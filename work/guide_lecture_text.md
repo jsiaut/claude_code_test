@@ -114,6 +114,10 @@ champ est refusé) :
 - « up to » → `up_to` ; « approximately » → `approximately` ; « at least » → `at_least`.
 - Période : `period_start` / `period_end` pour un flux, `period_end` seul pour un solde à une
   date, `event_date` pour un événement daté. Mets-les dès qu'ils sont déterminables.
+- Une date que le texte n'écrit pas (« May 2023 », « upon completion of the merger ») reste
+  vide, avec le texte dans `note` : elle ne se prend pas dans un fait balisé. Un total balisé
+  (remboursements de l'exercice, par exemple) ne s'attribue pas à un instrument que le texte ne
+  chiffre pas, même si les valeurs coïncident.
 
 ## 6. Ce qu'on cherche, par type de bloc
 
