@@ -18,6 +18,18 @@ from .graph import normalize_name
 LEGAL_SUFFIX = re.compile(r"\b(inc|corp|llc|lp|ltd|plc|pbc|co|n a|ag|gmbh|s a|sa|b v|bv|n v|nv|pte|llp|lllp|"
                           r"sarl|s a r l|kk|spa|s p a|se|limited|l l c)$")
 FILER_WORDS = {"we", "us", "the company", "our company"}
+_DESCR_START = re.compile(r"^(a|an|the|certain|one|two|several|various|unnamed|unidentified|other|its|our)\b")
+_DESCR_ANY = re.compile(r"\b(affiliates? of|subsidiar(y|ies) of|on behalf of)\b")
+
+
+class _Descriptive:
+    """Description plutôt que dénomination : article ou quantificateur en tête, ou « affiliate of »."""
+    @staticmethod
+    def match(n):
+        return bool(_DESCR_START.match(n) or _DESCR_ANY.search(n))
+
+
+DESCRIPTIVE = _Descriptive()
 
 
 def _d(x):
@@ -172,7 +184,9 @@ def build(p0, cfg, counterparty_names):
         if not n or n in known or n in FILER_WORDS or name.strip().upper() in (cfg.get("groups") or {}):
             continue
         known.add(n)
-        if LEGAL_SUFFIX.search(n):
+        # une description (« an affiliate of OpenAI Group PBC », « certain lenders ») n'est pas une
+        # dénomination légale, même si elle se termine par un suffixe juridique : elle reste pending
+        if LEGAL_SUFFIX.search(n) and not DESCRIPTIVE.match(n):
             eid = f"name:{n}"
             ent(eid, name, "executor_decision",
                 "D-0022 : dénomination légale complète dans une pièce déposée ; entité et groupe propres", fin=fin)
