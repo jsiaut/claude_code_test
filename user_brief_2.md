@@ -18,8 +18,10 @@ plus loin ?*
 ## Ce que le modèle affirme
 
 - **Huit groupes ont au moins un événement de fragilité daté**, avec sa pièce :
-  - Oracle a investi plus que la trésorerie dégagée par son activité, deux trimestres de suite, à cinq
-    reprises depuis l'été 2025 ; Amazon à quatre reprises (2021, 2022 et 2026) ; CoreWeave à cinq.
+  - Investir plus que la trésorerie que rapporte l'activité, deux trimestres de suite : Oracle sans
+    interruption depuis le trimestre clos fin mai 2025 ; CoreWeave à chaque trimestre connu depuis l'été
+    2024 (un trimestre n'a pas de chiffre exploitable) ; Amazon par épisodes, en 2021, en 2022 et de
+    nouveau au premier semestre 2026.
   - CoreWeave déclare une faiblesse de son contrôle interne sur six trimestres d'affilée ; elle a
     obtenu une dérogation aux clauses financières d'un prêt et modifié ces clauses deux fois.
   - Marvell a aussi modifié des clauses de prêt (deux fois) ; NVIDIA, Meta, AMD et Marvell ont connu un
