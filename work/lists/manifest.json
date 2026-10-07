@@ -1,0 +1,732 @@
+[
+ {
+  "lot": "conc_01",
+  "blocks": 38,
+  "chars": 75946
+ },
+ {
+  "lot": "inv_01",
+  "blocks": 53,
+  "chars": 179547
+ },
+ {
+  "lot": "inv_02",
+  "blocks": 68,
+  "chars": 174806
+ },
+ {
+  "lot": "inv_03",
+  "blocks": 72,
+  "chars": 177519
+ },
+ {
+  "lot": "inv_04",
+  "blocks": 40,
+  "chars": 140436
+ },
+ {
+  "lot": "k8_01",
+  "blocks": 54,
+  "chars": 100526
+ },
+ {
+  "lot": "debt_01",
+  "blocks": 26,
+  "chars": 197997
+ },
+ {
+  "lot": "debt_02",
+  "blocks": 34,
+  "chars": 190282
+ },
+ {
+  "lot": "debt_03",
+  "blocks": 38,
+  "chars": 199633
+ },
+ {
+  "lot": "debt_04",
+  "blocks": 34,
+  "chars": 198321
+ },
+ {
+  "lot": "debt_05",
+  "blocks": 31,
+  "chars": 189287
+ },
+ {
+  "lot": "debt_06",
+  "blocks": 23,
+  "chars": 182619
+ },
+ {
+  "lot": "debt_07",
+  "blocks": 36,
+  "chars": 197014
+ },
+ {
+  "lot": "debt_08",
+  "blocks": 43,
+  "chars": 197147
+ },
+ {
+  "lot": "debt_09",
+  "blocks": 42,
+  "chars": 197222
+ },
+ {
+  "lot": "debt_10",
+  "blocks": 12,
+  "chars": 36012
+ },
+ {
+  "lot": "lease_01",
+  "blocks": 61,
+  "chars": 168821
+ },
+ {
+  "lot": "lease_02",
+  "blocks": 68,
+  "chars": 169888
+ },
+ {
+  "lot": "lease_03",
+  "blocks": 54,
+  "chars": 143433
+ },
+ {
+  "lot": "comm_01",
+  "blocks": 17,
+  "chars": 197500
+ },
+ {
+  "lot": "comm_02",
+  "blocks": 18,
+  "chars": 192101
+ },
+ {
+  "lot": "comm_03",
+  "blocks": 22,
+  "chars": 199709
+ },
+ {
+  "lot": "comm_04",
+  "blocks": 19,
+  "chars": 195668
+ },
+ {
+  "lot": "comm_05",
+  "blocks": 19,
+  "chars": 190505
+ },
+ {
+  "lot": "comm_06",
+  "blocks": 23,
+  "chars": 193107
+ },
+ {
+  "lot": "comm_07",
+  "blocks": 20,
+  "chars": 194297
+ },
+ {
+  "lot": "comm_08",
+  "blocks": 21,
+  "chars": 185684
+ },
+ {
+  "lot": "comm_09",
+  "blocks": 22,
+  "chars": 195666
+ },
+ {
+  "lot": "comm_10",
+  "blocks": 22,
+  "chars": 198636
+ },
+ {
+  "lot": "comm_11",
+  "blocks": 23,
+  "chars": 186199
+ },
+ {
+  "lot": "comm_12",
+  "blocks": 23,
+  "chars": 198865
+ },
+ {
+  "lot": "comm_13",
+  "blocks": 20,
+  "chars": 196748
+ },
+ {
+  "lot": "comm_14",
+  "blocks": 22,
+  "chars": 189516
+ },
+ {
+  "lot": "comm_15",
+  "blocks": 15,
+  "chars": 101867
+ },
+ {
+  "lot": "ex_01",
+  "blocks": 1,
+  "chars": 390230
+ },
+ {
+  "lot": "ex_02",
+  "blocks": 2,
+  "chars": 200348
+ },
+ {
+  "lot": "ex_03",
+  "blocks": 2,
+  "chars": 272882
+ },
+ {
+  "lot": "ex_04",
+  "blocks": 1,
+  "chars": 522757
+ },
+ {
+  "lot": "ex_05",
+  "blocks": 8,
+  "chars": 307830
+ },
+ {
+  "lot": "ex_06",
+  "blocks": 4,
+  "chars": 251118
+ },
+ {
+  "lot": "ex_07",
+  "blocks": 1,
+  "chars": 300934
+ },
+ {
+  "lot": "ex_08",
+  "blocks": 1,
+  "chars": 96116
+ },
+ {
+  "lot": "ex_09",
+  "blocks": 1,
+  "chars": 600570
+ },
+ {
+  "lot": "ex_10",
+  "blocks": 1,
+  "chars": 618891
+ },
+ {
+  "lot": "ex_11",
+  "blocks": 1,
+  "chars": 260175
+ },
+ {
+  "lot": "ex_12",
+  "blocks": 1,
+  "chars": 166402
+ },
+ {
+  "lot": "ex_13",
+  "blocks": 1,
+  "chars": 288817
+ },
+ {
+  "lot": "ex_14",
+  "blocks": 2,
+  "chars": 258473
+ },
+ {
+  "lot": "ex_15",
+  "blocks": 4,
+  "chars": 293896
+ },
+ {
+  "lot": "ex_16",
+  "blocks": 5,
+  "chars": 155606
+ },
+ {
+  "lot": "ex_17",
+  "blocks": 1,
+  "chars": 526589
+ },
+ {
+  "lot": "ex_18",
+  "blocks": 1,
+  "chars": 98171
+ },
+ {
+  "lot": "ex_19",
+  "blocks": 1,
+  "chars": 432715
+ },
+ {
+  "lot": "ex_20",
+  "blocks": 8,
+  "chars": 300485
+ },
+ {
+  "lot": "ex_21",
+  "blocks": 5,
+  "chars": 316597
+ },
+ {
+  "lot": "ex_22",
+  "blocks": 1,
+  "chars": 606256
+ },
+ {
+  "lot": "ex_23",
+  "blocks": 1,
+  "chars": 395434
+ },
+ {
+  "lot": "ex_24",
+  "blocks": 2,
+  "chars": 200226
+ },
+ {
+  "lot": "ex_25",
+  "blocks": 1,
+  "chars": 541821
+ },
+ {
+  "lot": "ex_26",
+  "blocks": 2,
+  "chars": 295656
+ },
+ {
+  "lot": "ex_27",
+  "blocks": 3,
+  "chars": 307312
+ },
+ {
+  "lot": "ex_28",
+  "blocks": 10,
+  "chars": 297084
+ },
+ {
+  "lot": "ex_29",
+  "blocks": 2,
+  "chars": 297207
+ },
+ {
+  "lot": "ex_30",
+  "blocks": 1,
+  "chars": 72391
+ },
+ {
+  "lot": "ex_31",
+  "blocks": 1,
+  "chars": 388770
+ },
+ {
+  "lot": "ex_32",
+  "blocks": 3,
+  "chars": 316222
+ },
+ {
+  "lot": "ex_33",
+  "blocks": 9,
+  "chars": 317246
+ },
+ {
+  "lot": "ex_34",
+  "blocks": 7,
+  "chars": 315770
+ },
+ {
+  "lot": "ex_35",
+  "blocks": 1,
+  "chars": 120225
+ },
+ {
+  "lot": "ex_36",
+  "blocks": 1,
+  "chars": 512952
+ },
+ {
+  "lot": "ex_37",
+  "blocks": 1,
+  "chars": 101526
+ },
+ {
+  "lot": "ex_38",
+  "blocks": 1,
+  "chars": 588307
+ },
+ {
+  "lot": "ex_39",
+  "blocks": 2,
+  "chars": 223852
+ },
+ {
+  "lot": "ex_40",
+  "blocks": 1,
+  "chars": 323953
+ },
+ {
+  "lot": "ex_41",
+  "blocks": 1,
+  "chars": 603340
+ },
+ {
+  "lot": "ex_42",
+  "blocks": 9,
+  "chars": 293416
+ },
+ {
+  "lot": "ex_43",
+  "blocks": 3,
+  "chars": 315656
+ },
+ {
+  "lot": "ex_44",
+  "blocks": 3,
+  "chars": 279106
+ },
+ {
+  "lot": "ex_45",
+  "blocks": 1,
+  "chars": 252621
+ },
+ {
+  "lot": "ex_46",
+  "blocks": 2,
+  "chars": 275161
+ },
+ {
+  "lot": "ex_47",
+  "blocks": 1,
+  "chars": 75817
+ },
+ {
+  "lot": "ex_48",
+  "blocks": 1,
+  "chars": 306081
+ },
+ {
+  "lot": "ex_49",
+  "blocks": 1,
+  "chars": 246797
+ },
+ {
+  "lot": "ex_50",
+  "blocks": 1,
+  "chars": 239940
+ },
+ {
+  "lot": "ex_51",
+  "blocks": 4,
+  "chars": 276039
+ },
+ {
+  "lot": "ex_52",
+  "blocks": 1,
+  "chars": 353811
+ },
+ {
+  "lot": "ex_53",
+  "blocks": 1,
+  "chars": 291425
+ },
+ {
+  "lot": "ex_54",
+  "blocks": 1,
+  "chars": 143252
+ },
+ {
+  "lot": "ex_55",
+  "blocks": 1,
+  "chars": 383850
+ },
+ {
+  "lot": "ex_56",
+  "blocks": 1,
+  "chars": 102242
+ },
+ {
+  "lot": "ex_57",
+  "blocks": 1,
+  "chars": 322075
+ },
+ {
+  "lot": "ex_58",
+  "blocks": 1,
+  "chars": 81036
+ },
+ {
+  "lot": "ex_59",
+  "blocks": 1,
+  "chars": 274639
+ },
+ {
+  "lot": "ex_60",
+  "blocks": 1,
+  "chars": 100983
+ },
+ {
+  "lot": "ex_61",
+  "blocks": 1,
+  "chars": 287562
+ },
+ {
+  "lot": "ex_62",
+  "blocks": 2,
+  "chars": 241739
+ },
+ {
+  "lot": "ex_63",
+  "blocks": 2,
+  "chars": 224057
+ },
+ {
+  "lot": "ex_64",
+  "blocks": 3,
+  "chars": 274810
+ },
+ {
+  "lot": "ex_65",
+  "blocks": 1,
+  "chars": 468108
+ },
+ {
+  "lot": "ex_66",
+  "blocks": 2,
+  "chars": 312062
+ },
+ {
+  "lot": "ex_67",
+  "blocks": 1,
+  "chars": 255779
+ },
+ {
+  "lot": "ex_68",
+  "blocks": 4,
+  "chars": 243905
+ },
+ {
+  "lot": "ex_69",
+  "blocks": 2,
+  "chars": 316878
+ },
+ {
+  "lot": "ex_70",
+  "blocks": 3,
+  "chars": 250369
+ },
+ {
+  "lot": "ex_71",
+  "blocks": 2,
+  "chars": 305557
+ },
+ {
+  "lot": "ex_72",
+  "blocks": 2,
+  "chars": 290686
+ },
+ {
+  "lot": "ex_73",
+  "blocks": 2,
+  "chars": 273145
+ },
+ {
+  "lot": "ex_74",
+  "blocks": 2,
+  "chars": 317774
+ },
+ {
+  "lot": "ex_75",
+  "blocks": 2,
+  "chars": 155274
+ },
+ {
+  "lot": "ex_76",
+  "blocks": 1,
+  "chars": 299815
+ },
+ {
+  "lot": "ex_77",
+  "blocks": 1,
+  "chars": 69218
+ },
+ {
+  "lot": "ex_78",
+  "blocks": 1,
+  "chars": 446928
+ },
+ {
+  "lot": "ex_79",
+  "blocks": 1,
+  "chars": 373656
+ },
+ {
+  "lot": "ex_80",
+  "blocks": 1,
+  "chars": 341741
+ },
+ {
+  "lot": "ex_81",
+  "blocks": 6,
+  "chars": 302722
+ },
+ {
+  "lot": "ex_82",
+  "blocks": 2,
+  "chars": 37015
+ },
+ {
+  "lot": "ex_83",
+  "blocks": 1,
+  "chars": 319578
+ },
+ {
+  "lot": "ex_84",
+  "blocks": 2,
+  "chars": 148909
+ },
+ {
+  "lot": "ex_85",
+  "blocks": 1,
+  "chars": 261995
+ },
+ {
+  "lot": "ex_86",
+  "blocks": 1,
+  "chars": 68859
+ },
+ {
+  "lot": "ex_87",
+  "blocks": 1,
+  "chars": 286873
+ },
+ {
+  "lot": "ex_88",
+  "blocks": 1,
+  "chars": 69089
+ },
+ {
+  "lot": "ex_89",
+  "blocks": 1,
+  "chars": 260344
+ },
+ {
+  "lot": "ex_90",
+  "blocks": 2,
+  "chars": 175057
+ },
+ {
+  "lot": "ex_91",
+  "blocks": 1,
+  "chars": 230291
+ },
+ {
+  "lot": "ex_92",
+  "blocks": 1,
+  "chars": 279263
+ },
+ {
+  "lot": "ex_93",
+  "blocks": 1,
+  "chars": 380994
+ },
+ {
+  "lot": "ex_94",
+  "blocks": 1,
+  "chars": 582441
+ },
+ {
+  "lot": "ex_95",
+  "blocks": 1,
+  "chars": 453861
+ },
+ {
+  "lot": "ex_96",
+  "blocks": 2,
+  "chars": 301064
+ },
+ {
+  "lot": "ex_97",
+  "blocks": 4,
+  "chars": 217149
+ },
+ {
+  "lot": "ex_98",
+  "blocks": 2,
+  "chars": 272378
+ },
+ {
+  "lot": "ex_99",
+  "blocks": 1,
+  "chars": 139828
+ },
+ {
+  "lot": "ex_100",
+  "blocks": 1,
+  "chars": 463887
+ },
+ {
+  "lot": "ex_101",
+  "blocks": 2,
+  "chars": 238013
+ },
+ {
+  "lot": "ex_102",
+  "blocks": 1,
+  "chars": 112593
+ },
+ {
+  "lot": "ex_103",
+  "blocks": 1,
+  "chars": 373973
+ },
+ {
+  "lot": "ex_104",
+  "blocks": 1,
+  "chars": 332326
+ },
+ {
+  "lot": "ex_105",
+  "blocks": 5,
+  "chars": 203757
+ },
+ {
+  "lot": "lever_01",
+  "blocks": 135,
+  "chars": 149657
+ },
+ {
+  "lot": "lever_02",
+  "blocks": 129,
+  "chars": 149869
+ },
+ {
+  "lot": "lever_03",
+  "blocks": 132,
+  "chars": 129553
+ },
+ {
+  "lot": "rev_01",
+  "blocks": 55,
+  "chars": 158422
+ },
+ {
+  "lot": "rev_02",
+  "blocks": 62,
+  "chars": 159128
+ },
+ {
+  "lot": "rev_03",
+  "blocks": 54,
+  "chars": 159157
+ },
+ {
+  "lot": "rev_04",
+  "blocks": 29,
+  "chars": 154466
+ }
+]

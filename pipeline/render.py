@@ -165,6 +165,20 @@ RANK1_SERIES = [
     ("lev_debt_and_leases_to_operating_income_plus_da", "debt", "Dette ÷ (résultat opérationnel + dotations)", "x"),
     ("lev_debt_and_leases_to_operating_income_plus_da", "leases", "Passifs locatifs ÷ (résultat opérationnel + dotations)", "x"),
 ]
+RANK2_SERIES = [
+    ("gross_margin", NONE, "Marge brute", "pct"),
+    ("operating_margin", NONE, "Marge opérationnelle", "pct"),
+    ("capex_to_revenue", NONE, "Capex décaissé ÷ revenu", "x"),
+    ("fcf_after_sbc", NONE, "Flux disponible après rémunération en actions", "usd"),
+    ("sbc_to_cfo", NONE, "Rémunération en actions ÷ CFO", "x"),
+    ("cfo_net_income_gap", NONE, "Écart CFO − résultat net", "usd"),
+    ("cov_interest_coverage", "without", "Résultat opérationnel ÷ charge d'intérêts (12 mois)", "x"),
+    ("working_capital", "net", "Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat)", "usd"),
+    ("eq_equity_and_accumulated_deficit", "equity", "Capitaux propres", "usd"),
+    ("eq_equity_and_accumulated_deficit", "accumulated_deficit", "Résultats non distribués (déficit si négatif)", "usd"),
+    ("eq_diluted_share_count_change", NONE, "Variation du nombre moyen dilué d'actions (sur un an)", "pct"),
+    ("cip_share", NONE, "En-cours ÷ immobilisations brutes", "pct"),
+]
 ANNUAL = [
     ("liq_principal_due_to_cash", "horizon_12m", "Principal dû à 12 mois ÷ trésorerie", "x"),
     ("liq_principal_due_to_cash", "horizon_24m", "Principal dû à 24 mois ÷ trésorerie", "x"),
@@ -401,6 +415,14 @@ def fragility_section(con, T, g):
                 c = one(con, meas, g, pe, term)
                 row.append(T.m(c, fmt=fmt) if c else "—")
             L.append(f"| {label} | " + " | ".join(row) + " |")
+        if q(con, "SELECT 1 FROM measures WHERE measure = 'gross_margin' AND subject = ? LIMIT 1", g):
+            L.append("| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* | " + " | ".join("" for _ in qs) + " |")
+            for meas, term, label, fmt in RANK2_SERIES:
+                row = []
+                for pe in qs:
+                    c = one(con, meas, g, pe, term)
+                    row.append(T.m(c, fmt=fmt) if c else "—")
+                L.append(f"| {label} | " + " | ".join(row) + " |")
         L.append("")
     ys = last_years(con, g, 2)
     if ys:

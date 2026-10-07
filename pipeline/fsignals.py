@@ -81,11 +81,27 @@ def observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_c
     return out
 
 
-def covenant_signals(groups, quarters_by_group, obs, as_of):
+def debt_note_quarters(obs, report_end_of):
+    """(groupe, fin de trimestre) dont la note de dette du rapport périodique a été lue (bloc
+    `text` de §14) : toute ligne, abstention comprise, d'un bloc debt_note."""
+    out = set()
+    for o in obs:
+        if o.get("block_kind") == "debt_note" and o.get("accession") in report_end_of:
+            out.add((o["group_id"], report_end_of[o["accession"]]))
+    return out
+
+
+def _read_for(read_q, g, pe):
+    return any(gg == g and d is not None and abs((d - pe).days) <= 7 for gg, d in read_q)
+
+
+def covenant_signals(groups, quarters_by_group, obs, as_of, report_end_of=None):
     """sig_covenant_events : manquements, dérogations et amendements de clauses financières.
-    Lus dans les items de 8-K et leurs pièces (tranche complète) ; les notes de dette des
-    rapports périodiques sont hors tranche : un trimestre sans événement est partial."""
+    Lus dans les items de 8-K et leurs pièces (tranche complète) et, si le bloc `text` est
+    ouvert, dans la note de dette de chaque rapport périodique : un trimestre sans événement
+    est computed si cette note est lue, partial sinon."""
     out = []
+    read_q = debt_note_quarters(obs, report_end_of or {})
     for g in groups:
         evs = [o for o in obs if o["group_id"] == g and o.get("signal") in COVENANT and o.get("signal_present") is True
                and o["validation_state"] == "valid"]
@@ -99,10 +115,43 @@ def covenant_signals(groups, quarters_by_group, obs, as_of):
                                 flags={"observations": [o["obs_key"] for o in hits],
                                        "signals": sorted({o["signal"] for o in hits}),
                                        "judgment_sensitive": any(o.get("judgment_sensitive") for o in hits)}))
+            elif _read_for(read_q, g, pe):
+                out.append(cell("sig_covenant_events", g, ps, pe, "as_known", as_of, value_text="no_event", status="computed",
+                                flags={"basis": "items 1.01, 1.02, 3.03 et 8.01 des 8-K et leurs pièces, note de dette du rapport lue"}))
             else:
                 out.append(cell("sig_covenant_events", g, ps, pe, "as_known", as_of, value_text="no_event", status="partial",
                                 nd_reason="not_processed", coverage="not_processed",
-                                flags={"basis": "items 1.01, 1.02, 3.03 et 8.01 des 8-K et leurs pièces lus ; notes de dette hors tranche"}))
+                                flags={"basis": "items 1.01, 1.02, 3.03 et 8.01 des 8-K et leurs pièces lus ; note de dette de ce trimestre non lue"}))
+    return out
+
+
+def pledged_signals(groups, quarters_by_group, obs, as_of, report_end_of):
+    """sig_pledged_assets : actifs nantis et trésorerie restreinte au profit de prêteurs (§4.5),
+    lus dans les notes de dette et les contrats ; un trimestre dont la note de dette n'est pas lue
+    reste indéterminé, jamais « sans nantissement »."""
+    out = []
+    read_q = debt_note_quarters(obs, report_end_of)
+    for g in groups:
+        evs = [o for o in obs if o["group_id"] == g and o.get("signal") == "pledged_assets"
+               and o.get("signal_present") is True and o["validation_state"] == "valid"]
+        for q in quarters_by_group[g]:
+            ps, pe = q["start"], q["end"]
+            hits = []
+            for o in evs:
+                d = _d(o.get("event_date")) or _d(o.get("period_end")) or \
+                    report_end_of.get(o.get("accession")) or _d(o.get("knowledge_date"))
+                if d is not None and ps <= d <= pe + dt.timedelta(days=7):
+                    hits.append(o)
+            if hits:
+                out.append(cell("sig_pledged_assets", g, ps, pe, "as_known", as_of, value_text="event", status="computed",
+                                knowledge_date=str(min(_d(o["knowledge_date"]) for o in hits)),
+                                flags={"observations": [o["obs_key"] for o in hits]}))
+            elif _read_for(read_q, g, pe):
+                out.append(cell("sig_pledged_assets", g, ps, pe, "as_known", as_of, value_text="no_event", status="computed",
+                                flags={"basis": "note de dette du rapport lue, aucun nantissement relevé"}))
+            else:
+                out.append(cell("sig_pledged_assets", g, ps, pe, "as_known", as_of, status="not_determinable",
+                                nd_reason="not_processed", coverage="not_processed"))
     return out
 
 

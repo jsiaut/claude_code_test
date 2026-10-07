@@ -116,7 +116,10 @@ def pick(occ, cutoff):
 
 def _match(occ, start, end, instant, tol=3):
     def close(a, b):
-        return a is not None and b is not None and abs((a - b).days) <= tol
+        # un instant n'a pas de début : NaT ne se compare à rien
+        if a is None or b is None or a != a or b != b:
+            return False
+        return abs((a - b).days) <= tol
     if instant:
         m = occ[occ["period_end"].map(lambda x: close(x, end)) & (occ["period_type"] == "instant")]
     else:

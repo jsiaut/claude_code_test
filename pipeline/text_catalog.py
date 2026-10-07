@@ -31,6 +31,16 @@ NOTE_SPECS = [
     ("commitments_note", re.compile(r"commitments?|contingenc|guarantee|purchase obligation", re.I)),
 ]
 CONC_CONCEPT = "us-gaap:ConcentrationRiskPercentage1"
+# leviers qui ne se lisent que dans le texte (§6.1) : durées d'amortissement et effets des
+# changements d'estimation, publiés dans la note des immobilisations et le paragraphe des
+# estimations ; repérés par leur concept standard, pas par un rôle (le rôle des principes
+# comptables couvre tout)
+LEVER_CONCEPTS = {"us-gaap:PropertyPlantAndEquipmentDisclosureTextBlock", "us-gaap:UseOfEstimates",
+                  "us-gaap:PropertyPlantAndEquipmentPolicyTextBlock", "us-gaap:ChangeInAccountingEstimatePolicyTextBlock",
+                  "us-gaap:ChangeInAccountingEstimateTextBlock"}
+# note de revenu : contrepartie payable au client, revenu contre titres, brut ou net, exemptions
+# du RPO (leviers 6, 7 et 9 de §6.1)
+REVENUE_CONCEPTS = {"us-gaap:RevenueFromContractWithCustomerTextBlock"}
 CONC_RX = re.compile(r"customer|client|concentration|\d+\s?%|percent", re.I)
 
 
@@ -63,6 +73,24 @@ def note_blocks(filing, files, inst_name, tb_concepts, facts_rows, labels):
             cand = [blocks._cand(f, labels) for f in cands]
             out.append(blocks._block(kind, filing, text, cand, inst_name, loc,
                                      note_label=c + " | " + "; ".join(blocks._role_def(lb, r) for r in notes)))
+    for c in sorted(LEVER_CONCEPTS | REVENUE_CONCEPTS):
+        tb = by_concept.get(c)
+        if tb is None or c in seen:
+            continue
+        text = textnorm.lines_to_text(textnorm.html_fragment_lines(tb["text"]))
+        if not text.strip():
+            continue
+        seen.add(c)
+        loc = blocks._fact_byte_range(raw, tb.get("fact_id"))
+        kind = "revenue_note" if c in REVENUE_CONCEPTS else "lever_note"
+        out.append(blocks._block(kind, filing, text, [blocks._cand(f, labels) for f in facts_rows
+                                                              if f["concept"] in ("us-gaap:PropertyPlantAndEquipmentUsefulLife",
+                                                                                  "us-gaap:Depreciation",
+                                                                                  "us-gaap:DepreciationDepletionAndAmortization",
+                                                                                  "us-gaap:RevenueRemainingPerformanceObligation",
+                                                                                  "us-gaap:ContractWithCustomerLiability")
+                                                              and f.get("value") is not None],
+                                 inst_name, loc, note_label=c))
     # texte autour des faits de concentration : les paragraphes de la note qui les porte
     conc_roles = [r for r, arcs in lb["pres"].items() if any(CONC_CONCEPT in (a[0], a[1]) for a in arcs)]
     if conc_roles:
@@ -206,6 +234,8 @@ if __name__ == "__main__":
     for k, (n, ch, keys) in sorted(by.items()):
         print(k, n, len(keys), ch)
     print(dict(stats))
-    with open(config.DB_DIR / "text_blocks_ext.jsonl", "w", encoding="utf-8") as fh:
+    tmp = config.DB_DIR / "text_blocks_ext.jsonl.tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
         for b in out:
             fh.write(json.dumps(b, ensure_ascii=False, default=str) + "\n")
+    tmp.replace(config.DB_DIR / "text_blocks_ext.jsonl")   # remplacement atomique : les lecteurs en cours ne voient jamais un fichier partiel

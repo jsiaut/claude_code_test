@@ -13,7 +13,7 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, links, load, measures, model, reader)
+               fsignals, lender, links, load, measures, model, rank2, reader)
 from .registry import MEASURES
 
 NONE = "none"
@@ -130,8 +130,12 @@ def run(as_of):
     filings = pd.read_parquet(config.DB_DIR / "filings.parquet")
     filings["filingDate"] = filings["filingDate"].map(_d)
 
-    # 5. mesures de rang 1 tirées des faits (phase 1), puis mesures dimensionnelles
+    # 5. mesures de rang 1 tirées des faits (phase 1), puis mesures dimensionnelles ; mesures de
+    # rang 2 tirées des faits, codées après la seconde page (§11.1)
     cells = measures.group_measures(con, groups, as_of)
+    cells += rank2.group_rank2(con, groups, as_of)
+    cells += rank2.rpo_beyond(con, groups, as_of) + rank2.segments(con, groups, as_of) + \
+        rank2.supplier_concentration(con, groups, as_of)
     scope = cfg.get("scope") if isinstance(cfg.get("scope"), list) else []
     lender_excl = []
     if "lender" in scope:
@@ -178,7 +182,10 @@ def run(as_of):
     parsed = set(pd.read_parquet(config.DB_DIR / "xbrl_documents.parquet")["accession"])
     sig_cells += fsignals.observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_ck, read_cks,
                                            parsed, as_of)
-    sig_cells += fsignals.covenant_signals(groups, quarters_by_group, valid, as_of)
+    report_end_of = {a: _d(r) for a, r in zip(filings["accessionNumber"], filings["reportDate"]) if r}
+    sig_cells += fsignals.covenant_signals(groups, quarters_by_group, valid, as_of, report_end_of)
+    sig_cells += fsignals.pledged_signals(groups, quarters_by_group, valid, as_of, report_end_of)
+    cells += rank2.lease_not_commenced(cells, valid, report_end_of, as_of)
     cells += sig_cells
 
     # 7. flux après financement des contreparties, matrice d'exposition tirée du texte

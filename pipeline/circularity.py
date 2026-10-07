@@ -122,8 +122,14 @@ def financed_events(pair):
                 and l["tier"] in ("A", "B", "C") and o.get("event_type") not in ("repayment", "conversion",
                                                                                  "disposal", "termination",
                                                                                  "impairment"):
-            ev.append((d, "b", l["link_key"], _kd(l)))
-            if l["tier"] in ("A", "B") and l["edge_type"] in ("equity_primary", "convertible_or_safe", "loan_or_facility"):
+            # (b) un versement ou un prêt en numéraire, daté ; une valeur au bilan constatée à une
+            # date prouve une détention (a), pas un versement des huit derniers trimestres
+            holding_only = o.get("event_type") in ("recognition", "measurement_change") or \
+                o.get("amount_nature") in ("investment_carrying_amount", "fair_value")
+            if not holding_only:
+                ev.append((d, "b", l["link_key"], _kd(l)))
+            if l["tier"] in ("A", "B") and l["edge_type"] in ("equity_primary", "convertible_or_safe", "loan_or_facility",
+                                                              "noncash_investment"):
                 ev.append((d, "a", l["link_key"], _kd(l)))
         if l["family"] == "customer_consideration" and l["stage"] == "recognized":
             ev.append((d, "c", l["link_key"], _kd(l)))
