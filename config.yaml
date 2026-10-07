@@ -16,8 +16,21 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
-scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
+scope: [lender, text]        # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
+  date: 2026-10-07
+  decision: "prêteurs et texte"
+  blocks: [lender, text]
+  page: user_brief_2.md      # commit 9210738
+  yield_presented:           # rendement présenté avec la question (delta.md du même commit)
+    rank1_cells: {total: 15766, computed: 6322, bounded: 161, partial: 794, not_determinable: 8489}
+    rank1_not_processed: 3394
+    annex_e_e7: {outcomes: 12, indeterminate: 11, result: non_discrimination}
+    fragility_events: 33
+    pairs: {total: 36, documented_dependency: 4, commercial_with_financing: 4, financed_documented: 6}
+    requests: 3741
+    blocks_read: 1133
+    exhibit_bodies_header_only: 217
 
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
