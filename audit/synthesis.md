@@ -4,13 +4,13 @@
 
 ## En tête
 
-- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `c52824e487b41daad31e7261d157506cf6797d2a`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `entity_aliases` (alias confirmés par extrait, D-0021); `own_entities` (entités propres confirmées par extrait, D-0021); `scope` (voir decisions.md); `scope_decision` (voir decisions.md).
-- **Périmètre couvert : premier passage et blocs `lender`, `text` de §14**, ouverts par l'utilisateur le 2026-10-07 après le rendement présenté dans la seconde page. Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des pièces arrêtées à leur en-tête ; ce qui n'est pas encore lu reste « non traité », bloc par bloc dans `exclusions`. Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.
-- **Résultat principal (E.7) : les pièces déposées ne permettent pas de discriminer entre les deux lectures.** 92 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 12 issues ; motifs : recherche incomplète : 5, précondition non remplie : 3, intervalle à cheval sur le seuil : 2, non traité au premier passage : 1. La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une non-discrimination tient encore en partie au périmètre de lecture.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 507, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `2a5858293bbf6d9bb18ecc96cf6c66ddd985525c`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `entity_aliases` (alias confirmés par extrait, D-0021); `own_entities` (entités propres confirmées par extrait, D-0021); `reading` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md).
+- **Périmètre couvert : premier passage et blocs `lender`, `text` de §14**, ouverts par l'utilisateur le 2026-10-07 après le rendement présenté dans la seconde page. Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; ce qui n'est pas encore lu reste « non traité », bloc par bloc dans `exclusions`. Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.
+- **Résultat principal (E.7) : les pièces déposées ne permettent pas de discriminer entre les deux lectures.** 94 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 16 issues ; motifs : recherche incomplète : 7, intervalle à cheval sur le seuil : 4, précondition non remplie : 3, pas encore lu : 1. La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une non-discrimination tient encore en partie au périmètre de lecture.
+- **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 508, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 775, `not_testable` 720, `ok` 13 425, `tautological` 613.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/36, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
-- **Exclusions principales** : `not_processed` 1 296, `conflicting` 377, `pending_entity` 59, `submitted_draft` 8, `invalid_aggregate` 6, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/37, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
+- **Exclusions principales** : `not_processed` 1 336, `conflicting` 377, `financial_parties_only` 165, `pending_entity` 112, `invalid_aggregate` 8, `submitted_draft` 8, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -40,9 +40,9 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 **Oracle**
 
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-09-10, rattaché au trimestre clos le 2025-08-31 ; pièce : 10-Q 0001193125-25-200095.
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-12-11, rattaché au trimestre clos le 2025-11-30 ; pièce : 10-Q 0001193125-25-315925, 10-Q 0001193125-25-200095.
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-03-11, rattaché au trimestre clos le 2026-02-28 ; pièce : 10-Q 0001193125-25-315925, 10-Q 0001193125-26-101045.
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-06-22, rattaché au trimestre clos le 2026-05-31 ; pièce : 10-Q 0001193125-26-101045, 10-K 0001193125-26-277521.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-12-11, rattaché au trimestre clos le 2025-11-30 ; pièce : 10-Q 0001193125-25-200095, 10-Q 0001193125-25-315925.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-03-11, rattaché au trimestre clos le 2026-02-28 ; pièce : 10-Q 0001193125-26-101045, 10-Q 0001193125-25-315925.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-06-22, rattaché au trimestre clos le 2026-05-31 ; pièce : 10-K 0001193125-26-277521, 10-Q 0001193125-26-101045.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-09-11, rattaché au trimestre clos le 2026-08-31 ; pièce : 10-Q 0001193125-26-389274.
 
 **CoreWeave**
@@ -52,15 +52,19 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-05-15, rattaché au trimestre clos le 2025-03-31 ; pièce : 10-Q 0001769628-25-000014.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2025-05-15, rattaché au trimestre clos le 2025-03-31 ; pièce : 10-Q 0001769628-25-000014.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2025-08-13, rattaché au trimestre clos le 2025-06-30 ; pièce : 10-Q 0001769628-25-000041.
-- F4 (amendement ou dérogation de clause financière) — rendu public le 2025-10-02, rattaché au trimestre clos le 2025-09-30 ; pièce : 8-K 0001193125-25-227562.
+- F4 (amendement ou dérogation de clause financière) — rendu public le 2025-08-13, rattaché au trimestre clos le 2025-09-30 ; pièce : 8-K 0001193125-25-227562, 10-Q 0001769628-25-000041.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2025-11-13, rattaché au trimestre clos le 2025-09-30 ; pièce : 10-Q 0001769628-25-000062.
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-03-02, rattaché au trimestre clos le 2025-12-31 ; pièce : 10-K 0001769628-26-000104, 10-Q 0001769628-25-000062.
-- F4 (amendement ou dérogation de clause financière) — rendu public le 2026-01-02, rattaché au trimestre clos le 2025-12-31 ; pièce : 8-K 0001769628-26-000003.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-03-02, rattaché au trimestre clos le 2025-12-31 ; pièce : 10-Q 0001769628-25-000062, 10-K 0001769628-26-000104.
+- F4 (amendement ou dérogation de clause financière) — rendu public le 2025-11-13, rattaché au trimestre clos le 2025-12-31 ; pièce : 8-K 0001769628-26-000003, 10-Q 0001769628-25-000062.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-03-02, rattaché au trimestre clos le 2025-12-31 ; pièce : 10-K 0001769628-26-000104.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-05-08, rattaché au trimestre clos le 2026-03-31 ; pièce : 10-Q 0001769628-26-000222.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-05-08, rattaché au trimestre clos le 2026-03-31 ; pièce : 10-Q 0001769628-26-000222.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001769628-26-000366, 10-Q 0001769628-26-000222.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001769628-26-000366.
+
+**SpaceX**
+
+- F4 (amendement ou dérogation de clause financière) — rendu public le 2026-08-04, rattaché au trimestre clos le 2026-03-31 ; pièce : 10-Q 0001628280-26-052535.
 
 **AMD**
 
@@ -70,7 +74,7 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 **Marvell**
 
 - F4 (amendement ou dérogation de clause financière) — rendu public le 2020-12-08, rattaché au trimestre clos le 2021-01-30 ; pièce : 8-K 0001193125-20-312706.
-- F4 (amendement ou dérogation de clause financière) — rendu public le 2023-04-17, rattaché au trimestre clos le 2023-04-29 ; pièce : 8-K 0001193125-23-103639.
+- F4 (amendement ou dérogation de clause financière) — rendu public le 2023-04-17, rattaché au trimestre clos le 2023-04-29 ; pièce : 10-Q 0001835632-23-000046, 10-K 0001835632-25-000057, 10-Q 0001835632-24-000200, 10-Q 0001835632-24-000142, 8-K 0001193125-23-103639, 10-Q 0001835632-23-000038, 10-Q 0001835632-24-000063.
 - F8 (croissance annuelle passée sous zéro) — rendu public le 2023-05-26, rattaché au trimestre clos le 2023-04-29 ; pièce : faits balisés.
 - F8 (croissance annuelle passée sous zéro) — rendu public le 2024-05-31, rattaché au trimestre clos le 2024-05-04 ; pièce : faits balisés.
 
@@ -79,7 +83,7 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F1 : calculée / événement 14 ; calculée / sans événement 177 ; indéterminée 65
 - F2 : indéterminée 256
 - F3 : partielle / sans événement 256
-- F4 : calculée / événement 5 ; partielle / sans événement 251
+- F4 : calculée / événement 6 ; calculée / sans événement 104 ; partielle / sans événement 146
 - F5 : calculée / événement 6 ; calculée / sans événement 197 ; indéterminée 53
 - F6 : calculée / événement 1 ; indéterminée 255
 - F7 : calculée / événement 2 ; calculée / sans événement 44 ; indéterminée 210
@@ -108,6 +112,19 @@ Dernière information balisée utilisée : 2026-08-26.
 | Obligations de prestation restantes (RPO) | 2 500 M$ | 2 300 M$ | 2 600 M$ | 3 200 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | 0,08 x | 0,06 x | 0,05 x | 0,17 x |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,02 x | 0,02 x | 0,03 x | 0,03 x |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 73,4 % | 75,0 % | 74,9 % | 75,0 % |
+| Marge opérationnelle | 63,2 % | 65,0 % | 65,6 % | 66,2 % |
+| Capex décaissé ÷ revenu | 0,03 x | 0,02 x | 0,02 x | 0,03 x |
+| Flux disponible après rémunération en actions | 20 461 M$ | 33 271 M$ | 46 659 M$ | 19 374 M$ |
+| Rémunération en actions ÷ CFO | 0,07 x | 0,05 x | 0,04 x | 0,08 x |
+| Écart CFO − résultat net | -8 159 M$ | -6 772 M$ | -7 977 M$ | -35 611 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 445,84 x | 503,42 x | 544,58 x | 426,74 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 43 303 M$ | 48 678 M$ | 51 696 M$ | 74 959 M$ |
+| Capitaux propres | 118 897 M$ | 157 293 M$ | 195 474 M$ | 228 984 M$ |
+| Résultats non distribués (déficit si négatif) | 107 908 M$ | 146 973 M$ | 185 038 M$ | 219 157 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | -1,2 % | n.d. (dénominateur négatif ou nul) | -0,9 % | -1,0 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-01-26 | 2026-01-25 |
 | --- | ---: | ---: |
@@ -124,7 +141,7 @@ Baux non commencés au 2026-01-25 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2026-01-25) : Equipment, Compute Hardware, And Software (borne basse) 2,0 ans ; Equipment, Compute Hardware, And Software (borne haute) 7,0 ans ; Building (valeur unique) 30,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 26 ; clauses financières — sans événement 26 ; items de détresse (8-K) — sans événement 26 ; continuité d'exploitation — sans événement 26 ; dépôt tardif — sans événement 26 ; faiblesse du contrôle interne — sans événement 26.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 26 ; clauses financières — sans événement 11, sans événement 15 ; items de détresse (8-K) — sans événement 26 ; continuité d'exploitation — sans événement 26 ; dépôt tardif — sans événement 26 ; faiblesse du contrôle interne — sans événement 26 ; actifs nantis — sans événement 11, indéterminée 15.
 
 ### Alphabet (GOOGL)
 
@@ -143,6 +160,19 @@ Dernière information balisée utilisée : 2026-07-23.
 | Obligations de prestation restantes (RPO) | 157 700 M$ | 242 800 M$ | 467 600 M$ | 519 500 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | 0,19 x | 0,32 x | 0,49 x | 0,58 x |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,12 x | 0,12 x | 0,11 x | 0,12 x |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 59,6 % | 59,8 % | 62,4 % | 61,6 % |
+| Marge opérationnelle | 30,5 % | 31,6 % | 36,1 % | 34,0 % |
+| Capex décaissé ÷ revenu | 0,23 x | 0,24 x | 0,32 x | 0,38 x |
+| Flux disponible après rémunération en actions | 18 093 M$ | 17 480 M$ | 3 365 M$ | -13 812 M$ |
+| Rémunération en actions ÷ CFO | 0,13 x | 0,13 x | 0,15 x | 0,20 x |
+| Écart CFO − résultat net | 13 435 M$ | 17 947 M$ | -16 788 M$ | -73 124 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 252,70 x | 175,32 x | 111,85 x | 65,55 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 41 060 M$ (partiel) | 44 108 M$ (partiel) | 38 985 M$ (partiel) | 51 754 M$ |
+| Capitaux propres | 386 867 M$ | 415 265 M$ | 478 746 M$ | 640 480 M$ |
+| Résultats non distribués (déficit si négatif) | 297 226 M$ | 324 055 M$ | 384 024 M$ | 493 371 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | -1,7 % | n.d. (dénominateur négatif ou nul) | -0,4 % | 0,9 % |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -159,7 +189,7 @@ Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2025-12-31) : Corporate And Other Assets (borne basse) 2,0 ans ; Corporate And Other Assets (borne haute) 25,0 ans ; Data Center and Office Buildings (borne basse) 7,0 ans ; Data Center and Office Buildings (borne haute) 40,0 ans ; Servers and Network Equipment (valeur unique) 6,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 22 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 12, sans événement 10 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22 ; actifs nantis — sans événement 12, indéterminée 10.
 
 ### Amazon (AMZN)
 
@@ -178,6 +208,19 @@ Dernière information balisée utilisée : 2026-07-31.
 | Obligations de prestation restantes (RPO) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 | Dette ÷ (résultat opérationnel + dotations) | 0,40 x | 0,47 x | 0,78 x | 0,78 x |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,71 x | 0,70 x | 0,67 x | 0,65 x |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 50,8 % | 48,5 % | 51,8 % | 52,3 % |
+| Marge opérationnelle | 9,7 % | 11,7 % | 13,1 % | 13,7 % |
+| Capex décaissé ÷ revenu | 0,19 x | 0,19 x | 0,24 x | 0,27 x |
+| Flux disponible après rémunération en actions | -4 417 M$ | 10 540 M$ | -22 203 M$ | -14 859 M$ |
+| Rémunération en actions ÷ CFO | 0,14 x | 0,08 x | 0,15 x | 0,13 x |
+| Écart CFO − résultat net | 14 338 M$ | 33 267 M$ | -4 223 M$ | -17 260 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 35,20 x | 35,17 x | 33,72 x | 28,13 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | -24 476 M$ | -36 431 M$ | -33 570 M$ | -41 592 M$ |
+| Capitaux propres | 369 631 M$ | 411 065 M$ | 441 914 M$ | 551 620 M$ |
+| Résultats non distribués (déficit si négatif) | 229 344 M$ | 250 536 M$ | 280 791 M$ | 343 438 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | 1,0 % | -25,0 % | 0,8 % | 0,9 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -194,7 +237,7 @@ Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2025-12-31) : Building (valeur unique) 40,0 ans ; Computer Equipment (borne basse) 5,0 ans ; Computer Equipment (borne haute) 6,0 ans ; Machinery And Equipment (borne basse) 10,0 ans ; Machinery And Equipment (borne haute) 13,0 ans ; Other Machinery and Equipment (borne basse) 3,0 ans ; Other Machinery and Equipment (borne haute) 10,0 ans ; Technology Equipment (borne basse) 5,0 ans ; Technology Equipment (borne haute) 6,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 22 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 8, indéterminée 14.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 12, sans événement 10 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 8, indéterminée 14 ; actifs nantis — événement 6, sans événement 6, indéterminée 10.
 
 ### Meta (META)
 
@@ -208,11 +251,24 @@ Dernière information balisée utilisée : 2026-07-30.
 | Capex ÷ CFO, additions non monétaires comprises | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) |
 | Flux disponible (CFO − capex) | 11 170 M$ | 14 831 M$ | 13 229 M$ | 1 746 M$ |
 | Flux disponible après locations-financement | 10 625 M$ | 14 077 M$ | 12 386 M$ | 784 M$ |
-| Flux après financement des contreparties | 11 170 M$ (partiel) | 14 831 M$ (partiel) | 13 229 M$ (partiel) | 1 746 M$ (partiel) |
+| Flux après financement des contreparties | 11 170 M$ (partiel) | n.d. (entité non confirmée) | 13 229 M$ (partiel) | 1 746 M$ (partiel) |
 | Délai de recouvrement (créances) | 31 j | 30 j | 28 j | 33 j |
 | Obligations de prestation restantes (RPO) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 0,58 x | n.d. (terme manquant) | 0,76 x |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 0,26 x | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 82,0 % | 81,8 % | 81,9 % | 81,4 % |
+| Marge opérationnelle | 40,1 % | 41,3 % | 40,6 % | 30,9 % |
+| Capex décaissé ÷ revenu | 0,37 x | 0,36 x | 0,34 x | 0,50 x |
+| Flux disponible après rémunération en actions | 5 614 M$ | 8 941 M$ | 7 197 M$ | -5 912 M$ |
+| Rémunération en actions ÷ CFO | 0,19 x | 0,16 x | 0,19 x | 0,24 x |
+| Écart CFO − résultat net | 27 290 M$ | 13 446 M$ | 5 453 M$ | 16 014 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 17 297 M$ (partiel) | 19 769 M$ (partiel) | 17 470 M$ (partiel) | 5 863 M$ (partiel) |
+| Capitaux propres | 194 066 M$ | 217 243 M$ | 243 681 M$ | 261 221 M$ |
+| Résultats non distribués (déficit si négatif) | 101 577 M$ | 121 179 M$ | 144 647 M$ | 157 843 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | -1,1 % | n.d. (dénominateur négatif ou nul) | -1,0 % | -0,2 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -229,7 +285,7 @@ Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2025-12-31) : Equipment And Other (borne basse) 1,0 ans ; Equipment And Other (borne haute) 25,0 ans ; Finance Lease, Right-Of-Use Asset (borne basse) 5,0 ans ; Finance Lease, Right-Of-Use Asset (borne haute) 20,0 ans ; Servers and Network Assets Components Stored By Suppliers (borne basse) 5,0 ans ; Servers and Network Assets Components Stored By Suppliers (borne haute) 5,5 ans ; Building (borne basse) 25,0 ans ; Building (borne haute) 30,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 22 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 11, sans événement 11 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22 ; actifs nantis — sans événement 11, indéterminée 11.
 
 ### Microsoft (MSFT)
 
@@ -248,6 +304,19 @@ Dernière information balisée utilisée : 2026-07-29.
 | Obligations de prestation restantes (RPO) | 398 000 M$ | 631 000 M$ | 633 000 M$ | 684 000 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 69,0 % | 68,0 % | 67,6 % | 67,2 % |
+| Marge opérationnelle | 48,9 % | 47,1 % | 46,3 % | 45,1 % |
+| Capex décaissé ÷ revenu | 0,25 x | 0,37 x | 0,37 x | 0,40 x |
+| Flux disponible après rémunération en actions | 22 680 M$ | 2 663 M$ | 12 722 M$ | 16 517 M$ |
+| Rémunération en actions ÷ CFO | 0,07 x | 0,09 x | 0,07 x | 0,06 x |
+| Écart CFO − résultat net | 17 310 M$ | -2 700 M$ | 14 901 M$ | 19 675 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 54,35 x | 53,94 x | 52,69 x | 50,88 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | -37 543 M$ | -31 110 M$ | -27 177 M$ | -33 108 M$ |
+| Capitaux propres | 363 076 M$ | 390 875 M$ | 414 367 M$ | 442 387 M$ |
+| Résultats non distribués (déficit si négatif) | 254 873 M$ | 280 789 M$ | 302 526 M$ | 328 265 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | -0,1 % | -0,1 % | -0,2 % | n.d. (dénominateur négatif ou nul) |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-06-30 | 2026-06-30 |
 | --- | ---: | ---: |
@@ -264,7 +333,7 @@ Baux non commencés au 2026-06-30 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2026-06-30) : Building And Building Improvements (borne basse) 5,0 ans ; Building And Building Improvements (borne haute) 15,0 ans ; Computer Equipment (borne basse) 2,0 ans ; Computer Equipment (borne haute) 6,0 ans ; Furniture And Fixtures (borne basse) 1,0 ans ; Furniture And Fixtures (borne haute) 10,0 ans ; Leasehold Improvements (borne basse) 3,0 ans ; Leasehold Improvements (borne haute) 15,0 ans ; Software And Software Development Costs (valeur unique) 3,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 24 ; clauses financières — sans événement 24 ; items de détresse (8-K) — sans événement 24 ; continuité d'exploitation — sans événement 24 ; dépôt tardif — sans événement 24 ; faiblesse du contrôle interne — sans événement 24.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 24 ; clauses financières — sans événement 12, sans événement 12 ; items de détresse (8-K) — sans événement 24 ; continuité d'exploitation — sans événement 24 ; dépôt tardif — sans événement 24 ; faiblesse du contrôle interne — sans événement 24 ; actifs nantis — sans événement 12, indéterminée 12.
 
 ### Oracle (ORCL)
 
@@ -283,6 +352,19 @@ Dernière information balisée utilisée : 2026-09-11.
 | Obligations de prestation restantes (RPO) | 523 300 M$ | 552 600 M$ | 638 000 M$ | 664 000 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | 1,00 x | 1,06 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Marge opérationnelle | 29,5 % | 31,8 % | 32,0 % | 34,8 % |
+| Capex décaissé ÷ revenu | 0,75 x | 1,08 x | 0,86 x | 1,47 x |
+| Flux disponible après rémunération en actions | -11 123 M$ | -12 812 M$ | -3 076 M$ | -6 523 M$ |
+| Rémunération en actions ÷ CFO | 0,56 x | 0,19 x | 0,08 x | 0,05 x |
+| Écart CFO − résultat net | -4 069 M$ | 3 430 M$ | 10 316 M$ | 18 343 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 4,80 x | 4,73 x | 4,48 x | 4,52 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | -10 640 M$ (partiel) | -8 636 M$ (partiel) | -10 508 M$ (partiel) | -14 355 M$ (partiel) |
+| Capitaux propres | 29 951 M$ | 38 495 M$ | 42 508 M$ | 66 772 M$ |
+| Résultats non distribués (déficit si négatif) | -9 355 M$ | -7 092 M$ | -4 309 M$ | -1 114 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | 1,8 % | 1,3 % | -100,0 % | 3,1 % |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | n.d. (non publié) | 32,6 % | 31,6 % |
 
 | Mesure (exercice clos le) | 2025-05-31 | 2026-05-31 |
 | --- | ---: | ---: |
@@ -299,7 +381,7 @@ Baux non commencés au 2026-05-31 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2026-05-31) : Servers and Networking Equipment (valeur unique) 6,0 ans ; Building And Building Improvements (borne basse) 1,0 ans ; Building And Building Improvements (borne haute) 40,0 ans ; Furniture And Fixtures (borne basse) 5,0 ans ; Furniture And Fixtures (borne haute) 15,0 ans ; Machinery And Equipment (borne basse) 1,0 ans ; Machinery And Equipment (borne haute) 6,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 25 ; clauses financières — sans événement 25 ; items de détresse (8-K) — sans événement 25 ; continuité d'exploitation — sans événement 25 ; dépôt tardif — sans événement 25 ; faiblesse du contrôle interne — sans événement 23, indéterminée 2.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 25 ; clauses financières — sans événement 6, sans événement 19 ; items de détresse (8-K) — sans événement 25 ; continuité d'exploitation — sans événement 25 ; dépôt tardif — sans événement 25 ; faiblesse du contrôle interne — sans événement 23, indéterminée 2 ; actifs nantis — sans événement 6, indéterminée 19.
 
 ### CoreWeave (CRWV)
 
@@ -318,6 +400,19 @@ Dernière information balisée utilisée : 2026-08-12.
 | Obligations de prestation restantes (RPO) | 50 000 M$ | 60 700 M$ | 98 800 M$ | 103 700 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 8,88 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 3,51 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 73,0 % | 67,6 % | 65,5 % | 65,9 % |
+| Marge opérationnelle | 3,8 % | -5,7 % | -6,9 % | -1,9 % |
+| Capex décaissé ÷ revenu | 1,75 x | 2,58 x | 3,70 x | 2,49 x |
+| Flux disponible après rémunération en actions | -844 M$ | -2 657 M$ | -4 864 M$ | -5 908 M$ |
+| Rémunération en actions ÷ CFO | 0,09 x | 0,10 x | 0,05 x | 0,24 x |
+| Écart CFO − résultat net | 1 799 M$ | 2 011 M$ | 3 724 M$ | 1 305 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | n.d. (terme manquant) | -0,04 x | -0,12 x | -0,14 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | -605 M$ (partiel) | -163 M$ (partiel) | -3 381 M$ (partiel) | -3 778 M$ (partiel) |
+| Capitaux propres | 3 878 M$ | 3 335 M$ | 4 759 M$ | 5 024 M$ |
+| Résultats non distribués (déficit si négatif) | -2 192 M$ | -2 643 M$ | -3 383 M$ | -4 009 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | 132,9 % | 235,0 % | 111,6 % | 13,1 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -334,7 +429,7 @@ Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2025-12-31) : Data Center Equipment And Leasehold Improvements (valeur unique) 12,0 ans ; Furniture, Fixtures, and Other Assets (borne basse) 3,0 ans ; Furniture, Fixtures, and Other Assets (borne haute) 5,0 ans ; Software (borne basse) 3,0 ans ; Software (borne haute) 6,0 ans ; Technology Equipment (valeur unique) 6,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — événement 3, sans événement 19 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 6, indéterminée 16 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — événement 6, indéterminée 16.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — événement 3, sans événement 3, sans événement 16 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 6, indéterminée 16 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — événement 6, indéterminée 16 ; actifs nantis — événement 6, indéterminée 16.
 
 ### SpaceX (SPCX)
 
@@ -353,6 +448,19 @@ Dernière information balisée utilisée : 2026-08-04.
 | Obligations de prestation restantes (RPO) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 47 461 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | 55,3 % |
+| Marge opérationnelle | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | -1,8 % |
+| Capex décaissé ÷ revenu | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) |
+| Flux disponible après rémunération en actions | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) |
+| Rémunération en actions ÷ CFO | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) |
+| Écart CFO − résultat net | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | n.d. (terme manquant) | -13 908 M$ | n.d. (terme manquant) | -9 906 M$ |
+| Capitaux propres | n.d. (non publié) | 2 573 M$ | 34 533 M$ | 127 224 M$ |
+| Résultats non distribués (déficit si négatif) | n.d. (non publié) | -37 035 M$ | n.d. (non publié) | -41 852 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | 100,2 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -367,7 +475,7 @@ Dernière information balisée utilisée : 2026-08-04.
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (non publié).
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 22 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 1, indéterminée 21 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 1, indéterminée 21.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — événement 1, sans événement 1, sans événement 20 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 1, indéterminée 21 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 1, indéterminée 21 ; actifs nantis — événement 2, indéterminée 20.
 
 ### AMD (AMD)
 
@@ -386,6 +494,19 @@ Dernière information balisée utilisée : 2026-08-05.
 | Obligations de prestation restantes (RPO) | 279 M$ | 315 M$ | 264 M$ | 222 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 51,7 % | 54,3 % | 52,8 % | 53,8 % |
+| Marge opérationnelle | 13,7 % | 17,1 % | 14,4 % | 17,3 % |
+| Capex décaissé ÷ revenu | 0,03 x | 0,02 x | 0,04 x | 0,07 x |
+| Flux disponible après rémunération en actions | 1 482 M$ | 1 892 M$ | 2 079 M$ | 1 055 M$ |
+| Rémunération en actions ÷ CFO | 0,19 x | 0,19 x | 0,16 x | 0,21 x |
+| Écart CFO − résultat net | 916 M$ | 1 089 M$ | 1 572 M$ | 69 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 24,68 x | 28,20 x | 29,49 x | 44,14 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 10 031 M$ (partiel) | 11 306 M$ (partiel) | 11 083 M$ (partiel) | 10 390 M$ (partiel) |
+| Capitaux propres | 60 790 M$ | 62 999 M$ | 64 462 M$ | 67 224 M$ |
+| Résultats non distribués (déficit si négatif) | 5 188 M$ | 6 699 M$ | 8 082 M$ | 5 909 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | 0,3 % | n.d. (dénominateur négatif ou nul) | 1,5 % | 1,8 % |
+| En-cours ÷ immobilisations brutes | 12,5 % | 10,3 % | 11,8 % | 18,1 % |
 
 | Mesure (exercice clos le) | 2024-12-28 | 2025-12-27 |
 | --- | ---: | ---: |
@@ -402,7 +523,7 @@ Baux non commencés au 2025-12-27 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2021-12-25) : Equipment (borne basse) 2,0 ans ; Equipment (borne haute) 6,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 22 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 13, sans événement 9 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22 ; actifs nantis — événement 2, sans événement 12, indéterminée 8.
 
 ### Broadcom (AVGO)
 
@@ -421,6 +542,19 @@ Dernière information balisée utilisée : 2026-09-10.
 | Obligations de prestation restantes (RPO) | 33 300 M$ | 45 000 M$ | 164 600 M$ | 179 200 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | 2,58 x | 2,33 x | 1,95 x | 1,37 x |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 68,0 % | 68,1 % | 69,5 % | 69,1 % |
+| Marge opérationnelle | 41,7 % | 44,3 % | 48,6 % | 53,9 % |
+| Capex décaissé ÷ revenu | 0,01 x | 0,01 x | 0,01 x | 0,02 x |
+| Flux disponible après rémunération en actions | 5 271 M$ | 5 834 M$ | 8 170 M$ | 11 646 M$ |
+| Rémunération en actions ÷ CFO | 0,28 x | 0,26 x | 0,20 x | 0,14 x |
+| Écart CFO − résultat net | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 7,94 x | 8,86 x | 10,41 x | 13,74 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | -1 614 M$ | 122 M$ | 2 783 M$ | 4 729 M$ |
+| Capitaux propres | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Résultats non distribués (déficit si négatif) | 9 761 M$ | 6 520 M$ | 12 166 M$ | 22 151 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | -25,0 % | 1,1 % | 1,0 % | 0,6 % |
+| En-cours ÷ immobilisations brutes | 1,1 % | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2024-11-03 | 2025-11-02 |
 | --- | ---: | ---: |
@@ -437,7 +571,7 @@ Baux non commencés au 2025-11-02 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2025-11-02) : Buildings and Leasehold Improvements (borne basse) 15,0 ans ; Buildings and Leasehold Improvements (borne haute) 40,0 ans ; Machinery And Equipment (borne basse) 3,0 ans ; Machinery And Equipment (borne haute) 10,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 23 ; clauses financières — sans événement 23 ; items de détresse (8-K) — sans événement 23 ; continuité d'exploitation — sans événement 23 ; dépôt tardif — sans événement 23 ; faiblesse du contrôle interne — sans événement 23.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 23 ; clauses financières — sans événement 11, sans événement 12 ; items de détresse (8-K) — sans événement 23 ; continuité d'exploitation — sans événement 23 ; dépôt tardif — sans événement 23 ; faiblesse du contrôle interne — sans événement 23 ; actifs nantis — sans événement 11, indéterminée 12.
 
 ### Marvell (MRVL)
 
@@ -456,6 +590,19 @@ Dernière information balisée utilisée : 2026-08-28.
 | Obligations de prestation restantes (RPO) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 51,6 % | 51,7 % | 52,1 % | 53,1 % |
+| Marge opérationnelle | 17,2 % | 18,2 % | 14,0 % | 16,8 % |
+| Capex décaissé ÷ revenu | 0,04 x | 0,05 x | 0,06 x | 0,05 x |
+| Flux disponible après rémunération en actions | 357 M$ | 116 M$ | 276 M$ | 153 M$ |
+| Rémunération en actions ÷ CFO | 0,26 x | 0,38 x | 0,32 x | 0,54 x |
+| Écart CFO − résultat net | -1 319 M$ | -22 M$ | 604 M$ | 298 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 5,86 x | 6,53 x | 6,73 x | 7,21 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 1 927 M$ (partiel) | 2 501 M$ (partiel) | 2 563 M$ (partiel) | 2 781 M$ (partiel) |
+| Capitaux propres | 14 057 M$ | 14 308 M$ | 18 216 M$ | 18 532 M$ |
+| Résultats non distribués (déficit si négatif) | 1 010 M$ | 1 356 M$ | 1 336 M$ | 1 591 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | -0,2 % | n.d. (non publié) | 2,0 % | 5,8 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-02-01 | 2026-01-31 |
 | --- | ---: | ---: |
@@ -472,7 +619,7 @@ Baux non commencés au 2026-01-31 (pont ouverture + nouveaux − commencés = cl
 
 Durées d'amortissement publiées (exercice clos le 2026-01-31) : Building Improvements (valeur unique) 15,0 ans ; Building (valeur unique) 30,0 ans ; Furniture And Fixtures (borne basse) 3,0 ans ; Furniture And Fixtures (borne haute) 4,0 ans ; Machinery And Equipment (borne basse) 2,0 ans ; Machinery And Equipment (borne haute) 7,0 ans ; Software And Software Development Costs (borne basse) 3,0 ans ; Software And Software Development Costs (borne haute) 4,0 ans.
 
-Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 26 ; clauses financières — événement 2, sans événement 24 ; items de détresse (8-K) — événement 1, sans événement 25 ; continuité d'exploitation — sans événement 26 ; dépôt tardif — sans événement 26 ; faiblesse du contrôle interne — sans événement 26.
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 26 ; clauses financières — événement 2, sans événement 12, sans événement 12 ; items de détresse (8-K) — événement 1, sans événement 25 ; continuité d'exploitation — sans événement 26 ; dépôt tardif — sans événement 26 ; faiblesse du contrôle interne — sans événement 26 ; actifs nantis — sans événement 12, indéterminée 14.
 
 ## Circularité, par paire
 
@@ -482,43 +629,43 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 - Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L2, L5) ; 5 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (non traité au premier passage) ; 2022-12-31 : n.d. (non traité au premier passage) ; 2023-12-30 : n.d. (non traité au premier passage) ; 2024-12-28 : n.d. (non traité au premier passage) ; 2025-12-27 : n.d. (non traité au premier passage).
-- Contrepartie payable au client : 5 cellules indéterminées (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (pas encore lu) ; 2022-12-31 : n.d. (pas encore lu) ; 2023-12-30 : n.d. (pas encore lu) ; 2024-12-28 : n.d. (pas encore lu) ; 2025-12-27 : n.d. (pas encore lu).
+- Contrepartie payable au client : 5 cellules indéterminées (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
-- Annexe E : E4 (engagement) : compatible ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E4 (engagement) : compatible ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — pas encore lu.
 
 ### AMD → Meta
 
 - Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète au premier passage ; 4 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (non traité au premier passage) ; 2022-12-31 : n.d. (non traité au premier passage) ; 2023-12-30 : n.d. (non traité au premier passage) ; 2024-12-28 : n.d. (non traité au premier passage) ; 2025-12-27 : n.d. (non traité au premier passage).
-- Contrepartie payable au client : 5 cellules indéterminées (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (pas encore lu) ; 2022-12-31 : n.d. (pas encore lu) ; 2023-12-30 : n.d. (pas encore lu) ; 2024-12-28 : n.d. (pas encore lu) ; 2025-12-27 : n.d. (pas encore lu).
+- Contrepartie payable au client : 5 cellules indéterminées (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
-- Annexe E : E4 (engagement) : compatible ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E4 (engagement) : compatible ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — pas encore lu.
 
 ### Amazon → OpenAI
 
 - Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L5) ; 10 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité au premier passage) ; 2022-12-31 : n.d. (non traité au premier passage) ; 2023-12-31 : n.d. (non traité au premier passage) ; 2024-12-31 : n.d. (non traité au premier passage) ; 2025-12-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (pas encore lu) ; 2022-12-31 : n.d. (pas encore lu) ; 2023-12-31 : n.d. (pas encore lu) ; 2024-12-31 : n.d. (pas encore lu) ; 2025-12-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (4 sur 4).
-- Annexe E : E4 (engagement) : indéterminé — date manquante ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E4 (engagement) : indéterminé — date manquante ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — pas encore lu.
 
 ### Broadcom → Apple Inc.
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 28 trimestres ; sensibilité `ever_financed` : inconnu 28 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (non traité au premier passage) ; 2022-10-30 : n.d. (non traité au premier passage) ; 2023-10-29 : n.d. (non traité au premier passage) ; 2024-11-03 : n.d. (non traité au premier passage) ; 2025-11-02 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (pas encore lu) ; 2022-10-30 : n.d. (pas encore lu) ; 2023-10-29 : n.d. (pas encore lu) ; 2024-11-03 : n.d. (pas encore lu) ; 2025-11-02 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Broadcom → BANK OF AMERICA, N.A.
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète au premier passage ; 16 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 28 trimestres ; sensibilité `ever_financed` : inconnu 28 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (non traité au premier passage) ; 2022-10-30 : n.d. (non traité au premier passage) ; 2023-10-29 : n.d. (non traité au premier passage) ; 2024-11-03 : n.d. (non traité au premier passage) ; 2025-11-02 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (pas encore lu) ; 2022-10-30 : n.d. (pas encore lu) ; 2023-10-29 : n.d. (pas encore lu) ; 2024-11-03 : n.d. (pas encore lu) ; 2025-11-02 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 8).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Broadcom → Silicon Manufacturing Partners Pte. Ltd.
 
@@ -527,31 +674,31 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : entre 0 % et 18 % ; 2022-10-30 : entre 0 % et 20 % ; 2023-10-29 : entre 0 % et 22 % ; 2024-11-03 : entre 0 % et 28 % ; 2025-11-02 : entre 0 % et 32 %.
 - Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — pas encore lu.
 
 ### Broadcom → Alphabet
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 28 trimestres ; sensibilité `ever_financed` : inconnu 28 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (non traité au premier passage) ; 2022-10-30 : n.d. (non traité au premier passage) ; 2023-10-29 : n.d. (non traité au premier passage) ; 2024-11-03 : n.d. (non traité au premier passage) ; 2025-11-02 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (pas encore lu) ; 2022-10-30 : n.d. (pas encore lu) ; 2023-10-29 : n.d. (pas encore lu) ; 2024-11-03 : n.d. (pas encore lu) ; 2025-11-02 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Broadcom → Anthropic
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 28 trimestres ; sensibilité `ever_financed` : inconnu 28 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (non traité au premier passage) ; 2022-10-30 : n.d. (non traité au premier passage) ; 2023-10-29 : n.d. (non traité au premier passage) ; 2024-11-03 : n.d. (non traité au premier passage) ; 2025-11-02 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (pas encore lu) ; 2022-10-30 : n.d. (pas encore lu) ; 2023-10-29 : n.d. (pas encore lu) ; 2024-11-03 : n.d. (pas encore lu) ; 2025-11-02 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Broadcom → Meta
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 28 trimestres ; sensibilité `ever_financed` : inconnu 28 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (non traité au premier passage) ; 2022-10-30 : n.d. (non traité au premier passage) ; 2023-10-29 : n.d. (non traité au premier passage) ; 2024-11-03 : n.d. (non traité au premier passage) ; 2025-11-02 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (pas encore lu) ; 2022-10-30 : n.d. (pas encore lu) ; 2023-10-29 : n.d. (pas encore lu) ; 2024-11-03 : n.d. (pas encore lu) ; 2025-11-02 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### CoreWeave → Jane Street Group, LLC
 
@@ -559,16 +706,16 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### CoreWeave → MagAI Ventures
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 8 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 13 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### CoreWeave → MAIV
 
@@ -577,7 +724,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (terme manquant) ; 2025-12-31 : entre 0 % et 68 %.
 - Dépendance du carnet (RPO) : 4 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — pas encore lu.
 
 ### CoreWeave → OpenAI
 
@@ -585,7 +732,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (2 sur 2).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### CoreWeave → Meta
 
@@ -593,7 +740,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (1 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### CoreWeave → Microsoft
 
@@ -601,192 +748,202 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (2 sur 2).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### CoreWeave → NVIDIA
 
-- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète au premier passage ; 8 arêtes.
+- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète au premier passage ; 9 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Alphabet → Kitty Hawk Corporation
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 5 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité au premier passage) ; 2022-12-31 : n.d. (non traité au premier passage) ; 2023-12-31 : n.d. (non traité au premier passage) ; 2024-12-31 : n.d. (non traité au premier passage) ; 2025-12-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (pas encore lu) ; 2022-12-31 : n.d. (pas encore lu) ; 2023-12-31 : n.d. (pas encore lu) ; 2024-12-31 : n.d. (pas encore lu) ; 2025-12-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Alphabet → LTA Research & Exploration LLC
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 9 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité au premier passage) ; 2022-12-31 : n.d. (non traité au premier passage) ; 2023-12-31 : n.d. (non traité au premier passage) ; 2024-12-31 : n.d. (non traité au premier passage) ; 2025-12-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (pas encore lu) ; 2022-12-31 : n.d. (pas encore lu) ; 2023-12-31 : n.d. (pas encore lu) ; 2024-12-31 : n.d. (pas encore lu) ; 2025-12-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
+
+### Meta → Jio Platforms Limited
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète au premier passage ; 5 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 24 trimestres, inconnu 3 trimestres ; sensibilité `ever_financed` : actif 24 trimestres, inconnu 3 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2022-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2023-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2024-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2025-12-31 : entre 0 % et 10 % (borne haute exclue).
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — pas encore lu.
 
 ### Marvell → Amazon
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien documenté (L2) ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 31 trimestres ; sensibilité `ever_financed` : inconnu 31 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-30 : n.d. (non traité au premier passage) ; 2022-01-29 : n.d. (non traité au premier passage) ; 2023-01-28 : n.d. (non traité au premier passage) ; 2024-02-03 : n.d. (non traité au premier passage) ; 2025-02-01 : n.d. (non traité au premier passage) ; 2026-01-31 : n.d. (non traité au premier passage).
-- Contrepartie payable au client : 6 cellules indéterminées (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-30 : n.d. (pas encore lu) ; 2022-01-29 : n.d. (pas encore lu) ; 2023-01-28 : n.d. (pas encore lu) ; 2024-02-03 : n.d. (pas encore lu) ; 2025-02-01 : n.d. (pas encore lu) ; 2026-01-31 : n.d. (pas encore lu).
+- Contrepartie payable au client : 6 cellules indéterminées (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Marvell → Alphabet
 
 - Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète au premier passage ; 6 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 31 trimestres ; sensibilité `ever_financed` : inconnu 31 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-30 : n.d. (non traité au premier passage) ; 2022-01-29 : n.d. (non traité au premier passage) ; 2023-01-28 : n.d. (non traité au premier passage) ; 2024-02-03 : n.d. (non traité au premier passage) ; 2025-02-01 : n.d. (non traité au premier passage) ; 2026-01-31 : n.d. (non traité au premier passage).
-- Contrepartie payable au client : 6 cellules indéterminées (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-30 : n.d. (pas encore lu) ; 2022-01-29 : n.d. (pas encore lu) ; 2023-01-28 : n.d. (pas encore lu) ; 2024-02-03 : n.d. (pas encore lu) ; 2025-02-01 : n.d. (pas encore lu) ; 2026-01-31 : n.d. (pas encore lu).
+- Contrepartie payable au client : 6 cellules indéterminées (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Microsoft → OpenAI
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 29 trimestres ; sensibilité `ever_financed` : inconnu 29 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (non traité au premier passage) ; 2022-06-30 : n.d. (non traité au premier passage) ; 2023-06-30 : n.d. (non traité au premier passage) ; 2024-06-30 : n.d. (non traité au premier passage) ; 2025-06-30 : n.d. (non traité au premier passage) ; 2026-06-30 : n.d. (non traité au premier passage).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète au premier passage ; 18 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 8 trimestres, inconnu 21 trimestres ; sensibilité `ever_financed` : actif 8 trimestres, inconnu 21 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (pas encore lu) ; 2022-06-30 : n.d. (pas encore lu) ; 2023-06-30 : n.d. (pas encore lu) ; 2024-06-30 : n.d. (pas encore lu) ; 2025-06-30 : entre 0 % et 10 % (borne haute exclue) ; 2026-06-30 : entre 0 % et 10 % (borne haute exclue).
+- Dépendance du carnet (RPO) : 4 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — pas encore lu.
 
 ### NVIDIA → Goldman Sachs & Co. LLC
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 31 trimestres ; sensibilité `ever_financed` : inconnu 31 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (non traité au premier passage) ; 2022-01-30 : n.d. (non traité au premier passage) ; 2023-01-29 : n.d. (non traité au premier passage) ; 2024-01-28 : n.d. (non traité au premier passage) ; 2025-01-26 : n.d. (non traité au premier passage) ; 2026-01-25 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (pas encore lu) ; 2022-01-30 : n.d. (pas encore lu) ; 2023-01-29 : n.d. (pas encore lu) ; 2024-01-28 : n.d. (pas encore lu) ; 2025-01-26 : n.d. (pas encore lu) ; 2026-01-25 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### NVIDIA → Wachovia Service Corporation
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 31 trimestres ; sensibilité `ever_financed` : inconnu 31 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (non traité au premier passage) ; 2022-01-30 : n.d. (non traité au premier passage) ; 2023-01-29 : n.d. (non traité au premier passage) ; 2024-01-28 : n.d. (non traité au premier passage) ; 2025-01-26 : n.d. (non traité au premier passage) ; 2026-01-25 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (pas encore lu) ; 2022-01-30 : n.d. (pas encore lu) ; 2023-01-29 : n.d. (pas encore lu) ; 2024-01-28 : n.d. (pas encore lu) ; 2025-01-26 : n.d. (pas encore lu) ; 2026-01-25 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### NVIDIA → CoreWeave
 
-- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L5) ; 9 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 4 trimestres, inconnu 27 trimestres ; sensibilité `ever_financed` : actif 4 trimestres, inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (non traité au premier passage) ; 2022-01-30 : n.d. (non traité au premier passage) ; 2023-01-29 : n.d. (non traité au premier passage) ; 2024-01-28 : n.d. (non traité au premier passage) ; 2025-01-26 : n.d. (non traité au premier passage) ; 2026-01-25 : entre 0 % et 22 %.
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L5) ; 10 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 6 trimestres, inconnu 25 trimestres ; sensibilité `ever_financed` : actif 6 trimestres, inconnu 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (pas encore lu) ; 2022-01-30 : n.d. (pas encore lu) ; 2023-01-29 : n.d. (pas encore lu) ; 2024-01-28 : n.d. (pas encore lu) ; 2025-01-26 : n.d. (pas encore lu) ; 2026-01-25 : entre 0 % et 22 %.
 - Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
-- Annexe E : E1 : étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non traité au premier passage.
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 5).
+- Annexe E : E1 : étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — pas encore lu.
 
 ### NVIDIA → OpenAI
 
 - Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L5) ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 31 trimestres ; sensibilité `ever_financed` : inconnu 31 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (non traité au premier passage) ; 2022-01-30 : n.d. (non traité au premier passage) ; 2023-01-29 : n.d. (non traité au premier passage) ; 2024-01-28 : n.d. (non traité au premier passage) ; 2025-01-26 : n.d. (non traité au premier passage) ; 2026-01-25 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (pas encore lu) ; 2022-01-30 : n.d. (pas encore lu) ; 2023-01-29 : n.d. (pas encore lu) ; 2024-01-28 : n.d. (pas encore lu) ; 2025-01-26 : n.d. (pas encore lu) ; 2026-01-25 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E4 (engagement) : indéterminé — date manquante ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E4 (engagement) : indéterminé — date manquante ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — pas encore lu.
 
 ### Oracle → Ampere Computing Holdings LLC
 
 - Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète au premier passage ; 4 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 4 trimestres, inconnu 26 trimestres ; sensibilité `ever_financed` : actif 4 trimestres, inconnu 26 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : entre 0 % et 10 % (borne haute exclue).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : entre 0 % et 10 % (borne haute exclue).
 - Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — pas encore lu.
 
 ### Oracle → Ampere Computing LLC
 
 - Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète au premier passage ; 14 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 22 trimestres, échu 8 trimestres ; sensibilité `ever_financed` : actif 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2022-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2023-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2024-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2025-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2022-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2023-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2024-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2025-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2026-05-31 : n.d. (pas encore lu).
 - Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — pas encore lu.
 
 ### Oracle → Autonomous Medical Devices, Inc.
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 2 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Oracle → Desert Champions LLC
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Oracle → Eau Palm Beach Resort & Spa
 
 - Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète au premier passage ; 2 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Oracle → Ellison Institute, LLC
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Oracle → Lanai Resorts, LLC
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Oracle → Lawrence Investments, LLC
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Oracle → Screening Room Media, Inc.
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète au premier passage ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 2 trimestres, échu 28 trimestres ; sensibilité `ever_financed` : actif 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — non traité au premier passage ; E2 à 10 % : indéterminé — non traité au premier passage ; E2 à 20 % : indéterminé — non traité au premier passage ; E5 : indéterminé — non traité au premier passage.
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — pas encore lu ; E2 à 10 % : indéterminé — pas encore lu ; E2 à 20 % : indéterminé — pas encore lu ; E5 : indéterminé — pas encore lu.
 
 ### Oracle → Sensei AG Holdings, Inc.
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète au premier passage ; 2 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (non traité au premier passage) ; 2022-05-31 : n.d. (non traité au premier passage) ; 2023-05-31 : n.d. (non traité au premier passage) ; 2024-05-31 : n.d. (non traité au premier passage) ; 2025-05-31 : n.d. (non traité au premier passage) ; 2026-05-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (pas encore lu) ; 2022-05-31 : n.d. (pas encore lu) ; 2023-05-31 : n.d. (pas encore lu) ; 2024-05-31 : n.d. (pas encore lu) ; 2025-05-31 : n.d. (pas encore lu) ; 2026-05-31 : n.d. (pas encore lu).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### SpaceX → Tesla, Inc.
 
 - Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète au premier passage ; 10 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité au premier passage) ; 2022-12-31 : n.d. (non traité au premier passage) ; 2023-12-31 : n.d. (non traité au premier passage) ; 2024-12-31 : n.d. (non traité au premier passage) ; 2025-12-31 : n.d. (non traité au premier passage).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (pas encore lu) ; 2022-12-31 : n.d. (pas encore lu) ; 2023-12-31 : n.d. (pas encore lu) ; 2024-12-31 : n.d. (pas encore lu) ; 2025-12-31 : n.d. (pas encore lu).
 - Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E5 : indéterminé — non traité au premier passage.
+- Annexe E : E5 : indéterminé — pas encore lu.
 
 ### Sorties de couverture par fournisseur (§3.6)
 
 | Fournisseur | Exercice | Revenu attribué à des clients nommés | Clients anonymes d'au moins 10 % | Résidu | Paires vues seulement côté client |
 | --- | --- | ---: | ---: | ---: | ---: |
-| NVIDIA | 2026-01-25 | 0,0 % (partiel) (partiel) | 36,0 % [35,0 % ; 37,0 %] | 64,0 % (partiel) | 1 |
+| NVIDIA | 2026-01-25 | 0,0 % (partiel) (partiel) | 36,0 % [35,0 % ; 37,0 %] | 64,0 % (partiel) | 0 |
 | Alphabet | 2025-12-31 | 0,0 % (partiel) (partiel) | 0,0 % [0,0 % ; 0,0 %] | 100,0 % (partiel) | 0 |
 | Amazon | 2025-12-31 | 0,0 % (partiel) (partiel) | 0,0 % [0,0 % ; 0,0 %] | 100,0 % (partiel) | 0 |
 | Meta | 2025-12-31 | 0,0 % (partiel) (partiel) | 0,0 % [0,0 % ; 0,0 %] | 100,0 % (partiel) | 0 |
-| Microsoft | 2026-06-30 | 0,0 % (partiel) (partiel) | 0,0 % [0,0 % ; 0,0 %] | 100,0 % (partiel) | 1 |
+| Microsoft | 2026-06-30 | 0,0 % (partiel) (partiel) | 0,0 % [0,0 % ; 0,0 %] | 100,0 % (partiel) | 0 |
 | Oracle | 2026-05-31 | 0,0 % (partiel) (partiel) | 0,0 % [0,0 % ; 0,0 %] | 100,0 % (partiel) | 0 |
 | CoreWeave | 2025-12-31 | 0,0 % (partiel) (partiel) | 67,0 % [66,5 % ; 67,5 %] | 33,0 % (partiel) | 0 |
 | SpaceX | 2025-12-31 | 0,0 % (partiel) (partiel) | 0,0 % [0,0 % ; 0,0 %] | 100,0 % (partiel) | 0 |
@@ -803,6 +960,7 @@ Positions que les sociétés de développement d'affaires (BDC) publient dans le
 | Groupe de l'émetteur | Date du bilan | Instrument | Positions | Coût | Juste valeur | Juste valeur ÷ coût | Part des intérêts capitalisés | Part sans accumulation d'intérêts |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Broadcom | 2022-12-31 | non classé | 1 | 5 M$ | 5 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| AbbVie Inc. | 2026-06-30 | non classé | 1 | — | — | n.d. (non balisé) | n.d. (non balisé) | n.d. (non balisé) |
 | Core Scientific, Inc. | 2022-09-30 | prêts et obligations | 1 | 30 M$ | 30 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
 | Core Scientific, Inc. | 2022-09-30 | titres de capital | 1 | 296 000 $ | 119 000 $ | 0,40 x | n.d. (non balisé) | n.d. (non balisé) |
 | Core Scientific, Inc. | 2022-12-31 | prêts et obligations | 1 | 30 M$ | 11 M$ | 0,38 x | n.d. (non balisé) | n.d. (non balisé) |
@@ -881,7 +1039,7 @@ Positions que les sociétés de développement d'affaires (BDC) publient dans le
 | SpaceX | 2026-03-31 | titres de capital | 4 | 13 M$ | 147 M$ | 10,94 x | n.d. (non balisé) | n.d. (non balisé) |
 | SpaceX | 2026-06-30 | titres de capital | 2 | 13 M$ | 239 M$ | 17,75 x | n.d. (non balisé) | n.d. (non balisé) |
 
-Appartenances datées : X Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre. X Holdings Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre.
+Appartenances datées : VMware, Inc. appartient au groupe Broadcom : avant cette date, la vue `as_known` le garde comme groupe propre. X Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre. X Holdings Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre.
 
 Identifiants de position écartés parce qu'ils nomment deux émetteurs : 11.
 
@@ -891,5 +1049,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non traité au premier passage 2 019, terme manquant 1 113, non publié 628, concept non résolu 623, non balisé 546, annuel seulement 394, historique tronqué 393, client anonyme 58, lecture impossible 32, période antérieure absente 28, frontière de retraitement 13, dénominateur négatif ou nul 10, précondition non remplie 9, date manquante 6, intervalle à cheval sur le seuil 5, recherche incomplète 5, entité non confirmée 1.
+Cellules indéterminées en vue `as_known`, par motif : pas encore lu 2 158, concept non résolu 1 747, terme manquant 1 623, non publié 1 409, non balisé 552, annuel seulement 394, historique tronqué 393, client anonyme 78, période antérieure absente 45, dénominateur négatif ou nul 41, lecture impossible 32, frontière de retraitement 21, intervalle à cheval sur le seuil 9, précondition non remplie 9, recherche incomplète 7, date manquante 6, entité non confirmée 3, dénominateur sous le seuil 2.
 

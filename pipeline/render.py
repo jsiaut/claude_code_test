@@ -100,6 +100,10 @@ class Tokens:
 
 
 def load(con, as_of):
+    # extension `text` ouverte : ce qui manque n'est plus « non traité au premier passage » mais pas encore lu
+    sc = config.load().get("scope")
+    if isinstance(sc, list) and "text" in sc:
+        ND_FR["not_processed"] = "pas encore lu"
     t = config.ROOT / "tables"
     for name in ("measures", "controls", "exclusions", "links", "observations", "entities", "facts", "documents"):
         con.execute(f"CREATE OR REPLACE VIEW {name} AS SELECT * FROM '{t / (name + '.parquet')}'")
@@ -192,7 +196,8 @@ SIGNALS = ["sig_late_filing", "sig_distress_8k_items", "sig_auditor_change_or_no
            "sig_going_concern", "sig_covenant_events"]
 SIG_FR = {"sig_late_filing": "dépôt tardif", "sig_distress_8k_items": "items de détresse (8-K)",
           "sig_auditor_change_or_nonreliance": "auditeur ou correction d'erreur", "sig_material_weakness": "faiblesse du contrôle interne",
-          "sig_going_concern": "continuité d'exploitation", "sig_covenant_events": "clauses financières"}
+          "sig_going_concern": "continuité d'exploitation", "sig_covenant_events": "clauses financières",
+          "sig_pledged_assets": "actifs nantis"}
 F_FR = {"F1": "capex décaissé supérieur au CFO deux trimestres de suite", "F2": "flux après financement des contreparties négatif",
         "F3": "garantie ou soutien appelé", "F4": "amendement ou dérogation de clause financière",
         "F5": "faiblesse significative du contrôle interne", "F6": "dépréciation d'investissement",
@@ -1024,7 +1029,8 @@ def text_yield_section(con, T, stats):
     npn = q(con, f"""SELECT count(*) AS n FROM measures WHERE measure IN ({','.join('?' * len(tiers))})
                      AND measure NOT IN ('fragility_event', 'annex_e_outcome') AND nd_reason = 'not_processed'""", *tiers)[0]["n"]
     if r1p:
-        L.append("- Cellules de rang 1, avant l'ouverture → maintenant : " + " ; ".join(
+        L.append(f"- Cellules de rang 1, avant l'ouverture → maintenant : total {fr_num(Decimal(r1p.get('total', 0)), 0)} → "
+                 f"{T.n('measures', {'rank1_now': 'total'}, sum(now.values()))} ; " + " ; ".join(
             f"{fr(st)} {fr_num(Decimal(r1p.get(st, 0)), 0)} → {T.n('measures', {'rank1_now': st}, now.get(st, 0))}"
             for st in ("computed", "bounded", "partial", "not_determinable")) +
             f" ; motif « non traité » {fr_num(Decimal(pres.get('rank1_not_processed', 0)), 0)} → "
@@ -1043,11 +1049,16 @@ def text_yield_section(con, T, stats):
              f"(E.1 et E.2) : {e7.get('indeterminate', '—')} sur {e7.get('outcomes', '—')} → "
              f"{T.n('measures', {'e7_indeterminate_now': True}, e7now['i'])} sur {T.n('measures', {'e7_outcomes_now': True}, e7now['n'])}.")
     for meas, label in (("sig_covenant_events", "Clauses financières"), ("sig_pledged_assets", "Actifs nantis")):
-        rows = q(con, f"""SELECT coalesce(value_text, status) AS v, count(*) AS n FROM measures WHERE measure = ?
-                          AND view = 'as_known' GROUP BY 1 ORDER BY 1""", meas)
+        rows = q(con, f"""SELECT status, coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n
+                          FROM measures WHERE measure = ? AND view = 'as_known' GROUP BY 1, 2, 3 ORDER BY 1, 2, 3""", meas)
         if rows:
+            def lab(r):
+                if r["status"] == "computed":
+                    return VALUE_FR.get(r["v"], fr(r["v"]))
+                return fr(r["status"]) + (f" ({VALUE_FR.get(r['v'], fr(r['v']))} sur la part lue)" if r["v"] else "") + \
+                    (f" / {ND_FR.get(r['nd'], r['nd'])}" if r["nd"] else "")
             L.append(f"- {label} (`{meas}`, trimestres-groupes, vue `as_known`) : " + ", ".join(
-                f"{VALUE_FR.get(r['v'], fr(r['v']))} {T.n('measures', {'text_signal': [meas, r['v']]}, r['n'])}" for r in rows) + ".")
+                f"{lab(r)} {T.n('measures', {'text_signal': [meas, r['status'], r['v'], r['nd']]}, r['n'])}" for r in rows) + ".")
     for meas, label in (("lease_not_commenced_bridge", "Pont des baux non commencés"),
                         ("depreciation_life_change_effect", "Effet publié d'un changement de durée d'utilité"),
                         ("lever_restatement", "Résultat opérationnel retraité de cet effet")):

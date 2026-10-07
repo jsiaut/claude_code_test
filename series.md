@@ -108,9 +108,9 @@
 | 2024-09-30 | 18,9 % | 23,1 % | 0,33 x | n.d. (terme manquant) | 16 466 M$ | 15 522 M$ | 16 466 M$ (partiel) | 33 j | n.d. (concept non résolu) | 0,38 x | n.d. (terme manquant) |  |
 | 2024-12-31 | 20,6 % | 21,9 % | 0,52 x | n.d. (terme manquant) | 13 563 M$ | 13 152 M$ | 13 563 M$ (partiel) | 32 j | n.d. (concept non résolu) | 0,34 x | 0,25 x |  |
 | 2025-03-31 | 16,1 % | 19,4 % | 0,54 x | n.d. (non publié) | 11 085 M$ | 10 334 M$ | 11 085 M$ (partiel) | 31 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2025-06-30 | 21,6 % | 19,4 % | 0,65 x | n.d. (terme manquant) | 9 023 M$ | 8 549 M$ | 9 023 M$ (partiel) | 32 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2025-06-30 | 21,6 % | 19,4 % | 0,65 x | n.d. (terme manquant) | 9 023 M$ | 8 549 M$ | n.d. (entité non confirmée) | 32 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2025-09-30 | 26,2 % | 21,3 % | 0,63 x | n.d. (terme manquant) | 11 170 M$ | 10 625 M$ | 11 170 M$ (partiel) | 31 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2025-12-31 | 23,8 % | 22,2 % | 0,59 x | n.d. (terme manquant) | 14 831 M$ | 14 077 M$ | 14 831 M$ (partiel) | 30 j | n.d. (concept non résolu) | 0,58 x | 0,26 x |  |
+| 2025-12-31 | 23,8 % | 22,2 % | 0,59 x | n.d. (terme manquant) | 14 831 M$ | 14 077 M$ | n.d. (entité non confirmée) | 30 j | n.d. (concept non résolu) | 0,58 x | 0,26 x |  |
 | 2026-03-31 | 33,1 % | 26,2 % | 0,59 x | n.d. (non publié) | 13 229 M$ | 12 386 M$ | 13 229 M$ (partiel) | 28 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-06-30 | 28,0 % | 27,7 % | 0,95 x | n.d. (terme manquant) | 1 746 M$ | 784 M$ | 1 746 M$ (partiel) | 33 j | n.d. (concept non résolu) | 0,76 x | n.d. (terme manquant) |  |
 
@@ -224,7 +224,7 @@
 | 2025-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2025-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2025-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |  |
-| 2026-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2026-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F4 |
 | 2026-06-30 | 91,9 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 42 j | 47 461 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 
 ## AMD (AMD)
