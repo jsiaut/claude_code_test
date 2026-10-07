@@ -1,0 +1,443 @@
+# config.yaml — seul fichier de configuration du modèle (spec v6.14, §0).
+# Données de départ : annexe B. Les critères des annexes E et F et les seuils sont
+# commités avant toute requête à la SEC, et leur empreinte est envoyée à l'utilisateur
+# hors du dépôt (§11.1). Tout changement ultérieur est signalé en tête de synthesis.md.
+# Prose en français, identifiants en anglais sans accent (§0).
+
+spec_version: "6.14"
+
+user_agent:
+  # Fourni par l'utilisateur le 2026-10-07, jamais inventé (§0, §9.5). Le dépôt GitHub
+  # est public : l'adresse de contact est masquée ici, comme dans toute copie partagée
+  # (§9.5). La valeur exacte se lit dans SEC_USER_AGENT, sinon dans
+  # secrets/user_agent.txt (non versionné). Décision D-0001 de decisions.md.
+  name: SEC_rapport_test
+  contact: "<adresse masquée>"
+  value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
+  sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
+
+scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
+scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
+
+window:
+  start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
+  include_interim: true
+  companyfacts: unbounded    # seul companyfacts se tire sans borne (§3.2)
+  extended_back_quarters: 4  # fenêtre allongée : fenêtre reculée de quatre trimestres (E.0)
+  preceding_quarters: 8      # instances et texte : fenêtre allongée + huit trimestres (§3.2, §11.1)
+
+groups:                      # CIK indicatifs ; company_tickers.json fait foi (§10.1)
+  NVDA: "0001045810"
+  GOOGL: "0001652044"
+  AMZN: "0001018724"
+  META: "0001326801"
+  MSFT: "0000789019"
+  ORCL: "0001341439"
+  CRWV: "0001769628"
+  SPCX: "0001181412"
+  AMD: "0000002488"
+  AVGO: "0001730168"
+  MRVL: "0001835632"
+
+predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
+  AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
+  MRVL: {"Marvell Technology Group Ltd.": "0001058057"}
+
+known_entities:              # appartenances et dates lues en phase 0 (§10.3)
+  SPCX: ["X.AI Holdings Corp.", "X.AI Corp.", "X Holdings Corp.", "X Corp.",
+         "X.AI LLC", "CTC Property, LLC"]
+cik_hints: {"X.AI Corp.": "0002002695"}
+labs: [OpenAI, Anthropic]    # groupes économiques non déposants (§10.4)
+
+lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
+               Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
+               AMD, "Advanced Micro Devices", Broadcom, Avago, Marvell]
+lexicon_rules:
+  AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
+
+# Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
+# Une entrée « mesure:terme » restreint le rang 1 à ce terme.
+tier1:
+  investment_and_flows:
+    - capex_to_cfo                          # term = with, without
+    - fcf_after_counterparty_financing
+    - fcf_after_finance_leases              # dépendance
+    - fcf_basic                             # dépendance
+    - capex_cash                            # dépendance (§5.5)
+    - finance_lease_additions               # dépendance
+    - vendor_financed_additions             # dépendance
+    - stock_paid_additions                  # dépendance
+  commitments:
+    - lease_not_commenced_bridge            # term = opening, additions, commenced, closing
+    - "exposure_matrix:contractual_outflows/purchase_obligation"
+  counterparties:
+    - counterparty_exposure                 # avec wrong_way
+  revenue_and_earnings:
+    - receivables_collection_period
+    - rpo_total
+    - revenue_growth                        # publié en regard de rpo_total ; F8
+    - depreciation_life_published           # F7
+    - "earnings_bridge_pretax:investment_gain_loss"   # avec price_setting_participation
+    - "earnings_bridge_pretax:investment_impairment"  # F6
+  liquidity_and_leverage:
+    - liq_principal_due_to_cash             # term = horizon_12m, horizon_24m
+    - lev_debt_and_leases_to_operating_income_plus_da   # term = debt, leases
+    - sig_covenant_events                   # F4
+  circularity_q4:
+    - financed_status                       # dépendance : F(S, C, t), §3.2
+    - documented_revenue_dependency
+    - investor_customer_revenue_share
+    - named_edge_coverage
+    - documented_pair_coverage
+    - customer_concentration_anonymous
+  structural_signals:
+    - sig_late_filing
+    - sig_distress_8k_items
+    - sig_auditor_change_or_nonreliance
+    - sig_material_weakness                 # F5
+    - sig_going_concern                     # F10
+  annex_f:
+    - fragility_event
+  annex_e:
+    - annex_e_outcome
+    - documented_backlog_dependency
+    - consideration_to_customer
+    - noncash_revenue_from_investees
+    - contract_coverage
+
+thresholds:                  # seuils cités dans le corps (annexe B)
+  financed_lookback_quarters: 8         # §3.2
+  vendor_credit_min_months: 12          # §3.1
+  c5_date_tolerance_days: 45            # §8.3
+  max_end_offset_days: 45               # §13
+  eps_scale_relative_tolerance: 0.10    # §8.3, C14
+  denominator_min_revenue_share: 0.05   # §6.2
+  scale_jump_factor: 100                # §7.3
+
+reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
+  max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
+
+session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
+
+network:                     # §9.5
+  cruise_requests_per_second: 5
+  sec_ceiling_requests_per_second: 10
+  pause_after_403_seconds: 600
+  max_consecutive_403_pauses: 3
+  retries_transient: 3       # 429, 5xx, délais dépassés
+  retry_backoff_seconds: [2, 8, 30]
+
+watched_forms:               # surveillance de l'exécution périodique (§11.5), revue à chaque phase 0 (§13)
+  periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
+  late: ["NT 10-K", "NT 10-Q"]
+  eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
+
+# Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
+# facts, observations et measures. Chaque paire engendre une relation overlaps
+# candidate entre toutes les lignes qui s'apparient ; seule une relation résolue
+# autorise la somme.
+non_additive_pairs:
+  - id: na01
+    a: {block: contractual_outflows, category_id: purchase_obligation, source_perspective: reporting_entity, side: customer}
+    b: {quantity: rpo_total, side: supplier}
+    match: [same_agreement]
+    default: {relation_type: overlaps, rule: "même contrat, deux perspectives : pas de somme"}
+  - id: na02
+    a: {category_id: debt, component_kind: principal}
+    b: {category_id: debt, measurement_basis: carrying_amount}
+    match: [same_group, same_date, same_instrument]
+    default: {relation_type: component_of, rule: "le reste étant décote et frais (ASC 835-30-45-1A)"}
+  - id: na03
+    a: {category_id: [debt, loan_or_facility], stage: available, measurement_basis: commitment_cap}
+    b: {category_id: [debt, loan_or_facility], stage: drawn_or_paid}
+    match: [same_instrument]
+    default: {relation_type: component_of, rule: "le reste étant le non-tiré (Reg S-X 5-02.19(b), 5-02.22(b))"}
+  - id: na04
+    a: {category_id: guarantee, component_kind: guarantee_cap}
+    b: {category_id: debt, guaranteed: true}
+    match: [same_instrument]
+    default: {relation_type: covers, rule: "à hauteur du plus petit (ASC 460-10-50-4)"}
+  - id: na05
+    a: {category_id: [lease_operating_maturity, lease_finance_maturity], measurement_basis: undiscounted}
+    b: {category_id: lease_liability, measurement_basis: carrying_amount}
+    match: [same_group, same_date, same_lease_type]
+    default: {relation_type: same_measure, condition: "intérêts implicites publiés (ASC 842-20-50-6)"}
+  - id: na06
+    a: {category_id: lease_not_commenced}
+    b: {category_id: purchase_obligation}
+    match: [same_group, same_date]
+    default: {relation_type: overlaps, rule: "tant qu'une pièce ne les dit pas disjoints"}
+  - id: na07
+    a: {block: exposed_assets, measurement_basis: cost}
+    b: {block: exposed_assets, measurement_basis: fair_value}
+    match: [same_instrument]
+    default: {relation_type: overlaps, rule: "deux bases, jamais sommées"}
+  - id: na08
+    a: {category_id: debt, intragroup: true}
+    b: {category_id: debt, reporting_scope: consolidated}
+    match: [same_group, same_date]
+    default: {relation_type: eliminated_with, rule: "ASC 810-10-45-1"}
+  - id: na09
+    a: {quantity: rpo_total}
+    b: {quantity: contract_liabilities}
+    match: [same_group, same_date]
+    default: {relation_type: overlaps, rule: "le RPO peut les inclure (ASC 606-10-50-13)"}
+  - id: na10
+    a: {category_id: vie_unconsolidated, measurement_basis: maximum_exposure}
+    b: {block: exposed_assets, component_kind: interest_held}
+    match: [same_group, same_date, same_counterparty]
+    default: {relation_type: overlaps, rule: "l'exposition peut inclure la participation"}
+  - id: na11
+    a: {category_id: supplier_finance_program}
+    b: {quantity: accounts_payable}
+    match: [same_group, same_date]
+    default: {relation_type: overlaps, rule: "l'encours peut être logé dans les dettes fournisseurs"}
+  - id: na12
+    a: {quantity: unpaid_capex}
+    b: {quantity: accounts_payable}
+    match: [same_group, same_date]
+    default: {relation_type: overlaps, rule: "le capex impayé peut être logé dans les dettes fournisseurs"}
+  - id: na13
+    a: {category_id: financing_obligation}
+    b: {category_id: debt}
+    match: [same_group, same_date]
+    default: {relation_type: component_of, condition: "la linkbase de présentation la place sous la dette (ASC 842-40-25-4)", otherwise: overlaps}
+  - id: na14
+    a: {measurement_basis: initial_cap}
+    b: {measurement_basis: outstanding_balance}
+    match: [same_agreement]
+    default: {relation_type: overlaps, rule: "deux assiettes"}
+  - id: na15
+    a: {category_id: vie_unconsolidated, measurement_basis: maximum_exposure}
+    b: {category_id: guarantee, beneficiary_is_vie: true}
+    match: [same_group, same_date, same_counterparty]
+    default: {relation_type: overlaps, rule: "l'exposition peut inclure la garantie donnée pour elle"}
+
+# Annexe E — énoncés de réfutation, transcrits avant toute exécution (§11.1).
+annex_e:
+  source: "spec v6.14, annexe E"
+  measure_id: annex_e_outcome
+  breakdown_fields: [statement, grid_point, date_basis]
+  ids: {statements: [E1, E2, E3, E4, E5, E6], rules: [E7, E8, E9]}
+  conventions:                            # E.0
+    outcomes:
+      E1: [supported, not_supported, indeterminate]
+      E2: [supported, refuted, indeterminate]
+      E3: [supported, refuted, indeterminate]
+      E4: [compatible, incompatible, indeterminate]
+      E5: [supported, indeterminate]        # jamais refuted
+      E6: [descriptive]
+    descriptive_outside_e7: [E4, E6]
+    not_determinable_measure_gives: indeterminate   # motif : le nd_reason de la mesure
+    other_indeterminate_reasons: [search_incomplete, date_missing, interval_straddles_threshold, precondition_not_met]
+    primary_view: as_known
+    as_known_evaluation_date: "date limite de dépôt du rapport annuel (10-K, 20-F ou 40-F) de chaque exercice, plafonnée à l'as_of de l'exécution ; l'as_of de la cellule porte cette date"
+    sensitivity_view: revised
+    unit: "paire (groupe fournisseur, groupe économique client)"
+    period: "exercice fiscal du fournisseur ; une issue par paire, sur les exercices de la fenêtre"
+    power_precondition_status: [computed, bounded]
+    grid:
+      high: [0.05, 0.10, 0.20]
+      low: "s/2"
+      headline: 0.10
+      others: "publiés à côté du point de tête, jamais à sa place"
+      applies_to: [E2, E3]
+    extended_window: "fenêtre d'analyse (§11.1), de l'exercice window.start_fiscal_year à as_of, reculée de quatre trimestres"
+    complete_search:
+      - "tous les dépôts du fournisseur et, s'il dépose, du client, sur la fenêtre allongée, ont été traités"
+      - "aucun candidat pertinent n'est not_processed ni parse_failed"
+      - "aucune clause pertinente n'est redacted"
+      - "aucune requête ni période de données pertinente n'est exclue pour search_incomplete ou not_processed"
+  statements:
+    E1:
+      title: "Lien documenté"
+      population: "paires où F vaut active, sous la politique exposure_outstanding, pendant au moins un trimestre de la fenêtre allongée"
+      financing_policy: exposure_outstanding
+      min_active_quarters_in_extended_window: 1
+      supported: "au moins une pièce L1 à L5 est trouvée"
+      not_supported: "la recherche est complète et n'en trouve aucune"
+      indeterminate: "sinon"
+      link_categories: [L1, L2, L3, L4, L5]
+      publish: "nombre de paires par issue, avec la couverture contractuelle (contract_coverage, §2.5)"
+    E2:
+      title: "Dépendance de revenu"
+      measure: documented_revenue_dependency
+      financing_policy: exposure_outstanding
+      supported: {bound: value_lower, comparison: ">=", threshold: "s", min_consecutive_fiscal_years: 2}
+      refuted: {bound: value_upper, comparison: "<", threshold: "s/2", over: all_evaluable_fiscal_years, min_evaluable_fiscal_years: 2}
+      indeterminate: "sinon"
+      rationale: "au point de tête, 10 % est le seuil de publication d'ASC 280, et 5 % laisse une marge d'un demi-seuil"
+    E3:
+      title: "Dépendance du carnet"
+      measure: documented_backlog_dependency
+      basis: "RPO de fin d'exercice"
+      rules: same_as_E2
+      grid: same_as_E2
+    E4:
+      title: "Chronologie (descriptif)"
+      descriptive: true
+      population: "paires qui ont un engagement de financement daté et au moins un engagement d'achat daté"
+      date_basis:
+        commitment: {t_f: "date de l'engagement de financement", purchases: "engagements d'achat"}
+        payment: {t_f: "date du versement ou du tirage", purchases: "paiements"}
+      window_days: {before: 90, after: 365}
+      compatible: "un engagement d'achat, ou un paiement, du client est daté dans [t_f − 90 jours ; t_f + 365 jours]"
+      indeterminate: "une date manque"
+      incompatible: "tous les autres cas"
+      presented_as_proof: false
+    E5:
+      title: "Contrepartie au client"
+      supported: "le fournisseur publie une contrepartie payable au client comptabilisée en réduction du revenu, ou un revenu contre une contrepartie non monétaire reçue de lui"
+      indeterminate: "sinon, y compris quand le fournisseur ne publie rien sur ce point"
+      refuted: never
+      unilateral: true
+    E6:
+      title: "Cycles (descriptif)"
+      descriptive: true
+      measure: documented_path
+      count_by: [temporal, relationship_conclusion]
+      outcome: descriptive
+  rules:
+    E7:
+      title: "Non-discrimination"
+      statements: [E1, E2]
+      grid_point: headline
+      indeterminate_share_greater_than: 0.70
+      headline_result: "les pièces déposées ne permettent pas de discriminer entre les deux lectures"
+      publish_with: ["taux d'issues indeterminate", "ventilation des motifs"]
+      reasons: [anonymous, channel_indirect, non_filer, redacted, not_processed, parse_failed]
+      nature: "un résultat, pas un échec"
+    E8:
+      title: "Agrégation"
+      rule: "aucune règle « au moins une paire » ne fonde une conclusion globale ; les résultats se publient paire par paire, avec la part des paires dans chaque issue"
+    E9:
+      title: "Engagements de rendu"
+      empty_numerator: {status: not_determinable, publish_alongside: [named_edge_coverage, documented_pair_coverage, customer_concentration_anonymous]}
+      directions: {circular_reading: [supported], other_reading: [refuted, not_supported]}
+      mirror_statement: none
+      unilateral: [E5]
+      descriptive: [E4, E6]
+
+# Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
+annex_f:
+  source: "spec v6.14, annexe F"
+  closed_list: true
+  measure_id: fragility_event
+  breakdown_field: event_id
+  weighting: none
+  totals: none                 # ni entre observables, ni entre groupes, ni dans le temps
+  score: none
+  expected_universe: "une cellule par groupe, observable et trimestre ; une source non lue ne passe jamais pour un trimestre sans événement"
+  carries: [period, knowledge_date]
+  events:
+    F1:
+      observable: "capex décaissé supérieur au CFO deux trimestres de suite"
+      source: "termes de capex_to_cfo, term = without (§6.2)"
+      rule: {measure: capex_to_cfo, term: without, condition: "capex_cash > cfo", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
+    F2:
+      observable: "fcf_after_counterparty_financing négatif"
+      source: "§4.4"
+      rule: {measure: fcf_after_counterparty_financing, condition: "value < 0"}
+    F3:
+      observable: "un backstop ou une garantie dont trigger_occurred = yes"
+      source: "§5.3"
+      rule: {categories: [guarantee, capacity_backstop, residual_value_guarantee, credit_enhancement, backstop], condition: "trigger_occurred = yes (un dépôt constate l'événement)"}
+    F4:
+      observable: "un amendement ou une dérogation de clause financière"
+      source: "sig_covenant_events (§4.5)"
+      rule: {measure: sig_covenant_events}
+    F5:
+      observable: "une faiblesse significative du contrôle interne"
+      source: "sig_material_weakness (§4.5)"
+      rule: {measure: sig_material_weakness}
+    F6:
+      observable: "une dépréciation d'investissement"
+      source: "investment_impairment (§6.2)"
+      rule: {measure: earnings_bridge_pretax, term: investment_impairment, condition: "value != 0"}
+    F7:
+      observable: "une baisse d'une durée d'amortissement publiée"
+      source: "depreciation_life_published (§6.2)"
+      rule: {measure: depreciation_life_published, condition: "une borne publiée de la durée d'une classe de même libellé est inférieure à celle de la publication précédente"}
+    F8:
+      observable: "un revenue_growth en glissement annuel qui passe sous zéro"
+      source: "revenue_growth, term = yoy (§4.2)"
+      rule: {measure: revenue_growth, term: yoy, condition: "value < 0 alors que la valeur de la période précédente est >= 0"}
+    F9:
+      observable: "un item 1.02 de 8-K sur un contrat de capacité"
+      source: "section 1.02 lue en phase 2 (§11.1)"
+      rule: {eight_k_item: "1.02", contract: capacity}
+    F10:
+      observable: "un doute sur la continuité d'exploitation"
+      source: "sig_going_concern (§4.5)"
+      rule: {measure: sig_going_concern}
+
+concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
+  revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
+  net_income: [NetIncomeLoss]
+  operating_income: [OperatingIncomeLoss]
+  pretax_income_continuing: [IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest]
+  total_assets: [Assets]
+  current_assets: [AssetsCurrent]
+  total_liabilities: [Liabilities]
+  current_liabilities: [LiabilitiesCurrent]
+  temporary_equity: [TemporaryEquityCarryingAmountAttributableToParent]
+  equity_including_nci: [StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest]
+  cash_and_equivalents: [CashAndCashEquivalentsAtCarryingValue]
+  restricted_cash_current: [RestrictedCashCurrent]
+  restricted_cash_noncurrent: [RestrictedCashNoncurrent]
+  cash_and_restricted_cash_total: [CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents]
+  cfo: [NetCashProvidedByUsedInOperatingActivities]
+  cfi: [NetCashProvidedByUsedInInvestingActivities]
+  cff: [NetCashProvidedByUsedInFinancingActivities]
+  capex_cash: [PaymentsToAcquirePropertyPlantAndEquipment]
+  unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
+  eps_diluted: [EarningsPerShareDiluted]
+  diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
+  net_income_to_common_diluted: [NetIncomeLossAvailableToCommonStockholdersDiluted]
+  rpo_total: [RevenueRemainingPerformanceObligation]
+  contract_liabilities: [ContractWithCustomerLiability]
+  operating_lease_liability_current: [OperatingLeaseLiabilityCurrent]
+  operating_lease_liability_noncurrent: [OperatingLeaseLiabilityNoncurrent]
+  operating_lease_payments_undiscounted: [LesseeOperatingLeaseLiabilityPaymentsDue]
+  operating_lease_imputed_interest: [LesseeOperatingLeaseLiabilityUndiscountedExcessAmount]
+  finance_lease_liability_current: [FinanceLeaseLiabilityCurrent]
+  finance_lease_liability_noncurrent: [FinanceLeaseLiabilityNoncurrent]
+  finance_lease_payments_undiscounted: [FinanceLeaseLiabilityPaymentsDue]
+  finance_lease_imputed_interest: [FinanceLeaseLiabilityUndiscountedExcessAmount]
+  capitalized_interest: [InterestCostsCapitalized]
+  short_term_investments: [ShortTermInvestments]
+  undrawn_committed_facilities: [LineOfCreditFacilityRemainingBorrowingCapacity]
+  dividends_paid: [PaymentsOfDividends, PaymentsOfDividendsCommonStock]
+  dividends_declared: [Dividends, DividendsCommonStock]
+  profit_including_nci: [ProfitLoss]
+  vendor_financed_ppe_additions: [NoncashOrPartNoncashAcquisitionFixedAssetsAcquired1]   # sans distinction du mode de paiement
+  stock_paid_ppe_additions: [StockIssued1]      # souvent en extension ou seulement narratif
+  debt_proceeds: [ProceedsFromIssuanceOfLongTermDebt, ProceedsFromIssuanceOfDebt]
+  debt_repayments: [RepaymentsOfLongTermDebt, RepaymentsOfDebt]
+  rou_obtained_finance_lease: [RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability]
+  rou_obtained_operating_lease: [RightOfUseAssetObtainedInExchangeForOperatingLeaseLiability]
+  finance_lease_principal_payments: [FinanceLeasePrincipalPayments]
+  pik_interest: [PaidInKindInterest]
+  equity_method_income: [IncomeLossFromEquityMethodInvestments]
+  dilution_gain: [GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee]
+  investment_gain_loss: [EquitySecuritiesFvNiGainLoss,
+    EquitySecuritiesWithoutReadilyDeterminableFairValueUpwardPriceAdjustmentAnnualAmount,
+    EquitySecuritiesWithoutReadilyDeterminableFairValueDownwardPriceAdjustmentAnnualAmount]
+  investment_impairment: [EquityMethodInvestmentOtherThanTemporaryImpairment,
+    EquitySecuritiesWithoutReadilyDeterminableFairValueImpairmentLossAnnualAmount]
+
+concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans le paquet épinglé
+  gross_profit: [GrossProfit]
+  cost_of_revenue: [CostOfRevenue, CostOfGoodsAndServicesSold]
+  receivables: [AccountsReceivableNetCurrent]
+  inventories: [InventoryNet]
+  accounts_payable: [AccountsPayableCurrent]
+  contract_liabilities_current: [ContractWithCustomerLiabilityCurrent]
+  segment_axis: [StatementBusinessSegmentsAxis]
+  going_concern_text_block: [SubstantialDoubtAboutGoingConcernTextBlock]   # §11.1, phase 2
+
+unanchored_quantities:       # résolues par la seule règle de §8.3
+  [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
+   depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
+   debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
+   interest_expense, interest_paid]

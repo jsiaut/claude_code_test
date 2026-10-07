@@ -1,0 +1,11 @@
+# Cache réseau : conservé hors du dépôt (§12.1)
+cache/
+# Valeur exacte du User-Agent : jamais versionnée, le dépôt est public (§9.5)
+secrets/
+# Fichiers de travail temporaires
+work/tmp/
+work/session.lock
+db/
+__pycache__/
+*.pyc
+.pytest_cache/
