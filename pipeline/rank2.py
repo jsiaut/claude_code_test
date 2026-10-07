@@ -431,8 +431,12 @@ def lease_not_commenced(cells, obs, report_end_of, as_of):
                   "knowledge_date": o.get("knowledge_date"), "tier": o.get("tier"), "is_tagged": False} for o in amounts.values()]
         # baux d'exploitation et de location-financement : deux classes exclusives (ASC 842), donc
         # additives ; toute autre pluralité de lignes reste partielle
-        kinds = [str(k).rsplit("_", 1)[-1] for k in amounts]
-        additive = len(amounts) == 1 or (len(amounts) == 2 and sorted(kinds) == ["finance", "operating"])
+        # deux partitions publiées : par classe (exploitation, location-financement) ou par échéance
+        # de commencement (moins d'un an, au-delà) ; chacune est exclusive, donc additive
+        keys = sorted(str(k) for k in amounts)
+        additive = len(amounts) == 1 or (len(amounts) == 2 and (
+            (keys[0].endswith("_finance") and keys[1].endswith("_operating")) or
+            (keys[0].endswith("_long_term") and keys[1].endswith("_short_term"))))
         return tot, terms, len(amounts), hits, additive
     # matrice d'exposition à chaque date lue
     for (g, d), v in sorted(by.items()):
@@ -441,7 +445,7 @@ def lease_not_commenced(cells, obs, report_end_of, as_of):
                         breakdown="contractual_outflows/undiscounted/lease_not_commenced/total", value=tot, unit="USD",
                         terms=terms, status="computed" if additive else "partial", nd_reason=None if additive else "term_missing",
                         flags={"observations": [o["obs_key"] for o in hits], "lines": n,
-                               "note": ("baux d'exploitation et de location-financement, classes exclusives (ASC 842)"
+                               "note": ("deux parties exclusives publiées (classe de bail ou échéance de commencement)"
                                         if n == 2 and additive else None) if additive
                                else "plusieurs lignes, additivité non démontrée"}))
     # pont annuel : remplace ouverture et clôture indéterminées
