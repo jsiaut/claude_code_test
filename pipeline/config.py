@@ -16,7 +16,7 @@ LOCK = WORK / "session.lock"
 
 # Versions qui entrent dans les clés de cache (§9.2, §9.6).
 NORMALIZER_VERSION = "n1"
-DELIMITER_VERSION = "d1"
+DELIMITER_VERSION = "d2"
 
 
 def load():

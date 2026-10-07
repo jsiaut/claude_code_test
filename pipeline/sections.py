@@ -90,15 +90,40 @@ ITEM_404_START = re.compile(
     r"(certain\s+relationships\s+and\s+related|related[\s-]+(person|party)\s+transactions?|"
     r"transactions?\s+with\s+related\s+(persons?|parties)|related[\s-]+(person|party)\s+transaction\s+polic)",
     re.I)
-ITEM_404_CONT = re.compile(r"related|transaction|relationship|polic|procedure|review|approval|"
-                           r"indebtedness|employment of|family", re.I)
+# titres majeurs d'un DEF 14A qui ferment la section Item 404
+MAJOR_PROXY = re.compile(
+    r"^\W{0,3}(executive\s+compensation|compensation\s+discussion|director\s+compensation|"
+    r"security\s+ownership|beneficial\s+ownership|stock\s+ownership|delinquent\s+section|section\s+16\(a\)|"
+    r"stockholder\s+proposals?|shareholder\s+proposals?|audit\s+committee\s+report|report\s+of\s+the\s+audit|"
+    r"proposal\s+(no\.?\s*)?\d|proposal\s+(one|two|three|four|five)|other\s+matters|householding|"
+    r"questions\s+and\s+answers|equity\s+compensation\s+plan|pay\s+versus\s+performance|annual\s+report|"
+    r"board\s+of\s+directors|corporate\s+governance|additional\s+information|submission\s+of|"
+    r"general\s+information|information\s+about|the\s+board|our\s+board|human\s+capital|ceo\s+pay\s+ratio|"
+    r"compensation\s+committee\s+report|principal\s+accountant|ratification|advisory\s+vote|"
+    r"environmental|sustainability|appendix|annex\s+[a-z]|audit\s+(and\s+\w+\s+)?committee\s+report|"
+    r"item\s+\d+\s*[-:.]|director\s+independence|compensation\s+committee\s+interlocks|"
+    r"consideration\s+of\s+director|board'?s\s+role|management\s+succession|executive\s+sessions|"
+    r"notes\s+to\s+the|financial\s+statements|report\s+of\s+independent|independent\s+registered|"
+    r"[\w ,&]{3,60}\bcommittee$|principal\s+(and\s+selling\s+)?(stock|share)holders|"
+    r"selling\s+(stock|share)holders|description\s+of\s+capital|shares\s+eligible|underwriting|"
+    r"material\s+u\.?s\.?\s+federal|legal\s+matters|experts$|where\s+you\s+can\s+find|"
+    r"management$|executive\s+officers\s+and\s+directors)", re.I)
+ITEM_404_HEAD = re.compile(
+    r"^\W{0,3}(certain\s+relationships\s+and\s+related|related[\s-]+(person|party)\s+transactions?\b|"
+    r"transactions?\s+with\s+related\s+(persons?|parties)|review\s+of\s+transactions\s+with\s+related|"
+    r"(and\s+)?related\s+(person|party)\s+transactions?$|policies\s+and\s+procedures\s+for\s+related)", re.I)
+PAGE_FURNITURE = re.compile(r"proxy\s+statement|^\d{1,3}$|^table\s+of\s+contents$|annual\s+meeting\s+of|"
+                            r"^back\s+to\s+contents$|notice\s+of\s+(annual\s+)?meeting", re.I)
 
 
 def item_404(raw, max_chars=60000):
-    """Section Item 404 : du premier titre « Certain Relationships... » ou
-    « Related Person Transactions » hors sommaire jusqu'au titre suivant étranger au sujet."""
+    """Section Item 404 : du premier titre « Certain Relationships... » ou « Related Person
+    Transactions » hors sommaire jusqu'au titre majeur suivant du DEF 14A (en-têtes et pieds
+    de page ignorés), plafonnée à max_chars ; la section la plus longue l'emporte (sommaire)."""
     lines = _lines(raw)
-    starts = [i for i, (t, h) in enumerate(lines) if h and ITEM_404_START.search(t) and len(t) < 200]
+    # un titre ouvre la ligne et ne se termine pas par une ponctuation de phrase (renvois écartés)
+    starts = [i for i, (t, h) in enumerate(lines) if len(t) < 160 and ITEM_404_HEAD.search(t)
+              and not t.rstrip().endswith((".", '"', ",", ";")) and (h or len(t) < 90)]
     best = None
     for s in starts:
         e = len(lines)
@@ -106,18 +131,21 @@ def item_404(raw, max_chars=60000):
         for j in range(s + 1, len(lines)):
             t, h = lines[j]
             size += len(t)
-            if h and len(t) < 200 and not ITEM_404_CONT.search(t) and size > 300:
+            if PAGE_FURNITURE.search(t) and len(t) < 120:
+                continue
+            if len(t) < 150 and MAJOR_PROXY.search(t) and size > 300 and not ITEM_404_START.search(t):
                 e = j
                 break
             if size > max_chars:
                 e = j
                 break
-        text_size = sum(len(t) for t, _ in lines[s:e])
+        body = [t for t, _ in lines[s:e] if not (PAGE_FURNITURE.search(t) and len(t) < 120)]
+        text_size = sum(len(t) for t in body)
         if text_size >= 300 and (best is None or text_size > best[2]):
-            best = (s, e, text_size)
+            best = (s, e, text_size, body)
     if not best:
         return None
-    return textnorm.lines_to_text(lines[best[0]:best[1]])
+    return "\n".join(best[3])
 
 
 _PAGE_BREAK = re.compile(rb"page-break-(before|after)\s*:\s*always|break-(before|after)\s*:\s*page|<hr[^>]*>",

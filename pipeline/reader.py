@@ -213,6 +213,73 @@ def render_block(b, cap):
     return header, facts, _chunks(b["text"], budget)
 
 
+def cmd_lot(small=4000, total=20000):
+    """Lot de petits blocs (§7.4) : les blocs suivants de la file tant que chacun fait moins
+    de `small` caractères et que le lot ne dépasse pas `total` ; un bloc plus long est servi
+    seul par `next`. Chaque bloc garde son fichier et sa validation (submit-lot)."""
+    q = queue()
+    lot, size = [], 0
+    for b in q:
+        header, facts, chunks = render_block(b, 10**9)
+        n = len(header) + len(facts) + len(chunks[0])   # faits candidats et en-têtes compris (§7.4)
+        if n > small:
+            break
+        if size + n > total and lot:
+            break
+        lot.append(b)
+        size += n
+    if not lot:
+        print("PAS DE PETIT BLOC EN TÊTE DE FILE : utiliser `next`")
+        return
+    for b in lot:
+        header, facts, chunks = render_block(b, 10**9)
+        print(header)
+        print(facts)
+        print("### TEXTE")
+        print(chunks[0])
+        print()
+    print(f"### LOT : {len(lot)} blocs, {size} caractères ; file restante : {len(q)} blocs")
+
+
+def cmd_submit_lot(path, final=False):
+    """Lignes de plusieurs blocs : champ `block` = clé de contenu ; écrites bloc par bloc."""
+    groups = {}
+    order = []
+    src = sys.stdin.read() if path == "-" else open(path, encoding="utf-8").read()
+    for raw in src.splitlines():
+        if not raw.strip():
+            continue
+        obj = json.loads(raw)
+        ck = obj.pop("block")
+        if ck not in groups:
+            order.append(ck)
+            groups[ck] = []
+        groups[ck].append(json.dumps(obj, ensure_ascii=False))
+    rc = 0
+    tmp = STATE.parent / "lot_part.jsonl"
+    for ck in order:
+        tmp.write_text("\n".join(groups[ck]) + "\n", encoding="utf-8")
+        r = cmd_submit(ck, str(tmp), final)
+        rc = max(rc, r or 0)
+    return rc
+
+
+def cmd_auto(small=5000, total=22000):
+    """Sert un lot si la tête de file est petite, sinon le bloc suivant (en morceaux)."""
+    STATE.parent.mkdir(parents=True, exist_ok=True)
+    state = json.loads(STATE.read_text()) if STATE.exists() else {}
+    if state.get("content_key"):
+        return cmd_next(None)
+    q = queue()
+    if not q:
+        print("FILE VIDE")
+        return
+    header, facts, chunks = render_block(q[0], 10**9)
+    if len(header) + len(facts) + len(chunks[0]) <= small:
+        return cmd_lot(small, total)
+    return cmd_next(None)
+
+
 def cmd_next(max_chars):
     cap = max_chars or config.load()["reading"]["max_read_chars"]
     STATE.parent.mkdir(parents=True, exist_ok=True)
@@ -338,6 +405,13 @@ def main(argv=None):
     s.add_argument("--next", action="store_true")
     sh = sub.add_parser("show")
     sh.add_argument("content_key")
+    lt = sub.add_parser("lot")
+    lt.add_argument("--small", type=int, default=4000)
+    lt.add_argument("--total", type=int, default=20000)
+    sl = sub.add_parser("submit-lot")
+    sl.add_argument("path")
+    sl.add_argument("--final", action="store_true")
+    sl.add_argument("--then", choices=["lot", "next", "auto"])
     a = ap.parse_args(argv)
     if a.cmd == "status":
         return cmd_status()
@@ -350,6 +424,17 @@ def main(argv=None):
         return rc
     if a.cmd == "show":
         return cmd_show(a.content_key)
+    if a.cmd == "lot":
+        return cmd_lot(a.small, a.total)
+    if a.cmd == "submit-lot":
+        rc = cmd_submit_lot(a.path, a.final)
+        if rc == 0 and a.then == "lot":
+            cmd_lot()
+        elif rc == 0 and a.then == "next":
+            cmd_next(None)
+        elif rc == 0 and a.then == "auto":
+            cmd_auto()
+        return rc
 
 
 if __name__ == "__main__":
