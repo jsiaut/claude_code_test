@@ -168,7 +168,8 @@ def build(p0, cfg, counterparty_names):
     known = set(reg.names)
     for name, fin in sorted(counterparty_names.items()):
         n = normalize_name(name)
-        if not n or n in known or n in FILER_WORDS:
+        # « we » ou l'identifiant d'un groupe écrit par le lecteur pour le déclarant : pas une contrepartie
+        if not n or n in known or n in FILER_WORDS or name.strip().upper() in (cfg.get("groups") or {}):
             continue
         known.add(n)
         if LEGAL_SUFFIX.search(n):

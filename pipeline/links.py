@@ -71,6 +71,7 @@ def build_edges(obs, reg):
         te, tg, ts = E.resolve(reg, payee, d, "as_known")
         fg_r = E.resolve(reg, payer, d, "revised")[1]
         tg_r = E.resolve(reg, payee, d, "revised")[1]
+
         for e, s in ((fe, fs), (te, ts)):
             if e and s in ("pending", "unknown"):
                 pend.add(e)

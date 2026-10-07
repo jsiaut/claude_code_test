@@ -169,6 +169,26 @@ def _state_path():
     return STATE
 
 
+def _run_path():
+    """Une liste de relecture a sa propre passe (work/tmp/run_<liste>.json) : ses blocs se
+    relisent même s'ils ont déjà des lignes, et la passe la plus récente remplace l'ancienne
+    au chargement (§7.4)."""
+    if LIST:
+        p = RUN.parent / f"run_{__import__('pathlib').Path(LIST).stem}.json"
+        if p.exists():
+            return p
+    return RUN
+
+
+def _read_in_pass(ck, pass_id):
+    """Le bloc a reçu des lignes (valides ou rejetées) dans cette passe."""
+    for p in (obs_path(ck), rejected_path(ck)):
+        if p.exists() and any(json.loads(l).get("pass_id") == pass_id
+                              for l in p.read_text(encoding="utf-8").splitlines() if l.strip()):
+            return True
+    return False
+
+
 def queue(catalog=None):
     """Blocs sans fichier d'observations, dans l'ordre du signal (§11.1) ; avec une liste,
     seulement ses blocs, dans l'ordre de la liste."""
@@ -179,10 +199,14 @@ def queue(catalog=None):
         keys = [l.strip() for l in open(LIST, encoding="utf-8") if l.strip()]
         order = {k: i for i, k in enumerate(keys)}
         catalog = [b for b in catalog if b["content_key"] in order]
+    repass = _run_path() != RUN
+    repass_id = json.loads(_run_path().read_text())["pass_id"] if repass else None
     for b in sorted(catalog, key=(lambda b: order[b["content_key"]]) if order else
                     (lambda b: (_effective_class(b), b["sort_key"]))):
         ck = b["content_key"]
-        if ck in seen or obs_path(ck).exists():
+        if ck in seen:
+            continue
+        if obs_path(ck).exists() and (not repass or _read_in_pass(ck, repass_id)):
             continue
         if b.get("requires") and not _requirement_met(b["requires"]):
             continue
@@ -245,9 +269,15 @@ _SCALE = {"thousand": Decimal(10) ** 3, "million": Decimal(10) ** 6, "billion": 
           "trillion": Decimal(10) ** 12}
 
 
+_TABLE_SCALE = re.compile(r"\bin\s+(thousand|million|billion)s?\b", re.I)
+
+
 def text_values(text):
-    """Valeurs numériques que le texte affiche, à leur échelle et brutes (pour l'affichage)."""
+    """Valeurs numériques que le texte affiche, à leur échelle et brutes (pour l'affichage).
+    Un tableau « in millions » (ou thousands, billions) affiche des nombres nus : ils valent
+    aussi à l'échelle déclarée par le bloc."""
     vals = set()
+    table_scales = {_SCALE[m.group(1).lower()] for m in _TABLE_SCALE.finditer(text)}
     for m in _NUM.finditer(text):
         try:
             v = Decimal(m.group(1).replace(",", ""))
@@ -259,6 +289,9 @@ def text_values(text):
             vals.add(v * _SCALE[unit])
         elif unit in ("%", "percent"):
             vals.add(v / 100)
+        else:
+            for sc in table_scales:
+                vals.add(v * sc)
     return vals
 
 
@@ -404,8 +437,8 @@ def cmd_next(max_chars):
 
 
 def _run_info():
-    if RUN.exists():
-        return json.loads(RUN.read_text())
+    if _run_path().exists():
+        return json.loads(_run_path().read_text())
     now = dt.datetime.now(dt.timezone.utc)
     return {"as_of": now.date().isoformat(), "pass_id": now.isoformat(timespec="seconds")}
 

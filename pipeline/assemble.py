@@ -186,6 +186,8 @@ def run(as_of):
     sig_cells += fsignals.covenant_signals(groups, quarters_by_group, valid, as_of, report_end_of)
     sig_cells += fsignals.pledged_signals(groups, quarters_by_group, valid, as_of, report_end_of)
     cells += rank2.lease_not_commenced(cells, valid, report_end_of, as_of)
+    lever = rank2.depreciation_lever(cells, valid, as_of)
+    cells += lever + rank2.lever_restatement(con, lever, as_of)
     cells += sig_cells
 
     # 7. flux après financement des contreparties, matrice d'exposition tirée du texte

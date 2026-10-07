@@ -157,21 +157,25 @@ def semantic_errors(line, block):
     cp = line.get("counterparty_name")
     if cp and line.get("counterparty_evidence") in ("named", "derivable"):
         if textnorm.norm_for_match(cp).lower() not in text_norm:
-            cands = " ".join(json.dumps(c.get("dims")) for c in block.get("candidate_facts") or []).lower()
-            if line.get("derivation_method") != "dimension_member_label" or cp.lower() not in cands:
+            # libellés de membre en clair (apostrophes typographiques comprises), même normalisation que le texte
+            cands = textnorm.norm_for_match(" ".join(json.dumps(c.get("dims"), ensure_ascii=False)
+                                                     for c in block.get("candidate_facts") or [])).lower()
+            if line.get("derivation_method") != "dimension_member_label" or \
+                    textnorm.norm_for_match(cp).lower() not in cands:
                 errs.append("contrepartie absente du bloc")
     if line.get("amount_origin") == "tagged_reference":
         cand = next((c for c in block.get("candidate_facts") or [] if c["fact_key"] == line.get("candidate_fact_key")), None)
         if cand is None:
             errs.append("candidate_fact_key absent des faits candidats du bloc")
-        elif line.get("amount") is not None and Decimal(str(line["amount"])) != Decimal(str(cand["value"])):
+        elif line.get("amount") is not None and abs(Decimal(str(line["amount"]))) != abs(Decimal(str(cand["value"]))):
+            # montants en valeur absolue (guide de lecture) : une perte balisée en négatif reste le même fait
             errs.append("montant différent du fait candidat")
     if line.get("amount_origin") == "narrative_only" and line.get("amount") is not None:
         # même valeur ET même période (ou ligne sans période) : un montant d'une autre
         # période, égal par hasard à un fait balisé, reste un texte non balisé
         pe = line.get("period_end")
         same = [c for c in block.get("candidate_facts") or []
-                if Decimal(str(c["value"])) == Decimal(str(line["amount"]))
+                if abs(Decimal(str(c["value"]))) == abs(Decimal(str(line["amount"])))
                 and (pe is None or str(c.get("period_end") or "")[:10] == pe)]
         if same:
             errs.append("montant présent dans un fait candidat : tagged_reference attendu")

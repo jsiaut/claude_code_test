@@ -454,3 +454,69 @@ def lease_not_commenced(cells, obs, report_end_of, as_of):
                                flags={"observations": [o["obs_key"] for o in hits], "is_tagged": False})
     cells[:] = [repl.get(id(c), c) for c in cells]
     return out
+
+
+LEVER_NOTE_RX = __import__("re").compile(r"^\s*effet\s*:\s*([+\-−])\s*(résultat|resultat|dotations?)", __import__("re").I)
+
+
+def depreciation_lever(cells, obs, as_of):
+    """depreciation_life_change_effect et lever_restatement (levier 1 de §6.1) : l'effet publié
+    d'un changement de durée d'utilité, pour sa seule période (ASC 250-10-50-4), puis publié,
+    retraité et écart du résultat opérationnel de la même période ; sans effet publié, rien
+    n'est retraité. Le signe vient de la note de la ligne (« effet : + résultat » ou
+    « effet : − résultat »), écrite par le lecteur d'après le texte."""
+    out = []
+    lines = [o for o in obs if o.get("kind") == "observation" and o["validation_state"] == "valid"
+             and o.get("block_kind") == "lever_note" and o.get("event_type") == "measurement_change"
+             and o.get("amount") is not None and o.get("unit") == "USD"]
+    seen = set()
+    for o in lines:
+        m = LEVER_NOTE_RX.match(o.get("note") or "")
+        ps, pe = o.get("period_start"), o.get("period_end")
+        if not m or not ps or not pe:
+            continue
+        key = (o["group_id"], ps, pe, o.get("instrument_key") or o["obs_key"])
+        if key in seen:
+            continue
+        seen.add(key)
+        sign = Decimal(1) if m.group(1) == "+" else Decimal(-1)
+        on_income = m.group(2).lower().startswith("r")
+        v = sign * Decimal(str(o["amount"])) * (1 if on_income else -1)
+        term = {"value": Decimal(str(o["amount"])), "fact_key": "obs:" + o["obs_key"],
+                "knowledge_date": o.get("knowledge_date"), "tier": o.get("tier"), "is_tagged": False}
+        out.append(cell("depreciation_life_change_effect", o["group_id"], ps, pe, "as_known", as_of,
+                        breakdown=o.get("instrument_key") or NONE, value=v, unit="USD", terms=[term],
+                        flags={"effect_on_income": str(v), "note": o.get("note"), "observation": o["obs_key"],
+                               "judgment_sensitive": True}))
+    return out
+
+
+def lever_restatement(con, effects, as_of):
+    """Pour chaque effet publié de changement de durée d'utilité : résultat opérationnel publié de
+    la même période, retraité (publié − effet) et écart (§6.4) ; jamais le retraité seul."""
+    out = []
+    if not effects:
+        return out
+    occ = model.occurrences_df(con)
+    cals = model.calendars()
+    as_of_d = dt.date.fromisoformat(as_of)
+    for e in effects:
+        g = e["subject"]
+        S = Series(occ, g, cals[g])
+        ps, pe = dt.date.fromisoformat(e["period_start"]), dt.date.fromisoformat(e["period_end"])
+        pub = S.duration("operating_income", ps, pe, as_of_d)
+        key = e["breakdown_key"]
+        if not pub:
+            for term in ("published", "restated", "difference"):
+                out.append(cell("lever_restatement", g, ps, pe, "as_known", as_of, term=term, breakdown=f"depreciation_life|{key}",
+                                status="not_determinable", nd_reason="term_missing"))
+            continue
+        eff = Decimal(str(e["value"]))
+        terms = [pub, {"value": abs(eff), "fact_key": json.loads(e["lineage"])[0], "knowledge_date": e["knowledge_date"],
+                       "tier": None, "is_tagged": False}]
+        for term, v in (("published", pub["value"]), ("restated", pub["value"] - eff), ("difference", eff)):
+            out.append(cell("lever_restatement", g, ps, pe, "as_known", as_of, term=term, breakdown=f"depreciation_life|{key}",
+                            value=v, unit="USD", terms=terms,
+                            flags={"basis": "résultat opérationnel publié moins l'effet publié du changement de durée, "
+                                            "pour la seule période de l'effet"}))
+    return out
