@@ -730,6 +730,7 @@ def delta(con, as_of, stats):
         sub_n = q(con, "SELECT count(*) AS n FROM exclusions WHERE item_key LIKE 'lender:subtotal:%'")[0]["n"]
         L.append("- Groupes d'émetteurs couverts : " + ", ".join(group_label(r["subject"]) for r in grp) + ".")
         L.append("")
+    L += text_yield_section(con, T, stats)
     L.append("## Exclusions nouvelles, par motif")
     L.append("")
     for r in q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC"):
@@ -973,6 +974,91 @@ def auditor_md(out):
     (out / "AUDITOR.md").write_text("# Consignes pour l'auditeur\n\n" + text + "\n", encoding="utf-8")
 
 
+TEXT_KIND_FR = {"concentration_text": "paragraphes sur les clients", "investment_note": "notes d'investissements",
+                "item_8k_201": "8-K item 2.01", "item_8k_203": "8-K item 2.03", "debt_note": "notes de dette",
+                "lease_note": "notes de baux", "commitments_note": "notes d'engagements",
+                "lever_note": "immobilisations et estimations", "revenue_note": "notes de revenu",
+                "exhibit_body": "corps d'EX-10"}
+
+
+def text_yield_section(con, T, stats):
+    """Rendement du bloc `text` (§14) : blocs lus et restants par type, lignes rendues, et ce qui
+    a changé depuis le rendement présenté à l'utilisateur avant l'ouverture."""
+    cfg = config.load()
+    sc = cfg.get("scope")
+    if not (isinstance(sc, list) and "text" in sc):
+        return []
+    first = str((cfg.get("reading") or {}).get("text_block_first_pass"))
+    pres = (cfg.get("scope_decision") or {}).get("yield_presented") or {}
+    tb = stats.get("blocks", {}).get("text", {})
+    L = ["## Rendement du bloc text (§14)", ""]
+    order = [k for k in TEXT_KIND_FR if k in tb]
+    tot = [sum(tb[k][i] for k in order) for i in range(4)]
+    L.append(f"- Blocs lus : {T.n('observations', {'text_blocks_read': True}, tot[1])} sur "
+             f"{T.n('observations', {'text_blocks_catalog': True}, tot[0])} "
+             f"({fr_num(Decimal(tot[3]) / Decimal(10**6), 1)} sur {fr_num(Decimal(tot[2]) / Decimal(10**6), 1)} millions de "
+             "caractères) ; par type : " + " ; ".join(
+                 f"{TEXT_KIND_FR[k]} {T.n('observations', {'text_read': k}, tb[k][1])}/{T.n('observations', {'text_catalog': k}, tb[k][0])}"
+                 for k in order) + ". Le reste est exclu bloc par bloc, motif « non traité » (`not_processed`), "
+             "du plus ancien au plus récent dans chaque type, et ouvre l'exécution suivante.")
+    lines = q(con, f"""SELECT kind, validation_state, count(*) AS n FROM observations WHERE pass_id >= ?
+                       GROUP BY 1, 2 ORDER BY 1, 2""", first)
+    obs = sum(r["n"] for r in lines if r["kind"] == "observation" and r["validation_state"] == "valid")
+    abst = sum(r["n"] for r in lines if r["kind"] == "abstention" and r["validation_state"] == "valid")
+    rej = sum(r["n"] for r in lines if r["validation_state"] != "valid")
+    L.append(f"- Lignes rendues dans les passes du bloc : {T.n('observations', {'text_obs': True}, obs)} observations, "
+             f"{T.n('observations', {'text_abst': True}, abst)} abstentions motivées, "
+             f"{T.n('observations', {'text_rejected': True}, rej)} rejetées par la validation.")
+    ed = q(con, f"""SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
+                    WHERE l.link_kind = 'edge' AND EXISTS (SELECT 1 FROM observations o WHERE o.pass_id >= ?
+                          AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""", first)
+    if ed:
+        L.append("- Arêtes établies par une ligne du bloc : " + ", ".join(
+            f"{r['family']} ({'montant' if r['edge_evidence'] == 'amount' else 'relation'}) "
+            f"{T.n('links', {'text_edges': [r['family'], r['edge_evidence']]}, r['n'])}" for r in ed) + ".")
+    r1p = pres.get("rank1_cells") or {}
+    tiers = [m for m, v in __import__("pipeline.registry", fromlist=["MEASURES"]).MEASURES.items() if v[0] == 1]
+    now = {r["status"]: r["n"] for r in q(con, f"""SELECT status, count(*) AS n FROM measures
+                    WHERE measure IN ({','.join('?' * len(tiers))}) AND measure NOT IN ('fragility_event', 'annex_e_outcome')
+                    GROUP BY 1""", *tiers)}
+    npn = q(con, f"""SELECT count(*) AS n FROM measures WHERE measure IN ({','.join('?' * len(tiers))})
+                     AND measure NOT IN ('fragility_event', 'annex_e_outcome') AND nd_reason = 'not_processed'""", *tiers)[0]["n"]
+    if r1p:
+        L.append("- Cellules de rang 1, avant l'ouverture → maintenant : " + " ; ".join(
+            f"{fr(st)} {fr_num(Decimal(r1p.get(st, 0)), 0)} → {T.n('measures', {'rank1_now': st}, now.get(st, 0))}"
+            for st in ("computed", "bounded", "partial", "not_determinable")) +
+            f" ; motif « non traité » {fr_num(Decimal(pres.get('rank1_not_processed', 0)), 0)} → "
+            f"{T.n('measures', {'rank1_not_processed_now': True}, npn)}. Le total peut changer : une ligne lue ouvre parfois "
+            "des cellules nouvelles (une paire, un instrument).")
+    fe = q(con, "SELECT count(*) AS n FROM measures WHERE measure = 'fragility_event' AND value_text = 'event'")
+    e7 = pres.get("annex_e_e7") or {}
+    # E.7 au point de tête de la grille : issues de E.1 et E.2 réunies, telles que E.7 les compte
+    e7r = q(con, """SELECT flags FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'
+                    ORDER BY breakdown_key LIMIT 1""")
+    e7fl = json.loads(e7r[0]["flags"]) if e7r and e7r[0]["flags"] else {}
+    e7now = {"n": sum(sum(v.values()) for k, v in e7fl.items() if k.startswith("outcomes_")),
+             "i": sum(v.get("indeterminate", 0) for k, v in e7fl.items() if k.startswith("outcomes_"))}
+    L.append(f"- Événements de l'annexe F : {fr_num(Decimal(pres.get('fragility_events', 0)), 0)} → "
+             f"{T.n('measures', {'annexF_events_now': True}, fe[0]['n'] if fe else 0)} ; issues de paire indéterminées "
+             f"(E.1 et E.2) : {e7.get('indeterminate', '—')} sur {e7.get('outcomes', '—')} → "
+             f"{T.n('measures', {'e7_indeterminate_now': True}, e7now['i'])} sur {T.n('measures', {'e7_outcomes_now': True}, e7now['n'])}.")
+    for meas, label in (("sig_covenant_events", "Clauses financières"), ("sig_pledged_assets", "Actifs nantis")):
+        rows = q(con, f"""SELECT coalesce(value_text, status) AS v, count(*) AS n FROM measures WHERE measure = ?
+                          AND view = 'as_known' GROUP BY 1 ORDER BY 1""", meas)
+        if rows:
+            L.append(f"- {label} (`{meas}`, trimestres-groupes, vue `as_known`) : " + ", ".join(
+                f"{VALUE_FR.get(r['v'], fr(r['v']))} {T.n('measures', {'text_signal': [meas, r['v']]}, r['n'])}" for r in rows) + ".")
+    for meas, label in (("lease_not_commenced_bridge", "Pont des baux non commencés"),
+                        ("depreciation_life_change_effect", "Effet publié d'un changement de durée d'utilité"),
+                        ("lever_restatement", "Résultat opérationnel retraité de cet effet")):
+        rows = q(con, "SELECT status, count(*) AS n FROM measures WHERE measure = ? GROUP BY 1 ORDER BY 1", meas)
+        if rows:
+            L.append(f"- {label} (`{meas}`) : " + ", ".join(
+                f"{fr(r['status'])} {T.n('measures', {'text_measure': [meas, r['status']]}, r['n'])}" for r in rows) + ".")
+    L.append("")
+    return L
+
+
 def block_stats():
     from . import reader
     cat = {b["content_key"]: b for b in reader.load_catalog()}
@@ -981,9 +1067,24 @@ def block_stats():
     for k, b in cat.items():
         if k in read and b["block_kind"].startswith("item_8k_"):
             by_item[b["block_kind"].replace("item_8k_", "")[0] + "." + b["block_kind"].replace("item_8k_", "")[1:]] += 1
+    text_open = reader._text_scope()
+    # corps arrêtés à l'en-tête et exclus : tous au premier passage ; les EX-4 seuls quand `text` rouvre les EX-10
     header_only = Counter((b.get("exhibit_type") or "EX").split(".")[0] for k, b in cat.items()
-                          if b["block_kind"] == "exhibit_body" and k not in read)
-    return {"catalog": len(cat), "read": len(read & set(cat)), "by_item": dict(by_item), "header_only": dict(header_only)}
+                          if b["block_kind"] == "exhibit_body" and k not in read
+                          and not (text_open and reader.in_text_block(b)))
+    text = {}
+    if text_open:
+        for k, b in cat.items():
+            if not reader.in_text_block(b):
+                continue
+            t = text.setdefault(b["block_kind"], [0, 0, 0, 0])
+            t[0] += 1
+            t[2] += b["chars"]
+            if k in read:
+                t[1] += 1
+                t[3] += b["chars"]
+    return {"catalog": len(cat), "read": len(read & set(cat)), "by_item": dict(by_item), "header_only": dict(header_only),
+            "text": text}
 
 
 def main(as_of):

@@ -274,7 +274,7 @@ def fiscal_years(quarters, ws, as_of_d):
 
 
 def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
-                  report_dates, lookback, censored_groups):
+                  report_dates, lookback, censored_groups, rev_notes_read=frozenset()):
     """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part)."""
     as_of_d = dt.date.fromisoformat(as_of)
     out, ev = [], {}
@@ -341,15 +341,20 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
                 active = [e for e, v in stq.items() if v == "active"]
                 rev, rterms = revenue(s, fs, fe, cut)
                 cells = dependency_cells(p, s, c, fs, fe, view, cell_as_of, cut, stq, active, rev, rterms,
-                                         conc_cells, named_conc, censored)
+                                         conc_cells, named_conc, censored, rev_notes_read)
                 out += cells
                 if view == "as_known":
                     ev[(s, c)]["years"][fe] = {c_["measure"]: c_ for c_ in cells}
     return out, ev
 
 
+def _rev_note_read(rev_notes_read, s, fe):
+    """La note de revenu du 10-K de l'exercice de S a été lue (bloc `text`, §14)."""
+    return any(g == s and abs((d - fe).days) <= 7 for g, d in rev_notes_read)
+
+
 def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms, conc_cells, named_conc,
-                     censored):
+                     censored, rev_notes_read=frozenset()):
     out = []
     flags_q = {"quarters": {str(k): v for k, v in sorted(stq.items())}}
     # documented_revenue_dependency (§3.3) : ratio des sommes, revenu attribué par S
@@ -402,14 +407,29 @@ def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms
             out.append(cell("consideration_to_customer", s, fs, fe, view, as_of, counterparty=c, value=v, unit="USD",
                             flags={"links": [l["link_key"] for l in rec]}))
         else:
+            read = _rev_note_read(rev_notes_read, s, fe)
             out.append(cell("consideration_to_customer", s, fs, fe, view, as_of, counterparty=c,
-                            status="not_determinable", nd_reason="not_processed",
-                            flags={"basis": "bons ou crédits remis au client publiés ; montant comptabilisé dans les notes hors tranche",
+                            status="not_determinable", nd_reason="not_disclosed" if read else "not_processed",
+                            flags={"basis": "bons ou crédits remis au client publiés ; montant comptabilisé non publié dans la "
+                                            "note de revenu lue" if read else
+                                            "bons ou crédits remis au client publiés ; montant comptabilisé dans les notes hors tranche",
                                    "links": [l["link_key"] for l in cc]}))
     if active:
-        out.append(cell("noncash_revenue_from_investees", s, fs, fe, view, as_of, counterparty=c,
-                        status="not_determinable", nd_reason="not_processed",
-                        flags={"basis": "revenu contre titres reçus (ASC 606-10-32-21) : notes de revenu hors tranche"}))
+        # revenu contre titres reçus du client (ASC 606-10-32-21), lu dans les notes de revenu
+        nc = [l for l in p.com if l.get("amount_nature") == "noncash_consideration_received" and l["stage"] == "recognized"
+              and l["unit"] == CURRENCY and l["edge_evidence"] == "amount"
+              and _d(l["_obs"].get("period_end")) and fs <= _d(l["_obs"]["period_end"]) <= fe]
+        if nc:
+            out.append(cell("noncash_revenue_from_investees", s, fs, fe, view, as_of, counterparty=c,
+                            value=sum(Decimal(str(l["amount"])) for l in nc), unit="USD",
+                            flags={"links": [l["link_key"] for l in nc]}))
+        else:
+            read = _rev_note_read(rev_notes_read, s, fe)
+            out.append(cell("noncash_revenue_from_investees", s, fs, fe, view, as_of, counterparty=c,
+                            status="not_determinable", nd_reason="not_disclosed" if read else "not_processed",
+                            flags={"basis": "revenu contre titres reçus (ASC 606-10-32-21) : rien de tel dans la note de revenu "
+                                            "lue de l'exercice" if read else
+                                            "revenu contre titres reçus (ASC 606-10-32-21) : note de revenu de l'exercice non lue"}))
         for term in ("total", "beyond_12m"):
             out.append(cell("documented_backlog_dependency", s, None, fe, view, as_of, counterparty=c, term=term,
                             policy="exposure_outstanding", status="not_determinable", nd_reason="anonymous",

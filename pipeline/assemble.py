@@ -200,8 +200,16 @@ def run(as_of):
     pairs = circularity.build_pairs(edges, set(groups))
     censored = {"CRWV"}        # history_left_censored (plan.md, phase 0)
     rd = model.original_report_dates(con)
+    # notes de revenu des 10-K lues (bloc text) : leurs exercices ne sont plus « non traités »
+    fil = pd.read_parquet(config.DB_DIR / "filings.parquet", columns=["accessionNumber", "reportDate"])
+    acc_rd = {a: str(r)[:10] for a, r in zip(fil["accessionNumber"], fil["reportDate"])
+              if r is not None and len(str(r)) >= 10 and str(r)[:4].isdigit()}
+    rev_read = frozenset((o["group_id"], dt.date.fromisoformat(acc_rd[o["accession"]])) for o in obs_rows
+                         if o["block_kind"] == "revenue_note" and str(o.get("form") or "").startswith("10-K")
+                         and o["validation_state"] == "valid" and o["accession"] in acc_rd)
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
-                                       deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored)
+                                       deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
+                                       rev_notes_read=rev_read)
     cells += pc
     cells += circularity.coverage_cells(groups, cals, gw, revenue, conc_cells, named_conc, pairs, edges, as_of, ev)
     cells += circularity.counterparty_exposure(pairs, ev, cals, as_of)

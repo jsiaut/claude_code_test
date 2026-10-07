@@ -227,6 +227,17 @@ def text_body(b):
     return b.get("block_kind") == "exhibit_body" and (b.get("exhibit_type") or "").upper().startswith("EX-10")
 
 
+def in_text_block(b):
+    """Bloc du bloc `text` de §14 : catalogue étendu (classe 3), ou corps d'EX-10 arrêté à son
+    en-tête au premier passage."""
+    if b.get("signal_class") == 3:
+        return True
+    if text_body(b) and b.get("requires"):
+        from .exhibits import decide
+        return decide(b["requires"])[0] is False
+    return False
+
+
 def _requirement_met(req, b=None):
     """Un corps de pièce n'entre dans la file qu'après lecture de son en-tête (§11.1) ; arrêté
     à l'en-tête au premier passage (établissements financiers seulement), il y entre quand le
