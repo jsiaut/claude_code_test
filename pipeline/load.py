@@ -173,10 +173,20 @@ def semantic_errors(line, block):
     if line.get("amount_origin") == "narrative_only" and line.get("amount") is not None:
         # même valeur ET même période (ou ligne sans période) : un montant d'une autre
         # période, égal par hasard à un fait balisé, reste un texte non balisé
-        pe = line.get("period_end")
+        # même date aussi : la fin de période de la ligne, sinon sa date d'événement, comprise dans la
+        # période du fait ; un plafond daté du jour de l'accord ou un encours d'une autre date n'est
+        # pas le même fait qu'un remboursement de même montant
+        pe, ed = line.get("period_end"), line.get("event_date")
+
+        def same_date(c):
+            ce, cs = str(c.get("period_end") or "")[:10], str(c.get("period_start") or "")[:10]
+            if pe:
+                return ce == pe
+            if ed:
+                return ce == ed or (len(cs) == 10 and cs <= ed <= ce)
+            return True
         same = [c for c in block.get("candidate_facts") or []
-                if abs(Decimal(str(c["value"]))) == abs(Decimal(str(line["amount"])))
-                and (pe is None or str(c.get("period_end") or "")[:10] == pe)]
+                if abs(Decimal(str(c["value"]))) == abs(Decimal(str(line["amount"]))) and same_date(c)]
         if same:
             errs.append("montant présent dans un fait candidat : tagged_reference attendu")
     if line.get("amount") is not None and line.get("unit") in ("USD", "EUR", "GBP", "JPY") and \

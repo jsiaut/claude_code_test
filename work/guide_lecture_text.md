@@ -109,8 +109,10 @@ champ est refusé) :
 - Le montant en unités, signe positif, sans arithmétique : un total que le texte n'écrit pas ne
   se calcule pas. Un montant « in millions » d'un tableau se multiplie par l'échelle annoncée
   par le tableau ou le texte (c'est une lecture d'échelle, pas une arithmétique).
-- Si un fait candidat a exactement la même valeur (et la même période), l'origine est
-  `tagged_reference` avec sa clé ; sinon `narrative_only`.
+- Si un fait candidat a exactement la même valeur (en valeur absolue) et la même date (la fin de
+  période de la ligne, ou sa date d'événement comprise dans la période du fait), l'origine est
+  `tagged_reference` avec sa clé ; sinon `narrative_only`. Un fait d'une autre date ou d'une
+  autre nature ne se cite pas parce que le nombre coïncide.
 - « up to » → `up_to` ; « approximately » → `approximately` ; « at least » → `at_least`.
 - Période : `period_start` / `period_end` pour un flux, `period_end` seul pour un solde à une
   date, `event_date` pour un événement daté. Mets-les dès qu'ils sont déterminables.
