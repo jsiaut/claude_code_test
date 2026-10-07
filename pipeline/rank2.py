@@ -414,7 +414,9 @@ def lease_not_commenced(cells, obs, report_end_of, as_of):
              and o.get("unit") == "USD" and o["validation_state"] == "valid" and o.get("kind") == "observation"]
     by = {}
     for o in lines:
-        d = _obs_date(o, report_end_of)
+        # date écrite par la ligne seulement : un bail signé après la clôture, sans date dans le texte,
+        # ne se rattache pas au solde de la date du bilan
+        d = _obs_date(o, {})
         if d:
             by.setdefault((o["group_id"], d), []).append(o)
 
