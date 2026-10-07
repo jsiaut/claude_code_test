@@ -2,7 +2,7 @@
 
 Ce guide s'adresse à qui lit les blocs du bloc `text` : notes d'investissements, de dette, de
 baux et d'engagements, paragraphes sur les clients, items 2.01 et 2.03 des 8-K, corps des
-pièces EX-10 et EX-4. Il reprend les règles de §7.4 et les conventions du premier passage.
+pièces EX-10 arrêtés à leur en-tête au premier passage. Il reprend les règles de §7.4 et les conventions du premier passage.
 Rien d'autre que ce que dit le bloc : aucun chiffre de mémoire, aucune connaissance extérieure,
 aucune arithmétique.
 
@@ -173,12 +173,44 @@ les montants payés à des vendeurs nommés ne sont pas des arêtes. 2.03 : obli
 nouvelle — `financing` / `loan_or_facility`, prêteur → groupe, montant en principal,
 `stage` `drawn_or_paid` (émission) ou `available` (facilité), échéance dans `note`.
 
-**Corps des EX-10 et EX-4.** Contrats entre le groupe et des établissements financiers :
+**Corps des EX-10.** Contrats entre le groupe et des établissements financiers :
 parties (`party_role`, `party_is_financial_institution`), montant des engagements
 (`commitment_cap`), clauses financières (niveaux de ratio : `signal` `covenant_amendment`
 seulement si la pièce modifie une clause ; sinon décris le covenant dans une observation sans
 signal, `note` avec le niveau), sûretés (`pledged_assets` true quand des actifs sont nantis),
 garanties (`credit_support`), cas de défaut. Lis tout le texte servi, morceau par morceau.
+
+**Immobilisations et estimations (`lever_note`).** Leviers de §6.1 qui ne se lisent que dans
+le texte. Le principal : un **changement d'estimation de durée d'utilité** (ou de valeur
+résiduelle) avec son effet publié. Une observation sans `family` ni `edge_type`, `event_type`
+`measurement_change`, `amount` = l'effet tel qu'écrit (positif), `unit` `USD`,
+`period_start` / `period_end` = la période de l'effet que le texte nomme (trimestre ou
+exercice ; sans période déterminable, pas de montant), `instrument_key` stable pour un même
+changement (par exemple `msft:server_life_fy2023`). Le champ `note` commence exactement par
+l'une de ces formes, choisie d'après le texte :
+- `effet : + résultat opérationnel` ou `effet : − résultat opérationnel` quand le texte donne
+  l'effet sur le résultat opérationnel (ou avant impôt) ;
+- `effet : − dotations` ou `effet : + dotations` quand il donne l'effet sur la charge
+  d'amortissement (une baisse des dotations s'écrit « − dotations ») ;
+- `effet : + résultat net` ou `effet : − résultat net` quand il ne donne que l'effet net d'impôt.
+Si le texte donne plusieurs effets (dotations, résultat opérationnel, résultat net), écris une
+ligne par effet, avec le même `instrument_key`. Les durées d'utilité publiées par classe
+d'actifs ne s'écrivent que si elles changent ; une politique inchangée → abstention
+`boilerplate_no_event`.
+
+**Notes de revenu (`revenue_note`).** Contrepartie payable à un client **nommé** (bons de
+souscription, actions, crédits, incitations) : `customer_consideration` (fournisseur → client),
+`edge_type` selon la forme, `amount_nature` `consideration_payable_to_customer`, `stage`
+`recognized` quand le texte dit le montant porté en réduction du revenu d'une période (avec
+la période), `signed` pour un engagement. Contrepartie non monétaire reçue d'un client nommé
+(titres ou bons du client reçus en paiement, ASC 606-10-32-21) : `commercial` /
+`revenue_recognized`, client → groupe, `amount_nature` `noncash_consideration_received`,
+`stage` `recognized`, période. Revenu ou carnet (RPO) attribué à un client nommé :
+`commercial` / `revenue_recognized` (montant reconnu) ou `purchase_commitment` (carnet,
+`stage` `signed`, `amount_nature` `commitment_unexecuted`, `period_end` à la date du carnet).
+Brut ou net (agent) : une observation sans montant seulement si le texte nomme la
+contrepartie. Rien de nommé → abstention `no_named_counterparty` ; politique générale →
+`boilerplate_no_event`.
 
 ## 7. Abstentions
 

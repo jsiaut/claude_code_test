@@ -456,7 +456,8 @@ def lease_not_commenced(cells, obs, report_end_of, as_of):
     return out
 
 
-LEVER_NOTE_RX = __import__("re").compile(r"^\s*effet\s*:\s*([+\-−])\s*(résultat|resultat|dotations?)", __import__("re").I)
+LEVER_NOTE_RX = __import__("re").compile(r"^\s*effet\s*:\s*([+\-−])\s*(résultat opérationnel|resultat operationnel|dotations?)",
+                                         __import__("re").I)      # « résultat net » : effet net d'impôt, jamais retraité
 
 
 def depreciation_lever(cells, obs, as_of):

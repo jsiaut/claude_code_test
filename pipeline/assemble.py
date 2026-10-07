@@ -428,7 +428,7 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
         seen.add(b["content_key"])
         if b["content_key"] in read_cks:
             continue
-        if b["block_kind"] == "exhibit_body" and not text_open:
+        if b["block_kind"] == "exhibit_body" and not (text_open and reader.text_body(b)):
             ex("block", b["content_key"], "financial_parties_only",
                f"{b.get('exhibit_type')} {b.get('document')} : parties non déposantes établissements financiers seulement (en-tête lu)",
                b["group_id"], b["accession"], b["content_key"])

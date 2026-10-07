@@ -208,7 +208,7 @@ def queue(catalog=None):
             continue
         if obs_path(ck).exists() and (not repass or _read_in_pass(ck, repass_id)):
             continue
-        if b.get("requires") and not _requirement_met(b["requires"]):
+        if b.get("requires") and not _requirement_met(b["requires"], b):
             continue
         seen.add(ck)
         out.append(b)
@@ -220,15 +220,22 @@ def _text_scope():
     return isinstance(sc, list) and "text" in sc
 
 
-def _requirement_met(req):
+def text_body(b):
+    """Corps de pièce que le bloc `text` de §14 rouvre : les EX-10 arrêtés à leur en-tête
+    (clauses des contrats d'origine entre établissements financiers) ; un EX-4 arrêté à son
+    en-tête reste exclu (`financial_parties_only`), §14 ne le rouvrant pas."""
+    return b.get("block_kind") == "exhibit_body" and (b.get("exhibit_type") or "").upper().startswith("EX-10")
+
+
+def _requirement_met(req, b=None):
     """Un corps de pièce n'entre dans la file qu'après lecture de son en-tête (§11.1) ; arrêté
     à l'en-tête au premier passage (établissements financiers seulement), il y entre quand le
-    bloc `text` de §14 est ouvert, après les notes et les items de 8-K."""
+    bloc `text` de §14 est ouvert, après les notes et les items de 8-K, s'il s'agit d'un EX-10."""
     from .exhibits import decide
     want, _ = decide(req)
     if want is None:
         return False
-    return bool(want) or _text_scope()
+    return bool(want) or (_text_scope() and (b is None or text_body(b)))
 
 
 def _effective_class(b):

@@ -287,7 +287,8 @@ def synthesis(con, as_of, stats):
                  "10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. "
                  + ("Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). " if "lender" in blocks_open else "")
                  + ("Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de "
-                    "concentration, items 2.01 et 2.03 des 8-K, corps des pièces arrêtées à leur en-tête ; ce qui n'est "
+                    "concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur "
+                    "en-tête restent exclus, §14 ne les rouvrant pas) ; ce qui n'est "
                     "pas encore lu reste « non traité », bloc par bloc dans `exclusions`. " if "text" in blocks_open else "")
                  + "Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.")
     e7 = q(con, "SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'")
@@ -782,7 +783,7 @@ def delta(con, as_of, stats):
     L.append("## Travail not_processed")
     L.append("")
     L.append("Hors tranche du premier passage, pour chaque groupe : notes d'investissements, de dette, de baux et "
-             "d'engagements ; texte autour des faits de concentration ; 8-K items 2.01 et 2.03 ; corps des EX-10 et EX-4 "
+             "d'engagements ; texte autour des faits de concentration ; 8-K items 2.01 et 2.03 ; corps des EX-10 "
              "arrêtés à leur en-tête. C'est ce que l'extension `text` de §14 lirait.")
     L.append("")
     L.append("## Paires non additives")
