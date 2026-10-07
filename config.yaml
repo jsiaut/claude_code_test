@@ -389,7 +389,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr�
   cfo: [NetCashProvidedByUsedInOperatingActivities]
   cfi: [NetCashProvidedByUsedInInvestingActivities]
   cff: [NetCashProvidedByUsedInFinancingActivities]
-  capex_cash: [PaymentsToAcquirePropertyPlantAndEquipment]
+  capex_cash: [PaymentsToAcquirePropertyPlantAndEquipment, PaymentsToAcquireProductiveAssets]
+                            # second candidat ajouté le 2026-10-07 (D-0012) : définition plus large
+                            # (logiciels et incorporels compris), drapeau capex_definition sur les cellules
   unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
   eps_diluted: [EarningsPerShareDiluted]
   diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]

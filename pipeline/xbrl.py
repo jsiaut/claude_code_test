@@ -289,7 +289,7 @@ def statement_kind(role_definition):
     d = (role_definition or "").lower()
     parts = [p.strip() for p in d.split(" - ")]
     cat = parts[1] if len(parts) >= 3 else ""
-    title = parts[-1]
+    title = " - ".join(parts[2:]) if len(parts) >= 3 else parts[-1]
     if cat == "statement" or "statement" in cat:
         if "parenthetical" in title:
             return "statement_parenthetical"

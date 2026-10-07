@@ -65,21 +65,29 @@ def load_facts(con):
 
 
 def mark_conflicts(con, scale_jump_factor):
-    """Deux faits incohérents d'une même identité dans un même dépôt sont conflicting ;
-    un saut d'un facteur 100 d'une période à l'autre aussi, tant que num des Notes Data
-    Sets ne l'a pas confirmé (§7.3) : hors des sommes."""
-    con.execute("""
+    """Deux faits d'une même identité dans un même dépôt sont conflicting si leur écart
+    dépasse la tolérance d'arrondi de leurs deux précisions (des doublons cohérents ne
+    le sont pas) ; un saut d'un facteur 100 entre deux périodes successives de même
+    longueur aussi, tant que num des Notes Data Sets ne l'a pas confirmé (§7.3)."""
+    tol = "(CASE WHEN {d}_inf THEN 0 WHEN {d} IS NULL THEN NULL ELSE 0.5 * pow(10, -{d}) END)"
+    con.execute(f"""
       UPDATE facts SET conflict = true WHERE fact_key IN (
-        SELECT fact_key FROM (
-          SELECT fact_key, count(DISTINCT value) OVER (PARTITION BY accession, concept, entity_id,
-                 period_type, period_start, period_end, unit, dims, reporting_scope) AS nv
-          FROM facts WHERE value IS NOT NULL AND source = 'instance') WHERE nv > 1)""")
+        SELECT a.fact_key FROM facts a JOIN facts b
+          ON a.accession = b.accession AND a.concept = b.concept AND a.entity_id = b.entity_id
+         AND a.period_type = b.period_type AND a.period_start IS NOT DISTINCT FROM b.period_start
+         AND a.period_end = b.period_end AND a.unit IS NOT DISTINCT FROM b.unit AND a.dims = b.dims
+         AND a.reporting_scope = b.reporting_scope AND a.fact_key <> b.fact_key
+        WHERE a.source = 'instance' AND b.source = 'instance' AND a.value IS NOT NULL AND b.value IS NOT NULL
+          AND abs(a.value - b.value) > coalesce({tol.format(d='a.decimals')}, 0) + coalesce({tol.format(d='b.decimals')}, 0))""")
     con.execute(f"""
       UPDATE facts SET conflict = true WHERE fact_key IN (
         SELECT fact_key FROM (
-          SELECT fact_key, value, lag(value) OVER (PARTITION BY group_id, concept, unit, dims, period_type
-                 ORDER BY period_end, period_start) AS prev
-          FROM facts WHERE value IS NOT NULL AND source = 'instance' AND n_dims = 0 AND unit = 'USD')
+          SELECT fact_key, value, lag(value) OVER (
+                   PARTITION BY group_id, concept, unit, dims, period_type,
+                                round(coalesce(date_diff('day', period_start, period_end), 0) / 30)
+                   ORDER BY period_end, period_start) AS prev
+          FROM facts WHERE value IS NOT NULL AND source = 'instance' AND n_dims = 0 AND unit = 'USD'
+            AND NOT coalesce(conflict, false))
         WHERE prev IS NOT NULL AND prev <> 0 AND value <> 0
           AND (abs(value / prev) >= {scale_jump_factor} OR abs(prev / value) >= {scale_jump_factor}))""")
     return con.execute("SELECT count(*) FROM facts WHERE conflict").fetchone()[0]
