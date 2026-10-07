@@ -1,0 +1,201 @@
+Annexe E — énoncés de réfutation, critères tels que commités
+
+Commit : 3ff3b988a48a5c904f88f006d263bfa780739d39 2026-10-07 10:54:38 +0000
+Première requête au journal : 2026-10-07T10:56:41.445+00:00
+Changement ultérieur : aucun (critères identiques dans le config.yaml courant)
+
+annex_e:
+  source: spec v6.14, annexe E
+  measure_id: annex_e_outcome
+  breakdown_fields:
+  - statement
+  - grid_point
+  - date_basis
+  ids:
+    statements:
+    - E1
+    - E2
+    - E3
+    - E4
+    - E5
+    - E6
+    rules:
+    - E7
+    - E8
+    - E9
+  conventions:
+    outcomes:
+      E1:
+      - supported
+      - not_supported
+      - indeterminate
+      E2:
+      - supported
+      - refuted
+      - indeterminate
+      E3:
+      - supported
+      - refuted
+      - indeterminate
+      E4:
+      - compatible
+      - incompatible
+      - indeterminate
+      E5:
+      - supported
+      - indeterminate
+      E6:
+      - descriptive
+    descriptive_outside_e7:
+    - E4
+    - E6
+    not_determinable_measure_gives: indeterminate
+    other_indeterminate_reasons:
+    - search_incomplete
+    - date_missing
+    - interval_straddles_threshold
+    - precondition_not_met
+    primary_view: as_known
+    as_known_evaluation_date: date limite de dépôt du rapport annuel (10-K, 20-F ou 40-F) de chaque exercice, plafonnée
+      à l'as_of de l'exécution ; l'as_of de la cellule porte cette date
+    sensitivity_view: revised
+    unit: paire (groupe fournisseur, groupe économique client)
+    period: exercice fiscal du fournisseur ; une issue par paire, sur les exercices de la fenêtre
+    power_precondition_status:
+    - computed
+    - bounded
+    grid:
+      high:
+      - 0.05
+      - 0.1
+      - 0.2
+      low: s/2
+      headline: 0.1
+      others: publiés à côté du point de tête, jamais à sa place
+      applies_to:
+      - E2
+      - E3
+    extended_window: fenêtre d'analyse (§11.1), de l'exercice window.start_fiscal_year à as_of, reculée de quatre
+      trimestres
+    complete_search:
+    - tous les dépôts du fournisseur et, s'il dépose, du client, sur la fenêtre allongée, ont été traités
+    - aucun candidat pertinent n'est not_processed ni parse_failed
+    - aucune clause pertinente n'est redacted
+    - aucune requête ni période de données pertinente n'est exclue pour search_incomplete ou not_processed
+  statements:
+    E1:
+      title: Lien documenté
+      population: paires où F vaut active, sous la politique exposure_outstanding, pendant au moins un trimestre
+        de la fenêtre allongée
+      financing_policy: exposure_outstanding
+      min_active_quarters_in_extended_window: 1
+      supported: au moins une pièce L1 à L5 est trouvée
+      not_supported: la recherche est complète et n'en trouve aucune
+      indeterminate: sinon
+      link_categories:
+      - L1
+      - L2
+      - L3
+      - L4
+      - L5
+      publish: nombre de paires par issue, avec la couverture contractuelle (contract_coverage, §2.5)
+    E2:
+      title: Dépendance de revenu
+      measure: documented_revenue_dependency
+      financing_policy: exposure_outstanding
+      supported:
+        bound: value_lower
+        comparison: '>='
+        threshold: s
+        min_consecutive_fiscal_years: 2
+      refuted:
+        bound: value_upper
+        comparison: <
+        threshold: s/2
+        over: all_evaluable_fiscal_years
+        min_evaluable_fiscal_years: 2
+      indeterminate: sinon
+      rationale: au point de tête, 10 % est le seuil de publication d'ASC 280, et 5 % laisse une marge d'un demi-seuil
+    E3:
+      title: Dépendance du carnet
+      measure: documented_backlog_dependency
+      basis: RPO de fin d'exercice
+      rules: same_as_E2
+      grid: same_as_E2
+    E4:
+      title: Chronologie (descriptif)
+      descriptive: true
+      population: paires qui ont un engagement de financement daté et au moins un engagement d'achat daté
+      date_basis:
+        commitment:
+          t_f: date de l'engagement de financement
+          purchases: engagements d'achat
+        payment:
+          t_f: date du versement ou du tirage
+          purchases: paiements
+      window_days:
+        before: 90
+        after: 365
+      compatible: un engagement d'achat, ou un paiement, du client est daté dans [t_f − 90 jours ; t_f + 365 jours]
+      indeterminate: une date manque
+      incompatible: tous les autres cas
+      presented_as_proof: false
+    E5:
+      title: Contrepartie au client
+      supported: le fournisseur publie une contrepartie payable au client comptabilisée en réduction du revenu,
+        ou un revenu contre une contrepartie non monétaire reçue de lui
+      indeterminate: sinon, y compris quand le fournisseur ne publie rien sur ce point
+      refuted: never
+      unilateral: true
+    E6:
+      title: Cycles (descriptif)
+      descriptive: true
+      measure: documented_path
+      count_by:
+      - temporal
+      - relationship_conclusion
+      outcome: descriptive
+  rules:
+    E7:
+      title: Non-discrimination
+      statements:
+      - E1
+      - E2
+      grid_point: headline
+      indeterminate_share_greater_than: 0.7
+      headline_result: les pièces déposées ne permettent pas de discriminer entre les deux lectures
+      publish_with:
+      - taux d'issues indeterminate
+      - ventilation des motifs
+      reasons:
+      - anonymous
+      - channel_indirect
+      - non_filer
+      - redacted
+      - not_processed
+      - parse_failed
+      nature: un résultat, pas un échec
+    E8:
+      title: Agrégation
+      rule: aucune règle « au moins une paire » ne fonde une conclusion globale ; les résultats se publient paire
+        par paire, avec la part des paires dans chaque issue
+    E9:
+      title: Engagements de rendu
+      empty_numerator:
+        status: not_determinable
+        publish_alongside:
+        - named_edge_coverage
+        - documented_pair_coverage
+        - customer_concentration_anonymous
+      directions:
+        circular_reading:
+        - supported
+        other_reading:
+        - refuted
+        - not_supported
+      mirror_statement: none
+      unilateral:
+      - E5
+      descriptive:
+      - E4
+      - E6

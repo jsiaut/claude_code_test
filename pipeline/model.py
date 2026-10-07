@@ -37,7 +37,11 @@ def build_base(as_of):
         SELECT DISTINCT m.group_id, m.quantity, f.accession, f.concept, 'D1_label_match', m.statement_kind
         FROM facts f JOIN concept_map m ON m.concept = f.concept AND m.group_id = f.group_id
         WHERE f.source = 'html_parse' AND m.accession = '0001628280-26-052535'""")
-    con.execute("""UPDATE facts SET model_quantity = m.quantity FROM concept_map m
+    # un concept peut servir deux grandeurs (créances nettes, résultats non distribués) : la
+    # colonne en garde une, de façon déterministe ; concept_map garde la correspondance entière
+    con.execute("""UPDATE facts SET model_quantity = m.quantity
+                   FROM (SELECT accession, concept, group_id, min(quantity) AS quantity FROM concept_map
+                         GROUP BY 1, 2, 3) m
                    WHERE facts.accession = m.accession AND facts.concept = m.concept
                      AND facts.group_id = m.group_id AND facts.n_dims = 0""")
     quantities.occurrences(con)
@@ -49,16 +53,36 @@ def calendars():
     out = {}
     for g, cal in p0["calendars"].items():
         qs = []
+        prev = None
         for y in cal["years"]:
             start = dt.date.fromisoformat(y["fy_start"]) if y.get("fy_start") else None
             fe = dt.date.fromisoformat(y["fy_end"]) if y.get("fy_end") else None
-            for i, qe in enumerate(y["q_ends"]):
-                qe = dt.date.fromisoformat(qe)
-                qs.append({"start": start, "end": qe, "fy_end": fe, "q": i + 1, "source": y["source"],
+            ends = [(dt.date.fromisoformat(q), y["source"]) for q in y["q_ends"]]
+            ends = _fill_quarter_gaps(ends, start, prev)
+            for i, (qe, src) in enumerate(ends):
+                qs.append({"start": start, "end": qe, "fy_end": fe, "q": i + 1, "source": src,
                            "in_progress": bool(y.get("in_progress"))})
                 start = qe + dt.timedelta(days=1)
+            prev = y
         out[g] = {"quarters": qs, "window": cal["window"]}
     return out
+
+
+def _fill_quarter_gaps(ends, fy_start, prev):
+    """Un exercice en cours ne liste que les trimestres déposés : un premier rapport qui
+    couvre six mois (SpaceX, introduite en juin 2026) ferait sinon d'un semestre un
+    trimestre. Les fins de trimestre manquantes avant la dernière déposée se déduisent de
+    l'exercice précédent, même décalage depuis le début d'exercice (source synthetic)."""
+    if not ends or fy_start is None or not prev or len(prev.get("q_ends", [])) < 4 or not prev.get("fy_start"):
+        return ends
+    p_start = dt.date.fromisoformat(prev["fy_start"])
+    have = [e for e, _ in ends]
+    out = list(ends)
+    for q in prev["q_ends"][:3]:
+        cand = fy_start + (dt.date.fromisoformat(q) - p_start)
+        if cand < have[-1] and not any(abs((cand - e).days) <= 10 for e in have):
+            out.append((cand, "synthetic"))
+    return sorted(out)
 
 
 def original_report_dates(con):

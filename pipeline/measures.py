@@ -19,6 +19,21 @@ def _q(x):
     return None if x is None else Decimal(x).quantize(Q6, rounding=ROUND_HALF_EVEN)
 
 
+def ds(x):
+    """Date d'une clé de cellule ou de contrôle : 'AAAA-MM-JJ', ou 'none' ; jamais une heure
+    ni 'NaT' (un Timestamp de pandas se lit sinon '2025-12-31 00:00:00' et ne se rapproche plus)."""
+    if x is None or (isinstance(x, float) and x != x) or x is getattr(__import__("pandas"), "NaT"):
+        return NONE
+    if isinstance(x, dt.datetime):
+        return x.date().isoformat()
+    if isinstance(x, dt.date):
+        return x.isoformat()
+    s = str(x)
+    if s in ("", NONE, "NaT", "None", "nan"):
+        return NONE
+    return s[:10] if len(s) >= 10 and s[4] == "-" and s[7] == "-" else s
+
+
 class Cell(dict):
     pass
 
@@ -38,7 +53,7 @@ def cell(measure, subject, ps, pe, view, as_of, term=NONE, breakdown=NONE, value
                     "concept_unresolved": "not_disclosed", "term_missing": "not_disclosed",
                     "conflicting": "conflicting"}.get(nd_reason, "unknown")
     return Cell(measure=measure, subject=subject, counterparty=counterparty,
-                period_start=str(ps) if ps else NONE, period_end=str(pe) if pe else NONE,
+                period_start=ds(ps), period_end=ds(pe),
                 view=view, as_of=as_of, term=term, breakdown_key=breakdown, financing_policy=policy,
                 constant_perimeter=perimeter, variant=variant, rank=rank, period_kind=kind,
                 value=_q(value) if value is not None else None, value_text=value_text,
@@ -48,9 +63,9 @@ def cell(measure, subject, ps, pe, view, as_of, term=NONE, breakdown=NONE, value
                 coverage_state=coverage,
                 evidence_profile=json.dumps({k: float(round(v, 4)) for k, v in sorted(prof.items())}) if terms else None,
                 lineage=json.dumps(sorted({t["fact_key"] for t in terms})) if terms else None,
-                knowledge_date=str(knowledge_date or max((t["knowledge_date"] for t in terms), default="") or "") or None,
+                knowledge_date=(lambda k: None if k == NONE else k)(ds(knowledge_date or max((str(t["knowledge_date"]) for t in terms), default=None))),
                 is_tagged=all(t.get("is_tagged", True) for t in terms) if terms else None,
-                flags=json.dumps(flags, sort_keys=True) if flags else None)
+                flags=json.dumps(flags, sort_keys=True, default=str) if flags else None)
 
 
 class Series:

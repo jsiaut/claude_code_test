@@ -1,0 +1,88 @@
+Annexe F — événements de fragilité, critères tels que commités
+
+Commit : 3ff3b988a48a5c904f88f006d263bfa780739d39 2026-10-07 10:54:38 +0000
+Première requête au journal : 2026-10-07T10:56:41.445+00:00
+Changement ultérieur : aucun (critères identiques dans le config.yaml courant)
+
+annex_f:
+  source: spec v6.14, annexe F
+  closed_list: true
+  measure_id: fragility_event
+  breakdown_field: event_id
+  weighting: none
+  totals: none
+  score: none
+  expected_universe: une cellule par groupe, observable et trimestre ; une source non lue ne passe jamais pour un
+    trimestre sans événement
+  carries:
+  - period
+  - knowledge_date
+  events:
+    F1:
+      observable: capex décaissé supérieur au CFO deux trimestres de suite
+      source: termes de capex_to_cfo, term = without (§6.2)
+      rule:
+        measure: capex_to_cfo
+        term: without
+        condition: capex_cash > cfo
+        consecutive_quarters: 2
+        dated_at: fin du second trimestre
+    F2:
+      observable: fcf_after_counterparty_financing négatif
+      source: §4.4
+      rule:
+        measure: fcf_after_counterparty_financing
+        condition: value < 0
+    F3:
+      observable: un backstop ou une garantie dont trigger_occurred = yes
+      source: §5.3
+      rule:
+        categories:
+        - guarantee
+        - capacity_backstop
+        - residual_value_guarantee
+        - credit_enhancement
+        - backstop
+        condition: trigger_occurred = yes (un dépôt constate l'événement)
+    F4:
+      observable: un amendement ou une dérogation de clause financière
+      source: sig_covenant_events (§4.5)
+      rule:
+        measure: sig_covenant_events
+    F5:
+      observable: une faiblesse significative du contrôle interne
+      source: sig_material_weakness (§4.5)
+      rule:
+        measure: sig_material_weakness
+    F6:
+      observable: une dépréciation d'investissement
+      source: investment_impairment (§6.2)
+      rule:
+        measure: earnings_bridge_pretax
+        term: investment_impairment
+        condition: value != 0
+    F7:
+      observable: une baisse d'une durée d'amortissement publiée
+      source: depreciation_life_published (§6.2)
+      rule:
+        measure: depreciation_life_published
+        condition: une borne publiée de la durée d'une classe de même libellé est inférieure à celle de la publication
+          précédente
+    F8:
+      observable: un revenue_growth en glissement annuel qui passe sous zéro
+      source: revenue_growth, term = yoy (§4.2)
+      rule:
+        measure: revenue_growth
+        term: yoy
+        condition: value < 0 alors que la valeur de la période précédente est >= 0
+    F9:
+      observable: un item 1.02 de 8-K sur un contrat de capacité
+      source: section 1.02 lue en phase 2 (§11.1)
+      rule:
+        eight_k_item: '1.02'
+        contract: capacity
+    F10:
+      observable: un doute sur la continuité d'exploitation
+      source: sig_going_concern (§4.5)
+      rule:
+        measure: sig_going_concern

@@ -204,7 +204,7 @@ def select_view(con, view, as_of, knowledge_cutoff=None):
           ORDER BY acceptance_datetime DESC NULLS LAST, accession DESC,
                    CASE source WHEN 'instance' THEN 0 ELSE 1 END, doc_rank DESC NULLS LAST,
                    CASE WHEN decimals_inf THEN 99 ELSE coalesce(decimals, -99) END DESC,
-                   occ_rank DESC NULLS LAST) AS rn
+                   occ_rank DESC NULLS LAST, fact_key DESC) AS rn
         FROM q_occ WHERE knowledge_date <= DATE '{cutoff}') WHERE rn = 1
     """).fetchdf()
 

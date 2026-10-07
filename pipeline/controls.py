@@ -37,9 +37,10 @@ def tol_of(row):
 
 def ctrl(control, subject, ps, pe, view, as_of, status, accession=None, breakdown=NONE, lhs=None, rhs=None,
          tol=None, basis="declared", explanation=None, reason=None, evidence=None, variant=NONE):
+    from .measures import ds
     diff = (lhs - rhs) if (lhs is not None and rhs is not None) else None
-    return {"control": control, "subject": subject, "period_start": str(ps) if ps else NONE,
-            "period_end": str(pe) if pe else NONE, "view": view, "as_of": as_of, "breakdown_key": breakdown,
+    return {"control": control, "subject": subject, "period_start": ds(ps),
+            "period_end": ds(pe), "view": view, "as_of": as_of, "breakdown_key": breakdown,
             "mapping_variant": variant, "accession": accession, "status": status, "explanation_code": explanation,
             "not_testable_reason": reason, "lhs": lhs, "rhs": rhs, "difference": diff, "tolerance": tol,
             "tolerance_basis": basis if tol is not None else None,
@@ -103,7 +104,7 @@ class Filing:
         for role, pr in p[p["child"] == total].groupby("role"):
             parent = pr.iloc[0]["parent"]
             allr = p[p["role"] == role]
-            kids = list(allr[allr["parent"] == parent].sort_values("ord")["child"])
+            kids = list(allr[allr["parent"] == parent].sort_values("ord", kind="stable")["child"])
             if total not in kids:
                 continue
             # les composantes précèdent leur total : on s'arrête au total
@@ -113,7 +114,7 @@ class Filing:
                 if c.endswith(skip):
                     continue
                 if c.endswith("Abstract"):
-                    sub = [x for x in allr[allr["parent"] == c].sort_values("ord")["child"]
+                    sub = [x for x in allr[allr["parent"] == c].sort_values("ord", kind="stable")["child"]
                            if not x.endswith(skip + ("Abstract",))]
                     subtot = [x for x in sub if self.calc_parents.get(x, set()) & set(sub)]
                     sibs += subtot[-1:] if subtot else sub
@@ -205,12 +206,16 @@ def sum_check(control, F, g, total, comps, weights, ptype, ps, pe, view, as_of, 
 def run(con, as_of):
     facts = con.execute("""SELECT fact_key, group_id, accession, form, concept, period_type, period_start, period_end,
                                   unit, dims, n_dims, value, decimals, decimals_inf, conflict, knowledge_date
-                           FROM facts WHERE source = 'instance' AND value IS NOT NULL""").fetchdf()
+                           FROM facts WHERE source = 'instance' AND value IS NOT NULL
+                           ORDER BY accession, fact_key""").fetchdf()
     for c in ("period_start", "period_end"):
-        facts[c] = pd.to_datetime(facts[c]).dt.date
-    pres = con.execute("SELECT accession, role, statement_kind, parent, child, ord FROM pres").fetchdf()
-    calc = con.execute("SELECT accession, role, parent, child, weight FROM calc").fetchdf()
-    cmap = con.execute("SELECT accession, quantity, concept, statement_kind FROM concept_map").fetchdf()
+        # un instant n'a pas de début : None, jamais NaT, pour que get(…, None, fin) le retrouve
+        facts[c] = [None if pd.isna(x) else x for x in pd.to_datetime(facts[c]).dt.date]
+    pres = con.execute("""SELECT accession, role, statement_kind, parent, child, ord FROM pres
+                           ORDER BY accession, role, parent, ord, child""").fetchdf()
+    calc = con.execute("SELECT accession, role, parent, child, weight FROM calc ORDER BY accession, role, parent, child").fetchdf()
+    cmap = con.execute("""SELECT accession, quantity, concept, statement_kind FROM concept_map
+                           ORDER BY accession, quantity, concept""").fetchdf()
     cmap_by = dict(tuple(cmap.groupby("accession")))
     from . import config as _cfg
     base_crdr = json.loads((_cfg.DB_DIR / "usgaap2026_balance.json").read_text())
@@ -218,6 +223,8 @@ def run(con, as_of):
     crdr_by = {a: dict(zip(t["concept"], t["crdr"])) for a, t in tags.groupby("accession")}
     pres_by = dict(tuple(pres.groupby("accession")))
     calc_by = dict(tuple(calc.groupby("accession")))
+    filings = pd.read_parquet(_cfg.DB_DIR / "filings.parquet")
+    report_end = {a: (str(d)[:10] if d else None) for a, d in zip(filings["accessionNumber"], filings["reportDate"])}
     out = []
     view = "as_known"   # un contrôle porte sur un dépôt, tel que publié (§7.3)
     for acc, fa in facts.groupby("accession"):
@@ -240,7 +247,7 @@ def run(con, as_of):
                     r = sum_check("c2_cash_flow_components", F, g, total, comps, w, ptype, ps, pe, view, as_of, form)
                     if r:
                         out.append(r)
-        out += mapping_check(F, g, cmap_by.get(acc), view, as_of)
+        out += mapping_check(F, g, cmap_by.get(acc), view, as_of, report_end.get(acc))
         out += c3_cash(F, g, view, as_of)
         out += c6_articulation(F, g, view, as_of)
         out += c9_leases(F, g, view, as_of)
@@ -288,7 +295,7 @@ MAP_TREES = {"balance_sheet": ["us-gaap:Assets", "us-gaap:LiabilitiesAndStockhol
                            "us-gaap:NetCashProvidedByUsedInFinancingActivities"]}
 
 
-def mapping_check(F, g, cmap, view, as_of):
+def mapping_check(F, g, cmap, view, as_of, report_end=None):
     """C1 et C2 portent sur les composantes sélectionnées (§8.3) : une grandeur rattachée
     à un concept d'un état doit appartenir à l'arbre de calcul de cet état."""
     out = []
@@ -306,7 +313,7 @@ def mapping_check(F, g, cmap, view, as_of):
                 continue  # informations supplémentaires, hors de l'arithmétique de l'état
             ok = row.concept in tree
             out.append(ctrl("c1_balance_components" if kind == "balance_sheet" else "c2_cash_flow_components",
-                            g, None, None, view, as_of, "ok" if ok else "mismatch", F.acc,
+                            g, None, report_end, view, as_of, "ok" if ok else "mismatch", F.acc,
                             breakdown=f"mapping:{row.quantity}", explanation=None if ok else "mapped_concept_outside_statement_tree",
                             evidence={"concept": row.concept}))
     return out
@@ -343,7 +350,7 @@ def c6_articulation(F, g, view, as_of):
     if p.empty:
         return out
     first = None
-    for c in p.sort_values(["ord"])["child"]:
+    for c in p.sort_values(["ord"], kind="stable")["child"]:
         if c in ("us-gaap:ProfitLoss", "us-gaap:NetIncomeLoss",
                  "us-gaap:IncomeLossFromContinuingOperations", "us-gaap:NetIncomeLossAvailableToCommonStockholdersBasic"):
             first = c
@@ -481,11 +488,13 @@ def c4_restatements(con, as_of):
     df = con.execute("""
       WITH o AS (
         SELECT q.group_id, q.quantity, q.period_type, q.period_start, q.period_end, q.unit, q.value, q.decimals,
-               q.decimals_inf, q.accession, q.knowledge_date, q.fact_key
+               q.decimals_inf, q.accession, q.knowledge_date, q.fact_key,
+               -- ordre total : date de connaissance, accession, clé du fait
+               CAST(q.knowledge_date AS VARCHAR) || '|' || q.accession || '|' || q.fact_key AS ord
         FROM q_occ q WHERE q.source = 'instance')
       SELECT group_id, quantity, period_type, period_start, period_end, unit,
-             arg_min(value, knowledge_date) AS first_value, arg_max(value, knowledge_date) AS last_value,
-             arg_min(accession, knowledge_date) AS first_acc, arg_max(accession, knowledge_date) AS last_acc,
+             arg_min(value, ord) AS first_value, arg_max(value, ord) AS last_value,
+             arg_min(accession, ord) AS first_acc, arg_max(accession, ord) AS last_acc,
              min(decimals) AS dec, max(knowledge_date) AS last_kd
       FROM o GROUP BY ALL HAVING count(DISTINCT value) > 1""").fetchdf()
     flags = con.execute("""SELECT accession, value_text FROM facts

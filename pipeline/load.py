@@ -68,7 +68,9 @@ def mark_conflicts(con, scale_jump_factor):
     """Deux faits d'une même identité dans un même dépôt sont conflicting si leur écart
     dépasse la tolérance d'arrondi de leurs deux précisions (des doublons cohérents ne
     le sont pas) ; un saut d'un facteur 100 entre deux périodes successives de même
-    longueur aussi, tant que num des Notes Data Sets ne l'a pas confirmé (§7.3)."""
+    longueur aussi, tant que num des Notes Data Sets ne l'a pas confirmé (§7.3). L'ordre
+    est total (date de connaissance, accession, clé du fait) : le résultat ne dépend pas
+    de l'ordre de lecture."""
     tol = "(CASE WHEN {d}_inf THEN 0 WHEN {d} IS NULL THEN NULL ELSE 0.5 * pow(10, -{d}) END)"
     con.execute(f"""
       UPDATE facts SET conflict = true WHERE fact_key IN (
@@ -85,7 +87,7 @@ def mark_conflicts(con, scale_jump_factor):
           SELECT fact_key, value, lag(value) OVER (
                    PARTITION BY group_id, concept, unit, dims, period_type,
                                 round(coalesce(date_diff('day', period_start, period_end), 0) / 30)
-                   ORDER BY period_end, period_start) AS prev
+                   ORDER BY period_end, period_start, knowledge_date, accession, fact_key) AS prev
           FROM facts WHERE value IS NOT NULL AND source = 'instance' AND n_dims = 0 AND unit = 'USD'
             AND NOT coalesce(conflict, false))
         WHERE prev IS NOT NULL AND prev <> 0 AND value <> 0

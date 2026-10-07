@@ -6,7 +6,7 @@ from decimal import Decimal
 
 import pandas as pd
 
-from .measures import cell
+from .measures import cell, ds
 
 DUR = re.compile(r"^P(?:(\d+(?:\.\d+)?)Y)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)D)?$")
 SEGMENT_LIKE = re.compile(r"(DataCenter|Consumer|Automotive|Industrial|Enterprise|Carrier|Networking|Cloud|EndCustomers|"
@@ -38,7 +38,7 @@ def useful_lives(con, groups, fiscal_years, as_of):
     df = con.execute("""SELECT fact_key, group_id, accession, form, period_end, dims, value_text, knowledge_date
                         FROM facts WHERE source = 'instance' AND concept = 'us-gaap:PropertyPlantAndEquipmentUsefulLife'
                           AND form LIKE '10-K%'""").fetchdf()
-    labels = dict(con.execute("SELECT concept, any_value(label) FROM labels WHERE label_role = 'label' GROUP BY 1").fetchall())
+    labels = dict(con.execute("SELECT concept, min(label) FROM labels WHERE label_role = 'label' GROUP BY 1").fetchall())
     out = []
     prev = {}
     for r in df.sort_values(["group_id", "period_end"]).itertuples():
@@ -116,12 +116,29 @@ def concentration(con, groups, as_of):
                         FROM facts WHERE source = 'instance' AND concept = 'us-gaap:ConcentrationRiskPercentage1'
                           AND value IS NOT NULL""").fetchdf()
     out, named = [], []
+    cands = []
     for r in df.itertuples():
         d = _dims(r.dims)
         bench = d.get("us-gaap:ConcentrationRiskByBenchmarkAxis", "")
         typ = d.get("us-gaap:ConcentrationRiskByTypeAxis", "")
         cust = d.get("srt:MajorCustomersAxis")
         if not cust or not any(bench.endswith(b) for b in REVENUE_BENCH) or "Customer" not in typ:
+            continue
+        local = cust.split(":", 1)[-1]
+        if SEGMENT_LIKE.search(local) and not ANON.search(local):
+            continue  # marché ou catégorie de clients, pas un client
+        cands.append((r, bench, cust, local))
+    # vue as_known : pour chaque période, les seuls faits du premier dépôt qui l'a publiée. Les
+    # libellés des clients anonymes sont propres à un dépôt (« Customer A » d'un 10-K devient
+    # « Customer One » dans le comparatif du suivant) : mêler deux dépôts compterait deux fois
+    # le même client.
+    first = {}
+    for r, *_ in cands:
+        k = (r.group_id, ds(r.period_start), ds(r.period_end))
+        o = (str(r.knowledge_date), r.accession)
+        first[k] = min(first.get(k, o), o)
+    for r, bench, cust, local in cands:
+        if (str(r.knowledge_date), r.accession) != first[(r.group_id, ds(r.period_start), ds(r.period_end))]:
             continue
         v = Decimal(str(r.value))
         if r.decimals_inf or r.decimals is None or pd.isna(r.decimals):
@@ -133,17 +150,14 @@ def concentration(con, groups, as_of):
             basis = "rounding"
         term = {"value": v, "fact_key": r.fact_key, "knowledge_date": str(r.knowledge_date), "tier": r.tier,
                 "is_tagged": True}
-        local = cust.split(":", 1)[-1]
-        if SEGMENT_LIKE.search(local) and not ANON.search(local):
-            continue  # marché ou catégorie de clients, pas un client
         if ANON.search(local):
             out.append(cell("customer_concentration_anonymous", r.group_id, r.period_start, r.period_end, "as_known",
                             as_of, breakdown=cust, value=v, lower=lo, upper=hi, bound_basis=basis,
                             status="bounded" if basis else "computed", unit="pure", terms=[term],
-                            flags={"benchmark": bench, "form": r.form}))
+                            flags={"benchmark": bench, "form": r.form, "accession": r.accession}))
         else:
-            named.append({"group_id": r.group_id, "member": cust, "value": v, "period_start": r.period_start,
-                          "period_end": r.period_end, "fact_key": r.fact_key, "form": r.form})
+            named.append({"group_id": r.group_id, "member": cust, "value": v, "period_start": ds(r.period_start),
+                          "period_end": ds(r.period_end), "fact_key": r.fact_key, "form": r.form})
     seen, uniq = set(), []
     for c in out:
         k = (c["subject"], c["period_start"], c["period_end"], c["breakdown_key"])
