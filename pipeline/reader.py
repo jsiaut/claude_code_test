@@ -199,16 +199,66 @@ def _chunks(text, cap, overlap=1500):
     return chunks
 
 
+_NUM = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s*(%|percent|thousand|million|billion|trillion)?", re.I)
+_SCALE = {"thousand": Decimal(10) ** 3, "million": Decimal(10) ** 6, "billion": Decimal(10) ** 9,
+          "trillion": Decimal(10) ** 12}
+
+
+def text_values(text):
+    """Valeurs numériques que le texte affiche, à leur échelle et brutes (pour l'affichage)."""
+    vals = set()
+    for m in _NUM.finditer(text):
+        try:
+            v = Decimal(m.group(1).replace(",", ""))
+        except InvalidOperation:
+            continue
+        vals.add(v)
+        unit = (m.group(2) or "").lower()
+        if unit in _SCALE:
+            vals.add(v * _SCALE[unit])
+        elif unit in ("%", "percent"):
+            vals.add(v / 100)
+    return vals
+
+
+def visible_candidates(b):
+    """Faits candidats dont la valeur paraît dans le texte du bloc. Le catalogue, la clé de
+    contenu et la validation gardent tous les faits ; seul l'affichage est réduit, car un
+    montant lu dans le texte ne peut égaler qu'un fait dont la valeur y paraît (D-0017)."""
+    cands = b.get("candidate_facts") or []
+    vals = text_values(b["text"])
+    out = []
+    for c in cands:
+        try:
+            v = Decimal(str(c["value"]))
+        except (InvalidOperation, TypeError):
+            out.append(c)
+            continue
+        if v in vals or -v in vals:
+            out.append(c)
+    return out, len(cands)
+
+
+def _dims_short(dims):
+    """Membres de dimension par leur libellé (le membre lui-même à défaut)."""
+    try:
+        d = json.loads(dims) if isinstance(dims, str) else (dims or [])
+    except ValueError:
+        return str(dims)
+    return "[" + " ; ".join((x[2] if len(x) > 2 and x[2] else x[1]) for x in d) + "]"
+
+
 def render_block(b, cap):
     head = {k: b.get(k) for k in ("content_key", "block_kind", "group_id", "cik", "accession",
                                   "form", "filing_date", "item", "exhibit_type", "document",
                                   "note_label", "period_start", "period_end", "knowledge_date")}
-    cands = b.get("candidate_facts") or []
+    cands, n_all = visible_candidates(b)
     cand_lines = [f"  {c['fact_key']} | {c['concept']} | {c['value']} {c.get('unit') or ''} | "
-                  f"{c.get('period_start') or ''}..{c.get('period_end')} | {c.get('dims') or '[]'}"
+                  f"{c.get('period_start') or ''}..{c.get('period_end')} | {_dims_short(c.get('dims'))}"
                   for c in cands]
     header = "### BLOC " + json.dumps(head, ensure_ascii=False)
-    facts = "### FAITS CANDIDATS (" + str(len(cands)) + ")\n" + "\n".join(cand_lines)
+    facts = (f"### FAITS CANDIDATS ({len(cands)} affichés sur {n_all} : valeur présente dans le texte)\n"
+             + "\n".join(cand_lines))
     budget = max(cap - len(header) - len(facts) - 200, 4000)
     return header, facts, _chunks(b["text"], budget)
 
@@ -412,6 +462,8 @@ def main(argv=None):
     sl.add_argument("path")
     sl.add_argument("--final", action="store_true")
     sl.add_argument("--then", choices=["lot", "next", "auto"])
+    sl.add_argument("--small", type=int, default=5000)
+    sl.add_argument("--total", type=int, default=22000)
     a = ap.parse_args(argv)
     if a.cmd == "status":
         return cmd_status()
@@ -429,11 +481,11 @@ def main(argv=None):
     if a.cmd == "submit-lot":
         rc = cmd_submit_lot(a.path, a.final)
         if rc == 0 and a.then == "lot":
-            cmd_lot()
+            cmd_lot(a.small, a.total)
         elif rc == 0 and a.then == "next":
             cmd_next(None)
         elif rc == 0 and a.then == "auto":
-            cmd_auto()
+            cmd_auto(a.small, a.total)
         return rc
 
 

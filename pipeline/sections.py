@@ -19,6 +19,13 @@ def _lines(raw):
 
 def _longest_section(lines, start_rx, end_rx, min_chars=200, start_filter=None):
     starts = [i for i, (t, _) in enumerate(lines) if start_rx.search(t) and len(t) < 400]
+    merged = False
+    if not starts:
+        # titre fondu dans son paragraphe (mise en page sans blocs) : la ligne qui commence
+        # par le titre ouvre la section, et la ligne qui commence par un titre majeur la ferme (d3)
+        starts = [i for i, (t, h) in enumerate(lines) if len(t) >= 160 and ITEM_404_HEAD.search(t)
+                  and not TOC_ROW.search(t)]
+        merged = True
     best = None
     for s in starts:
         if start_filter and not start_filter(lines, s):
@@ -107,7 +114,7 @@ MAJOR_PROXY = re.compile(
     r"[\w ,&]{3,60}\bcommittee$|principal\s+(and\s+selling\s+)?(stock|share)holders|"
     r"selling\s+(stock|share)holders|description\s+of\s+capital|shares\s+eligible|underwriting|"
     r"material\s+u\.?s\.?\s+federal|legal\s+matters|experts$|where\s+you\s+can\s+find|"
-    r"management$|executive\s+officers\s+and\s+directors)", re.I)
+    r"management$|executive\s+officers\s+and\s+directors|additional\s+meeting)", re.I)
 ITEM_404_HEAD = re.compile(
     r"^\W{0,3}(certain\s+relationships\s+and\s+related|related[\s-]+(person|party)\s+transactions?\b|"
     r"transactions?\s+with\s+related\s+(persons?|parties)|review\s+of\s+transactions\s+with\s+related|"
@@ -116,14 +123,30 @@ PAGE_FURNITURE = re.compile(r"proxy\s+statement|^\d{1,3}$|^table\s+of\s+contents
                             r"^back\s+to\s+contents$|notice\s+of\s+(annual\s+)?meeting", re.I)
 
 
+TOC_ROW = re.compile(r"\|\s*\d{1,3}\s*$")
+PAGE_NUMBER = re.compile(r"^\d{1,3}$")
+SENTENCE = re.compile(r"[.:]\s+[A-Z(]\w*\s+\w+")
+
+
 def item_404(raw, max_chars=60000):
     """Section Item 404 : du premier titre « Certain Relationships... » ou « Related Person
     Transactions » hors sommaire jusqu'au titre majeur suivant du DEF 14A (en-têtes et pieds
     de page ignorés), plafonnée à max_chars ; la section la plus longue l'emporte (sommaire)."""
     lines = _lines(raw)
     # un titre ouvre la ligne et ne se termine pas par une ponctuation de phrase (renvois écartés)
+    # une entrée de sommaire (titre suivi de son numéro de page, sur la ligne ou la suivante)
+    # n'ouvre pas la section (d3)
     starts = [i for i, (t, h) in enumerate(lines) if len(t) < 160 and ITEM_404_HEAD.search(t)
-              and not t.rstrip().endswith((".", '"', ",", ";")) and (h or len(t) < 90)]
+              and not t.rstrip().endswith((".", '"', ",", ";")) and (h or len(t) < 90)
+              and not TOC_ROW.search(t)
+              and not (i + 1 < len(lines) and PAGE_NUMBER.match(lines[i + 1][0].strip()))]
+    merged = False
+    if not starts:
+        # titre fondu dans son paragraphe (mise en page sans blocs) : la ligne qui commence
+        # par le titre ouvre la section, et la ligne qui commence par un titre majeur la ferme (d3)
+        starts = [i for i, (t, h) in enumerate(lines) if len(t) >= 160 and ITEM_404_HEAD.search(t)
+                  and not TOC_ROW.search(t)]
+        merged = True
     best = None
     for s in starts:
         e = len(lines)
@@ -133,7 +156,13 @@ def item_404(raw, max_chars=60000):
             size += len(t)
             if PAGE_FURNITURE.search(t) and len(t) < 120:
                 continue
-            if len(t) < 150 and MAJOR_PROXY.search(t) and size > 300 and not ITEM_404_START.search(t):
+            # un titre majeur, pas une puce qui commence par les mêmes mots (« Director
+            # compensation. Any compensation... ») : marqué titre, ou sans phrase (d3)
+            if len(t) < 150 and MAJOR_PROXY.search(t) and size > 300 and not ITEM_404_START.search(t) \
+                    and (h or not SENTENCE.search(t)):
+                e = j
+                break
+            if merged and MAJOR_PROXY.search(t) and size > 300 and not ITEM_404_START.search(t[:200]):
                 e = j
                 break
             if size > max_chars:

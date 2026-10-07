@@ -165,8 +165,12 @@ def semantic_errors(line, block):
         elif line.get("amount") is not None and Decimal(str(line["amount"])) != Decimal(str(cand["value"])):
             errs.append("montant différent du fait candidat")
     if line.get("amount_origin") == "narrative_only" and line.get("amount") is not None:
+        # même valeur ET même période (ou ligne sans période) : un montant d'une autre
+        # période, égal par hasard à un fait balisé, reste un texte non balisé
+        pe = line.get("period_end")
         same = [c for c in block.get("candidate_facts") or []
-                if Decimal(str(c["value"])) == Decimal(str(line["amount"]))]
+                if Decimal(str(c["value"])) == Decimal(str(line["amount"]))
+                and (pe is None or str(c.get("period_end") or "")[:10] == pe)]
         if same:
             errs.append("montant présent dans un fait candidat : tagged_reference attendu")
     if line.get("amount") is not None and line.get("unit") in ("USD", "EUR", "GBP", "JPY") and \
