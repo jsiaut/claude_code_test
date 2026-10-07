@@ -429,15 +429,21 @@ def lease_not_commenced(cells, obs, report_end_of, as_of):
         tot = sum(Decimal(str(o["amount"])) for o in amounts.values())
         terms = [{"value": Decimal(str(o["amount"])), "fact_key": "obs:" + o["obs_key"],
                   "knowledge_date": o.get("knowledge_date"), "tier": o.get("tier"), "is_tagged": False} for o in amounts.values()]
-        return tot, terms, len(amounts), hits
+        # baux d'exploitation et de location-financement : deux classes exclusives (ASC 842), donc
+        # additives ; toute autre pluralité de lignes reste partielle
+        kinds = [str(k).rsplit("_", 1)[-1] for k in amounts]
+        additive = len(amounts) == 1 or (len(amounts) == 2 and sorted(kinds) == ["finance", "operating"])
+        return tot, terms, len(amounts), hits, additive
     # matrice d'exposition à chaque date lue
     for (g, d), v in sorted(by.items()):
-        tot, terms, n, hits = value_at(g, d)
+        tot, terms, n, hits, additive = value_at(g, d)
         out.append(cell("exposure_matrix", g, None, d, "as_known", as_of,
                         breakdown="contractual_outflows/undiscounted/lease_not_commenced/total", value=tot, unit="USD",
-                        terms=terms, status="computed" if n == 1 else "partial", nd_reason=None if n == 1 else "term_missing",
+                        terms=terms, status="computed" if additive else "partial", nd_reason=None if additive else "term_missing",
                         flags={"observations": [o["obs_key"] for o in hits], "lines": n,
-                               "note": None if n == 1 else "plusieurs lignes, additivité non démontrée"}))
+                               "note": ("baux d'exploitation et de location-financement, classes exclusives (ASC 842)"
+                                        if n == 2 and additive else None) if additive
+                               else "plusieurs lignes, additivité non démontrée"}))
     # pont annuel : remplace ouverture et clôture indéterminées
     repl = {}
     for c in cells:
@@ -447,10 +453,10 @@ def lease_not_commenced(cells, obs, report_end_of, as_of):
         d = fe if c["term"] == "closing" else fs - dt.timedelta(days=1)
         r = value_at(g, d)
         if r:
-            tot, terms, n, hits = r
+            tot, terms, n, hits, additive = r
             repl[id(c)] = cell("lease_not_commenced_bridge", g, fs, fe, c["view"], as_of, term=c["term"], value=tot,
-                               unit="USD", terms=terms, status="computed" if n == 1 else "partial",
-                               nd_reason=None if n == 1 else "term_missing",
+                               unit="USD", terms=terms, status="computed" if additive else "partial",
+                               nd_reason=None if additive else "term_missing",
                                flags={"observations": [o["obs_key"] for o in hits], "is_tagged": False})
     cells[:] = [repl.get(id(c), c) for c in cells]
     return out
