@@ -1,16 +1,16 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
-- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `e5c23ee9fc0bac8d47dc5fe949c2362851f37936`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `entity_aliases` (alias confirmés par extrait, D-0021); `own_entities` (entités propres confirmées par extrait, D-0021).
-- **Périmètre couvert : premier passage.** Faits balisés des onze groupes, puis notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation et items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Les notes d'investissements, de dette, de baux et d'engagements ne sont pas lues : ce qui en dépend est publié partiel ou indéterminé, motif « non traité au premier passage ».
-- **Résultat principal (E.7) : les pièces déposées ne permettent pas de discriminer entre les deux lectures.** 92 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 12 issues ; motifs : recherche incomplète : 5, précondition non remplie : 3, intervalle à cheval sur le seuil : 2, non traité au premier passage : 1. Au premier passage, cette non-discrimination tient d'abord au périmètre borné de la lecture, non à une absence de relations.
+- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `c52824e487b41daad31e7261d157506cf6797d2a`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `entity_aliases` (alias confirmés par extrait, D-0021); `own_entities` (entités propres confirmées par extrait, D-0021); `scope` (voir decisions.md); `scope_decision` (voir decisions.md).
+- **Périmètre couvert : premier passage et blocs `lender`, `text` de §14**, ouverts par l'utilisateur le 2026-10-07 après le rendement présenté dans la seconde page. Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des pièces arrêtées à leur en-tête ; ce qui n'est pas encore lu reste « non traité », bloc par bloc dans `exclusions`. Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.
+- **Résultat principal (E.7) : les pièces déposées ne permettent pas de discriminer entre les deux lectures.** 92 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 12 issues ; motifs : recherche incomplète : 5, précondition non remplie : 3, intervalle à cheval sur le seuil : 2, non traité au premier passage : 1. La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une non-discrimination tient encore en partie au périmètre de lecture.
 - **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 507, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 775, `not_testable` 720, `ok` 13 425, `tautological` 613.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/36, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
-- **Exclusions principales** : `conflicting` 377, `financial_parties_only` 217, `pending_entity` 48, `not_processed` 11, `submitted_draft` 8, `parse_failed` 1, `not_public` 1, `history_left_censored` 1, `invalid_aggregate` 1.
+- **Exclusions principales** : `not_processed` 1 296, `conflicting` 377, `pending_entity` 59, `submitted_draft` 8, `invalid_aggregate` 6, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -40,14 +40,14 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 **Oracle**
 
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-09-10, rattaché au trimestre clos le 2025-08-31 ; pièce : 10-Q 0001193125-25-200095.
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-12-11, rattaché au trimestre clos le 2025-11-30 ; pièce : 10-Q 0001193125-25-200095, 10-Q 0001193125-25-315925.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-12-11, rattaché au trimestre clos le 2025-11-30 ; pièce : 10-Q 0001193125-25-315925, 10-Q 0001193125-25-200095.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-03-11, rattaché au trimestre clos le 2026-02-28 ; pièce : 10-Q 0001193125-25-315925, 10-Q 0001193125-26-101045.
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-06-22, rattaché au trimestre clos le 2026-05-31 ; pièce : 10-K 0001193125-26-277521, 10-Q 0001193125-26-101045.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-06-22, rattaché au trimestre clos le 2026-05-31 ; pièce : 10-Q 0001193125-26-101045, 10-K 0001193125-26-277521.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-09-11, rattaché au trimestre clos le 2026-08-31 ; pièce : 10-Q 0001193125-26-389274.
 
 **CoreWeave**
 
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-03-02, rattaché au trimestre clos le 2024-12-31 ; pièce : 10-K 0001769628-26-000104, 10-Q 0001769628-25-000062.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-03-02, rattaché au trimestre clos le 2024-12-31 ; pièce : 10-Q 0001769628-25-000062, 10-K 0001769628-26-000104.
 - F4 (amendement ou dérogation de clause financière) — rendu public le 2025-10-02, rattaché au trimestre clos le 2024-12-31 ; pièce : 8-K 0001193125-25-227562.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-05-15, rattaché au trimestre clos le 2025-03-31 ; pièce : 10-Q 0001769628-25-000014.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2025-05-15, rattaché au trimestre clos le 2025-03-31 ; pièce : 10-Q 0001769628-25-000014.
@@ -59,7 +59,7 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-03-02, rattaché au trimestre clos le 2025-12-31 ; pièce : 10-K 0001769628-26-000104.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-05-08, rattaché au trimestre clos le 2026-03-31 ; pièce : 10-Q 0001769628-26-000222.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-05-08, rattaché au trimestre clos le 2026-03-31 ; pièce : 10-Q 0001769628-26-000222.
-- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001769628-26-000222, 10-Q 0001769628-26-000366.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001769628-26-000366, 10-Q 0001769628-26-000222.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001769628-26-000366.
 
 **AMD**
@@ -796,11 +796,100 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 Le revenu attribué à des clients nommés est une borne basse : le texte qui entoure les faits de concentration n'est pas lu au premier passage. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).
 
+## Côté prêteur (BDC Data Sets)
+
+Positions que les sociétés de développement d'affaires (BDC) publient dans leur portefeuille, rattachées aux entités des groupes et aux contreparties que nomment leurs pièces, par dénomination légale entière ; une position dont l'identifiant nomme aussi un autre émetteur n'est rattachée à personne. Vue `as_known` : le portefeuille à la date du bilan du dépôt de chaque fonds. Les fonds privés et les banques ne publient rien (`not_public`), et une balise absente ne prouve rien : un taux d'intérêt capitalisé ou un statut de non-accumulation non balisé reste indéterminé, jamais nul. Juste valeur ÷ coût n'est pas une probabilité de défaut, et des intérêts capitalisés peuvent être prévus dès l'origine : les trois signaux se lisent ensemble.
+
+| Groupe de l'émetteur | Date du bilan | Instrument | Positions | Coût | Juste valeur | Juste valeur ÷ coût | Part des intérêts capitalisés | Part sans accumulation d'intérêts |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Broadcom | 2022-12-31 | non classé | 1 | 5 M$ | 5 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2022-09-30 | prêts et obligations | 1 | 30 M$ | 30 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2022-09-30 | titres de capital | 1 | 296 000 $ | 119 000 $ | 0,40 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2022-12-31 | prêts et obligations | 1 | 30 M$ | 11 M$ | 0,38 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2022-12-31 | titres de capital | 1 | 296 000 $ | 7 000 $ | 0,02 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-03-31 | prêts et obligations | 7 | 87 M$ | 46 M$ | 0,53 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-03-31 | titres de capital | 4 | 638 000 $ | 60 000 $ | 0,09 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-06-30 | prêts et obligations | 9 | 87 M$ | 51 M$ | 0,59 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-06-30 | titres de capital | 4 | 638 000 $ | 168 000 $ | 0,26 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-09-30 | prêts et obligations | 9 | 87 M$ | 66 M$ | 0,76 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-09-30 | titres de capital | 4 | 638 000 $ | 141 000 $ | 0,22 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-12-31 | prêts et obligations | 7 | 87 M$ | 75 M$ | 0,86 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2023-12-31 | titres de capital | 3 | 638 000 $ | 286 000 $ | 0,45 x | n.d. (non balisé) | n.d. (non balisé) |
+| Core Scientific, Inc. | 2024-03-31 | titres de capital | 10 | 53 M$ | 49 M$ | 0,92 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2022-12-31 | non classé | 1 | 5 M$ | 4 M$ | 0,89 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2023-03-31 | non classé | 1 | 5 M$ | 4 M$ | 0,92 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2023-06-30 | non classé | 1 | 7 M$ | 6 M$ | 0,91 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2023-09-30 | non classé | 1 | 7 M$ | 6 M$ | 0,90 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2024-03-31 | non classé | 2 | 11 M$ | 11 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2024-06-30 | prêts et obligations | 1 | 6 M$ | 6 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2024-06-30 | non classé | 1 | 7 M$ | 7 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2024-09-30 | prêts et obligations | 1 | 6 M$ | 6 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2024-09-30 | non classé | 1 | 7 M$ | 7 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2024-12-31 | non classé | 2 | 13 M$ | 13 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-03-31 | non classé | 1 | 6 M$ | 6 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-06-30 | prêts et obligations | 3 | 25 M$ | 25 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-06-30 | non classé | 2 | 7 M$ | 7 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-09-30 | prêts et obligations | 3 | 76 M$ | 76 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-09-30 | non classé | 2 | 11 M$ | 11 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-11-30 | prêts et obligations | 1 | 4 M$ | 4 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-12-31 | prêts et obligations | 3 | 75 M$ | 76 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2025-12-31 | non classé | 2 | 9 M$ | 9 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2026-03-31 | prêts et obligations | 3 | 25 M$ | 25 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2026-03-31 | non classé | 2 | 9 M$ | 9 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2026-06-30 | prêts et obligations | 1 | 24 M$ | 24 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Jane Street Group, LLC | 2026-06-30 | non classé | 2 | 9 M$ | 9 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| VMware, Inc. | 2022-12-31 | non classé | 1 | 3 M$ | 3 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Corp. | 2025-03-31 | non classé | 1 | 10 M$ | 10 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Corp. | 2025-06-30 | prêts et obligations | 4 | 124 M$ | 125 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Corp. | 2025-06-30 | non classé | 2 | 12 M$ | 12 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Corp. | 2025-09-30 | prêts et obligations | 5 | 123 M$ | 126 M$ | 1,02 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Corp. | 2025-09-30 | non classé | 2 | 17 M$ | 17 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Corp. | 2025-12-31 | prêts et obligations | 4 | 98 M$ | 100 M$ | 1,02 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Corp. | 2025-12-31 | non classé | 2 | 12 M$ | 12 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Holdings Corp. | 2025-03-31 | prêts et obligations | 3 | 35 M$ | 36 M$ | 1,02 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Holdings Corp. | 2025-06-30 | prêts et obligations | 2 | 30 M$ | 29 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Holdings Corp. | 2025-09-30 | prêts et obligations | 6 | 48 M$ | 48 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| X Holdings Corp. | 2025-12-31 | prêts et obligations | 6 | 56 M$ | 56 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2023-09-30 | prêts et obligations | 8 | 687 000 $ | 685 000 $ | 1,00 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2023-12-31 | prêts et obligations | 8 | 10 M$ | 10 M$ | 1,00 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2024-03-31 | prêts et obligations | 5 | 17 M$ | 18 M$ | 1,02 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2024-06-30 | prêts et obligations | 13 | 19 M$ | 19 M$ | 1,02 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2024-09-30 | prêts et obligations | 14 | 32 M$ | 33 M$ | 1,01 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2024-12-31 | prêts et obligations | 11 | 53 M$ | 54 M$ | 1,01 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2025-03-31 | prêts et obligations | 9 | 64 M$ | 64 M$ | 1,01 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2025-06-30 | prêts et obligations | 10 | 69 M$ | 69 M$ | 1,01 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2025-06-30 | non classé | 1 | — | — | n.d. (non balisé) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2025-09-30 | prêts et obligations | 8 | 69 M$ | 69 M$ | 1,01 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2025-12-31 | prêts et obligations | 8 | 68 M$ | 68 M$ | 1,01 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2026-03-31 | prêts et obligations | 7 | 60 M$ | 61 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| CoreWeave | 2026-06-30 | prêts et obligations | 20 | 60 M$ | 61 M$ | 1,02 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| Oracle | 2022-12-31 | non classé | 1 | 1 M$ | 1 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2022-09-30 | titres de capital | 2 | 3 M$ | 4 M$ | 1,30 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2022-12-31 | titres de capital | 2 | 3 M$ | 4 M$ | 1,40 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2023-03-31 | titres de capital | 4 | 30 M$ | 43 M$ | 1,43 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2023-06-30 | titres de capital | 4 | 30 M$ | 43 M$ | 1,43 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2023-09-30 | titres de capital | 4 | 30 M$ | 45 M$ | 1,51 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2023-12-31 | titres de capital | 4 | 30 M$ | 51 M$ | 1,71 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2024-03-31 | titres de capital | 4 | 30 M$ | 54 M$ | 1,80 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2024-06-30 | titres de capital | 4 | 30 M$ | 60 M$ | 2,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2024-09-30 | titres de capital | 4 | 30 M$ | 63 M$ | 2,09 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2024-12-31 | titres de capital | 4 | 30 M$ | 100 M$ | 3,33 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2025-03-31 | titres de capital | 4 | 30 M$ | 105 M$ | 3,51 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2025-06-30 | titres de capital | 4 | 30 M$ | 105 M$ | 3,51 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2025-09-30 | titres de capital | 4 | 30 M$ | 120 M$ | 4,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2025-12-31 | titres de capital | 4 | 30 M$ | 217 M$ | 7,22 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2026-03-31 | titres de capital | 4 | 13 M$ | 147 M$ | 10,94 x | n.d. (non balisé) | n.d. (non balisé) |
+| SpaceX | 2026-06-30 | titres de capital | 2 | 13 M$ | 239 M$ | 17,75 x | n.d. (non balisé) | n.d. (non balisé) |
+
+Appartenances datées : X Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre. X Holdings Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre.
+
+Identifiants de position écartés parce qu'ils nomment deux émetteurs : 11.
+
 ## Évolution
 
 Premier passage : aucune exécution antérieure à laquelle comparer. Les séries trimestrielles complètes, ruptures de base marquées, sont dans `series.md` ; `delta.md` sera le point d'entrée des exécutions suivantes.
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non traité au premier passage 2 019, terme manquant 1 113, non publié 628, concept non résolu 623, annuel seulement 394, historique tronqué 393, client anonyme 58, lecture impossible 32, période antérieure absente 28, frontière de retraitement 13, dénominateur négatif ou nul 10, précondition non remplie 9, date manquante 6, recherche incomplète 5, intervalle à cheval sur le seuil 5, entité non confirmée 1.
+Cellules indéterminées en vue `as_known`, par motif : non traité au premier passage 2 019, terme manquant 1 113, non publié 628, concept non résolu 623, non balisé 546, annuel seulement 394, historique tronqué 393, client anonyme 58, lecture impossible 32, période antérieure absente 28, frontière de retraitement 13, dénominateur négatif ou nul 10, précondition non remplie 9, date manquante 6, intervalle à cheval sur le seuil 5, recherche incomplète 5, entité non confirmée 1.
 

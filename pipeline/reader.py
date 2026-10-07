@@ -25,6 +25,7 @@ from .lock import touch_lock
 from .registry import ENUMS
 
 CATALOG = config.DB_DIR / "blocks.jsonl"          # recalculé à chaque exécution
+CATALOG_EXT = config.DB_DIR / "text_blocks_ext.jsonl"   # bloc `text` de §14, s'il est ouvert
 STATE = config.WORK / "tmp" / "reading_state.json"
 RUN = config.WORK / "tmp" / "run.json"              # as_of et pass_id de l'exécution
 
@@ -140,10 +141,15 @@ def schema_errors(line):
 # -- catalogue et file ---------------------------------------------------------------
 
 def load_catalog():
-    if not CATALOG.exists():
-        return []
-    with open(CATALOG, encoding="utf-8") as fh:
-        return [json.loads(l) for l in fh if l.strip()]
+    out = []
+    if CATALOG.exists():
+        with open(CATALOG, encoding="utf-8") as fh:
+            out = [json.loads(l) for l in fh if l.strip()]
+    scope = config.load().get("scope")
+    if isinstance(scope, list) and "text" in scope and CATALOG_EXT.exists():
+        with open(CATALOG_EXT, encoding="utf-8") as fh:
+            out += [json.loads(l) for l in fh if l.strip()]
+    return out
 
 
 def obs_path(content_key):
@@ -154,11 +160,27 @@ def rejected_path(content_key):
     return config.OBS_DIR / f"{content_key}.rejected.jsonl"
 
 
+LIST = None        # fichier de clés de contenu : file de lecture restreinte, dans son ordre
+
+
+def _state_path():
+    if LIST:
+        return STATE.parent / f"reading_state_{__import__('pathlib').Path(LIST).stem}.json"
+    return STATE
+
+
 def queue(catalog=None):
-    """Blocs sans fichier d'observations, dans l'ordre du signal (§11.1)."""
+    """Blocs sans fichier d'observations, dans l'ordre du signal (§11.1) ; avec une liste,
+    seulement ses blocs, dans l'ordre de la liste."""
     catalog = catalog if catalog is not None else load_catalog()
     seen, out = set(), []
-    for b in sorted(catalog, key=lambda b: (b["signal_class"], b["sort_key"])):
+    order = None
+    if LIST:
+        keys = [l.strip() for l in open(LIST, encoding="utf-8") if l.strip()]
+        order = {k: i for i, k in enumerate(keys)}
+        catalog = [b for b in catalog if b["content_key"] in order]
+    for b in sorted(catalog, key=(lambda b: order[b["content_key"]]) if order else
+                    (lambda b: (_effective_class(b), b["sort_key"]))):
         ck = b["content_key"]
         if ck in seen or obs_path(ck).exists():
             continue
@@ -169,10 +191,29 @@ def queue(catalog=None):
     return out
 
 
+def _text_scope():
+    sc = config.load().get("scope")
+    return isinstance(sc, list) and "text" in sc
+
+
 def _requirement_met(req):
-    """Un corps de pièce n'entre dans la file qu'après lecture de son en-tête (§11.1)."""
-    from .exhibits import body_required
-    return body_required(req)
+    """Un corps de pièce n'entre dans la file qu'après lecture de son en-tête (§11.1) ; arrêté
+    à l'en-tête au premier passage (établissements financiers seulement), il y entre quand le
+    bloc `text` de §14 est ouvert, après les notes et les items de 8-K."""
+    from .exhibits import decide
+    want, _ = decide(req)
+    if want is None:
+        return False
+    return bool(want) or _text_scope()
+
+
+def _effective_class(b):
+    if b["block_kind"] == "exhibit_body" and b.get("requires"):
+        from .exhibits import decide
+        want, _ = decide(b["requires"])
+        if want is False:
+            return 4
+    return b["signal_class"]
 
 
 def _chunks(text, cap, overlap=1500):
@@ -317,7 +358,8 @@ def cmd_submit_lot(path, final=False):
 def cmd_auto(small=5000, total=22000):
     """Sert un lot si la tête de file est petite, sinon le bloc suivant (en morceaux)."""
     STATE.parent.mkdir(parents=True, exist_ok=True)
-    state = json.loads(STATE.read_text()) if STATE.exists() else {}
+    sp = _state_path()
+    state = json.loads(sp.read_text()) if sp.exists() else {}
     if state.get("content_key"):
         return cmd_next(None)
     q = queue()
@@ -333,7 +375,8 @@ def cmd_auto(small=5000, total=22000):
 def cmd_next(max_chars):
     cap = max_chars or config.load()["reading"]["max_read_chars"]
     STATE.parent.mkdir(parents=True, exist_ok=True)
-    state = json.loads(STATE.read_text()) if STATE.exists() else {}
+    sp = _state_path()
+    state = json.loads(sp.read_text()) if sp.exists() else {}
     q = queue()
     if not q:
         print("FILE VIDE")
@@ -357,7 +400,7 @@ def cmd_next(max_chars):
         state["chunk"] = len(chunks) - 1
         state["complete"] = True
         print("### FIN DU BLOC : rendre les lignes avec `submit`")
-    STATE.write_text(json.dumps(state))
+    sp.write_text(json.dumps(state))
 
 
 def _run_info():
@@ -385,12 +428,15 @@ def cmd_submit(content_key, path, final=False):
         print(f"REFUS : clé de contenu inconnue {content_key}")
         return 2
     errs = []
+    from .load import semantic_errors
     for i, (raw, obj) in enumerate(lines):
         e = [obj["__json_error__"]] if "__json_error__" in obj else schema_errors(obj)
+        if not e and not final:
+            e = ["sémantique : " + x for x in semantic_errors(obj, catalog[content_key])[0]]
         if e:
             errs.append((i, raw, e))
     if errs and not final:
-        print("ERREURS DE SCHÉMA (reprendre une fois les lignes refusées, puis --final) :")
+        print("ERREURS DE SCHÉMA OU DE SÉMANTIQUE (reprendre une fois les lignes refusées, puis --final) :")
         for i, _, e in errs:
             print(f"  ligne {i + 1}: " + " ; ".join(e))
         return 1
@@ -410,10 +456,11 @@ def cmd_submit(content_key, path, final=False):
                                      "raw": raw, "errors": e}, ensure_ascii=False) + "\n")
     if not good:
         p.touch()
-    if STATE.exists():
-        st = json.loads(STATE.read_text())
+    sp = _state_path()
+    if sp.exists():
+        st = json.loads(sp.read_text())
         if st.get("content_key") == content_key:
-            STATE.unlink()
+            sp.unlink()
     touch_lock()
     print(f"ÉCRIT : {len(good)} ligne(s) valides, {len(errs)} rejetée(s) — {p.name}")
     return 0
@@ -464,7 +511,13 @@ def main(argv=None):
     sl.add_argument("--then", choices=["lot", "next", "auto"])
     sl.add_argument("--small", type=int, default=5000)
     sl.add_argument("--total", type=int, default=22000)
+    for sp_ in (n, s, lt, sl):
+        sp_.add_argument("--list")
+    st_ = sub.choices["status"]
+    st_.add_argument("--list")
     a = ap.parse_args(argv)
+    global LIST
+    LIST = getattr(a, "list", None)
     if a.cmd == "status":
         return cmd_status()
     if a.cmd == "next":

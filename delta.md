@@ -30,22 +30,27 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Arêtes de montant : commercial 128, credit_support 2, customer_consideration 7, financing 58 ; arêtes de relation : 139.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (borne basse ; le texte autour des faits de concentration n'est pas lu au premier passage), et part des clients anonymes : AMD (exercice clos le 2025-12-27) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 0,0 % ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 % (partiel), anonymes d'au moins 10 % 0,0 %.
 - Cellules de la question 4, par statut et motif : indéterminée / non traité au premier passage 3 364 ; indéterminée / historique tronqué 786 ; calculée 545 ; bornée 161 ; partielle / non traité au premier passage 110 ; indéterminée / client anonyme 88 ; indéterminée / concept non résolu 86 ; indéterminée / non publié 13 ; indéterminée / terme manquant 13.
-- Requêtes : 3 741 au journal, dont 3 734 réussies, 1 539 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-07T11:54:33.106+00:00.
-- Blocs lus : 1 133 sur 1 350 clés de contenu ; par item de 8-K : 1.01 92, 1.02 11, 3.03 9, 8.01 347 ; pièces arrêtées à leur en-tête : EX-10 52, EX-4 165.
+- Requêtes : 3 764 au journal, dont 3 757 réussies, 2 053 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-07T15:56:13.959+00:00.
+- Blocs lus : 1 133 sur 2 429 clés de contenu ; par item de 8-K : 1.01 92, 1.02 11, 3.03 9, 8.01 347 ; pièces arrêtées à leur en-tête : EX-10 52, EX-4 165.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 273 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 284 s ; lecture : voir le journal ci-dessus.
+
+## Rendement du bloc lender (§14)
+
+- Faits de BDC rattachés : 997, dans 166 dépôts de 31 fonds.
+- Cellules par mesure, statut et motif : bdc_fv_to_cost calculée 217 ; bdc_fv_to_cost indéterminée / non balisé 8 ; bdc_fv_to_cost partielle 44 ; bdc_non_accrual_share indéterminée / non balisé 269 ; bdc_pik_share indéterminée / non balisé 269.
+- Groupes d'émetteurs couverts : Broadcom, Core Scientific, Inc., Jane Street Group, LLC, VMware, Inc., X Corp., X Holdings Corp., CoreWeave, Oracle, SpaceX.
 
 ## Exclusions nouvelles, par motif
 
+- `not_processed` : 1 296
 - `conflicting` : 377
-- `financial_parties_only` : 217
-- `pending_entity` : 48
-- `not_processed` : 11
+- `pending_entity` : 59
 - `submitted_draft` : 8
+- `invalid_aggregate` : 6
+- `parse_failed` : 3
+- `not_public` : 2
 - `history_left_censored` : 1
-- `invalid_aggregate` : 1
-- `not_public` : 1
-- `parse_failed` : 1
 
 ## Décisions et variantes nouvelles
 
@@ -75,6 +80,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0024 — C8, C11 et C12.
 - D-0025 — Concentration : un seul dépôt par période.
 - D-0026 — Trimestres d'un exercice en cours et dates des clés.
+- D-0027 — Blocs ouverts : `lender` et `text`.
 
 ## Critères des annexes E et F
 

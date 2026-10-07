@@ -108,6 +108,10 @@ def load(con, as_of):
                                     ON e.entity_id = m.entity_id AND e.record_kind = 'entity'
                                     WHERE m.record_kind = 'membership' AND m.ref LIKE 'CP:%' GROUP BY 1""").fetchall():
         CP_NAMES[ref] = name
+    # groupe propre calculé hors de toute appartenance datée (avant une combinaison) : même nom
+    for norm, name in con.execute("""SELECT normalized_name, min(name) FROM entities WHERE record_kind = 'entity'
+                                     AND normalized_name IS NOT NULL GROUP BY 1""").fetchall():
+        CP_NAMES.setdefault("CP:" + norm, name)
 
 
 def q(con, sql, *args):
@@ -238,7 +242,10 @@ def synthesis(con, as_of, stats):
     L = []
     L.append("# Note de synthèse — fragilité financière de la chaîne IA")
     L.append("")
-    L.append(f"*Exécution du {as_of} · spec v6.14 · périmètre : premier passage · rendu généré depuis les tables "
+    sc = new.get("scope")
+    blocks_open = sc if isinstance(sc, list) else []
+    per = "premier passage" + (f", blocs {', '.join('`' + b + '`' for b in blocks_open)} de §14" if blocks_open else "")
+    L.append(f"*Exécution du {as_of} · spec v6.14 · périmètre : {per} · rendu généré depuis les tables "
              "`measures`, `controls` et `exclusions`, jamais édité à la main.*")
     L.append("")
     L.append("## En tête")
@@ -253,10 +260,22 @@ def synthesis(con, as_of, stats):
                  "sans toucher ces critères : " + "; ".join(f"`{k}` ({d})" for k, d in ch) + ".")
     else:
         L.append("- **Critères modifiés depuis leur commit d'origine** : " + ", ".join(k for k, v in crit.items() if not v))
-    L.append("- **Périmètre couvert : premier passage.** Faits balisés des onze groupes, puis notes de parties liées, "
-             "Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation et items 1.01, 1.02, 3.03 et 8.01 des 8-K "
-             "avec leurs pièces EX-10 et EX-4. Les notes d'investissements, de dette, de baux et d'engagements ne sont "
-             "pas lues : ce qui en dépend est publié partiel ou indéterminé, motif « non traité au premier passage ».")
+    if not blocks_open:
+        L.append("- **Périmètre couvert : premier passage.** Faits balisés des onze groupes, puis notes de parties liées, "
+                 "Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation et items 1.01, 1.02, 3.03 et 8.01 des 8-K "
+                 "avec leurs pièces EX-10 et EX-4. Les notes d'investissements, de dette, de baux et d'engagements ne sont "
+                 "pas lues : ce qui en dépend est publié partiel ou indéterminé, motif « non traité au premier passage ».")
+    else:
+        dec = new.get("scope_decision") or {}
+        L.append(f"- **Périmètre couvert : premier passage et blocs {', '.join('`' + b + '`' for b in blocks_open)} de §14**, "
+                 f"ouverts par l'utilisateur le {dec.get('date')} après le rendement présenté dans la seconde page. "
+                 "Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des "
+                 "10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. "
+                 + ("Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). " if "lender" in blocks_open else "")
+                 + ("Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de "
+                    "concentration, items 2.01 et 2.03 des 8-K, corps des pièces arrêtées à leur en-tête ; ce qui n'est "
+                    "pas encore lu reste « non traité », bloc par bloc dans `exclusions`. " if "text" in blocks_open else "")
+                 + "Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.")
     e7 = q(con, "SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'")
     if e7:
         c = e7[0]
@@ -268,8 +287,10 @@ def synthesis(con, as_of, stats):
                                 for k, v in sorted((fl.get('reasons') or {}).items(), key=lambda x: -x[1]))
             L.append(f"- **Résultat principal (E.7) : {res}.** {T.m(c, fmt='pct', dec=0)} des issues de E.1 et E.2 "
                      f"au point de tête (10 %) sont indéterminées, sur {T.m(c, field='denominator', fmt='count')} issues ; "
-                     f"motifs : {reasons or 'aucun'}. Au premier passage, cette non-discrimination tient d'abord au "
-                     "périmètre borné de la lecture, non à une absence de relations.")
+                     f"motifs : {reasons or 'aucun'}. " + ("Au premier passage, cette non-discrimination tient d'abord au "
+                     "périmètre borné de la lecture, non à une absence de relations." if not blocks_open else
+                     "La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une "
+                     "non-discrimination tient encore en partie au périmètre de lecture."))
         else:
             L.append("- **E.7** : aucune paire à financement établi, E.1 et E.2 sans issue.")
     for view in ("as_known", "revised"):
@@ -330,6 +351,7 @@ def synthesis(con, as_of, stats):
         L += fragility_section(con, T, g)
     # Circularité
     L += circularity_section(con, T, groups)
+    L += lender_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
     L.append("")
@@ -425,6 +447,61 @@ def fragility_section(con, T, g):
     for r in sig:
         by[r["measure"]].append(f"{fr(r['v'] or r['status'])} {T.n('measures', {'subject': g, 'measure': r['measure'], 'status': r['status'], 'v': r['v']}, r['n'])}")
     L.append("Signaux sur la fenêtre (trimestres) : " + " ; ".join(f"{SIG_FR[m]} — {', '.join(v)}" for m, v in by.items()) + ".")
+    L.append("")
+    return L
+
+
+CLASS_FR = {"debt": "prêts et obligations", "equity": "titres de capital", "unclassified": "non classé"}
+
+
+def lender_section(con, T):
+    """Bloc lender de §14 : positions des BDC rattachées aux entités du registre, trois signaux
+    lus ensemble, tous fonds confondus, par groupe de l'émetteur et par date de bilan."""
+    rows = q(con, """SELECT * FROM measures WHERE measure IN ('bdc_fv_to_cost', 'bdc_pik_share', 'bdc_non_accrual_share')
+                     AND counterparty = 'none' AND breakdown_key LIKE 'all_bdc|%' ORDER BY subject, period_end, breakdown_key""")
+    if not rows:
+        return []
+    L = ["## Côté prêteur (BDC Data Sets)", ""]
+    L.append("Positions que les sociétés de développement d'affaires (BDC) publient dans leur portefeuille, rattachées "
+             "aux entités des groupes et aux contreparties que nomment leurs pièces, par dénomination légale entière ; une "
+             "position dont l'identifiant nomme aussi un autre émetteur n'est rattachée à personne. Vue `as_known` : le "
+             "portefeuille à la date du bilan du dépôt de chaque fonds. Les fonds privés et les banques ne publient rien "
+             "(`not_public`), et une balise absente ne prouve rien : un taux d'intérêt capitalisé ou un statut de "
+             "non-accumulation non balisé reste indéterminé, jamais nul. Juste valeur ÷ coût n'est pas une probabilité "
+             "de défaut, et des intérêts capitalisés peuvent être prévus dès l'origine : les trois signaux se lisent ensemble.")
+    L.append("")
+    L.append("| Groupe de l'émetteur | Date du bilan | Instrument | Positions | Coût | Juste valeur | Juste valeur ÷ coût | Part des intérêts capitalisés | Part sans accumulation d'intérêts |")
+    L.append("| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |")
+    by = defaultdict(dict)
+    for r in rows:
+        by[(r["subject"], r["period_end"], r["breakdown_key"].split("|", 1)[1])][r["measure"]] = r
+    for (subj, pe, cls), m in sorted(by.items()):
+        fv = m.get("bdc_fv_to_cost")
+        fl = json.loads(fv["flags"]) if fv and fv["flags"] else {}
+        n = fl.get("holdings")
+        L.append(f"| {group_label(subj)} | {pe} | {CLASS_FR.get(cls, cls)} | {T.n('measures', {'bdc_holdings': [subj, pe, cls]}, n) if n is not None else '—'} | "
+                 f"{T.m(fv, 'denominator') if fv and fv.get('denominator') is not None else '—'} | "
+                 f"{T.m(fv, 'numerator') if fv and fv.get('numerator') is not None else '—'} | "
+                 f"{T.m(fv, fmt='x') if fv else '—'} | {T.m(m['bdc_pik_share'], fmt='pct') if m.get('bdc_pik_share') else '—'} | "
+                 f"{T.m(m['bdc_non_accrual_share'], fmt='pct') if m.get('bdc_non_accrual_share') else '—'} |")
+    L.append("")
+    notes = []
+    for subj in sorted({k[0] for k in by if k[0].startswith("CP:")}):
+        m = q(con, """SELECT m.ref, min(m.common_control_start) AS cc, min(m.legal_date) AS ld FROM entities e
+                      JOIN entities m ON m.entity_id = e.entity_id AND m.record_kind = 'membership'
+                      WHERE e.record_kind = 'entity' AND e.normalized_name = ? AND m.ref NOT LIKE 'CP:%' GROUP BY 1""",
+              subj[3:])
+        for r in m:
+            notes.append(f"{group_label(subj)} appartient au groupe {group_label(r['ref'])}"
+                         + (f" en vue `revised` depuis le {r['cc']} (contrôle commun)" if r["cc"] else "")
+                         + (f", en vue `as_known` depuis le {r['ld']}" if r["ld"] else "")
+                         + " : avant cette date, la vue `as_known` le garde comme groupe propre.")
+    if notes:
+        L.append("Appartenances datées : " + " ".join(notes))
+        L.append("")
+    amb = q(con, "SELECT count(*) AS n FROM exclusions WHERE item_key LIKE 'lender:%' AND reason = 'pending_entity'")[0]["n"]
+    L.append(f"Identifiants de position écartés parce qu'ils nomment deux émetteurs : "
+             f"{T.n('exclusions', {'lender_ambiguous': True}, amb)}.")
     L.append("")
     return L
 
@@ -614,6 +691,22 @@ def delta(con, as_of, stats):
              "13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).")
     L.append(f"- Durée de l'assemblage : {stats.get('seconds', 0)} s ; lecture : voir le journal ci-dessus.")
     L.append("")
+    lend = q(con, """SELECT measure, status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures
+                     WHERE measure LIKE 'bdc_%' GROUP BY 1, 2, 3 ORDER BY 1, 2, 3""")
+    if lend:
+        L.append("## Rendement du bloc lender (§14)")
+        L.append("")
+        hf = q(con, "SELECT count(*) AS n, count(DISTINCT accession) AS a, count(DISTINCT cik) AS b FROM facts WHERE source = 'bdc_num'")[0]
+        L.append(f"- Faits de BDC rattachés : {T.n('facts', {'bdc_facts': True}, hf['n'])}, dans "
+                 f"{T.n('facts', {'bdc_filings': True}, hf['a'])} dépôts de {T.n('facts', {'bdc_ciks': True}, hf['b'])} fonds.")
+        L.append("- Cellules par mesure, statut et motif : " + " ; ".join(
+            f"{r['measure']} {fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} "
+            f"{T.n('measures', {'bdc': [r['measure'], r['status'], r['nd']]}, r['n'])}" for r in lend) + ".")
+        grp = q(con, """SELECT DISTINCT subject FROM measures WHERE measure = 'bdc_fv_to_cost' AND counterparty = 'none'
+                        ORDER BY 1""")
+        sub_n = q(con, "SELECT count(*) AS n FROM exclusions WHERE item_key LIKE 'lender:subtotal:%'")[0]["n"]
+        L.append("- Groupes d'émetteurs couverts : " + ", ".join(group_label(r["subject"]) for r in grp) + ".")
+        L.append("")
     L.append("## Exclusions nouvelles, par motif")
     L.append("")
     for r in q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC"):

@@ -13,7 +13,7 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, links, load, measures, model, reader)
+               fsignals, lender, links, load, measures, model, reader)
 from .registry import MEASURES
 
 NONE = "none"
@@ -52,7 +52,7 @@ def insert(con, table, rows, cols=None):
     for c in cols:
         t = types[c]
         if t.startswith("DECIMAL"):
-            df[c] = df[c].map(lambda v: None if v is None or (isinstance(v, float) and v != v) else str(v))
+            df[c] = df[c].map(lambda v: None if v is None or (isinstance(v, float) and v != v) or v == "" else str(v))
             sel.append(f"CAST({c} AS {t}) AS {c}")
         elif t in ("DATE", "TIMESTAMP"):
             df[c] = df[c].map(lambda v: None if v is None or (isinstance(v, float) and v != v) or v in ("none", "", "NaT")
@@ -132,6 +132,17 @@ def run(as_of):
 
     # 5. mesures de rang 1 tirées des faits (phase 1), puis mesures dimensionnelles
     cells = measures.group_measures(con, groups, as_of)
+    scope = cfg.get("scope") if isinstance(cfg.get("scope"), list) else []
+    lender_excl = []
+    if "lender" in scope:
+        # bloc lender de §14 : positions des BDC rattachées aux entités du registre
+        hold, bnum = lender.matched_holdings(lender.legal_names(ent_rows), ent_rows)
+        insert(con, "facts", lender.bdc_facts(bnum))
+        cells += lender.measures_cells(hold, as_of)
+        lender_excl = lender.exclusions(as_of)
+        stats["lender"] = {"facts": len(bnum), "holdings": len(hold), "bdc": int(hold["bdc_cik"].nunique()) if len(hold) else 0,
+                           "groups": sorted(hold["group"].dropna().unique()) if len(hold) else [],
+                           "ambiguous_identifiers": len(lender.AMBIGUOUS)}
     cells += dimensional.useful_lives(con, groups, None, as_of)
     lnc = dimensional.leases_not_commenced(con, groups, {g: [(a, b) for a, b, _ in years_by_group[g]] for g in groups}, as_of)
     cells += lnc
@@ -231,7 +242,7 @@ def run(as_of):
     n_docs = insert(con, "documents", docs)
 
     # 15. exclusions
-    excl = list(obs_excl) + inv_excl + exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
+    excl = list(obs_excl) + inv_excl + lender_excl + exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
 
     # 16. export
@@ -399,16 +410,27 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
     def ex(kind, key, reason, detail, group=None, acc=None, ck=None):
         out.append({"exclusion_key": f"{reason}:{key}", "item_kind": kind, "item_key": key, "reason": reason,
                     "detail": detail, "group_id": group, "accession": acc, "content_key": ck, "as_of": as_of})
+    sc = config.load().get("scope")
+    text_open = isinstance(sc, list) and "text" in sc
     seen = set()
     for b in catalog:
         if b["content_key"] in seen:
             continue
         seen.add(b["content_key"])
-        if b["block_kind"] == "exhibit_body" and b["content_key"] not in read_cks:
+        if b["content_key"] in read_cks:
+            continue
+        if b["block_kind"] == "exhibit_body" and not text_open:
             ex("block", b["content_key"], "financial_parties_only",
                f"{b.get('exhibit_type')} {b.get('document')} : parties non déposantes établissements financiers seulement (en-tête lu)",
                b["group_id"], b["accession"], b["content_key"])
-        elif b["content_key"] not in read_cks:
+        elif b["block_kind"] == "exhibit_body":
+            ex("block", b["content_key"], "not_processed",
+               f"{b.get('exhibit_type')} {b.get('document')} : corps arrêté à l'en-tête au premier passage, bloc text de §14 non encore lu",
+               b["group_id"], b["accession"], b["content_key"])
+        elif b.get("signal_class") == 3:
+            ex("block", b["content_key"], "not_processed", f"{b['block_kind']} : bloc text de §14 non encore lu",
+               b["group_id"], b["accession"], b["content_key"])
+        else:
             ex("block", b["content_key"], "not_processed", "bloc de la tranche non lu", b["group_id"], b["accession"],
                b["content_key"])
     for acc in sorted(failed):
@@ -426,10 +448,11 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
            "premier dépôt après le début de la période de lecture, aucun prédécesseur (plan.md)", g)
     ex("aggregate", "datacenter_securitizations", "not_public",
        "couche titrisée des datacenters : selon une réponse du personnel de la SEC du 29 juillet 2026, ces titres ne sont pas des asset-backed securities ; non documentable à la ligne (§5.2)")
-    text_out = ("notes d'investissements, de dette, de baux et d'engagements ; texte autour des faits de concentration ; "
-                "8-K items 2.01 et 2.03 (bloc text de §14)")
-    for g in p0["groups"]:
-        ex("group", f"{g}:text_outside_first_pass", "not_processed", text_out, g)
+    if not text_open:
+        text_out = ("notes d'investissements, de dette, de baux et d'engagements ; texte autour des faits de concentration ; "
+                    "8-K items 2.01 et 2.03 (bloc text de §14)")
+        for g in p0["groups"]:
+            ex("group", f"{g}:text_outside_first_pass", "not_processed", text_out, g)
     return out
 
 

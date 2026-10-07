@@ -115,6 +115,29 @@ def build(as_of, used_accessions=None, failed=None):
                      "sha256": cache.sha256(data), "size_bytes": len(data), "cache_path": str(rel),
                      "fetched_as_of": as_of, "amends_accession": None, "parse_state": "parsed",
                      "normalizer_version": None, "classification_note": None})
+    # jeux de données de la SEC (bloc lender de §14) : page, readme et archives mensuelles
+    for p in sorted((root / "other" / "bdc").rglob("*.zst")):
+        rel = p.relative_to(root)
+        data = cache.read(p)
+        name = rel.name[:-4]
+        if rel.parts[-2] == "archives":
+            kind, url = "dataset_archive", ("https://www.sec.gov/files/datastandardsinnovation/data/"
+                                            "business-development-company-bdc-data-sets/" + name)
+        elif name.endswith(".pdf"):
+            kind, url = "web_page", "https://www.sec.gov/files/bdc_readme.pdf"
+        else:
+            kind, url = "web_page", "https://www.sec.gov/data-research/sec-markets-data/bdc-data-sets"
+        rows.append({"doc_key": "other/" + "/".join(rel.parts[1:])[:-4], "resource_kind": kind, "url": url,
+                     "cik": None, "group_id": None, "accession": None, "document": name, "sgml_type": None,
+                     "sgml_description": None, "form": None, "items": None, "filing_date": None,
+                     "acceptance_datetime": None, "report_date": None, "knowledge_date": None,
+                     "filing_status": "filed" if kind == "dataset_archive" else None, "incorporated_by_reference": None,
+                     "doc_class": "financial_statements" if kind == "dataset_archive" else "inventory",
+                     "assurance_level": "not_applicable", "tier": None, "sha256": cache.sha256(data),
+                     "size_bytes": len(data), "cache_path": str(rel), "fetched_as_of": as_of,
+                     "amends_accession": None, "parse_state": "parsed", "normalizer_version": None,
+                     "classification_note": "BDC Data Sets, millésime gardé (rafraîchissement de septembre 2026)"
+                     if kind == "dataset_archive" else None})
     for p in sorted((root / "taxonomies").rglob("*.zst")):
         rel = p.relative_to(root)
         data = cache.read(p)

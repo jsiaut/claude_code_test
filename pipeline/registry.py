@@ -18,7 +18,8 @@ ENUMS = {
                   "pointer", "governance", "non_edgar", "inventory", NONE],
     "resource_kind": ["api_tickers", "api_submissions", "api_companyfacts", "filing_index",
                       "sgml_header", "xbrl_zip", "instance", "linkbase", "schema", "metalinks",
-                      "filing_summary", "primary_document", "exhibit", "taxonomy_package"],
+                      "filing_summary", "primary_document", "exhibit", "taxonomy_package",
+                      "dataset_archive", "web_page"],
     "parse_state": ["parsed", "parse_failed", "not_parsed"],
     # §2.4 contrepartie
     "counterparty_evidence": ["named", "derivable", "anonymous", NONE],
@@ -142,7 +143,10 @@ ENUMS = {
                           "duplicate_of_other_block", "cannot_describe_in_schema", NONE],
     "block_kind": ["related_party_note", "item_404", "item_9a", "item_4_10q", "going_concern",
                    "item_8k_101", "item_8k_102", "item_8k_303", "item_8k_801",
-                   "exhibit_header", "exhibit_body", "spacex_annual_note"],
+                   "exhibit_header", "exhibit_body", "spacex_annual_note",
+                   # bloc `text` de §14
+                   "investment_note", "debt_note", "lease_note", "commitments_note", "concentration_text",
+                   "item_8k_201", "item_8k_203"],
     "signal": ["material_weakness", "going_concern", "covenant_amendment", "covenant_waiver",
                "covenant_breach", "capacity_contract_termination", "auditor_change",
                "nonreliance", "pledged_assets", "contract_termination_other", NONE],
@@ -237,6 +241,10 @@ MEASURES = {
     "rpo_beyond_12m": (2, [NONE], "instant", "6.2"),
     "capex_to_cfo": (1, ["with", "without"], "quarter", "6.2"),
     "lever_restatement": (2, ["published", "restated", "difference"], "fiscal_year", "6.4"),
+    # §14 côté prêteur (bloc lender) : trois signaux lus ensemble
+    "bdc_fv_to_cost": (2, [NONE], "instant", "14"),
+    "bdc_pik_share": (2, [NONE], "instant", "14"),
+    "bdc_non_accrual_share": (2, [NONE], "instant", "14"),
     # annexes
     "annex_e_outcome": (1, [NONE], "fiscal_year", "E"),
     "fragility_event": (1, [NONE], "quarter", "F"),
