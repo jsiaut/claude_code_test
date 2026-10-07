@@ -33,7 +33,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Requêtes : 3 741 au journal, dont 3 734 réussies, 1 539 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-07T11:54:33.106+00:00.
 - Blocs lus : 1 133 sur 1 350 clés de contenu ; par item de 8-K : 1.01 92, 1.02 11, 3.03 9, 8.01 347 ; pièces arrêtées à leur en-tête : EX-10 52, EX-4 165.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 271 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 273 s ; lecture : voir le journal ci-dessus.
 
 ## Exclusions nouvelles, par motif
 
@@ -42,10 +42,10 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - `pending_entity` : 48
 - `not_processed` : 11
 - `submitted_draft` : 8
-- `parse_failed` : 1
 - `history_left_censored` : 1
 - `invalid_aggregate` : 1
 - `not_public` : 1
+- `parse_failed` : 1
 
 ## Décisions et variantes nouvelles
 
@@ -73,6 +73,8 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0022 — Dénomination légale complète.
 - D-0023 — Contrôles par vue.
 - D-0024 — C8, C11 et C12.
+- D-0025 — Concentration : un seul dépôt par période.
+- D-0026 — Trimestres d'un exercice en cours et dates des clés.
 
 ## Critères des annexes E et F
 
