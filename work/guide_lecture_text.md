@@ -116,8 +116,10 @@ champ est refusé) :
 - « up to » → `up_to` ; « approximately » → `approximately` ; « at least » → `at_least`.
 - Période : `period_start` / `period_end` pour un flux, `period_end` seul pour un solde à une
   date, `event_date` pour un événement daté. Mets-les dès qu'ils sont déterminables.
-- Une date que le texte n'écrit pas (« May 2023 », « upon completion of the merger ») reste
-  vide, avec le texte dans `note` : elle ne se prend pas dans un fait balisé. Un total balisé
+- Un jour que le texte n'écrit pas ne se prend pas dans un fait balisé. Un mois ou une année
+  écrits (« In May 2023 », « In 2024 ») donnent une période sur ce mois ou cette année
+  (`period_start` / `period_end`), pas une `event_date` ; une date seulement relative (« upon
+  completion of the merger ») reste vide, avec le texte dans `note`. Un total balisé
   (remboursements de l'exercice, par exemple) ne s'attribue pas à un instrument que le texte ne
   chiffre pas, même si les valeurs coïncident.
 
