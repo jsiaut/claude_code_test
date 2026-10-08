@@ -181,12 +181,18 @@ les montants payés à des vendeurs nommés ne sont pas des arêtes. 2.03 : obli
 nouvelle — `financing` / `loan_or_facility`, prêteur → groupe, montant en principal,
 `stage` `drawn_or_paid` (émission) ou `available` (facilité), échéance dans `note`.
 
-**Corps des EX-10.** Contrats entre le groupe et des établissements financiers :
-parties (`party_role`, `party_is_financial_institution`), montant des engagements
-(`commitment_cap`), clauses financières (niveaux de ratio : `signal` `covenant_amendment`
-seulement si la pièce modifie une clause ; sinon décris le covenant dans une observation sans
-signal, `note` avec le niveau), sûretés (`pledged_assets` true quand des actifs sont nantis),
-garanties (`credit_support`), cas de défaut. Lis tout le texte servi, morceau par morceau.
+**Corps des EX-10.** Contrats entre le groupe et des établissements financiers, lus en entier,
+morceau par morceau (les lignes s'ajoutent au fichier après chaque morceau). L'instrument :
+`financing` / `loan_or_facility`, prêteurs → emprunteur, engagement total en `commitment_cap`,
+date du contrat, échéance et marge en `note`, l'agent administratif en `payer`
+(`administrative_agent`) ; les banques du syndicat ne se listent pas une à une. Une ligne par
+clause financière chiffrée (niveau en `note`, sans signal ; `covenant_amendment` ou
+`covenant_waiver` seulement si la pièce modifie ou lève une clause). Sûretés : `pledged_assets`
+true quand le contrat crée une sûreté (actifs décrits en `note`). Garanties : `credit_support`,
+garant → emprunteur, une ligne par garant nommé. Une ligne pour chaque partie qui n'est ni une
+banque ni un fonds de crédit (fournisseur, client, groupe de la liste), et pour un contrat client
+nommé dans les sûretés. Cas de défaut notables en `note`. Capped call ou couverture : observation
+sans famille, contrepartie nommée, termes en `note`.
 
 **Immobilisations et estimations (`lever_note`).** Leviers de §6.1 qui ne se lisent que dans
 le texte. Le principal : un **changement d'estimation de durée d'utilité** (ou de valeur
