@@ -107,6 +107,7 @@ entity_aliases:
   - {alias: "Xilinx", of: "Xilinx, Inc.", decision: D-0021, block: 37a0c2a01788d041d8680a885e8d58dcb8497090b99fec7f26a7adb54418da11, accession: 0000002488-22-000026, quote: "Xilinx, Inc. (\"Xilinx\")"}
   - {alias: "Inphi", of: "Inphi Corporation", decision: D-0021, block: 5389b2043bb52457dda5954e6ee683ce2a1fff97b27644cc11d1d9d75aa48f4c, accession: 0001193125-21-147951, quote: "Inphi Corporation (\"Inphi\")"}
   - {alias: "Marvell Technology", of: "Marvell Technology, Inc.", decision: D-0021, block: 5389b2043bb52457dda5954e6ee683ce2a1fff97b27644cc11d1d9d75aa48f4c, accession: 0001193125-21-147951, quote: "Marvell Technology, Inc. (\"MTI\")"}
+  - {alias: "Maui HoldCo, Inc.", of: "Marvell Technology, Inc.", decision: D-0032, block: a027085f1e17060a43fbc0c54653e1bc140de3fb7bec02a77fe5449792ea829b, accession: 0001193125-21-123305, quote: "Marvell Technology, Inc. (f/k/a Maui HoldCo, Inc.), a Delaware corporation (\"Marvell Technology\")"}
   - {alias: "OpenAI", of: "LAB:OPENAI", decision: D-0021, block: 5d0931cd4f5232639347d9d3635fa149009dcbb5261431752bf99537218ff1bb, accession: 0001193125-25-216497, quote: "OpenAI OpCo, LLC (\"OpenAI\")"}
   - {alias: "Anthropic", of: "LAB:ANTHROPIC", decision: D-0021, block: 46b1cfb8909d9aa57c6317242f0c846d1e2eda719fb95c8e6b711761c34c9e0b, accession: 0001193125-26-144028, quote: "Anthropic PBC (\"Anthropic\")"}
 own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
