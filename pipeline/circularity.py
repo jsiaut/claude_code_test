@@ -670,7 +670,7 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
             out.append(cell("counterparty_exposure", s, None, t, "as_known", as_of, counterparty=c,
                             status="not_determinable", nd_reason="not_disclosed" if done else "not_processed",
                             flags={"wrong_way": wrong_way,
-                                   "basis": "aucun montant d'exposition publié dans les dépôts lus du fournisseur" if done
+                                   "basis": "aucun montant d'exposition relevé dans les dépôts lus du fournisseur" if done
                                             else "aucun montant d'exposition lu ; notes d'investissements hors tranche"}))
             continue
         for (blk, basis, cat), ls in sorted(lines.items()):

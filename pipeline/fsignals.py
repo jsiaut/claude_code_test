@@ -208,7 +208,11 @@ def counterparty_financing(groups, quarters_by_group, edges, measures_df, as_of,
                 v = fcf - sum((Decimal(str(l["amount"])) for l in gq), Decimal(0)) + \
                     sum((Decimal(str(l["amount"])) for l in bq), Decimal(0))
                 done = g in text_done
+                kds = [str(r.iloc[0]["knowledge_date"])] if r.iloc[0].get("knowledge_date") not in (None, "") and \
+                    not pd.isna(r.iloc[0].get("knowledge_date")) else []
+                kds += [str(_kd) for _kd in (l.get("knowledge_date") for l in gq + bq) if _kd]
                 out.append(cell("fcf_after_counterparty_financing", g, ps, pe, view, as_of, value=v, unit="USD",
+                                knowledge_date=max(kds) if kds else None,
                                 status="computed" if done else "partial", nd_reason=None if done else "not_processed",
                                 coverage="observed" if done else "not_processed",
                                 flags={"fcf_basic_lineage": r.iloc[0]["lineage"],
@@ -285,7 +289,9 @@ def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_g
             # F2 : fcf_after_counterparty_financing négatif (calculable seulement si complet)
             f2 = get("fcf_after_counterparty_financing", pe)
             if f2 is not None and f2["status"] == "computed":
-                ev("F2", "computed", "event" if Decimal(str(f2["value"])) < 0 else "no_event")
+                kd2 = f2["knowledge_date"] if f2.get("knowledge_date") is not None and not pd.isna(f2.get("knowledge_date")) else None
+                ev("F2", "computed", "event" if Decimal(str(f2["value"])) < 0 else "no_event", kd=kd2,
+                   flags={"lineage": f2["lineage"]} if f2.get("lineage") is not None and not pd.isna(f2.get("lineage")) else None)
             elif f2 is not None and f2["status"] == "not_determinable":
                 ev("F2", "not_determinable", nd=f2["nd_reason"] or "term_missing",
                    flags={"basis": "flux après financement des contreparties indéterminé"})

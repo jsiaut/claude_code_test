@@ -38,7 +38,7 @@ ND_FR = {
     "annual_only": "annuel seulement", "pending_entity": "entité non confirmée", "blocked_overlap": "chevauchement non résolu",
     "out_of_first_pass": "hors du premier passage"}
 VALUE_FR = {"no_event": "sans événement", "event": "événement", "active": "actif", "lapsed": "échu",
-            "unknown": "inconnu", "never": "jamais", "searched_none_found": "recherche complète, rien trouvé", "supported": "étayé", "refuted": "réfuté", "indeterminate": "indéterminé",
+            "unknown": "inconnu", "never": "jamais documenté", "searched_none_found": "recherche complète, rien trouvé", "supported": "étayé", "refuted": "réfuté", "indeterminate": "indéterminé",
             "compatible": "compatible", "descriptive": "descriptif", "not_supported": "non étayé",
             "computed": "calculée", "partial": "partielle", "bounded": "bornée", "not_determinable": "indéterminée",
             "not_applicable": "sans objet", "commitment": "engagement", "payment": "paiement",
@@ -100,10 +100,11 @@ class Tokens:
 
 
 def load(con, as_of):
-    # extension `text` ouverte : ce qui manque n'est plus « non traité au premier passage » mais pas encore lu
+    # extension `text` ouverte : ce qui manque n'est plus « non traité au premier passage » ; une fois le texte
+    # lu, il ne reste de non traité que ce qui relève d'un bloc de §14 fermé (les chemins de E.6, par exemple)
     sc = config.load().get("scope")
     if isinstance(sc, list) and "text" in sc:
-        ND_FR["not_processed"] = "pas encore lu"
+        ND_FR["not_processed"] = "non traité (bloc de §14 non lu ou fermé)"
     t = config.ROOT / "tables"
     for name in ("measures", "controls", "exclusions", "links", "observations", "entities", "facts", "documents"):
         con.execute(f"CREATE OR REPLACE VIEW {name} AS SELECT * FROM '{t / (name + '.parquet')}'")
@@ -293,8 +294,12 @@ def synthesis(con, as_of, stats):
                  + ("Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). " if "lender" in blocks_open else "")
                  + ("Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de "
                     "concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur "
-                    "en-tête restent exclus, §14 ne les rouvrant pas) ; ce qui n'est "
-                    "pas encore lu reste « non traité », bloc par bloc dans `exclusions`. " if "text" in blocks_open else "")
+                    "en-tête restent exclus, §14 ne les rouvrant pas) ; " + (
+                        "tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». "
+                        if not q(con, """SELECT 1 FROM exclusions WHERE reason = 'not_processed' AND item_kind = 'block'
+                                         LIMIT 1""") else
+                        "ce qui n'est pas encore lu reste « non traité », bloc par bloc dans `exclusions`. ")
+                    if "text" in blocks_open else "")
                  + "Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.")
     e7 = q(con, "SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'")
     if e7:
@@ -1084,9 +1089,9 @@ def text_yield_section(con, T, stats):
         L.append("- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : " + ", ".join(
             f"{VALUE_FR.get(r['v'], r['v'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} "
             f"{T.n('measures', {'financed_status_now': [r['v'], r['nd']]}, r['n'])}" for r in fs) +
-            ". « Jamais » exige une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, "
-            "du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que "
-            "la découverte (§14) n'est pas ouverte.")
+            ". « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : "
+            "tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre "
+            "laisse la recherche incomplète tant que la découverte (§14) n'est pas ouverte.")
     # ce qu'une extension peut encore changer (§11.1, E.7) : motifs des cellules de rang 1 non calculées
     why = q(con, f"""SELECT nd_reason AS nd, count(*) AS n FROM measures WHERE measure IN ({','.join('?' * len(tiers))})
                      AND status IN ('not_determinable', 'partial') AND nd_reason IS NOT NULL
