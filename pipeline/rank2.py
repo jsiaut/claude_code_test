@@ -482,24 +482,33 @@ def depreciation_lever(cells, obs, as_of):
     lines = [o for o in obs if o.get("kind") == "observation" and o["validation_state"] == "valid"
              and o.get("block_kind") == "lever_note" and o.get("event_type") == "measurement_change"
              and o.get("amount") is not None and o.get("unit") == "USD"]
-    seen = set()
-    for o in lines:
+    by = {}
+    for o in sorted(lines, key=lambda o: (str(o.get("knowledge_date")), o["obs_key"])):
         m = LEVER_NOTE_RX.match(o.get("note") or "")
         ps, pe = o.get("period_start"), o.get("period_end")
         if not m or not ps or not pe:
             continue
         key = (o["group_id"], ps, pe, o.get("instrument_key") or o["obs_key"])
-        if key in seen:
-            continue
-        seen.add(key)
-        sign = Decimal(1) if m.group(1) == "+" else Decimal(-1)
-        on_income = m.group(2).lower().startswith("r")
-        v = sign * Decimal(str(o["amount"])) * (1 if on_income else -1)
-        term = {"value": Decimal(str(o["amount"])), "fact_key": "obs:" + o["obs_key"],
-                "knowledge_date": o.get("knowledge_date"), "tier": o.get("tier"), "is_tagged": False}
-        out.append(cell("depreciation_life_change_effect", o["group_id"], ps, pe, "as_known", as_of,
-                        breakdown=o.get("instrument_key") or NONE, value=v, unit="USD", terms=[term],
-                        flags={"effect_on_income": str(v), "note": o.get("note"), "observation": o["obs_key"],
+        by.setdefault(key, []).append((m, o))
+    for (g, ps, pe, ik), items in sorted(by.items()):
+        # l'effet sur le résultat opérationnel l'emporte ; à défaut, les effets sur les dotations,
+        # parts distinctes (coût des ventes, charges opérationnelles) additionnées une fois chacune :
+        # le même effet relu dans un autre dépôt ne compte pas deux fois
+        op = [(m, o) for m, o in items if m.group(2).lower().startswith("r")]
+        parts = {}
+        for m, o in ([op[0]] if op else items):
+            parts.setdefault((m.group(1) == "+", m.group(2).lower().startswith("r"), str(o["amount"])), (m, o))
+        v, terms, obs_keys = Decimal(0), [], []
+        for (plus, on_income, _), (m, o) in sorted(parts.items()):
+            amt = Decimal(str(o["amount"]))
+            v += (1 if plus else -1) * amt * (1 if on_income else -1)
+            terms.append({"value": amt, "fact_key": "obs:" + o["obs_key"], "knowledge_date": o.get("knowledge_date"),
+                          "tier": o.get("tier"), "is_tagged": False})
+            obs_keys.append(o["obs_key"])
+        out.append(cell("depreciation_life_change_effect", g, ps, pe, "as_known", as_of,
+                        breakdown=ik if not str(ik).count("/") else NONE, value=v, unit="USD", terms=terms,
+                        flags={"effect_on_income": str(v), "basis": "résultat opérationnel" if op else
+                               ("dotations, " + str(len(parts)) + " part(s)"), "observations": obs_keys,
                                "judgment_sensitive": True}))
     return out
 
