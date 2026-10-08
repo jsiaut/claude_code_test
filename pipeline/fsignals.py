@@ -3,6 +3,9 @@
 
 Une source non lue ne passe jamais pour un trimestre sans événement : chaque cellule dit
 si sa source a été lue (computed), lue en partie (partial, not_processed) ou non (not_determinable).
+Une fois le texte d'un groupe lu en entier (bloc text de §14), ce qui reste indéterminé l'est
+parce que la pièce n'existe pas (not_disclosed : pas de rapport, pas de note de dette), jamais
+parce qu'elle attend une lecture.
 """
 import datetime as dt
 import json
@@ -95,7 +98,22 @@ def _read_for(read_q, g, pe):
     return any(gg == g and d is not None and abs((d - pe).days) <= 7 for gg, d in read_q)
 
 
-def covenant_signals(groups, quarters_by_group, obs, as_of, report_end_of=None):
+def _unread_debt_note(g, q, text_done, filings, debt_note_accs):
+    """Pourquoi la note de dette du trimestre n'est pas lue : (motif, base). Une fois le texte du
+    groupe lu en entier (bloc text de §14), il ne reste que deux cas, tous deux non publiés : pas
+    de rapport périodique pour le trimestre, ou un rapport sans note de dette."""
+    if g not in text_done or filings is None:
+        return "not_processed", None
+    reps = reports_by_quarter(filings, g, q)
+    if reps.empty:
+        return "not_disclosed", "aucun rapport périodique pour ce trimestre"
+    if not set(reps["accessionNumber"]) & debt_note_accs:
+        return "not_disclosed", "le rapport du trimestre ne contient pas de note de dette ; son texte est lu"
+    return "not_processed", None
+
+
+def covenant_signals(groups, quarters_by_group, obs, as_of, report_end_of=None, text_done=frozenset(),
+                     filings=None, debt_note_accs=frozenset()):
     """sig_covenant_events : manquements, dérogations et amendements de clauses financières.
     Lus dans les items de 8-K et leurs pièces (tranche complète) et, si le bloc `text` est
     ouvert, dans la note de dette de chaque rapport périodique : un trimestre sans événement
@@ -119,13 +137,16 @@ def covenant_signals(groups, quarters_by_group, obs, as_of, report_end_of=None):
                 out.append(cell("sig_covenant_events", g, ps, pe, "as_known", as_of, value_text="no_event", status="computed",
                                 flags={"basis": "items 1.01, 1.02, 3.03 et 8.01 des 8-K et leurs pièces, note de dette du rapport lue"}))
             else:
+                nd, why = _unread_debt_note(g, q, text_done, filings, debt_note_accs)
                 out.append(cell("sig_covenant_events", g, ps, pe, "as_known", as_of, value_text="no_event", status="partial",
-                                nd_reason="not_processed", coverage="not_processed",
-                                flags={"basis": "items 1.01, 1.02, 3.03 et 8.01 des 8-K et leurs pièces lus ; note de dette de ce trimestre non lue"}))
+                                nd_reason=nd, coverage=nd,
+                                flags={"basis": "items 1.01, 1.02, 3.03 et 8.01 des 8-K et leurs pièces lus ; "
+                                                + (why or "note de dette de ce trimestre non lue")}))
     return out
 
 
-def pledged_signals(groups, quarters_by_group, obs, as_of, report_end_of):
+def pledged_signals(groups, quarters_by_group, obs, as_of, report_end_of, text_done=frozenset(), filings=None,
+                    debt_note_accs=frozenset()):
     """sig_pledged_assets : actifs nantis et trésorerie restreinte au profit de prêteurs (§4.5),
     lus dans les notes de dette et les contrats ; un trimestre dont la note de dette n'est pas lue
     reste indéterminé, jamais « sans nantissement »."""
@@ -153,14 +174,16 @@ def pledged_signals(groups, quarters_by_group, obs, as_of, report_end_of):
                 out.append(cell("sig_pledged_assets", g, ps, pe, "as_known", as_of, value_text="no_event", status="computed",
                                 flags={"basis": "note de dette du rapport lue, aucun nantissement relevé"}))
             else:
+                nd, why = _unread_debt_note(g, q, text_done, filings, debt_note_accs)
                 out.append(cell("sig_pledged_assets", g, ps, pe, "as_known", as_of, status="not_determinable",
-                                nd_reason="not_processed", coverage="not_processed"))
+                                nd_reason=nd, coverage=nd, flags={"basis": why} if why else None))
     return out
 
 
-def counterparty_financing(groups, quarters_by_group, edges, measures_df, as_of):
+def counterparty_financing(groups, quarters_by_group, edges, measures_df, as_of, text_done=frozenset()):
     """fcf_after_counterparty_financing = fcf_basic − financements en numéraire accordés à des
-    contreparties nommées + remboursements reçus ; partial au premier passage."""
+    contreparties nommées + remboursements reçus ; partial tant que le texte du groupe n'est pas
+    lu en entier (notes d'investissements du bloc text de §14), computed ensuite."""
     out = []
     m = measures_df[(measures_df["measure"] == "fcf_basic")]
     for g in groups:
@@ -184,12 +207,15 @@ def counterparty_financing(groups, quarters_by_group, edges, measures_df, as_of)
                 bq = [l for l in back if l["_date"] and ps <= l["_date"] <= pe]
                 v = fcf - sum((Decimal(str(l["amount"])) for l in gq), Decimal(0)) + \
                     sum((Decimal(str(l["amount"])) for l in bq), Decimal(0))
+                done = g in text_done
                 out.append(cell("fcf_after_counterparty_financing", g, ps, pe, view, as_of, value=v, unit="USD",
-                                status="partial", nd_reason="not_processed", coverage="not_processed",
+                                status="computed" if done else "partial", nd_reason=None if done else "not_processed",
+                                coverage="observed" if done else "not_processed",
                                 flags={"fcf_basic_lineage": r.iloc[0]["lineage"],
                                        "financing_given": [l["link_key"] for l in gq],
                                        "repayments_received": [l["link_key"] for l in bq],
-                                       "basis": "financements lus dans la tranche ; notes d'investissements hors tranche"}))
+                                       "basis": "financements nommés lus dans la tranche et le bloc text" if done else
+                                                "financements lus dans la tranche ; notes d'investissements hors tranche"}))
     return out
 
 
@@ -221,7 +247,7 @@ def exposure_from_observations(obs, as_of):
 
 
 def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_group, filings, read_cks,
-                     blocks_by_acc, as_of):
+                     blocks_by_acc, as_of, text_done=frozenset()):
     """Annexe F, F1 à F10 : une cellule par groupe, observable et trimestre, jamais de somme."""
     out = []
     m = measures_df
@@ -260,6 +286,9 @@ def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_g
             f2 = get("fcf_after_counterparty_financing", pe)
             if f2 is not None and f2["status"] == "computed":
                 ev("F2", "computed", "event" if Decimal(str(f2["value"])) < 0 else "no_event")
+            elif f2 is not None and f2["status"] == "not_determinable":
+                ev("F2", "not_determinable", nd=f2["nd_reason"] or "term_missing",
+                   flags={"basis": "flux après financement des contreparties indéterminé"})
             else:
                 ev("F2", "not_determinable", nd="not_processed", coverage="not_processed",
                    flags={"basis": "flux après financement des contreparties partiel : notes d'investissements hors tranche"})
@@ -272,6 +301,12 @@ def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_g
             if hits:
                 ev("F3", "computed", "event", flags={"observations": [o["obs_key"] for o in hits]},
                    kd=str(min(_d(o["knowledge_date"]) for o in hits)))
+            elif g in text_done and not reports_by_quarter(filings, g, q).empty:
+                ev("F3", "computed", "no_event",
+                   flags={"basis": "garanties et soutiens lus dans les 8-K, leurs pièces et les notes d'engagements et de dette"})
+            elif g in text_done:
+                ev("F3", "partial", "no_event", nd="not_disclosed", coverage="not_disclosed",
+                   flags={"basis": "8-K et pièces lus ; aucun rapport périodique pour ce trimestre"})
             else:
                 ev("F3", "partial", "no_event", nd="not_processed", coverage="not_processed",
                    flags={"basis": "garanties et soutiens lus dans les 8-K de la tranche ; notes d'engagements hors tranche"})

@@ -38,7 +38,7 @@ ND_FR = {
     "annual_only": "annuel seulement", "pending_entity": "entité non confirmée", "blocked_overlap": "chevauchement non résolu",
     "out_of_first_pass": "hors du premier passage"}
 VALUE_FR = {"no_event": "sans événement", "event": "événement", "active": "actif", "lapsed": "échu",
-            "unknown": "inconnu", "supported": "étayé", "refuted": "réfuté", "indeterminate": "indéterminé",
+            "unknown": "inconnu", "never": "jamais", "searched_none_found": "recherche complète, rien trouvé", "supported": "étayé", "refuted": "réfuté", "indeterminate": "indéterminé",
             "compatible": "compatible", "descriptive": "descriptif", "not_supported": "non étayé",
             "computed": "calculée", "partial": "partielle", "bounded": "bornée", "not_determinable": "indéterminée",
             "not_applicable": "sans objet", "commitment": "engagement", "payment": "paiement",
@@ -534,6 +534,19 @@ def lender_section(con, T):
     return L
 
 
+def LINK_FR(fl):
+    """Preuve de lien d'une paire (§3.4) : documenté, recherche complète sans pièce, ou recherche incomplète et pourquoi."""
+    le = fl.get("linkage_evidence")
+    if le == "documented_link":
+        return "documenté (" + ", ".join(fl.get("link_categories") or []) + ")"
+    if le == "searched_none_found":
+        return "non trouvé, recherche complète au sens de E.0"
+    why = {"search_incomplete": "le client peut déposer hors du périmètre, découverte (§14) non ouverte",
+           "parse_failed": "une archive de la période est illisible", "redacted": "une clause de la paire est caviardée",
+           "not_processed": "texte non lu"}.get(fl.get("search_reason") or "not_processed", fl.get("search_reason"))
+    return f"non trouvé, recherche incomplète ({why})"
+
+
 def circularity_section(con, T, groups):
     L = ["## Circularité, par paire", ""]
     L.append("Une paire réunit un groupe du périmètre et une contrepartie que ses pièces nomment, avec au moins une arête "
@@ -549,7 +562,7 @@ def circularity_section(con, T, groups):
         L.append(f"### {GROUP_NAMES.get(s, s)} → {group_label(cp)}")
         L.append("")
         L.append(f"- Conclusion : **{CONC_FR[c['value_text']]}** ; structure {STRUCT_FR.get(fl.get('edge_structure'), fl.get('edge_structure'))} ; "
-                 f"lien {'documenté (' + ', '.join(fl.get('link_categories') or []) + ')' if fl.get('linkage_evidence') == 'documented_link' else 'non trouvé, recherche incomplète au premier passage'} ; "
+                 f"lien {LINK_FR(fl)} ; "
                  f"{T.n('links', {'pair': [s, cp], 'edges': True}, len(fl.get('edges') or []))} "
                  f"{plural(len(fl.get('edges') or []), 'arête')}.")
         fs = q(con, """SELECT financing_policy, value_text, count(*) AS n, min(period_end) AS a, max(period_end) AS b
@@ -614,11 +627,16 @@ def circularity_section(con, T, groups):
             vp = one(con, "visible_pairs_count", g, pe)
             anon = (f"{T.m(an, fmt='pct')} [{T.m(an, 'value_lower', 'pct')} ; {T.m(an, 'value_upper', 'pct')}]"
                     if an and an.get("value_lower") is not None else (T.m(an, fmt='pct') if an else "—"))
-            L.append(f"| {GROUP_NAMES[g]} | {pe} | {T.m(nn, fmt='pct') if nn else '—'} (partiel) | {anon} | "
+            part = " (partiel)" if nn and nn["status"] == "partial" else ""
+            L.append(f"| {GROUP_NAMES[g]} | {pe} | {T.m(nn, fmt='pct') if nn else '—'}{part} | {anon} | "
                      f"{T.m(rs, fmt='pct') if rs else '—'} | {T.m(vp, fmt='count') if vp else '—'} |")
     L.append("")
-    L.append("Le revenu attribué à des clients nommés est une borne basse : le texte qui entoure les faits de concentration "
-             "n'est pas lu au premier passage. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).")
+    if conc_text_read(con):
+        L.append("Le texte qui entoure les faits de concentration est lu (bloc text de §14) : un client qui reste anonyme "
+                 "l'est dans les pièces elles-mêmes. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).")
+    else:
+        L.append("Le revenu attribué à des clients nommés est une borne basse : le texte qui entoure les faits de concentration "
+                 "n'est pas lu au premier passage. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).")
     L.append("")
     return L
 
@@ -696,9 +714,10 @@ def delta(con, as_of, stats):
              if an and an.get("value_lower") is not None and an["status"] == "bounded" else T.m(an, fmt='pct') if an else "—")
         return (f"{GROUP_NAMES.get(r['subject'], r['subject'])} (exercice clos le {r['period_end']}) : nommés "
                 f"{T.m(one(con, 'named_edge_coverage', r['subject'], r['period_end'], 'named'), fmt='pct')}, anonymes d'au moins 10 % {a}")
-    L.append("- Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (borne basse ; le texte autour "
-             "des faits de concentration n'est pas lu au premier passage), et part des clients anonymes : " +
-             " ; ".join(cov(r) for r in nec) + ".")
+    L.append("- Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (" +
+             ("le texte autour des faits de concentration est lu : l'anonymat est celui des pièces" if conc_text_read(con)
+              else "borne basse ; le texte autour des faits de concentration n'est pas lu au premier passage") +
+             "), et part des clients anonymes : " + " ; ".join(cov(r) for r in nec) + ".")
     q4 = ["financed_status", "documented_revenue_dependency", "investor_customer_revenue_share", "named_edge_coverage",
           "documented_pair_coverage", "customer_concentration_anonymous", "documented_backlog_dependency",
           "consideration_to_customer", "noncash_revenue_from_investees", "contract_coverage", "relationship_conclusion"]
@@ -979,6 +998,14 @@ def auditor_md(out):
     (out / "AUDITOR.md").write_text("# Consignes pour l'auditeur\n\n" + text + "\n", encoding="utf-8")
 
 
+def conc_text_read(con):
+    """Le texte autour des faits de concentration est lu pour tous les fournisseurs : chaque cellule
+    `named_edge_coverage` du terme `named` est calculée, plus aucune n'est partielle."""
+    r = q(con, """SELECT count(*) AS n FROM measures WHERE measure = 'named_edge_coverage' AND term = 'named'
+                  AND status = 'partial'""")
+    return r[0]["n"] == 0
+
+
 TEXT_KIND_FR = {"concentration_text": "paragraphes sur les clients", "investment_note": "notes d'investissements",
                 "item_8k_201": "8-K item 2.01", "item_8k_203": "8-K item 2.03", "debt_note": "notes de dette",
                 "lease_note": "notes de baux", "commitments_note": "notes d'engagements",
@@ -1004,8 +1031,9 @@ def text_yield_section(con, T, stats):
              f"({fr_num(Decimal(tot[3]) / Decimal(10**6), 1)} sur {fr_num(Decimal(tot[2]) / Decimal(10**6), 1)} millions de "
              "caractères) ; par type : " + " ; ".join(
                  f"{TEXT_KIND_FR[k]} {T.n('observations', {'text_read': k}, tb[k][1])}/{T.n('observations', {'text_catalog': k}, tb[k][0])}"
-                 for k in order) + ". Le reste est exclu bloc par bloc, motif « non traité » (`not_processed`), "
-             "du plus ancien au plus récent dans chaque type, et ouvre l'exécution suivante.")
+                 for k in order) + (". Le reste est exclu bloc par bloc, motif « non traité » (`not_processed`), "
+                                    "du plus ancien au plus récent dans chaque type, et ouvre l'exécution suivante."
+                                    if tot[1] < tot[0] else ". Aucun bloc du catalogue ne reste à lire."))
     lines = q(con, f"""SELECT kind, validation_state, count(*) AS n FROM observations WHERE pass_id >= ?
                        GROUP BY 1, 2 ORDER BY 1, 2""", first)
     obs = sum(r["n"] for r in lines if r["kind"] == "observation" and r["validation_state"] == "valid")
@@ -1048,6 +1076,27 @@ def text_yield_section(con, T, stats):
              f"{T.n('measures', {'annexF_events_now': True}, fe[0]['n'] if fe else 0)} ; issues de paire indéterminées "
              f"(E.1 et E.2) : {e7.get('indeterminate', '—')} sur {e7.get('outcomes', '—')} → "
              f"{T.n('measures', {'e7_indeterminate_now': True}, e7now['i'])} sur {T.n('measures', {'e7_outcomes_now': True}, e7now['n'])}.")
+    # statut « financé » : never devient possible une fois la recherche complète (§3.2, E.0)
+    fs = q(con, """SELECT coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures
+                   WHERE measure = 'financed_status' AND view = 'as_known' AND financing_policy = 'exposure_outstanding'
+                   GROUP BY 1, 2 ORDER BY 3 DESC""")
+    if fs:
+        L.append("- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : " + ", ".join(
+            f"{VALUE_FR.get(r['v'], r['v'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} "
+            f"{T.n('measures', {'financed_status_now': [r['v'], r['nd']]}, r['n'])}" for r in fs) +
+            ". « Jamais » exige une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, "
+            "du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que "
+            "la découverte (§14) n'est pas ouverte.")
+    # ce qu'une extension peut encore changer (§11.1, E.7) : motifs des cellules de rang 1 non calculées
+    why = q(con, f"""SELECT nd_reason AS nd, count(*) AS n FROM measures WHERE measure IN ({','.join('?' * len(tiers))})
+                     AND status IN ('not_determinable', 'partial') AND nd_reason IS NOT NULL
+                     GROUP BY 1 ORDER BY 2 DESC""", *tiers)
+    if why:
+        L.append("- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : " + " ; ".join(
+            f"{ND_FR.get(r['nd'], r['nd'])} {T.n('measures', {'rank1_reason_now': r['nd']}, r['n'])}" for r in why) +
+            ". Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche "
+            "incomplète » attend la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de "
+            "concentration étant lu.")
     for meas, label in (("sig_covenant_events", "Clauses financières"), ("sig_pledged_assets", "Actifs nantis")):
         rows = q(con, f"""SELECT status, coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n
                           FROM measures WHERE measure = ? AND view = 'as_known' GROUP BY 1, 2, 3 ORDER BY 1, 2, 3""", meas)

@@ -86,8 +86,10 @@ def evaluate(ev, cfg, groups_window, deadlines, as_of):
         if active_ext:
             if e["pieces"]:
                 o, why = "supported", None
+            elif e.get("search_complete"):
+                o, why = "not_supported", None      # recherche complète au sens de E.0, aucune pièce L1 à L5
             else:
-                o, why = "indeterminate", "search_incomplete"
+                o, why = "indeterminate", e.get("search_reason") or "search_incomplete"
             known, full = e["contract"]
             out.append(cell("annex_e_outcome", s, ext, as_of_d, "as_known", as_of, counterparty=c,
                             breakdown=bk("E1"), value_text=o, status="computed" if why is None else "not_determinable",
@@ -155,7 +157,8 @@ def evaluate(ev, cfg, groups_window, deadlines, as_of):
             out.append(cell("annex_e_outcome", s, ws, as_of_d, "as_known", as_of, counterparty=c,
                             breakdown=bk("E5"), value_text=o,
                             status="computed" if o == "supported" else "not_determinable",
-                            nd_reason=None if o == "supported" else "not_processed",
+                            nd_reason=None if o == "supported" else
+                                      ("not_disclosed" if e.get("s_text_done") else "not_processed"),
                             flags={"l3_pieces": [x["obs_key"] for x in l3], "unilateral": True}))
     # E.6 cycles : chemins de §14 non calculés au premier passage
     for s in sorted({k[0] for k in ev}):

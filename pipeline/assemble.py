@@ -176,6 +176,23 @@ def run(as_of):
     for b in blocks.values():
         blocks_by_acc.setdefault(b["accession"], []).append(b)
     read_cks = {p.stem for p in config.OBS_DIR.glob("*.jsonl") if not p.name.endswith(".rejected.jsonl")}
+    # groupes dont tout le texte du catalogue est lu, bloc text compris (§11.1, E.0) : un corps de
+    # pièce exclu avec son motif (financial_parties_only) ne compte pas comme non lu
+    text_open = isinstance(cfg.get("scope"), list) and "text" in cfg["scope"]
+    unread = {b["group_id"] for b in catalog if b["content_key"] not in read_cks
+              and not (b["block_kind"] == "exhibit_body" and not (text_open and reader.text_body(b)))}
+    text_done = frozenset(g for g in groups if text_open and g not in unread)
+    # une archive illisible laisse la recherche incomplète sur les trimestres dont la fenêtre de
+    # rétrospection de F (huit trimestres, §3.2) couvre sa période
+    lookback_days = 92 * cfg["thresholds"]["financed_lookback_quarters"]
+    failed_until = {}
+    for f in json.loads((config.DB_DIR / "phase1_failures.json").read_text()):
+        r = filings[filings["accessionNumber"] == f["accession"]]
+        if r.empty or not _d(r.iloc[0]["reportDate"]):
+            continue
+        g, until = r.iloc[0]["group_id"], _d(r.iloc[0]["reportDate"]) + dt.timedelta(days=lookback_days)
+        failed_until[g] = max(failed_until.get(g, until), until)
+    stats["text_done_groups"] = sorted(text_done)
     obs_by_ck = {}
     for o in valid:
         obs_by_ck.setdefault(o["content_key"], []).append(o)
@@ -183,8 +200,11 @@ def run(as_of):
     sig_cells += fsignals.observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_ck, read_cks,
                                            parsed, as_of)
     report_end_of = {a: _d(r) for a, r in zip(filings["accessionNumber"], filings["reportDate"]) if r}
-    sig_cells += fsignals.covenant_signals(groups, quarters_by_group, valid, as_of, report_end_of)
-    sig_cells += fsignals.pledged_signals(groups, quarters_by_group, valid, as_of, report_end_of)
+    debt_note_accs = frozenset(b["accession"] for b in catalog if b["block_kind"] == "debt_note")
+    sig_cells += fsignals.covenant_signals(groups, quarters_by_group, valid, as_of, report_end_of, text_done, filings,
+                                           debt_note_accs)
+    sig_cells += fsignals.pledged_signals(groups, quarters_by_group, valid, as_of, report_end_of, text_done, filings,
+                                          debt_note_accs)
     cells += rank2.lease_not_commenced(cells, valid, report_end_of, as_of)
     lever = rank2.depreciation_lever(cells, valid, as_of)
     cells += lever + rank2.lever_restatement(con, lever, as_of)
@@ -193,7 +213,7 @@ def run(as_of):
     # 7. flux après financement des contreparties, matrice d'exposition tirée du texte
     mdf = pd.DataFrame(cells)
     cells = [c for c in cells if c["measure"] != "fcf_after_counterparty_financing"]
-    cells += fsignals.counterparty_financing(groups, quarters_by_group, edges, mdf, as_of)
+    cells += fsignals.counterparty_financing(groups, quarters_by_group, edges, mdf, as_of, text_done)
     cells += fsignals.exposure_from_observations(valid, as_of)
 
     # 8. circularité : paires, statut financé, dépendances, couverture, exposition par contrepartie
@@ -209,10 +229,11 @@ def run(as_of):
                          and o["validation_state"] == "valid" and o["accession"] in acc_rd)
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
-                                       rev_notes_read=rev_read)
+                                       rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until)
     cells += pc
-    cells += circularity.coverage_cells(groups, cals, gw, revenue, conc_cells, named_conc, pairs, edges, as_of, ev)
-    cells += circularity.counterparty_exposure(pairs, ev, cals, as_of)
+    cells += circularity.coverage_cells(groups, cals, gw, revenue, conc_cells, named_conc, pairs, edges, as_of, ev,
+                                        text_done)
+    cells += circularity.counterparty_exposure(pairs, ev, cals, as_of, text_done)
     cells += annex_e.evaluate(ev, cfg, gw, deadlines, as_of)
     stats["pairs"] = {f"{s}->{c}": {"structure": e["structure"], "linkage": e["linkage"], "conclusion": e["conclusion"],
                                     "edges": len(e["pair"].edges),
@@ -226,7 +247,7 @@ def run(as_of):
     for o in valid:
         obs_by_group.setdefault(o["group_id"], []).append(o)
     cells += fsignals.fragility_events(groups, quarters_by_group, mdf, sig_cells, obs_by_group, filings, read_cks,
-                                       blocks_by_acc, as_of)
+                                       blocks_by_acc, as_of, text_done)
 
     # 10. invariants d'agrégat (§7.6) sur les sommes d'arêtes
     inv_excl = invariants(cells, edges, rels, reg)

@@ -3,8 +3,11 @@ sorties de couverture (§3.6) et exposition par contrepartie (§4.6).
 
 F(S, C, t) est une fonction pure sur les arêtes, à chaque fin de trimestre du fournisseur.
 Au premier passage, les notes d'investissements ne sont pas lues : `never` est impossible et
-F reste `unknown` (not_processed) tant qu'une pièce lue ne l'établit pas. L'absence n'est
-jamais un zéro ; aucun seuil de ratio ne déclenche seul une conclusion.
+F reste `unknown` (not_processed) tant qu'une pièce lue ne l'établit pas. Une fois lu tout le
+texte du fournisseur et, s'il dépose, du client (recherche complète au sens de E.0), F vaut
+`never` là où rien n'a jamais tenu ; sinon `unknown`, avec le motif de ce qui manque
+(search_incomplete pour un client qui peut déposer hors du périmètre, parse_failed, redacted).
+L'absence n'est jamais un zéro ; aucun seuil de ratio ne déclenche seul une conclusion.
 """
 import datetime as dt
 import json
@@ -100,12 +103,21 @@ def build_pairs(edges, groups):
             if s == c:
                 continue
             pairs.setdefault((s, c), Pair(s, c)).edges.append(l)
-    # une paire ne vit que si C est client de S, financé par S ou reçoit une contrepartie
+    # une paire ne vit que si C est client de S, financé par S ou reçoit une contrepartie ; une clôture
+    # (remboursement, résiliation, conversion, cession) suit le sens de la trésorerie (guide, §3) et ne
+    # fait jamais naître seule une paire où le déposant financerait son prêteur ou son bailleur (§3.1)
     keep = {}
     for k, p in pairs.items():
-        if p.com or p.fin or (p.mirror_fin and p.com):
+        if p.com or any(_opening(l) for l in p.fin) or (p.mirror_fin and p.com):
             keep[k] = p
     return keep
+
+
+CLOSING_EVENTS = ("repayment", "termination", "conversion", "disposal")
+
+
+def _opening(l):
+    return l["_obs"].get("event_type") not in CLOSING_EVENTS and l["stage"] not in ("settled", "terminated")
 
 
 # -- statut « financé » --------------------------------------------------------------
@@ -173,13 +185,47 @@ def financed_status(pair, quarters, cutoff_of, lookback, censored):
     return out
 
 
-def status_cell(s, c, q, view, as_of, policy, st, keys, censored):
+UNKNOWN_BASIS = {
+    "not_processed": "aucune pièce lue n'établit les conditions (a) à (c) ; notes d'investissements hors tranche",
+    "history_left_censored": "historique tronqué à gauche : premier dépôt après le début de la période de lecture",
+    "search_incomplete": "dépôts du fournisseur lus ; le client peut déposer hors du périmètre, et la découverte "
+                         "(§14) n'est pas ouverte",
+    "parse_failed": "une archive de la fenêtre de rétrospection est illisible",
+    "redacted": "une clause d'un contrat de la paire est caviardée",
+}
+
+
+def search_state(s, c, groups, text_done, failed_until, redacted):
+    """Recherche complète au sens de E.0 pour la paire, trimestre par trimestre : tous les dépôts
+    du fournisseur et, s'il dépose, du client sont traités, aucun candidat pertinent n'est
+    not_processed ni parse_failed, aucune clause pertinente n'est caviardée. Renvoie une
+    fonction fin de trimestre -> (complète, motif sinon). Un laboratoire de `labs` ne dépose
+    pas (§10.4) ; une autre contrepartie peut déposer, et ses dépôts ne sont lus qu'avec la
+    découverte (§14)."""
+    def st(q_end):
+        if s not in text_done or (c in groups and c not in text_done):
+            return False, "not_processed"
+        if c not in groups and not str(c).startswith("LAB:"):
+            return False, "search_incomplete"
+        if any(g in failed_until and q_end <= failed_until[g] for g in (s, c)):
+            return False, "parse_failed"
+        if redacted:
+            return False, "redacted"
+        return True, None
+    return st
+
+
+def status_cell(s, c, q, view, as_of, policy, st, keys, censored, reason="not_processed"):
+    if st == "never":
+        return cell("financed_status", s, q["start"], q["end"], view, as_of, counterparty=c, policy=policy,
+                    value_text="never", status="computed",
+                    flags={"basis": "recherche complète (E.0) : aucune des conditions (a) à (c) n'a jamais tenu"})
     if st == "unknown":
-        nd = "history_left_censored" if censored else "not_processed"
+        nd = "history_left_censored" if censored else (reason or "not_processed")
         return cell("financed_status", s, q["start"], q["end"], view, as_of, counterparty=c, policy=policy,
                     value_text="unknown", status="not_determinable", nd_reason=nd,
                     coverage="not_processed" if nd == "not_processed" else "unknown",
-                    flags={"basis": "aucune pièce lue n'établit les conditions (a) à (c) ; notes d'investissements hors tranche"})
+                    flags={"basis": UNKNOWN_BASIS.get(nd, nd)})
     return cell("financed_status", s, q["start"], q["end"], view, as_of, counterparty=c, policy=policy,
                 value_text=st, status="computed", flags={"links": keys} if keys else None)
 
@@ -274,7 +320,8 @@ def fiscal_years(quarters, ws, as_of_d):
 
 
 def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
-                  report_dates, lookback, censored_groups, rev_notes_read=frozenset()):
+                  report_dates, lookback, censored_groups, rev_notes_read=frozenset(), text_done=frozenset(),
+                  failed_until=None):
     """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part)."""
     as_of_d = dt.date.fromisoformat(as_of)
     out, ev = [], {}
@@ -288,23 +335,35 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
         ext = groups_window[s]["extended_start"]
         qs = [q for q in qs_all if q["end"] >= ext - dt.timedelta(days=1)]
         censored = s in censored_groups
+        iks = {l.get("instrument_key") for l in p.edges if l.get("instrument_key")}
+        redacted = any(o.get("redacted") for ik in iks for o in obs_by_instrument.get(ik, []))
+        search = search_state(s, c, set(groups_window), text_done, failed_until or {}, redacted)
 
         def cut_known(q):
             return report_dates.get((s, q["end"])) or as_of_d
         F = {}
         for view, cutf in (("as_known", cut_known), ("revised", lambda q: as_of_d)):
             st = financed_status(p, qs_all, cutf, lookback, censored)
+            # rien n'a jamais tenu et toutes les pièces qui pourraient l'établir sont lues : never (§3.2)
+            if not censored:
+                for policy in ("exposure_outstanding", "ever_financed"):
+                    for qe, (v, keys) in list(st[policy].items()):
+                        if v == "unknown" and search(qe)[0]:
+                            st[policy][qe] = ("never", keys)
             F[view] = st
             for policy in ("exposure_outstanding", "ever_financed"):
                 for q in qs:
                     v, keys = st[policy][q["end"]]
-                    out.append(status_cell(s, c, q, view, as_of, policy, v, keys, censored))
+                    out.append(status_cell(s, c, q, view, as_of, policy, v, keys, censored, search(q["end"])[1]))
         s_names = names_of_group(reg, s)
         c_names = names_of_group(reg, c) | {l["_obs"].get("counterparty_name") for l in p.edges
                                             if l["_obs"].get("counterparty_name")}
         pieces = link_pieces(p, obs, reg, s_names, {n for n in c_names if n})
         structure = p.structure()
-        linkage = "documented_link" if pieces else "search_incomplete"
+        ext_states = [search(q["end"]) for q in qs] or [search(as_of_d)]
+        complete = all(x[0] for x in ext_states)
+        search_reason = next((x[1] for x in ext_states if not x[0]), None)
+        linkage = "documented_link" if pieces else ("searched_none_found" if complete else "search_incomplete")
         if linkage == "documented_link" and structure == "commercial_and_financing":
             concl = "documented_dependency"
         elif structure == "commercial_and_financing":
@@ -316,7 +375,7 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
         win_start = groups_window[s]["window_start"]
         out.append(cell("relationship_conclusion", s, win_start, as_of_d, "as_known", as_of, counterparty=c,
                         value_text=concl, status="computed",
-                        flags={"edge_structure": structure, "linkage_evidence": linkage,
+                        flags={"edge_structure": structure, "linkage_evidence": linkage, "search_reason": search_reason,
                                "link_pieces": sorted({o["obs_key"] for o in pieces}),
                                "link_categories": sorted({o["link_category"] for o in pieces}),
                                "edges": sorted(l["link_key"] for l in p.edges)}))
@@ -331,7 +390,8 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
                             status="not_determinable", nd_reason="not_disclosed",
                             flags={"basis": "aucun accord identifié par une clé d'instrument"}))
         ev[(s, c)] = {"pair": p, "pieces": pieces, "structure": structure, "linkage": linkage,
-                      "conclusion": concl, "F": F, "years": {}, "contract": (known, full)}
+                      "conclusion": concl, "F": F, "years": {}, "contract": (known, full),
+                      "search_complete": complete, "search_reason": search_reason, "s_text_done": s in text_done}
         # mesures par exercice du fournisseur
         for fs, fe, fqs in fiscal_years(cal["quarters"], groups_window[s]["window_start"], as_of_d):
             for view in ("as_known", "revised"):
@@ -341,7 +401,9 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
                 active = [e for e, v in stq.items() if v == "active"]
                 rev, rterms = revenue(s, fs, fe, cut)
                 cells = dependency_cells(p, s, c, fs, fe, view, cell_as_of, cut, stq, active, rev, rterms,
-                                         conc_cells, named_conc, censored, rev_notes_read)
+                                         conc_cells, named_conc, censored, rev_notes_read,
+                                         next((search(e)[1] for e in stq if not search(e)[0]), None),
+                                         s in text_done)
                 out += cells
                 if view == "as_known":
                     ev[(s, c)]["years"][fe] = {c_["measure"]: c_ for c_ in cells}
@@ -354,17 +416,25 @@ def _rev_note_read(rev_notes_read, s, fe):
 
 
 def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms, conc_cells, named_conc,
-                     censored, rev_notes_read=frozenset()):
+                     censored, rev_notes_read=frozenset(), search_reason=None, s_done=False):
     out = []
     flags_q = {"quarters": {str(k): v for k, v in sorted(stq.items())}}
+    # motif des trimestres où F n'est pas active : rien à lire de plus si F y vaut never ou lapsed
+    # après une recherche complète (précondition non remplie, jamais un zéro, §3.5) ; sinon ce qui manque
+    if censored:
+        idle = "history_left_censored"
+    elif search_reason is None and all(v in ("never", "lapsed", "active") for v in stq.values()):
+        idle = "precondition_not_met"
+    else:
+        idle = search_reason or "not_processed"
     # documented_revenue_dependency (§3.3) : ratio des sommes, revenu attribué par S
     if not active:
-        nd = "history_left_censored" if censored else "not_processed"
-        if all(v == "lapsed" for v in stq.values()):
-            nd = "not_processed"   # (a) non exclue tant que les notes d'investissements ne sont pas lues
+        basis = "F jamais active sur l'exercice"
+        if idle == "precondition_not_met":
+            basis += " (recherche complète : F y vaut never ou lapsed)"
         out.append(cell("documented_revenue_dependency", s, fs, fe, view, as_of, counterparty=c,
-                        policy="exposure_outstanding", status="not_determinable", nd_reason=nd,
-                        flags=dict(flags_q, basis="F jamais active sur l'exercice")))
+                        policy="exposure_outstanding", status="not_determinable", nd_reason=idle,
+                        flags=dict(flags_q, basis=basis)))
     elif rev is None:
         out.append(cell("documented_revenue_dependency", s, fs, fe, view, as_of, counterparty=c,
                         policy="exposure_outstanding", status="not_determinable", nd_reason="term_missing",
@@ -378,7 +448,7 @@ def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms
             out.append(cell("documented_revenue_dependency", s, fs, fe, view, as_of, counterparty=c,
                             policy="exposure_outstanding", value=num / rev, numerator=num, denominator=rev,
                             unit="pure", terms=rterms, status="computed" if len(active) == len(stq) else "partial",
-                            nd_reason=None if len(active) == len(stq) else "not_processed",
+                            nd_reason=None if len(active) == len(stq) else idle,
                             flags=dict(flags_q, links=[l["link_key"] for l in attr])))
         else:
             up = anonymous_upper(conc_cells, s, fe)
@@ -411,9 +481,11 @@ def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms
         else:
             read = _rev_note_read(rev_notes_read, s, fe)
             out.append(cell("consideration_to_customer", s, fs, fe, view, as_of, counterparty=c,
-                            status="not_determinable", nd_reason="not_disclosed" if read else "not_processed",
+                            status="not_determinable", nd_reason="not_disclosed" if read or s_done else "not_processed",
                             flags={"basis": "bons ou crédits remis au client publiés ; montant comptabilisé non publié dans la "
                                             "note de revenu lue" if read else
+                                            "bons ou crédits remis au client publiés ; aucune note de revenu de 10-K pour cet "
+                                            "exercice dans les dépôts lus" if s_done else
                                             "bons ou crédits remis au client publiés ; montant comptabilisé dans les notes hors tranche",
                                    "links": [l["link_key"] for l in cc]}))
     if active:
@@ -428,9 +500,11 @@ def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms
         else:
             read = _rev_note_read(rev_notes_read, s, fe)
             out.append(cell("noncash_revenue_from_investees", s, fs, fe, view, as_of, counterparty=c,
-                            status="not_determinable", nd_reason="not_disclosed" if read else "not_processed",
+                            status="not_determinable", nd_reason="not_disclosed" if read or s_done else "not_processed",
                             flags={"basis": "revenu contre titres reçus (ASC 606-10-32-21) : rien de tel dans la note de revenu "
                                             "lue de l'exercice" if read else
+                                            "revenu contre titres reçus (ASC 606-10-32-21) : aucune note de revenu de 10-K "
+                                            "pour cet exercice dans les dépôts lus" if s_done else
                                             "revenu contre titres reçus (ASC 606-10-32-21) : note de revenu de l'exercice non lue"}))
         for term in ("total", "beyond_12m"):
             out.append(cell("documented_backlog_dependency", s, None, fe, view, as_of, counterparty=c, term=term,
@@ -441,7 +515,8 @@ def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms
 
 # -- sorties de couverture (§3.6) ------------------------------------------------------
 
-def coverage_cells(groups, cals, groups_window, revenue, conc_cells, named_conc, pairs, edges, as_of, ev):
+def coverage_cells(groups, cals, groups_window, revenue, conc_cells, named_conc, pairs, edges, as_of, ev,
+                   text_done=frozenset()):
     as_of_d = dt.date.fromisoformat(as_of)
     out = []
     for s in groups:
@@ -467,19 +542,23 @@ def coverage_cells(groups, cals, groups_window, revenue, conc_cells, named_conc,
             a_val = sum((Decimal(str(c["value"])) for c in anon), Decimal(0))
             a_lo = sum((Decimal(str(c["value_lower"])) for c in anon), Decimal(0))
             a_hi = sum((Decimal(str(c["value_upper"])) for c in anon), Decimal(0))
+            done = s in text_done
             fl = {"overlap_possible": True, "named_concentration": [n["fact_key"] for n in named],
                   "attributed_links": [l["link_key"] for l in attr],
                   "anonymous_cells": [c["breakdown_key"] for c in anon],
-                  "basis": "texte autour des faits de concentration hors tranche (§11.1)"}
+                  "basis": "texte autour des faits de concentration et notes de revenu lus (bloc text de §14)" if done
+                           else "texte autour des faits de concentration hors tranche (§11.1)"}
             out.append(cell("named_edge_coverage", s, fs, fe, "as_known", as_of, term="named", value=n_val,
-                            status="partial", nd_reason="not_processed", unit="pure", terms=rterms, flags=fl))
+                            status="computed" if done else "partial", nd_reason=None if done else "not_processed",
+                            unit="pure", terms=rterms, flags=fl))
             out.append(cell("named_edge_coverage", s, fs, fe, "as_known", as_of, term="anonymous", value=a_val,
                             lower=a_lo, upper=a_hi, bound_basis="rounding" if anon else None,
                             status="bounded" if anon else "computed", unit="pure", flags=fl))
             out.append(cell("named_edge_coverage", s, fs, fe, "as_known", as_of, term="residual",
                             value=Decimal(1) - n_val - a_val, lower=Decimal(1) - n_val - a_hi,
                             upper=Decimal(1) - n_val - a_lo, bound_basis="rounding" if anon else None,
-                            status="partial", nd_reason="not_processed", unit="pure", flags=fl))
+                            status=("bounded" if anon else "computed") if done else "partial",
+                            nd_reason=None if done else "not_processed", unit="pure", flags=fl))
             # paires vues seulement côté client (jamais converties en revenu)
             vis = set()
             for (ss, c), p in pairs.items():
@@ -532,8 +611,20 @@ def coverage_cells(groups, cals, groups_window, revenue, conc_cells, named_conc,
     return out
 
 
-def counterparty_exposure(pairs, ev, cals, as_of):
-    """Une ligne par bloc et par base, sans total (§4.6), avec wrong_way."""
+FLOW_ONLY = ("repayment", "conversion", "measurement_change", "recognition", "impairment", "disposal", "termination")
+
+
+def _precision(x):
+    """Nombre de chiffres significatifs d'un montant : la valeur exacte l'emporte sur l'arrondie."""
+    t = format(Decimal(str(x)).normalize(), "f").replace(".", "").lstrip("0").rstrip("0")
+    return len(t)
+
+
+def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
+    """Une ligne par bloc et par base, sans total (§4.6), avec wrong_way. Au coût, les apports en
+    numéraire s'additionnent ; un plafond d'engagement, une valeur au bilan ou une garantie est un
+    état : la dernière valeur connue à t par instrument, jamais une somme dans le temps. Un gain ou
+    une perte de mise en équivalence est un flux du résultat, pas une exposition."""
     as_of_d = dt.date.fromisoformat(as_of)
     out = []
     for (s, c), p in sorted(pairs.items()):
@@ -541,7 +632,7 @@ def counterparty_exposure(pairs, ev, cals, as_of):
         t = qs[-1]["end"] if qs else as_of_d
         ever_active = any(v[0] == "active" for v in ev[(s, c)]["F"]["as_known"]["exposure_outstanding"].values())
         wrong_way = bool(ever_active and p.com)
-        lines = {}
+        flows, states = {}, {}
         for l in p.fin + [x for x in p.edges if x["from_group"] == s and x["to_group"] == c
                           and x["family"] == "credit_support"]:
             o = l["_obs"]
@@ -549,21 +640,38 @@ def counterparty_exposure(pairs, ev, cals, as_of):
                 continue
             if l["_date"] and l["_date"] > t:
                 continue
-            if l["family"] == "financing" and l["edge_evidence"] == "amount" and o.get("event_type") not in ("repayment", "conversion"):
-                key = ("exposed_assets", "cost", "equity_investment") if l["edge_type"] in ("equity_primary", "convertible_or_safe") \
-                    else ("exposed_assets", "principal", "loan_receivable")
-            elif l["family"] == "financing" and (o.get("amount_nature") == "commitment_unexecuted"
-                                                 or o.get("measurement_basis") == "commitment_cap"):
+            et, nat, mb = o.get("event_type"), o.get("amount_nature"), o.get("measurement_basis")
+            equity = l["edge_type"] in ("equity_primary", "convertible_or_safe")
+            if l["family"] == "financing" and (nat in ("investment_carrying_amount", "fair_value")
+                                               or mb in ("carrying_amount", "fair_value")):
+                key = ("exposed_assets", "fair_value" if "fair_value" in (nat, mb) else "carrying_amount",
+                       "equity_investment" if equity else "loan_receivable")
+            elif l["family"] == "financing" and (nat == "commitment_unexecuted" or mb == "commitment_cap"):
                 key = ("contractual_outflows", "commitment_cap", o.get("category_id") or "uncalled_commitment")
+            elif l["family"] == "financing" and l["edge_evidence"] == "amount" and et not in FLOW_ONLY \
+                    and mb != "equity_method":
+                flows.setdefault(("exposed_assets", "cost" if equity else "principal",
+                                  "equity_investment" if equity else "loan_receivable"), []).append(l)
+                continue
             elif l["family"] == "credit_support":
-                key = ("contingent_obligations", o.get("measurement_basis") or "commitment_cap", o.get("category_id") or "guarantee")
+                key = ("contingent_obligations", mb or "commitment_cap", o.get("category_id") or "guarantee")
             else:
                 continue
+            ik = l.get("instrument_key") or l["link_key"]
+            rank = (l["_date"] or dt.date.min, _precision(o["amount"]), str(_kd(l) or ""))
+            cur = states.get((key, ik))
+            if cur is None or rank > cur[0]:
+                states[(key, ik)] = (rank, l)
+        lines = dict(flows)
+        for (key, ik), (_, l) in states.items():
             lines.setdefault(key, []).append(l)
+        done = s in text_done
         if not lines:
             out.append(cell("counterparty_exposure", s, None, t, "as_known", as_of, counterparty=c,
-                            status="not_determinable", nd_reason="not_processed",
-                            flags={"wrong_way": wrong_way, "basis": "aucun montant d'exposition lu ; notes d'investissements hors tranche"}))
+                            status="not_determinable", nd_reason="not_disclosed" if done else "not_processed",
+                            flags={"wrong_way": wrong_way,
+                                   "basis": "aucun montant d'exposition publié dans les dépôts lus du fournisseur" if done
+                                            else "aucun montant d'exposition lu ; notes d'investissements hors tranche"}))
             continue
         for (blk, basis, cat), ls in sorted(lines.items()):
             v = sum(Decimal(str(l["_obs"]["amount"])) for l in ls)
@@ -571,8 +679,10 @@ def counterparty_exposure(pairs, ev, cals, as_of):
             for l in ls:
                 tiers[l["tier"]] = tiers.get(l["tier"], Decimal(0)) + Decimal(str(l["_obs"]["amount"])) / v if v else Decimal(0)
             out.append(cell("counterparty_exposure", s, None, t, "as_known", as_of, counterparty=c,
-                            breakdown=f"{blk}/{basis}/{cat}", value=v, unit="USD", status="partial",
-                            nd_reason="not_processed",
+                            breakdown=f"{blk}/{basis}/{cat}", value=v, unit="USD", status="computed" if done else "partial",
+                            nd_reason=None if done else "not_processed",
                             flags={"wrong_way": wrong_way, "links": [l["link_key"] for l in ls],
+                                   "rule": "somme des apports" if basis in ("cost", "principal") else
+                                           "dernière valeur connue à la date, par instrument",
                                    "evidence_profile": {k: float(round(x, 4)) for k, x in tiers.items()}}))
     return out
