@@ -400,8 +400,10 @@ def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms
     # contrepartie au client et revenu contre titres (§3.3, E.5)
     cc = [l for l in p.fin if l["family"] == "customer_consideration"]
     if cc:
+        # un flux de la période (réduction du revenu), jamais le solde d'un actif de contre-revenu à une date
         rec = [l for l in cc if l["stage"] == "recognized" and l["unit"] == CURRENCY and l["edge_evidence"] == "amount"
-               and _d(l["_obs"].get("period_end")) and fs <= _d(l["_obs"]["period_end"]) <= fe]
+               and _d(l["_obs"].get("period_end")) and fs <= _d(l["_obs"]["period_end"]) <= fe
+               and _d(l["_obs"].get("period_start")) and l["_obs"].get("measurement_basis") != "carrying_amount"]
         if rec:
             v = sum(Decimal(str(l["amount"])) for l in rec)
             out.append(cell("consideration_to_customer", s, fs, fe, view, as_of, counterparty=c, value=v, unit="USD",
