@@ -132,8 +132,11 @@ def pledged_signals(groups, quarters_by_group, obs, as_of, report_end_of):
     out = []
     read_q = debt_note_quarters(obs, report_end_of)
     for g in groups:
+        # une sûreté conditionnelle dont le déclencheur n'a pas joué (dépôt de garantie en espèces
+        # exigé seulement en cas de défaut d'un prêteur, par exemple) n'est pas un actif nanti
         evs = [o for o in obs if o["group_id"] == g and o.get("signal") == "pledged_assets"
-               and o.get("signal_present") is True and o["validation_state"] == "valid"]
+               and o.get("signal_present") is True and o["validation_state"] == "valid"
+               and not (o.get("conditionality") == "conditional" and o.get("trigger_occurred") != "yes")]
         for q in quarters_by_group[g]:
             ps, pe = q["start"], q["end"]
             hits = []
