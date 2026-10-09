@@ -329,7 +329,7 @@ def synthesis(con, as_of, stats):
     L.append("  Par contrôle (`mismatch` sur total, vue `as_known`) : " +
              ", ".join(f"{r['control'].split('_')[0].upper()} {T.n('controls', {'control': r['control'], 'mismatch': True}, r['m'])}/"
                        f"{T.n('controls', {'control': r['control']}, r['n'])}" for r in mm) + ".")
-    ex = q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC")
+    ex = q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC, 1")
     L.append("- **Exclusions principales** : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'reason': r['reason']}, r['n'])}"
                                                            for r in ex) + ".")
     L.append("- **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.")
@@ -386,7 +386,7 @@ def synthesis(con, as_of, stats):
     L.append("## Ce qui n'a pas pu être établi")
     L.append("")
     nd = q(con, """SELECT nd_reason, count(*) AS n FROM measures WHERE status = 'not_determinable' AND view = 'as_known'
-                   GROUP BY 1 ORDER BY 2 DESC""")
+                   GROUP BY 1 ORDER BY 2 DESC, 1""")
     L.append("Cellules indéterminées en vue `as_known`, par motif : " +
              ", ".join(f"{ND_FR.get(r['nd_reason'], r['nd_reason'])} {T.n('measures', {'nd_reason': r['nd_reason']}, r['n'])}" for r in nd) + ".")
     L.append("")
@@ -396,12 +396,14 @@ def synthesis(con, as_of, stats):
 def evidence_text(con, c, fl):
     obs = fl.get("observations") or []
     if obs:
-        r = q(con, f"SELECT DISTINCT accession, form FROM observations WHERE obs_key IN ({','.join('?' * len(obs))})", *obs)
+        r = q(con, f"SELECT DISTINCT accession, form FROM observations WHERE obs_key IN ({','.join('?' * len(obs))}) "
+                   "ORDER BY accession", *obs)
         return ", ".join(f"{x['form']} {x['accession']}" for x in r) or "observation"
     lin = fl.get("lineage")
     if lin:
         keys = json.loads(lin) if isinstance(lin, str) else lin
-        r = q(con, f"SELECT DISTINCT accession, form FROM facts WHERE fact_key IN ({','.join('?' * len(keys))})", *keys)
+        r = q(con, f"SELECT DISTINCT accession, form FROM facts WHERE fact_key IN ({','.join('?' * len(keys))}) "
+                   "ORDER BY accession", *keys)
         return ", ".join(f"{x['form']} {x['accession']}" for x in r[:3]) or "faits balisés"
     if fl.get("decreases"):
         return "durées publiées (faits balisés de deux 10-K successifs)"
@@ -695,11 +697,11 @@ def delta(con, as_of, stats):
     tiers = [m for m, v in __import__("pipeline.registry", fromlist=["MEASURES"]).MEASURES.items() if v[0] == 1]
     r1 = q(con, f"""SELECT status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures
                     WHERE measure IN ({','.join('?' * len(tiers))}) AND measure NOT IN ('fragility_event', 'annex_e_outcome')
-                    GROUP BY 1, 2 ORDER BY 3 DESC""", *tiers)
+                    GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""", *tiers)
     L.append("- Cellules de rang 1, par statut et motif : " + " ; ".join(
         f"{fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} {T.n('measures', {'rank1': [r['status'], r['nd']]}, r['n'])}" for r in r1) + ".")
     fe = q(con, """SELECT status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures WHERE measure = 'fragility_event'
-                   GROUP BY 1, 2 ORDER BY 3 DESC""")
+                   GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""")
     L.append("- Cellules de l'annexe F, par statut et motif : " + " ; ".join(
         f"{fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} {T.n('measures', {'annexF': [r['status'], r['nd']]}, r['n'])}" for r in fe) + ".")
     fin = q(con, """SELECT subject, counterparty FROM measures WHERE measure = 'financed_status' AND value_text = 'active'
@@ -727,7 +729,7 @@ def delta(con, as_of, stats):
           "documented_pair_coverage", "customer_concentration_anonymous", "documented_backlog_dependency",
           "consideration_to_customer", "noncash_revenue_from_investees", "contract_coverage", "relationship_conclusion"]
     r4 = q(con, f"""SELECT status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures WHERE measure IN ({','.join('?' * len(q4))})
-                    GROUP BY 1, 2 ORDER BY 3 DESC""", *q4)
+                    GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""", *q4)
     L.append("- Cellules de la question 4, par statut et motif : " + " ; ".join(
         f"{fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} {T.n('measures', {'q4': [r['status'], r['nd']]}, r['n'])}" for r in r4) + ".")
     n, ok, by, first, last = journal_stats()
@@ -762,7 +764,7 @@ def delta(con, as_of, stats):
     L += text_yield_section(con, T, stats)
     L.append("## Exclusions nouvelles, par motif")
     L.append("")
-    for r in q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC"):
+    for r in q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC, 1"):
         L.append(f"- `{r['reason']}` : {T.n('exclusions', {'reason': r['reason']}, r['n'])}")
     L.append("")
     L.append("## Décisions et variantes nouvelles")
@@ -783,7 +785,7 @@ def delta(con, as_of, stats):
     L.append("")
     L.append("## Dépôts nouveaux")
     L.append("")
-    fd = q(con, """SELECT form, count(DISTINCT accession) AS n FROM documents WHERE accession IS NOT NULL GROUP BY 1 ORDER BY 2 DESC""")
+    fd = q(con, """SELECT form, count(DISTINCT accession) AS n FROM documents WHERE accession IS NOT NULL GROUP BY 1 ORDER BY 2 DESC, 1""")
     L.append("Premier passage : tous les dépôts lus sont nouveaux — " + ", ".join(f"{r['form']} {T.n('documents', {'form': r['form']}, r['n'])}" for r in fd if r["form"]) + ".")
     L.append("")
     L.append("## Valeurs changées pour des périodes déjà publiées")
@@ -902,11 +904,11 @@ def numbers_csv(con, rows, path):
                             okeys += json.loads(ev[0]["evidence_keys"])
                     if fkeys:
                         for f in q(con, f"""SELECT fact_key, accession, locator, is_tagged, tier FROM facts
-                                            WHERE fact_key IN ({','.join('?' * len(fkeys))})""", *fkeys):
+                                            WHERE fact_key IN ({','.join('?' * len(fkeys))}) ORDER BY fact_key""", *fkeys):
                             terms.append((f["fact_key"], f["accession"], f["locator"], f["is_tagged"], f["tier"]))
                     if okeys:
                         for o in q(con, f"""SELECT obs_key, accession, locator, tier FROM observations
-                                            WHERE obs_key IN ({','.join('?' * len(okeys))})""", *okeys):
+                                            WHERE obs_key IN ({','.join('?' * len(okeys))}) ORDER BY obs_key""", *okeys):
                             terms.append((o["obs_key"], o["accession"], o["locator"], False, o["tier"]))
             if not terms:
                 terms = [(None, None, None, None, None)]
@@ -1084,7 +1086,7 @@ def text_yield_section(con, T, stats):
     # statut « financé » : never devient possible une fois la recherche complète (§3.2, E.0)
     fs = q(con, """SELECT coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures
                    WHERE measure = 'financed_status' AND view = 'as_known' AND financing_policy = 'exposure_outstanding'
-                   GROUP BY 1, 2 ORDER BY 3 DESC""")
+                   GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""")
     if fs:
         L.append("- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : " + ", ".join(
             f"{VALUE_FR.get(r['v'], r['v'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} "
@@ -1095,7 +1097,7 @@ def text_yield_section(con, T, stats):
     # ce qu'une extension peut encore changer (§11.1, E.7) : motifs des cellules de rang 1 non calculées
     why = q(con, f"""SELECT nd_reason AS nd, count(*) AS n FROM measures WHERE measure IN ({','.join('?' * len(tiers))})
                      AND status IN ('not_determinable', 'partial') AND nd_reason IS NOT NULL
-                     GROUP BY 1 ORDER BY 2 DESC""", *tiers)
+                     GROUP BY 1 ORDER BY 2 DESC, 1""", *tiers)
     if why:
         L.append("- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : " + " ; ".join(
             f"{ND_FR.get(r['nd'], r['nd'])} {T.n('measures', {'rank1_reason_now': r['nd']}, r['n'])}" for r in why) +

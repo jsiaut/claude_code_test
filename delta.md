@@ -31,7 +31,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 
 ## Rendement du passage (§11.1)
 
-- Cellules de rang 1, par statut et motif : calculée 9 886 ; indéterminée / terme manquant 2 044 ; indéterminée / recherche incomplète 1 653 ; indéterminée / concept non résolu 1 073 ; indéterminée / non publié 990 ; indéterminée / historique tronqué 760 ; bornée 194 ; indéterminée / client anonyme 122 ; indéterminée / précondition non remplie 111 ; indéterminée / frontière de retraitement 83 ; indéterminée / lecture impossible 70 ; partielle / non publié 53 ; partielle / terme manquant 10 ; indéterminée / dénominateur négatif ou nul 10 ; indéterminée / entité non confirmée 6.
+- Cellules de rang 1, par statut et motif : calculée 9 886 ; indéterminée / terme manquant 2 044 ; indéterminée / recherche incomplète 1 653 ; indéterminée / concept non résolu 1 073 ; indéterminée / non publié 990 ; indéterminée / historique tronqué 760 ; bornée 194 ; indéterminée / client anonyme 122 ; indéterminée / précondition non remplie 111 ; indéterminée / frontière de retraitement 83 ; indéterminée / lecture impossible 70 ; partielle / non publié 53 ; indéterminée / dénominateur négatif ou nul 10 ; partielle / terme manquant 10 ; indéterminée / entité non confirmée 6.
 - Cellules de l'annexe F, par statut et motif : calculée 1 759 ; indéterminée / annuel seulement 394 ; indéterminée / non publié 115 ; indéterminée / terme manquant 91 ; partielle / non publié 90 ; indéterminée / concept non résolu 62 ; indéterminée / période antérieure absente 28 ; indéterminée / lecture impossible 16 ; indéterminée / dénominateur négatif ou nul 5.
 - Paires à financement documenté (F active au moins un trimestre) : 9 — Broadcom → Silicon Manufacturing Partners Pte. Ltd., CoreWeave → MAIV, CoreWeave → OpenAI, Meta → Jio Platforms Limited, Microsoft → OpenAI, NVIDIA → CoreWeave, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc..
 - Arêtes de montant : commercial 148, credit_support 13, customer_consideration 16, financing 192 ; arêtes de relation : 474.
@@ -40,7 +40,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Requêtes : 3 775 au journal, dont 3 768 réussies, 2 053 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-07T16:28:26.977+00:00.
 - Blocs lus : 2 914 sur 3 079 clés de contenu ; par item de 8-K : 1.01 92, 1.02 11, 2.01 17, 2.03 37, 3.03 9, 8.01 347 ; pièces arrêtées à leur en-tête : EX-4 165.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 455 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 534 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -108,6 +108,9 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0030 — Bloc `text` : corrections du validateur, relecture ciblée, VMware.
 - D-0031 — Bloc `text` : corps de pièces, leviers et notes de revenu.
 - D-0032 — Bloc `text` : corrections nées de la lecture, corps d'EX-10, Maui HoldCo.
+- D-0033 — Bloc `text` lu en entier : motifs de couverture, statut `never`, exposition par contrepartie.
+- D-0034 — Audit de la lecture du bloc `text` après les interruptions.
+- D-0035 — Tests unitaires de §8.4 et trois mesures de rang 2.
 
 ## Critères des annexes E et F
 
@@ -119,7 +122,7 @@ Inchangés depuis le commit d'origine 3ff3b988a48a.
 
 ## Dépôts nouveaux
 
-Premier passage : tous les dépôts lus sont nouveaux — 8-K 426, 10-Q 250, DEF 14A 87, 10-K 77, S-1/A 4, 8-K/A 4, S-1 2, 424B4 2, 10-K/A 2.
+Premier passage : tous les dépôts lus sont nouveaux — 8-K 426, 10-Q 250, DEF 14A 87, 10-K 77, 8-K/A 4, S-1/A 4, 10-K/A 2, 424B4 2, S-1 2.
 
 ## Valeurs changées pour des périodes déjà publiées
 
