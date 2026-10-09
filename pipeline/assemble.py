@@ -525,14 +525,15 @@ def discovery_exclusions(as_of):
     if discovery.UNITS.exists():
         built = discovery.built_units()
         units = pd.read_parquet(discovery.UNITS)
-        for u in units.itertuples(index=False):
-            b = built.get(u.order)
+        # dictionnaires et non itertuples : la colonne « pass » est un mot réservé que itertuples renomme
+        for u in units.to_dict("records"):
+            b = built.get(u["order"])
             if b and b.get("content_key"):
                 continue
             why = (b or {}).get("error") or "unité de la file de la découverte non encore préparée ni lue"
-            ex("document", f"discovery:{u.adsh}/{u.doc}", "not_processed" if not (b or {}).get("error") else "not_collected",
-               f"rang {u.rank}, passe {u._asdict()['pass']}, {u.kind} : {why} ; groupes nommés {u.groups}",
-               "CP:cik" + str(u.cik), u.adsh)
+            ex("document", f"discovery:{u['adsh']}/{u['doc']}", "not_processed" if not (b or {}).get("error") else "not_collected",
+               f"rang {u['rank']}, passe {u['pass']}, {u['kind']} : {why} ; groupes nommés {u['groups']}",
+               "CP:cik" + str(u["cik"]), u["adsh"])
     todo = discovery.in_period(discovery.archive_list(), discovery.period_start())
     done = set(discovery.scanned_archives())
     for a in todo:
