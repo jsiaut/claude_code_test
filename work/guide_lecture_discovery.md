@@ -57,3 +57,26 @@ instrument, d'un bloc à l'autre.
 - Le déclarant et ses filiales consolidées s'écrivent `the Company` dans `payer` et `payee`, quelle que soit la forme du texte (« we », nom court, « the Group », nom d'une filiale consolidée). La citation reste celle du texte.
 - Un terme défini du bloc (« Borrower », « Lender », « Holder », « Customer », « Partner ») s'écrit sous le nom qu'il désigne dans le même bloc.
 - Une même valeur ne se relève qu'une fois : un montant par segment qui compose un total déjà relevé ne fait pas de ligne (abstention `duplicate_of_other_block`).
+
+## 5. Cas tranchés en deuxième tranche (D-0040)
+
+- **Bons remis à un groupe et passés en charges.** Le déclarant remet des bons à un groupe au
+  titre d'un accord commercial et les porte en charges commerciales et de marketing, ou en
+  actif de l'accord amorti en charges. C'est un coût d'achat : famille `commercial`,
+  `purchase` ou `purchase_commitment`, déclarant → groupe, `judgment_sensitive`. La famille
+  `customer_consideration` reste réservée aux bons que le déclarant porte en réduction de son
+  revenu (le groupe est alors son client).
+- **Mention fausse du lexique.** Le terme désigne autre chose que le groupe : homonyme (« Meta »
+  pour Meta Materials), navire (« the Amazon »), projet (« Amazon Wind »), terme sans rapport
+  (« AMD » dans les pièces d'Installed Building Products), titre du fichier source
+  (« Microsoft Word - … »). Abstention `out_of_scope_content`, avec une `note` qui cite ce que
+  le terme désigne et dit « mention fausse du lexique ».
+- **Litiges.** Un litige, une action de groupe ou un accord transactionnel avec un groupe n'est
+  pas une relation de financement ni d'achat : abstention `out_of_scope_content`, sauf flux
+  chiffré entre les parties constaté par le texte.
+- **Bloc très long.** Un bloc trop long pour être lu en entier (état des placements d'un plan
+  11-K) se parcourt en entier par recherche des noms de groupes et des termes du lexique.
+  L'abstention dit ce parcours et ce qu'il a trouvé.
+- **Filiale nommée d'un groupe.** Une filiale nommée (« Amazon.com Services LLC, a direct or
+  indirect subsidiary of Amazon ») s'écrit sous son nom ; son rattachement au groupe se fait
+  dans `config.yaml` (`confirmed_entities`), avec l'extrait qui l'établit, jamais de mémoire.
