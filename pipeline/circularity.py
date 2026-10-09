@@ -186,16 +186,17 @@ def financed_status(pair, quarters, cutoff_of, lookback, censored):
 
 
 UNKNOWN_BASIS = {
-    "not_processed": "aucune pièce lue n'établit les conditions (a) à (c) ; notes d'investissements hors tranche",
+    "not_processed": "aucune pièce lue n'établit les conditions (a) à (c) ; des pièces qui nomment le fournisseur "
+                     "restent à lire (notes hors tranche, ou notes du client trouvées par la découverte)",
     "history_left_censored": "historique tronqué à gauche : premier dépôt après le début de la période de lecture",
-    "search_incomplete": "dépôts du fournisseur lus ; le client peut déposer hors du périmètre, et la découverte "
-                         "(§14) n'est pas ouverte",
+    "search_incomplete": "dépôts du fournisseur lus ; le client peut déposer hors du périmètre, et ses dépôts "
+                         "ne sont pas tous couverts par la découverte (§14)",
     "parse_failed": "une archive de la fenêtre de rétrospection est illisible",
     "redacted": "une clause d'un contrat de la paire est caviardée",
 }
 
 
-def search_state(s, c, groups, text_done, failed_until, redacted):
+def search_state(s, c, groups, text_done, failed_until, redacted, client_state=None):
     """Recherche complète au sens de E.0 pour la paire, trimestre par trimestre : tous les dépôts
     du fournisseur et, s'il dépose, du client sont traités, aucun candidat pertinent n'est
     not_processed ni parse_failed, aucune clause pertinente n'est caviardée. Renvoie une
@@ -206,7 +207,13 @@ def search_state(s, c, groups, text_done, failed_until, redacted):
         if s not in text_done or (c in groups and c not in text_done):
             return False, "not_processed"
         if c not in groups and not str(c).startswith("LAB:"):
-            return False, "search_incomplete"
+            # découverte ouverte (§14, D-0037) : le client hors périmètre est cherché dans les
+            # Notes Data Sets et la recherche plein texte ; sinon il peut déposer sans être lu
+            if client_state is None:
+                return False, "search_incomplete"
+            ok, why, _ = client_state(str(c)[3:] if str(c).startswith("CP:") else str(c), s)
+            if not ok:
+                return False, why
         if any(g in failed_until and q_end <= failed_until[g] for g in (s, c)):
             return False, "parse_failed"
         if redacted:
@@ -321,7 +328,7 @@ def fiscal_years(quarters, ws, as_of_d):
 
 def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
                   report_dates, lookback, censored_groups, rev_notes_read=frozenset(), text_done=frozenset(),
-                  failed_until=None):
+                  failed_until=None, client_state=None):
     """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part)."""
     as_of_d = dt.date.fromisoformat(as_of)
     out, ev = [], {}
@@ -337,7 +344,7 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
         censored = s in censored_groups
         iks = {l.get("instrument_key") for l in p.edges if l.get("instrument_key")}
         redacted = any(o.get("redacted") for ik in iks for o in obs_by_instrument.get(ik, []))
-        search = search_state(s, c, set(groups_window), text_done, failed_until or {}, redacted)
+        search = search_state(s, c, set(groups_window), text_done, failed_until or {}, redacted, client_state)
 
         def cut_known(q):
             return report_dates.get((s, q["end"])) or as_of_d

@@ -98,8 +98,10 @@ class Registry:
         return None
 
 
-def build(p0, cfg, counterparty_names):
-    """Lignes de la table entities (entités, appartenances, alias) et le registre."""
+def build(p0, cfg, counterparty_names, discovered=None):
+    """Lignes de la table entities (entités, appartenances, alias) et le registre. `discovered` :
+    déposants trouvés par la découverte (§14), (dénomination EDGAR, CIK) ; chacun est l'entité de
+    sa dénomination légale normalisée, avec son CIK (D-0036, point 10)."""
     base = copy.deepcopy(cfg)
     base["confirmed_entities"] = []          # traitées ici, avec leur extrait
     rows = graph.seed_entities(p0, base)
@@ -175,6 +177,20 @@ def build(p0, cfg, counterparty_names):
                 mem(eid, _cp_group(normalize_name(target)), evidence="D-0022")
         alias(eid, a["alias"], ev(a))
 
+    # déposants découverts : même CIK (§10.2), dénomination EDGAR ; un nom déjà au registre reçoit le CIK
+    for name, cik in sorted(discovered or []):
+        n = normalize_name(name)
+        if not n:
+            continue
+        eid = by_norm.get(n)
+        if eid is None:
+            eid = f"name:{n}"
+            ent(eid, name, "same_cik", f"déposant EDGAR, CIK {cik} (découverte, D-0036)", cik=cik)
+            mem(eid, _cp_group(n), rule="same_cik", evidence=f"CIK {cik}")
+        else:
+            for r in rows:
+                if r["record_kind"] == "entity" and r["entity_id"] == eid and not r.get("cik"):
+                    r["cik"], r["is_filer"] = cik, True
     reg = Registry(rows)
     # contreparties nommées : dénomination légale complète (D-0022), sinon pending
     known = set(reg.names)

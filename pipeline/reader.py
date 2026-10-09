@@ -26,6 +26,7 @@ from .registry import ENUMS
 
 CATALOG = config.DB_DIR / "blocks.jsonl"          # recalculé à chaque exécution
 CATALOG_EXT = config.DB_DIR / "text_blocks_ext.jsonl"   # bloc `text` de §14, s'il est ouvert
+CATALOG_DISC = config.DB_DIR / "discovery_blocks.jsonl"  # bloc `discovery` de §14, s'il est ouvert
 STATE = config.WORK / "tmp" / "reading_state.json"
 RUN = config.WORK / "tmp" / "run.json"              # as_of et pass_id de l'exécution
 
@@ -148,6 +149,10 @@ def load_catalog():
     scope = config.load().get("scope")
     if isinstance(scope, list) and "text" in scope and CATALOG_EXT.exists():
         with open(CATALOG_EXT, encoding="utf-8") as fh:
+            out += [json.loads(l) for l in fh if l.strip()]
+    # bloc `discovery` de §14 : blocs préparés par tranches, dans l'ordre de la file (D-0036)
+    if isinstance(scope, list) and "discovery" in scope and CATALOG_DISC.exists():
+        with open(CATALOG_DISC, encoding="utf-8") as fh:
             out += [json.loads(l) for l in fh if l.strip()]
     return out
 
@@ -343,7 +348,9 @@ def _dims_short(dims):
 def render_block(b, cap):
     head = {k: b.get(k) for k in ("content_key", "block_kind", "group_id", "cik", "accession",
                                   "form", "filing_date", "item", "exhibit_type", "document",
-                                  "note_label", "period_start", "period_end", "knowledge_date")}
+                                  "note_label", "period_start", "period_end", "knowledge_date",
+                                  "filer_name", "groups_named", "terms") if k in b or k in (
+                                      "content_key", "block_kind", "group_id", "cik", "accession", "form")}
     cands, n_all = visible_candidates(b)
     cand_lines = [f"  {c['fact_key']} | {c['concept']} | {c['value']} {c.get('unit') or ''} | "
                   f"{c.get('period_start') or ''}..{c.get('period_end')} | {_dims_short(c.get('dims'))}"

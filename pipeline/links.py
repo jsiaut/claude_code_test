@@ -71,6 +71,13 @@ def build_edges(obs, reg):
         te, tg, ts = E.resolve(reg, payee, d, "as_known")
         fg_r = E.resolve(reg, payer, d, "revised")[1]
         tg_r = E.resolve(reg, payee, d, "revised")[1]
+        # bloc de la découverte : « we », « the Company » désignent le déposant découvert (§14)
+        decl = o.get("group_id") or ""
+        if decl.startswith("CP:"):
+            if payer and normalize_name(payer) in E.FILER_WORDS:
+                fe, fg, fs, fg_r = "name:" + decl[3:], decl, "confirmed", decl
+            if payee and normalize_name(payee) in E.FILER_WORDS:
+                te, tg, ts, tg_r = "name:" + decl[3:], decl, "confirmed", decl
 
         for e, s in ((fe, fs), (te, ts)):
             if e and s in ("pending", "unknown"):

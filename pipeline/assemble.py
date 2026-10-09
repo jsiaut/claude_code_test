@@ -106,7 +106,9 @@ def run(as_of):
                              "rejected_semantic": sum(1 for o in obs_rows if o["validation_state"] != "valid")}
 
     # 3. entités et arêtes
-    ent_rows, reg = entities.build(p0, cfg, links.counterparty_names(obs_rows))
+    discovered = {(b["filer_name"], str(int(b["cik"]))) for b in catalog
+                  if b["block_kind"].startswith("discovery_") and b.get("filer_name")}
+    ent_rows, reg = entities.build(p0, cfg, links.counterparty_names(obs_rows), discovered)
     edges, pend = links.build_edges(obs_rows, reg)
     rels = links.instrument_relations(edges)
     for o in obs_rows:
@@ -227,9 +229,15 @@ def run(as_of):
     rev_read = frozenset((o["group_id"], dt.date.fromisoformat(acc_rd[o["accession"]])) for o in obs_rows
                          if o["block_kind"] == "revenue_note" and str(o.get("form") or "").startswith("10-K")
                          and o["validation_state"] == "valid" and o["accession"] in acc_rd)
+    # découverte ouverte (§14, D-0037) : état de la recherche côté client hors périmètre
+    client_state = None
+    if isinstance(cfg.get("scope"), list) and "discovery" in cfg["scope"]:
+        from . import discovery
+        client_state = discovery.client_states(read_cks, min(w["extended_start"] for w in gw.values()))
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
-                                       rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until)
+                                       rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
+                                       client_state=client_state)
     cells += pc
     cells += circularity.coverage_cells(groups, cals, gw, revenue, conc_cells, named_conc, pairs, edges, as_of, ev,
                                         text_done)
@@ -472,6 +480,10 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
         elif b.get("signal_class") == 3:
             ex("block", b["content_key"], "not_processed", f"{b['block_kind']} : bloc text de §14 non encore lu",
                b["group_id"], b["accession"], b["content_key"])
+        elif b["block_kind"].startswith("discovery_"):
+            ex("block", b["content_key"], "not_processed",
+               f"{b['block_kind']} de {b.get('filer_name')} : bloc discovery de §14 préparé, non encore lu",
+               b["group_id"], b["accession"], b["content_key"])
         else:
             ex("block", b["content_key"], "not_processed", "bloc de la tranche non lu", b["group_id"], b["accession"],
                b["content_key"])
@@ -495,6 +507,45 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
                     "8-K items 2.01 et 2.03 (bloc text de §14)")
         for g in p0["groups"]:
             ex("group", f"{g}:text_outside_first_pass", "not_processed", text_out, g)
+    if isinstance(sc, list) and "discovery" in sc:
+        out += discovery_exclusions(as_of)
+    return out
+
+
+def discovery_exclusions(as_of):
+    """Bloc `discovery` (§14, D-0036) : unités de la file dont le bloc n'est pas encore préparé
+    (non lues), archives de la période non tirées (leurs paires portent search_incomplete) et
+    requêtes saturées sur un seul jour."""
+    from . import discovery
+    out = []
+
+    def ex(kind, key, reason, detail, group=None, acc=None):
+        out.append({"exclusion_key": f"{reason}:{key}", "item_kind": kind, "item_key": key, "reason": reason,
+                    "detail": detail, "group_id": group, "accession": acc, "content_key": None, "as_of": as_of})
+    if discovery.UNITS.exists():
+        built = discovery.built_units()
+        units = pd.read_parquet(discovery.UNITS)
+        for u in units.itertuples(index=False):
+            b = built.get(u.order)
+            if b and b.get("content_key"):
+                continue
+            why = (b or {}).get("error") or "unité de la file de la découverte non encore préparée ni lue"
+            ex("document", f"discovery:{u.adsh}/{u.doc}", "not_processed" if not (b or {}).get("error") else "not_collected",
+               f"rang {u.rank}, passe {u._asdict()['pass']}, {u.kind} : {why} ; groupes nommés {u.groups}",
+               "CP:cik" + str(u.cik), u.adsh)
+    todo = discovery.in_period(discovery.archive_list(), discovery.period_start())
+    done = set(discovery.scanned_archives())
+    for a in todo:
+        if a["name"] not in done:
+            ex("period", f"notes:{a['name']}", "not_processed",
+               f"archive des Notes Data Sets non tirée ({a['filed_from']} au {a['filed_to']}) : ses paires portent search_incomplete")
+    qlog = discovery.QUERY_LOG
+    if qlog.exists():
+        for l in qlog.read_text(encoding="utf-8").splitlines():
+            r = json.loads(l)
+            if r.get("status") == "saturated_single_day":
+                ex("query", f"efts:{r['term']}:{r['start']}", "not_collected",
+                   f"recherche plein texte saturée sur un jour ({r['term']}, {r['start']}) : résultats au-delà de 10 000 non vus")
     return out
 
 

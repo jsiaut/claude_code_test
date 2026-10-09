@@ -78,11 +78,12 @@ def build(as_of, used_accessions=None, failed=None):
     failed = failed or set()
     rows = []
     root = config.CACHE
+    disc = _discovery_meta()
     for p in sorted((root / "archives").rglob("*.zst")):
         rel = p.relative_to(root)
         cik, acc = rel.parts[1], rel.parts[2]
         name = "/".join(rel.parts[3:])[:-4]
-        m = meta.get(acc, {})
+        m = meta.get(acc) or disc.get(acc, {})
         st, desc = sgml.get((acc, name), (None, None))
         kind = _kind(name, st)
         fs, dc, al, tier = _classify(kind, m.get("form"), st, m.get("items"))
@@ -138,6 +139,7 @@ def build(as_of, used_accessions=None, failed=None):
                      "amends_accession": None, "parse_state": "parsed", "normalizer_version": None,
                      "classification_note": "BDC Data Sets, millésime gardé (rafraîchissement de septembre 2026)"
                      if kind == "dataset_archive" else None})
+    rows += _discovery_rows(root, as_of)
     for p in sorted((root / "taxonomies").rglob("*.zst")):
         rel = p.relative_to(root)
         data = cache.read(p)
@@ -149,4 +151,85 @@ def build(as_of, used_accessions=None, failed=None):
                      "tier": "F", "sha256": cache.sha256(data), "size_bytes": len(data), "cache_path": str(rel),
                      "fetched_as_of": as_of, "amends_accession": None, "parse_state": "parsed",
                      "normalizer_version": None, "classification_note": "taxonomie épinglée (annexe D)"})
+    return rows
+
+
+def _discovery_meta():
+    """Formulaire et date des dépôts tirés par la découverte (pages R, EX-10, Form D)."""
+    out = {}
+    for name in ("discovery_mentions.parquet", "discovery_ex10.parquet", "discovery_formd.parquet"):
+        p = config.DB_DIR / name
+        if not p.exists():
+            continue
+        df = pd.read_parquet(p)
+        for r in df.to_dict("records"):
+            acc = r.get("adsh")
+            if not acc or acc in out:
+                continue
+            fd = str(r.get("date") or r.get("file_date") or "").replace("-", "")
+            out[acc] = {"form": r.get("form"), "filingDate": f"{fd[:4]}-{fd[4:6]}-{fd[6:8]}" if len(fd) == 8 else None,
+                        "group_id": None}
+    return out
+
+
+def _discovery_rows(root, as_of):
+    """Bloc `discovery` (§14) : archives des Notes Data Sets (empreinte et extraits, l'archive
+    entière n'étant pas gardée, D-0036), page et notice des jeux de données, liste des noms
+    d'EDGAR, pages de la recherche plein texte."""
+    rows = []
+    man = root / "datasets" / "notes" / "manifest.jsonl"
+    seen = {}
+    if man.exists():
+        for l in man.read_text(encoding="utf-8").splitlines():
+            r = json.loads(l)
+            seen[r["name"]] = r
+    for name, r in sorted(seen.items()):
+        if r.get("status") != "scanned":
+            continue
+        rows.append({"doc_key": f"datasets/notes/{name}", "resource_kind": "dataset_archive", "url": r["url"],
+                     "cik": None, "group_id": None, "accession": None, "document": name + ".zip", "sgml_type": None,
+                     "sgml_description": None, "form": None, "items": None, "filing_date": None,
+                     "acceptance_datetime": None, "report_date": None, "knowledge_date": r.get("retrieved", "")[:10] or None,
+                     "filing_status": "filed", "incorporated_by_reference": None, "doc_class": "financial_statements",
+                     "assurance_level": "not_applicable", "tier": None, "sha256": r.get("sha256"),
+                     "size_bytes": r.get("bytes"), "cache_path": f"datasets/notes/{name}/", "fetched_as_of": as_of,
+                     "amends_accession": None, "parse_state": "parsed", "normalizer_version": None,
+                     "classification_note": (f"Notes Data Sets, dépôts du {r.get('filed_from')} au {r.get('filed_to')} ; "
+                                             f"archive non gardée entière (extraits sous cache_path), lexique "
+                                             f"{r.get('lexicon_version')}, Last-Modified {r.get('last_modified')}")})
+    for sub, url_of, kind, note in (
+            ("notes", lambda n: "https://www.sec.gov/data-research/sec-markets-data/financial-statement-notes-data-sets"
+             if n.endswith(".html") else "https://www.sec.gov/files/aqfsn_1.pdf", "web_page", "Notes Data Sets : page et notice"),
+            ("edgar", lambda n: "https://www.sec.gov/Archives/edgar/cik-lookup-data.txt", "web_page",
+             "liste des noms et CIK d'EDGAR (§9.4)")):
+        d = root / "other" / sub
+        if not d.exists():
+            continue
+        for p in sorted(d.glob("*.zst")):
+            data = cache.read(p)
+            name = p.name[:-4]
+            rows.append({"doc_key": f"other/{sub}/{name}", "resource_kind": kind, "url": url_of(name), "cik": None,
+                         "group_id": None, "accession": None, "document": name, "sgml_type": None,
+                         "sgml_description": None, "form": None, "items": None, "filing_date": None,
+                         "acceptance_datetime": None, "report_date": None, "knowledge_date": None,
+                         "filing_status": None, "incorporated_by_reference": None, "doc_class": "inventory",
+                         "assurance_level": "not_applicable", "tier": None, "sha256": cache.sha256(data),
+                         "size_bytes": len(data), "cache_path": str(p.relative_to(root)), "fetched_as_of": as_of,
+                         "amends_accession": None, "parse_state": "parsed", "normalizer_version": None,
+                         "classification_note": note})
+    sdir = root / "search"
+    if sdir.exists():
+        for p in sorted(sdir.rglob("*.json.zst")):
+            data = cache.read(p)
+            rows.append({"doc_key": "search/" + "/".join(p.relative_to(sdir).parts)[:-4], "resource_kind": "web_page",
+                         "url": None, "cik": None, "group_id": None, "accession": None,
+                         "document": p.parent.name, "sgml_type": None, "sgml_description": None, "form": None,
+                         "items": None, "filing_date": None, "acceptance_datetime": None, "report_date": None,
+                         "knowledge_date": p.name[:10], "filing_status": None, "incorporated_by_reference": None,
+                         "doc_class": "inventory", "assurance_level": "not_applicable", "tier": None,
+                         "sha256": cache.sha256(data), "size_bytes": len(data),
+                         "cache_path": str(p.relative_to(root)), "fetched_as_of": as_of, "amends_accession": None,
+                         "parse_state": "parsed", "normalizer_version": None,
+                         "classification_note": "page de la recherche plein texte (efts.sec.gov), requête consignée "
+                                                "dans work/discovery/efts_queries.jsonl"})
     return rows

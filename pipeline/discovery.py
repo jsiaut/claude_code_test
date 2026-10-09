@@ -602,22 +602,22 @@ def _date(ymd):
 
 
 def fact_dates(ddate, qtrs, datp, durp):
-    """Dates d'un fait de num : `ddate` est arrondie à la fin de mois et `datp` donne l'écart
-    en fraction du mois ; la durée vaut `qtrs` trimestres plus `durp` (readme, §5.4)."""
+    """Dates d'un fait de num : `ddate` est la fin de mois la plus proche ; dans les archives,
+    `datp` est l'écart en jours (de -15 à 15) et la date réelle vaut ddate - datp (accord du
+    7 septembre 2025 : ddate 20250831, datp -7) ; `durp` est l'écart de durée en fraction
+    d'année (1/365 = un jour) par rapport à qtrs trimestres de 365/4 jours."""
     end = _date(ddate)
     try:
-        import calendar as _cal
-        days = _cal.monthrange(end.year, end.month)[1]
-        end = end + dt.timedelta(days=round(float(datp or 0) * days))
+        end = end - dt.timedelta(days=int(round(float(datp or 0))))
     except (TypeError, ValueError):
         pass
     q = int(qtrs or 0)
     if q == 0:
         return None, end
     try:
-        dur = round((q + float(durp or 0)) * 91.3125)
+        dur = int(round(q * 365 / 4 + float(durp or 0) * 365))
     except (TypeError, ValueError):
-        dur = round(q * 91.3125)
+        dur = int(round(q * 365 / 4))
     return end - dt.timedelta(days=dur - 1), end
 
 
@@ -649,6 +649,24 @@ def candidate_facts(text, num, dims):
     return out
 
 
+def r_page_text(raw):
+    """Texte d'une page R : le titre de la note, puis le contenu de chaque cellule de texte
+    (`td class="text"`) linéarisé comme un fragment, paragraphes et tableaux gardés ; sans
+    cela, toute la note tiendrait sur une seule ligne de tableau, impossible à découper (§7.4)."""
+    from . import textnorm
+    root = textnorm.parse_html(raw)
+    tds = root.xpath('//td[@class="text"]')
+    if not tds:
+        return textnorm.lines_to_text(textnorm.linearize(root))
+    lin = textnorm.Linearizer()
+    for th in root.xpath('//th[contains(concat(" ", normalize-space(@class), " "), " tl ")]')[:1]:
+        lin.add(th.text_content(), True)
+        lin.flush()
+    for td in tds:
+        lin.walk_cell(td)
+    return textnorm.lines_to_text(lin.lines)
+
+
 def note_family(ren_f, report, shortname):
     """Pages de la note : elle-même, ses tableaux et ses détails, rattachés par le rendu
     (`parentreport`, `ultparentrpt`) ou, à défaut, par le préfixe de leur nom court."""
@@ -676,8 +694,7 @@ def note_block(client, m, sub_row, report, shortname, num, dims, sort_key):
         url = f"{SEC}/Archives/edgar/data/{int(sub_row['cik'])}/{acc.replace('-', '')}/{doc}"
         raw, _ = client.get(url)
         cache.write(path, raw)
-    root = textnorm.parse_html(raw)
-    text = textnorm.lines_to_text(textnorm.linearize(root))
+    text = r_page_text(raw)
     cands = candidate_facts(text, num, dims)
     tier, assurance, status = form_evidence(sub_row["form"], sub_row.get("fp"))
     period = sub_row.get("period")
@@ -708,7 +725,7 @@ _NAME_RX = re.compile(r"^(.*?)\s+(?:\([^)]*\)\s+)?\(CIK (\d{10})\)\s*$")
 
 def _display(names):
     out = []
-    for n in names or []:
+    for n in (list(names) if names is not None else []):
         m = _NAME_RX.match(n.strip())
         if m:
             out.append((m.group(1).strip(), m.group(2)))
@@ -718,6 +735,20 @@ def _display(names):
 def efts_hits():
     p = config.DB_DIR / "discovery_efts.parquet"
     return pd.read_parquet(p) if p.exists() else pd.DataFrame()
+
+
+def _valid_terms_only(h, lex):
+    """Une pièce ne se tire que si l'un des termes qui l'ont trouvée peut nommer un groupe à sa
+    date (entrées datées du lexique) ; une ligne par pièce."""
+    by_term = {}
+    for e in lex:
+        by_term.setdefault(e["term"], []).append(e)
+    ok = set()
+    for r in h.itertuples(index=False):
+        period = (r.file_date or "").replace("-", "")
+        if any(ref_valid(e, period) for e in by_term.get(r.term, [])):
+            ok.add(r.id)
+    return h[h["id"].isin(ok)].drop_duplicates("id")
 
 
 def verify_exhibits(rate=4.0):
@@ -732,7 +763,7 @@ def verify_exhibits(rate=4.0):
     client.min_interval = 1.0 / rate
     h = efts_hits()
     h = h[h["file_type"].fillna("").str.upper().str.startswith("EX-10")]
-    h = h.drop_duplicates("id")
+    h = _valid_terms_only(h, lex)
     rows = []
     from concurrent.futures import ThreadPoolExecutor
 
@@ -753,7 +784,7 @@ def verify_exhibits(rate=4.0):
                 cache.write(path, raw)
         except net.NotCollected as exc:
             return {"id": r["id"], "status": "not_collected", "reason": str(exc)}
-        text = sections.full_text(raw)
+        text, how = plain_text(raw)
         period = (r["file_date"] or "").replace("-", "")
         hits = find_mentions(text, rx, lex, lambda t: own_name_spans(t, [n for n, _ in names]))
         refs, terms, first = set(), set(), None
@@ -767,16 +798,36 @@ def verify_exhibits(rate=4.0):
         return {"id": r["id"], "status": "verified" if refs else "no_mention", "cik": str(int(cik10)),
                 "filer": name, "adsh": acc, "file": r["file"], "file_type": r["file_type"], "form": r["form"],
                 "file_date": r["file_date"], "groups": sorted(refs), "terms": ";".join(sorted(terms)),
-                "chars": len(text), "first_mention_char": first}
+                "chars": len(text), "first_mention_char": first, "text_method": how}
 
-    with ThreadPoolExecutor(max_workers=4) as tp:
-        for out in tp.map(one, [r for _, r in h.iterrows()]):
+    def safe(r):
+        try:
+            return one(r)
+        except Exception as exc:                 # une pièce illisible ne coupe pas la vérification
+            return {"id": r["id"], "status": "parse_failed", "reason": f"{type(exc).__name__}: {exc}"[:300]}
+
+    with ThreadPoolExecutor(max_workers=8) as tp:
+        for out in tp.map(safe, [r for _, r in h.iterrows()]):
             if out:
                 rows.append(out)
     df = pd.DataFrame(rows)
     df.to_parquet(config.DB_DIR / "discovery_ex10.parquet", index=False)
     print(df["status"].value_counts().to_dict() if len(df) else {}, client.stats["requests"])
     return df
+
+
+def plain_text(raw):
+    """Texte d'une pièce par le normaliseur ; un HTML trop imbriqué pour le linéariseur (profondeur
+    de récursion) se lit en retirant les balises, ce qui suffit à y chercher un terme."""
+    from . import sections, textnorm
+    try:
+        return sections.full_text(raw), "linearized"
+    except RecursionError:
+        t = textnorm.decode(raw)
+        t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", t)
+        t = re.sub(r"<[^>]+>", " ", t)
+        import html as _html
+        return re.sub(r"\s+", " ", _html.unescape(t)), "tags_stripped"
 
 
 def _xml_text(raw):
@@ -801,7 +852,7 @@ def verify_form_d(rate=4.0):
     client.min_interval = 1.0 / rate
     h = efts_hits()
     h = h[h["root_forms"].map(lambda x: "D" in list(x) if x is not None else False)]
-    h = h.drop_duplicates("id")
+    h = _valid_terms_only(h, lex)
     rows = []
     from concurrent.futures import ThreadPoolExecutor
 
@@ -845,8 +896,14 @@ def verify_form_d(rate=4.0):
                 "total_offering_amount": tag("totalOfferingAmount"), "first_sale": first_sale,
                 "is_amendment": tag("isAmendment"), "industry": tag("industryGroupType")}
 
-    with ThreadPoolExecutor(max_workers=4) as tp:
-        for out in tp.map(one, [r for _, r in h.iterrows()]):
+    def safe(r):
+        try:
+            return one(r)
+        except Exception as exc:                 # une pièce illisible ne coupe pas la vérification
+            return {"id": r["id"], "status": "parse_failed", "reason": f"{type(exc).__name__}: {exc}"[:300]}
+
+    with ThreadPoolExecutor(max_workers=8) as tp:
+        for out in tp.map(safe, [r for _, r in h.iterrows()]):
             if out:
                 rows.append(out)
     df = pd.DataFrame(rows)
@@ -854,12 +911,326 @@ def verify_form_d(rate=4.0):
     print(df["status"].value_counts().to_dict() if len(df) else {}, client.stats["requests"])
     return df
 
+
+# -- candidats classés et file de lecture (D-0036) -------------------------------------------
+
+CANDIDATES = config.DB_DIR / "discovery_candidates.parquet"
+UNITS = config.DB_DIR / "discovery_units.parquet"
+
+
+def _num_amount(x):
+    try:
+        v = float(str(x).replace(",", ""))
+        return v if v == v else None
+    except (TypeError, ValueError):
+        return None
+
+
+def all_mentions():
+    """Mentions des trois sources : notes (txt), EX-10 vérifiés, Form D vérifiés ; une ligne
+    par (document, groupe)."""
+    nm = note_mentions()
+    amts = documented_amounts(set(nm["adsh"])) if len(nm) else {}
+    rows = []
+    for r in nm.to_dict("records"):
+        a = amts.get((r["adsh"], r["group"]))
+        rows.append({"cik": str(r["cik"]), "filer": r["filer"], "class": r["class"], "group": r["group"],
+                     "adsh": r["adsh"], "doc": r["tag"], "form": r["form"], "date": r["filed"], "period": r["period"],
+                     "amount": a[0] if a else None, "amount_basis": (f"num:{a[1]}:{a[2]}:{a[3]}:{a[4]}" if a else None),
+                     "archive": r["archive"], "value_sha": r["value_sha"], "chars": r["chars"], "terms": r["terms"],
+                     "truncated": r["truncated"]})
+    p = config.DB_DIR / "discovery_ex10.parquet"
+    if p.exists():
+        ex = pd.read_parquet(p)
+        ex = ex[ex["status"] == "verified"]
+        for r in ex.itertuples(index=False):
+            for g in r.groups:
+                rows.append({"cik": r.cik, "filer": r.filer, "class": "contract", "group": g, "adsh": r.adsh,
+                             "doc": r.file, "form": r.form, "date": (r.file_date or "").replace("-", ""),
+                             "period": None, "amount": None, "amount_basis": None, "archive": None,
+                             "value_sha": None, "chars": r.chars, "terms": r.terms, "truncated": False})
+    p = config.DB_DIR / "discovery_formd.parquet"
+    if p.exists():
+        fd = pd.read_parquet(p)
+        fd = fd[fd["status"] == "verified"]
+        for r in fd.itertuples(index=False):
+            amt = _num_amount(r.total_amount_sold)
+            for g in r.groups:
+                rows.append({"cik": r.cik, "filer": r.filer, "class": "form_d", "group": g, "adsh": r.adsh,
+                             "doc": r.file, "form": r.form, "date": (r.file_date or "").replace("-", ""),
+                             "period": None, "amount": amt,
+                             "amount_basis": "form_d:totalAmountSold" if amt is not None else None,
+                             "archive": None, "value_sha": None, "chars": 0, "terms": r.terms, "truncated": False})
+    return pd.DataFrame(rows)
+
+
+def rank_candidates(m):
+    """Classement fixé d'avance (§14, D-0036) : classe de mention, montant documenté
+    décroissant (sans montant ensuite), nombre de groupes nommés, accession."""
+    out = []
+    for cik, g in m.groupby("cik"):
+        best = min(CLASS_ORDER[c] for c in g["class"])
+        best_rows = g[g["class"].map(CLASS_ORDER) == best]
+        amts = [a for a in g["amount"] if a is not None and a == a]
+        out.append({"cik": cik, "filer": g.sort_values("date")["filer"].iloc[-1],
+                    "best_class": [k for k, v in CLASS_ORDER.items() if v == best][0],
+                    "documented_amount": max(amts) if amts else None,
+                    "n_groups": g["group"].nunique(), "groups": ";".join(sorted(g["group"].unique())),
+                    "first_accession": min(best_rows["adsh"]),
+                    "n_mentions": len(g), "n_documents": g[["adsh", "doc"]].drop_duplicates().shape[0],
+                    "classes": ";".join(sorted(g["class"].unique(), key=CLASS_ORDER.get))})
+    c = pd.DataFrame(out)
+    c["_cls"] = c["best_class"].map(CLASS_ORDER)
+    c["_noamt"] = c["documented_amount"].isna()
+    c["_amt"] = -c["documented_amount"].fillna(0)
+    c = c.sort_values(["_cls", "_noamt", "_amt", "n_groups", "first_accession"],
+                      ascending=[True, True, True, False, True]).drop(columns=["_cls", "_noamt", "_amt"])
+    c.insert(0, "rank", range(1, len(c) + 1))
+    return c.reset_index(drop=True)
+
+
+def reading_units(m, c):
+    """Unités de lecture dans l'ordre de la file (D-0036, point 8) : (A) en-têtes d'EX-10 et
+    notes du dépôt le plus récent de chaque candidat, dans l'ordre du classement ; (B) ses autres
+    notes, du plus récent au plus ancien ; un texte identique n'est qu'une unité."""
+    rank = dict(zip(c["cik"], c["rank"]))
+    units, seen = [], set()
+    notes = m[m["class"].isin(["related_party", "note"])]
+    exs = m[m["class"] == "contract"]
+    for cik in c["cik"]:
+        r = rank[cik]
+        for x in exs[exs["cik"] == cik].drop_duplicates(["adsh", "doc"]).sort_values("date", ascending=False).itertuples(index=False):
+            units.append({"pass": "A", "rank": r, "cik": cik, "kind": "exhibit_header", "adsh": x.adsh,
+                          "doc": x.doc, "date": x.date, "archive": None, "value_sha": None,
+                          "groups": ";".join(sorted(exs[(exs["adsh"] == x.adsh) & (exs["doc"] == x.doc)]["group"]))})
+        n = notes[notes["cik"] == cik]
+        if n.empty:
+            continue
+        docs = n.drop_duplicates(["adsh", "doc"]).sort_values(["date", "adsh"], ascending=[False, False])
+        latest = docs["adsh"].iloc[0]
+        for x in docs.itertuples(index=False):
+            if x.value_sha in seen:
+                continue
+            seen.add(x.value_sha)
+            units.append({"pass": "A" if x.adsh == latest else "B", "rank": r, "cik": cik, "kind": "note",
+                          "adsh": x.adsh, "doc": x.doc, "date": x.date, "archive": x.archive,
+                          "value_sha": x.value_sha,
+                          "groups": ";".join(sorted(n[(n["adsh"] == x.adsh) & (n["doc"] == x.doc)]["group"]))})
+    u = pd.DataFrame(units)
+    u["_p"] = u["pass"].map({"A": 0, "B": 1, "C": 2})
+    u = u.sort_values(["_p", "rank", "date", "adsh", "doc"], ascending=[True, True, False, False, True],
+                      kind="mergesort").drop(columns=["_p"])
+    u.insert(0, "order", range(1, len(u) + 1))
+    return u.reset_index(drop=True)
+
+
+def build_candidates():
+    m = all_mentions()
+    c = rank_candidates(m)
+    u = reading_units(m, c)
+    m.to_parquet(config.DB_DIR / "discovery_mentions.parquet", index=False)
+    c.to_parquet(CANDIDATES, index=False)
+    u.to_parquet(UNITS, index=False)
+    print("mentions", len(m), "candidats", len(c), "unités", len(u))
+    print(c.groupby("best_class").size().to_dict())
+    print(u.groupby(["pass", "kind"]).size().to_dict())
+    return m, c, u
+
+
+# -- préparation des blocs par tranches, dans l'ordre de la file ------------------------------
+
+BUILT = config.DB_DIR / "discovery_built.jsonl"
+
+
+def built_units():
+    if not BUILT.exists():
+        return {}
+    out = {}
+    for l in BUILT.read_text(encoding="utf-8").splitlines():
+        r = json.loads(l)
+        out[r["order"]] = r
+    return out
+
+
+class _Archive:
+    """Extraits d'une archive, chargés une fois."""
+    _cache = {}
+
+    @classmethod
+    def get(cls, name):
+        if name not in cls._cache:
+            if len(cls._cache) > 3:
+                cls._cache.pop(next(iter(cls._cache)))
+            d = BASE / name
+            sub = pd.read_parquet(d / "sub.parquet")
+            ren = pd.read_parquet(d / "ren.parquet")
+            pre = pd.read_parquet(d / "pre.parquet", columns=["adsh", "report", "tag", "version"])
+            num = pd.read_parquet(d / "num.parquet")
+            dim = pd.read_parquet(d / "dim.parquet")
+            cls._cache[name] = {"sub": sub.set_index("adsh"), "ren": ren, "pre": pre, "num": num,
+                                "dims": dict(zip(dim["dimhash"], dim["segments"]))}
+        return cls._cache[name]
+
+
+def _exhibit_block(u, client):
+    from . import blocks, sections
+    from .graph import normalize_name
+    ex = pd.read_parquet(config.DB_DIR / "discovery_ex10.parquet")
+    r = ex[(ex["adsh"] == u["adsh"]) & (ex["file"] == u["doc"])].iloc[0]
+    cik10 = str(r["cik"]).zfill(10)
+    raw = cache.read(cache.archive_path(cik10, r["adsh"], r["file"]))
+    head = sections.first_page(raw)
+    ck = blocks.content_key(head, [])
+    fd = r["file_date"]
+    return {"content_key": ck, "block_kind": "discovery_exhibit_header", "signal_class": 5,
+            "sort_key": f"{u['order']:07d}", "group_id": "CP:" + normalize_name(r["filer"]), "cik": cik10,
+            "accession": r["adsh"], "form": r["form"], "filing_date": fd, "acceptance": None,
+            "knowledge_date": fd, "period_start": None, "period_end": fd, "document": r["file"],
+            "locator": {"file": r["file"], "accession": r["adsh"], "cik": cik10, "byte_range": None},
+            "text": head, "candidate_facts": [], "chars": len(head),
+            "normalizer_version": config.NORMALIZER_VERSION, "delimiter_version": config.DELIMITER_VERSION,
+            "exhibit_type": r["file_type"], "filing_status": "filed", "assurance_level": "not_applicable",
+            "tier": "D", "filer_name": r["filer"], "mention_class": "contract", "groups_named": u["groups"].split(";"),
+            "terms": r["terms"], "unit_order": int(u["order"])}
+
+
+def _note_unit_block(u, client):
+    a = _Archive.get(u["archive"])
+    sub_row = a["sub"].loc[u["adsh"]].to_dict()
+    sub_row["adsh"] = u["adsh"]
+    pre = a["pre"]
+    p = pre[(pre["adsh"] == u["adsh"]) & (pre["tag"] == u["doc"])]
+    if p.empty:
+        return None, "report_not_found"
+    report = str(sorted(p["report"].astype(int))[0])
+    ren_f = a["ren"][a["ren"]["adsh"] == u["adsh"]]
+    rr = ren_f[ren_f["report"].astype(str) == report]
+    shortname = rr["shortname"].iloc[0] if len(rr) else None
+    fam = note_family(ren_f, report, shortname)
+    tags = set(pre[(pre["adsh"] == u["adsh"]) & (pre["report"].astype(str).isin(fam))]["tag"])
+    num = a["num"]
+    num = num[(num["adsh"] == u["adsh"]) & (num["tag"].isin(tags))]
+    m = {"adsh": u["adsh"], "class": "related_party" if RELATED_TAG.search(u["doc"]) else "note",
+         "groups": u["groups"].split(";"), "terms": None, "tag": u["doc"]}
+    try:
+        b = note_block(client, m, sub_row, report, shortname, num, a["dims"], f"{u['order']:07d}")
+    except net.NotCollected as exc:
+        return None, f"not_collected: {exc}"
+    b["unit_order"] = int(u["order"])
+    b["block_kind"] = "discovery_note"
+    return b, None
+
+
+def prepare(n=50, rate=4.0):
+    """Construit les blocs des `n` unités suivantes de la file qui ne le sont pas encore (une
+    requête par page R) et les ajoute au catalogue de la découverte."""
+    cfg = config.load()
+    client = net.SecClient(AS_OF, cfg)
+    client.min_interval = 1.0 / rate
+    units = pd.read_parquet(UNITS)
+    done = built_units()
+    todo = [u for u in units.to_dict("records") if u["order"] not in done][:n]
+    nb = 0
+    for u in todo:
+        if u["kind"] == "exhibit_header":
+            b, err = _exhibit_block(u, client), None
+        else:
+            b, err = _note_unit_block(u, client)
+        rec = {"order": int(u["order"]), "rank": int(u["rank"]), "cik": u["cik"], "kind": u["kind"],
+               "adsh": u["adsh"], "doc": u["doc"], "content_key": b["content_key"] if b else None, "error": err}
+        if b:
+            with open(DISC_CATALOG, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+            nb += 1
+        with open(BUILT, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    print(f"blocs préparés : {nb} sur {len(todo)} unités ; requêtes {client.stats['requests']}")
+
+
+# -- recherche complète côté client (E.0) une fois la découverte ouverte (D-0037) ------------
+
+PERIODIC = {"10-K", "10-K/A", "10-KT", "10-KT/A", "10-Q", "10-Q/A", "10-QT", "10-QT/A",
+            "20-F", "20-F/A", "40-F", "40-F/A"}
+LOOKUP = ("edgar", "cik-lookup-data_2026-10-09.txt.zst")
+
+
+def edgar_names():
+    """Dénomination normalisée -> CIK, depuis la liste des noms d'EDGAR (§9.4)."""
+    from .graph import normalize_name
+    p = cache.other_path(*LOOKUP)
+    if not p.exists():
+        return {}
+    out = {}
+    for l in cache.read(p).decode("latin-1").splitlines():
+        parts = l.rsplit(":", 2)
+        if len(parts) == 3 and parts[1].isdigit():
+            out.setdefault(normalize_name(parts[0]), set()).add(str(int(parts[1])))
+    return out
+
+
+def periodic_filings():
+    """Rapports périodiques de chaque CIK dans les archives scannées : (cik -> [(form, filed)])."""
+    out = {}
+    for name in scanned_archives():
+        sub = pd.read_parquet(BASE / name / "sub.parquet", columns=["cik", "form", "filed"])
+        sub = sub[sub["form"].isin(PERIODIC)]
+        for r in sub.itertuples(index=False):
+            out.setdefault(str(int(r.cik)), []).append((r.form, r.filed))
+    return out
+
+
+def coverage_ok():
+    """Toutes les archives de la période sont scannées sous le lexique courant."""
+    todo = {a["name"] for a in in_period(archive_list(), period_start())}
+    return todo <= set(scanned_archives())
+
+
+def client_states(read_cks, extended_start):
+    """État de la recherche côté client pour chaque contrepartie hors périmètre, par sa
+    dénomination normalisée : (complète, motif, cik). Un client sans CIK sous sa dénomination
+    ne dépose pas ; un CIK sans rapport périodique depuis le début de la fenêtre allongée n'a
+    pas de notes à lire ; un déposant périodique n'est complet que si toutes ses unités qui
+    nomment le fournisseur sont lues. Une archive non tirée laisse la recherche incomplète."""
+    from .graph import normalize_name
+    names = edgar_names()
+    per = periodic_filings()
+    units = pd.read_parquet(UNITS) if UNITS.exists() else pd.DataFrame()
+    built = built_units()
+    cands = pd.read_parquet(CANDIDATES) if CANDIDATES.exists() else pd.DataFrame()
+    filer_cik = {normalize_name(n): str(c) for n, c in zip(cands.get("filer", []), cands.get("cik", []))}
+    complete_cov = coverage_ok()
+    ext = extended_start.strftime("%Y%m%d") if hasattr(extended_start, "strftime") else str(extended_start)
+
+    def state(norm, s):
+        if not complete_cov:
+            return False, "search_incomplete", None
+        ciks = {filer_cik[norm]} if norm in filer_cik else names.get(norm, set())
+        if not ciks:
+            return True, None, None                      # non-déposant (§10.4)
+        cik = sorted(ciks)[0]
+        reps = [f for c in ciks for f in per.get(c, []) if f[1] >= ext]
+        if not reps:
+            return True, None, cik                       # aucun rapport périodique dans la fenêtre
+        if units.empty:
+            return False, "not_processed", cik
+        mine = units[(units["cik"].isin(ciks)) & (units["groups"].str.split(";").map(lambda g: s in g))]
+        for u in mine.itertuples(index=False):
+            b = built.get(u.order)
+            if not b or not b.get("content_key") or b["content_key"] not in read_cks:
+                return False, "not_processed", cik
+        return True, None, cik
+    return state
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "fetch":
         fetch(only=set(sys.argv[2:]) or None)
     elif cmd == "search":
         search(rate=float(sys.argv[2]) if len(sys.argv) > 2 else None)
+    elif cmd == "candidates":
+        build_candidates()
+    elif cmd == "prepare":
+        prepare(int(sys.argv[2]) if len(sys.argv) > 2 else 50)
     elif cmd == "verify":
         verify_exhibits()
         verify_form_d()
