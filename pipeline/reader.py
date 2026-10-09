@@ -398,7 +398,8 @@ def cmd_submit_lot(path, final=False):
             groups[ck] = []
         groups[ck].append(json.dumps(obj, ensure_ascii=False))
     rc = 0
-    tmp = STATE.parent / "lot_part.jsonl"
+    # un fichier par liste : deux lecteurs simultanés ne doivent jamais s'échanger leurs lignes (D-0034)
+    tmp = STATE.parent / (f"lot_part_{__import__('pathlib').Path(LIST).stem}.jsonl" if LIST else "lot_part.jsonl")
     for ck in order:
         tmp.write_text("\n".join(groups[ck]) + "\n", encoding="utf-8")
         r = cmd_submit(ck, str(tmp), final)
