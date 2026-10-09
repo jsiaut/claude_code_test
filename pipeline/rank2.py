@@ -248,6 +248,7 @@ def annual_rank2(S, g, fs, fe, cutoff, view, as_of):
         out.append(cell("implied_useful_life", g, fs, fe, view, as_of, status="not_determinable",
                         nd_reason=(_nd(S, "gross_depreciable_ppe", None) if d1 is None else "prior_period_missing"
                                    if d0 is None else _nd(S, "depreciation_expense", None))))
+    out += liquidity_12m(S, g, fs, fe, cutoff, view, as_of)
     # part des effets publiés du pont dans le résultat avant impôt (§6.2) : seulement si celui-ci
     # est positif et dépasse 5 % du revenu ; un terme non publié rend la part partielle
     pretax = S.duration("pretax_income_continuing", fs, fe, cutoff)
@@ -282,11 +283,71 @@ def annual_rank2(S, g, fs, fe, cutoff, view, as_of):
     return out
 
 
+OUTFLOWS_12M = (("debt_principal", "debt_principal_due_12m"), ("operating_lease_payments", "operating_lease_payments_12m"),
+                ("finance_lease_payments", "finance_lease_payments_12m"), ("purchase_obligations", "purchase_obligation_12m"))
+
+
+def liquidity_12m(S, g, fs, fe, cutoff, view, as_of):
+    """liq_cash_to_12m_outflows (§4.3) : trésorerie et placements courants ÷ sorties contractuelles
+    à 12 mois (principal de dette, loyers de location simple et de location-financement,
+    obligations d'achat), en fin d'exercice, sans (`without`) et avec (`with`) les facilités
+    confirmées non tirées au numérateur. Les placements : le total balisé s'il existe, sinon la
+    trésorerie plus la ligne de placements courants ; un groupe qui ne présente cette ligne dans
+    aucun de ses bilans n'en a pas, et la trésorerie seule est complète. Un terme de sortie non
+    balisé rend le ratio indéterminé, jamais complété par un zéro. Aucune paire non additive du
+    registre (§8.2) ne relie ces quatre termes : leur somme est admise."""
+    out = []
+    inv_qns = ("cash_equivalents_and_marketable", "short_term_investments", "marketable_securities_current")
+    total = S.instant("cash_equivalents_and_marketable", fe, cutoff)
+    cash = S.instant("cash_and_equivalents", fe, cutoff)
+    flags = {}
+    if total:
+        num_terms, num_nd = [total], None
+        flags["liquidity_basis"] = "trésorerie et placements courants balisés en un total"
+    elif cash:
+        inv = S.instant("short_term_investments", fe, cutoff) or S.instant("marketable_securities_current", fe, cutoff)
+        if inv:
+            num_terms, num_nd = [cash, inv], None
+            flags["liquidity_basis"] = "trésorerie plus placements courants"
+        elif not any(S.has(q) for q in inv_qns):
+            num_terms, num_nd = [cash], None
+            flags["liquidity_basis"] = "trésorerie seule : aucune ligne de placements courants dans les bilans du groupe"
+        else:
+            num_terms, num_nd = [cash], "not_disclosed"
+    else:
+        num_terms, num_nd = [], _nd(S, "cash_and_equivalents", None)
+    outs, missing = [], []
+    for label, qn in OUTFLOWS_12M:
+        t = S.instant(qn, fe, cutoff)
+        if t:
+            outs.append((label, t))
+        else:
+            missing.append((label, _nd(S, qn, None)))
+    flags["outflows_12m"] = {label: str(t["value"]) for label, t in outs}
+    if missing:
+        flags["outflows_missing"] = {label: r for label, r in missing}
+    undrawn = S.instant("undrawn_committed_facilities", fe, cutoff)
+    for term in ("without", "with"):
+        terms = num_terms + [t for _, t in outs] + ([undrawn] if term == "with" and undrawn else [])
+        if num_nd or missing or (term == "with" and not undrawn):
+            r = num_nd or (missing[0][1] if missing else _nd(S, "undrawn_committed_facilities", None))
+            out.append(cell("liq_cash_to_12m_outflows", g, None, fe, view, as_of, term=term, status="not_determinable",
+                            nd_reason=r, terms=terms, flags=flags))
+            continue
+        num = sum(t["value"] for t in num_terms) + (undrawn["value"] if term == "with" else 0)
+        den = sum(t["value"] for _, t in outs)
+        v, r = _ratio(num, den)
+        out.append(cell("liq_cash_to_12m_outflows", g, None, fe, view, as_of, term=term, value=v, numerator=num,
+                        denominator=den, unit="pure", terms=terms, flags=flags,
+                        status="computed" if v is not None else "not_determinable", nd_reason=r))
+    return out
+
+
 # -- mesures lues dans les faits dimensionnés de l'instance -----------------------------------
 
 def _facts(con, where):
     df = con.execute(f"""SELECT fact_key, group_id, accession, form, concept, period_type, period_start, period_end,
-                                 dims, n_dims, value, value_text, decimals, decimals_inf, knowledge_date, tier, is_tagged
+                                 dims, n_dims, value, value_text, unit, decimals, decimals_inf, knowledge_date, tier, is_tagged
                           FROM facts WHERE source = 'instance' AND NOT coalesce(conflict, false) AND {where}
                           ORDER BY group_id, knowledge_date, accession, fact_key""").fetchdf()
     from .measures import ds
@@ -380,9 +441,23 @@ def segments(con, groups, as_of):
     return out
 
 
+def _fiscal_years(groups, as_of):
+    from .circularity import fiscal_years
+    cals = model.calendars()
+    as_of_d = dt.date.fromisoformat(as_of)
+    return {g: [(fs, fe) for fs, fe, _ in fiscal_years(cals[g]["quarters"],
+                                                       dt.date.fromisoformat(cals[g]["window"]["window_start"]), as_of_d)]
+            for g in groups}
+
+
+def _near(d, fe, days=7):
+    return d is not None and d != NONE and abs((dt.date.fromisoformat(str(d)[:10]) - fe).days) <= days
+
+
 def supplier_concentration(con, groups, as_of):
     """supplier_concentration : parts publiées d'achats ou de coûts par fournisseur (§3.6), telles
-    que balisées ; un fournisseur anonyme reste anonyme."""
+    que balisées ; un fournisseur anonyme reste anonyme. Un exercice sans fait balisé reçoit son
+    état (not_tagged) : un fournisseur dont dépend le groupe peut être nommé en texte seulement."""
     out = []
     df = _facts(con, "concept = 'us-gaap:ConcentrationRiskPercentage1' AND dims LIKE '%SupplierConcentrationRiskMember%' AND value IS NOT NULL")
     df = df[df["group_id"].isin(groups)]
@@ -390,6 +465,52 @@ def supplier_concentration(con, groups, as_of):
     for (g, key, ps, pe), view, r in _by_view(df, ["group_id", "key", "period_start", "period_end"]):
         out.append(cell("supplier_concentration", g, ps, pe, view, as_of, breakdown=key[:500], value=Decimal(str(r.value)),
                         unit="pure", terms=[_term(r)]))
+    for g, years in _fiscal_years(groups, as_of).items():
+        ends = list(df[df["group_id"] == g]["period_end"])
+        for fs, fe in years:
+            if any(_near(e, fe) for e in ends):
+                continue
+            for view in ("revised", "as_known"):
+                out.append(cell("supplier_concentration", g, fs, fe, view, as_of, status="not_determinable",
+                                nd_reason="not_tagged", coverage="not_collected",
+                                flags={"basis": "aucun fait ConcentrationRiskPercentage1 sur SupplierConcentrationRiskMember "
+                                                "dans les instances du groupe pour cet exercice"}))
+    return out
+
+
+SEGMENT_EXPENSE_RX = r"Cost|Expense"
+SEGMENT_EXPENSE_EXCLUDED = r"Restructuring|Severance|ToDate|ExpectedCost"
+ASU_2023_07_FIRST_YEAR_START = dt.date(2023, 12, 16)     # exercices ouverts après le 15 décembre 2023
+
+
+def segment_expenses(con, groups, as_of):
+    """segment_significant_expenses (§4.2, ASU 2023-07) : charges sectorielles telles que balisées
+    sur StatementBusinessSegmentsAxis, une cellule par secteur, concept et période, jamais sommées ;
+    les « autres éléments sectoriels » (SegmentReportingOtherItemAmount) gardent leur concept. Les
+    montants de restructuration cumulés ou attendus ne sont pas des charges de la période. Un
+    exercice soumis à ASU 2023-07 sans charge sectorielle balisée reçoit son état (not_tagged)."""
+    out = []
+    df = _facts(con, "dims LIKE '%StatementBusinessSegmentsAxis%' AND period_type = 'duration' AND value IS NOT NULL")
+    df = df[df["group_id"].isin(groups) & (df["unit"] == "USD")]
+    df["member"] = df["dims"].map(_segment_member)
+    df = df[df["member"].notna()]
+    local = df["concept"].str.split(":").str[-1]
+    df = df[(local.str.contains(SEGMENT_EXPENSE_RX) | (local == "SegmentReportingOtherItemAmount"))
+            & ~local.str.contains(SEGMENT_EXPENSE_EXCLUDED)]
+    for (g, mem, concept, ps, pe), view, r in _by_view(df, ["group_id", "member", "concept", "period_start", "period_end"]):
+        out.append(cell("segment_significant_expenses", g, ps, pe, view, as_of, breakdown=f"{mem}|{concept}",
+                        value=Decimal(str(r.value)), unit="USD", terms=[_term(r)], flags={"concept": concept}))
+    for g, years in _fiscal_years(groups, as_of).items():
+        x = df[df["group_id"] == g]
+        for fs, fe in years:
+            if fs < ASU_2023_07_FIRST_YEAR_START:
+                continue
+            if any(_near(ps_, fs) and _near(pe_, fe) for ps_, pe_ in zip(x["period_start"], x["period_end"])):
+                continue
+            for view in ("revised", "as_known"):
+                out.append(cell("segment_significant_expenses", g, fs, fe, view, as_of, status="not_determinable",
+                                nd_reason="not_tagged", coverage="not_collected",
+                                flags={"basis": "aucune charge balisée sur StatementBusinessSegmentsAxis pour cet exercice"}))
     return out
 
 

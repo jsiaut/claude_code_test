@@ -135,7 +135,7 @@ def run(as_of):
     cells = measures.group_measures(con, groups, as_of)
     cells += rank2.group_rank2(con, groups, as_of)
     cells += rank2.rpo_beyond(con, groups, as_of) + rank2.segments(con, groups, as_of) + \
-        rank2.supplier_concentration(con, groups, as_of)
+        rank2.segment_expenses(con, groups, as_of) + rank2.supplier_concentration(con, groups, as_of)
     scope = cfg.get("scope") if isinstance(cfg.get("scope"), list) else []
     lender_excl = []
     if "lender" in scope:
@@ -320,8 +320,12 @@ def invariants(cells, edges, rels, reg):
         if any(l["from_group"] is None or l["to_group"] is None for l in ls):
             bad.append("g")
         if bad:
+            # motif de la cellule : l'invariant violé, le plus spécifique d'abord ; (a) niveau E ou F :
+            # une pièce non admissible dans un agrégat, précondition de la somme non remplie
+            reason = {"d": "blocked_overlap", "b": "mixed_currency", "g": "pending_entity",
+                      "a": "precondition_not_met"}
             c["status"] = "blocked_overlap" if bad == ["d"] else "not_determinable"
-            c["nd_reason"] = "blocked_overlap" if bad == ["d"] else "pending_entity"
+            c["nd_reason"] = next(reason[x] for x in ("d", "b", "g", "a") if x in bad)
             c["value"] = None
             out.append({"exclusion_key": f"invalid_aggregate:{c['measure']}:{c['subject']}:{c['counterparty']}:{c['period_end']}:{c['breakdown_key']}",
                         "item_kind": "aggregate", "item_key": f"{c['measure']}/{c['subject']}/{c['counterparty']}/{c['period_end']}",

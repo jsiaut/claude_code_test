@@ -41,10 +41,17 @@ def norm_label(s):
     return s
 
 
+FIXED_ZERO = ("-", "—", "–")
+
+
 def _num(cell):
+    """Valeur d'une cellule d'état financier : parenthèses négatives ; un tiret est un zéro
+    publié (l'équivalent HTML de ixt:fixed-zero), une cellule vide une absence (§7.3, §3.5)."""
     c = cell.replace("$", "").replace(",", "").strip()
-    if c in ("-", "—", ""):
+    if c == "":
         return None
+    if c in FIXED_ZERO:
+        return Decimal(0)
     neg = c.startswith("(") and c.endswith(")")
     c = c.strip("()")
     try:
@@ -154,9 +161,10 @@ def run(con):
                 unmatched.append({"statement": kind, "label": label})
                 continue
             concept = next(iter(concepts))
-            for y, v in zip(years, vals):
+            for y, v, raw_cell in zip(years, vals, cells):
                 if v is None:
                     continue
+                fixed_zero = raw_cell.replace("$", "").strip() in FIXED_ZERO
                 if kind == "balance_sheet":
                     ps, pe, pt = None, f"{y}-12-31", "instant"
                 else:
@@ -180,7 +188,7 @@ def run(con):
                     "dims": "[]", "n_dims": 0, "framework": "us_gaap", "reporting_scope": "as_reported",
                     "value": str(value if "Shares" not in concept else v * Decimal(1_000_000)),
                     "value_text": None, "decimals": -6 if not concept.startswith("us-gaap:EarningsPerShare") else 2,
-                    "decimals_inf": False, "precision_known": True, "is_nil": False, "is_fixed_zero": None,
+                    "decimals_inf": False, "precision_known": True, "is_nil": False, "is_fixed_zero": fixed_zero,
                     "fact_id": None,
                     "locator": json.dumps({"file": DOC_424B4, "accession": ACC_424B4, "cik": CIK,
                                            "byte_range": list(loc) if loc else None, "quote": label[:200],

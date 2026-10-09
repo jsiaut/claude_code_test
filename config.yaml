@@ -503,4 +503,4 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
   [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
    depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
    debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
-   interest_expense, interest_paid]
+   interest_expense, interest_paid, operating_lease_payments_12m, finance_lease_payments_12m]
