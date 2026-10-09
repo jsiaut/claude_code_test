@@ -51,3 +51,9 @@ groupe n'est que cité), abstention `out_of_scope_content` avec une `note` qui l
 Préfixe : le nom court du déclarant, en minuscules sans espace (`apollo:broadcom_capital_solution`,
 `applieddigital:coreweave_lease_ellendale`). La même clé pour toutes les lignes du même
 instrument, d'un bloc à l'autre.
+
+## 4. Désignation des parties (D-0038)
+
+- Le déclarant et ses filiales consolidées s'écrivent `the Company` dans `payer` et `payee`, quelle que soit la forme du texte (« we », nom court, « the Group », nom d'une filiale consolidée). La citation reste celle du texte.
+- Un terme défini du bloc (« Borrower », « Lender », « Holder », « Customer », « Partner ») s'écrit sous le nom qu'il désigne dans le même bloc.
+- Une même valeur ne se relève qu'une fois : un montant par segment qui compose un total déjà relevé ne fait pas de ligne (abstention `duplicate_of_other_block`).

@@ -300,7 +300,11 @@ def synthesis(con, as_of, stats):
                                          LIMIT 1""") else
                         "ce qui n'est pas encore lu reste « non traité », bloc par bloc dans `exclusions`. ")
                     if "text" in blocks_open else "")
-                 + "Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.")
+                 + ("Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein "
+                    "texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la première "
+                    "tranche est lue, le reste de la file est « non traité » (D-0038). " if "discovery" in blocks_open else "")
+                 + "Les blocs " + ", ".join(f"`{b}`" for b in ("discovery", "form_d", "paths", "foreign")
+                                         if b not in blocks_open) + " restent fermés.")
     e7 = q(con, "SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'")
     if e7:
         c = e7[0]
@@ -314,8 +318,11 @@ def synthesis(con, as_of, stats):
                      f"au point de tête (10 %) sont indéterminées, sur {T.m(c, field='denominator', fmt='count')} issues ; "
                      f"motifs : {reasons or 'aucun'}. " + ("Au premier passage, cette non-discrimination tient d'abord au "
                      "périmètre borné de la lecture, non à une absence de relations." if not blocks_open else
-                     "La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une "
-                     "non-discrimination tient encore en partie au périmètre de lecture."))
+                     ("La découverte (§14) n'étant lue que sur sa première tranche, la recherche reste incomplète au "
+                      "sens de E.0 pour les clients dont des dépôts restent à lire : une non-discrimination tient encore "
+                      "en partie au périmètre de lecture." if "discovery" in blocks_open else
+                      "La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une "
+                      "non-discrimination tient encore en partie au périmètre de lecture.")))
         else:
             L.append("- **E.7** : aucune paire à financement établi, E.1 et E.2 sans issue.")
     for view in ("as_known", "revised"):
@@ -548,7 +555,9 @@ def LINK_FR(fl):
         return "documenté (" + ", ".join(fl.get("link_categories") or []) + ")"
     if le == "searched_none_found":
         return "non trouvé, recherche complète au sens de E.0"
-    why = {"search_incomplete": "le client peut déposer hors du périmètre, découverte (§14) non ouverte",
+    disc = "discovery" in (config.load().get("scope") or [])
+    why = {"search_incomplete": ("le client dépose hors du périmètre et ses dépôts ne sont pas tous lus (découverte, §14)"
+                                 if disc else "le client peut déposer hors du périmètre, découverte (§14) non ouverte"),
            "parse_failed": "une archive de la période est illisible", "redacted": "une clause de la paire est caviardée",
            "not_processed": "texte non lu"}.get(fl.get("search_reason") or "not_processed", fl.get("search_reason"))
     return f"non trouvé, recherche incomplète ({why})"
@@ -762,6 +771,7 @@ def delta(con, as_of, stats):
         L.append("- Groupes d'émetteurs couverts : " + ", ".join(group_label(r["subject"]) for r in grp) + ".")
         L.append("")
     L += text_yield_section(con, T, stats)
+    L += discovery_yield_section(con, T, stats)
     L.append("## Exclusions nouvelles, par motif")
     L.append("")
     for r in q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC, 1"):
@@ -1042,7 +1052,7 @@ def text_yield_section(con, T, stats):
                                     "du plus ancien au plus récent dans chaque type, et ouvre l'exécution suivante."
                                     if tot[1] < tot[0] else ". Aucun bloc du catalogue ne reste à lire."))
     lines = q(con, f"""SELECT kind, validation_state, count(*) AS n FROM observations WHERE pass_id >= ?
-                       GROUP BY 1, 2 ORDER BY 1, 2""", first)
+                       AND CAST(block_kind AS VARCHAR) NOT LIKE 'discovery_%' GROUP BY 1, 2 ORDER BY 1, 2""", first)
     obs = sum(r["n"] for r in lines if r["kind"] == "observation" and r["validation_state"] == "valid")
     abst = sum(r["n"] for r in lines if r["kind"] == "abstention" and r["validation_state"] == "valid")
     rej = sum(r["n"] for r in lines if r["validation_state"] != "valid")
@@ -1051,6 +1061,7 @@ def text_yield_section(con, T, stats):
              f"{T.n('observations', {'text_rejected': True}, rej)} rejetées par la validation.")
     ed = q(con, f"""SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
                     WHERE l.link_kind = 'edge' AND EXISTS (SELECT 1 FROM observations o WHERE o.pass_id >= ?
+                          AND CAST(o.block_kind AS VARCHAR) NOT LIKE 'discovery_%'
                           AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""", first)
     if ed:
         L.append("- Arêtes établies par une ligne du bloc : " + ", ".join(
@@ -1093,7 +1104,9 @@ def text_yield_section(con, T, stats):
             f"{T.n('measures', {'financed_status_now': [r['v'], r['nd']]}, r['n'])}" for r in fs) +
             ". « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : "
             "tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre "
-            "laisse la recherche incomplète tant que la découverte (§14) n'est pas ouverte.")
+            + ("laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus "
+               "(découverte, §14, D-0037)." if "discovery" in (cfg.get("scope") or []) else
+               "laisse la recherche incomplète tant que la découverte (§14) n'est pas ouverte."))
     # ce qu'une extension peut encore changer (§11.1, E.7) : motifs des cellules de rang 1 non calculées
     why = q(con, f"""SELECT nd_reason AS nd, count(*) AS n FROM measures WHERE measure IN ({','.join('?' * len(tiers))})
                      AND status IN ('not_determinable', 'partial') AND nd_reason IS NOT NULL
@@ -1102,8 +1115,9 @@ def text_yield_section(con, T, stats):
         L.append("- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : " + " ; ".join(
             f"{ND_FR.get(r['nd'], r['nd'])} {T.n('measures', {'rank1_reason_now': r['nd']}, r['n'])}" for r in why) +
             ". Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche "
-            "incomplète » attend la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de "
-            "concentration étant lu.")
+            "incomplète » attend " + ("la lecture du reste de la file de la découverte (§14)" if "discovery" in
+                                       (cfg.get("scope") or []) else "la découverte (§14)") +
+            " ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.")
     for meas, label in (("sig_covenant_events", "Clauses financières"), ("sig_pledged_assets", "Actifs nantis")):
         rows = q(con, f"""SELECT status, coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n
                           FROM measures WHERE measure = ? AND view = 'as_known' GROUP BY 1, 2, 3 ORDER BY 1, 2, 3""", meas)
@@ -1122,6 +1136,82 @@ def text_yield_section(con, T, stats):
         if rows:
             L.append(f"- {label} (`{meas}`) : " + ", ".join(
                 f"{fr(r['status'])} {T.n('measures', {'text_measure': [meas, r['status']]}, r['n'])}" for r in rows) + ".")
+    L.append("")
+    return L
+
+
+def discovery_yield_section(con, T, stats):
+    """Rendement du bloc `discovery` (§14, D-0036 à D-0038) : sources tirées, candidats, file de
+    lecture, lignes rendues, arêtes et pièces de lien, et ce qui a changé depuis le rendement
+    présenté à l'utilisateur avant l'ouverture."""
+    import pandas as pd
+    from . import discovery
+    cfg = config.load()
+    if "discovery" not in (cfg.get("scope") or []):
+        return []
+    hist = [h for h in (cfg.get("scope_history") or []) if "discovery" in (h.get("blocks") or [])]
+    pres = (hist[-1] if hist else {}).get("yield_presented") or {}
+    L = ["## Rendement du bloc discovery (§14)", ""]
+    todo = discovery.in_period(discovery.archive_list(), discovery.period_start())
+    done = set(discovery.scanned_archives())
+    nq = len(discovery.QUERY_LOG.read_text(encoding="utf-8").splitlines()) if discovery.QUERY_LOG.exists() else 0
+    L.append(f"- Sources : {T.n('exclusions', {'discovery_archives_scanned': True}, len(done & {a['name'] for a in todo}))} "
+             f"archives des Notes Data Sets scannées sur {T.n('exclusions', {'discovery_archives_period': True}, len(todo))} "
+             f"de la période ; {T.n('journal', {'discovery_efts_queries': True}, nq)} requêtes de recherche plein texte "
+             "consignées (EX-10 et Form D).")
+    cand = pd.read_parquet(discovery.CANDIDATES) if discovery.CANDIDATES.exists() else None
+    units = pd.read_parquet(discovery.UNITS) if discovery.UNITS.exists() else None
+    if cand is not None:
+        by = cand["class"].value_counts().to_dict()
+        L.append(f"- Candidats (déposants qui nomment un groupe) : {T.n('observations', {'discovery_candidates': True}, len(cand))}, "
+                 "par classe de mention : " + ", ".join(
+                     f"{c} {T.n('observations', {'discovery_candidates_class': c}, int(by.get(c, 0)))}"
+                     for c in ("contract", "related_party", "note", "form_d") if c in by) + ".")
+    disc = q(con, """SELECT kind, validation_state, count(*) AS n, count(DISTINCT content_key) AS b FROM observations
+                     WHERE CAST(block_kind AS VARCHAR) LIKE 'discovery_%' GROUP BY 1, 2 ORDER BY 1, 2""")
+    nb = q(con, """SELECT count(DISTINCT content_key) AS b, count(DISTINCT group_id) AS g FROM observations
+                   WHERE CAST(block_kind AS VARCHAR) LIKE 'discovery_%'""")[0]
+    if units is not None:
+        L.append(f"- File de lecture : {T.n('observations', {'discovery_units': True}, len(units))} unités (notes et en-têtes "
+                 f"d'EX-10) ; lues : {T.n('observations', {'discovery_blocks_read': True}, nb['b'])} blocs de "
+                 f"{T.n('observations', {'discovery_filers_read': True}, nb['g'])} déposants, ceux des premiers candidats du "
+                 "classement. Le reste est exclu, motif « non traité » (`not_processed`), unité par unité dans `exclusions`.")
+    obs = sum(r["n"] for r in disc if r["kind"] == "observation" and r["validation_state"] == "valid")
+    abst = sum(r["n"] for r in disc if r["kind"] == "abstention" and r["validation_state"] == "valid")
+    rej = sum(r["n"] for r in disc if r["validation_state"] != "valid")
+    L.append(f"- Lignes rendues : {T.n('observations', {'discovery_obs': True}, obs)} observations, "
+             f"{T.n('observations', {'discovery_abst': True}, abst)} abstentions motivées, "
+             f"{T.n('observations', {'discovery_rejected': True}, rej)} rejetées par la validation.")
+    ed = q(con, """SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
+                   WHERE l.link_kind = 'edge' AND EXISTS (SELECT 1 FROM observations o
+                         WHERE CAST(o.block_kind AS VARCHAR) LIKE 'discovery_%'
+                         AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""")
+    if ed:
+        L.append("- Arêtes établies par une ligne de la découverte : " + ", ".join(
+            f"{r['family']} ({'montant' if r['edge_evidence'] == 'amount' else 'relation'}) "
+            f"{T.n('links', {'discovery_edges': [r['family'], r['edge_evidence']]}, r['n'])}" for r in ed) + ".")
+    lk = q(con, """SELECT link_category AS c, count(*) AS n FROM observations WHERE CAST(block_kind AS VARCHAR) LIKE 'discovery_%'
+                   AND validation_state = 'valid' AND link_category IS NOT NULL GROUP BY 1 ORDER BY 1""")
+    if lk:
+        L.append("- Pièces de lien (L1 à L5, §3.4) relevées dans les blocs de la découverte : " + ", ".join(
+            f"{r['c']} {T.n('observations', {'discovery_link': r['c']}, r['n'])}" for r in lk) +
+            " ; chacune nomme les deux parties, un groupe et un déposant hors du périmètre.")
+    np_ = q(con, """SELECT count(*) AS n FROM exclusions WHERE reason = 'not_processed' AND item_key LIKE 'discovery:%'""")[0]["n"]
+    L.append(f"- Unités de la file encore à lire : {T.n('exclusions', {'discovery_not_processed': True}, np_)}.")
+    fsp = pres.get("financed_status_quarter_pairs") or {}
+    if fsp:
+        now = {(r["v"] or r["nd"]): r["n"] for r in q(con, """SELECT coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd,
+                  count(*) AS n FROM measures WHERE measure = 'financed_status' AND view = 'as_known'
+                  AND financing_policy = 'exposure_outstanding' GROUP BY 1, 2""")}
+        L.append("- Statut « financé » (trimestres-paires), avant l'ouverture → maintenant : " + " ; ".join(
+            f"{VALUE_FR.get(k, ND_FR.get(k, k))} {fr_num(Decimal(fsp.get(k, 0)), 0)} → "
+            f"{T.n('measures', {'financed_status_discovery_now': k}, now.get(k, 0))}" for k in sorted(set(fsp) | set(now))) + ".")
+    r1 = q(con, f"""SELECT count(*) AS n FROM measures WHERE nd_reason = 'search_incomplete' AND measure IN
+                    ({','.join('?' * len([m for m, v in __import__("pipeline.registry", fromlist=["MEASURES"]).MEASURES.items() if v[0] == 1]))})""",
+           *[m for m, v in __import__("pipeline.registry", fromlist=["MEASURES"]).MEASURES.items() if v[0] == 1])[0]["n"]
+    if "rank1_search_incomplete" in pres:
+        L.append(f"- Cellules de rang 1 au motif « recherche incomplète » : {fr_num(Decimal(pres['rank1_search_incomplete']), 0)} → "
+                 f"{T.n('measures', {'rank1_search_incomplete_now': True}, r1)}.")
     L.append("")
     return L
 

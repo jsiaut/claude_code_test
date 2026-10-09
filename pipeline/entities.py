@@ -18,6 +18,8 @@ from .graph import normalize_name
 LEGAL_SUFFIX = re.compile(r"\b(inc|corp|llc|lp|ltd|plc|pbc|co|n a|ag|gmbh|s a|sa|b v|bv|n v|nv|pte|llp|lllp|"
                           r"sarl|s a r l|kk|spa|s p a|se|limited|l l c)$")
 FILER_WORDS = {"we", "us", "the company", "our company"}
+# mêmes mots sous leur forme normalisée (« the Company » devient « co ») : c'est elle qu'on compare (D-0038)
+FILER_NORM = {normalize_name(w) for w in FILER_WORDS}
 _DESCR_START = re.compile(r"^(a|an|the|certain|one|two|several|various|unnamed|unidentified|other|its|our)\b")
 _DESCR_ANY = re.compile(r"\b(affiliates? of|subsidiar(y|ies) of|on behalf of)\b")
 
@@ -197,7 +199,7 @@ def build(p0, cfg, counterparty_names, discovered=None):
     for name, fin in sorted(counterparty_names.items()):
         n = normalize_name(name)
         # « we » ou l'identifiant d'un groupe écrit par le lecteur pour le déclarant : pas une contrepartie
-        if not n or n in known or n in FILER_WORDS or name.strip().upper() in (cfg.get("groups") or {}):
+        if not n or n in known or n in FILER_NORM or name.strip().upper() in (cfg.get("groups") or {}):
             continue
         known.add(n)
         # une description (« an affiliate of OpenAI Group PBC », « certain lenders ») n'est pas une

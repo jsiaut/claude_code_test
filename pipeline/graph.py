@@ -149,7 +149,7 @@ def edges_from_observations(obs, entity_rows):
         for side in ("payer", "payee"):
             nm = o.get(side)
             # « we » du texte, ou l'identifiant du groupe déposant écrit à sa place par le lecteur
-            if nm and (normalize_name(nm) in ("we", "us", "the company", "our company")
+            if nm and (normalize_name(nm) in {normalize_name(w) for w in ("we", "us", "the company", "our company")}
                        or nm.strip().upper() == filer_group):
                 if side == "payer":
                     payer_e, payer_g = f"group:{filer_group}", filer_group
