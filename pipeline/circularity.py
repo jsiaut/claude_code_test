@@ -13,7 +13,9 @@ import datetime as dt
 import json
 from decimal import Decimal
 
+from . import entities as E
 from .graph import normalize_name
+from .links import edge_date
 from .measures import cell
 
 NONE = "none"
@@ -253,11 +255,32 @@ def names_of_group(reg, g):
     return {n for n in out if n}
 
 
+def party_groups(o, reg):
+    """Groupes des parties d'une ligne (payeur, bénéficiaire, contrepartie nommée), dans les
+    deux vues ; « we », « the Company » désignent le déposant de la ligne (D-0038)."""
+    d = edge_date(o)
+    out = set()
+    for n in (o.get("payer"), o.get("payee"), o.get("counterparty_name")):
+        if not n:
+            continue
+        if normalize_name(n) in E.FILER_NORM:
+            out.add(o["group_id"])
+            continue
+        for view in ("as_known", "revised"):
+            g = E.resolve(reg, n, d, view)[1]
+            if g:
+                out.add(g)
+    return out
+
+
 def link_pieces(pair, obs, reg, s_names, c_names):
     """Pièces L1 à L5 dont l'extrait, retrouvé mot pour mot, nomme les deux parties (§3.4).
-    Le déposant se nomme lui-même par un terme défini (« the Company », « we »)."""
+    Le déposant se nomme lui-même par un terme défini (« the Company », « we »). Les parties
+    de la ligne doivent être S et C : une ligne d'un tiers qui nomme l'une des deux n'est pas
+    une pièce de la paire (D-0039)."""
     out = []
-    self_ref = ("the Company", "Company", "we ", "We ", "our ", "us ")
+    # « the Group » : désignation du déclarant dans les comptes d'un groupe (IREN), réécrite « the Company » (D-0038)
+    self_ref = ("the Company", "Company", "the Group", "The Group", "we ", "We ", "our ", "us ")
     for o in obs:
         if o["kind"] != "observation" or o["validation_state"] != "valid":
             continue
@@ -265,12 +288,9 @@ def link_pieces(pair, obs, reg, s_names, c_names):
             continue
         q = o.get("quote") or ""
         ql = q.lower()
-        names = {normalize_name(o.get("payer") or ""), normalize_name(o.get("payee") or ""),
-                 normalize_name(o.get("counterparty_name") or "")}
         s_hit = any(n.lower() in ql for n in s_names) or (o["group_id"] == pair.s and any(x in q for x in self_ref))
         c_hit = any(n.lower() in ql for n in c_names) or (o["group_id"] == pair.c and any(x in q for x in self_ref))
-        involved = {normalize_name(n) for n in s_names | c_names} & names
-        if s_hit and c_hit and involved:
+        if s_hit and c_hit and {pair.s, pair.c} <= party_groups(o, reg):
             out.append(o)
     return out
 
@@ -362,10 +382,13 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
                 for q in qs:
                     v, keys = st[policy][q["end"]]
                     out.append(status_cell(s, c, q, view, as_of, policy, v, keys, censored, search(q["end"])[1]))
-        s_names = names_of_group(reg, s)
+        # la contrepartie nommée d'une ligne déposée par S désigne C, et réciproquement : une
+        # ligne déposée par C ne donne jamais un nom de C (D-0039)
+        s_names = names_of_group(reg, s) | {l["_obs"].get("counterparty_name") for l in p.edges
+                                            if l["_obs"]["group_id"] == c}
         c_names = names_of_group(reg, c) | {l["_obs"].get("counterparty_name") for l in p.edges
-                                            if l["_obs"].get("counterparty_name")}
-        pieces = link_pieces(p, obs, reg, s_names, {n for n in c_names if n})
+                                            if l["_obs"]["group_id"] == s}
+        pieces = link_pieces(p, obs, reg, {n for n in s_names if n}, {n for n in c_names if n})
         structure = p.structure()
         ext_states = [search(q["end"]) for q in qs] or [search(as_of_d)]
         complete = all(x[0] for x in ext_states)

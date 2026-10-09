@@ -23,7 +23,7 @@ from . import config
 NONE = "none"
 CRITERIA_COMMIT = "3ff3b98"
 ND_FR = {
-    "not_processed": "non traité au premier passage", "search_incomplete": "recherche incomplète",
+    "not_processed": "non traité (pièce non encore lue)", "search_incomplete": "recherche incomplète",
     "non_filer": "non-déposant", "redacted": "caviardé", "anonymous": "client anonyme",
     "channel_indirect": "vente indirecte", "parse_failed": "lecture impossible",
     "denominator_nonpositive": "dénominateur négatif ou nul", "denominator_below_threshold": "dénominateur sous le seuil",
@@ -104,7 +104,8 @@ def load(con, as_of):
     # lu, il ne reste de non traité que ce qui relève d'un bloc de §14 fermé (les chemins de E.6, par exemple)
     sc = config.load().get("scope")
     if isinstance(sc, list) and "text" in sc:
-        ND_FR["not_processed"] = "non traité (bloc de §14 non lu ou fermé)"
+        ND_FR["not_processed"] = ("non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)"
+                                  if "discovery" in sc else "non traité (bloc de §14 non lu ou fermé)")
     t = config.ROOT / "tables"
     for name in ("measures", "controls", "exclusions", "links", "observations", "entities", "facts", "documents"):
         con.execute(f"CREATE OR REPLACE VIEW {name} AS SELECT * FROM '{t / (name + '.parquet')}'")
@@ -314,15 +315,29 @@ def synthesis(con, as_of, stats):
                    if c["value_text"] == "non_discrimination" else "discrimination possible au sens de E.7")
             reasons = ", ".join(f"{ND_FR.get(k, k)} : {T.n('measures', {'E7_reason': k}, v)}"
                                 for k, v in sorted((fl.get('reasons') or {}).items(), key=lambda x: -x[1]))
+            if c["value_text"] != "non_discrimination":
+                # issues déterminées, par énoncé : ce qui permet de discriminer, et ce que « non étayé » veut dire
+                det = [(st, k, v) for st in ("E1", "E2") for k, v in sorted((fl.get(f"outcomes_{st}") or {}).items())
+                       if k != "indeterminate"]
+                caveat = ("Issues déterminées : " + ", ".join(
+                    f"{st[0]}.{st[1:]} {VALUE_FR.get(k, k)} {T.n('measures', {'E7_outcomes': [st, k]}, v)}" for st, k, v in det) +
+                    ". Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche "
+                    "complète au sens de E.0, non que le financement soit sans rapport avec les achats. "
+                    + ("La découverte (§14) n'étant lue que sur sa première tranche, les paires dont le client a encore des "
+                       "dépôts à lire restent indéterminées." if "discovery" in blocks_open else ""))
+            elif not blocks_open:
+                caveat = ("Au premier passage, cette non-discrimination tient d'abord au périmètre borné de la lecture, "
+                          "non à une absence de relations.")
+            elif "discovery" in blocks_open:
+                caveat = ("La découverte (§14) n'étant lue que sur sa première tranche, la recherche reste incomplète au "
+                          "sens de E.0 pour les clients dont des dépôts restent à lire : une non-discrimination tient encore "
+                          "en partie au périmètre de lecture.")
+            else:
+                caveat = ("La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une "
+                          "non-discrimination tient encore en partie au périmètre de lecture.")
             L.append(f"- **Résultat principal (E.7) : {res}.** {T.m(c, fmt='pct', dec=0)} des issues de E.1 et E.2 "
                      f"au point de tête (10 %) sont indéterminées, sur {T.m(c, field='denominator', fmt='count')} issues ; "
-                     f"motifs : {reasons or 'aucun'}. " + ("Au premier passage, cette non-discrimination tient d'abord au "
-                     "périmètre borné de la lecture, non à une absence de relations." if not blocks_open else
-                     ("La découverte (§14) n'étant lue que sur sa première tranche, la recherche reste incomplète au "
-                      "sens de E.0 pour les clients dont des dépôts restent à lire : une non-discrimination tient encore "
-                      "en partie au périmètre de lecture." if "discovery" in blocks_open else
-                      "La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une "
-                      "non-discrimination tient encore en partie au périmètre de lecture.")))
+                     f"motifs : {reasons or 'aucun'}. " + caveat.strip())
         else:
             L.append("- **E.7** : aucune paire à financement établi, E.1 et E.2 sans issue.")
     for view in ("as_known", "revised"):
@@ -1162,9 +1177,9 @@ def discovery_yield_section(con, T, stats):
     cand = pd.read_parquet(discovery.CANDIDATES) if discovery.CANDIDATES.exists() else None
     units = pd.read_parquet(discovery.UNITS) if discovery.UNITS.exists() else None
     if cand is not None:
-        by = cand["class"].value_counts().to_dict()
+        by = cand["best_class"].value_counts().to_dict()
         L.append(f"- Candidats (déposants qui nomment un groupe) : {T.n('observations', {'discovery_candidates': True}, len(cand))}, "
-                 "par classe de mention : " + ", ".join(
+                 "par meilleure classe de mention : " + ", ".join(
                      f"{c} {T.n('observations', {'discovery_candidates_class': c}, int(by.get(c, 0)))}"
                      for c in ("contract", "related_party", "note", "form_d") if c in by) + ".")
     disc = q(con, """SELECT kind, validation_state, count(*) AS n, count(DISTINCT content_key) AS b FROM observations
@@ -1193,19 +1208,63 @@ def discovery_yield_section(con, T, stats):
     lk = q(con, """SELECT link_category AS c, count(*) AS n FROM observations WHERE CAST(block_kind AS VARCHAR) LIKE 'discovery_%'
                    AND validation_state = 'valid' AND link_category IS NOT NULL GROUP BY 1 ORDER BY 1""")
     if lk:
-        L.append("- Pièces de lien (L1 à L5, §3.4) relevées dans les blocs de la découverte : " + ", ".join(
+        # pièce d'une paire (S, C) : ses parties sont S et C et l'extrait les nomme tous deux (§3.4, D-0039)
+        used = set()
+        for r in q(con, "SELECT flags FROM measures WHERE measure = 'relationship_conclusion' AND view = 'as_known'"):
+            used |= set((json.loads(r["flags"]) if r["flags"] else {}).get("link_pieces") or [])
+        keys = [r["k"] for r in q(con, """SELECT obs_key AS k FROM observations WHERE CAST(block_kind AS VARCHAR) LIKE 'discovery_%'
+                                         AND validation_state = 'valid' AND link_category IS NOT NULL""")]
+        L.append("- Lignes à catégorie de lien (L1 à L5, §3.4) dans les blocs de la découverte : " + ", ".join(
             f"{r['c']} {T.n('observations', {'discovery_link': r['c']}, r['n'])}" for r in lk) +
-            " ; chacune nomme les deux parties, un groupe et un déposant hors du périmètre.")
+            f". Pièces d'une paire (S, C) : {T.n('measures', {'discovery_link_pieces': True}, sum(1 for k in keys if k in used))} ; "
+            "leurs parties sont le fournisseur S et le client C, et l'extrait les nomme tous deux (D-0039). "
+            "Les autres lignes ne comptent pour aucune paire.")
     np_ = q(con, """SELECT count(*) AS n FROM exclusions WHERE reason = 'not_processed' AND item_key LIKE 'discovery:%'""")[0]["n"]
     L.append(f"- Unités de la file encore à lire : {T.n('exclusions', {'discovery_not_processed': True}, np_)}.")
     fsp = pres.get("financed_status_quarter_pairs") or {}
     if fsp:
-        now = {(r["v"] or r["nd"]): r["n"] for r in q(con, """SELECT coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd,
-                  count(*) AS n FROM measures WHERE measure = 'financed_status' AND view = 'as_known'
-                  AND financing_policy = 'exposure_outstanding' GROUP BY 1, 2""")}
-        L.append("- Statut « financé » (trimestres-paires), avant l'ouverture → maintenant : " + " ; ".join(
-            f"{VALUE_FR.get(k, ND_FR.get(k, k))} {fr_num(Decimal(fsp.get(k, 0)), 0)} → "
-            f"{T.n('measures', {'financed_status_discovery_now': k}, now.get(k, 0))}" for k in sorted(set(fsp) | set(now))) + ".")
+        # clé commune aux deux relevés : la valeur, ou le motif quand la valeur est « unknown »
+        canon = {"history_left_censored": "censored"}
+        now = {}
+        for r in q(con, """SELECT coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n
+                           FROM measures WHERE measure = 'financed_status' AND view = 'as_known'
+                           AND financing_policy = 'exposure_outstanding' GROUP BY 1, 2"""):
+            k = r["v"] if r["v"] not in ("", "unknown") else canon.get(r["nd"], r["nd"])
+            now[k] = now.get(k, 0) + r["n"]
+
+        def lab(k):
+            return VALUE_FR.get(k) or ND_FR.get({"censored": "history_left_censored"}.get(k, k)) or k
+        L.append("- Statut « financé » (trimestres-paires, vue `as_known`), avant l'ouverture → maintenant : " + " ; ".join(
+            f"{lab(k)} {fr_num(Decimal(fsp.get(k, 0)), 0)} → "
+            f"{T.n('measures', {'financed_status_discovery_now': k}, now.get(k, 0))}" for k in sorted(set(fsp) | set(now))) +
+            ". La recherche incomplète devient « non traité » quand le client dépose et que ses unités ne sont pas toutes "
+            "lues, « jamais documenté » quand son côté est complet (D-0037).")
+    # paires à financement documenté et issues de l'annexe E, avant l'ouverture → maintenant (E.0, E.7)
+    fin = q(con, """SELECT count(DISTINCT subject || '|' || counterparty) AS n FROM measures WHERE measure = 'financed_status'
+                    AND value_text = 'active' AND view = 'as_known' AND financing_policy = 'exposure_outstanding'""")[0]["n"]
+    if "pairs_financed_documented" in pres:
+        L.append(f"- Paires à financement documenté (F active au moins un trimestre) : "
+                 f"{fr_num(Decimal(pres['pairs_financed_documented']), 0)} → "
+                 f"{T.n('measures', {'discovery_financed_pairs_now': True}, fin)}.")
+    e7p = pres.get("annex_e_e7") or {}
+    e7r = q(con, """SELECT value_text, flags FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'
+                    ORDER BY breakdown_key LIMIT 1""")
+    if e7p and e7r:
+        fl = json.loads(e7r[0]["flags"]) if e7r[0]["flags"] else {}
+        n = sum(sum(v.values()) for k, v in fl.items() if k.startswith("outcomes_"))
+        i = sum(v.get("indeterminate", 0) for k, v in fl.items() if k.startswith("outcomes_"))
+        e7fr = {"non_discrimination": "non-discrimination", "discrimination_possible": "discrimination possible"}
+        e1 = fl.get("outcomes_E1") or {}
+        L.append(f"- Annexe E, issues de E.1 et E.2 au point de tête (10 %), avant l'ouverture → maintenant : indéterminées "
+                 f"{fr_num(Decimal(e7p.get('indeterminate', 0)), 0)} sur {fr_num(Decimal(e7p.get('outcomes', 0)), 0)} → "
+                 f"{T.n('measures', {'discovery_e7_indeterminate_now': True}, i)} sur "
+                 f"{T.n('measures', {'discovery_e7_outcomes_now': True}, n)} ; E.7 : "
+                 f"{e7fr.get(e7p.get('result'), e7p.get('result'))} → {e7fr.get(e7r[0]['value_text'], e7r[0]['value_text'])}. "
+                 "Issues de E.1 (lien documenté, paires où F est active) : " + ", ".join(
+                     f"{VALUE_FR.get(k, k)} {T.n('measures', {'discovery_e1_now': k}, v)}" for k, v in sorted(e1.items())) +
+                 ". Une issue « non étayé » suppose la recherche complète des deux côtés (E.0) : la découverte la rend "
+                 "possible quand le client ne dépose pas, n'a aucun rapport périodique dans la fenêtre allongée, ou que toutes "
+                 "ses unités qui nomment le fournisseur sont lues (D-0037).")
     r1 = q(con, f"""SELECT count(*) AS n FROM measures WHERE nd_reason = 'search_incomplete' AND measure IN
                     ({','.join('?' * len([m for m, v in __import__("pipeline.registry", fromlist=["MEASURES"]).MEASURES.items() if v[0] == 1]))})""",
            *[m for m, v in __import__("pipeline.registry", fromlist=["MEASURES"]).MEASURES.items() if v[0] == 1])[0]["n"]

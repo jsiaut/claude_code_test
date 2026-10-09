@@ -1,16 +1,16 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
-- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `7aa294e13d6a62b95185cb8b919164f0194f9e5a`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `entity_aliases` (alias confirmés par extrait, D-0021); `own_entities` (entités propres confirmées par extrait, D-0021); `reading` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md); `unanchored_quantities` (voir decisions.md).
-- **Périmètre couvert : premier passage et blocs `lender`, `text` de §14**, ouverts par l'utilisateur le 2026-10-07 après le rendement présenté dans la seconde page. Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Les blocs `discovery`, `form_d`, `paths` et `foreign` restent fermés.
-- **Résultat principal (E.7) : les pièces déposées ne permettent pas de discriminer entre les deux lectures.** 83 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 18 issues ; motifs : recherche incomplète : 7, intervalle à cheval sur le seuil : 4, précondition non remplie : 4. La découverte (§14) n'étant pas ouverte, la recherche reste incomplète au sens de E.0 : une non-discrimination tient encore en partie au périmètre de lecture.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 506, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `002f9f34d9b2d6878fb7c1777249a0d60e7b0953`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `discovery` (voir decisions.md); `entity_aliases` (alias confirmés par extrait, D-0021); `own_entities` (entités propres confirmées par extrait, D-0021); `reading` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md); `scope_history` (voir decisions.md); `unanchored_quantities` (voir decisions.md).
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery` de §14**, ouverts par l'utilisateur le 2026-10-07 après le rendement présenté dans la seconde page. Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la première tranche est lue, le reste de la file est « non traité » (D-0038). Les blocs `form_d`, `paths`, `foreign` restent fermés.
+- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 59 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 22 issues ; motifs : précondition non remplie : 6, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, lecture impossible : 1. Issues déterminées : E.1 non étayé 9. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur sa première tranche, les paires dont le client a encore des dépôts à lire restent indéterminées.
+- **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 518, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 775, `not_testable` 720, `ok` 13 425, `tautological` 613.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/35, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
-- **Exclusions principales** : `conflicting` 377, `pending_entity` 223, `financial_parties_only` 165, `invalid_aggregate` 8, `submitted_draft` 8, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/47, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
+- **Exclusions principales** : `not_processed` 19 003, `conflicting` 377, `pending_entity` 226, `financial_parties_only` 165, `invalid_aggregate` 8, `submitted_draft` 8, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -674,18 +674,42 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### AMD → Meta
 
-- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L2) ; 4 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
 - Contrepartie payable au client : 5 cellules indéterminées (non publié).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
 - Annexe E : E4 (engagement) : compatible ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non publié.
 
+### Amazon → 1LIFE HEALTHCARE INC
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 3 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
 ### Amazon → Apple Inc.
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Amazon → RIVIAN AUTOMOTIVE, INC. / DE
+
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L5) ; 13 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (recherche incomplète) ; 2022-12-31 : n.d. (recherche incomplète) ; 2023-12-31 : n.d. (recherche incomplète) ; 2024-12-31 : n.d. (recherche incomplète) ; 2025-12-31 : n.d. (recherche incomplète).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Amazon → SNAP INC
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
@@ -699,20 +723,28 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Broadcom → Apple Inc.
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 1 arête.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 28 trimestres ; sensibilité `ever_financed` : inconnu 28 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (recherche incomplète) ; 2022-10-30 : n.d. (recherche incomplète) ; 2023-10-29 : n.d. (recherche incomplète) ; 2024-11-03 : n.d. (recherche incomplète) ; 2025-11-02 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (précondition non remplie) ; 2022-10-30 : n.d. (précondition non remplie) ; 2023-10-29 : n.d. (précondition non remplie) ; 2024-11-03 : n.d. (précondition non remplie) ; 2025-11-02 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Broadcom → Silicon Manufacturing Partners Pte. Ltd.
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 5 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 28 trimestres ; sensibilité `ever_financed` : actif 28 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : entre 0 % et 18 % ; 2022-10-30 : entre 0 % et 20 % ; 2023-10-29 : entre 0 % et 22 % ; 2024-11-03 : entre 0 % et 28 % ; 2025-11-02 : entre 0 % et 32 %.
 - Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### Broadcom → WarehouseCo Intermediate Holdings LP
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (précondition non remplie) ; 2022-10-30 : n.d. (précondition non remplie) ; 2023-10-29 : n.d. (précondition non remplie) ; 2024-11-03 : n.d. (précondition non remplie) ; 2025-11-02 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
 
 ### Broadcom → Alphabet
 
@@ -740,7 +772,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### CoreWeave → Jane Street Group, LLC
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -748,7 +780,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### CoreWeave → MagAI Ventures
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 17 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 17 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
@@ -757,12 +789,12 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### CoreWeave → MAIV
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 8 trimestres, échu 1 trimestre, inconnu 18 trimestres ; sensibilité `ever_financed` : actif 9 trimestres, inconnu 18 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (terme manquant) ; 2025-12-31 : entre 0 % et 68 %.
 - Dépendance du carnet (RPO) : 4 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
 ### CoreWeave → OpenAI
 
@@ -799,30 +831,70 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
 - Annexe E : E5 : indéterminé — non publié.
 
+### Alphabet → CIPHER DIGITAL INC.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 6 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Alphabet → EQUIFAX INC
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
 ### Alphabet → Kitty Hawk Corporation
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 5 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (recherche incomplète) ; 2022-12-31 : n.d. (recherche incomplète) ; 2023-12-31 : n.d. (recherche incomplète) ; 2024-12-31 : n.d. (recherche incomplète) ; 2025-12-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (une archive de la période est illisible) ; 5 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 22 trimestres, inconnu 5 trimestres ; sensibilité `ever_financed` : jamais documenté 22 trimestres, inconnu 5 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Alphabet → LTA Research & Exploration LLC
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 9 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (recherche incomplète) ; 2022-12-31 : n.d. (recherche incomplète) ; 2023-12-31 : n.d. (recherche incomplète) ; 2024-12-31 : n.d. (recherche incomplète) ; 2025-12-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (une archive de la période est illisible) ; 9 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 22 trimestres, inconnu 5 trimestres ; sensibilité `ever_financed` : jamais documenté 22 trimestres, inconnu 5 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
+### Alphabet → SNAP INC
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Alphabet → TERAWULF INC.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 4 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Alphabet → SpaceX
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (une archive de la période est illisible) ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 1 trimestre, jamais documenté 21 trimestres, inconnu 5 trimestres ; sensibilité `ever_financed` : actif 1 trimestre, jamais documenté 21 trimestres, inconnu 5 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
+- Annexe E : E1 : indéterminé — lecture impossible ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E5 : indéterminé — non publié.
+
 ### Meta → Jio Platforms Limited
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 5 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 24 trimestres, inconnu 3 trimestres ; sensibilité `ever_financed` : actif 24 trimestres, inconnu 3 trimestres.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 24 trimestres, jamais documenté 3 trimestres ; sensibilité `ever_financed` : actif 24 trimestres, jamais documenté 3 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2022-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2023-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2024-12-31 : entre 0 % et 10 % (borne haute exclue) ; 2025-12-31 : entre 0 % et 10 % (borne haute exclue).
 - Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
 ### Marvell → Amazon
 
@@ -835,12 +907,21 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Marvell → Alphabet
 
-- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète (une archive de la période est illisible) ; 6 arêtes.
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L2) ; 6 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 23 trimestres, inconnu 8 trimestres ; sensibilité `ever_financed` : jamais documenté 23 trimestres, inconnu 8 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-30 : n.d. (lecture impossible) ; 2022-01-29 : n.d. (précondition non remplie) ; 2023-01-28 : n.d. (précondition non remplie) ; 2024-02-03 : n.d. (précondition non remplie) ; 2025-02-01 : n.d. (précondition non remplie) ; 2026-01-31 : n.d. (précondition non remplie).
 - Contrepartie payable au client : 6 cellules indéterminées (non publié).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
+
+### Microsoft → GENERAL MOTORS CO
+
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète (texte non lu) ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 11 trimestres, inconnu 18 trimestres ; sensibilité `ever_financed` : actif 11 trimestres, inconnu 18 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-06-30 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-06-30 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-06-30 : entre 0 % et 10 % (borne haute exclue) ; 2025-06-30 : entre 0 % et 10 % (borne haute exclue) ; 2026-06-30 : entre 0 % et 10 % (borne haute exclue).
+- Dépendance du carnet (RPO) : 6 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
+- Annexe E : E1 : indéterminé — non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
 ### Microsoft → OpenAI
 
@@ -851,14 +932,22 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
+### NVIDIA → IREN LTD
+
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L1, L3) ; 3 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 31 trimestres ; sensibilité `ever_financed` : inconnu 31 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-01-30 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-01-29 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-01-28 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-01-26 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2026-01-25 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
+- Annexe E : E5 : indéterminé — non publié.
+
 ### NVIDIA → CoreWeave
 
-- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L5) ; 10 arêtes.
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 10 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 6 trimestres, jamais documenté 25 trimestres ; sensibilité `ever_financed` : actif 6 trimestres, jamais documenté 25 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (précondition non remplie) ; 2022-01-30 : n.d. (précondition non remplie) ; 2023-01-29 : n.d. (précondition non remplie) ; 2024-01-28 : n.d. (précondition non remplie) ; 2025-01-26 : n.d. (précondition non remplie) ; 2026-01-25 : entre 0 % et 22 %.
 - Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 5).
-- Annexe E : E1 : étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
 ### NVIDIA → OpenAI
 
@@ -870,91 +959,100 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Oracle → Ampere Computing Holdings LLC
 
-- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 4 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 4 trimestres, inconnu 26 trimestres ; sensibilité `ever_financed` : actif 4 trimestres, inconnu 26 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : entre 0 % et 10 % (borne haute exclue).
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 4 trimestres, jamais documenté 26 trimestres ; sensibilité `ever_financed` : actif 4 trimestres, jamais documenté 26 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : entre 0 % et 10 % (borne haute exclue).
 - Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
 ### Oracle → Ampere Computing LLC
 
-- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 14 arêtes.
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 14 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 22 trimestres, échu 8 trimestres ; sensibilité `ever_financed` : actif 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2022-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2023-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2024-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2025-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2026-05-31 : n.d. (recherche incomplète).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2022-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2023-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2024-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2025-05-31 : entre 0 % et 10 % (borne haute exclue) ; 2026-05-31 : n.d. (précondition non remplie).
 - Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
 ### Oracle → Autonomous Medical Devices, Inc.
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 2 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Oracle → Desert Champions LLC
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 1 arête.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Oracle → Eau Palm Beach Resort & Spa
 
-- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 2 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Oracle → Ellison Institute, LLC
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 3 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Oracle → Lanai Resorts, LLC
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 1 arête.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Oracle → Lawrence Investments, LLC
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 1 arête.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Oracle → Screening Room Media, Inc.
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 1 arête.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 2 trimestres, échu 28 trimestres ; sensibilité `ever_financed` : actif 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
-- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — recherche incomplète ; E2 à 10 % : indéterminé — recherche incomplète ; E2 à 20 % : indéterminé — recherche incomplète ; E5 : indéterminé — non publié.
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E5 : indéterminé — non publié.
 
 ### Oracle → Sensei AG Holdings, Inc.
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 2 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
+- Annexe E : E5 : indéterminé — non publié.
+
+### SpaceX → ECHOSTAR CORP
+
+- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète (texte non lu) ; 7 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
+- Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 5).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### SpaceX → Tesla, Inc.
 
-- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète (le client peut déposer hors du périmètre, découverte (§14) non ouverte) ; 10 arêtes.
+- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche incomplète (texte non lu) ; 10 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (recherche incomplète) ; 2022-12-31 : n.d. (recherche incomplète) ; 2023-12-31 : n.d. (recherche incomplète) ; 2024-12-31 : n.d. (recherche incomplète) ; 2025-12-31 : n.d. (recherche incomplète).
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-12-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
 - Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
@@ -964,13 +1062,13 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 | Fournisseur | Exercice | Revenu attribué à des clients nommés | Clients anonymes d'au moins 10 % | Résidu | Paires vues seulement côté client |
 | --- | --- | ---: | ---: | ---: | ---: |
 | NVIDIA | 2026-01-25 | 0,0 % | 36,0 % [35,0 % ; 37,0 %] | 64,0 % | 0 |
-| Alphabet | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
-| Amazon | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
+| Alphabet | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 2 |
+| Amazon | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 3 |
 | Meta | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
-| Microsoft | 2026-06-30 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
+| Microsoft | 2026-06-30 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 1 |
 | Oracle | 2026-05-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
 | CoreWeave | 2025-12-31 | 0,0 % | 67,0 % [66,5 % ; 67,5 %] | 33,0 % | 0 |
-| SpaceX | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
+| SpaceX | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 1 |
 | AMD | 2025-12-27 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
 | Broadcom | 2025-11-02 | 0,0 % | 32,0 % [31,5 % ; 32,5 %] | 68,0 % | 1 |
 | Marvell | 2026-01-31 | 0,0 % | 51,0 % [50,0 % ; 52,0 %] | 49,0 % | 0 |
@@ -1073,5 +1171,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : concept non résolu 1 762, terme manquant 1 655, non publié 1 614, recherche incomplète 838, non balisé 615, annuel seulement 394, historique tronqué 380, client anonyme 83, précondition non remplie 68, lecture impossible 59, période antérieure absente 45, dénominateur négatif ou nul 41, frontière de retraitement 21, non traité (bloc de §14 non lu ou fermé) 11, intervalle à cheval sur le seuil 9, date manquante 8, entité non confirmée 3, dénominateur sous le seuil 2.
+Cellules indéterminées en vue `as_known`, par motif : concept non résolu 1 762, terme manquant 1 655, non publié 1 640, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 650, non balisé 615, annuel seulement 394, historique tronqué 380, précondition non remplie 158, client anonyme 97, lecture impossible 90, période antérieure absente 45, dénominateur négatif ou nul 41, frontière de retraitement 21, intervalle à cheval sur le seuil 11, date manquante 8, entité non confirmée 3, dénominateur sous le seuil 2.
 
