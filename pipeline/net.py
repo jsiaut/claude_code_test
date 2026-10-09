@@ -8,6 +8,7 @@ au journal. Le User-Agent n'est jamais envoyé à un autre hôte.
 """
 import datetime as dt
 import json
+import os
 import re
 import threading
 import time
@@ -92,7 +93,10 @@ class SecClient:
             self._paused_until = max(self._paused_until, time.monotonic() + seconds)
 
     # -- requête ---------------------------------------------------------------
-    def get(self, url, timeout=120):
+    def get(self, url, timeout=120, dest=None):
+        """Corps de la ressource, ou, avec `dest`, écrit en flux dans ce fichier (archives de
+        plusieurs centaines de Mo) : le corps renvoyé est alors None et ses octets comptent au
+        journal comme les autres."""
         host = urllib.parse.urlparse(url).hostname or ""
         is_sec = host in self.sec_hosts
         headers = {"User-Agent": self.ua} if is_sec else {}
@@ -105,12 +109,23 @@ class SecClient:
             t0 = time.monotonic()
             ts_start = _utcnow().isoformat(timespec="milliseconds")
             try:
-                resp = self.session.get(url, headers=headers, timeout=timeout)
+                resp = self.session.get(url, headers=headers, timeout=timeout, stream=dest is not None)
+                if dest is not None and resp.status_code == 200:
+                    n = 0
+                    tmp = str(dest) + ".part"
+                    with open(tmp, "wb") as fh:
+                        for chunk in resp.iter_content(chunk_size=1 << 20):
+                            fh.write(chunk)
+                            n += len(chunk)
+                    os.replace(tmp, dest)
+                    resp._content = b""
+                    resp._streamed_bytes = n
             except requests.exceptions.ProxyError as exc:
                 self.journal(url=url, host=host, status="proxy_error", bytes=0,
                              attempt=attempt, note=str(exc)[:200])
                 raise EgressBlocked(f"{host} refusé par la politique réseau de l'environnement") from exc
-            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError,
+                    requests.exceptions.ChunkedEncodingError) as exc:
                 self.journal(url=url, host=host, status="network_error", bytes=0,
                              attempt=attempt, note=type(exc).__name__)
                 if transient < len(self.backoff):
@@ -121,21 +136,22 @@ class SecClient:
             elapsed = time.monotonic() - t0
             body = resp.content
             status = resp.status_code
+            nbytes = getattr(resp, "_streamed_bytes", len(body))
             note = None
             if status == 403 and is_sec:
                 m = re.search(rb"<title>(.*?)</title>", body[:4000], re.I | re.S)
                 note = m.group(1).decode("utf-8", "replace").strip() if m else "403"
-            self.journal(url=url, host=host, status=status, bytes=len(body), ts_start=ts_start,
+            self.journal(url=url, host=host, status=status, bytes=nbytes, ts_start=ts_start,
                          elapsed_ms=int(elapsed * 1000), attempt=attempt, note=note)
             if is_sec:
                 touch_lock()
                 self.stats["requests"] += 1
-                self.stats["bytes"] += len(body)
+                self.stats["bytes"] += nbytes
                 self.stats["elapsed"] += elapsed
             if status == 200:
                 if is_sec:
                     self._consecutive_403 = 0
-                return body, resp.headers
+                return (None if dest is not None else body), resp.headers
             if status == 403 and is_sec:
                 self._consecutive_403 += 1
                 if self._consecutive_403 > self.max_403:

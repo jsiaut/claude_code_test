@@ -58,7 +58,7 @@ CREATE TYPE source_perspective AS ENUM ('reporting_entity', 'counterparty', 'non
 CREATE TYPE reporting_scope AS ENUM ('as_reported', 'pro_forma', 'as_if_combined', 'legacy_only', 'legal_entity', 'parent_only', 'none');
 CREATE TYPE obs_kind AS ENUM ('observation', 'abstention');
 CREATE TYPE abstention_reason AS ENUM ('no_relevant_content', 'boilerplate_no_event', 'financial_parties_only', 'no_named_counterparty', 'no_amount', 'illegible', 'out_of_scope_content', 'duplicate_of_other_block', 'cannot_describe_in_schema', 'none');
-CREATE TYPE block_kind AS ENUM ('related_party_note', 'item_404', 'item_9a', 'item_4_10q', 'going_concern', 'item_8k_101', 'item_8k_102', 'item_8k_303', 'item_8k_801', 'exhibit_header', 'exhibit_body', 'spacex_annual_note', 'investment_note', 'debt_note', 'lease_note', 'commitments_note', 'concentration_text', 'item_8k_201', 'item_8k_203', 'lever_note', 'revenue_note');
+CREATE TYPE block_kind AS ENUM ('related_party_note', 'item_404', 'item_9a', 'item_4_10q', 'going_concern', 'item_8k_101', 'item_8k_102', 'item_8k_303', 'item_8k_801', 'exhibit_header', 'exhibit_body', 'spacex_annual_note', 'investment_note', 'debt_note', 'lease_note', 'commitments_note', 'concentration_text', 'item_8k_201', 'item_8k_203', 'lever_note', 'revenue_note', 'discovery_note', 'discovery_exhibit_header', 'discovery_exhibit_body');
 CREATE TYPE signal AS ENUM ('material_weakness', 'going_concern', 'covenant_amendment', 'covenant_waiver', 'covenant_breach', 'capacity_contract_termination', 'auditor_change', 'nonreliance', 'pledged_assets', 'contract_termination_other', 'none');
 CREATE TYPE validation_state AS ENUM ('valid', 'rejected_schema', 'rejected_semantic');
 CREATE TYPE price_setting_participation AS ENUM ('yes', 'no', 'unknown', 'none');

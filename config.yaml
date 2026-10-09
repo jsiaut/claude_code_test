@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text]        # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -31,6 +31,20 @@ scope_decision:              # réponse de l'utilisateur à la seconde page (§1
     requests: 3741
     blocks_read: 1133
     exhibit_bodies_header_only: 217
+scope_history:               # décisions suivantes de l'utilisateur, dans l'ordre (§11.1)
+  - date: 2026-10-09
+    decision: "On lance la partie découverte, sans sous-agent"
+    blocks: [discovery]
+    page: delta.md           # commit 63323c4, rendement après les blocs lender et text
+    yield_presented:
+      rank1_cells: {total: 17065, computed: 9886, bounded: 194, partial: 63, not_determinable: 6922}
+      rank1_search_incomplete: 1653
+      financed_status_quarter_pairs: {search_incomplete: 375, never: 291, censored: 174, active: 108,
+                                       lapsed: 37, parse_failed: 13}
+      annex_e_e7: {outcomes: 18, indeterminate: 15, result: non_discrimination}
+      fragility_events: 69
+      pairs_financed_documented: 9
+    execution: "lecture séquentielle par l'exécutant, sans sous-agent (consigne de l'utilisateur)"
 
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
@@ -67,6 +81,42 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
                AMD, "Advanced Micro Devices", Broadcom, Avago, Marvell]
 lexicon_rules:
   AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
+
+discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-0036)
+  datasets: notes            # Notes Data Sets, fichier txt ; de la plus récente à la plus ancienne
+  lexicon:                   # lexique initial (lexicon_seed) avec la cible de chaque terme ; mots entiers
+    seed:
+      - {term: NVIDIA, ref: NVDA}
+      - {term: Alphabet, ref: GOOGL, case_sensitive: true}
+      - {term: Google, ref: GOOGL}
+      - {term: Amazon, ref: AMZN, case_sensitive: true}
+      - {term: "Amazon Web Services", ref: AMZN}
+      - {term: Meta, ref: META, case_sensitive: true}
+      - {term: Microsoft, ref: MSFT}
+      - {term: Oracle, ref: ORCL, case_sensitive: true}
+      - {term: CoreWeave, ref: CRWV}
+      - {term: SpaceX, ref: SPCX}
+      - {term: xAI, ref: SPCX, case_sensitive: true}
+      - {term: "X.AI", ref: SPCX, case_sensitive: true}
+      - {term: OpenAI, ref: "LAB:OPENAI"}
+      - {term: Anthropic, ref: "LAB:ANTHROPIC", case_sensitive: true}
+      - {term: Stargate, ref: "OTHER:STARGATE", case_sensitive: true}
+      - {term: AMD, ref: AMD, case_sensitive: true}
+      - {term: "Advanced Micro Devices", ref: AMD}
+      - {term: Broadcom, ref: AVGO}
+      - {term: Avago, ref: AVGO}
+      - {term: Marvell, ref: MRVL}
+    confirmed:               # entités confirmées des groupes (registre, §10.2), avec leurs dates
+      - {term: Facebook, ref: META, case_sensitive: true, valid_to: "2021-10-27"}     # ancienne dénomination de Meta Platforms, Inc.
+      - {term: Xilinx, ref: AMD, valid_from: "2022-02-14"}
+      - {term: VMware, ref: AVGO, valid_from: "2023-11-22"}
+      - {term: Inphi, ref: MRVL, case_sensitive: true, valid_from: "2021-04-20"}
+      - {term: MAIV, ref: CRWV, case_sensitive: true, valid_from: "2025-12-31"}
+      - {term: "CTC Property", ref: SPCX, case_sensitive: true, valid_from: "2026-06-30"}
+      - {term: "X Corp", ref: SPCX, case_sensitive: true, valid_from: "2023-01-01"}
+      - {term: "X Holdings Corp", ref: SPCX, case_sensitive: true, valid_from: "2023-01-01"}
+      - {term: "Atlantic Crypto", ref: CRWV, case_sensitive: true, valid_to: "2019-10-03"}
+      - {term: "Maui HoldCo", ref: MRVL, case_sensitive: true}
 
 # Entités confirmées par le producteur (§10.2) : chaque appartenance ou alias est établi par
 # un extrait cité mot pour mot (bloc et accession), décision D-0021 de decisions.md. Hors de
