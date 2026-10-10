@@ -1599,6 +1599,7 @@ def discovery_yield_section(con, T, stats):
 def nf_discovery_lines(con, T):
     """Piste des non-déposants de la découverte (D-0044) : sources, candidats, unités retenues et
     lues, lignes rendues et arêtes établies."""
+    import pandas as pd
     from . import discovery, nf_discovery as NF
     if not NF.UNITS.exists():
         return []
@@ -1633,6 +1634,13 @@ def nf_discovery_lines(con, T):
         cnt = {x["kind"]: x["n"] for x in r}
         L.append(f"  Lignes rendues : {T.n('observations', {'nf_obs': True}, cnt.get('observation', 0))} observations, "
                  f"{T.n('observations', {'nf_abst': True}, cnt.get('abstention', 0))} abstentions motivées.")
+    refs = sorted({g for s in units["groups"] for g in s.split(";") if g})
+    for g in refs:
+        e = q(con, """SELECT count(*) AS n, count(*) FILTER (WHERE (CASE WHEN from_group = ? THEN to_group ELSE from_group END)
+                      NOT LIKE 'CP:%') AS k FROM links WHERE link_kind = 'edge' AND (from_group = ? OR to_group = ?)""", g, g, g)[0]
+        L.append(f"  Arêtes de {group_label(g)} : {T.n('links', {'nf_edges': g}, e['n'])}, dont "
+                 f"{T.n('links', {'nf_edges_groups': g}, e['k'])} avec un groupe ou un laboratoire ; les autres vont à des "
+                 "contreparties propres (§10.2).")
     return L
 
 

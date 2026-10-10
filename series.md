@@ -29,7 +29,7 @@
 | 2025-04-27 | 69,2 % | 86,2 % | 0,04 x | n.d. (terme manquant) | 26 187 M$ | n.d. (concept non résolu) | 26 187 M$ | 46 j | 1 800 M$ | 0,10 x | 0,02 x |  |
 | 2025-07-27 | 55,6 % | 71,6 % | 0,12 x | n.d. (terme manquant) | 13 470 M$ | n.d. (concept non résolu) | 13 470 M$ | 54 j | 1 900 M$ | 0,09 x | 0,02 x |  |
 | 2025-10-26 | 62,5 % | 65,2 % | 0,07 x | n.d. (terme manquant) | 22 115 M$ | n.d. (concept non résolu) | 22 115 M$ | 53 j | 2 500 M$ | 0,08 x | 0,02 x |  |
-| 2026-01-25 | 73,2 % | 65,5 % | 0,04 x | n.d. (terme manquant) | 34 904 M$ | n.d. (concept non résolu) | 32 904 M$ | 51 j | 2 300 M$ | 0,06 x | 0,02 x |  |
+| 2026-01-25 | 73,2 % | 65,5 % | 0,04 x | n.d. (terme manquant) | 34 904 M$ | n.d. (concept non résolu) | 27 904 M$ | 51 j | 2 300 M$ | 0,06 x | 0,02 x |  |
 | 2026-04-26 | 85,2 % | 70,7 % | 0,03 x | n.d. (terme manquant) | 48 587 M$ | n.d. (concept non résolu) | 46 587 M$ | 45 j | 2 600 M$ | 0,05 x | 0,03 x |  |
 | 2026-07-26 | 105,9 % | 83,4 % | 0,11 x | n.d. (terme manquant) | 21 400 M$ | n.d. (concept non résolu) | 21 400 M$ | 60 j | 3 200 M$ | 0,17 x | 0,03 x |  |
 

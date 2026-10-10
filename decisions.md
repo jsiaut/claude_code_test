@@ -312,3 +312,14 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Twenty One Capital (actionnaire par achat à Tether, sortie en mai 2026), Alibaba, UTStarcom (40 % du chiffre d'affaires 2017), Bloom Energy (coentreprise rachetée 2,0 M$).
 
   (9) Non-déposant vérifié : ni SoftBank Group Corp. (CIK 1065521) ni SoftBank Corp. (CIK 1794354) n'a de rapport périodique dans les 47 archives des Notes Data Sets. La recherche reste complète du côté de SoftBank.
+
+  (10) Effets au réassemblage, de l'état publié au commit 05e85c0 à maintenant :
+  - paires : 60 → 64. Les 4 nouvelles sont en « causalité non établie » : Amazon → DISH (cloud 5G), NVIDIA → Energy Global, LP (contrat prépayé), NVIDIA → SB Energy (placement de classe N), NVIDIA → Intel (5,0 Md$). Aucune conclusion existante ne change ;
+  - Microsoft → General Motors reste une relation commerciale doublée d'un financement, mais passe de 2 à 18 arêtes et de 11 à 21 trimestres « financé » actifs (actions de classe G de Cruise, cloud) ;
+  - paires à financement documenté : 12 → 13 (NVIDIA → Intel) ;
+  - cycles documentés : 25, inchangés ; aucun ne passe par SoftBank ;
+  - annexe E : 13 issues indéterminées sur 24 → 15 sur 26. E.7 reste « discrimination possible » ;
+  - SoftBank porte 47 arêtes. 3 vont à un groupe ou un laboratoire : 2 à Cipher (placement de 50 M$ de Star Beacon LLC en janvier 2025, et une arête de relation), 1 à OpenAI (investisseur, pièce d'Amazon). Les autres vont à des contreparties propres (WeWork, GM, Sprint, Uber, DiDi, Guardant Health, AeroVironment…). SoftBank n'est le client d'aucun groupe : il n'entre dans aucune paire (S, C) ;
+  - les lignes d'Arm entre NVIDIA et SoftBank Group Capital Limited n'ont pas de famille : la règle B ne crée aucune arête entre groupes ;
+  - flux de NVIDIA après financement des contreparties, trimestre clos le 25 janvier 2026 : 32 904 → 27 904 M$, soit les 5,0 Md$ placés chez Intel ;
+  - exclusions `not_processed` : 18 749 → 19 892, dont 1 143 unités hors règle de la piste.
