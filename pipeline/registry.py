@@ -259,6 +259,12 @@ MEASURES = {
     "bdc_portfolio_non_accrual_share": (2, [NONE], "instant", "14"),
     "bdc_portfolio_unfunded_ratio": (2, [NONE], "instant", "14"),
     "bdc_portfolio_software_share": (2, [NONE], "instant", "14"),
+    # §14 passif des BDC (bloc lender_liabilities, D-0047) : par véhicule et date de bilan, puis par offre de rachat
+    "bdc_liab_asset_coverage": (2, [NONE], "instant", "14"),
+    "bdc_liab_debt_to_net_assets": (2, [NONE], "instant", "14"),
+    "bdc_liab_liabilities_to_net_assets": (2, [NONE], "instant", "14"),
+    "bdc_tender_acceptance_ratio": (2, [NONE], "event", "14"),
+    "bdc_tender_demand_ratio": (2, [NONE], "event", "14"),
     # §14 chemins (bloc paths) : cycles orientés de longueur 2 ou 3 entre groupes
     "documented_path": (2, [NONE], "window", "14"),
     # §14 Form D (bloc form_d) : montant vendu par offre, sur le dernier dépôt connu

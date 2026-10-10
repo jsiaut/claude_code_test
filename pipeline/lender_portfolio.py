@@ -265,26 +265,27 @@ def _point(c):
     return None if v is None else Decimal(str(v))
 
 
-def events_cells(cells_by_vehicle, as_of, gap_days):
-    """F11 à F13 : trois dates de bilan successives du même véhicule, 120 jours au plus entre deux."""
+def events_cells(cells_by_vehicle, as_of, gap_days, events=None, decision="D-0045"):
+    """F11 à F13 (et F14, D-0047) : trois dates de bilan successives du même véhicule, 120 jours au
+    plus entre deux."""
     from .measures import cell
     out = []
     for subj, by_date in cells_by_vehicle.items():
         dates = sorted(by_date)
         for i, date in enumerate(dates):
             ps = dates[i - 1] if i else None
-            for fid, (measure, way) in EVENTS.items():
+            for fid, (measure, way) in (events or EVENTS).items():
                 trio = dates[i - 2:i + 1] if i >= 2 else None
                 if trio is None:
                     out.append(cell("fragility_event", subj, ps, date, "as_known", as_of, breakdown=fid,
                                     status="not_determinable", nd_reason="prior_period_missing",
-                                    flags={"subjects": "bdc_vehicles", "decision": "D-0045"}))
+                                    flags={"subjects": "bdc_vehicles", "decision": decision}))
                     continue
                 ds = [dt.date.fromisoformat(x) for x in trio]
                 if any((b - a).days > gap_days for a, b in zip(ds, ds[1:])):
                     out.append(cell("fragility_event", subj, ps, date, "as_known", as_of, breakdown=fid,
                                     status="not_determinable", nd_reason="prior_period_missing",
-                                    flags={"subjects": "bdc_vehicles", "decision": "D-0045", "dates": trio,
+                                    flags={"subjects": "bdc_vehicles", "decision": decision, "dates": trio,
                                            "note": f"écart de plus de {gap_days} jours entre deux dates de bilan"}))
                     continue
                 vals = [_point(by_date[x].get(measure)) for x in trio]
@@ -292,13 +293,13 @@ def events_cells(cells_by_vehicle, as_of, gap_days):
                 if any(v is None for v in vals):
                     out.append(cell("fragility_event", subj, ps, date, "as_known", as_of, breakdown=fid,
                                     status="not_determinable", nd_reason="not_tagged",
-                                    flags={"subjects": "bdc_vehicles", "decision": "D-0045", "dates": trio}))
+                                    flags={"subjects": "bdc_vehicles", "decision": decision, "dates": trio}))
                     continue
                 a, b, cur = vals
                 hit = (cur < b < a) if way == "down" else (cur > b > a)
                 out.append(cell("fragility_event", subj, ps, date, "as_known", as_of, breakdown=fid, status="computed",
                                 value_text="event" if hit else "no_event", knowledge_date=c["knowledge_date"],
-                                flags={"subjects": "bdc_vehicles", "decision": "D-0045", "dates": trio,
+                                flags={"subjects": "bdc_vehicles", "decision": decision, "dates": trio,
                                        "values": [str(v) for v in vals], "measure": measure}))
     return out
 
