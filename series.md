@@ -394,3 +394,125 @@
 | 2026-03-31 | 44,9 % | -13,7 % | 1,56 x | n.d. (non publié) | -139 M$ | -140 M$ | -139 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | ↯ | F2, F5 |
 | 2026-06-30 | 108,8 % | 26,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -584 M$ | -584 M$ | -584 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | F2, F5 |
 
+## BLUE OWL CAPITAL CORP II (véhicule BDC, cik:0001655887)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | 98,66 % | n.d. (non balisé) | ≥ 5,52 % |  |
+| 2023-06-30 | 98,63 % | n.d. (non balisé) | ≥ 5,11 % |  |
+| 2023-09-30 | 98,77 % | n.d. (non balisé) | ≥ 5,27 % |  |
+| 2023-12-31 | 98,66 % | n.d. (non balisé) | ≥ 6,50 % |  |
+| 2024-03-31 | 98,56 % | n.d. (non balisé) | ≥ 7,99 % | F11 |
+| 2024-06-30 | 98,09 % | n.d. (non balisé) | ≥ 12,04 % | F11 |
+| 2024-09-30 | 98,25 % | n.d. (non balisé) | ≥ 10,00 % |  |
+| 2024-12-31 | 97,48 % | n.d. (non balisé) | ≥ 9,00 % |  |
+| 2025-03-31 | 98,16 % | n.d. (non balisé) | ≥ 8,09 % |  |
+| 2025-06-30 | 96,94 % | n.d. (non balisé) | ≥ 9,30 % |  |
+| 2025-09-30 | 96,02 % | n.d. (non balisé) | ≥ 10,04 % | F11 |
+| 2025-12-31 | 96,09 % | n.d. (non balisé) | ≥ 8,94 % |  |
+| 2026-03-31 | 92,04 % | n.d. (non balisé) | ≥ 7,52 % |  |
+| 2026-06-30 | 88,56 % | n.d. (non balisé) | ≥ 7,09 % | F11 |
+
+## BLUE OWL CAPITAL CORP (véhicule BDC, cik:0001655888)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2022-09-30 | 97,71 % (partiel) | n.d. (non balisé) | ≥ 6,59 % |  |
+| 2022-12-31 | 97,90 % (partiel) | n.d. (non balisé) | ≥ 6,17 % |  |
+| 2023-03-31 | 98,58 % (partiel) | n.d. (non balisé) | ≥ 6,10 % |  |
+| 2023-06-30 | 98,58 % (partiel) | n.d. (non balisé) | ≥ 5,27 % |  |
+| 2023-09-30 | 98,66 % (partiel) | n.d. (non balisé) | ≥ 122,20 % |  |
+| 2023-12-31 | 98,72 % (partiel) | n.d. (non balisé) | ≥ 6,22 % |  |
+| 2024-03-31 | 98,58 % (partiel) | n.d. (non balisé) | ≥ 7,26 % |  |
+| 2024-06-30 | 98,14 % (partiel) | n.d. (non balisé) | ≥ 11,29 % | F11 |
+| 2024-09-30 | 98,09 % (partiel) | n.d. (non balisé) | ≥ 9,85 % | F11 |
+| 2024-12-31 | 97,58 % (partiel) | n.d. (non balisé) | ≥ 9,65 % | F11 |
+| 2025-03-31 | 99,38 % (partiel) | n.d. (non balisé) | ≥ 9,42 % |  |
+| 2025-06-30 | 98,63 % (partiel) | n.d. (non balisé) | ≥ 9,73 % |  |
+| 2025-09-30 | 97,95 % (partiel) | n.d. (non balisé) | ≥ 10,30 % | F11 |
+| 2025-12-31 | 97,96 % (partiel) | n.d. (non balisé) | ≥ 8,63 % |  |
+| 2026-03-31 | 97,98 % (partiel) | n.d. (non balisé) | ≥ 9,26 % |  |
+| 2026-06-30 | 96,30 % (partiel) | n.d. (non balisé) | ≥ 7,69 % |  |
+
+## BLUE OWL TECHNOLOGY FINANCE CORP. (véhicule BDC, cik:0001747777)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | 99,29 % | n.d. (non balisé) | ≥ 5,52 % |  |
+| 2023-06-30 | 99,35 % | n.d. (non balisé) | ≥ 5,73 % |  |
+| 2023-09-30 | 99,29 % | n.d. (non balisé) | ≥ 5,62 % |  |
+| 2023-12-31 | 99,45 % | n.d. (non balisé) | ≥ 6,12 % |  |
+| 2024-03-31 | 99,15 % | n.d. (non balisé) | ≥ 7,62 % |  |
+| 2024-06-30 | 98,10 % | n.d. (non balisé) | ≥ 11,40 % | F11 |
+| 2024-09-30 | 100,54 % | n.d. (non balisé) | ≥ 8,80 % |  |
+| 2024-12-31 | 99,20 % | n.d. (non balisé) | ≥ 8,79 % |  |
+| 2025-03-31 | 99,60 % (partiel) | n.d. (non balisé) | ≥ 11,38 % |  |
+| 2025-06-30 | 99,90 % (partiel) | n.d. (non balisé) | ≥ 11,83 % |  |
+| 2025-09-30 | 99,86 % (partiel) | n.d. (non balisé) | ≥ 12,18 % |  |
+| 2025-12-31 | 99,84 % (partiel) | n.d. (non balisé) | ≥ 11,53 % | F11 |
+| 2026-03-31 | 97,91 % (partiel) | n.d. (non balisé) | ≥ 12,91 % | F11 |
+| 2026-06-30 | 97,61 % (partiel) | n.d. (non balisé) | ≥ 11,94 % | F11 |
+
+## BLUE OWL CAPITAL CORP III (véhicule BDC, cik:0001807427)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | 99,74 % | n.d. (non balisé) | ≥ 7,20 % |  |
+| 2023-06-30 | 99,77 % | n.d. (non balisé) | ≥ 6,69 % |  |
+| 2023-09-30 | 99,77 % | n.d. (non balisé) | ≥ 5,88 % |  |
+| 2023-12-31 | 99,96 % | n.d. (non balisé) | ≥ 7,12 % |  |
+| 2024-03-31 | 100,11 % | n.d. (non balisé) | ≥ 8,68 % |  |
+| 2024-06-30 | 99,87 % | n.d. (non balisé) | ≥ 12,13 % |  |
+| 2024-09-30 | 99,80 % | n.d. (non balisé) | ≥ 12,98 % | F11 |
+
+## BLUE OWL CREDIT INCOME CORP. (véhicule BDC, cik:0001812554)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | 99,49 % (partiel) | n.d. (non balisé) | ≥ 6,89 % |  |
+| 2023-06-30 | 99,65 % (partiel) | n.d. (non balisé) | ≥ 6,86 % |  |
+| 2023-09-30 | 99,99 % (partiel) | n.d. (non balisé) | ≥ 6,59 % |  |
+| 2023-12-31 | 100,36 % (partiel) | n.d. (non balisé) | ≥ 7,56 % |  |
+| 2024-03-31 | 100,23 % (partiel) | n.d. (non balisé) | ≥ 8,87 % |  |
+| 2024-06-30 | 100,01 % (partiel) | n.d. (non balisé) | ≥ 12,73 % | F11 |
+| 2024-09-30 | 99,92 % (partiel) | n.d. (non balisé) | ≥ 12,42 % | F11 |
+| 2024-12-31 | 99,65 % (partiel) | n.d. (non balisé) | ≥ 11,66 % | F11 |
+| 2025-03-31 | 99,51 % (partiel) | n.d. (non balisé) | ≥ 13,10 % | F11 |
+| 2025-06-30 | 99,50 % (partiel) | n.d. (non balisé) | ≥ 12,57 % | F11 |
+| 2025-09-30 | 99,29 % (partiel) | n.d. (non balisé) | ≥ 14,45 % | F11 |
+| 2025-12-31 | 99,39 % (partiel) | n.d. (non balisé) | ≥ 14,03 % |  |
+| 2026-03-31 | 98,31 % (partiel) | n.d. (non balisé) | ≥ 14,36 % |  |
+| 2026-06-30 | 98,17 % (partiel) | n.d. (non balisé) | ≥ 12,01 % | F11 |
+
+## BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC, cik:0001869453)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | 99,98 % | n.d. (non balisé) | ≥ 7,36 % |  |
+| 2023-06-30 | 100,08 % | n.d. (non balisé) | ≥ 7,01 % |  |
+| 2023-09-30 | 100,36 % | n.d. (non balisé) | ≥ 7,28 % |  |
+| 2023-12-31 | 100,52 % | n.d. (non balisé) | ≥ 8,10 % |  |
+| 2024-03-31 | 100,63 % | n.d. (non balisé) | ≥ 8,73 % |  |
+| 2024-06-30 | 99,99 % | n.d. (non balisé) | ≥ 12,10 % |  |
+| 2024-09-30 | 100,39 % | n.d. (non balisé) | ≥ 10,34 % |  |
+| 2024-12-31 | 100,18 % (partiel) | n.d. (non balisé) | ≥ 10,41 % |  |
+| 2025-03-31 | 99,76 % (partiel) | n.d. (non balisé) | ≥ 12,72 % | F11 |
+| 2025-06-30 | 100,02 % (partiel) | n.d. (non balisé) | ≥ 11,95 % |  |
+| 2025-09-30 | 99,99 % (partiel) | n.d. (non balisé) | ≥ 12,79 % |  |
+| 2025-12-31 | 99,70 % (partiel) | n.d. (non balisé) | ≥ 13,44 % | F11 |
+| 2026-03-31 | 96,84 % (partiel) | n.d. (non balisé) | ≥ 13,25 % | F11 |
+| 2026-06-30 | 96,06 % (partiel) | n.d. (non balisé) | ≥ 9,62 % | F11 |
+
+## BLUE OWL TECHNOLOGY FINANCE CORP. II (véhicule BDC, cik:0001889668)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | 100,30 % | n.d. (non balisé) | ≥ 8,09 % |  |
+| 2023-06-30 | 100,36 % | n.d. (non balisé) | ≥ 7,22 % |  |
+| 2023-09-30 | 100,55 % | n.d. (non balisé) | ≥ 7,38 % |  |
+| 2023-12-31 | 100,66 % | n.d. (non balisé) | ≥ 9,01 % |  |
+| 2024-03-31 | 100,86 % | n.d. (non balisé) | ≥ 10,84 % |  |
+| 2024-06-30 | 100,58 % | n.d. (non balisé) | ≥ 15,78 % |  |
+| 2024-09-30 | 100,67 % | n.d. (non balisé) | ≥ 12,02 % |  |
+| 2024-12-31 | 100,21 % (partiel) | n.d. (non balisé) | ≥ 12,01 % |  |
+

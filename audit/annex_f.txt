@@ -2,7 +2,7 @@ Annexe F — événements de fragilité, critères tels que commités
 
 Commit : 3ff3b988a48a5c904f88f006d263bfa780739d39 2026-10-07 10:54:38 +0000
 Première requête au journal : 2026-10-07T10:56:41.445+00:00
-Changement ultérieur : aucun (critères identiques dans le config.yaml courant)
+Changement ultérieur : voir le diff ci-dessous
 
 annex_f:
   source: spec v6.14, annexe F
@@ -86,3 +86,421 @@ annex_f:
       source: sig_going_concern (§4.5)
       rule:
         measure: sig_going_concern
+
+Diff :
+diff --git a/config.yaml b/config.yaml
+index 1378604..10bda74 100644
+--- a/config.yaml
++++ b/config.yaml
+@@ -16,9 +16,94 @@ user_agent:
+   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
+   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
+ 
+-scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
+-scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
++scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
++scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
++  date: 2026-10-07
++  decision: "prêteurs et texte"
++  blocks: [lender, text]
++  page: user_brief_2.md      # commit 9210738
++  yield_presented:           # rendement présenté avec la question (delta.md du même commit)
++    rank1_cells: {total: 15766, computed: 6322, bounded: 161, partial: 794, not_determinable: 8489}
++    rank1_not_processed: 3394
++    annex_e_e7: {outcomes: 12, indeterminate: 11, result: non_discrimination}
++    fragility_events: 33
++    pairs: {total: 36, documented_dependency: 4, commercial_with_financing: 4, financed_documented: 6}
++    requests: 3741
++    blocks_read: 1133
++    exhibit_bodies_header_only: 217
++scope_history:               # décisions suivantes de l'utilisateur, dans l'ordre (§11.1)
++  - date: 2026-10-09
++    decision: "On lance la partie découverte, sans sous-agent"
++    blocks: [discovery]
++    page: delta.md           # commit 63323c4, rendement après les blocs lender et text
++    yield_presented:
++      rank1_cells: {total: 17065, computed: 9886, bounded: 194, partial: 63, not_determinable: 6922}
++      rank1_search_incomplete: 1653
++      financed_status_quarter_pairs: {search_incomplete: 375, never: 291, censored: 174, active: 108,
++                                       lapsed: 37, parse_failed: 13}
++      annex_e_e7: {outcomes: 18, indeterminate: 15, result: non_discrimination}
++      fragility_events: 69
++      pairs_financed_documented: 9
++    execution: "lecture séquentielle par l'exécutant, sans sous-agent (consigne de l'utilisateur)"
++  - date: 2026-10-10
++    decision: "ok fais ça, toujours sans sous-agent"
++    question: "arrêter la lecture de la découverte après la deuxième tranche, puis ouvrir paths et form_d"
++    blocks: [paths, form_d]
++    discovery_reading: stopped   # passe A lue sur les rangs 1 à 50 (D-0038, D-0040) ; le reste de la file reste « non traité »
++    page: "point d'étape dans la conversation du 2026-10-10 (D-0041)"
++    yield_presented:             # état publié au commit ccb65e5, avant l'ouverture
++      pairs_financed_documented: 11
++      annex_e_e7: {outcomes: 22, indeterminate: 13, result: discrimination_possible}
++      discovery_units_not_processed: 18799
++      relationship_conclusions: {pairs: 52, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 4, causality_not_established: 34}
++    execution: "sans sous-agent (consigne de l'utilisateur)"
++  - date: 2026-10-10
++    decision: "Poursuis sur le bloc foreign, toujours sans sous-agent"
++    blocks: [foreign]
++    page: "rapport de livraison des blocs paths et form_d dans la conversation du 2026-10-10 (D-0042)"
++    yield_presented:             # état publié au commit 94b7a1e, avant l'ouverture
++      relationship_conclusions: {pairs: 52, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 4, causality_not_established: 34}
++      documented_paths: {cycles: 23, documented_dependency: 10, commercial_with_financing: 12, reciprocal_commercial_only: 1}
++      pairs_financed_documented: 11
++      annex_e_e7: {outcomes: 22, indeterminate: 13, result: discrimination_possible}
++      discovery_units_not_processed: 18799
++    execution: "sans sous-agent (consigne de l'utilisateur)"
++  - date: 2026-10-10
++    decision: "On continue sur l'ajout de nouveaux groupes, toujours sans sous-agent"
++    groups_added: [WULF, CIFR, CORZ]   # hébergeurs endettés, dans l'ordre de §14 ; dates d'entrée : group_entry
++    page: "rapport de livraison du bloc foreign dans la conversation du 2026-10-10 (D-0043)"
++    yield_presented:             # état publié au commit 2364e9c, avant l'ajout
++      relationship_conclusions: {pairs: 53, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 4, causality_not_established: 35}
++      documented_paths: {cycles: 23, documented_dependency: 10, commercial_with_financing: 12, reciprocal_commercial_only: 1}
++      pairs_financed_documented: 12
++      annex_e_e7: {outcomes: 24, indeterminate: 14, result: discrimination_possible}
++      discovery_units_not_processed: 18799
++    execution: "sans sous-agent (consigne de l'utilisateur)"
++  - date: 2026-10-10
++    decision: "Ok fais les niveaux 1 et 2, toujours sans sous-agent"
++    question: "intégrer SoftBank : entités réunies par extraits (niveau 1), non-déposant cherché par la découverte (niveau 2)"
++    blocks: [discovery]          # piste des non-déposants de la découverte (D-0044)
++    non_filers_added: ["NF:SOFTBANK"]
++    page: "réflexion sur SoftBank dans la conversation du 2026-10-10 (D-0044)"
++    yield_presented:             # état publié au commit 05e85c0, avant l'ajout
++      relationship_conclusions: {pairs: 60, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 6, causality_not_established: 40}
++      documented_paths: {cycles: 25, documented_dependency: 10, commercial_with_financing: 13, reciprocal_commercial_only: 2}
++      pairs_financed_documented: 12
++      annex_e_e7: {outcomes: 24, indeterminate: 13, result: discrimination_possible}
++    execution: "sans sous-agent (consigne de l'utilisateur)"
+ 
++  - date: 2026-10-10
++    decision: "Fais le niveau 1, toujours sans sous-agent"
++    question: "fragilité du financement de Blue Owl : signaux de portefeuille de toutes les BDC, événements F11 à F13 (niveau 1)"
++    blocks: [lender_portfolio]   # portefeuille entier des BDC, cinq mesures (D-0045)
++    page: "réflexion sur Blue Owl dans la conversation du 2026-10-10 (D-0045)"
++    yield_presented:             # état publié au commit 3390f1c, avant l'ouverture
++      relationship_conclusions: {pairs: 64, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 6, causality_not_established: 44}
++      documented_paths: {cycles: 25, documented_dependency: 10, commercial_with_financing: 13, reciprocal_commercial_only: 2}
++      pairs_financed_documented: 13
++      annex_e_e7: {outcomes: 26, indeterminate: 15, result: discrimination_possible}
++      fragility_events: 169
++    execution: "sans sous-agent (consigne de l'utilisateur)"
+ window:
+   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
+   include_interim: true
+@@ -38,6 +123,60 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+   AMD: "0000002488"
+   AVGO: "0001730168"
+   MRVL: "0001835632"
++  WULF: "0001083301"         # ajouts du 2026-10-10 (D-0043) : hébergeurs endettés, dans l'ordre de §14
++  CIFR: "0001819989"
++  CORZ: "0001839341"
++
++group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
++                             # énonce sa composition et ces dates (§9.6)
++  - {date: 2026-10-07, groups: [NVDA, GOOGL, AMZN, META, MSFT, ORCL, CRWV, SPCX, AMD, AVGO, MRVL], basis: "annexe B"}
++  - {date: 2026-10-10, groups: [WULF, CIFR, CORZ], basis: "D-0043, ajout de groupes de §14"}
++
++reverse_combinations:        # déclarant légal distinct de l'acquéreur comptable (ASC 805-40 ; fusion inversée,
++                             # recapitalisation inversée d'une SPAC) : les rapports du CIK pour les périodes closes
++                             # avant la réalisation présentent le déclarant légal, hors du groupe ; l'historique du
++                             # groupe est celui de l'acquéreur comptable, publié par les rapports postérieurs.
++                             # Rupture de périmètre (§10.2) : l'historique antérieur est tronqué à gauche (D-0043)
++  WULF:
++    consummation: "2021-12-13"
++    legal_registrant: "IKONICS Corporation"
++    accounting_acquirer: "TeraCub Inc. (constituée le 8 février 2021)"
++    evidence:
++      - "8-K12B 0000950142-21-003986 : « This Current Report on Form 8-K establishes TeraWulf as the successor issuer to IKONICS pursuant to Rule 12g-3(c) under the Securities Exchange Act of 1934 »"
++      - "10-K 0001104659-22-041168 (exercice 2021) : « For financial accounting purposes, the business combination was treated as a reverse merger whereby the accounting acquirer was TeraCub »"
++  CIFR:
++    consummation: "2021-08-27"
++    legal_registrant: "Good Works Acquisition Corp."
++    accounting_acquirer: "Cipher Mining Technologies Inc. (constituée le 7 janvier 2021)"
++    evidence:
++      - "8-K 0001193125-21-260900 (date de l'événement : 2021-08-27, items 2.01 et 3.03)"
++      - "10-Q 0000950170-21-004222 (T3 2021) : « The Merger was accounted for as a reverse recapitalization in accordance with U.S. GAAP » ; « Cipher was determined to be the accounting acquirer »"
++    pre_combination_filings:   # dépôts postérieurs à la réalisation qui ne portent que sur les états du déclarant légal
++      - {accession: "0001193125-21-366363", form: "8-K", items: "4.02", quote: "Therefore, the errors relate to the pre-business combination SPAC and its financial statements"}
++  CORZ:
++    consummation: "2022-01-19"
++    legal_registrant: "Power & Digital Infrastructure Acquisition Corp."
++    accounting_acquirer: "Core Scientific Holding Co."
++    evidence:
++      - "8-K 0001193125-22-016157 (date de l'événement : 2022-01-19, items 2.01 et 3.03)"
++      - "10-Q 0001628280-22-014350 (T1 2022) : « The Merger is accounted for as a reverse recapitalization with the Company being the accounting acquirer »"
++      - "10-K 0001193125-22-088850 (exercice 2021, déposé après la réalisation) : états de la SPAC (actif de 346 368 517 $ au 31 décembre 2021), hors du groupe"
++
++reporting_start:             # début de l'obligation de publier, par fréquence (§7.5) : trimestres à partir du
++                             # premier 10-Q du groupe ; exercices présentés par le document d'enregistrement
++                             # (Reg S-X 3-01, 3-02) ; avant, la cellule attendue est not_applicable avec sa pièce
++  SPCX:
++    quarter: ["2026-04-01", "EFFECT 9999999995-26-001968 du 2026-06-11 ; premier 10-Q 0001628280-26-052535 (T2 2026)"]
++    fiscal_year: ["2023-01-01", "424B4 0001628280-26-042639 : exercices 2023 à 2025 présentés (Reg S-X 3-02)"]
++  CRWV:
++    quarter: ["2025-01-01", "424B4 0001193125-25-067651 du 2025-03-31 ; premier 10-Q pour le T1 2025"]
++    fiscal_year: ["2022-01-01", "424B4 0001193125-25-067651 : exercices 2022 à 2024 présentés (Reg S-X 3-02)"]
++  WULF:
++    quarter: ["2022-01-01", "fusion inversée du 2021-12-13 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001558370-22-008985 (T1 2022)"]
++  CIFR:
++    quarter: ["2021-07-01", "recapitalisation inversée du 2021-08-27 (D-0043) ; premier 10-Q de l'acquéreur comptable 0000950170-21-004222 (T3 2021)"]
++  CORZ:
++    quarter: ["2022-01-01", "recapitalisation inversée du 2022-01-19 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001628280-22-014350 (T1 2022)"]
+ 
+ predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
+   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
+@@ -48,6 +187,8 @@ known_entities:              # appartenances et dates lues en phase 0 (§10.3)
+          "X.AI LLC", "CTC Property, LLC"]
+ cik_hints: {"X.AI Corp.": "0002002695"}
+ labs: [OpenAI, Anthropic]    # groupes économiques non déposants (§10.4)
++non_filers:                  # autres groupes économiques non déposants (§10.4), ni laboratoires ni sous-jacents de form_d (D-0044)
++  - {name: SoftBank, ref: "NF:SOFTBANK"}
+ 
+ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
+                Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
+@@ -55,6 +196,162 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+ lexicon_rules:
+   AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
+ 
++discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-0036)
++  datasets: notes            # Notes Data Sets, fichier txt ; de la plus récente à la plus ancienne
++  lexicon:                   # lexique initial (lexicon_seed) avec la cible de chaque terme ; mots entiers
++    seed:
++      - {term: NVIDIA, ref: NVDA}
++      - {term: Alphabet, ref: GOOGL, case_sensitive: true}
++      - {term: Google, ref: GOOGL}
++      - {term: Amazon, ref: AMZN, case_sensitive: true}
++      - {term: "Amazon Web Services", ref: AMZN}
++      - {term: Meta, ref: META, case_sensitive: true}
++      - {term: Microsoft, ref: MSFT}
++      - {term: Oracle, ref: ORCL, case_sensitive: true}
++      - {term: CoreWeave, ref: CRWV}
++      - {term: SpaceX, ref: SPCX}
++      - {term: xAI, ref: SPCX, case_sensitive: true}
++      - {term: "X.AI", ref: SPCX, case_sensitive: true}
++      - {term: OpenAI, ref: "LAB:OPENAI"}
++      - {term: Anthropic, ref: "LAB:ANTHROPIC", case_sensitive: true}
++      - {term: Stargate, ref: "OTHER:STARGATE", case_sensitive: true}
++      - {term: AMD, ref: AMD, case_sensitive: true}
++      - {term: "Advanced Micro Devices", ref: AMD}
++      - {term: Broadcom, ref: AVGO}
++      - {term: Avago, ref: AVGO}
++      - {term: Marvell, ref: MRVL}
++    confirmed:               # entités confirmées des groupes (registre, §10.2), avec leurs dates
++      - {term: Facebook, ref: META, case_sensitive: true, valid_to: "2021-10-27"}     # ancienne dénomination de Meta Platforms, Inc.
++      - {term: Xilinx, ref: AMD, valid_from: "2022-02-14"}
++      - {term: VMware, ref: AVGO, valid_from: "2023-11-22"}
++      - {term: Inphi, ref: MRVL, case_sensitive: true, valid_from: "2021-04-20"}
++      - {term: MAIV, ref: CRWV, case_sensitive: true, valid_from: "2025-12-31"}
++      - {term: "CTC Property", ref: SPCX, case_sensitive: true, valid_from: "2026-06-30"}
++      - {term: "X Corp", ref: SPCX, case_sensitive: true, valid_from: "2023-01-01"}
++      - {term: "X Holdings Corp", ref: SPCX, case_sensitive: true, valid_from: "2023-01-01"}
++      - {term: "Atlantic Crypto", ref: CRWV, case_sensitive: true, valid_to: "2019-10-03"}
++      - {term: "Maui HoldCo", ref: MRVL, case_sensitive: true}
++  non_filer:                 # piste des non-déposants (D-0044) : extraits, file et état de lecture propres
++    lexicon:                 # mots entiers ; scan avec le lexique d'ensemble pour les co-mentions
++      - {term: SoftBank, ref: "NF:SOFTBANK"}
++    search_forms: ex10       # recherche plein texte des EX-10 seulement ; pas de Form D
++    reading:                 # règle fixée avant de voir les candidats
++      r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
++      r2_documented_amount: latest   # montant documenté : notes du dépôt le plus récent
++      cap_units: 300         # au-delà, arrêt et rendement présenté
++
++form_d:                      # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
++  excluded_issuers:          # le terme y désigne autre chose qu'une exposition à la cible ; motif lu dans le Form D
++    - {cik: "1931731", name: "Anthropic Capital Fund, LP", decision: D-0041, kind: homonym,
++       evidence: "fonds de type « Hedge Fund » dont le commandité et le gérant se nomment Anthropic Capital Partners, LLC et Anthropic Capital Management, LLC : le terme désigne le gérant, pas une exposition à Anthropic PBC"}
++    - {cik: "1729637", name: "Karbon-X Corp.", decision: D-0041, kind: homonym,
++       evidence: "société du groupe d'activité « Energy Conservation » : « X Corp » n'y est que la fin de la dénomination Karbon-X Corp., pas X Corp."}
++    - {cik: "1877240", name: "OpenAI Startup Fund I, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++    - {cik: "2133720", name: "OpenAI Startup Fund II, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++    - {cik: "2003722", name: "OpenAI Startup Fund SPV I, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++    - {cik: "2018704", name: "OpenAI Startup Fund SPV II, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++    - {cik: "2018916", name: "OpenAI Startup Fund SPV III, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++    - {cik: "2023254", name: "OpenAI Startup Fund SPV IV, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++    - {cik: "2044928", name: "OpenAI Startup Fund SPV V, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++    - {cik: "2079027", name: "OpenAI Startup Fund SPV VI, L.P.", decision: D-0041, kind: sponsor,
++       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
++
++foreign:                     # bloc de §14 ouvert le 2026-10-10 (décision D-0042)
++  forms: ["20-F", "20-F/A", "40-F", "40-F/A", "6-K", "6-K/A", "F-1", "F-1/A", "F-4", "F-4/A"]
++  named_issuers:             # émetteurs étrangers que la spec nomme comme nœuds de la chaîne (§14, annexe D)
++    - {cik: "1878848", name: "IREN Ltd", source: "§14 et annexe D : 20-F jusqu'à l'exercice clos le 30 juin 2024, 10-K ensuite"}
++    - {cik: "1513845", name: "Nebius Group N.V.", source: "§14 et annexe D : 20-F et 6-K"}
++  # sélection fixée avant de lire : les unités de la file de découverte (D-0036) tirées d'un formulaire
++  # étranger, pour les émetteurs nommés ci-dessus et pour les contreparties étrangères déjà présentes
++  # dans une paire ou un cycle ; les autres unités étrangères restent dans la file, « non traitées »
++  selection: [named_issuers, graph_counterparties]
++
++paths:                       # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
++  lengths: [2, 3]            # cycles orientés de longueur 2 ou 3 entre groupes, hors intragroupe
++  temporal_max_quarters: 4   # arêtes actives ensemble ou à moins de quatre trimestres d'écart
++
++# Entités confirmées par le producteur (§10.2) : chaque appartenance ou alias est établi par
++# un extrait cité mot pour mot (bloc et accession), décision D-0021 de decisions.md. Hors de
++# cette liste, une contrepartie nommée par sa dénomination légale complète est une entité et un
++# groupe économique propres (D-0022) ; toute autre mention reste pending, hors des agrégats.
++confirmed_entities:
++  - {name: "Google LLC", group: GOOGL, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: d262c7d93c38d3bfca0c82abf88418d636d10e3f82f0a88c8df2a6a962fb3fcc, accession: 0001652044-25-000074, quote: "Google LLC (\"Google\"), a wholly-owned subsidiary"}
++  - {name: "Amazon.com NV Investment Holdings LLC", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 8e289f5600a093d7746ac91c13ba2adbd349bf8a1048b4303aa73aba22314536, accession: 0001104659-26-021050, quote: "Amazon.com NV Investment Holdings LLC (\"Amazon Sub\"), a wholly-owned subsidiary of Amazon"}
++  - {name: "Amazon Web Services, Inc.", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 7a3af0ea4081e287058057565732ed97d6088d4aaea0934371eed2451c0fd6a8, accession: 0001104659-26-021050, quote: "affiliates of each of the Company and OpenAI entered into (i) a commercial arrangement primarily for the provision of Amazon Web Services (\"AWS\") cloud services to OpenAI"}
++  - {name: "NVIDIA Land Development, LLC", group: NVDA, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 262e9cb02978050921fecb9ae92753a90fab776096c94562ef18e07521d74ed0, accession: 0001045810-17-000164, quote: "NVIDIA Land Development, LLC, or NVIDIA Land, a wholly-owned subsidiary of NVIDIA Corporation"}
++  - {name: "NVIDIA International Holdings Inc.", group: NVDA, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: c3f3bb952330217e6646f85f64d8c55ab0024db6d087f89890b42b7c8a466139, accession: 0001193125-20-244601, quote: "NVIDIA International Holdings Inc., a Delaware corporation and a wholly owned subsidiary of NVIDIA"}
++  - {name: "Broadcom Technologies Inc.", group: AVGO, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: c5f2bb3cebd3a5d801c6a2c50f47036bd20644f204b1f5e0cc454bf52e5965da, accession: 0001193125-19-017097, quote: "Broadcom Technologies Inc. (\"Broadcom Technologies\"), a Delaware corporation and a wholly-owned subsidiary of Broadcom Inc."}
++  - {name: "Broadcom Corporation", group: AVGO, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: ed63758b5967ad01d0026b1748f3581fdd87299ae3d0820f3e657dbe909fca52, accession: 0001193125-19-017097, quote: "Old Broadcom Parent has distributed all the common shares of the Company and all of the ordinary shares of the Co-Issuer, to Broadcom Technologies"}
++  - {name: "Broadcom Cayman Finance Limited", group: AVGO, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: ed63758b5967ad01d0026b1748f3581fdd87299ae3d0820f3e657dbe909fca52, accession: 0001193125-19-017097, quote: "Old Broadcom Parent has distributed all the common shares of the Company and all of the ordinary shares of the Co-Issuer, to Broadcom Technologies"}
++  - {name: "Xilinx, Inc.", group: AMD, treatment: consolidated_subsidiary, valid_from: "2022-02-14", rule: executor_decision, decision: D-0021, block: f51e1651f623afeceec01285bc5fff1f80fd047a29a1a7f63cba3df3f6d8978d, accession: 0000002488-22-000031, quote: "WHEREAS, on the date hereof, pursuant to an Agreement and Plan of Merger, dated as of October 26, 2020 (the \"Merger Agreement\"), by among the Company, the Parent Guarantor and Thrones Merger Sub, Inc., a Delaware corporation and wholly owned subsidiary of the Parent Guarantor (\"Merger Sub\"), Merger Sub merged with and into the Company", membership_note: "pièce datée du 14 février 2022 : la fusion a lieu à sa date"}
++  - {name: "Inphi Corporation", group: MRVL, treatment: consolidated_subsidiary, valid_from: "2021-04-20", rule: executor_decision, decision: D-0021, block: 5389b2043bb52457dda5954e6ee683ce2a1fff97b27644cc11d1d9d75aa48f4c, accession: 0001193125-21-147951, quote: "Inphi Corporation (\"Inphi\"), a wholly owned subsidiary of Marvell Technology, Inc. (\"MTI\")"}
++  - {name: "CoreWeave Compute Acquisition Co. II, LLC", group: CRWV, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "CoreWeave Compute Acquisition Co. II, LLC, our direct, wholly-owned subsidiary"}
++  - {name: "CoreWeave Compute Acquisition Co. IV, LLC", group: CRWV, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "CoreWeave Compute Acquisition Co. IV, LLC, our direct, wholly-owned subsidiary"}
++  - {name: "CoreWeave Compute Acquisition Co. VII, LLC", group: CRWV, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 010a49c5d1958b31248be4e752f6ca7685fb2618f969e86623a473f46eadef35, accession: 0001769628-26-000003, quote: "CoreWeave Compute Acquisition Co. VII, LLC (\"CCAC VII\"), a Delaware limited liability company and a direct subsidia"}
++  - {name: "CoreWeave Compute Acquisition Co. VIII, LLC", group: CRWV, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 63a1c62b29ca282318b6ee32a29bcf8eaeb332283df19e4d3f071b9a211cbfa3, accession: 0001769628-26-000129, quote: "CoreWeave Compute Acquisition Co. VIII, LLC (\"CCAC VIII\" or the \"Borrower\"), a Delaware limited liability company and an indirect subsidiary of CoreWeave, Inc"}
++  - {name: "CoreWeave Compute Acquisition Co. V, LLC", group: CRWV, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 49a1a3ef2f0cf4fdda702bbef1a7604a6c2daadcee3d818dbca6c682ef292e66, accession: 0001769628-25-000033, quote: "CoreWeave Compute Acquisition Co. V, LLC (\"CCAC V\"), a Delaware limited liability company and a direct subsidiary of CoreWeave, Inc."}
++  - {name: "CoreWeave Financing DDTL V, LLC", group: CRWV, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 59da6a122e8526e5ceb6d12cedb981db2a64d9a0dc57a65c8da01afbde8bee67, accession: 0001769628-26-000236, quote: "CoreWeave Financing DDTL V, LLC (the \"Borrower\"), a Delaware limited liability company and an indirect subsidiary of CoreWeave, Inc."}
++  - {name: "CoreWeave Financing DDTL V-V, LLC", group: CRWV, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0021, block: 4482413d586ea8d8b22056569f2e26c9b074776c566f2cd3e17a95aac2f3d01c, accession: 0001769628-26-000357, quote: "CoreWeave Financing DDTL V-V, LLC (the \"Borrower\"), a Delaware limited liability company and an indirect subsidiary of CoreWeave, Inc."}
++  - {name: "VMware, Inc.", group: AVGO, treatment: consolidated_subsidiary, valid_from: "2023-11-22", rule: executor_decision, decision: D-0021, block: 4f9fd0db37ba5714e9d9adad617c682f0692d80a312aa862d5f630f8d1334556, accession: 0001140361-23-054354, quote: "On November 22, 2023, Broadcom Inc. (\"Broadcom\") completed its acquisition of VMware, Inc. (\"VMware\")", membership_note: "8-K item 2.01 (bloc text) : VMware survit à la First Merger comme filiale à 100 % de Holdco, Holdco devenant filiale à 100 % de Broadcom par la Second Merger ; avant cette date, groupe propre"}
++  - {name: "OpenAI OpCo, LLC", group: LAB:OPENAI, treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0021, block: 5d0931cd4f5232639347d9d3635fa149009dcbb5261431752bf99537218ff1bb, accession: 0001193125-25-216497, quote: "OpenAI OpCo, LLC (\"OpenAI\")"}
++  - {name: "OpenAI Group PBC", group: LAB:OPENAI, treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0021, block: 8e289f5600a093d7746ac91c13ba2adbd349bf8a1048b4303aa73aba22314536, accession: 0001104659-26-021050, quote: "OpenAI Group PBC (\"OpenAI\")"}
++  - {name: "Anthropic PBC", group: LAB:ANTHROPIC, treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0021, block: 46b1cfb8909d9aa57c6317242f0c846d1e2eda719fb95c8e6b711761c34c9e0b, accession: 0001193125-26-144028, quote: "Anthropic PBC (\"Anthropic\")"}
++  - {name: "Amazon Logistics, Inc.", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0038, block: 6f45e084ec881e52209cd693dacbe259217f6a7590e47a263a7a0f2363395397, accession: 0001874178-23-000058, quote: "Amazon Logistics, Inc., a Delaware corporation (\"Amazon\")", membership_note: "même bloc : « Additionally, Amazon's affiliate, Amazon.com, Inc., and Rivian's affiliate, Rivian Automotive, Inc., entered into a letter agreement dated February 15, 2019 » ; affiliée d'Amazon.com, Inc., tête du groupe AMZN"}
++  - {name: "Amazon.com Services LLC", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0040, block: 9fb22e68f88a34af527d594209be55dc4c5cefb28adf76ac9fe8558c176c7053, accession: 0001193125-24-136251, quote: "Amazon.com Services LLC, a direct or indirect subsidiary of Amazon", membership_note: "même bloc : « Air Transport Services Group, Inc., a Delaware corporation (the \"Company\"), and Amazon.com, Inc., a Delaware corporation (\"Amazon\") » ; filiale d'Amazon.com, Inc., tête du groupe AMZN"}
++  - {name: "Amazon Data Services, Inc.", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0043, block: afc9ecc5828fc4c4301dd88f108da11223baefbd4c356793f8a0ac3c79bb5c54, accession: 0000950103-26-001966, quote: "\"Amazon Parent\" means Amazon.com, Inc. \"Amazon Tenant\" means Amazon Data Services, Inc.", membership_note: "même bloc : « \"Amazon Guaranty\" means the limited parent guarantee dated as of November 21, 2025, from Amazon Parent relating to Amazon Tenant's payment obligations under the Datacenter Lease. » ; filiale d'Amazon.com, Inc., tête du groupe AMZN ; corps d'EX-4 resté à son en-tête (financial_parties_only), cité pour l'identité seulement"}
++  - {name: "SoftBank Group Corp.", group: "NF:SOFTBANK", treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0044, block: 82149ed7d79ec736d122b98fecd3e9e9d6b7aae9a10f2b3d80f047140fcf4cfb, accession: 0001193125-25-017265, quote: "Star Beacon LLC, a wholly owned subsidiary of SoftBank Group Corp. (\"SoftBank\")", membership_note: "tête du groupe économique non déposant SoftBank (§10.4)"}
++  - {name: "Star Beacon LLC", group: "NF:SOFTBANK", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0044, block: ccca44dca579b5a22b80ea746350256c010f14025f421e1a0f8b147b66451896, accession: 0001193125-25-017265, quote: "Star Beacon LLC, a Delaware limited liability company and wholly owned subsidiary of SoftBank Group Corp.", membership_note: "filiale à 100 % de SoftBank Group Corp."}
++  - {name: "Brightstar US, Inc.", group: "NF:SOFTBANK", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0044, block: 01f6569f641225c08e123e09984b95474d93e778015122e2882b276490fef5a0, accession: 0000101830-20-000008, quote: "As Brightstar is a subsidiary of SoftBank", membership_note: "appartenance affirmée par l'extrait (D-0044, règle A) ; le même bloc définit Brightstar US, Inc. (Brightstar) ; constatée au 31 décembre 2019, sortie du groupe non documentée"}
++  - {name: "SoftBank Latin America", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: f45888f4914e94b44fc1b4f2e2f9000b2d86090f7bd933d66dea401a8192b088, accession: 0001813756-23-000059, quote: "SoftBank Latin America (\"SBLA\"), an affiliate of SBG", membership_note: "appartenance affirmée par l'extrait (D-0044, règle A) ; SBG y désigne SoftBank Group Corp. ou une entité qu'elle contrôle (note 1 du même 10-Q)"}
++  - {name: "SB Northstar LP", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 754efd2ed33799fdc7ba4dde37447d541fa19ad5dfb4e4b7f69cc0db2b81dd02, accession: 0001628280-26-017747, quote: "SB Northstar LP, an affiliate of SoftBank Group Corp.", membership_note: "appartenance affirmée par l'extrait (D-0044, règle A)"}
++  - {name: "SoftBank Group Capital Limited", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: c3f3bb952330217e6646f85f64d8c55ab0024db6d087f89890b42b7c8a466139, accession: 0001193125-20-244601, quote: "SoftBank Group Capital Limited, a company organized under the laws of England & Wales (\"SoftBank\")", membership_note: "désignée dans le dépôt par le terme défini « SoftBank », alias confirmé du groupe (D-0044, règle B) ; même désignation dans le 10-K 2024 de Moatable"}
++  - {name: "SoftBank Vision Fund (AIV M2) L.P.", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 60aad3bbf1bcf1cd5049e4fbe93371356dc4989e5883e9abcddba5c812091cac, accession: 0001467858-25-000032, quote: "SoftBank Vision Fund (AIV M2) L.P.'s (SoftBank)", membership_note: "désignée dans le dépôt par le terme défini « SoftBank », alias confirmé du groupe (D-0044, règle B)"}
++  - {name: "SVF Yellow (USA) Corporation", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: ecd2379223d4694ff8fc67d4e73d56587f42853ef995f7a82fbbe80adba4128c, accession: 0001543151-24-000012, quote: "SVF Yellow (USA) Corporation (\"SoftBank\")", membership_note: "désignée dans le dépôt par le terme défini « SoftBank », alias confirmé du groupe (D-0044, règle B)"}
++  - {name: "Stellar Beacon LLC", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 1c2b783485210cf687031f73482756654c2387f1158a6b571b164f63fb0cde06, accession: 0001213900-26-087471, quote: "Stellar Beacon LLC, a Delaware limited liability company (\"SoftBank\")", membership_note: "désignée dans le dépôt par le terme défini « SoftBank », alias confirmé du groupe (D-0044, règle B) ; entité distincte de Star Beacon LLC"}
++  - {name: "SoftBank Corp.", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 5e7283844e0396ffadb3e40d02dfa6ed695a51b86995d5ef095c6f24cb165b2b, accession: 0001558370-24-009515, quote: "SoftBank Corp. (\"SoftBank\")", membership_note: "désignée dans le dépôt par le terme défini « SoftBank », alias confirmé du groupe (D-0044, règle B) ; même désignation dans le 10-K 2023 de Bloom Energy (Softbank Corp.)"}
++  - {name: "SVF II Energy (DE) LLC", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 48a0ae360ae0e05b81e498f9f32e0d82f004faf28cde5b3fa9a1af3b2a0a659a, accession: 0001628280-26-062846, quote: "\"SoftBank Holders\" has the meaning set forth in the preamble, and includes any other Affiliate of SoftBank that holds Shares from time to time", membership_note: "appartenance affirmée par l'extrait (D-0044, règle A) : le même bloc définit « SoftBank » comme SoftBank Group Corp., et « any other Affiliate » fait des SoftBank Holders du préambule (SB Energy HoldCo, LLC et SVF II Energy (DE) LLC) des affiliés de SoftBank"}
++  - {name: "SB Energy HoldCo, LLC", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 48a0ae360ae0e05b81e498f9f32e0d82f004faf28cde5b3fa9a1af3b2a0a659a, accession: 0001628280-26-062846, quote: "\"SoftBank Holders\" has the meaning set forth in the preamble, and includes any other Affiliate of SoftBank that holds Shares from time to time", membership_note: "appartenance affirmée par l'extrait (D-0044, règle A) : le même bloc définit « SoftBank » comme SoftBank Group Corp., et « any other Affiliate » fait des SoftBank Holders du préambule (SB Energy HoldCo, LLC et SVF II Energy (DE) LLC) des affiliés de SoftBank"}
++entity_aliases:
++  - {alias: "NVIDIA", of: "NVIDIA Corporation", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "NVIDIA Corporation (\"NVIDIA\")"}
++  - {alias: "Meta", of: "Meta Platforms, Inc.", decision: D-0021, block: 943d65c0fd815aa4a4da6c197bb4d1dcd7c2ee6576608488dc012e6dbb28423e, accession: 0001769628-25-000050, quote: "Meta Platforms, Inc. (\"Meta\")"}
++  - {alias: "Magnetar", of: "Magnetar Financial LLC", decision: D-0021, block: 80188e4fd6cefcb4f41b481afd32d5aaf62688a157de13f940f42a399b54ebab, accession: 0001769628-26-000104, quote: "Magnetar Financial LLC (\"Magnetar\")"}
++  - {alias: "Tesla", of: "Tesla, Inc.", decision: D-0021, block: c820494663cb13e54fc46241c1b0b1f4a259642224b07775ab05ccb156c48a27, accession: 0001628280-26-052535, quote: "Tesla, Inc. (\"Tesla\")"}
++  - {alias: "Valor", of: "Valor Equity Partners", decision: D-0021, block: c820494663cb13e54fc46241c1b0b1f4a259642224b07775ab05ccb156c48a27, accession: 0001628280-26-052535, quote: "Valor Equity Partners (\"Valor\")"}
++  - {alias: "Amazon Web Services", of: "Amazon Web Services, Inc.", decision: D-0021, block: 7a3af0ea4081e287058057565732ed97d6088d4aaea0934371eed2451c0fd6a8, accession: 0001104659-26-021050, quote: "Amazon Web Services (\"AWS\") cloud services to OpenAI"}
++  - {alias: "Broadcom Technologies", of: "Broadcom Technologies Inc.", decision: D-0021, block: c5f2bb3cebd3a5d801c6a2c50f47036bd20644f204b1f5e0cc454bf52e5965da, accession: 0001193125-19-017097, quote: "Broadcom Technologies Inc. (\"Broadcom Technologies\")"}
++  - {alias: "CCAC VII", of: "CoreWeave Compute Acquisition Co. VII, LLC", decision: D-0021, block: 010a49c5d1958b31248be4e752f6ca7685fb2618f969e86623a473f46eadef35, accession: 0001769628-26-000003, quote: "CoreWeave Compute Acquisition Co. VII, LLC (\"CCAC VII\")"}
++  - {alias: "CCAC VIII", of: "CoreWeave Compute Acquisition Co. VIII, LLC", decision: D-0021, block: 63a1c62b29ca282318b6ee32a29bcf8eaeb332283df19e4d3f071b9a211cbfa3, accession: 0001769628-26-000129, quote: "CoreWeave Compute Acquisition Co. VIII, LLC (\"CCAC VIII\""}
++  - {alias: "Xilinx", of: "Xilinx, Inc.", decision: D-0021, block: 37a0c2a01788d041d8680a885e8d58dcb8497090b99fec7f26a7adb54418da11, accession: 0000002488-22-000026, quote: "Xilinx, Inc. (\"Xilinx\")"}
++  - {alias: "Inphi", of: "Inphi Corporation", decision: D-0021, block: 5389b2043bb52457dda5954e6ee683ce2a1fff97b27644cc11d1d9d75aa48f4c, accession: 0001193125-21-147951, quote: "Inphi Corporation (\"Inphi\")"}
++  - {alias: "Marvell Technology", of: "Marvell Technology, Inc.", decision: D-0021, block: 5389b2043bb52457dda5954e6ee683ce2a1fff97b27644cc11d1d9d75aa48f4c, accession: 0001193125-21-147951, quote: "Marvell Technology, Inc. (\"MTI\")"}
++  - {alias: "Maui HoldCo, Inc.", of: "Marvell Technology, Inc.", decision: D-0032, block: a027085f1e17060a43fbc0c54653e1bc140de3fb7bec02a77fe5449792ea829b, accession: 0001193125-21-123305, quote: "Marvell Technology, Inc. (f/k/a Maui HoldCo, Inc.), a Delaware corporation (\"Marvell Technology\")"}
++  - {alias: "OpenAI", of: "LAB:OPENAI", decision: D-0021, block: 5d0931cd4f5232639347d9d3635fa149009dcbb5261431752bf99537218ff1bb, accession: 0001193125-25-216497, quote: "OpenAI OpCo, LLC (\"OpenAI\")"}
++  - {alias: "Anthropic", of: "LAB:ANTHROPIC", decision: D-0021, block: 46b1cfb8909d9aa57c6317242f0c846d1e2eda719fb95c8e6b711761c34c9e0b, accession: 0001193125-26-144028, quote: "Anthropic PBC (\"Anthropic\")"}
++  - {alias: "Amazon", of: "Amazon.com, Inc.", decision: D-0038, block: ec28495ac804f354691ca9c0141bab89b79dcb60e7f9dd920b367c76c2af9cb4, accession: 0001404123-23-000016, quote: "Amazon.com, Inc. (\"Amazon\")"}
++  - {alias: "Google", of: "Google LLC", decision: D-0038, block: 471416e82411b9dd2125a38e79ccc2e5984ebb9d1103380792384e2c4725316a, accession: 0001083301-26-000166, quote: "Google LLC (\"Google\")"}
++  - {alias: "Microsoft", of: "Microsoft Corporation", decision: D-0038, block: 8fba4d62bb012f3ed51529d77f1e088630ed56038883915140d89b26845ce87d, accession: 0001002517-22-000017, quote: "Microsoft Corporation (\"Microsoft\")"}
++  - {alias: "Facebook", of: "Facebook, Inc.", decision: D-0038, block: 0aee503b4ff076e5ed466a7439822ba30951ae410a2a54649e0f04aa58e539bd, accession: 0001683168-18-000488, quote: "Facebook, Inc. and its Affiliates (as defined below with offices at 1601 Willow Road, Menlo Park, CA 94025 (\"Facebook\")"}
++  - {alias: "Broadcom", of: "Broadcom Inc.", decision: D-0038, block: 46b1cfb8909d9aa57c6317242f0c846d1e2eda719fb95c8e6b711761c34c9e0b, accession: 0001193125-26-144028, quote: "Broadcom Inc. (\"Broadcom\")"}
++  - {alias: "Oracle", of: "Oracle Corporation", decision: D-0038, block: e8f208676bd328f7a39f08b9d5a6f13b8d06cfd4487c74f8cf1d2802a963430e, accession: 0001193125-26-389753, quote: "Oracle Corporation (\"Oracle\")"}
++  - {alias: "Marvell", of: "Marvell Technology Group Ltd.", decision: D-0038, block: 7db407632e69fc96dd2bb3a88478f2d0886fec8c0ee2ebb1c9dd11780a099cf3, accession: 0001193125-21-122807, quote: "Marvell Technology Group Ltd.'s (\"Marvell\")"}
++  - {alias: "SpaceX", of: "Space Exploration Technologies Corp.", decision: D-0038, block: 8fb0eaa8e5cc782cb5865c354128d7dad135cc3f3817723ac0e2b9f97e4de558, accession: 0001104659-26-089370, quote: "Space Exploration Technologies Corp., a Texas corporation (\"SpaceX\")"}
++  - {alias: "Core Scientific, Inc.", of: "Core Scientific, Inc./tx", decision: D-0043, block: d2eeccf55611592d82afc9bb5838753aaabd7660e00d8319b021e628c9144bc5, accession: 0001193125-22-199189, quote: "Core Scientific, Inc., a Delaware corporation (the \"Company\")"}   # « /tx » : suffixe de désambiguïsation d'EDGAR, pas la dénomination légale
++  - {alias: "AMD", of: "Advanced Micro Devices, Inc.", decision: D-0039, block: b2e6eb4698cf82892444f34ab3c6fb0791b0df02449c7f2ab7bab0f536a03e37, accession: 0000002488-26-000045, quote: "Advanced Micro Devices, Inc. (\"AMD\")"}
++  - {alias: "SoftBank", of: "NF:SOFTBANK", decision: D-0044, block: 82149ed7d79ec736d122b98fecd3e9e9d6b7aae9a10f2b3d80f047140fcf4cfb, accession: 0001193125-25-017265, quote: "SoftBank Group Corp. (\"SoftBank\")"}
++  - {alias: "SBG", of: "NF:SOFTBANK", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "All references to \"SBG\" are references to SoftBank Group Corp. or a controlled affiliate or subsidiary thereof"}
++  - {alias: "SVF II", of: "SoftBank Vision Fund II-2 L.P.", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "the SoftBank Vision Fund II-2 L.P. (\"SVF II\")"}
++own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
++  - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
++  - {name: "MAIV", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "we contributed an aggregate amount of $50 million to a fund managed by Magnetar (\"MAIV\")", group: CRWV, treatment: consolidated_subsidiary, valid_from: "2025-12-31", membership_note: "D-0019 : le 10-K 2025 de CoreWeave dit consolider le fonds (modèle des droits de vote) ; entrée attestée au 2025-12-31"}
++  - {name: "Valor Equity Partners", decision: D-0021, block: c820494663cb13e54fc46241c1b0b1f4a259642224b07775ab05ccb156c48a27, accession: 0001628280-26-052535, quote: "Valor Equity Partners (\"Valor\")"}
++
+ # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
+ # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
+ tier1:
+@@ -116,6 +413,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+ 
+ reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
+   max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
++  text_block_first_pass: "2026-10-07T16:30:00Z"   # première passe du bloc text (D-0029) : ses lignes et celles des passes suivantes forment son rendement
+ 
+ session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
+ 
+@@ -131,6 +429,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+   periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
+   late: ["NT 10-K", "NT 10-Q"]
+   eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
++  form_d: ["D", "D/A"]       # Form D des entités suivies, bloc form_d ouvert (§14, D-0041)
++  foreign: ["20-F", "20-F/A", "40-F", "40-F/A", "6-K", "6-K/A"]   # émetteurs étrangers suivis, bloc foreign (§14, D-0042)
+ 
+ # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
+ # facts, observations et measures. Chaque paire engendre une relation overlaps
+@@ -318,6 +618,22 @@ annex_e:
+       unilateral: [E5]
+       descriptive: [E4, E6]
+ 
++
++# Bloc lender_portfolio (D-0045) : portefeuille entier de chaque BDC des archives en cache, cinq mesures.
++lender_portfolio:
++  universe: all_bdc            # toutes les BDC des BDC Data Sets en cache ; un véhicule = un déclarant (CIK)
++  view: as_known               # premier dépôt d'un véhicule pour une date de bilan
++  software_coverage_min: 0.9   # part de la juste valeur qui doit porter un secteur pour calculer la part logiciel
++  consecutive_gap_days_max: 120   # deux dates de bilan successives d'un véhicule, au plus
++  platforms:                   # regroupement de présentation par la marque du gestionnaire ; aucun groupe économique affirmé
++    Blue Owl: {name_terms: ["Blue Owl", "Owl Rock"]}
++  peers:                       # repères nommés d'avance, pour la lecture
++    - {name: "Ares Capital Corp", cik: "0001287750"}
++    - {name: "Blackstone Secured Lending Fund", cik: "0001736035"}
++    - {name: "Blackstone Private Credit Fund", cik: "0001803498"}
++    - {name: "Golub Capital BDC, Inc.", cik: "0001476765"}
++    - {name: "FS KKR Capital Corp", cik: "0001422183"}
++    - {name: "HPS Corporate Lending Fund", cik: "0001838126"}
+ # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
+ annex_f:
+   source: "spec v6.14, annexe F"
+@@ -370,6 +686,24 @@ annex_f:
+       observable: "un doute sur la continuité d'exploitation"
+       source: "sig_going_concern (§4.5)"
+       rule: {measure: sig_going_concern}
++    F11:
++      observable: "juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite"
++      source: "bdc_portfolio_fv_to_cost (bloc lender_portfolio, D-0045)"
++      subjects: bdc_vehicles     # véhicules de l'univers du bloc, pas les groupes
++      added_by: D-0045
++      rule: {measure: bdc_portfolio_fv_to_cost, condition: "valeur(t) < valeur(t-1) < valeur(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
++    F12:
++      observable: "part des intérêts capitalisés du portefeuille d'une BDC (borne basse) en hausse deux trimestres de suite"
++      source: "bdc_portfolio_pik_share (bloc lender_portfolio, D-0045)"
++      subjects: bdc_vehicles
++      added_by: D-0045
++      rule: {measure: bdc_portfolio_pik_share, condition: "borne(t) > borne(t-1) > borne(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
++    F13:
++      observable: "part des prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite"
++      source: "bdc_portfolio_non_accrual_share (bloc lender_portfolio, D-0045)"
++      subjects: bdc_vehicles
++      added_by: D-0045
++      rule: {measure: bdc_portfolio_non_accrual_share, condition: "borne(t) > borne(t-1) > borne(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
+ 
+ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
+   revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
+@@ -389,7 +723,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+   cfo: [NetCashProvidedByUsedInOperatingActivities]
+   cfi: [NetCashProvidedByUsedInInvestingActivities]
+   cff: [NetCashProvidedByUsedInFinancingActivities]
+-  capex_cash: [PaymentsToAcquirePropertyPlantAndEquipment]
++  capex_cash: [PaymentsToAcquirePropertyPlantAndEquipment, PaymentsToAcquireProductiveAssets]
++                            # second candidat ajouté le 2026-10-07 (D-0012) : définition plus large
++                            # (logiciels et incorporels compris), drapeau capex_definition sur les cellules
+   unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
+   eps_diluted: [EarningsPerShareDiluted]
+   diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
+@@ -440,4 +776,4 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+   [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
+    depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
+    debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
+-   interest_expense, interest_paid]
++   interest_expense, interest_paid, operating_lease_payments_12m, finance_lease_payments_12m]

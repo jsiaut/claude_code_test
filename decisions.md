@@ -364,3 +364,18 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - prêt : une position que son libellé ne classe pas en capital, que son libellé classe en dette ou qui porte un principal, et qui est financée (coût, juste valeur ou principal). Le libellé seul ne suffisait pas : chez Blackstone Secured Lending, les identifiants ne nomment que l'emprunteur (« ACI Group Holdings, Inc. 1 »), et un seul prêt sur 568 positions était reconnu au 31 mars 2024. Une ligne qui ne porte qu'un engagement non tiré n'est pas un prêt du portefeuille ;
   - couverture : juste valeur ÷ coût exige un coût balisé sur au moins 90 % de la juste valeur des prêts ; les intérêts capitalisés exigent un taux total balisé sur au moins 90 % du principal en dollars. C'est le seuil de 90 % que le point 5 fixait déjà pour la part logiciel ; en dessous, la cellule est non déterminable (`not_tagged`), avec sa couverture dans les drapeaux. Un ratio calculé sur une petite part du portefeuille n'en dit rien ;
   - erreurs d'échelle : un prêt dont le coût ou la juste valeur vaut au moins 500 fois son principal en dollars, ou dont le coût en vaut au plus le 1/500e, est écarté et compté (`scale_errors_excluded`). Une juste valeur très basse reste : un prêt déprécié peut valoir presque rien. Un engagement non tiré supérieur à toute la juste valeur du portefeuille est écarté de même. Exemples : chez Blue Owl Capital Corp au 30 septembre 2023, des engagements balisés mille fois trop haut portaient le ratio à 523 % ; chez HPS Corporate Lending Fund, 15 à 18 prêts par dépôt en 2025.
+
+  (9) Résultats au réassemblage, vue `as_known`, dernier bilan au 30 juin 2026 pour la plupart des véhicules :
+  - univers : 198 véhicules et 2 088 couples véhicule × date de bilan. Sont déterminés : juste valeur ÷ coût 1 904 fois, intérêts capitalisés 1 078, engagements non tirés 847, part logiciel 3, prêts sans accumulation d'intérêts jamais. Le statut de performance n'est pas balisé dans `num`, si bien que F13 est non déterminable partout ;
+  - repères de l'univers pour juste valeur ÷ coût : la médiane passe de 99,58 % au 31 décembre 2025 à 98,64 % au 31 mars 2026 et 98,72 % au 30 juin 2026 ; le premier quartile, de 97,47 % à 96,66 %. La médiane des intérêts capitalisés (bornes basses) passe de 1,83 % au 30 septembre 2025 à 3,18 % au 30 juin 2026 ;
+  - Blue Owl, juste valeur ÷ coût au 30 juin 2026, avec la valeur un an plus tôt :
+    - Blue Owl Capital Corp II : 88,56 % (96,94 %) ;
+    - Blue Owl Technology Income Corp. : 96,06 % (100,02 %) ;
+    - Blue Owl Capital Corp : 96,30 % (98,63 %) ;
+    - Blue Owl Technology Finance Corp. : 97,61 % (99,90 %) ;
+    - Blue Owl Credit Income Corp. : 98,17 % (99,50 %) ;
+  - trois de ces cinq véhicules sont sous le premier quartile de l'univers au 30 juin 2026, Blue Owl Capital Corp II très en dessous. F11 tombe au 30 juin 2026 chez Blue Owl Capital Corp II, Blue Owl Technology Finance Corp., Blue Owl Credit Income Corp. et Blue Owl Technology Income Corp. ;
+  - Blue Owl Capital Corp III et Blue Owl Technology Finance Corp. II n'ont plus de bilan dans les archives après le 30 septembre et le 31 décembre 2024 ;
+  - les intérêts capitalisés de Blue Owl ne sont pas déterminables : ses véhicules ne balisent pas le taux total. Ses engagements non tirés valent au moins 7,1 % à 12,0 % du portefeuille selon le véhicule ;
+  - repères nommés, au 30 juin 2026 : FS KKR Capital Corp 91,01 %, Blackstone Secured Lending Fund 96,34 %, Blackstone Private Credit Fund 96,64 %, Ares Capital Corp 96,66 %, Golub Capital BDC 98,25 %, HPS Corporate Lending Fund 99,08 % ;
+  - F11 est fréquent : deux baisses consécutives suffisent. Il ne distingue pas un véhicule à lui seul ; le niveau et l'ampleur de la baisse se lisent à côté.

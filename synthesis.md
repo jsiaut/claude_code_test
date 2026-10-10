@@ -1,17 +1,21 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
-- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `2137dc8219294f661fb6014f24b6172509cb8e8e`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `discovery` (voir decisions.md); `entity_aliases` (alias confirmés par extrait, D-0021); `foreign` (voir decisions.md); `form_d` (voir decisions.md); `group_entry` (voir decisions.md); `groups` (voir decisions.md); `non_filers` (voir decisions.md); `own_entities` (entités propres confirmées par extrait, D-0021); `paths` (voir decisions.md); `reading` (voir decisions.md); `reporting_start` (voir decisions.md); `reverse_combinations` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md); `scope_history` (voir decisions.md); `unanchored_quantities` (voir decisions.md); `watched_forms` (voir decisions.md).
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des quatorze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
+- **Critères modifiés depuis leur commit d'origine** `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38) : `annex_f`. Diff, et ce qui ne change pas :
+  - annexe F, ajout de F11 (D-0045) : « juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_fv_to_cost", "condition": "valeur(t) < valeur(t-1) < valeur(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
+  - annexe F, ajout de F12 (D-0045) : « part des intérêts capitalisés du portefeuille d'une BDC (borne basse) en hausse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_pik_share", "condition": "borne(t) > borne(t-1) > borne(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
+  - annexe F, ajout de F13 (D-0045) : « part des prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_non_accrual_share", "condition": "borne(t) > borne(t-1) > borne(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
+  - annexe F, inchangés : F1, F2, F3, F4, F5, F6, F7, F8, F9, F10 (mêmes observables, mêmes règles)
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des quatorze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 58 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 26 issues ; motifs : précondition non remplie : 8, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 2. Issues déterminées : E.1 non étayé 11. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
 - **Contrôles comptables, vue `as_known`** : `mismatch` 710, `not_testable` 622, `ok` 15 906, `tautological` 688 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 1 039, `not_testable` 853, `ok` 15 674, `tautological` 688.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 101/562, C11 51/497, C12 206/1 153, C13 0/205, C14 19/599, C15 82/350, C16 0/307, C1 106/7 951, C2 39/4 489, C3 60/317, C5 0/64, C6 0/688, C7 1/262, C8 39/95, C9 6/387.
-- **Exclusions principales** : `not_processed` 19 892, `conflicting` 555, `pending_entity` 322, `financial_parties_only` 185, `out_of_scope` 44, `parse_failed` 16, `invalid_aggregate` 10, `submitted_draft` 8, `history_left_censored` 4, `not_public` 2.
+- **Exclusions principales** : `not_processed` 19 892, `conflicting` 555, `pending_entity` 322, `financial_parties_only` 185, `out_of_scope` 44, `parse_failed` 32, `invalid_aggregate` 30, `submitted_draft` 8, `history_left_censored` 4, `not_public` 2.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -226,7 +230,7 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F2 (flux après financement des contreparties négatif) — rendu public le 2026-07-28, rattaché au trimestre clos le 2026-06-30 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-07-28, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001839341-26-000014.
 
-États de couverture des cellules de l'annexe F (groupe × trimestre), pour lire ce qui n'a pas été observé :
+États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F13 : véhicule BDC × date de bilan, D-0045), pour lire ce qui n'a pas été observé :
 
 - F1 : calculée / événement 21 ; calculée / sans événement 181 ; indéterminée 120
 - F2 : calculée / événement 76 ; calculée / sans événement 189 ; indéterminée 57
@@ -238,6 +242,9 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F8 : calculée / événement 10 ; calculée / sans événement 227 ; indéterminée 85
 - F9 : calculée / sans événement 322
 - F10 : calculée / événement 10 ; calculée / sans événement 266 ; indéterminée 46
+- F11 : calculée / événement 500 ; calculée / sans événement 1 009 ; indéterminée 579
+- F12 : calculée / événement 222 ; calculée / sans événement 562 ; indéterminée 1 304
+- F13 : indéterminée 2 088
 
 ## Fragilité, par groupe
 
@@ -1731,11 +1738,56 @@ Appartenances datées : VMware, Inc. appartient au groupe Broadcom : avant cette
 
 Identifiants de position écartés parce qu'ils nomment deux émetteurs : 17.
 
+## Fragilité du financement : portefeuilles entiers des BDC (bloc `lender_portfolio`, D-0045)
+
+Toutes les BDC des archives en cache, sans sélection ; un véhicule est un déclarant, et rien ne s'additionne entre véhicules. Vue `as_known` : le premier dépôt d'un véhicule pour une date de bilan. Juste valeur ÷ coût porte sur les prêts. Les intérêts capitalisés (taux PIK pondéré par le principal, sur le taux total) et les engagements non tirés sont des bornes basses : une position sans balise compte sans PIK ou sans engagement. Les événements F11 (juste valeur ÷ coût en baisse deux trimestres de suite) et F12 (intérêts capitalisés en hausse deux trimestres de suite) ont été fixés avant le calcul (D-0045). La plateforme Blue Owl réunit les véhicules dont la dénomination EDGAR porte « Blue Owl » ou « Owl Rock » : un regroupement de présentation, pas un groupe économique.
+
+- Univers : 198 véhicules, 2 088 couples véhicule × date de bilan. Mesures déterminées : juste valeur ÷ coût 1 904, intérêts capitalisés 1 078, prêts sans accumulation d'intérêts 0, engagements non tirés 847, part logiciel 3.
+- Les prêts sans accumulation d'intérêts ne sont pas balisés dans `num` (ni axe de statut ni membre) : la mesure et F13 restent non déterminables. Le secteur n'est presque jamais balisé : la part logiciel aussi. Il faudrait lire les notes des portefeuilles (niveau 2).
+
+**Véhicules Blue Owl**
+
+| Véhicule | Dernier bilan | Juste valeur ÷ coût | — un an plus tôt | Intérêts capitalisés | — un an plus tôt | Engagements non tirés ÷ portefeuille | F11 (dates) | F12 (dates) |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| BLUE OWL CAPITAL CORP II | 2026-06-30 | 88,56 % | 96,94 % | n.d. (non balisé) | n.d. (non balisé) | ≥ 7,09 % | 2024-03-31, 2024-06-30, 2025-09-30, 2026-06-30 | aucune |
+| BLUE OWL CAPITAL CORP | 2026-06-30 | 96,30 % (partiel) | 98,63 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | ≥ 7,69 % | 2024-06-30, 2024-09-30, 2024-12-31, 2025-09-30 | aucune |
+| BLUE OWL TECHNOLOGY FINANCE CORP. | 2026-06-30 | 97,61 % (partiel) | 99,90 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | ≥ 11,94 % | 2024-06-30, 2025-12-31, 2026-03-31, 2026-06-30 | aucune |
+| BLUE OWL CAPITAL CORP III | 2024-09-30 | 99,80 % | 99,77 % | n.d. (non balisé) | n.d. (non balisé) | ≥ 12,98 % | 2024-09-30 | aucune |
+| BLUE OWL CREDIT INCOME CORP. | 2026-06-30 | 98,17 % (partiel) | 99,50 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | ≥ 12,01 % | 2024-06-30, 2024-09-30, 2024-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2026-06-30 | aucune |
+| BLUE OWL TECHNOLOGY INCOME CORP. | 2026-06-30 | 96,06 % (partiel) | 100,02 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | ≥ 9,62 % | 2025-03-31, 2025-12-31, 2026-03-31, 2026-06-30 | aucune |
+| BLUE OWL TECHNOLOGY FINANCE CORP. II | 2024-12-31 | 100,21 % (partiel) | 100,66 % | n.d. (non balisé) | n.d. (non balisé) | ≥ 12,01 % | aucune | aucune |
+
+**Repères nommés d'avance**
+
+| Véhicule | Dernier bilan | Juste valeur ÷ coût | — un an plus tôt | Intérêts capitalisés | — un an plus tôt | Engagements non tirés ÷ portefeuille | F11 (dates) | F12 (dates) |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| ARES CAPITAL CORP | 2026-06-30 | 96,66 % (partiel) | 97,89 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | ≥ 14,47 % | 2023-03-31, 2025-03-31, 2026-06-30 | aucune |
+| BLACKSTONE SECURED LENDING FUND | 2026-06-30 | 96,34 % | 100,27 % | ≥ 5,33 % | ≥ 5,41 % | ≥ 10,38 % | 2023-03-31, 2023-06-30, 2025-09-30, 2025-12-31, 2026-03-31, 2026-06-30 | 2023-03-31, 2024-06-30, 2024-09-30, 2024-12-31, 2025-03-31 |
+| BLACKSTONE PRIVATE CREDIT FUND | 2026-06-30 | 96,64 % | 99,48 % | ≥ 4,79 % | ≥ 5,14 % | ≥ 22,70 % | 2026-06-30 | 2023-03-31, 2023-12-31, 2024-12-31, 2025-03-31, 2025-06-30, 2025-09-30 |
+| GOLUB CAPITAL BDC, INC. | 2026-06-30 | 98,25 % | 99,56 % | ≥ 6,32 % | ≥ 4,72 % | n.d. (non balisé) | 2026-03-31 | 2023-03-31, 2024-03-31, 2024-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31, 2026-03-31, 2026-06-30 |
+| FS KKR CAPITAL CORP | 2026-06-30 | 91,01 % (partiel) | 95,58 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | ≥ 6,50 % | 2023-03-31, 2026-03-31, 2026-06-30 | aucune |
+| HPS CORPORATE LENDING FUND | 2026-06-30 | 99,08 % | 101,38 % | ≥ 4,98 % | n.d. (non balisé) | ≥ 10,97 % | 2025-12-31 | 2023-09-30, 2023-12-31, 2024-03-31 |
+
+Quartiles de l'univers par date de bilan (premier quartile / médiane / troisième quartile ; des repères, jamais des totaux) :
+
+| Date du bilan | Véhicules | Juste valeur ÷ coût | Intérêts capitalisés (bornes basses) |
+| --- | ---: | --- | --- |
+| 2024-09-30 | 131 | 97,56 % / 99,42 % / 100,42 % | 0,23 % / 2,27 % / 3,60 % |
+| 2024-12-31 | 133 | 97,38 % / 99,34 % / 100,21 % | 0,43 % / 2,21 % / 3,30 % |
+| 2025-03-31 | 134 | 97,44 % / 99,47 % / 100,09 % | 0,00 % / 1,53 % / 4,08 % |
+| 2025-06-30 | 145 | 97,59 % / 99,67 % / 100,33 % | 0,14 % / 1,74 % / 3,84 % |
+| 2025-09-30 | 148 | 97,58 % / 99,55 % / 100,34 % | 0,17 % / 1,83 % / 4,17 % |
+| 2025-12-31 | 155 | 97,47 % / 99,58 % / 100,25 % | 0,25 % / 2,64 % / 4,93 % |
+| 2026-03-31 | 155 | 96,64 % / 98,64 % / 99,51 % | 0,79 % / 2,94 % / 5,22 % |
+| 2026-06-30 | 157 | 96,66 % / 98,72 % / 99,43 % | 0,65 % / 3,18 % / 5,33 % |
+
+Exclusions du bloc : `invalid_aggregate` 20, `parse_failed` 16 (lignes « Total » de portefeuilles et lignes illisibles, par archive).
+
 ## Évolution
 
 Premier passage : aucune exécution antérieure à laquelle comparer. Les séries trimestrielles complètes, ruptures de base marquées, sont dans `series.md` ; `delta.md` sera le point d'entrée des exécutions suivantes.
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : terme manquant 2 298, concept non résolu 2 269, non publié 2 130, non balisé 939, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 921, historique tronqué 793, annuel seulement 496, précondition non remplie 193, dénominateur négatif ou nul 165, client anonyme 113, frontière de retraitement 106, période antérieure absente 72, date manquante 12, intervalle à cheval sur le seuil 11, entité non confirmée 3, dénominateur sous le seuil 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 10 334, terme manquant 2 298, concept non résolu 2 269, non publié 2 130, période antérieure absente 1 236, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 921, historique tronqué 793, annuel seulement 496, précondition non remplie 193, dénominateur négatif ou nul 185, client anonyme 113, frontière de retraitement 106, date manquante 12, intervalle à cheval sur le seuil 11, entité non confirmée 3, dénominateur sous le seuil 2.
 
