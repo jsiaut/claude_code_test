@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -103,6 +103,12 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       pairs_financed_documented: 13
       annex_e_e7: {outcomes: 26, indeterminate: 15, result: discrimination_possible}
       fragility_events: 169
+    execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-10
+    decision: "Fais le niveau 3, toujours sans sous-agent"
+    question: "nommer Blue Owl sur la coentreprise de Meta en Louisiane et la relier aux montants des notes de Meta (niveau 3)"
+    blocks: [montages]           # financeur d'un montage que les notes d'un groupe ne nomment pas (D-0046)
+    page: "plan en trois niveaux sur Blue Owl dans la conversation du 2026-10-10 (D-0046)"
     execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
@@ -348,6 +354,7 @@ entity_aliases:
   - {alias: "SBG", of: "NF:SOFTBANK", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "All references to \"SBG\" are references to SoftBank Group Corp. or a controlled affiliate or subsidiary thereof"}
   - {alias: "SVF II", of: "SoftBank Vision Fund II-2 L.P.", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "the SoftBank Vision Fund II-2 L.P. (\"SVF II\")"}
 own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
+  - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
   - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
   - {name: "MAIV", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "we contributed an aggregate amount of $50 million to a fund managed by Magnetar (\"MAIV\")", group: CRWV, treatment: consolidated_subsidiary, valid_from: "2025-12-31", membership_note: "D-0019 : le 10-K 2025 de CoreWeave dit consolider le fonds (modèle des droits de vote) ; entrée attestée au 2025-12-31"}
   - {name: "Valor Equity Partners", decision: D-0021, block: c820494663cb13e54fc46241c1b0b1f4a259642224b07775ab05ccb156c48a27, accession: 0001628280-26-052535, quote: "Valor Equity Partners (\"Valor\")"}
@@ -618,6 +625,29 @@ annex_e:
       unilateral: [E5]
       descriptive: [E4, E6]
 
+
+# Montages identifiés (D-0046) : un montage que les notes d'un groupe décrivent sans le nommer,
+# identifié par des extraits cités des deux côtés ; décision de l'exécutant.
+identified_ventures:
+  - id: meta_richland_parish_venture
+    name: "Project Beignet Holdings"
+    group: META
+    group_term: "the Venture"
+    decision: D-0046
+    group_blocks:                # notes de Meta qui décrivent le montage
+      - {block: 4495846547b305cdaf98dbbd7742ebc9f902e3d07adb7b2159ac3859b862d8d4, accession: 0001628280-25-047240, quote: "In October 2025, we entered into a joint venture (the Venture) with an affiliate of funds managed by Blue Owl Capital, Inc. (the Investor) to co-develop a new data center campus in Richland Parish, Louisiana."}
+      - {block: 3e5dc9af3bd45e577a6b351c7c6a934db5f30b4a3e3aaabf5963c3bbbfd2f947, quote: "At Venture formation, we contributed $4.30 billion of held-for-sale assets, net of liabilities, and we received a one-time distribution of $2.55 billion."}
+      - {block: 07588365270c2739e7167628f407b52e1b1deef0f714fbe69c88ab3840ff8ddd, quote: "Our non-marketable equity method investments include an arrangement, entered into in October 2025, to co-develop a data center campus in Louisiana (the Venture), in which we hold a 20% membership interest."}
+    financier_blocks:            # pièce d'un véhicule de Blue Owl qui nomme le montage
+      - {block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Beignet JV was formed to facilitate the funding and development of a data center campus leased to and operated by Meta Platforms, Inc."}
+    traits:                      # au moins trois traits confirmés par extrait (D-0046, point 6)
+      louisiana: "Richland Parish, Louisiana (10-Q de Meta, note 13)"
+      october_2025: "In October 2025 (Meta) ; On October 21, 2025 (Blue Owl Real Estate Net Lease Trust)"
+      membership_split: "20 % pour Meta, 80 % pour l'investisseur (Meta) ; 80,0 % de Project Beignet Holdings à Beignet Investor LLC (Blue Owl Real Estate Net Lease Trust)"
+      meta_named: "Meta Platforms, Inc., locataire et exploitante du campus (Blue Owl Real Estate Net Lease Trust)"
+    members:
+      - {name: "Meta Platforms, Inc.", interest: "20 %"}
+      - {name: "Beignet Investor LLC", interest: "80 %", note: "« an affiliate of funds managed by Blue Owl Capital, Inc. » selon Meta ; détenue à 63,0 % (indirectement) par Blue Owl Real Estate Net Lease Trust, si bien qu'elle entre dans le regroupement de présentation de la plateforme Blue Owl (D-0046, point 7)"}
 
 # Bloc lender_portfolio (D-0045) : portefeuille entier de chaque BDC des archives en cache, cinq mesures.
 lender_portfolio:

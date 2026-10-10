@@ -400,3 +400,16 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   (6) Identification de « the Venture ». La coentreprise des notes de Meta n'est identifiée à un montage décrit ailleurs que si un extrait cité en confirme au moins trois traits : la Louisiane (ou Richland Parish) ; une formation ou une annonce en octobre 2025 ; 20 % pour Meta, ou 80 % pour l'autre membre ; Meta nommée comme membre ou comme locataire. L'identification se consigne dans `config.yaml` (`identified_ventures`), avec les extraits des deux côtés. Les abstentions de Meta restent : ses notes ne nomment personne. Les arêtes ne naissent que des lignes de blocs qui nomment leurs parties.
 
   (7) Rattachements. Les fonds gérés par Blue Owl ne forment pas un groupe économique (D-0045, point 3). Un véhicule dont la dénomination ne porte pas « Blue Owl » (Beignet Investor LLC, par exemple) n'entre dans le regroupement de présentation de la plateforme que sur un extrait qui le dit détenu ou géré par des fonds de Blue Owl.
+
+  (8) Amendement après les comptes de la recherche, avant toute lecture. Il ne se fonde que sur les formulaires et les nombres de résultats. Les requêtes rendent 3 538, 790, 1, plus de 10 000 et 2 résultats. Ce sont pour l'essentiel des relevés de portefeuille : NPORT-P, N-CSR et N-CSRS, N-MFP3, 13F-HR, N-PX, 486BPOS, POS EX, et les 11-K des plans d'épargne, où les obligations de Beignet Investor LLC et les actions de Meta figurent en lignes de titres. Deux règles s'ajoutent :
+  - ces relevés ne décrivent pas de montage et ne se lisent pas : motif `out_of_scope`, compté par formulaire ;
+  - « Hyperion » seul ne qualifie pas une fenêtre, car il désigne aussi Hyperion Refinance S.à r.l. (Howden), emprunteur des BDC de Blue Owl. Une fenêtre ne se lit que si elle nomme « Beignet », « Richland Parish » ou « Meta ».
+
+  Restent 37 pièces de formulaires narratifs (10-Q, 10-K, 8-K et annexes, 424B3, N-14 8C, DEF 14A), plus les rapports périodiques de Blue Owl Capital Inc. Elles se tirent toutes, et la règle des fenêtres s'y applique mécaniquement.
+
+  (9) Second amendement, après le premier décompte des fenêtres et avant toute lecture. Dans ses propres dépôts, Meta se nomme « Meta » à chaque paragraphe : son 10-Q du troisième trimestre 2025 et sa DEF 14A de 2026 donnaient 63 fenêtres, dont 24 au-delà du plafond. Le nom du déposant ne qualifie donc pas une fenêtre dans ses propres pièces, et « Blue Owl » s'ajoute aux termes qualifiants hors des pièces de Blue Owl :
+  - dans une pièce de Meta, une fenêtre se lit si elle nomme « Blue Owl », « Beignet » ou « Richland Parish » ;
+  - dans une pièce d'un déposant « Blue Owl », si elle nomme « Meta », « Beignet » ou « Richland Parish » ;
+  - ailleurs, si elle nomme l'un de ces cinq termes.
+
+  Les rapports périodiques de Blue Owl Capital Inc. de la période ne nomment ni Meta, ni Beignet, ni Richland Parish : aucune fenêtre.

@@ -485,6 +485,7 @@ def synthesis(con, as_of, stats):
     L += foreign_section(con, T)
     L += lender_section(con, T)
     L += lender_portfolio_section(con, T)
+    L += montages_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
     L.append("")
@@ -786,6 +787,50 @@ def lender_portfolio_section(con, T):
         L.append("Exclusions du bloc : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'lp_excl': r['reason']}, r['n'])}"
                                                     for r in ex) + " (lignes « Total » de portefeuilles et lignes illisibles, "
                  "par archive).")
+        L.append("")
+    return L
+
+
+def montages_section(con, T):
+    """Bloc montages (D-0046) : montages que les notes d'un groupe décrivent sans les nommer,
+    identifiés par des extraits des deux côtés ; montants tirés des lignes validées."""
+    cfg = config.load()
+    if "montages" not in (cfg.get("scope") or []) or not cfg.get("identified_ventures"):
+        return []
+    L = ["## Montages identifiés (bloc `montages`, D-0046)", ""]
+    L.append("Un montage que les notes d'un groupe décrivent sans nommer son financeur, identifié par des extraits "
+             "cités des deux côtés (au moins trois traits concordants). Les montants viennent des lignes validées des "
+             "deux côtés ; ils ne s'additionnent pas.")
+    L.append("")
+    for v in cfg["identified_ventures"]:
+        cks = [e["block"] for e in (v.get("group_blocks") or []) + (v.get("financier_blocks") or [])]
+        rows = q(con, f"""SELECT obs_key, content_key, group_id, form, knowledge_date, counterparty_name, family, edge_type,
+                             amount, amount_qualifier, measurement_basis, instrument_key FROM observations
+                          WHERE validation_state = 'valid' AND kind = 'observation' AND amount IS NOT NULL
+                          AND content_key IN ({','.join('?' * len(cks))}) ORDER BY knowledge_date, obs_key""", *cks)
+        L.append(f"**{v['name']}** — « {v.get('group_term')} » dans les notes de {GROUP_NAMES.get(v['group'], v['group'])}")
+        L.append("")
+        L.append("- Membres : " + " ; ".join(f"{m['name']} {m['interest']}" for m in v.get("members") or []) + ".")
+        L.append("- Traits concordants : " + " ; ".join(f"{t}" for t in (v.get("traits") or {}).values()) + ".")
+        lab = {"lease_financing": "distribution reçue par Meta à la formation",
+               "capacity_lease": "baux d'exploitation (engagement initial, à partir de 2029)",
+               "residual_value_guarantee": "garantie de valeur résiduelle de Meta (seuil de départ)",
+               "equity_primary": "engagement de fonds propres de Blue Owl Real Estate Net Lease Trust",
+               "loan_or_facility": "obligations garanties de Beignet Investor LLC (6,581 %, 2049)"}
+        for r in rows:
+            amt = Decimal(str(r["amount"]))
+            L.append(f"- {lab.get(r['edge_type'], r['edge_type'])} : "
+                     f"{T.n('observations', {'montage_amount': r['obs_key']}, amt, fr_num(amt / Decimal(10**9), 2) + ' Md$')}"
+                     f"{' (environ)' if r['amount_qualifier'] == 'approximately' else ''}"
+                     f"{' (au plus)' if r['amount_qualifier'] == 'up_to' else ''} — {group_label(r['group_id'])}, {r['form']} rendu public le {r['knowledge_date']}.")
+        L.append("- Les notes suivantes de Meta (10-K 2025, 10-Q de 2026) ne nomment plus que « the Venture » : leurs lignes "
+                 "restent des abstentions (`no_named_counterparty`), et l'identification se lit ici.")
+        L.append("")
+    ex = q(con, """SELECT reason, count(*) AS n FROM exclusions WHERE item_key LIKE 'montages:%' GROUP BY 1 ORDER BY 1""")
+    if ex:
+        L.append("Exclusions du bloc : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'mt_excl': r['reason']}, r['n'])}"
+                                                    for r in ex) + " (relevés de portefeuille non lus, pièces sans "
+                 "paragraphe qualifiant).")
         L.append("")
     return L
 

@@ -150,7 +150,9 @@ ENUMS = {
                    "investment_note", "debt_note", "lease_note", "commitments_note", "concentration_text",
                    "item_8k_201", "item_8k_203", "lever_note", "revenue_note",
                    # bloc `discovery` de §14 : notes et pièces EX-10 des déposants qui nomment un groupe
-                   "discovery_note", "discovery_exhibit_header", "discovery_exhibit_body"],
+                   "discovery_note", "discovery_exhibit_header", "discovery_exhibit_body",
+                   # bloc montages : paragraphes autour des termes d'un montage (D-0046)
+                   "montage_text"],
     "signal": ["material_weakness", "going_concern", "covenant_amendment", "covenant_waiver",
                "covenant_breach", "capacity_contract_termination", "auditor_change",
                "nonreliance", "pledged_assets", "contract_termination_other", NONE],

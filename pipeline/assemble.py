@@ -13,7 +13,7 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, lender_portfolio, links, load, measures, model, rank2, reader)
+               fsignals, lender, lender_portfolio, links, load, measures, model, montages, rank2, reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
 
@@ -349,7 +349,9 @@ def run(as_of):
     n_docs = insert(con, "documents", docs)
 
     # 15. exclusions
-    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + formd_excl + \
+    # bloc montages (D-0046) : relevés de portefeuille non lus, pièces sans fenêtre, fenêtres au-delà du plafond
+    mt_excl = montages.exclusions(as_of) if "montages" in scope else []
+    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + mt_excl + formd_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
 

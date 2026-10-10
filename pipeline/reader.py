@@ -28,6 +28,7 @@ CATALOG = config.DB_DIR / "blocks.jsonl"          # recalculé à chaque exécut
 CATALOG_EXT = config.DB_DIR / "text_blocks_ext.jsonl"   # bloc `text` de §14, s'il est ouvert
 CATALOG_DISC = config.DB_DIR / "discovery_blocks.jsonl"  # bloc `discovery` de §14, s'il est ouvert
 CATALOG_NF = config.DB_DIR / "nf_discovery_blocks.jsonl"   # piste des non-déposants de la découverte (D-0044)
+CATALOG_MT = config.DB_DIR / "montages_blocks.jsonl"       # bloc montages : financeur d'un montage nommé ailleurs (D-0046)
 STATE = config.WORK / "tmp" / "reading_state.json"
 RUN = config.WORK / "tmp" / "run.json"              # as_of et pass_id de l'exécution
 
@@ -157,6 +158,9 @@ def load_catalog():
             out += [json.loads(l) for l in fh if l.strip()]
     if isinstance(scope, list) and "discovery" in scope and CATALOG_NF.exists():
         with open(CATALOG_NF, encoding="utf-8") as fh:
+            out += [json.loads(l) for l in fh if l.strip()]
+    if isinstance(scope, list) and "montages" in scope and CATALOG_MT.exists():
+        with open(CATALOG_MT, encoding="utf-8") as fh:
             out += [json.loads(l) for l in fh if l.strip()]
     return out
 
