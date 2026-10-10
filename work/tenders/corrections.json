@@ -1,0 +1,569 @@
+{
+ "0001509470|0001104659-23-034730": {
+  "_index": 1,
+  "note": "taux de réduction publié (99,1 %) ; parts apportées non chiffrées",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null
+ },
+ "0001509470|0001104659-24-025256": {
+  "_index": 2,
+  "note": "taux de réduction publié (69,3 %) ; parts apportées non chiffrées",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null
+ },
+ "0001535778|0001535778-22-000037": {
+  "_index": 16,
+  "proration": true
+ },
+ "0001535778|0001535778-23-000012": {
+  "_index": 17,
+  "proration": true
+ },
+ "0001535778|0001535778-23-000050": {
+  "_index": 18,
+  "proration": true
+ },
+ "0001535778|0001535778-23-000084": {
+  "_index": 19,
+  "proration": true
+ },
+ "0001535778|0001535778-23-000112": {
+  "_index": 20,
+  "proration": true
+ },
+ "0001535778|0001535778-24-000032": {
+  "_index": 22,
+  "proration": true
+ },
+ "0001535778|0001535778-24-000065": {
+  "_index": 24,
+  "proration": true
+ },
+ "0001535778|0001535778-24-000155": {
+  "_index": 25,
+  "proration": true
+ },
+ "0001634452|0001193125-24-055467": {
+  "_index": 53,
+  "expiration": "2024-03-29",
+  "note": "le document écrit « March 29, 2023 », antérieur au dépôt de l'offre (2024-03-01) : coquille, année corrigée"
+ },
+ "0001655887|0001193125-22-289947": {
+  "_index": 63,
+  "note": "maximum = apportées − excédent publié ; toutes achetées (règle 13e-4(f)(1)(ii))",
+  "offer_max": "1128668",
+  "offer_max_parts": [
+   "2309063",
+   "-1180395"
+  ],
+  "offer_max_quote": "@tendered_quote",
+  "offer_max_unit": "shares",
+  "proration": false
+ },
+ "0001655887|0001193125-23-043553": {
+  "_index": 64,
+  "offer_max": "@T-EXCESS",
+  "proration": false
+ },
+ "0001655887|0001193125-23-149407": {
+  "_index": 65,
+  "accepted": "4010887",
+  "accepted_quote": "@SENT:has repurchased a total of 4,010,887 Shares",
+  "accepted_unit": "shares",
+  "expiration": "2023-06-26",
+  "expiration_quote": "@SENT:on June 26, 2023, and approximately 3,670,134",
+  "note": "amendement 2 : 340 753 parts apportées omises par erreur administrative puis rachetées ; 4 010 887 parts au total",
+  "offer_max": "1116071",
+  "offer_max_parts": [
+   "3670134",
+   "-2554063"
+  ],
+  "offer_max_quote": "@SENT:by approximately 2,554,063 Shares",
+  "offer_max_unit": "shares",
+  "proration": false,
+  "tendered": "4010887",
+  "tendered_parts": [
+   "3670134",
+   "340753"
+  ],
+  "tendered_quote": "@SENT:340,753 shares (the \"Additional Shares\")",
+  "tendered_quote2": "@SENT:In Amendment No. 1, the Company reported that 3,670,134 Shares",
+  "tendered_unit": "shares"
+ },
+ "0001655887|0001628280-24-005914": {
+  "_index": 68,
+  "offer_max": "@T-EXCESS",
+  "proration": false
+ },
+ "0001655887|0001628280-25-026265": {
+  "_index": 73,
+  "offer_max": "@T-EXCESS",
+  "proration": false
+ },
+ "0001655887|0001655887-25-000042": {
+  "_index": 74,
+  "offer_max": "@T-EXCESS",
+  "proration": false
+ },
+ "0001661306|0001661306-22-000085": {
+  "_index": 75,
+  "proration": true
+ },
+ "0001661306|0001661306-23-000013": {
+  "_index": 76,
+  "proration": true
+ },
+ "0001661306|0001661306-23-000044": {
+  "_index": 77,
+  "accepted": "50083",
+  "accepted_parts": [
+   "50070",
+   "13"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-23-000060": {
+  "_index": 78,
+  "accepted": "49925",
+  "accepted_parts": [
+   "49888",
+   "37"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-23-000099": {
+  "_index": 79,
+  "accepted": "49479",
+  "accepted_parts": [
+   "49378",
+   "101"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-24-000009": {
+  "_index": 80,
+  "accepted": "48625",
+  "accepted_parts": [
+   "48616",
+   "9"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-24-000043": {
+  "_index": 82,
+  "proration": true
+ },
+ "0001661306|0001661306-25-000008": {
+  "_index": 84,
+  "accepted": "44045",
+  "accepted_parts": [
+   "44030",
+   "15"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-25-000031": {
+  "_index": 85,
+  "accepted": "43116",
+  "accepted_parts": [
+   "42970",
+   "146"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-25-000051": {
+  "_index": 86,
+  "accepted": "42020",
+  "accepted_parts": [
+   "41931",
+   "89"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-26-000016": {
+  "_index": 88,
+  "accepted": "16098",
+  "accepted_parts": [
+   "15966",
+   "132"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001661306|0001661306-26-000041": {
+  "_index": 89,
+  "accepted": "15677",
+  "accepted_parts": [
+   "15582",
+   "95"
+  ],
+  "accepted_unit": "shares",
+  "proration": true
+ },
+ "0001702510|0001702510-22-000088": {
+  "_index": 90,
+  "accepted": "2117816",
+  "accepted_quote": "@SENT:has accepted for purchase pursuant to the Offer 2,117,816 Shares",
+  "accepted_unit": "shares",
+  "note": "réduction au prorata publiée (46,659 % des parts apportées)",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null
+ },
+ "0001702510|0001702510-23-000019": {
+  "_index": 91,
+  "accepted": "2043878",
+  "accepted_basis": null,
+  "accepted_quote": "@SENT:2,043,878 Shares",
+  "accepted_unit": "shares",
+  "note": "réduction au prorata publiée (70,301 % des parts apportées)",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null
+ },
+ "0001742313|0001104659-26-052795": {
+  "_index": 119,
+  "proration": true
+ },
+ "0001742313|0001104659-26-089853": {
+  "_index": 120,
+  "proration": true
+ },
+ "0001786835|0001140361-23-041882": {
+  "_index": 123,
+  "proration": true
+ },
+ "0001786835|0001140361-23-055506": {
+  "_index": 124,
+  "proration": true
+ },
+ "0001786835|0001140361-24-010786": {
+  "_index": 125,
+  "proration": true
+ },
+ "0001786835|0001140361-24-028097": {
+  "_index": 126,
+  "proration": true
+ },
+ "0001786835|0001140361-24-039636": {
+  "_index": 131,
+  "proration": true
+ },
+ "0001786835|0001140361-24-048159": {
+  "_index": 132,
+  "proration": true
+ },
+ "0001786835|0001140361-25-006765": {
+  "_index": 128,
+  "proration": true
+ },
+ "0001786835|0001140361-25-020921": {
+  "_index": 129,
+  "proration": true
+ },
+ "0001786835|0001140361-25-033410": {
+  "_index": 135,
+  "proration": true
+ },
+ "0001786835|0001140361-25-043954": {
+  "_index": 130,
+  "proration": true
+ },
+ "0001786835|0001140361-26-007541": {
+  "_index": 137,
+  "proration": true
+ },
+ "0001786835|0001140361-26-023460": {
+  "_index": 131,
+  "proration": true
+ },
+ "0001803498|0001193125-26-199360": {
+  "_index": 146,
+  "proration": true
+ },
+ "0001812554|0001628280-26-012584": {
+  "_index": 161,
+  "proration": true
+ },
+ "0001812554|0001628280-26-038223": {
+  "_index": 162,
+  "proration": true
+ },
+ "0001817825|0001213900-23-072913": {
+  "_index": 166,
+  "accepted": "all",
+  "accepted_quote": "@SENT:the Company will purchase the Tendered Shares",
+  "proration": false
+ },
+ "0001817825|0001213900-24-074115": {
+  "_index": 170,
+  "accepted": "all",
+  "accepted_quote": "@SENT:the Company will purchase the Tendered Shares",
+  "proration": false
+ },
+ "0001817825|0001213900-24-103737": {
+  "_index": 171,
+  "accepted": "0",
+  "accepted_quote": "@SENT:the Company will not purchase any Shares",
+  "accepted_unit": "shares",
+  "note": "le document annonce qu'aucune part ne sera achetée malgré les parts apportées, sans motif : relevé tel quel"
+ },
+ "0001817825|0001213900-25-082054": {
+  "_index": 174,
+  "accepted": "all",
+  "accepted_quote": "@SENT:the Company will purchase the Tendered Shares",
+  "proration": false
+ },
+ "0001817825|0001213900-25-116234": {
+  "_index": 175,
+  "accepted": "0",
+  "accepted_quote": "@SENT:the Company will not purchase any Shares",
+  "accepted_unit": "shares",
+  "note": "le document annonce qu'aucune part ne sera achetée malgré les parts apportées, sans motif : relevé tel quel"
+ },
+ "0001837532|0001193125-26-051399": {
+  "_index": 194,
+  "proration": true
+ },
+ "0001837532|0001193125-26-226683": {
+  "_index": 195,
+  "proration": true
+ },
+ "0001838126|0001628280-26-033166": {
+  "proration": true
+ },
+ "0001838126|0001838126-26-000007": {
+  "proration": true
+ },
+ "0001851322|0001193125-26-039397": {
+  "acceptance_pct": "47.8",
+  "acceptance_pct_quote": "@SENT:approximately 47.8% of the Units",
+  "proration": true
+ },
+ "0001851322|0001193125-26-206575": {
+  "acceptance_pct": "41.6",
+  "acceptance_pct_quote": "@SENT:approximately 41.6% of the Units",
+  "proration": true
+ },
+ "0001851322|0001193125-26-349128": {
+  "proration": true
+ },
+ "0001859919|0001859919-26-000025": {
+  "acceptance_pct": "44.3",
+  "acceptance_pct_quote": "@SENT:approximately 44.3% of the Shares",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null
+ },
+ "0001859919|0001859919-26-000050": {
+  "acceptance_pct": "46.01",
+  "acceptance_pct_quote": "@SENT:approximately 46.01% of the Shares",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null
+ },
+ "0001859919|0001859919-26-000082": {
+  "acceptance_pct": "46.84",
+  "acceptance_pct_quote": "@SENT:approximately 46.84% of the Shares",
+  "proration": true
+ },
+ "0001860424|0001193125-25-080190": {
+  "acceptance_pct": "66.54",
+  "acceptance_pct_quote": "@SENT:approximately 66.54% of the Shares",
+  "accepted": null,
+  "accepted_basis": null,
+  "accepted_quote": null,
+  "proration": true
+ },
+ "0001860424|0001193125-25-158744": {
+  "acceptance_pct": "91.79",
+  "acceptance_pct_quote": "@SENT:approximately 91.79% of the Shares",
+  "accepted": null,
+  "accepted_basis": null,
+  "accepted_quote": null,
+  "proration": true
+ },
+ "0001860424|0001193125-25-237080": {
+  "proration": true
+ },
+ "0001860424|0001193125-26-008886": {
+  "proration": true
+ },
+ "0001860424|0001193125-26-152877": {
+  "proration": true
+ },
+ "0001860424|0001193125-26-302048": {
+  "proration": true
+ },
+ "0001869453|0001628280-26-012583": {
+  "proration": true
+ },
+ "0001869453|0001628280-26-038221": {
+  "proration": true
+ },
+ "0001899996|0001193125-24-208442": {
+  "proration": true
+ },
+ "0001899996|0001193125-25-038223": {
+  "proration": true
+ },
+ "0001901164|0001140361-25-002883": {
+  "_index": 331,
+  "note": "montant apporté publié en dollars (valeur liquidative des parts apportées), toutes payées",
+  "tendered": "329137.76",
+  "tendered_quote": "@SENT:a total of $329,137.76",
+  "tendered_unit": "usd"
+ },
+ "0001901164|0001140361-25-017327": {
+  "_index": 332,
+  "note": "montant apporté publié en dollars (valeur liquidative des parts apportées), toutes payées",
+  "tendered": "3012238.24",
+  "tendered_quote": "@SENT:a total of $3,012,238.24",
+  "tendered_unit": "usd"
+ },
+ "0001902649|0001140361-26-020390": {
+  "_index": 349,
+  "proration": true
+ },
+ "0001918712|0001104659-26-018135": {
+  "_index": 398,
+  "proration": true
+ },
+ "0001918712|0001104659-26-064497": {
+  "_index": 399,
+  "proration": true
+ },
+ "0001918712|0001104659-26-099224": {
+  "_index": 400,
+  "proration": true
+ },
+ "0001919369|0001193125-26-121738": {
+  "_index": 405,
+  "accepted": "47026423.73",
+  "accepted_basis": null,
+  "accepted_quote": "@SENT:aggregate net asset value of Shares accepted",
+  "accepted_unit": "usd",
+  "note": "offre sursouscrite ; rachat au prorata ; acceptées publiées en dollars, apportées en parts",
+  "proration": true
+ },
+ "0001920145|0001193125-26-365299": {
+  "_index": 419,
+  "note": "estimation publiée avant le décompte final ; acceptation non publiée à as_of",
+  "tendered": "7605110.708",
+  "tendered_pct": "2.03",
+  "tendered_pct_quote": "@SENT:approximately 7,605,110.708 Shares",
+  "tendered_quote": "@SENT:approximately 7,605,110.708 Shares",
+  "tendered_unit": "shares"
+ },
+ "0001923622|0001683863-24-004437": {
+  "_index": 435,
+  "expiration": null,
+  "note": "date d'expiration publiée (25 juin 2024) antérieure au dépôt de l'offre (27 juin 2024) : non retenue"
+ },
+ "0001923622|0001683863-25-002709": {
+  "_index": 438,
+  "accepted": "all",
+  "accepted_basis": "payment_of_tendered",
+  "accepted_quote": "@SENT:Shares were repurchased at a price",
+  "proration": false
+ },
+ "0001923622|0001683863-25-005409": {
+  "_index": 439,
+  "accepted": "all",
+  "accepted_basis": "payment_of_tendered",
+  "accepted_quote": "@SENT:Shares were repurchased at a price",
+  "proration": false
+ },
+ "0001923622|0001923622-26-000004": {
+  "_index": 442,
+  "accepted": "all",
+  "accepted_basis": "payment_of_tendered",
+  "accepted_quote": "@SENT:Shares were repurchased at a price",
+  "proration": false
+ },
+ "0001923622|0001923622-26-000014": {
+  "_index": 443,
+  "accepted": "all",
+  "accepted_basis": "payment_of_tendered",
+  "accepted_quote": "@SENT:Shares were repurchased at a price",
+  "proration": false
+ },
+ "0001930087|0001104659-26-036090": {
+  "_index": 453,
+  "proration": true
+ },
+ "0001930679|0001104659-26-021839": {
+  "acceptance_pct": "80",
+  "acceptance_pct_quote": "@SENT:approximately 80% of the Shares",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null
+ },
+ "0001950803|0001213900-25-038545": {
+  "note": "amendement « Amended and Restated » du Schedule TO : pas de résultat publié",
+  "result": "no_result",
+  "tendered": null,
+  "tendered_pct": null,
+  "tendered_pct_quote": null,
+  "tendered_quote": null
+ },
+ "0001973476|0001193125-26-039494": {
+  "acceptance_pct": "73.2",
+  "acceptance_pct_quote": "@SENT:approximately 73.2% of the Units",
+  "proration": true
+ },
+ "0001973476|0001193125-26-206611": {
+  "acceptance_pct": "69.4",
+  "acceptance_pct_quote": "@SENT:approximately 69.4% of the Units",
+  "proration": true
+ },
+ "0001973476|0001193125-26-349165": {
+  "proration": true
+ },
+ "0001976336|0001104659-26-096596": {
+  "note": "estimation publiée avant le décompte final ; acceptation non publiée à as_of",
+  "tendered": "147606.240",
+  "tendered_pct": "0.45",
+  "tendered_pct_quote": "@SENT:The Fund estimates that 147,606.240 Shares",
+  "tendered_quote": "@SENT:The Fund estimates that 147,606.240 Shares",
+  "tendered_unit": "shares"
+ },
+ "0001983514|0001193125-26-088208": {
+  "note": "montant apporté publié en dollars (valeur liquidative des parts apportées), toutes payées",
+  "tendered": "10881371",
+  "tendered_quote": "@SENT:approximately $10,881,371",
+  "tendered_unit": "usd"
+ },
+ "0001983514|0001193125-26-251385": {
+  "note": "montant apporté publié en dollars (valeur liquidative des parts apportées), toutes payées",
+  "tendered": "10736000",
+  "tendered_quote": "@SENT:approximately $10,736,000",
+  "tendered_unit": "usd"
+ },
+ "0001993402|0001104659-26-061037": {
+  "proration": true
+ },
+ "0002031283|0001104659-26-015030": {
+  "tendered": "6130.288",
+  "tendered_pct": "0.05",
+  "tendered_pct_quote": "@SENT:A total of 6,130.288 Shares",
+  "tendered_quote": "@SENT:A total of 6,130.288 Shares",
+  "tendered_unit": "shares"
+ },
+ "0002031283|0001104659-26-062094": {
+  "tendered": "2573.8439",
+  "tendered_pct": "0.02",
+  "tendered_pct_quote": "@SENT:A total of 2,573.8439 Shares",
+  "tendered_quote": "@SENT:A total of 2,573.8439 Shares",
+  "tendered_unit": "shares"
+ }
+}
