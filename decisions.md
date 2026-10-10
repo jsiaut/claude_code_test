@@ -379,3 +379,24 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - les intérêts capitalisés de Blue Owl ne sont pas déterminables : ses véhicules ne balisent pas le taux total. Ses engagements non tirés valent au moins 7,1 % à 12,0 % du portefeuille selon le véhicule ;
   - repères nommés, au 30 juin 2026 : FS KKR Capital Corp 91,01 %, Blackstone Secured Lending Fund 96,34 %, Blackstone Private Credit Fund 96,64 %, Ares Capital Corp 96,66 %, Golub Capital BDC 98,25 %, HPS Corporate Lending Fund 99,08 % ;
   - F11 est fréquent : deux baisses consécutives suffisent. Il ne distingue pas un véhicule à lui seul ; le niveau et l'ampleur de la baisse se lisent à côté.
+
+- **D-0046 — Blue Owl, niveau 3 : nommer le financeur de la coentreprise de Meta en Louisiane, règles fixées avant la recherche.** (1) Décision de l'utilisateur, le 2026-10-10 : « Fais le niveau 3, toujours sans sous-agent ». Le niveau 3 nomme Blue Owl sur le montage de Meta à partir des pièces qui le décrivent, et le relie à ce que les notes de Meta en publient déjà. Meta n'appelle ce montage que « the Venture » : 20 % pour Meta, garanties de valeur résiduelle d'environ 28 Md$, loyers de 12,31 Md$ à partir de 2029 (blocs 3e5dc9af3bd4 et 07588365270c, deux abstentions `no_named_counterparty`). Lecture séquentielle par l'exécutant, sans sous-agent.
+
+  (2) Pourquoi la découverte ne l'a pas vu. Les Notes Data Sets ne portent que les notes des états financiers. Un gestionnaire comme Blue Owl Capital Inc. décrit ce genre d'opération dans son rapport de gestion ou dans ses communiqués, hors des notes. Blue Owl Capital Inc. n'est donc pas un candidat de D-0036. Ses véhicules le sont (Blue Owl Real Estate Net Lease Trust au rang 21 ; véhicules « Blue Owl GP Stakes Stargate » par leurs Form D).
+
+  (3) Sources. Recherche plein texte d'EDGAR, du 2025-10-01 au 2026-10-07, tous formulaires :
+  - « "Beignet Investor" » ;
+  - « "Blue Owl" Hyperion » ;
+  - « "Blue Owl" "Richland Parish" » ;
+  - « "Blue Owl" "Meta Platforms" » ;
+  - « "Blue Owl" », limitée aux dépôts de Meta (CIK 1326801).
+
+  S'y ajoutent les rapports périodiques de Blue Owl Capital Inc. de la période : 10-Q du troisième trimestre 2025, 10-K 2025, 10-Q des deux premiers trimestres 2026. Chaque pièce se tire une fois, en cache, sous les règles réseau habituelles (journal, cinq requêtes par seconde au plus, pause après un refus).
+
+  (4) Unités de lecture. Dans chaque pièce retenue (document principal ou annexe), les paragraphes qui nomment un terme du lexique (« Beignet », « Hyperion », « Richland Parish », « Meta » en mot entier et avec sa majuscule), avec les deux paragraphes qui précèdent et les deux qui suivent ; les fenêtres qui se chevauchent se fondent. C'est la règle du texte autour des faits du bloc `text` (D-0029). Plafond : 40 unités, dans l'ordre des dates de dépôt ; au-delà, `not_processed`. Une pièce où « Meta » n'a aucun rapport avec Meta Platforms se ferme par une abstention motivée.
+
+  (5) Lignes. Conventions de lecture habituelles : citation mot pour mot, contrepartie nommée dans le bloc, la société déclarante écrite « the Company ». Dans une pièce de Blue Owl Capital Inc., « the Company » est le gestionnaire ; les fonds qu'il gère et les véhicules du montage s'écrivent comme le bloc les nomme. Un montant égal à un fait balisé du bloc renvoie à ce fait.
+
+  (6) Identification de « the Venture ». La coentreprise des notes de Meta n'est identifiée à un montage décrit ailleurs que si un extrait cité en confirme au moins trois traits : la Louisiane (ou Richland Parish) ; une formation ou une annonce en octobre 2025 ; 20 % pour Meta, ou 80 % pour l'autre membre ; Meta nommée comme membre ou comme locataire. L'identification se consigne dans `config.yaml` (`identified_ventures`), avec les extraits des deux côtés. Les abstentions de Meta restent : ses notes ne nomment personne. Les arêtes ne naissent que des lignes de blocs qui nomment leurs parties.
+
+  (7) Rattachements. Les fonds gérés par Blue Owl ne forment pas un groupe économique (D-0045, point 3). Un véhicule dont la dénomination ne porte pas « Blue Owl » (Beignet Investor LLC, par exemple) n'entre dans le regroupement de présentation de la plateforme que sur un extrait qui le dit détenu ou géré par des fonds de Blue Owl.
