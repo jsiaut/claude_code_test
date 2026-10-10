@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text, discovery, paths, form_d, foreign]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -92,6 +92,18 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 24, indeterminate: 13, result: discrimination_possible}
     execution: "sans sous-agent (consigne de l'utilisateur)"
 
+  - date: 2026-10-10
+    decision: "Fais le niveau 1, toujours sans sous-agent"
+    question: "fragilité du financement de Blue Owl : signaux de portefeuille de toutes les BDC, événements F11 à F13 (niveau 1)"
+    blocks: [lender_portfolio]   # portefeuille entier des BDC, cinq mesures (D-0045)
+    page: "réflexion sur Blue Owl dans la conversation du 2026-10-10 (D-0045)"
+    yield_presented:             # état publié au commit 3390f1c, avant l'ouverture
+      relationship_conclusions: {pairs: 64, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 6, causality_not_established: 44}
+      documented_paths: {cycles: 25, documented_dependency: 10, commercial_with_financing: 13, reciprocal_commercial_only: 2}
+      pairs_financed_documented: 13
+      annex_e_e7: {outcomes: 26, indeterminate: 15, result: discrimination_possible}
+      fragility_events: 169
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
@@ -606,6 +618,22 @@ annex_e:
       unilateral: [E5]
       descriptive: [E4, E6]
 
+
+# Bloc lender_portfolio (D-0045) : portefeuille entier de chaque BDC des archives en cache, cinq mesures.
+lender_portfolio:
+  universe: all_bdc            # toutes les BDC des BDC Data Sets en cache ; un véhicule = un déclarant (CIK)
+  view: as_known               # premier dépôt d'un véhicule pour une date de bilan
+  software_coverage_min: 0.9   # part de la juste valeur qui doit porter un secteur pour calculer la part logiciel
+  consecutive_gap_days_max: 120   # deux dates de bilan successives d'un véhicule, au plus
+  platforms:                   # regroupement de présentation par la marque du gestionnaire ; aucun groupe économique affirmé
+    Blue Owl: {name_terms: ["Blue Owl", "Owl Rock"]}
+  peers:                       # repères nommés d'avance, pour la lecture
+    - {name: "Ares Capital Corp", cik: "0001287750"}
+    - {name: "Blackstone Secured Lending Fund", cik: "0001736035"}
+    - {name: "Blackstone Private Credit Fund", cik: "0001803498"}
+    - {name: "Golub Capital BDC, Inc.", cik: "0001476765"}
+    - {name: "FS KKR Capital Corp", cik: "0001422183"}
+    - {name: "HPS Corporate Lending Fund", cik: "0001838126"}
 # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
 annex_f:
   source: "spec v6.14, annexe F"
@@ -658,6 +686,24 @@ annex_f:
       observable: "un doute sur la continuité d'exploitation"
       source: "sig_going_concern (§4.5)"
       rule: {measure: sig_going_concern}
+    F11:
+      observable: "juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite"
+      source: "bdc_portfolio_fv_to_cost (bloc lender_portfolio, D-0045)"
+      subjects: bdc_vehicles     # véhicules de l'univers du bloc, pas les groupes
+      added_by: D-0045
+      rule: {measure: bdc_portfolio_fv_to_cost, condition: "valeur(t) < valeur(t-1) < valeur(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
+    F12:
+      observable: "part des intérêts capitalisés du portefeuille d'une BDC (borne basse) en hausse deux trimestres de suite"
+      source: "bdc_portfolio_pik_share (bloc lender_portfolio, D-0045)"
+      subjects: bdc_vehicles
+      added_by: D-0045
+      rule: {measure: bdc_portfolio_pik_share, condition: "borne(t) > borne(t-1) > borne(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
+    F13:
+      observable: "part des prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite"
+      source: "bdc_portfolio_non_accrual_share (bloc lender_portfolio, D-0045)"
+      subjects: bdc_vehicles
+      added_by: D-0045
+      rule: {measure: bdc_portfolio_non_accrual_share, condition: "borne(t) > borne(t-1) > borne(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
 
 concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
   revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]

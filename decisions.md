@@ -323,3 +323,39 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - les lignes d'Arm entre NVIDIA et SoftBank Group Capital Limited n'ont pas de famille : la règle B ne crée aucune arête entre groupes ;
   - flux de NVIDIA après financement des contreparties, trimestre clos le 25 janvier 2026 : 32 904 → 27 904 M$, soit les 5,0 Md$ placés chez Intel ;
   - exclusions `not_processed` : 18 749 → 19 892, dont 1 143 unités hors règle de la piste.
+
+- **D-0045 — Fragilité du financement : Blue Owl, niveau 1. Signaux de portefeuille de toutes les BDC et événements F11 à F13 de l'annexe F, règles fixées avant tout calcul.** (1) Décision de l'utilisateur, le 2026-10-10 : « Fais le niveau 1, toujours sans sous-agent ». Elle suit « Pour Blue Owl ce qui m'intéresse c'est la fragilité du financement ». Le niveau 1 calcule, depuis les archives BDC déjà en cache et sans requête, des signaux de portefeuille par véhicule et par date de bilan, avec des événements de fragilité définis ici avant de voir une seule valeur. Les niveaux 2 (passif : levier, couverture, rachats) et 3 (nommer Blue Owl sur la coentreprise de Meta en Louisiane) ne sont pas ouverts. Lecture et calcul par l'exécutant, sans sous-agent.
+
+  (2) Périmètre. Le bloc `lender` limite l'usage des BDC Data Sets aux positions sur les entités des groupes et sur leurs contreparties (§14). Cette décision l'étend au portefeuille entier de chaque BDC, pour les cinq mesures du point 5 seulement : bloc `lender_portfolio` dans `scope`. La fragilité d'un financeur se lit dans tout son portefeuille, pas dans ses seules positions sur nos groupes : les 60 cellules du bloc `lender` qui portent sur les BDC de Blue Owl visent des emprunteurs sans rapport avec la question.
+
+  (3) Univers, sans sélection :
+  - toutes les BDC des 21 archives en cache (2022 T4 à août 2026), soit environ 188 véhicules et 2 066 dépôts. Un véhicule est un déclarant (CIK). Aucune somme entre véhicules ;
+  - véhicules Blue Owl : les déclarants dont la dénomination EDGAR, actuelle ou ancienne, contient « Blue Owl » ou « Owl Rock ». Ce sont Blue Owl Capital Corp, Blue Owl Capital Corp II, Blue Owl Capital Corp III, Blue Owl Technology Finance Corp., Blue Owl Technology Finance Corp. II, Blue Owl Credit Income Corp. et Blue Owl Technology Income Corp. C'est un regroupement de présentation par la marque du gestionnaire : ces fonds ne sont pas consolidés par Blue Owl Capital Inc., et aucun groupe économique n'est affirmé ;
+  - repères nommés d'avance, pour la lecture : Ares Capital Corp, Blackstone Secured Lending Fund, Blackstone Private Credit Fund, Golub Capital BDC, FS KKR Capital Corp, HPS Corporate Lending Fund ;
+  - repères de distribution : à chaque date de bilan, les quartiles de chaque mesure sur les véhicules où elle est calculée. Ce sont des repères, jamais des totaux. Les événements ne se comptent pas entre véhicules.
+
+  (4) Source et millésime :
+  - les faits de `num.tsv` des archives, relus sans le préfiltre de noms du bloc `lender`. Le fichier `soi` ne sert pas : son coût et sa juste valeur suivent des libellés qui changent d'une taxonomie à l'autre ;
+  - concepts : coût, juste valeur, principal, taux d'intérêt, taux capitalisé (PIK), engagement non tiré envers l'émetteur, et les axes de statut de performance et de secteur ;
+  - une position : dépôt, identifiant, et autres axes hors statut de performance et secteur ; les lignes « Total » sont écartées ; classe d'instrument par le libellé, comme le bloc `lender` (prêt, capital, non classé) ;
+  - faits à la date du bilan du dépôt. Vue `as_known` : le premier dépôt d'un véhicule pour une date l'emporte, un amendement ne la remplace pas.
+
+  (5) Mesures, par véhicule et date de bilan :
+  - `bdc_portfolio_fv_to_cost` : somme des justes valeurs ÷ somme des coûts des prêts dont les deux sont balisés ; `partial` si des prêts n'ont pas les deux ;
+  - `bdc_portfolio_pik_share` : somme de (principal × taux capitalisé) ÷ somme de (principal × taux total), sur les prêts dont le principal et le taux total sont balisés. Un prêt sans taux capitalisé balisé compte sans intérêts capitalisés : la valeur est une borne basse (`bounded`, base `untagged_counted_as_absent`) ;
+  - `bdc_portfolio_non_accrual_share` : somme des coûts des prêts dont le statut de performance balisé dit non productif ou sans accumulation d'intérêts ÷ somme des coûts des prêts. Un dépôt qui ne balise aucun statut n'est pas déterminable (`not_tagged`). Sinon, un prêt sans statut compte comme productif : borne basse ;
+  - `bdc_portfolio_unfunded_ratio` : somme des engagements non tirés balisés ÷ somme des justes valeurs de toutes les positions. Aucun engagement balisé : non déterminable ; sinon, borne basse ;
+  - `bdc_portfolio_software_share` : somme des justes valeurs des positions dont le membre de l'axe de secteur contient « software » ÷ somme des justes valeurs des positions qui portent un secteur. Calculée si au moins 90 % de la juste valeur porte un secteur, `partial` en dessous, non déterminable sans aucun secteur balisé. Un premier relevé de structure, fait avant tout calcul de valeur, montre que l'axe de secteur est rare dans `num` : cette mesure sera le plus souvent non déterminable.
+
+  (6) Annexe F : trois événements ajoutés à la liste fermée, pour les véhicules de l'univers seulement. Les groupes ne sont pas concernés et F1 à F10 ne changent pas. Seuils de signe et de durée, sans calibrage sur les données :
+  - F11 : `bdc_portfolio_fv_to_cost` en baisse deux trimestres de suite ;
+  - F12 : `bdc_portfolio_pik_share` (borne basse) en hausse deux trimestres de suite ;
+  - F13 : `bdc_portfolio_non_accrual_share` (borne basse) en hausse deux trimestres de suite.
+
+  Chaque événement porte sur trois dates de bilan successives du même véhicule, distantes de 120 jours au plus, et se date à la dernière, comme F1. Si une des trois valeurs manque ou si l'écart dépasse 120 jours, la cellule est non déterminable, jamais « sans événement ». Une cellule par véhicule, événement et date de bilan. Comme le veut l'annexe F, le changement de la liste est signalé en tête de la note de synthèse, avec le diff.
+
+  (7) Limites connues avant calcul :
+  - les bornes basses suivent les pratiques de balisage : un changement de balisage peut produire une hausse ;
+  - les marques en juste valeur sont lissées, et seulement trimestrielles ;
+  - les fonds de data centers de Blue Owl ne publient pas de portefeuille (`not_public`) : le niveau 1 ne voit pas la coentreprise de Meta en Louisiane ;
+  - le passif (levier, couverture, rachats demandés et acceptés) n'est pas couvert.
