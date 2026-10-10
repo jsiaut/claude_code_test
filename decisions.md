@@ -268,3 +268,47 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - ordre : R1 puis R2, chacun dans l'ordre du classement. Un texte identique n'est qu'une unité, et un bloc déjà lu par la découverte d'origine (même clé de contenu) ne se relit pas. Un EX-10 se lit par son en-tête ; son corps seulement si l'en-tête montre un groupe partie, après les notes ;
   - plafond : au-delà de 300 unités retenues, la lecture s'arrête à la 300e. Le reste est `not_processed`, et le rendement est présenté avant d'aller plus loin ;
   - l'état d'une unité préparée se garde sous sa clé (accession, document), non sous son rang dans la file, pour qu'un lexique enrichi ne décale rien.
+
+  (6) Lecture, sans sous-agent :
+  - 89 candidats et 1 221 unités. 78 unités retenues chez 26 candidats : 40 par R1, 38 par R2 ; 57 notes et 21 en-têtes d'EX-10. Les 1 143 autres sont hors règle, exclues avec le motif `not_processed` et la règle dans le détail. Le plafond n'est pas atteint ;
+  - 75 blocs lus, les 3 autres unités l'ayant déjà été par la découverte d'origine. Puis 2 corps d'EX-10 dont l'en-tête montre NVIDIA partie : la convention de droits d'enregistrement et le contrat à terme prépayé de SB Energy (S-1 et S-1/A de 2026). Aucun autre en-tête ne montre un groupe partie ; ces corps ne se lisent pas ;
+  - 126 lignes : 96 observations, 30 abstentions, aucune rejetée ;
+  - Arm Holdings plc (rang 51) est hors règle : ni co-mention dans une unité, ni montant documenté. Il n'est pas lu, la règle étant fixée ;
+  - incident : un lot soumis deux fois a dupliqué des lignes dans 7 fichiers d'observations. Les doublons ont été retirés avant l'assemblage (8 lignes ramenées à 4 dans un fichier, 2 à 1 dans les autres).
+
+  (7) Niveau 1, entités confirmées pendant la lecture (`config.yaml`, `confirmed_entities` et `entity_aliases`). Traitement de consolidation `undetermined` sauf mention contraire.
+  - Règle A, l'extrait affirme le lien :
+    - alias « SBG » : note 1 du 10-Q de WeWork du 8 août 2023, « All references to "SBG" are references to SoftBank Group Corp. or a controlled affiliate or subsidiary thereof ». L'alias est global ; seules des lignes de WeWork le portent ;
+    - Brightstar US, Inc., filiale (`consolidated_subsidiary`) : 10-Q de Sprint de janvier 2020, « As Brightstar is a subsidiary of SoftBank ». Sa sortie du groupe n'est pas documentée ;
+    - SoftBank Latin America (« an affiliate of SBG », WeWork) et SB Northstar LP (« an affiliate of SoftBank Group Corp. », Better Home & Finance) ;
+    - SB Energy HoldCo, LLC et SVF II Energy (DE) LLC : le corps de la convention de droits d'enregistrement de SB Energy définit « SoftBank » comme SoftBank Group Corp., et les « SoftBank Holders » du préambule comme incluant « any other Affiliate of SoftBank ».
+  - Règle B, désignation : SoftBank Group Capital Limited (8-K de NVIDIA de septembre 2020, aussi Moatable), SoftBank Vision Fund (AIV M2) L.P. (10-K 2024 de GM), SVF Yellow (USA) Corporation (Uber), Stellar Beacon LLC (Twenty One Capital) et SoftBank Corp. (AeroVironment, Bloom Energy). Le déposant désigne chacune par le terme défini « SoftBank », qui est l'alias déjà confirmé du groupe :
+    - une ligne qui aurait gardé ce terme serait rattachée au groupe, et la convention de lecture impose d'écrire le nom désigné ;
+    - sans cette règle, une même contrepartie changerait de groupe d'un bloc à l'autre : chez GM, « SoftBank » en 2021 et 2022, le nom du fonds en 2024 ;
+    - cette règle assouplit le point (3), qui écartait SoftBank Group Capital Limited faute d'extrait sur le contrôle. C'est une décision de l'exécutant, soumise à l'utilisateur ; la retirer revient à supprimer ces cinq entrées de `config.yaml`.
+  - Alias sans appartenance : « SVF II » désigne SoftBank Vision Fund II-2 L.P. (même note de WeWork). Ce fonds n'entre pas dans le groupe : WeWork l'exclut expressément de « SBG », et aucun extrait n'affirme son contrôle. Même chose pour SoftBank Vision Fund (AIV M1) L.P. et SVF Endurance (Cayman) Limited.
+  - Restent hors du groupe, faute d'extrait :
+    - « SoftBank Group » chez Intel (2 lignes, dont le placement de 2,0 Md$ de septembre 2025) : aucun bloc ne définit ce terme ;
+    - Softbank Vision fund (Getaround), Softbank Robotics Singapore Pte Ltd (Concorde) ;
+    - HAPSMobile Inc., détenue à 100 % par SoftBank depuis mars 2022 : aucune ligne n'est postérieure ;
+    - SB Energy, Inc. (contrôle non affirmé), OpenAI Infra Holdings, LLC, Arm, Ampere, SVF Holdco (UK) Limited ;
+    - Sprint et Fortress, contrôlées par SoftBank à l'époque, restent des contreparties propres : aucun bloc lu n'affirme ce contrôle. Les flux entre Sprint et Brightstar ne s'éliminent donc pas.
+
+  (8) Relations principales relevées :
+  - WeWork :
+    - échange en mai 2023 des 1,65 Md$ d'obligations série I détenues par des entités de SBG, contre 458 M$ d'obligations échangeables et environ 1,1 milliard d'actions (494 M$) ;
+    - billets garantis de SVF II : 300 M$ émis puis rachetés, engagement de 500 M$ résilié, 300 M$ de billets de premier rang à tirage différé ;
+    - JapanCo (500 M$, plus 31 M$ en 2022) et LatamCo (80 M$ de SoftBank Latin America, options pour 60 M$) ;
+    - revenus d'adhésions tirés de SBG ;
+  - GM : rachat des actions privilégiées de Cruise détenues par SoftBank, 2,1 Md$ en mars 2022 ;
+  - Uber : 333 M$ de parts privilégiées d'Apparate en 2019, réglées à la cession d'ATG en janvier 2021 (356 M$) ;
+  - Intel : 2,0 Md$ d'actions vendues à « SoftBank Group » en septembre 2025, 5,0 Md$ à NVIDIA en décembre 2025 ;
+  - SB Energy : placement privé d'actions de classe N et contrat prépayé de 1,5 Md$ de NVIDIA ; bons d'OpenAI Infra Holdings ; actionnaires SoftBank ;
+  - autres :
+    - Guardant Health : coentreprise (41 M$), rachat 177,8 M$ ;
+    - Sprint : bon exercé (287 M$) ; Brightstar (ligne de crédit de 700 M$, ventes d'appareils, commissions) ; 154 M$ dus à un affilié de SoftBank ;
+    - DiDi (Voyager, 325 M$) ; AeroVironment (HAPSMobile, commande de 51,2 M$, 43,3 M$ de revenus) ; Moatable (rachats de 7,1 M$ et 2,5 M$) ;
+    - Concorde (billet convertible de 1 M$), Getaround (prêt-relais de 5 M$), Tempus (coentreprise), Fortress (garantie limitée), Better (billet convertible de SB Northstar) ;
+    - Twenty One Capital (actionnaire par achat à Tether, sortie en mai 2026), Alibaba, UTStarcom (40 % du chiffre d'affaires 2017), Bloom Energy (coentreprise rachetée 2,0 M$).
+
+  (9) Non-déposant vérifié : ni SoftBank Group Corp. (CIK 1065521) ni SoftBank Corp. (CIK 1794354) n'a de rapport périodique dans les 47 archives des Notes Data Sets. La recherche reste complète du côté de SoftBank.

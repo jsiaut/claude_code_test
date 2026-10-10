@@ -12,6 +12,7 @@ from pathlib import Path
 import pandas as pd
 
 from pipeline import discovery as D
+from pipeline import entities as E
 from pipeline import nf_discovery as N
 
 LEX = [{"term": "NVIDIA", "ref": "NVDA", "case": False, "from": None, "to": None},
@@ -84,6 +85,22 @@ class NonFiler(unittest.TestCase):
         self.assertTrue(N.is_non_filer("LAB:OPENAI"))
         self.assertFalse(N.is_non_filer("CP:softbank group corp"))
         self.assertFalse(N.is_non_filer("NVDA"))
+
+
+class LevelOne(unittest.TestCase):
+    """Niveau 1 (D-0044, point 7) : alias du groupe, entités désignées « SoftBank », noms sans extrait."""
+
+    def test_resolution(self):
+        cfg = {"labs": [], "non_filers": [{"name": "SoftBank", "ref": "NF:SOFTBANK"}],
+               "confirmed_entities": [
+                   {"name": "SoftBank Group Corp.", "group": "NF:SOFTBANK", "treatment": "parent"},
+                   {"name": "SVF Yellow (USA) Corporation", "group": "NF:SOFTBANK", "treatment": "undetermined"}],
+               "entity_aliases": [{"alias": "SoftBank", "of": "NF:SOFTBANK"}, {"alias": "SBG", "of": "NF:SOFTBANK"}]}
+        names = ["Softbank", "SBG", "SVF Yellow (USA) Corporation", "SoftBank Group Corporation", "SoftBank Group"]
+        _, reg = E.build({"meta": {}}, cfg, {n: False for n in names})
+        g = {n: E.resolve(reg, n, "2024-06-30")[1] for n in names}
+        self.assertEqual([g[n] for n in names[:4]], ["NF:SOFTBANK"] * 4)
+        self.assertIsNone(g["SoftBank Group"])      # nom sans extrait : en attente, hors du groupe
 
 
 if __name__ == "__main__":

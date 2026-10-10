@@ -549,6 +549,28 @@ def prepare(n=50, rate=4.0):
     print(f"blocs préparés : {nb} sur {len(todo)} unités ; requêtes {client.stats['requests']}")
 
 
+def prepare_body(adsh, doc):
+    """Corps d'un EX-10 dont l'en-tête, lu, montre un groupe partie (D-0044, point 5) : lu après
+    les notes, sous le même rang que son en-tête ; tiré du cache, sans requête."""
+    from . import blocks, sections
+    cat = [json.loads(x) for x in open(CATALOG, encoding="utf-8")]
+    head = next(b for b in cat if b["accession"] == adsh and b["document"] == doc
+                and b["block_kind"] == "discovery_exhibit_header")
+    if any(b["accession"] == adsh and b["document"] == doc and b["block_kind"] == "discovery_exhibit_body"
+           for b in cat):
+        print("corps déjà au catalogue")
+        return
+    raw = cache.read(cache.archive_path(head["cik"], adsh, doc))
+    full = sections.full_text(raw)
+    b = dict(head)
+    b.update({"content_key": blocks.content_key(full, []), "block_kind": "discovery_exhibit_body",
+              "sort_key": head["sort_key"] + "b", "text": full, "chars": len(full), "nf_rule": head["nf_rule"] + "-corps",
+              "requires": {"header_content_key": head["content_key"], "exhibit_type": head["exhibit_type"]}})
+    with open(CATALOG, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+    print(f"corps ajouté : {b['content_key']} ({len(full)} caractères)")
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "fetch":
@@ -561,5 +583,7 @@ if __name__ == "__main__":
         build_candidates()
     elif cmd == "prepare":
         prepare(int(sys.argv[2]) if len(sys.argv) > 2 else 50)
+    elif cmd == "body":
+        prepare_body(sys.argv[2], sys.argv[3])
     else:
         status()

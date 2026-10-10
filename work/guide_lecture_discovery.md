@@ -88,5 +88,8 @@ instrument, d'un bloc à l'autre.
   - SoftBank est client, fournisseur, coentrepreneur ou bailleur du déclarant : famille `commercial`, dans le sens de la ressource. Une coentreprise nommée, une ligne sous son nom.
   - Un groupe ou un laboratoire nommé dans la même unité : comme au § 1.
 - **Entités de SoftBank** (Vision Fund, SB Energy, SB Investment Advisers, SoftBank Corp., Star Beacon…) : chaque ligne porte la dénomination écrite par le texte. Leur rattachement au groupe se fait dans `config.yaml` (`confirmed_entities`), seulement sur l'extrait qui l'affirme (« an affiliate of SoftBank Group Corp. », « wholly owned subsidiary »). Ces extraits se notent dans la `note` de la ligne.
+  - Règle A : l'extrait affirme le lien (filiale, « an affiliate of SBG », « any other Affiliate of SoftBank »).
+  - Règle B : le déposant désigne l'entité par le terme défini « SoftBank » (« SVF Yellow (USA) Corporation ("SoftBank") »). La ligne porte le nom désigné ; l'entité entre dans le groupe, traitement `undetermined` (D-0044, point 7).
+  - Un autre terme défini (« SoftBank Vision Fund », « SoftBank Holder », « SBG » quand le déposant en exclut les fonds) ne suffit pas sans extrait de la règle A.
 - **Le déclarant filiale de SoftBank** (SB Energy, PayPay, SoftBank Corp., Arm) : il est `the Company`, et ses relations avec ses actionnaires du groupe SoftBank sont internes à SoftBank dès que l'extrait établit le contrôle. Elles se notent quand même, avec ce contrôle dans la `note`.
 - Une mention de SoftBank comme simple actionnaire passé, ancien investisseur sans flux daté, ou dans une liste de références : abstention `out_of_scope_content` ou `boilerplate_no_event`, avec une `note`.
