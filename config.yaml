@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text, discovery]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery, paths, form_d]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -45,6 +45,18 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       fragility_events: 69
       pairs_financed_documented: 9
     execution: "lecture séquentielle par l'exécutant, sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-10
+    decision: "ok fais ça, toujours sans sous-agent"
+    question: "arrêter la lecture de la découverte après la deuxième tranche, puis ouvrir paths et form_d"
+    blocks: [paths, form_d]
+    discovery_reading: stopped   # passe A lue sur les rangs 1 à 50 (D-0038, D-0040) ; le reste de la file reste « non traité »
+    page: "point d'étape dans la conversation du 2026-10-10 (D-0041)"
+    yield_presented:             # état publié au commit ccb65e5, avant l'ouverture
+      pairs_financed_documented: 11
+      annex_e_e7: {outcomes: 22, indeterminate: 13, result: discrimination_possible}
+      discovery_units_not_processed: 18799
+      relationship_conclusions: {pairs: 52, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 4, causality_not_established: 34}
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
@@ -117,6 +129,33 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
       - {term: "X Holdings Corp", ref: SPCX, case_sensitive: true, valid_from: "2023-01-01"}
       - {term: "Atlantic Crypto", ref: CRWV, case_sensitive: true, valid_to: "2019-10-03"}
       - {term: "Maui HoldCo", ref: MRVL, case_sensitive: true}
+
+form_d:                      # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
+  excluded_issuers:          # le terme y désigne autre chose qu'une exposition à la cible ; motif lu dans le Form D
+    - {cik: "1931731", name: "Anthropic Capital Fund, LP", decision: D-0041, kind: homonym,
+       evidence: "fonds de type « Hedge Fund » dont le commandité et le gérant se nomment Anthropic Capital Partners, LLC et Anthropic Capital Management, LLC : le terme désigne le gérant, pas une exposition à Anthropic PBC"}
+    - {cik: "1729637", name: "Karbon-X Corp.", decision: D-0041, kind: homonym,
+       evidence: "société du groupe d'activité « Energy Conservation » : « X Corp » n'y est que la fin de la dénomination Karbon-X Corp., pas X Corp."}
+    - {cik: "1877240", name: "OpenAI Startup Fund I, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+    - {cik: "2133720", name: "OpenAI Startup Fund II, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+    - {cik: "2003722", name: "OpenAI Startup Fund SPV I, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+    - {cik: "2018704", name: "OpenAI Startup Fund SPV II, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+    - {cik: "2018916", name: "OpenAI Startup Fund SPV III, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+    - {cik: "2023254", name: "OpenAI Startup Fund SPV IV, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+    - {cik: "2044928", name: "OpenAI Startup Fund SPV V, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+    - {cik: "2079027", name: "OpenAI Startup Fund SPV VI, L.P.", decision: D-0041, kind: sponsor,
+       evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+
+paths:                       # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
+  lengths: [2, 3]            # cycles orientés de longueur 2 ou 3 entre groupes, hors intragroupe
+  temporal_max_quarters: 4   # arêtes actives ensemble ou à moins de quatre trimestres d'écart
 
 # Entités confirmées par le producteur (§10.2) : chaque appartenance ou alias est établi par
 # un extrait cité mot pour mot (bloc et accession), décision D-0021 de decisions.md. Hors de

@@ -69,7 +69,7 @@ def grid_outcome(cells_by_year, s, crit):
     return "indeterminate", "interval_straddles_threshold"
 
 
-def evaluate(ev, cfg, groups_window, deadlines, as_of):
+def evaluate(ev, cfg, groups_window, deadlines, as_of, paths=None):
     E = cfg["annex_e"]
     grid = [Decimal(str(x)) for x in E["conventions"]["grid"]["high"]]
     head = Decimal(str(E["conventions"]["grid"]["headline"]))
@@ -160,11 +160,28 @@ def evaluate(ev, cfg, groups_window, deadlines, as_of):
                             nd_reason=None if o == "supported" else
                                       ("not_disclosed" if e.get("s_text_done") else "not_processed"),
                             flags={"l3_pieces": [x["obs_key"] for x in l3], "unilateral": True}))
-    # E.6 cycles : chemins de §14 non calculés au premier passage
+    # E.6 cycles (descriptif) : décompte des documented_path par valeur de temporal et par conclusion
+    def tally6(ps):
+        cnt = {}
+        for p_ in ps:
+            cnt.setdefault(p_["temporal"], Counter())[p_["conclusion"]] += 1
+        return {k: dict(v) for k, v in sorted(cnt.items())}
     for s in sorted({k[0] for k in ev}):
+        if paths is None:
+            out.append(cell("annex_e_outcome", s, groups_window[s]["window_start"], as_of_d, "as_known", as_of,
+                            breakdown=bk("E6"), value_text="descriptive", status="not_determinable",
+                            nd_reason="not_processed", flags={"basis": "documented_path relève du bloc paths de §14, non ouvert"}))
+            continue
+        mine = [p_ for p_ in paths if s in p_["nodes"]]
         out.append(cell("annex_e_outcome", s, groups_window[s]["window_start"], as_of_d, "as_known", as_of,
-                        breakdown=bk("E6"), value_text="descriptive", status="not_determinable",
-                        nd_reason="not_processed", flags={"basis": "documented_path relève du bloc paths de §14, non ouvert"}))
+                        breakdown=bk("E6"), value_text="descriptive", status="computed", value=len(mine),
+                        flags={"counts": tally6(mine), "paths": [p_["key"] for p_ in mine],
+                               "basis": "cycles orientés de longueur 2 ou 3 qui passent par le groupe (bloc paths, §14)"}))
+    if paths is not None:
+        out.append(cell("annex_e_outcome", "ALL", None, as_of_d, "as_known", as_of, breakdown=bk("E6"),
+                        value_text="descriptive", status="computed", value=len(paths),
+                        flags={"counts": tally6(paths), "by_length": dict(Counter(len(p_["nodes"]) for p_ in paths)),
+                               "basis": "chaque cycle compté une fois (bloc paths, §14) ; issue descriptive, hors de E.7"}))
     # E.7 non-discrimination, E.8 agrégation, E.9 engagements de rendu
     allo = tally["E1"] + tally["E2"]
     n = len(allo)

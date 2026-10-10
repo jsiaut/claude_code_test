@@ -37,10 +37,10 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Arêtes de montant : commercial 196, credit_support 14, customer_consideration 70, financing 201 ; arêtes de relation : 550.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
 - Cellules de la question 4, par statut et motif : calculée 3 625 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 849 ; indéterminée / historique tronqué 760 ; indéterminée / précondition non remplie 278 ; bornée 203 ; indéterminée / client anonyme 150 ; indéterminée / non publié 132 ; indéterminée / lecture impossible 114 ; indéterminée / concept non résolu 86 ; indéterminée / terme manquant 13.
-- Requêtes : 12 463 au journal, dont 12 185 réussies, 25 327 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-09T18:27:18.517+00:00.
+- Requêtes : 12 506 au journal, dont 12 228 réussies, 25 327 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-10T06:48:52.205+00:00.
 - Blocs lus : 3 305 sur 3 470 clés de contenu ; par item de 8-K : 1.01 92, 1.02 11, 2.01 17, 2.03 37, 3.03 9, 8.01 347 ; pièces arrêtées à leur en-tête : EX-4 165.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 696 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 546 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -56,7 +56,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 19 235 ; calculée 6 322 → 11 561 ; bornée 161 → 203 ; partielle 794 → 63 ; indéterminée 8 489 → 7 408 ; motif « non traité » 3 394 → 1 849. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
 - Événements de l'annexe F : 33 → 69 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 13 sur 22.
 - Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 678, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 430, inconnu / historique tronqué 174, actif 120, échu 37, inconnu / lecture impossible 28. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
-- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : terme manquant 2 145 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 861 ; non publié 1 335 ; concept non résolu 1 135 ; historique tronqué 760 ; annuel seulement 394 ; précondition non remplie 296 ; client anonyme 177 ; lecture impossible 147 ; frontière de retraitement 83 ; période antérieure absente 28 ; dénominateur négatif ou nul 15 ; date manquante 12 ; intervalle à cheval sur le seuil 11 ; entité non confirmée 6. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
+- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : terme manquant 2 145 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 850 ; non publié 1 335 ; concept non résolu 1 135 ; historique tronqué 760 ; annuel seulement 394 ; précondition non remplie 296 ; client anonyme 177 ; lecture impossible 147 ; frontière de retraitement 83 ; période antérieure absente 28 ; dénominateur négatif ou nul 15 ; date manquante 12 ; intervalle à cheval sur le seuil 11 ; entité non confirmée 6. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
 - Clauses financières (`sig_covenant_events`, trimestres-groupes, vue `as_known`) : événement 9, sans événement 194, partielle (sans événement sur la part lue) / non publié 53.
 - Actifs nantis (`sig_pledged_assets`, trimestres-groupes, vue `as_known`) : événement 27, sans événement 176, indéterminée / non publié 53.
 - Pont des baux non commencés (`lease_not_commenced_bridge`) : calculée 130, indéterminée 338, partielle 2.
@@ -77,12 +77,25 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Annexe E, issues de E.1 et E.2 au point de tête (10 %), avant l'ouverture → maintenant : indéterminées 15 sur 18 → 13 sur 22 ; E.7 : non-discrimination → discrimination possible. Issues de E.1 (lien documenté, paires où F est active) : indéterminé 2, non étayé 9. Une issue « non étayé » suppose la recherche complète des deux côtés (E.0) : la découverte la rend possible quand le client ne dépose pas, n'a aucun rapport périodique dans la fenêtre allongée, ou que toutes ses unités qui nomment le fournisseur sont lues (D-0037).
 - Cellules de rang 1 au motif « recherche incomplète » : 1 653 → 0.
 
+## Rendement du bloc paths (§14)
+
+- Cycles orientés entre groupes : 23, dont longueur 2 : 20, longueur 3 : 3.
+- Par concomitance et conclusion : non / relation commerciale doublée d'un financement 1 ; oui / relation commerciale doublée d'un financement 11 ; oui / dépendance documentée 10 ; oui / achats réciproques seulement 1.
+- E.6 n'est plus « non traité » : chaque fournisseur porte le décompte des cycles qui passent par lui.
+
+## Rendement du bloc form_d (§14)
+
+- Form D lus (documents analysés) : 883 ; relations « remplace » entre dépôts d'une même offre : 293.
+- Cellules `form_d_offering_amount` : émetteurs du périmètre : 40 cellules calculées, 20 offres ; véhicules : 2 275 cellules calculées, 329 offres.
+- Exclusions du bloc : `out_of_scope` 38.
+
 ## Exclusions nouvelles, par motif
 
 - `not_processed` : 18 799
 - `conflicting` : 377
 - `pending_entity` : 227
 - `financial_parties_only` : 165
+- `out_of_scope` : 38
 - `invalid_aggregate` : 8
 - `submitted_draft` : 8
 - `parse_failed` : 3
@@ -130,6 +143,8 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0037 — Recherche complète côté client (E.0) une fois la découverte ouverte.
 - D-0038 — Première tranche de la découverte lue : alias de marque, désignation du déclarant, doubles comptes.
 - D-0039 — Pièces de lien d'une paire : les parties de la ligne sont S et C ; alias « AMD » ; « the Group ».
+- D-0040 — Deuxième tranche de la découverte lue (rangs 26 à 50) : bons passés en charges, mentions fausses, litiges, filiale d'Amazon.
+- D-0041 — Lecture de la découverte arrêtée ; blocs `paths` et `form_d` ouverts.
 
 ## Critères des annexes E et F
 
@@ -141,7 +156,7 @@ Inchangés depuis le commit d'origine 3ff3b988a48a.
 
 ## Dépôts nouveaux
 
-Premier passage : tous les dépôts lus sont nouveaux — 8-K 2 305, 10-Q 1 164, 10-K 716, D 534, D/A 311, S-1 253, S-1/A 175, F-1 105, DEF 14A 87, S-4/A 73, 8-K/A 69, F-1/A 54, 10-12G 40, S-4 32, 10-12G/A 30, 10-K/A 29, 10-Q/A 19, F-4/A 16, 10-12B/A 14, F-4 13, 20-F 11, 10-12B 7, S-11 5, S-11/A 4, 424B4 2, 11-K 1, 20-F/A 1, 40-F 1.
+Premier passage : tous les dépôts lus sont nouveaux — 8-K 2 305, 10-Q 1 164, 10-K 716, D 565, D/A 318, S-1 253, S-1/A 175, F-1 105, DEF 14A 87, S-4/A 73, 8-K/A 69, F-1/A 54, 10-12G 40, S-4 32, 10-12G/A 30, 10-K/A 29, 10-Q/A 19, F-4/A 16, 10-12B/A 14, F-4 13, 20-F 11, 10-12B 7, S-11 5, S-11/A 4, 424B4 2, 11-K 1, 20-F/A 1, 40-F 1.
 
 ## Valeurs changées pour des périodes déjà publiées
 

@@ -1,16 +1,16 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
-- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `b0949d1e75ba86165d72b9a9dd1611a07a065b83`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `discovery` (voir decisions.md); `entity_aliases` (alias confirmés par extrait, D-0021); `own_entities` (entités propres confirmées par extrait, D-0021); `reading` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md); `scope_history` (voir decisions.md); `unanchored_quantities` (voir decisions.md).
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery` de §14**, ouverts par l'utilisateur le 2026-10-07 après le rendement présenté dans la seconde page. Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la première tranche est lue, le reste de la file est « non traité » (D-0038). Les blocs `form_d`, `paths`, `foreign` restent fermés.
-- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 59 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 22 issues ; motifs : précondition non remplie : 6, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, lecture impossible : 1. Issues déterminées : E.1 non étayé 9. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur sa première tranche, les paires dont le client a encore des dépôts à lire restent indéterminées.
+- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `ccb65e58ce866975bc8af1d13b4c4127549404c9`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `discovery` (voir decisions.md); `entity_aliases` (alias confirmés par extrait, D-0021); `form_d` (voir decisions.md); `own_entities` (entités propres confirmées par extrait, D-0021); `paths` (voir decisions.md); `reading` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md); `scope_history` (voir decisions.md); `unanchored_quantities` (voir decisions.md).
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 50 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Le bloc `foreign` reste fermé.
+- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 59 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 22 issues ; motifs : précondition non remplie : 6, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, lecture impossible : 1. Issues déterminées : E.1 non étayé 9. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
 - **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 523, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 775, `not_testable` 720, `ok` 13 425, `tautological` 613.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/52, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
-- **Exclusions principales** : `not_processed` 18 799, `conflicting` 377, `pending_entity` 227, `financial_parties_only` 165, `invalid_aggregate` 8, `submitted_draft` 8, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
+- **Exclusions principales** : `not_processed` 18 799, `conflicting` 377, `pending_entity` 227, `financial_parties_only` 165, `out_of_scope` 38, `invalid_aggregate` 8, `submitted_draft` 8, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -1116,6 +1116,83 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 Le texte qui entoure les faits de concentration est lu (bloc text de §14) : un client qui reste anonyme l'est dans les pièces elles-mêmes. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).
 
+## Cycles entre groupes (bloc paths, §14)
+
+Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, client → fournisseur, fournisseur → client pour une contrepartie au client, garant → obligé) et revient à son point de départ après un ou deux intermédiaires ; il passe par au moins un groupe du périmètre et jamais à l'intérieur d'un même groupe. Concomitance (`temporal`) : on peut choisir une arête par maillon dont les périodes sont actives ensemble ou à moins de quatre trimestres d'écart. La conclusion n'est « dépendance documentée » que si chaque paire d'arêtes consécutives a sa pièce L1 à L5, dont l'extrait nomme les parties de la jonction : les deux d'une paire pour un cycle de longueur 2, les trois pour un cycle de longueur 3. Aucun ratio de chemin n'est publié, des montants de natures différentes ne se composant pas, et un cycle ne prouve ni revenu artificiel ni absence de demande finale (§3.3).
+
+| Cycle | Longueur | Concomitance (écart en trimestres) | Structure | Lien | Conclusion |
+| --- | ---: | --- | --- | --- | --- |
+| AMD → OpenAI → AMD | 2 | oui (0) | commerciale et financière | documenté (L2, L5) | **dépendance documentée** |
+| AMD → Meta → AMD | 2 | oui (0) | commerciale et financière | documenté (L2) | **dépendance documentée** |
+| Amazon → AIR TRANSPORT SERVICES GROUP, INC. → Amazon | 2 | oui (0) | commerciale et financière | documenté (L1, L5) | **dépendance documentée** |
+| Amazon → APPLIED OPTOELECTRONICS, INC. → Amazon | 2 | oui (0) | commerciale et financière | documenté (L1, L3) | **dépendance documentée** |
+| Amazon → CLEAN ENERGY FUELS CORP. → Amazon | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Amazon → RIVIAN AUTOMOTIVE, INC. / DE → Amazon | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
+| Amazon → OpenAI → Amazon | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
+| Amazon → OpenAI → CEREBRAS SYSTEMS INC. → Amazon | 3 | oui (1) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| CoreWeave → OpenAI → CoreWeave | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
+| CoreWeave → OpenAI → NVIDIA → CoreWeave | 3 | non (4) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
+| CoreWeave → NVIDIA → CoreWeave | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
+| CoreWeave → NVIDIA → OpenAI → CoreWeave | 3 | oui (2) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
+| Alphabet → ADT INC. → Alphabet | 2 | oui (0) | commerciale et financière | documenté (L2, L5) | **dépendance documentée** |
+| Alphabet → PLANET LABS PBC → Alphabet | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Alphabet → Marvell → Alphabet | 2 | oui (0) | commerciale et financière | documenté (L2) | **dépendance documentée** |
+| Microsoft → GENERAL MOTORS CO → Microsoft | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| NVIDIA → IREN LTD → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L1, L3) | **dépendance documentée** |
+| NVIDIA → OpenAI → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
+| Oracle → Ampere Computing Holdings LLC → Oracle | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Oracle → Ampere Computing LLC → Oracle | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Oracle → Eau Palm Beach Resort & Spa → Oracle | 2 | oui (0) | commerciale réciproque | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **achats réciproques seulement** |
+| SpaceX → ECHOSTAR CORP → SpaceX | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| SpaceX → Tesla, Inc. → SpaceX | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+
+Décompte de E.6 (descriptif, hors de E.7) : 23 cycles ; concomitance non : relation commerciale doublée d'un financement 1 ; concomitance oui : relation commerciale doublée d'un financement 11, dépendance documentée 10, achats réciproques seulement 1.
+
+## Form D (bloc form_d, §14)
+
+Un Form D donne le montant vendu d'une offre, cumulé depuis sa première vente, jamais une valorisation ni une contrepartie. La mesure se fait par offre (CIK de l'émetteur et date de première vente) sur le dernier dépôt connu : un D et ses D/A ne se somment pas, chaque dépôt remplace le précédent. Le montant peut inclure du non monétaire (titres remis lors d'un regroupement d'entreprises, par exemple) : ce n'est pas du numéraire primaire sans autre pièce. Aucun total n'est fait, ni entre offres ni entre véhicules.
+
+**Émetteurs du périmètre** (faits sur l'entité émettrice, rattachée à son groupe à la date du dépôt ; vue `as_known`, puis `revised` quand le rattachement diffère, §10.3) :
+
+| Émetteur | Groupe | Première vente | Dernier dépôt | Montant vendu | Regroupement d'entreprises |
+| --- | --- | --- | --- | ---: | --- |
+| SPACE EXPLORATION TECHNOLOGIES CORP | SpaceX | 2020-02-28 | 2020-05-26 | 346 M$ | non |
+| SPACE EXPLORATION TECHNOLOGIES CORP | SpaceX | 2020-08-04 | 2020-08-18 | 1 901 M$ | non |
+| SPACE EXPLORATION TECHNOLOGIES CORP | SpaceX | 2021-02-16 | 2021-04-14 | 1 164 M$ | non |
+| SPACE EXPLORATION TECHNOLOGIES CORP | SpaceX | 2021-11-01 | 2021-11-15 | 345 M$ | oui |
+| SPACE EXPLORATION TECHNOLOGIES CORP | SpaceX | 2021-12-14 | 2021-12-29 | 337 M$ | non |
+| SPACE EXPLORATION TECHNOLOGIES CORP | SpaceX | 2022-05-27 | 2022-06-30 | 1 725 M$ | non |
+| SPACE EXPLORATION TECHNOLOGIES CORP | SpaceX | 2022-07-20 | 2022-08-05 | 250 M$ | non |
+| CoreWeave, Inc. | CoreWeave | 2019-09-25 | 2020-02-14 | 1 M$ | non |
+| CoreWeave, Inc. | CoreWeave | 2020-12-14 | 2021-03-03 | 4 M$ | non |
+| CoreWeave, Inc. | CoreWeave | 2021-04-30 | 2021-05-07 | 4 M$ | non |
+| CoreWeave, Inc. | CoreWeave | 2024-05-16 | 2024-05-30 | 1 150 M$ | non |
+| Marvell Technology, Inc. | Marvell | 2026-02-02 | 2026-02-17 | 2 031 M$ | oui |
+| Marvell Technology, Inc. | Marvell | 2026-02-10 | 2026-02-25 | 200 M$ | oui |
+| X.AI CORP. | X.AI Corp. ; SpaceX en vue `revised` | 2023-11-29 | 2023-12-05 | 135 M$ | non |
+| X.AI CORP. | X.AI Corp. ; SpaceX en vue `revised` | 2024-05-10 | 2024-05-28 | 5 024 M$ | non |
+| X.AI CORP. | X.AI Corp. ; SpaceX en vue `revised` | 2024-11-22 | 2024-12-05 | 6 000 M$ | non |
+| X.AI CORP. | X.AI Corp. ; SpaceX en vue `revised` | 2025-02-10 | 2025-02-25 | 28 M$ | oui |
+| X.AI Holdings Corp. | X.AI Holdings Corp. ; SpaceX en vue `revised` | 2025-06-18 | 2025-08-06 | 5 319 M$ | non |
+| X.AI Holdings Corp. | X.AI Holdings Corp. ; SpaceX en vue `revised` | 2025-12-19 | 2026-01-06 | 16 600 M$ | non |
+| MICROSOFT CORP | Microsoft | 2020-07-14 | 2020-07-24 | 270 M$ | oui |
+
+**Véhicules tiers** (émetteurs dont la dénomination, ou la description des titres offerts, nomme un laboratoire ou un groupe qui ne dépose encore aucun rapport périodique) : ils mesurent une demande d'exposition secondaire et n'entrent jamais dans une mesure de financement du nœud sous-jacent. Série par véhicule et par trimestre civil, sur le dernier dépôt connu à chaque fin de trimestre, tant que le sous-jacent ne dépose pas ; un nom ne prouve pas la détention, et un homonyme est écarté avec son motif.
+
+| Sous-jacent nommé | Véhicules | Offres | Cellules (véhicule × trimestre) | Premier trimestre | Dernier trimestre |
+| --- | ---: | ---: | ---: | --- | --- |
+| CoreWeave | 13 | 13 | 30 | 2023-12-31 | 2025-03-31 |
+| Anthropic | 61 | 77 | 531 | 2023-06-30 | 2026-09-30 |
+| OpenAI | 32 | 33 | 218 | 2023-03-31 | 2026-09-30 |
+| SpaceX | 194 | 207 | 1 496 | 2019-06-30 | 2026-06-30 |
+
+- CoreWeave, plus grandes offres connues au 2025-03-31 : Lumida 2024 A CoreWeave SPV Sep 24 a Series of CGF2021 LLC 11 M$ ; AUGUREY VENTURES I, LLC - COREWEAVE A 3 M$ ; DiversiFi Ventures CoreWeave SPV I a Series of CGF2021 LLC 2 M$ ; AUGUREY VENTURES III, LLC - SERIES COREWEAVE B 1 M$ ; CoreWeave a Series of Anchor Capital GP II LLC 1 M$.
+- Anthropic, plus grandes offres connues au 2026-09-30 : MW LSVC Anthropic, LLC 18 M$ ; HII Anthropic-01, a Series of HII Anthropic, LLC 17 M$ ; Anthropic Magnitude Jan 2026 a Series of CGF2021 LLC 14 M$ ; HII Anthropic Series-02, a Series of HII Anthropic, LLC 12 M$ ; Hiive Anthropic Series II a Series of Hiive Anthropic LLC 9 M$.
+- OpenAI, plus grandes offres connues au 2026-09-30 : Starbridge OpenAI 1 Jul 2025 a Series of CGF2021 LLC 9 M$ ; OpenAI-01, a Series of OpenAI Opp Fund LLC 8 M$ ; OpenAI Sep 2024 a Series of CGF2021 LLC 5 M$ ; DiversiFi Ventures OpenAI SPVI a Series of CGF2021 LLC 4 M$ ; OpenAI 1, a Series of Venelite Venture Funds, LP 3 M$.
+- SpaceX, plus grandes offres connues au 2026-06-30 : American Ventures QP Opportunity Fund LLC, Series IV SpaceX 202 M$ ; MCF SpaceX LLC 31 M$ ; MCF SpaceX-I LLC 29 M$ ; Vise SpaceX SPV I, LLC 26 M$ ; SpaceX Partners 1 LLC 21 M$.
+
+Offres écartées : 12 dont le terme désigne autre chose qu'une exposition à la cible (homonyme, ou promoteur du fonds ; motif lu dans le Form D, D-0041) ; offres du périmètre antérieures à la fenêtre allongée 26.
+
 ## Côté prêteur (BDC Data Sets)
 
 Positions que les sociétés de développement d'affaires (BDC) publient dans leur portefeuille, rattachées aux entités des groupes et aux contreparties que nomment leurs pièces, par dénomination légale entière ; une position dont l'identifiant nomme aussi un autre émetteur n'est rattachée à personne. Vue `as_known` : le portefeuille à la date du bilan du dépôt de chaque fonds. Les fonds privés et les banques ne publient rien (`not_public`), et une balise absente ne prouve rien : un taux d'intérêt capitalisé ou un statut de non-accumulation non balisé reste indéterminé, jamais nul. Juste valeur ÷ coût n'est pas une probabilité de défaut, et des intérêts capitalisés peuvent être prévus dès l'origine : les trois signaux se lisent ensemble.
@@ -1215,5 +1292,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : concept non résolu 1 762, non publié 1 655, terme manquant 1 655, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 952, non balisé 629, annuel seulement 394, historique tronqué 380, précondition non remplie 158, client anonyme 97, lecture impossible 90, période antérieure absente 45, dénominateur négatif ou nul 41, frontière de retraitement 21, date manquante 12, intervalle à cheval sur le seuil 11, entité non confirmée 3, dénominateur sous le seuil 2.
+Cellules indéterminées en vue `as_known`, par motif : concept non résolu 1 762, non publié 1 655, terme manquant 1 655, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 941, non balisé 629, annuel seulement 394, historique tronqué 380, précondition non remplie 158, client anonyme 97, lecture impossible 90, période antérieure absente 45, dénominateur négatif ou nul 41, frontière de retraitement 21, date manquante 12, intervalle à cheval sur le seuil 11, entité non confirmée 3, dénominateur sous le seuil 2.
 

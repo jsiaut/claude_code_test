@@ -242,7 +242,25 @@ def run(as_of):
     cells += circularity.coverage_cells(groups, cals, gw, revenue, conc_cells, named_conc, pairs, edges, as_of, ev,
                                         text_done)
     cells += circularity.counterparty_exposure(pairs, ev, cals, as_of, text_done)
-    cells += annex_e.evaluate(ev, cfg, gw, deadlines, as_of)
+    # bloc paths de §14 : cycles orientés de longueur 2 ou 3 entre groupes (documented_path, E.6, D-0041)
+    path_list = None
+    if "paths" in scope:
+        from . import paths as path_block
+        pcfg = cfg.get("paths") or {}
+        path_cells, path_list = path_block.path_measures(
+            edges, obs_rows, reg, groups, gw, as_of, text_done, {k: e["linkage"] for k, e in ev.items()},
+            tuple(pcfg.get("lengths", (2, 3))), int(pcfg.get("temporal_max_quarters", 4)))
+        cells += path_cells
+        stats["paths"] = {"cycles": len(path_list), "by_length": dict(Counter(len(x["nodes"]) for x in path_list)),
+                          "by_temporal_conclusion": dict(Counter(f"{x['temporal']}|{x['conclusion']}" for x in path_list))}
+    cells += annex_e.evaluate(ev, cfg, gw, deadlines, as_of, paths=path_list)
+    # bloc form_d de §14 : montant vendu par offre, émetteurs du périmètre et véhicules tiers (D-0041)
+    formd_rels, formd_excl = [], []
+    if "form_d" in scope:
+        from . import formd
+        fcells, formd_rels, formd_excl, fst = formd.build(reg, as_of, cfg, p0)
+        cells += fcells
+        stats["form_d"] = fst
     stats["pairs"] = {f"{s}->{c}": {"structure": e["structure"], "linkage": e["linkage"], "conclusion": e["conclusion"],
                                     "edges": len(e["pair"].edges),
                                     "active_quarters": sum(1 for v in e["F"]["as_known"]["exposure_outstanding"].values()
@@ -277,18 +295,24 @@ def run(as_of):
     amount_rows = amount_rows_for_pairs(edges, valid, con)
     cand, counts = links.pair_candidates(cfg["non_additive_pairs"], amount_rows)
     stats["non_additive_candidates"] = counts
-    link_rows = [{k: v for k, v in l.items() if not k.startswith("_")} for l in edges] + rels + cand
+    link_rows = [{k: v for k, v in l.items() if not k.startswith("_")} for l in edges] + rels + cand + formd_rels
     n_links = insert(con, "links", link_rows)
     n_ent = insert(con, "entities", ent_rows)
 
     # 14. documents
     failed = {f["accession"] for f in json.loads((config.DB_DIR / "phase1_failures.json").read_text())}
     used = set(con.execute("SELECT DISTINCT accession FROM facts").fetchdf()["accession"]) | {b["accession"] for b in catalog}
+    if "form_d" in scope:
+        from . import formd
+        if formd.FILINGS.exists():
+            fd = pd.read_parquet(formd.FILINGS, columns=["adsh", "parse_state"])
+            used |= set(fd.loc[fd["parse_state"] == "parsed", "adsh"])
     docs = documents.build(as_of, used, failed)
     n_docs = insert(con, "documents", docs)
 
     # 15. exclusions
-    excl = list(obs_excl) + inv_excl + lender_excl + exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
+    excl = list(obs_excl) + inv_excl + lender_excl + formd_excl + \
+        exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
 
     # 16. export

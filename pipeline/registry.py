@@ -163,6 +163,8 @@ ENUMS = {
                          "superseded_by_tagged", "egress_blocked"],
     "item_kind": ["filing", "document", "block", "observation_line", "fact", "aggregate",
                   "entity", "measure_cell", "query", "period", "group"],
+    # §14 chemins (bloc paths) : arêtes d'un cycle actives ensemble ou à moins de quatre trimestres
+    "temporal": ["yes", "no", "unknown"],
     # Annexe E
     "annex_e_outcome": ["supported", "not_supported", "refuted", "indeterminate", "compatible",
                         "incompatible", "descriptive"],
@@ -247,6 +249,10 @@ MEASURES = {
     "bdc_fv_to_cost": (2, [NONE], "instant", "14"),
     "bdc_pik_share": (2, [NONE], "instant", "14"),
     "bdc_non_accrual_share": (2, [NONE], "instant", "14"),
+    # §14 chemins (bloc paths) : cycles orientés de longueur 2 ou 3 entre groupes
+    "documented_path": (2, [NONE], "window", "14"),
+    # §14 Form D (bloc form_d) : montant vendu par offre, sur le dernier dépôt connu
+    "form_d_offering_amount": (2, [NONE], "instant", "14"),
     # annexes
     "annex_e_outcome": (1, [NONE], "fiscal_year", "E"),
     "fragility_event": (1, [NONE], "quarter", "F"),

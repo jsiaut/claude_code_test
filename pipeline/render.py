@@ -289,7 +289,10 @@ def synthesis(con, as_of, stats):
     else:
         dec = new.get("scope_decision") or {}
         L.append(f"- **Périmètre couvert : premier passage et blocs {', '.join('`' + b + '`' for b in blocks_open)} de §14**, "
-                 f"ouverts par l'utilisateur le {dec.get('date')} après le rendement présenté dans la seconde page. "
+                 "ouverts sur décision de l'utilisateur (" + " ; ".join(
+                     f"{', '.join('`' + b + '`' for b in h.get('blocks') or [])} le {h.get('date')}"
+                     for h in [dec] + list(new.get("scope_history") or []) if h.get("blocks"))
+                 + ", chaque fois après le rendement présenté). "
                  "Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des "
                  "10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. "
                  + ("Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). " if "lender" in blocks_open else "")
@@ -302,10 +305,19 @@ def synthesis(con, as_of, stats):
                         "ce qui n'est pas encore lu reste « non traité », bloc par bloc dans `exclusions`. ")
                     if "text" in blocks_open else "")
                  + ("Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein "
-                    "texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la première "
-                    "tranche est lue, le reste de la file est « non traité » (D-0038). " if "discovery" in blocks_open else "")
-                 + "Les blocs " + ", ".join(f"`{b}`" for b in ("discovery", "form_d", "paths", "foreign")
-                                         if b not in blocks_open) + " restent fermés.")
+                    "texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; "
+                    + (f"la passe A est lue jusqu'au rang {T.n('observations', {'discovery_last_rank_read': True}, discovery_ranks_read())} du classement, puis la lecture est arrêtée sur "
+                       "décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». "
+                       if (new.get("scope_history") or [{}])[-1].get("discovery_reading") == "stopped" else
+                       "la lecture avance par tranches, le reste de la file est « non traité » (D-0038). ")
+                    if "discovery" in blocks_open else "")
+                 + ("Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). "
+                    if "paths" in blocks_open else "")
+                 + ("Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant "
+                    "(D-0041). " if "form_d" in blocks_open else "")
+                 + (lambda closed: "" if not closed else (f"Le bloc `{closed[0]}` reste fermé." if len(closed) == 1 else
+                    "Les blocs " + ", ".join(f"`{x}`" for x in closed) + " restent fermés."))(
+                     [x for x in ("discovery", "form_d", "paths", "foreign") if x not in blocks_open]))
     e7 = q(con, "SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'")
     if e7:
         c = e7[0]
@@ -323,13 +335,13 @@ def synthesis(con, as_of, stats):
                     f"{st[0]}.{st[1:]} {VALUE_FR.get(k, k)} {T.n('measures', {'E7_outcomes': [st, k]}, v)}" for st, k, v in det) +
                     ". Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche "
                     "complète au sens de E.0, non que le financement soit sans rapport avec les achats. "
-                    + ("La découverte (§14) n'étant lue que sur sa première tranche, les paires dont le client a encore des "
-                       "dépôts à lire restent indéterminées." if "discovery" in blocks_open else ""))
+                    + ("La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le "
+                       "client a encore des dépôts à lire restent indéterminées." if "discovery" in blocks_open else ""))
             elif not blocks_open:
                 caveat = ("Au premier passage, cette non-discrimination tient d'abord au périmètre borné de la lecture, "
                           "non à une absence de relations.")
             elif "discovery" in blocks_open:
-                caveat = ("La découverte (§14) n'étant lue que sur sa première tranche, la recherche reste incomplète au "
+                caveat = ("La découverte (§14) n'étant lue que sur les premiers rangs de son classement, la recherche reste incomplète au "
                           "sens de E.0 pour les clients dont des dépôts restent à lire : une non-discrimination tient encore "
                           "en partie au périmètre de lecture.")
             else:
@@ -398,6 +410,8 @@ def synthesis(con, as_of, stats):
         L += fragility_section(con, T, g)
     # Circularité
     L += circularity_section(con, T, groups)
+    L += paths_section(con, T)
+    L += formd_section(con, T)
     L += lender_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
@@ -578,6 +592,170 @@ def LINK_FR(fl):
     return f"non trouvé, recherche incomplète ({why})"
 
 
+TEMP_FR = {"yes": "oui", "no": "non", "unknown": "inconnue (un maillon sans arête datée)"}
+
+
+def path_link_fr(fl):
+    le = fl.get("linkage_evidence")
+    if le == "documented_link":
+        return "documenté (" + ", ".join(fl.get("link_categories") or []) + ")"
+    if le == "searched_none_found":
+        return "non trouvé, recherche complète au sens de E.0"
+    return "non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire)"
+
+
+def paths_section(con, T):
+    """Bloc paths de §14 : cycles orientés de longueur 2 ou 3 entre groupes (documented_path, E.6, D-0041)."""
+    if "paths" not in (config.load().get("scope") or []):
+        return []
+    rows = q(con, "SELECT * FROM measures WHERE measure = 'documented_path' ORDER BY breakdown_key")
+    L = ["## Cycles entre groupes (bloc paths, §14)", ""]
+    L.append("Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, client → fournisseur, fournisseur "
+             "→ client pour une contrepartie au client, garant → obligé) et revient à son point de départ après un ou deux "
+             "intermédiaires ; il passe par au moins un groupe du périmètre et jamais à l'intérieur d'un même groupe. "
+             "Concomitance (`temporal`) : on peut choisir une arête par maillon dont les périodes sont actives ensemble ou à "
+             "moins de quatre trimestres d'écart. La conclusion n'est « dépendance documentée » que si chaque paire d'arêtes "
+             "consécutives a sa pièce L1 à L5, dont l'extrait nomme les parties de la jonction : les deux d'une paire pour un "
+             "cycle de longueur 2, les trois pour un cycle de longueur 3. Aucun ratio de chemin n'est publié, des montants de "
+             "natures différentes ne se composant pas, et un cycle ne prouve ni revenu artificiel ni absence de demande "
+             "finale (§3.3).")
+    L.append("")
+    if not rows:
+        L.append("Aucun cycle dans le graphe courant.")
+        L.append("")
+        return L
+    L.append("| Cycle | Longueur | Concomitance (écart en trimestres) | Structure | Lien | Conclusion |")
+    L.append("| --- | ---: | --- | --- | --- | --- |")
+    for c in rows:
+        fl = json.loads(c["flags"])
+        nodes = " → ".join(group_label(n) for n in fl["nodes"] + fl["nodes"][:1])
+        gap = fl.get("gap_quarters")
+        temp = TEMP_FR.get(fl["temporal"], fl["temporal"]) + (
+            f" ({T.n('measures', {'path_gap_quarters': c['breakdown_key']}, gap)})" if gap is not None else "")
+        L.append(f"| {nodes} | {T.n('measures', {'path_length': c['breakdown_key']}, fl['length'])} | {temp} | "
+                 f"{STRUCT_FR.get(fl['edge_structure'], fl['edge_structure'])} | {path_link_fr(fl)} | "
+                 f"**{CONC_FR[c['value_text']]}** |")
+    L.append("")
+    e6 = q(con, """SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND subject = 'ALL'
+                   AND breakdown_key = 'E6|none|none'""")
+    if e6:
+        fl = json.loads(e6[0]["flags"]) if e6[0]["flags"] else {}
+        parts = []
+        for tv, cnt in sorted((fl.get("counts") or {}).items()):
+            parts.append(f"concomitance {TEMP_FR.get(tv, tv).split(' (')[0]} : " + ", ".join(
+                f"{CONC_FR.get(k, k)} {T.n('measures', {'E6': [tv, k]}, v)}" for k, v in sorted(cnt.items())))
+        L.append(f"Décompte de E.6 (descriptif, hors de E.7) : {T.m(e6[0], fmt='count')} cycles ; " + " ; ".join(parts) + ".")
+        L.append("")
+    return L
+
+
+def formd_section(con, T):
+    """Bloc form_d de §14 : offres des émetteurs du périmètre, série des véhicules tiers (D-0041)."""
+    if "form_d" not in (config.load().get("scope") or []):
+        return []
+    L = ["## Form D (bloc form_d, §14)", ""]
+    L.append("Un Form D donne le montant vendu d'une offre, cumulé depuis sa première vente, jamais une valorisation ni une "
+             "contrepartie. La mesure se fait par offre (CIK de l'émetteur et date de première vente) sur le dernier dépôt "
+             "connu : un D et ses D/A ne se somment pas, chaque dépôt remplace le précédent. Le montant peut inclure du non "
+             "monétaire (titres remis lors d'un regroupement d'entreprises, par exemple) : ce n'est pas du numéraire primaire "
+             "sans autre pièce. Aucun total n'est fait, ni entre offres ni entre véhicules.")
+    L.append("")
+    subj = q(con, """SELECT * FROM measures WHERE measure = 'form_d_offering_amount'
+                     AND flags LIKE '%"issuer_is_subject": true%' ORDER BY breakdown_key, view""")
+    if subj:
+        L.append("**Émetteurs du périmètre** (faits sur l'entité émettrice, rattachée à son groupe à la date du dépôt ; "
+                 "vue `as_known`, puis `revised` quand le rattachement diffère, §10.3) :")
+        L.append("")
+        L.append("| Émetteur | Groupe | Première vente | Dernier dépôt | Montant vendu | Regroupement d'entreprises |")
+        L.append("| --- | --- | --- | --- | ---: | --- |")
+        by = defaultdict(dict)
+        for c in subj:
+            by[c["breakdown_key"]][c["view"]] = c
+        for key, v in by.items():
+            a = v.get("as_known") or v.get("revised")
+            r = v.get("revised")
+            fl = json.loads(a["flags"])
+            grp = group_label(a["subject"]) if a["view"] == "as_known" else ""
+            if r and (a["view"] != "as_known" or r["subject"] != a["subject"]):
+                grp = (grp + " ; " if grp else "") + f"{group_label(r['subject'])} en vue `revised`"
+            L.append(f"| {fl.get('issuer_name')} | {grp} | {a['period_start']} | {a['period_end']} | {T.m(a)} | "
+                     f"{'oui' if fl.get('business_combination') else 'non'} |")
+        L.append("")
+    veh = q(con, """SELECT subject, count(DISTINCT counterparty) AS v, count(DISTINCT breakdown_key) AS o, count(*) AS n,
+                           min(period_end) AS a, max(period_end) AS b
+                    FROM measures WHERE measure = 'form_d_offering_amount' AND flags LIKE '%"issuer_is_subject": false%'
+                    GROUP BY 1 ORDER BY 1""")
+    if veh:
+        L.append("**Véhicules tiers** (émetteurs dont la dénomination, ou la description des titres offerts, nomme un "
+                 "laboratoire ou un groupe qui ne dépose encore aucun rapport périodique) : ils mesurent une demande "
+                 "d'exposition secondaire et n'entrent jamais dans une mesure de financement du nœud sous-jacent. Série par "
+                 "véhicule et par trimestre civil, sur le dernier dépôt connu à chaque fin de trimestre, tant que le "
+                 "sous-jacent ne dépose pas ; un nom ne prouve pas la détention, et un homonyme est écarté avec son motif.")
+        L.append("")
+        L.append("| Sous-jacent nommé | Véhicules | Offres | Cellules (véhicule × trimestre) | Premier trimestre | Dernier trimestre |")
+        L.append("| --- | ---: | ---: | ---: | --- | --- |")
+        for r in veh:
+            L.append(f"| {group_label(r['subject'])} | {T.n('measures', {'formd_vehicles': r['subject']}, r['v'])} | "
+                     f"{T.n('measures', {'formd_vehicle_offerings': r['subject']}, r['o'])} | "
+                     f"{T.n('measures', {'formd_vehicle_cells': r['subject']}, r['n'])} | {r['a']} | {r['b']} |")
+        L.append("")
+        for r in veh:
+            top = q(con, """SELECT * FROM measures WHERE measure = 'form_d_offering_amount' AND subject = ? AND period_end = ?
+                            AND flags LIKE '%"issuer_is_subject": false%' AND value IS NOT NULL
+                            ORDER BY value DESC, breakdown_key LIMIT 5""", r["subject"], r["b"])
+            if top:
+                L.append(f"- {group_label(r['subject'])}, plus grandes offres connues au {r['b']} : " + " ; ".join(
+                    f"{json.loads(c['flags']).get('vehicle')} {T.m(c)}" for c in top) + ".")
+        L.append("")
+    homo = q(con, """SELECT count(*) AS n FROM exclusions WHERE item_key LIKE 'formd:%' AND detail LIKE '%D-0041%'""")[0]["n"]
+    oos = q(con, """SELECT count(*) AS n FROM exclusions WHERE item_key LIKE 'formd:%' AND reason = 'out_of_scope'
+                    AND detail LIKE '%fenêtre allongée%'""")[0]["n"]
+    L.append(f"Offres écartées : {T.n('exclusions', {'formd_homonyms': True}, homo)} dont le terme désigne autre chose qu'une "
+             f"exposition à la cible (homonyme, ou promoteur du fonds ; motif lu dans le Form D, D-0041) ; offres du périmètre "
+             f"antérieures à la fenêtre allongée "
+             f"{T.n('exclusions', {'formd_before_window': True}, oos)}.")
+    L.append("")
+    return L
+
+
+def paths_formd_yield_section(con, T):
+    """Rendement des blocs paths et form_d de §14 (D-0041)."""
+    sc = config.load().get("scope") or []
+    L = []
+    if "paths" in sc:
+        L += ["## Rendement du bloc paths (§14)", ""]
+        rows = q(con, "SELECT value_text, flags FROM measures WHERE measure = 'documented_path'")
+        by_len = Counter(json.loads(r["flags"])["length"] for r in rows)
+        by_t = Counter((json.loads(r["flags"])["temporal"], r["value_text"]) for r in rows)
+        L.append(f"- Cycles orientés entre groupes : {T.n('measures', {'paths_total': True}, len(rows))}, dont "
+                 + ", ".join(f"longueur {T.n('measures', {'paths_length_value': k}, k)} : {T.n('measures', {'paths_by_length': k}, v)}"
+                             for k, v in sorted(by_len.items())) + ".")
+        L.append("- Par concomitance et conclusion : " + " ; ".join(
+            f"{TEMP_FR.get(a, a).split(' (')[0]} / {CONC_FR.get(b, b)} {T.n('measures', {'paths_by': [a, b]}, v)}"
+            for (a, b), v in sorted(by_t.items())) + ".")
+        L.append("- E.6 n'est plus « non traité » : chaque fournisseur porte le décompte des cycles qui passent par lui.")
+        L.append("")
+    if "form_d" in sc:
+        L += ["## Rendement du bloc form_d (§14)", ""]
+        docs = q(con, """SELECT count(*) AS n FROM documents WHERE form IN ('D', 'D/A') AND parse_state = 'parsed'""")[0]["n"]
+        st = q(con, """SELECT CASE WHEN flags LIKE '%"issuer_is_subject": true%' THEN 'subject' ELSE 'vehicle' END AS p,
+                              status, count(*) AS n, count(DISTINCT breakdown_key) AS o FROM measures
+                       WHERE measure = 'form_d_offering_amount' GROUP BY 1, 2 ORDER BY 1, 2""")
+        ex = q(con, """SELECT reason, count(*) AS n FROM exclusions WHERE item_key LIKE 'formd:%' GROUP BY 1 ORDER BY 1""")
+        rel = q(con, """SELECT count(*) AS n FROM links WHERE relation_type = 'replaces' AND a_key LIKE 'formd:%'""")[0]["n"]
+        L.append(f"- Form D lus (documents analysés) : {T.n('documents', {'formd_docs': True}, docs)} ; relations « remplace » "
+                 f"entre dépôts d'une même offre : {T.n('links', {'formd_replaces': True}, rel)}.")
+        stfr = {"computed": "calculées", "not_determinable": "indéterminées"}
+        L.append("- Cellules `form_d_offering_amount` : " + " ; ".join(
+            f"{'émetteurs du périmètre' if r['p'] == 'subject' else 'véhicules'} : "
+            f"{T.n('measures', {'formd_cells': [r['p'], r['status']]}, r['n'])} cellules {stfr.get(r['status'], r['status'])}, "
+            f"{T.n('measures', {'formd_offerings': [r['p'], r['status']]}, r['o'])} offres" for r in st) + ".")
+        L.append("- Exclusions du bloc : " + (", ".join(f"`{r['reason']}` {T.n('exclusions', {'formd_excl': r['reason']}, r['n'])}"
+                                                    for r in ex) or "aucune") + ".")
+        L.append("")
+    return L
+
+
 def circularity_section(con, T, groups):
     L = ["## Circularité, par paire", ""]
     L.append("Une paire réunit un groupe du périmètre et une contrepartie que ses pièces nomment, avec au moins une arête "
@@ -670,6 +848,55 @@ def circularity_section(con, T, groups):
                  "n'est pas lu au premier passage. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).")
     L.append("")
     return L
+
+
+# règles des blocs de §14, énoncées pour l'auditeur quand le bloc est ouvert (§12.2), sans aucun résultat
+BLOCK_RULES = {
+    "lender": "**Côté prêteur (`lender`).** Portefeuilles publiés des BDC (BDC Data Sets, fichier `soi` ; état des "
+              "placements, Reg S-X 12-12), rattachés aux entités des groupes et aux contreparties nommées par dénomination "
+              "légale entière. Trois signaux lus ensemble : juste valeur ÷ coût, part des intérêts capitalisés, part sans "
+              "accumulation d'intérêts ; aucun n'est une probabilité de défaut. Une balise absente ne prouve rien, la taille "
+              "d'une facilité n'est pas la position détenue, et les fonds privés ne publient rien.",
+    "text": "**Texte des groupes (`text`).** Notes d'investissements (ASC 321, ASC 323), de dette (ASC 470), de baux "
+            "(ASC 842) et d'engagements (ASC 440), texte autour des faits de concentration (ASC 280-10-50-42), items 2.01 "
+            "et 2.03 des 8-K, corps des EX-10. Un contrat prouve un plafond, pas un versement.",
+    "discovery": "**Découverte (`discovery`).** Un déposant hors du périmètre est candidat si la mention d'un groupe est "
+                 "dans une note, un contrat annexé, une section parties liées ou un Form D, jamais dans un facteur de "
+                 "risque. Les candidats se lisent dans un ordre fixé d'avance (classe de mention, montant documenté, "
+                 "nombre de groupes nommés, accession) ; ce qui n'est pas lu reste « non traité », jamais absent.",
+    "paths": "**Chemins (`paths`).** Cycles orientés de longueur 2 ou 3 entre groupes, hors intragroupe, dans le sens de "
+             "la ressource, avec leur concomitance (arêtes actives ensemble ou à moins de quatre trimestres d'écart). "
+             "« Dépendance documentée » seulement si chaque paire d'arêtes consécutives a sa pièce L1 à L5 ; aucun ratio "
+             "de chemin, des montants de natures différentes ne se composant pas.",
+    "form_d": "**Form D (`form_d`).** Avis de vente déposé sous la Regulation D (Rule 503) : le montant vendu (Form D, "
+              "Item 13) est cumulé depuis la première vente de l'offre, jamais une valorisation ni une contrepartie. "
+              "Mesure par offre (CIK de l'émetteur et date de première vente) sur le dernier dépôt connu : un D et ses D/A "
+              "ne se somment pas. Un montant qui peut inclure du non monétaire n'est pas du numéraire primaire sans autre "
+              "pièce. Un véhicule tiers mesure une demande d'exposition secondaire et n'entre jamais dans une mesure de "
+              "financement du nœud sous-jacent.",
+    "foreign": "**Émetteurs étrangers (`foreign`).** 20-F, 40-F et 6-K ; une contrepartie ou un groupe en IFRS est traité "
+               "à part, jamais sommé avec du US GAAP.",
+}
+
+
+def domain_rules():
+    """Page des règles du domaine pour l'auditeur : le modèle, puis les règles des blocs de §14 ouverts."""
+    txt = (config.ROOT / "audit_templates" / "domain_rules.md").read_text(encoding="utf-8")
+    sc = config.load().get("scope")
+    blocks = [b for b in (sc if isinstance(sc, list) else []) if b in BLOCK_RULES]
+    if not blocks:
+        return txt
+    txt = txt.replace("§2 à §10 et §13 ; le §14 n'est pas ouvert au premier passage).*",
+                      "§2 à §10, §13 et, pour les blocs ouverts, §14).*")
+    return txt.rstrip("\n") + "\n\n## Blocs ouverts de la phase ultérieure (§14)\n\n" + "".join(
+        f"- {BLOCK_RULES[b]}\n" for b in blocks)
+
+
+def discovery_ranks_read():
+    """Dernier rang du classement dont les unités de la passe A sont lues (D-0036)."""
+    from . import discovery
+    built = discovery.built_units()
+    return max((u.get("rank") or 0 for u in built.values() if u.get("content_key")), default=0)
 
 
 def journal_stats():
@@ -787,6 +1014,7 @@ def delta(con, as_of, stats):
         L.append("")
     L += text_yield_section(con, T, stats)
     L += discovery_yield_section(con, T, stats)
+    L += paths_formd_yield_section(con, T)
     L.append("## Exclusions nouvelles, par motif")
     L.append("")
     for r in q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC, 1"):
@@ -999,7 +1227,7 @@ def audit(con, as_of, rows, stats):
             txt += "\nDiff :\n" + subprocess.run(["git", "diff", CRITERIA_COMMIT, "--", "config.yaml"], capture_output=True,
                                                  text=True, cwd=config.ROOT).stdout
         (out / fname).write_text(txt, encoding="utf-8")
-    shutil.copy(config.ROOT / "audit_templates" / "domain_rules.md", out / "domain_rules.md")
+    (out / "domain_rules.md").write_text(domain_rules(), encoding="utf-8")
     # journal masqué : vérifié avant copie
     jt = (config.ROOT / "journal.jsonl").read_text(encoding="utf-8")
     secret = (config.ROOT / "secrets" / "user_agent.txt")

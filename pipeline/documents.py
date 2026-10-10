@@ -38,6 +38,9 @@ def _classify(kind, form, sgml_type, items):
     """filing_status, doc_class, assurance_level, tier d'un document (§2.2, annexe A)."""
     form = form or ""
     st = (sgml_type or "").upper()
+    if form in ("D", "D/A"):
+        # Form D : filed, montant vendu par offre (§14, annexe A) ; niveau C
+        return "filed", "narrative", "unaudited", "C"
     if form.startswith("DRS"):
         return "submitted_draft", "narrative", "unaudited", "E"
     if kind in ("sgml_header", "filing_index", "filing_summary", "metalinks"):
@@ -85,7 +88,7 @@ def build(as_of, used_accessions=None, failed=None):
         name = "/".join(rel.parts[3:])[:-4]
         m = meta.get(acc) or disc.get(acc, {})
         st, desc = sgml.get((acc, name), (None, None))
-        kind = _kind(name, st)
+        kind = "primary_document" if m.get("form") in ("D", "D/A") else _kind(name, st)
         fs, dc, al, tier = _classify(kind, m.get("form"), st, m.get("items"))
         data = cache.read(p)
         fd = m.get("filingDate")
@@ -157,7 +160,8 @@ def build(as_of, used_accessions=None, failed=None):
 def _discovery_meta():
     """Formulaire et date des dépôts tirés par la découverte (pages R, EX-10, Form D)."""
     out = {}
-    for name in ("discovery_mentions.parquet", "discovery_ex10.parquet", "discovery_formd.parquet"):
+    for name in ("discovery_mentions.parquet", "discovery_ex10.parquet", "discovery_formd.parquet",
+                 "formd_filings.parquet"):
         p = config.DB_DIR / name
         if not p.exists():
             continue

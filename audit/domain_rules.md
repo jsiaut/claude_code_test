@@ -1,7 +1,7 @@
 # Règles du domaine appliquées
 
 *Une page, sans aucun résultat. Elle énonce les règles que le modèle applique et leurs sources
-normatives (spec v6.14, §2 à §10 et §13 ; le §14 n'est pas ouvert au premier passage).*
+normatives (spec v6.14, §2 à §10, §13 et, pour les blocs ouverts, §14).*
 
 ## Preuves (§2)
 
@@ -36,3 +36,11 @@ normatives (spec v6.14, §2 à §10 et §13 ; le §14 n'est pas ouvert au premie
 - Un seul User-Agent déclaré, 5 requêtes par seconde au plus (plafond SEC : 10 par utilisateur), pause d'au moins 10 minutes après un 403, aucun changement d'identité.
 - Une entité par personne morale, appartenances datées ; on ne fusionne que sur CIK ou identité affirmée par une pièce ; un émetteur successeur garde l'historique de son prédécesseur. Une combinaison sous contrôle commun porte deux dates (début du contrôle commun en vue `revised`, date juridique en vue `as_known`).
 - Les exercices ne coïncident pas (52/53 semaines) ; les flux des 10-Q sont cumulés et le quatrième trimestre s'obtient par différence ; un amendement complète l'original sans le remplacer.
+
+## Blocs ouverts de la phase ultérieure (§14)
+
+- **Côté prêteur (`lender`).** Portefeuilles publiés des BDC (BDC Data Sets, fichier `soi` ; état des placements, Reg S-X 12-12), rattachés aux entités des groupes et aux contreparties nommées par dénomination légale entière. Trois signaux lus ensemble : juste valeur ÷ coût, part des intérêts capitalisés, part sans accumulation d'intérêts ; aucun n'est une probabilité de défaut. Une balise absente ne prouve rien, la taille d'une facilité n'est pas la position détenue, et les fonds privés ne publient rien.
+- **Texte des groupes (`text`).** Notes d'investissements (ASC 321, ASC 323), de dette (ASC 470), de baux (ASC 842) et d'engagements (ASC 440), texte autour des faits de concentration (ASC 280-10-50-42), items 2.01 et 2.03 des 8-K, corps des EX-10. Un contrat prouve un plafond, pas un versement.
+- **Découverte (`discovery`).** Un déposant hors du périmètre est candidat si la mention d'un groupe est dans une note, un contrat annexé, une section parties liées ou un Form D, jamais dans un facteur de risque. Les candidats se lisent dans un ordre fixé d'avance (classe de mention, montant documenté, nombre de groupes nommés, accession) ; ce qui n'est pas lu reste « non traité », jamais absent.
+- **Chemins (`paths`).** Cycles orientés de longueur 2 ou 3 entre groupes, hors intragroupe, dans le sens de la ressource, avec leur concomitance (arêtes actives ensemble ou à moins de quatre trimestres d'écart). « Dépendance documentée » seulement si chaque paire d'arêtes consécutives a sa pièce L1 à L5 ; aucun ratio de chemin, des montants de natures différentes ne se composant pas.
+- **Form D (`form_d`).** Avis de vente déposé sous la Regulation D (Rule 503) : le montant vendu (Form D, Item 13) est cumulé depuis la première vente de l'offre, jamais une valorisation ni une contrepartie. Mesure par offre (CIK de l'émetteur et date de première vente) sur le dernier dépôt connu : un D et ses D/A ne se somment pas. Un montant qui peut inclure du non monétaire n'est pas du numéraire primaire sans autre pièce. Un véhicule tiers mesure une demande d'exposition secondaire et n'entre jamais dans une mesure de financement du nœud sous-jacent.
