@@ -58,7 +58,7 @@ def build_edges(obs, reg):
     for eid, ms in reg.members.items():
         for m in ms:
             if (m.get("resolution_rule") == "same_cik" and m.get("consolidation_treatment") == "parent"
-                    and not str(m["ref"]).startswith(("CP:", "LAB:")) and eid.startswith("cik:")):
+                    and not str(m["ref"]).startswith(("CP:", "LAB:", "NF:")) and eid.startswith("cik:")):
                 heads.setdefault(m["ref"], eid)
     for o in obs:
         if o["kind"] != "observation" or o["validation_state"] != "valid":

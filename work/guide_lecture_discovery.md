@@ -80,3 +80,13 @@ instrument, d'un bloc à l'autre.
 - **Filiale nommée d'un groupe.** Une filiale nommée (« Amazon.com Services LLC, a direct or
   indirect subsidiary of Amazon ») s'écrit sous son nom ; son rattachement au groupe se fait
   dans `config.yaml` (`confirmed_entities`), avec l'extrait qui l'établit, jamais de mémoire.
+
+## 6. Piste des non-déposants : SoftBank (D-0044)
+
+- **Ce qu'on cherche** : les relations entre le déclarant et SoftBank (`NF:SOFTBANK`), et, dans la même unité, celles avec les groupes, les laboratoires ou Stargate nommés (`groups_named`).
+  - SoftBank finance le déclarant (actions, obligations convertibles, prêt, bons, garantie) : famille `financing` ou `credit_support`, SoftBank → déclarant.
+  - SoftBank est client, fournisseur, coentrepreneur ou bailleur du déclarant : famille `commercial`, dans le sens de la ressource. Une coentreprise nommée, une ligne sous son nom.
+  - Un groupe ou un laboratoire nommé dans la même unité : comme au § 1.
+- **Entités de SoftBank** (Vision Fund, SB Energy, SB Investment Advisers, SoftBank Corp., Star Beacon…) : chaque ligne porte la dénomination écrite par le texte. Leur rattachement au groupe se fait dans `config.yaml` (`confirmed_entities`), seulement sur l'extrait qui l'affirme (« an affiliate of SoftBank Group Corp. », « wholly owned subsidiary »). Ces extraits se notent dans la `note` de la ligne.
+- **Le déclarant filiale de SoftBank** (SB Energy, PayPay, SoftBank Corp., Arm) : il est `the Company`, et ses relations avec ses actionnaires du groupe SoftBank sont internes à SoftBank dès que l'extrait établit le contrôle. Elles se notent quand même, avec ce contrôle dans la `note`.
+- Une mention de SoftBank comme simple actionnaire passé, ancien investisseur sans flux daté, ou dans une liste de références : abstention `out_of_scope_content` ou `boilerplate_no_event`, avec une `note`.

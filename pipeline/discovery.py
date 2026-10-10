@@ -189,10 +189,12 @@ def _read_tsv(zf, name, col=None, values=None, quoting=3):
     return pd.concat(parts, ignore_index=True)
 
 
-def scan(zpath, lex, excluded_ciks):
+def scan(zpath, lex, excluded_ciks, keep_refs=None):
     """Scan d'une archive : lignes de `txt` qui nomment un terme du lexique, hors des dépôts
     des groupes et hors des taxonomies qui ne sont pas des notes ; puis, pour les dépôts
-    retenus, `num`, `dim`, `tag` (balises propres), `pre` et `ren`."""
+    retenus, `num`, `dim`, `tag` (balises propres), `pre` et `ren`. Avec `keep_refs` (piste des
+    non-déposants, D-0044), seules les lignes qui nomment l'une de ces cibles sont gardées, avec
+    toutes les cibles qu'elles nomment."""
     rx, low = compile_lexicon(lex)
     zf = zipfile.ZipFile(zpath)
     sub = _read_tsv(zf, "sub.tsv")
@@ -240,6 +242,9 @@ def scan(zpath, lex, excluded_ciks):
             hits = find_mentions(v, rx, lex, lambda t: own_name_spans(t, nm))
             if not hits:
                 stats["own_name_only_rows"] += 1
+                continue
+            if keep_refs is not None and not any(lex[i]["ref"] in keep_refs for i, _, _ in hits):
+                stats["other_refs_only_rows"] = stats.get("other_refs_only_rows", 0) + 1
                 continue
             stats["hit_rows"] += 1
             if truncated:
@@ -381,9 +386,10 @@ def _efts(client, params):
     return json.loads(body), url, False
 
 
-def _log_query(rec):
-    QUERY_LOG.parent.mkdir(parents=True, exist_ok=True)
-    with open(QUERY_LOG, "a", encoding="utf-8") as fh:
+def _log_query(rec, log=None):
+    log = log or QUERY_LOG
+    log.parent.mkdir(parents=True, exist_ok=True)
+    with open(log, "a", encoding="utf-8") as fh:
         fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
 
@@ -393,7 +399,7 @@ def _split(a, b):
     return (a, mid.isoformat()), ((mid + dt.timedelta(days=1)).isoformat(), b)
 
 
-def harvest(client, term, forms, start=START, end=AS_OF, keep=lambda s: True):
+def harvest(client, term, forms, start=START, end=AS_OF, keep=lambda s: True, log=None):
     """Toutes les pages d'une requête ; une requête saturée (10 000 résultats) se resserre
     sur deux périodes plus courtes, jusqu'à passer sous le plafond."""
     out = []
@@ -407,7 +413,7 @@ def harvest(client, term, forms, start=START, end=AS_OF, keep=lambda s: True):
         if tot.get("relation") == "gte" or tot["value"] >= 10000:
             if a == b:
                 _log_query({"term": term, "forms": forms, "start": a, "end": b, "total": tot,
-                            "status": "saturated_single_day"})
+                            "status": "saturated_single_day"}, log)
             else:
                 stack.extend(_split(a, b))
                 continue
@@ -429,7 +435,7 @@ def harvest(client, term, forms, start=START, end=AS_OF, keep=lambda s: True):
                                 "period_ending": s.get("period_ending"), "ciks": s.get("ciks"),
                                 "display_names": s.get("display_names"), "items": s.get("items")})
         _log_query({"term": term, "forms": forms, "start": a, "end": b, "total": n, "pages": pages,
-                    "url": EFTS + "?q=" + params["q"], "status": "complete"})
+                    "url": EFTS + "?q=" + params["q"], "status": "complete"}, log)
     return out
 
 
@@ -525,20 +531,23 @@ def note_mentions():
     return pd.DataFrame(rows)
 
 
-def documented_amounts(adshs):
+def documented_amounts(adshs, lex=None, archives=None, subdir=""):
     """Montant documenté par (dépôt, groupe), tiré de `num` (§14) : le plus grand montant en
     USD d'un fait dont un membre de dimension nomme le groupe, hors du nom propre du déposant.
-    Jamais d'une observation ; sans tel fait, pas de montant."""
-    lex = lexicon()
+    Jamais d'une observation ; sans tel fait, pas de montant. La piste des non-déposants
+    (D-0044) passe son lexique, ses archives et le sous-dossier de ses extraits."""
+    lex = lex or lexicon()
     rx, low = compile_lexicon(lex)
     out = {}
-    for name in scanned_archives():
+    for name in (scanned_archives() if archives is None else archives):
         d = BASE / name
-        num = pd.read_parquet(d / "num.parquet", columns=["adsh", "tag", "ddate", "qtrs", "uom", "dimh", "value"])
+        if not (d / subdir / "num.parquet").exists():
+            continue
+        num = pd.read_parquet(d / subdir / "num.parquet", columns=["adsh", "tag", "ddate", "qtrs", "uom", "dimh", "value"])
         num = num[(num["adsh"].isin(adshs)) & (num["uom"] == "USD") & (num["dimh"] != "0x00000000")]
         if num.empty:
             continue
-        dim = pd.read_parquet(d / "dim.parquet")
+        dim = pd.read_parquet(d / subdir / "dim.parquet")
         sub = pd.read_parquet(d / "sub.parquet", columns=["adsh", "name", "former", "period"])
         names = {r.adsh: (r.name, r.former, r.period) for r in sub.itertuples(index=False)}
         seg_hits = {}

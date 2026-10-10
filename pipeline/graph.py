@@ -101,6 +101,12 @@ def seed_entities(p0, cfg):
         ent(f"lab:{lab.lower()}", lab, None, False, "lab", rule="config_seed",
             evidence="config.yaml labs (§10.4)")
         mem(f"lab:{lab.lower()}", f"LAB:{lab.upper()}", "none", None, "parent", rule="config_seed")
+    # autres groupes économiques non déposants (§10.4, D-0044)
+    for nf in cfg.get("non_filers") or []:
+        eid = f"nf:{nf['name'].lower()}"
+        ent(eid, nf["name"], None, False, "non_filer", rule="config_seed",
+            evidence="config.yaml non_filers (§10.4, D-0044)")
+        mem(eid, nf["ref"], "none", None, "parent", rule="config_seed")
     for c in cfg.get("confirmed_entities") or []:
         eid = c.get("entity_id") or f"name:{normalize_name(c['name'])}"
         ent(eid, c["name"], c.get("cik"), bool(c.get("cik")), c.get("group_kind", "counterparty_group"),

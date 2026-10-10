@@ -244,6 +244,8 @@ def plural(n, word, suffix="s"):
 def group_label(g):
     if g.startswith("LAB:"):
         return {"LAB:OPENAI": "OpenAI", "LAB:ANTHROPIC": "Anthropic"}.get(g, g[4:].title())
+    if g.startswith("NF:"):
+        return {"NF:SOFTBANK": "SoftBank"}.get(g, g[3:].title())
     if g.startswith("CP:"):
         return CP_NAMES.get(g, g[3:])
     return GROUP_NAMES.get(g, g)
@@ -1539,6 +1541,7 @@ def discovery_yield_section(con, T, stats):
             "Les autres lignes ne comptent pour aucune paire.")
     np_ = q(con, """SELECT count(*) AS n FROM exclusions WHERE reason = 'not_processed' AND item_key LIKE 'discovery:%'""")[0]["n"]
     L.append(f"- Unités de la file encore à lire : {T.n('exclusions', {'discovery_not_processed': True}, np_)}.")
+    L += nf_discovery_lines(con, T)
     fsp = pres.get("financed_status_quarter_pairs") or {}
     if fsp:
         # clé commune aux deux relevés : la valeur, ou le motif quand la valeur est « unknown »
@@ -1590,6 +1593,46 @@ def discovery_yield_section(con, T, stats):
         L.append(f"- Cellules de rang 1 au motif « recherche incomplète » : {fr_num(Decimal(pres['rank1_search_incomplete']), 0)} → "
                  f"{T.n('measures', {'rank1_search_incomplete_now': True}, r1)}.")
     L.append("")
+    return L
+
+
+def nf_discovery_lines(con, T):
+    """Piste des non-déposants de la découverte (D-0044) : sources, candidats, unités retenues et
+    lues, lignes rendues et arêtes établies."""
+    from . import discovery, nf_discovery as NF
+    if not NF.UNITS.exists():
+        return []
+    units = pd.read_parquet(NF.UNITS)
+    cand = pd.read_parquet(NF.CANDIDATES)
+    ex10 = pd.read_parquet(NF.EX10) if NF.EX10.exists() else pd.DataFrame(columns=["status"])
+    todo = {a["name"] for a in discovery.in_period(discovery.archive_list(), discovery.period_start())}
+    done = set(NF.scanned_archives()) & todo
+    keys = set()
+    if NF.CATALOG.exists():
+        keys = {json.loads(l)["content_key"] for l in NF.CATALOG.read_text(encoding="utf-8").splitlines() if l.strip()}
+    read = {p.stem for p in config.OBS_DIR.glob("*.jsonl") if not p.name.endswith(".rejected.jsonl")} & keys
+    st = units["status"].value_counts().to_dict()
+    ru = units[units["status"] != "out_of_rule"]["rule"].value_counts().to_dict()
+    names = ", ".join(sorted({group_label(g) for s in units["groups"] for g in s.split(";") if g}))
+    L = [f"- Piste des non-déposants ({names}, D-0044) : {T.n('exclusions', {'nf_archives_scanned': True}, len(done))} "
+         f"archives scannées sur {T.n('exclusions', {'nf_archives_period': True}, len(todo))} avec le lexique de la piste ; "
+         f"{T.n('observations', {'nf_ex10_verified': True}, int((ex10['status'] == 'verified').sum()))} EX-10 vérifiés ; "
+         f"{T.n('observations', {'nf_candidates': True}, len(cand))} candidats ; "
+         f"{T.n('observations', {'nf_units': True}, len(units))} unités, dont "
+         f"{T.n('observations', {'nf_units_selected': True}, int(st.get('queued', 0) + st.get('over_cap', 0)))} retenues "
+         f"(co-mention R1 {T.n('observations', {'nf_units_rule': 'R1'}, int(ru.get('R1', 0)))}, "
+         f"montant documenté R2 {T.n('observations', {'nf_units_rule': 'R2'}, int(ru.get('R2', 0)))}), "
+         f"{T.n('observations', {'nf_blocks_read': True}, len(read))} blocs lus, "
+         f"{T.n('observations', {'nf_units_over_cap': True}, int(st.get('over_cap', 0)))} au-delà du plafond, "
+         f"{T.n('observations', {'nf_units_out_of_rule': True}, int(st.get('out_of_rule', 0)))} hors de la règle "
+         "(exclues, motif « non traité »)."]
+    if read:
+        ks = ",".join("'" + k + "'" for k in sorted(read))
+        r = q(con, f"""SELECT kind, count(*) AS n FROM observations WHERE validation_state = 'valid'
+                       AND content_key IN ({ks}) GROUP BY 1 ORDER BY 1""")
+        cnt = {x["kind"]: x["n"] for x in r}
+        L.append(f"  Lignes rendues : {T.n('observations', {'nf_obs': True}, cnt.get('observation', 0))} observations, "
+                 f"{T.n('observations', {'nf_abst': True}, cnt.get('abstention', 0))} abstentions motivées.")
     return L
 
 

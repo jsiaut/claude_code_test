@@ -184,7 +184,7 @@ def path_measures(edges, obs, reg, groups, groups_window, as_of, text_done=froze
         documented = all(pieces)
         # recherche complète : chaque nœud est un groupe dont le texte est lu, ou un laboratoire qui ne
         # dépose pas (§10.4), et aucune paire mesurée du cycle n'est en recherche incomplète (E.0)
-        complete = all(x in text_done or str(x).startswith("LAB:") for x in nodes) and all(
+        complete = all(x in text_done or str(x).startswith(("LAB:", "NF:")) for x in nodes) and all(
             pair_linkage.get((a, b)) != "search_incomplete" and pair_linkage.get((b, a)) != "search_incomplete"
             for a, b in zip(nodes, nodes[1:] + nodes[:1]))
         linkage = "documented_link" if documented else ("searched_none_found" if complete else "search_incomplete")

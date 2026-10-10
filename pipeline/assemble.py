@@ -629,7 +629,43 @@ def discovery_exclusions(as_of):
             if r.get("status") == "saturated_single_day":
                 ex("query", f"efts:{r['term']}:{r['start']}", "not_collected",
                    f"recherche plein texte saturée sur un jour ({r['term']}, {r['start']}) : résultats au-delà de 10 000 non vus")
+    nf_discovery_exclusions(ex, todo)
     return out
+
+
+def nf_discovery_exclusions(ex, todo):
+    """Piste des non-déposants (D-0044) : une unité non lue reste visible, avec la règle qui l'écarte
+    (hors de la règle, au-delà du plafond) ou son état (retenue, non encore lue) ; une archive non
+    scannée sous le lexique de la piste laisse l'inventaire incomplet. Les exclusions passent par
+    `ex`, qui les ajoute à celles de la découverte."""
+    from . import nf_discovery as NF
+    if not NF.UNITS.exists():
+        return
+    read_cks = {p.stem for p in config.OBS_DIR.glob("*.jsonl") if not p.name.endswith(".rejected.jsonl")}
+    built = NF.built_units()
+    units = pd.read_parquet(NF.UNITS)
+    for u in units.to_dict("records"):
+        b = built.get((u["adsh"], u["doc"]))
+        if b and b.get("content_key") and b["content_key"] in read_cks:
+            continue
+        reason = "not_processed"
+        if u["status"] == "out_of_rule":
+            why = ("hors de la règle de lecture (D-0044) : ni co-mention d'un groupe, d'un laboratoire ou de "
+                   "Stargate, ni note du dernier dépôt d'un candidat à montant documenté")
+        elif u["status"] == "over_cap":
+            why = f"retenue ({u['rule']}), au-delà du plafond de lecture (D-0044)"
+        elif b and b.get("error"):
+            why, reason = b["error"], "not_collected"
+        else:
+            why = f"retenue ({u['rule']}), non encore préparée ni lue"
+        ex("document", f"discovery_nf:{u['adsh']}/{u['doc']}", reason,
+           f"piste des non-déposants ({u['groups']}), rang {u['rank']}, passe {u['pass']}, {u['kind']} : {why}",
+           "CP:cik" + str(u["cik"]), u["adsh"])
+    done_nf = set(NF.scanned_archives())
+    for a in todo:
+        if a["name"] not in done_nf:
+            ex("period", f"notes_nf:{a['name']}", "not_processed",
+               f"archive des Notes Data Sets non scannée pour la piste des non-déposants ({a['filed_from']} au {a['filed_to']})")
 
 
 if __name__ == "__main__":

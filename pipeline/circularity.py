@@ -208,7 +208,7 @@ def search_state(s, c, groups, text_done, failed_until, redacted, client_state=N
     def st(q_end):
         if s not in text_done or (c in groups and c not in text_done):
             return False, "not_processed"
-        if c not in groups and not str(c).startswith("LAB:"):
+        if c not in groups and not str(c).startswith(("LAB:", "NF:")):
             # découverte ouverte (§14, D-0037) : le client hors périmètre est cherché dans les
             # Notes Data Sets et la recherche plein texte ; sinon il peut déposer sans être lu
             if client_state is None:

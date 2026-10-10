@@ -53,7 +53,7 @@ CREATE TYPE consolidation_treatment AS ENUM ('parent', 'consolidated_subsidiary'
 CREATE TYPE combination_method AS ENUM ('acquisition', 'common_control', 'succession', 'reorganization', 'reverse_recapitalization', 'none');
 CREATE TYPE entity_status AS ENUM ('confirmed', 'pending');
 CREATE TYPE resolution_rule AS ENUM ('same_cik', 'ex21', 'name_jurisdiction_two_documents', 'formerly_known_as', 'notes_consolidated', 'succession_document', 'executor_decision', 'config_seed', 'none');
-CREATE TYPE group_kind AS ENUM ('config_group', 'lab', 'counterparty_group', 'joint_venture', 'none');
+CREATE TYPE group_kind AS ENUM ('config_group', 'lab', 'non_filer', 'counterparty_group', 'joint_venture', 'none');
 CREATE TYPE source_perspective AS ENUM ('reporting_entity', 'counterparty', 'none');
 CREATE TYPE reporting_scope AS ENUM ('as_reported', 'pro_forma', 'as_if_combined', 'legacy_only', 'legal_entity', 'parent_only', 'none');
 CREATE TYPE obs_kind AS ENUM ('observation', 'abstention');

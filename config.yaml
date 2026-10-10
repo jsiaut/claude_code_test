@@ -79,6 +79,18 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 24, indeterminate: 14, result: discrimination_possible}
       discovery_units_not_processed: 18799
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-10
+    decision: "Ok fais les niveaux 1 et 2, toujours sans sous-agent"
+    question: "intégrer SoftBank : entités réunies par extraits (niveau 1), non-déposant cherché par la découverte (niveau 2)"
+    blocks: [discovery]          # piste des non-déposants de la découverte (D-0044)
+    non_filers_added: ["NF:SOFTBANK"]
+    page: "réflexion sur SoftBank dans la conversation du 2026-10-10 (D-0044)"
+    yield_presented:             # état publié au commit 05e85c0, avant l'ajout
+      relationship_conclusions: {pairs: 60, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 6, causality_not_established: 40}
+      documented_paths: {cycles: 25, documented_dependency: 10, commercial_with_financing: 13, reciprocal_commercial_only: 2}
+      pairs_financed_documented: 12
+      annex_e_e7: {outcomes: 24, indeterminate: 13, result: discrimination_possible}
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
@@ -163,6 +175,8 @@ known_entities:              # appartenances et dates lues en phase 0 (§10.3)
          "X.AI LLC", "CTC Property, LLC"]
 cik_hints: {"X.AI Corp.": "0002002695"}
 labs: [OpenAI, Anthropic]    # groupes économiques non déposants (§10.4)
+non_filers:                  # autres groupes économiques non déposants (§10.4), ni laboratoires ni sous-jacents de form_d (D-0044)
+  - {name: SoftBank, ref: "NF:SOFTBANK"}
 
 lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
@@ -205,6 +219,14 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
       - {term: "X Holdings Corp", ref: SPCX, case_sensitive: true, valid_from: "2023-01-01"}
       - {term: "Atlantic Crypto", ref: CRWV, case_sensitive: true, valid_to: "2019-10-03"}
       - {term: "Maui HoldCo", ref: MRVL, case_sensitive: true}
+  non_filer:                 # piste des non-déposants (D-0044) : extraits, file et état de lecture propres
+    lexicon:                 # mots entiers ; scan avec le lexique d'ensemble pour les co-mentions
+      - {term: SoftBank, ref: "NF:SOFTBANK"}
+    search_forms: ex10       # recherche plein texte des EX-10 seulement ; pas de Form D
+    reading:                 # règle fixée avant de voir les candidats
+      r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
+      r2_documented_amount: latest   # montant documenté : notes du dépôt le plus récent
+      cap_units: 300         # au-delà, arrêt et rendement présenté
 
 form_d:                      # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
   excluded_issuers:          # le terme y désigne autre chose qu'une exposition à la cible ; motif lu dans le Form D
@@ -272,6 +294,8 @@ confirmed_entities:
   - {name: "Amazon Logistics, Inc.", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0038, block: 6f45e084ec881e52209cd693dacbe259217f6a7590e47a263a7a0f2363395397, accession: 0001874178-23-000058, quote: "Amazon Logistics, Inc., a Delaware corporation (\"Amazon\")", membership_note: "même bloc : « Additionally, Amazon's affiliate, Amazon.com, Inc., and Rivian's affiliate, Rivian Automotive, Inc., entered into a letter agreement dated February 15, 2019 » ; affiliée d'Amazon.com, Inc., tête du groupe AMZN"}
   - {name: "Amazon.com Services LLC", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0040, block: 9fb22e68f88a34af527d594209be55dc4c5cefb28adf76ac9fe8558c176c7053, accession: 0001193125-24-136251, quote: "Amazon.com Services LLC, a direct or indirect subsidiary of Amazon", membership_note: "même bloc : « Air Transport Services Group, Inc., a Delaware corporation (the \"Company\"), and Amazon.com, Inc., a Delaware corporation (\"Amazon\") » ; filiale d'Amazon.com, Inc., tête du groupe AMZN"}
   - {name: "Amazon Data Services, Inc.", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0043, block: afc9ecc5828fc4c4301dd88f108da11223baefbd4c356793f8a0ac3c79bb5c54, accession: 0000950103-26-001966, quote: "\"Amazon Parent\" means Amazon.com, Inc. \"Amazon Tenant\" means Amazon Data Services, Inc.", membership_note: "même bloc : « \"Amazon Guaranty\" means the limited parent guarantee dated as of November 21, 2025, from Amazon Parent relating to Amazon Tenant's payment obligations under the Datacenter Lease. » ; filiale d'Amazon.com, Inc., tête du groupe AMZN ; corps d'EX-4 resté à son en-tête (financial_parties_only), cité pour l'identité seulement"}
+  - {name: "SoftBank Group Corp.", group: "NF:SOFTBANK", treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0044, block: 82149ed7d79ec736d122b98fecd3e9e9d6b7aae9a10f2b3d80f047140fcf4cfb, accession: 0001193125-25-017265, quote: "Star Beacon LLC, a wholly owned subsidiary of SoftBank Group Corp. (\"SoftBank\")", membership_note: "tête du groupe économique non déposant SoftBank (§10.4)"}
+  - {name: "Star Beacon LLC", group: "NF:SOFTBANK", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0044, block: ccca44dca579b5a22b80ea746350256c010f14025f421e1a0f8b147b66451896, accession: 0001193125-25-017265, quote: "Star Beacon LLC, a Delaware limited liability company and wholly owned subsidiary of SoftBank Group Corp.", membership_note: "filiale à 100 % de SoftBank Group Corp."}
 entity_aliases:
   - {alias: "NVIDIA", of: "NVIDIA Corporation", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "NVIDIA Corporation (\"NVIDIA\")"}
   - {alias: "Meta", of: "Meta Platforms, Inc.", decision: D-0021, block: 943d65c0fd815aa4a4da6c197bb4d1dcd7c2ee6576608488dc012e6dbb28423e, accession: 0001769628-25-000050, quote: "Meta Platforms, Inc. (\"Meta\")"}
@@ -298,6 +322,7 @@ entity_aliases:
   - {alias: "SpaceX", of: "Space Exploration Technologies Corp.", decision: D-0038, block: 8fb0eaa8e5cc782cb5865c354128d7dad135cc3f3817723ac0e2b9f97e4de558, accession: 0001104659-26-089370, quote: "Space Exploration Technologies Corp., a Texas corporation (\"SpaceX\")"}
   - {alias: "Core Scientific, Inc.", of: "Core Scientific, Inc./tx", decision: D-0043, block: d2eeccf55611592d82afc9bb5838753aaabd7660e00d8319b021e628c9144bc5, accession: 0001193125-22-199189, quote: "Core Scientific, Inc., a Delaware corporation (the \"Company\")"}   # « /tx » : suffixe de désambiguïsation d'EDGAR, pas la dénomination légale
   - {alias: "AMD", of: "Advanced Micro Devices, Inc.", decision: D-0039, block: b2e6eb4698cf82892444f34ab3c6fb0791b0df02449c7f2ab7bab0f536a03e37, accession: 0000002488-26-000045, quote: "Advanced Micro Devices, Inc. (\"AMD\")"}
+  - {alias: "SoftBank", of: "NF:SOFTBANK", decision: D-0044, block: 82149ed7d79ec736d122b98fecd3e9e9d6b7aae9a10f2b3d80f047140fcf4cfb, accession: 0001193125-25-017265, quote: "SoftBank Group Corp. (\"SoftBank\")"}
 own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
   - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
   - {name: "MAIV", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "we contributed an aggregate amount of $50 million to a fund managed by Magnetar (\"MAIV\")", group: CRWV, treatment: consolidated_subsidiary, valid_from: "2025-12-31", membership_note: "D-0019 : le 10-K 2025 de CoreWeave dit consolider le fonds (modèle des droits de vote) ; entrée attestée au 2025-12-31"}

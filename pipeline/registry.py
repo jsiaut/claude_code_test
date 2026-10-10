@@ -133,7 +133,7 @@ ENUMS = {
     "resolution_rule": ["same_cik", "ex21", "name_jurisdiction_two_documents", "formerly_known_as",
                         "notes_consolidated", "succession_document", "executor_decision",
                         "config_seed", NONE],
-    "group_kind": ["config_group", "lab", "counterparty_group", "joint_venture", NONE],
+    "group_kind": ["config_group", "lab", "non_filer", "counterparty_group", "joint_venture", NONE],
     "source_perspective": ["reporting_entity", "counterparty", NONE],
     "reporting_scope": ["as_reported", "pro_forma", "as_if_combined", "legacy_only",
                         "legal_entity", "parent_only", NONE],

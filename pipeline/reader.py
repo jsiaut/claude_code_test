@@ -27,6 +27,7 @@ from .registry import ENUMS
 CATALOG = config.DB_DIR / "blocks.jsonl"          # recalculé à chaque exécution
 CATALOG_EXT = config.DB_DIR / "text_blocks_ext.jsonl"   # bloc `text` de §14, s'il est ouvert
 CATALOG_DISC = config.DB_DIR / "discovery_blocks.jsonl"  # bloc `discovery` de §14, s'il est ouvert
+CATALOG_NF = config.DB_DIR / "nf_discovery_blocks.jsonl"   # piste des non-déposants de la découverte (D-0044)
 STATE = config.WORK / "tmp" / "reading_state.json"
 RUN = config.WORK / "tmp" / "run.json"              # as_of et pass_id de l'exécution
 
@@ -153,6 +154,9 @@ def load_catalog():
     # bloc `discovery` de §14 : blocs préparés par tranches, dans l'ordre de la file (D-0036)
     if isinstance(scope, list) and "discovery" in scope and CATALOG_DISC.exists():
         with open(CATALOG_DISC, encoding="utf-8") as fh:
+            out += [json.loads(l) for l in fh if l.strip()]
+    if isinstance(scope, list) and "discovery" in scope and CATALOG_NF.exists():
+        with open(CATALOG_NF, encoding="utf-8") as fh:
             out += [json.loads(l) for l in fh if l.strip()]
     return out
 

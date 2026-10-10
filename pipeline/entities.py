@@ -145,7 +145,8 @@ def build(p0, cfg, counterparty_names, discovered=None, former=None):
         n = normalize_name(c["name"])
         eid = by_norm.get(n) or f"name:{n}"
         if eid not in {r["entity_id"] for r in rows if r["record_kind"] == "entity"}:
-            kind = "lab" if str(c["group"]).startswith("LAB:") else "config_group"
+            kind = ("lab" if str(c["group"]).startswith("LAB:") else
+                    "non_filer" if str(c["group"]).startswith("NF:") else "config_group")
             ent(eid, c["name"], "executor_decision", ev(c), kind=kind)
         frm = c.get("valid_from") or "none"
         if frm != "none":
@@ -169,8 +170,8 @@ def build(p0, cfg, counterparty_names, discovered=None, former=None):
     # alias établis par un extrait (D-0021)
     for a in cfg.get("entity_aliases") or []:
         target = a["of"]
-        if target.startswith("LAB:"):
-            eid = f"lab:{target.split(':', 1)[1].lower()}"
+        if target.startswith(("LAB:", "NF:")):
+            eid = f"{target.split(':', 1)[0].lower()}:{target.split(':', 1)[1].lower()}"
         else:
             eid = by_norm.get(normalize_name(target))
             if eid is None:      # cible nommée par sa dénomination légale complète (D-0022)

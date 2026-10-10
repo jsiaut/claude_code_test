@@ -236,3 +236,35 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - bloc `lender` : cellules des BDC 831 → 1 251 (point 14) ;
   - exclusions : `conflicting` +178 (faits des trois groupes : TeraWulf 38, Cipher 62, Core Scientific 78), `financial_parties_only` +20, `out_of_scope` +6 (unités de la découverte et dépôts antérieurs aux fusions inversées, deux lignes par groupe), `history_left_censored` +3, `pending_entity` +91 (85 dénominations sans pièce d'identité, 6 positions de BDC qui nomment deux émetteurs), `not_processed` −44 (unités de la découverte des trois déposants). `parse_failed` passe de 3 à 16 : l'archive d'Alphabet de 2019 en sort (point 7), et les archives de BDC dont des lignes de `num` ont un nombre de champs inattendu passent de 2 à 16 avec la nouvelle extraction ;
   - tests unitaires : 60 (délimitation `d4`, date de publicité d'un signal). Source : §2.1, §3.1, §7.3, §9.2, §9.6, §10.1, §10.2, §11.1, §14, annexes A, E et F.
+- **D-0044 — SoftBank, groupe économique non déposant (§10.4) : entités confirmées et découverte dédiée, règles fixées avant de voir les candidats.** (1) Décision de l'utilisateur, le 2026-10-10 : « Ok fais les niveaux 1 et 2, toujours sans sous-agent ». Elle suit une réflexion sur l'intégration de SoftBank, sur l'état publié au commit 05e85c0. Le niveau 1 réunit les entités de SoftBank en un groupe économique, par des extraits de pièces (§10.2). Le niveau 2 traite SoftBank comme un non-déposant, à la manière d'OpenAI et d'Anthropic, et cherche qui le nomme dans EDGAR. Le niveau 3, des comptes propres tirés de sources hors SEC, n'est pas retenu. Lecture séquentielle par l'exécutant, sans sous-agent.
+
+  (2) Non-déposant. SoftBank Group Corp. est coté à Tokyo et ne dépose ni 10-K ni 20-F. Ses dépôts EDGAR éventuels, sans rapport périodique, ne nomment pas les financeurs d'un émetteur : la recherche est complète de son côté (D-0037, point 2), ce que l'intégration vérifie dans la liste des noms d'EDGAR. Son groupe s'écrit `NF:SOFTBANK` (`config.yaml`, `non_filers`), et non `LAB:` :
+  - ce n'est pas un laboratoire ;
+  - un Form D dont la dénomination nomme SoftBank est une offre d'une entité de SoftBank, pas un véhicule d'exposition : le bloc `form_d` ne prend pas SoftBank pour sous-jacent.
+
+  Comme pour un laboratoire, la recherche est complète du côté de SoftBank pour une paire (E.0) et pour un cycle (bloc `paths`). Une filiale qui dépose elle-même ne fait pas de SoftBank un déposant ; ses dépôts restent des dépôts de découverte.
+
+  (3) Niveau 1, entités confirmées dès maintenant (8-K de Cipher du 30 janvier 2025) :
+  - SoftBank Group Corp. est la tête du groupe ;
+  - Star Beacon LLC en est une filiale à 100 % : « Star Beacon LLC, a wholly owned subsidiary of SoftBank Group Corp. ("SoftBank") » ;
+  - « SoftBank » est un alias du groupe.
+
+  N'entrent dans le groupe que sur un extrait qui l'affirme, avec sa date : SoftBank Group Capital Limited et SVF Holdco (UK) Limited, vendeurs d'Arm dans le 8-K de NVIDIA du 14 septembre 2020 ; Arm Limited ; Ampere. Aucun bloc lu ne le fait aujourd'hui :
+  - le 8-K de NVIDIA ne dit pas qui contrôle les vendeurs ;
+  - la DEF 14A d'Oracle de 2025 ne donne que l'accord du 19 mars 2025 sur Ampere (« When the Ampere Acquisition closes, we will cease to be an investor in Ampere »), pas sa réalisation.
+
+  (4) Niveau 2, sources et lexique :
+  - lexique de la piste : « SoftBank », insensible à la casse, en mot entier, cible `NF:SOFTBANK`. Ni « Vision Fund », ni « SVF », ni « Arm », ni « Ampere », ni « SB Energy » : ce sont des termes ambigus (une unité électrique, un mot courant) ou des entités non confirmées (D-0036, point 3) ;
+  - Notes Data Sets : les 47 archives de D-0036, retirées et scannées avec le lexique d'ensemble (groupes, laboratoires, Stargate, SoftBank). Ne sont gardées que les lignes de `txt` qui nomment SoftBank, avec les autres cibles nommées dans la même valeur, ainsi que `num`, `dim`, `tag`, `pre` et `ren` de leurs dépôts. Exclusions de D-0036 (dépôts des groupes, taxonomies qui ne sont pas des notes, nom propre du déposant). Extraits sous `cache/datasets/notes/{archive}/nf/`, manifeste `manifest_nf.jsonl` ;
+  - recherche plein texte : la phrase « SoftBank » sur les formulaires racines des EX-10 (D-0036, point 5). Pas de Form D : un Form D ne se lit jamais, et SoftBank n'est pas un sous-jacent du bloc `form_d` ;
+  - la découverte d'origine ne change pas : mêmes extraits, même version de lexique, même classement, même file, même état de lecture. L'arrêt de D-0041 tient.
+
+  (5) Candidats, classement et règle de lecture :
+  - candidat : le déposant (CIK). Classement de D-0036 : classe de mention, puis montant documenté, puis nombre de cibles nommées, puis accession. Le montant documenté est celui d'un fait de `num` dont un membre de dimension nomme SoftBank ;
+  - unités lues :
+    - (R1) une note ou un EX-10 qui nomme SoftBank et, dans la même unité, un groupe, un laboratoire ou Stargate : toutes ces unités, de la plus récente à la plus ancienne ;
+    - (R2) pour un candidat qui a un montant documenté, les notes de son dépôt le plus récent qui nomment SoftBank ;
+  - le reste est exclu, motif `not_processed`, la règle dans le détail ;
+  - ordre : R1 puis R2, chacun dans l'ordre du classement. Un texte identique n'est qu'une unité, et un bloc déjà lu par la découverte d'origine (même clé de contenu) ne se relit pas. Un EX-10 se lit par son en-tête ; son corps seulement si l'en-tête montre un groupe partie, après les notes ;
+  - plafond : au-delà de 300 unités retenues, la lecture s'arrête à la 300e. Le reste est `not_processed`, et le rendement est présenté avant d'aller plus loin ;
+  - l'état d'une unité préparée se garde sous sa clé (accession, document), non sous son rang dans la file, pour qu'un lexique enrichi ne décale rien.
