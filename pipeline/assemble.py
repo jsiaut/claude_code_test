@@ -13,7 +13,8 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, lender_portfolio, links, load, measures, model, montages, rank2, reader)
+               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, model, montages, rank2,
+               reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
 
@@ -312,6 +313,17 @@ def run(as_of):
             "cells": dict(Counter(f"{c['measure']}|{c['status']}" for c in lp if c["measure"] != "fragility_event")),
             "events": dict(Counter(f"{c['breakdown_key']}|{c['value_text'] or c['nd_reason']}" for c in lp
                                    if c["measure"] == "fragility_event"))}
+    # bloc lender_liabilities (D-0047) : passif des mêmes véhicules, offres de rachat, F14 à F16
+    ll_excl = []
+    if "lender_liabilities" in scope:
+        ll = lender_liabilities.cells(as_of)
+        cells += ll
+        ll_excl = lender_liabilities.exclusions(as_of)
+        stats["lender_liabilities"] = {
+            "vehicles": len({c["subject"] for c in ll}),
+            "cells": dict(Counter(f"{c['measure']}|{c['status']}" for c in ll if c["measure"] != "fragility_event")),
+            "events": dict(Counter(f"{c['breakdown_key']}|{c['value_text'] or c['nd_reason']}" for c in ll
+                                   if c["measure"] == "fragility_event"))}
 
     # 10. invariants d'agrégat (§7.6) sur les sommes d'arêtes
     inv_excl = invariants(cells, edges, rels, reg)
@@ -351,7 +363,7 @@ def run(as_of):
     # 15. exclusions
     # bloc montages (D-0046) : relevés de portefeuille non lus, pièces sans fenêtre, fenêtres au-delà du plafond
     mt_excl = montages.exclusions(as_of) if "montages" in scope else []
-    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + mt_excl + formd_excl + \
+    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
 

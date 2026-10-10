@@ -889,6 +889,8 @@ def finalize():
                 or r.get("proration") is not None else r["result"]
         if c:
             r["corrected"] = sorted(c)
+            if not r.get("read"):
+                r["read"] = [o["amendments"][-1]["accession"]]     # relevé tiré du dernier amendement par l'exécutant
         e = check_reading(r, texts)
         if e:
             errors.append(f"{o['offer_key']} ({o['entity']} {o['offer_date']}) : {e}")
@@ -970,7 +972,9 @@ def tender_outcome(r):
     out = {}
     t, a, m = _num(r.get("tendered")), r.get("accepted"), _num(r.get("offer_max"))
     tu, au, mu = r.get("tendered_unit"), r.get("accepted_unit"), r.get("offer_max_unit")
-    if a == "all" and t is not None:
+    if t is not None and t == 0:
+        out["acceptance"] = "denominator_nonpositive"      # rien d'apporté : pas de rapport
+    elif a == "all" and t is not None:
         out["acceptance"] = (Decimal(1), t, t)
     elif a == "all":
         out["acceptance"] = "not_disclosed"
@@ -1046,7 +1050,7 @@ def tender_cells(as_of):
             continue
         dates = {a["accession"]: a["date"] for a in o["amendments"]}
         kd = max((dates.get(x) for x in r.get("read") or [] if dates.get(x)), default=None)
-        exp = r.get("expiration") or kd
+        exp = r.get("expiration") or kd or o["offer_date"]
         res = tender_outcome(r)
         fl = {**base, "read": r.get("read"), "expiration": r.get("expiration"),
               "tendered": r.get("tendered"), "tendered_unit": r.get("tendered_unit"),
@@ -1279,6 +1283,32 @@ def announcements_by_cik():
 def cells(as_of):
     """Toutes les cellules du bloc."""
     return balance_cells(as_of) + tender_cells(as_of) + program_cells(as_of)
+
+
+def exclusions(as_of):
+    """Lignes de num illisibles, offres sur d'autres titres que les parts, 8-K au-delà du plafond de lecture."""
+    info = json.loads(INFO.read_text()) if INFO.exists() else {}
+    out = []
+
+    def ex(key, kind, reason, detail, acc=None):
+        out.append({"exclusion_key": f"{reason}:lender_liabilities:{key}", "item_kind": kind,
+                    "item_key": f"lender_liabilities:{key}", "reason": reason, "detail": detail, "group_id": None,
+                    "accession": acc, "content_key": None, "as_of": as_of})
+    for arch, n in sorted((info.get("lines_malformed") or {}).items()):
+        if n:
+            ex(f"{arch}:num.tsv", "document", "parse_failed",
+               f"{n} ligne(s) de num au nombre de champs inattendu, écartées (D-0047)")
+    for o in load_offers():
+        if o["in_window"] and not share_offer(o) and o.get("security_class"):
+            ex(f"offer:{o['offer_key']}", "document", "out_of_scope",
+               f"{o['entity']}, SC TO-I du {o['offer_date']} : offre sur « {o.get('security_title')} », pas sur les parts "
+               "du véhicule (D-0047, point 9)", o["offer_accession"])
+    for d in info.get("announcements_over_cap") or []:
+        k = f"8k:{d['accession']}" + (f"/{d['document']}#{d['window']}" if d.get("document") else "")
+        ex(k, "document", "not_processed",
+           f"{d['entity']}, 8-K du {d['filing_date']} : au-delà du plafond de 40 unités de lecture (D-0047, point 7)",
+           d["accession"])
+    return out
 
 
 if __name__ == "__main__":

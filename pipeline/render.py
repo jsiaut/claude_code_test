@@ -30,7 +30,7 @@ ND_FR = {
     "recast_boundary": "frontière de retraitement", "history_left_censored": "historique tronqué",
     "term_missing": "terme manquant", "not_disclosed": "non publié", "not_collected": "non collecté",
     "concept_unresolved": "concept non résolu", "conflicting": "faits en conflit", "mixed_currency": "devises mêlées",
-    "end_offset_exceeded": "dates de fin trop éloignées", "no_effect_published": "effet non publié",
+    "end_offset_exceeded": "période non écoulée à la date de coupure", "no_effect_published": "effet non publié",
     "precondition_not_met": "précondition non remplie", "date_missing": "date manquante",
     "interval_straddles_threshold": "intervalle à cheval sur le seuil", "prior_period_missing": "période antérieure absente",
     "not_tagged": "non balisé", "no_named_counterparty": "pas de contrepartie nommée",
@@ -254,7 +254,10 @@ F_FR = {"F1": "capex décaissé supérieur au CFO deux trimestres de suite", "F2
         "F9": "fin d'un contrat de capacité (8-K item 1.02)", "F10": "doute sur la continuité d'exploitation",
         "F11": "juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite",
         "F12": "intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite",
-        "F13": "prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite"}
+        "F13": "prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite",
+        "F14": "ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite",
+        "F15": "offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)",
+        "F16": "interruption d'un programme régulier d'offres de rachat d'une BDC"}
 CONC_FR = {"documented_dependency": "dépendance documentée", "commercial_with_financing": "relation commerciale doublée d'un financement",
            "reciprocal_commercial_only": "achats réciproques seulement", "causality_not_established": "causalité non établie"}
 STRUCT_FR = {"commercial_and_financing": "commerciale et financière", "financing_only": "financière seulement",
@@ -465,7 +468,9 @@ def synthesis(con, as_of, stats):
     agg = defaultdict(list)
     for r in st:
         agg[r["f"]].append(f"{fr(r['status'])}{(' / ' + fr(r['v'])) if r['v'] else ''} {T.n('measures', {'F': r['f'], 'status': r['status'], 'v': r['v']}, r['n'])}")
-    L.append("États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F13 : véhicule BDC × date de bilan, D-0045), pour lire ce qui n'a pas été observé :")
+    L.append("États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F14 : véhicule BDC × date de bilan, "
+             "D-0045 et D-0047 ; F15 : véhicule × offre de rachat ; F16 : véhicule × offre qui clôt une série), pour lire ce "
+             "qui n'a pas été observé :")
     L.append("")
     for f in sorted(agg, key=lambda x: int(x[1:])):
         L.append(f"- {f} : " + " ; ".join(agg[f]))
@@ -485,6 +490,7 @@ def synthesis(con, as_of, stats):
     L += foreign_section(con, T)
     L += lender_section(con, T)
     L += lender_portfolio_section(con, T)
+    L += lender_liabilities_section(con, T)
     L += montages_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
@@ -787,6 +793,224 @@ def lender_portfolio_section(con, T):
         L.append("Exclusions du bloc : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'lp_excl': r['reason']}, r['n'])}"
                                                     for r in ex) + " (lignes « Total » de portefeuilles et lignes illisibles, "
                  "par archive).")
+        L.append("")
+    return L
+
+
+def f15_txt(f):
+    f = f or {}
+    if f.get("value_text") == "event":
+        return "réduite"
+    if f.get("value_text") == "no_event":
+        return "servie en entier"
+    return "n.d. (" + {"end_offset_exceeded": "offre encore ouverte", "not_disclosed": "résultat non publié",
+                       "not_processed": "non lu", "not_collected": "non obtenu"}.get(f.get("nd_reason"), f.get("nd_reason") or "") + ")"
+
+
+LL_KIND_FR = {"suspension": "suspension des rachats", "termination": "fin des rachats", "merger_agreement": "accord de fusion",
+              "merger_termination": "fusion abandonnée", "merger_completion": "fusion réalisée", "listing": "cotation",
+              "return_of_capital": "remboursement par distributions", "other": "autre annonce"}
+
+
+def ll_data(con):
+    """Cellules du bloc lender_liabilities : bilan par véhicule et date, offres par véhicule, événements F14 à F16."""
+    by = defaultdict(dict)
+    names = {}
+    for r in q(con, """SELECT * FROM measures WHERE measure LIKE 'bdc_liab_%' AND view = 'as_known'
+                       ORDER BY subject, period_end, measure"""):
+        by[(r["subject"], r["period_end"])][r["measure"]] = r
+        fl = json.loads(r["flags"]) if r["flags"] else {}
+        if fl.get("vehicle"):
+            names[r["subject"]] = fl["vehicle"]
+    offers = defaultdict(dict)
+    for r in q(con, """SELECT * FROM measures WHERE (measure LIKE 'bdc_tender_%' OR (measure = 'fragility_event'
+                       AND breakdown_key = 'F15')) AND subject LIKE 'cik:%' ORDER BY subject, period_end"""):
+        fl = json.loads(r["flags"]) if r["flags"] else {}
+        o = offers[fl.get("offer")]
+        o.update({"subject": r["subject"], "vehicle": fl.get("vehicle"), "offer_date": fl.get("offer_date"),
+                  "end": r["period_end"]})
+        o["F15" if r["measure"] == "fragility_event" else r["measure"]] = r
+    f16 = [dict(r, fl=json.loads(r["flags"]) if r["flags"] else {}) for r in q(con, """SELECT * FROM measures
+           WHERE measure = 'fragility_event' AND breakdown_key = 'F16' ORDER BY period_end, subject""")]
+    return by, names, offers, f16
+
+
+def lender_liabilities_section(con, T):
+    """Bloc lender_liabilities (D-0047) : couverture et levier des BDC, offres de rachat (demandes et
+    acceptations), événements F14 à F16, annonces lues dans les 8-K."""
+    import statistics
+    from . import lender_liabilities as LL
+    cfg = config.load()
+    if "lender_liabilities" not in (cfg.get("scope") or []):
+        return []
+    lp = cfg.get("lender_portfolio") or {}
+    by, names, offers, f16 = ll_data(con)
+    if not by:
+        return []
+    L = ["## Fragilité du financement : passif des BDC et rachats (bloc `lender_liabilities`, D-0047)", ""]
+    L.append("Mêmes véhicules que le bloc `lender_portfolio`, sans sélection ni somme entre véhicules. Le ratio de couverture "
+             "est celui que publie le véhicule (loi de 1940 : actif net plus dette de premier rang, sur cette dette) ; dette "
+             "÷ actif net s'en déduit, et passif total ÷ actif net le majore. Les offres de rachat sont les SC TO-I des "
+             "véhicules non cotés : parts apportées, parts acceptées et plafond de l'offre se lisent dans l'amendement final. "
+             "Événements fixés avant tout calcul : F14 (couverture en baisse deux trimestres de suite), F15 (offre réduite au "
+             "prorata), F16 (interruption d'un programme régulier d'offres). Les demandes ne disent pas qui demande.")
+    L.append("")
+    cov = Counter((m.get("bdc_liab_asset_coverage") or {}).get("status") for m in by.values())
+    nd = Counter((m.get("bdc_liab_asset_coverage") or {}).get("nd_reason") for m in by.values())
+    lna = Counter((m.get("bdc_liab_liabilities_to_net_assets") or {}).get("status") for m in by.values())
+    L.append(f"- Bilans : {T.n('measures', {'ll_vehicles': True}, len(names))} véhicules, "
+             f"{T.n('measures', {'ll_vehicle_dates': True}, len(by))} couples véhicule × date. Couverture publiée et retenue "
+             f"{T.n('measures', {'ll_cov': 'computed'}, cov['computed'])} fois ; non balisée "
+             f"{T.n('measures', {'ll_cov_nd': 'not_tagged'}, nd['not_tagged'])} ; contraire à l'identité du bilan, souvent le "
+             f"seuil légal balisé à la place du ratio, {T.n('measures', {'ll_cov_nd': 'conflicting'}, nd['conflicting'])} ; "
+             f"hors échelle {T.n('measures', {'ll_cov_nd': 'parse_failed'}, nd['parse_failed'])}. Passif ÷ actif net "
+             f"calculé {T.n('measures', {'ll_lna': 'computed'}, lna['computed'])} fois.")
+    res = Counter()
+    for o in offers.values():
+        f = o.get("F15") or {}
+        res[f.get("value_text") or f.get("nd_reason")] += 1
+    L.append(f"- Offres de rachat de parts dans la fenêtre : {T.n('measures', {'ll_offers': True}, len(offers))}, chez "
+             f"{T.n('measures', {'ll_offer_vehicles': True}, len({o['subject'] for o in offers.values()}))} véhicules. "
+             f"F15 tranché : {T.n('measures', {'ll_f15': 'read'}, res['event'] + res['no_event'])} ; réduites au prorata "
+             f"{T.n('measures', {'ll_f15': 'event'}, res['event'])} ; encore ouvertes à `as_of` "
+             f"{T.n('measures', {'ll_f15': 'end_offset_exceeded'}, res['end_offset_exceeded'])} ; résultat non publié "
+             f"{T.n('measures', {'ll_f15': 'not_disclosed'}, res['not_disclosed'])} (dont les parts acceptées non chiffrées).")
+    L.append("")
+
+    def val(c):
+        if not c or c["status"] == "not_determinable" or c["value"] is None:
+            return None
+        return Decimal(str(c["value"]))
+
+    def cell_txt(c, fmt):
+        if c is None:
+            return "—"
+        if fmt == "x":
+            return T.m(c, fmt="x") if c["value"] is not None else T.m(c)
+        return T.m(c, fmt="pct", dec=0)
+    bo = lp_platform({s: {"_": n} for s, n in names.items()},
+                     (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or ["Blue Owl", "Owl Rock"])
+    peers = [f"cik:{p['cik']}" for p in lp.get("peers") or [] if f"cik:{p['cik']}" in names]
+    ev14 = defaultdict(list)
+    for r in q(con, """SELECT subject, period_end FROM measures WHERE measure = 'fragility_event' AND breakdown_key = 'F14'
+                       AND value_text = 'event' ORDER BY period_end"""):
+        ev14[r["subject"]].append(r["period_end"])
+
+    def lev_rows(subjects):
+        out = ["| Véhicule | Dernier bilan | Couverture | Dette ÷ actif net | — un an plus tôt | Passif ÷ actif net | F14 (dernières dates) |",
+               "| --- | --- | ---: | ---: | ---: | ---: | --- |"]
+        for s in subjects:
+            ds = sorted(d for (ss, d) in by if ss == s)
+            if not ds:
+                continue
+            d = ds[-1]
+            y = lp_year_before(ds, d)
+            m, my = by[(s, d)], (by[(s, y)] if y else {})
+            out.append(f"| {names[s]} | {d} | {cell_txt(m.get('bdc_liab_asset_coverage'), 'pct')} | "
+                       f"{cell_txt(m.get('bdc_liab_debt_to_net_assets'), 'x')} | "
+                       f"{cell_txt(my.get('bdc_liab_debt_to_net_assets'), 'x') if y else '—'} | "
+                       f"{cell_txt(m.get('bdc_liab_liabilities_to_net_assets'), 'x')} | "
+                       f"{', '.join(ev14[s][-3:]) or 'aucune'} |")
+        return out
+    L += ["**Levier des véhicules Blue Owl**", ""] + lev_rows(bo) + [""]
+    L += ["**Levier des repères nommés d'avance**", ""] + lev_rows(peers) + [""]
+    per = defaultdict(lambda: defaultdict(list))
+    for (s, d), m in by.items():
+        for k in ("bdc_liab_debt_to_net_assets", "bdc_liab_liabilities_to_net_assets"):
+            x = val(m.get(k))
+            if x is not None:
+                per[d][k].append(x)
+    dates = [d for d in sorted(per) if len(per[d]["bdc_liab_debt_to_net_assets"]) >= 20][-6:]
+    if dates:
+        L.append("Quartiles de l'univers par date de bilan (premier quartile / médiane / troisième quartile ; des repères, "
+                 "jamais des totaux). Dette ÷ actif net sur les seuls véhicules qui publient leur couverture :")
+        L.append("")
+        L.append("| Date du bilan | Véhicules (couverture) | Dette ÷ actif net | Véhicules (passif) | Passif ÷ actif net |")
+        L.append("| --- | ---: | --- | ---: | --- |")
+
+        def qt(meas, d):
+            xs = sorted(per[d][meas])
+            if len(xs) < 4:
+                return "—"
+            q1, q2, q3 = statistics.quantiles(xs, n=4, method="inclusive")
+            return " / ".join(T.n("measures", {"ll_quartile": [meas, d, i]}, v, fr_num(v, 2) + " x")
+                              for i, v in ((1, q1), (2, q2), (3, q3)))
+        for d in dates:
+            L.append(f"| {d} | {T.n('measures', {'ll_n_at': ['de', d]}, len(per[d]['bdc_liab_debt_to_net_assets']))} | "
+                     f"{qt('bdc_liab_debt_to_net_assets', d)} | "
+                     f"{T.n('measures', {'ll_n_at': ['lna', d]}, len(per[d]['bdc_liab_liabilities_to_net_assets']))} | "
+                     f"{qt('bdc_liab_liabilities_to_net_assets', d)} |")
+        L.append("")
+    # rachats : trimestre d'expiration, toute l'univers
+    tq = defaultdict(lambda: {"n": 0, "read": 0, "ev": 0, "dem": []})
+    for o in offers.values():
+        e = o["end"] or o["offer_date"]
+        k = f"{e[:4]} T{(int(e[5:7]) - 1) // 3 + 1}"
+        f = o.get("F15") or {}
+        tq[k]["n"] += 1
+        tq[k]["read"] += f.get("value_text") in ("event", "no_event")
+        tq[k]["ev"] += f.get("value_text") == "event"
+        x = val(o.get("bdc_tender_demand_ratio"))
+        if x is not None:
+            tq[k]["dem"].append(x)
+    L.append("**Rachats, par trimestre d'expiration des offres (tous les véhicules qui en font)**")
+    L.append("")
+    L.append("| Trimestre | Offres | F15 tranché | Réduites au prorata (F15) | Demande médiane ÷ plafond | Offres au-delà du plafond |")
+    L.append("| --- | ---: | ---: | ---: | ---: | ---: |")
+    for k in sorted(tq):
+        t = tq[k]
+        med = statistics.median(t["dem"]) if t["dem"] else None
+        L.append(f"| {k} | {T.n('measures', {'ll_q_offers': k}, t['n'])} | {T.n('measures', {'ll_q_read': k}, t['read'])} | "
+                 f"{T.n('measures', {'ll_q_f15': k}, t['ev'])} | "
+                 f"{T.n('measures', {'ll_q_dem_med': k}, med, fr_num(med, 2)) if med is not None else '—'} "
+                 f"({T.n('measures', {'ll_q_dem_n': k}, len(t['dem']))} offres) | "
+                 f"{T.n('measures', {'ll_q_dem_over': k}, sum(1 for x in t['dem'] if x > 1))} |")
+    L.append("")
+    L.append("La demande rapporte les parts apportées au plafond de l'offre (en général 5 % des parts) ; elle n'est calculée "
+             "que si l'amendement ou l'offre donne ce plafond dans la même unité.")
+    L.append("")
+
+    def offer_rows(subjects, n_last=6):
+        out = ["| Véhicule | Expiration | Demande ÷ plafond | Acceptées ÷ apportées | F15 |", "| --- | --- | ---: | ---: | --- |"]
+        for s in subjects:
+            os_ = sorted((o for o in offers.values() if o["subject"] == s), key=lambda o: o["end"] or "")
+            for o in os_[-n_last:]:
+                out.append(f"| {o['vehicle']} | {o['end']} | {cell_txt(o.get('bdc_tender_demand_ratio'), 'x')} | "
+                           f"{cell_txt(o.get('bdc_tender_acceptance_ratio'), 'pct')} | {f15_txt(o.get('F15'))} |")
+        return out
+    owl_t = [s for s in bo if any(o["subject"] == s for o in offers.values())]
+    peer_t = [s for s in peers if any(o["subject"] == s for o in offers.values())]
+    L += ["**Rachats des véhicules Blue Owl (six dernières offres)**", ""] + offer_rows(owl_t) + [""]
+    L += ["**Rachats des repères non cotés (six dernières offres)**", ""] + offer_rows(peer_t) + [""]
+    ann = LL.announcements_by_cik()
+    L.append("**F16, interruptions d'un programme régulier d'offres**")
+    L.append("")
+    evs = [r for r in f16 if r["value_text"] == "event"]
+    st = Counter(r["value_text"] or r["nd_reason"] for r in f16)
+    L.append(f"- Cellules : {T.n('measures', {'ll_f16': 'event'}, st['event'])} événements, "
+             f"{T.n('measures', {'ll_f16': 'no_event'}, st['no_event'])} sans événement, "
+             f"{T.n('measures', {'ll_f16': 'open'}, st['end_offset_exceeded'])} dont les 120 jours ne sont pas écoulés.")
+    for r in evs:
+        fl = r["fl"]
+        cik = r["subject"].split(":", 1)[1]
+        why = [f"{LL_KIND_FR.get(a['kind'], a['kind'])} ({a['date']} : {a.get('note')})" for a in ann.get(cik, [])
+               if a.get("reason") == "f16"]
+        L.append(f"- {fl.get('entity')} : dernière offre le {fl.get('last_offer')}, aucune dans les 120 jours (événement daté "
+                 f"du {r['period_end']}). " + (("8-K lus : " + " ; ".join(why) + ".") if why else "Aucun 8-K lu n'en donne la cause."))
+    L.append("")
+    owl_ann = [a for c_, xs in ann.items() for a in xs if a.get("reason") == "blue_owl"]
+    if owl_ann:
+        L.append("**Annonces des véhicules Blue Owl lues dans leurs 8-K (les plus récentes d'abord, plafond de 40 unités)**")
+        L.append("")
+        for a in sorted(owl_ann, key=lambda a: a["date"], reverse=True):
+            L.append(f"- {a['date']}, {a['entity']} — {LL_KIND_FR.get(a['kind'], a['kind'])} : {a.get('note')}. "
+                     f"« {a['quote'][:220]}{'…' if len(a['quote']) > 220 else ''} »")
+        L.append("")
+    ex = q(con, """SELECT reason, count(*) AS n FROM exclusions WHERE item_key LIKE 'lender_liabilities:%' GROUP BY 1 ORDER BY 1""")
+    if ex:
+        L.append("Exclusions du bloc : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'ll_excl': r['reason']}, r['n'])}"
+                                                    for r in ex) + " (offres sur des obligations ou des actions de préférence ; "
+                 "8-K au-delà du plafond de lecture).")
         L.append("")
     return L
 
@@ -1269,9 +1493,10 @@ def delta(con, as_of, stats):
         for sj in shown:
             for f, ds in sorted(evd[sj].items()):
                 last = sorted(names[sj])[-1] if names[sj] else None
+                unit = {"F15": "offre(s)", "F16": "interruption(s)"}.get(f, "date(s) de bilan")
                 L.append(f"- {names[sj].get(last, sj) if last else sj} (véhicule BDC) : {f} ({F_FR[f]}) — "
-                         f"{T.n('measures', {'F_event_vehicle': [sj, f]}, len(ds))} date(s) de bilan")
-        L.append("- Les autres véhicules BDC de l'univers (D-0045) ne sont pas listés ici : leurs cellules sont dans `measures`.")
+                         f"{T.n('measures', {'F_event_vehicle': [sj, f]}, len(ds))} {unit}")
+        L.append("- Les autres véhicules BDC de l'univers (D-0045, D-0047) ne sont pas listés ici : leurs cellules sont dans `measures`.")
     L.append("")
     L.append("## Rendement du passage (§11.1)")
     L.append("")
@@ -1288,7 +1513,7 @@ def delta(con, as_of, stats):
     fv = q(con, """SELECT status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures WHERE measure = 'fragility_event'
                    AND subject LIKE 'cik:%' GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""")
     if fv:
-        L.append("- Cellules de F11 à F13 des véhicules BDC (D-0045), par statut et motif : " + " ; ".join(
+        L.append("- Cellules de F11 à F16 des véhicules BDC (D-0045, D-0047), par statut et motif : " + " ; ".join(
             f"{fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} {T.n('measures', {'annexF_vehicles': [r['status'], r['nd']]}, r['n'])}" for r in fv) + ".")
     fin = q(con, """SELECT subject, counterparty FROM measures WHERE measure = 'financed_status' AND value_text = 'active'
                     AND view = 'as_known' AND financing_policy = 'exposure_outstanding' GROUP BY 1, 2 ORDER BY 1, 2""")
@@ -1467,7 +1692,50 @@ def series(con, as_of, stats):
                 L.append(f"| {d} | {lp_cell_txt(T, m.get('bdc_portfolio_fv_to_cost'))} | {lp_cell_txt(T, m.get('bdc_portfolio_pik_share'))} | "
                          f"{lp_cell_txt(T, m.get('bdc_portfolio_unfunded_ratio'))} | {', '.join(evs)} |")
             L.append("")
+            if "lender_liabilities" in (config.load().get("scope") or []):
+                L += series_liabilities(con, T, sj)
     return "\n".join(L) + "\n", T.rows
+
+
+def series_liabilities(con, T, sj):
+    """Passif et offres de rachat d'un véhicule BDC (D-0047), série complète, vue as_known."""
+    rows = q(con, """SELECT * FROM measures WHERE subject = ? AND (measure LIKE 'bdc_liab_%' OR (measure = 'fragility_event'
+                     AND breakdown_key = 'F14' AND value_text = 'event')) AND view = 'as_known' ORDER BY period_end, measure""", sj)
+    by = defaultdict(dict)
+    for r in rows:
+        by[r["period_end"]][r["measure"] if r["measure"] != "fragility_event" else "F14"] = r
+    L = []
+    if by:
+        L.append("Passif (D-0047) :")
+        L.append("")
+        L.append("| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |")
+        L.append("| --- | ---: | ---: | ---: | --- |")
+        for d in sorted(by):
+            m = by[d]
+            if not any(k.startswith("bdc_liab_") for k in m):
+                continue
+            c, de, ln = m.get("bdc_liab_asset_coverage"), m.get("bdc_liab_debt_to_net_assets"), m.get("bdc_liab_liabilities_to_net_assets")
+            L.append(f"| {d} | {T.m(c, fmt='pct', dec=0) if c else '—'} | {T.m(de, fmt='x') if de and de['value'] is not None else (T.m(de) if de else '—')} | "
+                     f"{T.m(ln, fmt='x') if ln and ln['value'] is not None else (T.m(ln) if ln else '—')} | {'oui' if 'F14' in m else ''} |")
+        L.append("")
+    offs = defaultdict(dict)
+    for r in q(con, """SELECT * FROM measures WHERE subject = ? AND (measure LIKE 'bdc_tender_%' OR (measure = 'fragility_event'
+                       AND breakdown_key = 'F15')) ORDER BY period_end""", sj):
+        fl = json.loads(r["flags"]) if r["flags"] else {}
+        o = offs[fl.get("offer")]
+        o["offer_date"], o["end"] = fl.get("offer_date"), r["period_end"]
+        o["F15" if r["measure"] == "fragility_event" else r["measure"]] = r
+    if offs:
+        L.append("Offres de rachat (D-0047) :")
+        L.append("")
+        L.append("| SC TO-I | Expiration | Demande ÷ plafond | Acceptées ÷ apportées | F15 |")
+        L.append("| --- | --- | ---: | ---: | --- |")
+        for o in sorted(offs.values(), key=lambda o: o["offer_date"] or ""):
+            dm, ac = o.get("bdc_tender_demand_ratio"), o.get("bdc_tender_acceptance_ratio")
+            L.append(f"| {o['offer_date']} | {o['end']} | {T.m(dm, fmt='x') if dm and dm['value'] is not None else (T.m(dm) if dm else '—')} | "
+                     f"{T.m(ac, fmt='pct', dec=1) if ac else '—'} | {f15_txt(o.get('F15'))} |")
+        L.append("")
+    return L
 
 
 # -- livrable d'audit -------------------------------------------------------------------
