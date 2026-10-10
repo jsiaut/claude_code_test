@@ -68,13 +68,13 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Cellules de l'annexe F des groupes, par statut et motif : calculée 2 160 ; indéterminée / annuel seulement 496 ; indéterminée / non publié 146 ; indéterminée / terme manquant 128 ; partielle / non publié 121 ; indéterminée / concept non résolu 80 ; indéterminée / période antérieure absente 43 ; indéterminée / dénominateur négatif ou nul 34 ; indéterminée / frontière de retraitement 12.
 - Cellules de F11 à F13 des véhicules BDC (D-0045), par statut et motif : indéterminée / non balisé 2 807 ; calculée 2 293 ; indéterminée / période antérieure absente 1 164.
 - Paires à financement documenté (F active au moins un trimestre) : 13 — Broadcom → Silicon Manufacturing Partners Pte. Ltd., CoreWeave → MAIV, CoreWeave → OpenAI, Alphabet → SpaceX, Meta → Jio Platforms Limited, Microsoft → GENERAL MOTORS CO, Microsoft → OpenAI, NVIDIA → INTEL CORP, NVIDIA → NEBIUS GROUP N.V., NVIDIA → CoreWeave, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc..
-- Arêtes de montant : commercial 387, credit_support 15, customer_consideration 73, financing 622 ; arêtes de relation : 983.
+- Arêtes de montant : commercial 388, credit_support 16, customer_consideration 73, financing 624 ; arêtes de relation : 986.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; Cipher (exercice clos le 2025-12-31) : nommés 70,0 %, anonymes d'au moins 10 % 0,0 % ; Core Scientific (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TeraWulf (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
 - Cellules de la question 4, par statut et motif : calculée 4 416 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 832 ; indéterminée / historique tronqué 1 586 ; indéterminée / précondition non remplie 335 ; bornée 236 ; indéterminée / client anonyme 172 ; indéterminée / non publié 138 ; indéterminée / concept non résolu 110 ; indéterminée / terme manquant 22.
-- Requêtes : 13 911 au journal, dont 13 632 réussies, 44 291 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-10T14:04:44.933+00:00.
-- Blocs lus : 4 234 sur 4 419 clés de contenu ; par item de 8-K : 1.01 179, 1.02 20, 2.01 19, 2.03 60, 3.03 15, 8.01 414 ; pièces arrêtées à leur en-tête : EX-4 185.
+- Requêtes : 13 980 au journal, dont 13 701 réussies, 44 449 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-10T15:59:58.296+00:00.
+- Blocs lus : 4 236 sur 4 421 clés de contenu ; par item de 8-K : 1.01 179, 1.02 20, 2.01 19, 2.03 60, 3.03 15, 8.01 414 ; pièces arrêtées à leur en-tête : EX-4 185.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 790 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 822 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -85,8 +85,8 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 ## Rendement du bloc text (§14)
 
 - Blocs lus : 2 162 sur 2 162 (25,8 sur 25,8 millions de caractères) ; par type : paragraphes sur les clients 38/38 ; notes d'investissements 251/251 ; 8-K item 2.01 19/19 ; 8-K item 2.03 60/60 ; notes de dette 368/368 ; notes de baux 243/243 ; notes d'engagements 363/363 ; immobilisations et estimations 544/544 ; notes de revenu 203/203 ; corps d'EX-10 73/73. Aucun bloc du catalogue ne reste à lire.
-- Lignes rendues dans les passes du bloc : 5 572 observations, 1 909 abstentions motivées, 0 rejetées par la validation.
-- Arêtes établies par une ligne du bloc : commercial (montant) 201, commercial (relation) 48, credit_support (montant) 12, credit_support (relation) 150, customer_consideration (montant) 12, financing (montant) 536, financing (relation) 511.
+- Lignes rendues dans les passes du bloc : 5 579 observations, 1 909 abstentions motivées, 0 rejetées par la validation.
+- Arêtes établies par une ligne du bloc : commercial (montant) 202, commercial (relation) 49, credit_support (montant) 13, credit_support (relation) 150, customer_consideration (montant) 12, financing (montant) 538, financing (relation) 513.
 - Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 24 003 ; calculée 6 322 → 14 016 ; bornée 161 → 236 ; partielle 794 → 85 ; indéterminée 8 489 → 9 666 ; motif « non traité » 3 394 → 1 832. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
 - Événements de l'annexe F : 33 → 169 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 15 sur 26.
 - Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 851, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 421, inconnu / historique tronqué 363, actif 135, échu 37. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
@@ -114,14 +114,14 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 
 ## Rendement du bloc paths (§14)
 
-- Cycles orientés entre groupes : 25, dont longueur 2 : 22, longueur 3 : 3.
-- Par concomitance et conclusion : non / relation commerciale doublée d'un financement 1 ; non / achats réciproques seulement 1 ; oui / relation commerciale doublée d'un financement 12 ; oui / dépendance documentée 10 ; oui / achats réciproques seulement 1.
+- Cycles orientés entre groupes : 26, dont longueur 2 : 23, longueur 3 : 3.
+- Par concomitance et conclusion : non / relation commerciale doublée d'un financement 1 ; non / achats réciproques seulement 1 ; oui / relation commerciale doublée d'un financement 13 ; oui / dépendance documentée 10 ; oui / achats réciproques seulement 1.
 - E.6 n'est plus « non traité » : chaque fournisseur porte le décompte des cycles qui passent par lui.
 
 ## Rendement du bloc foreign (§14)
 
 - Blocs de formulaires étrangers lus : 13 ; 14 observations, 3 abstentions.
-- Lignes par cadre comptable de leur pièce : aucun 2 909, ifrs 3, us_gaap 7 065.
+- Lignes par cadre comptable de leur pièce : aucun 2 916, ifrs 3, us_gaap 7 065.
 
 ## Rendement du bloc form_d (§14)
 
@@ -135,7 +135,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - `conflicting` : 555
 - `pending_entity` : 322
 - `financial_parties_only` : 185
-- `out_of_scope` : 44
+- `out_of_scope` : 96
 - `parse_failed` : 32
 - `invalid_aggregate` : 30
 - `submitted_draft` : 8
@@ -189,6 +189,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0043 — Ajout de groupes : TeraWulf (WULF), Cipher (CIFR) et Core Scientific (CORZ).
 - D-0044 — SoftBank, groupe économique non déposant (§10.4) : entités confirmées et découverte dédiée, règles fixées avant de voir les candidats.
 - D-0045 — Fragilité du financement : Blue Owl, niveau 1. Signaux de portefeuille de toutes les BDC et événements F11 à F13 de l'annexe F, règles fixées avant tout calcul.
+- D-0046 — Blue Owl, niveau 3 : nommer le financeur de la coentreprise de Meta en Louisiane, règles fixées avant la recherche.
 
 ## Critères des annexes E et F
 
@@ -200,7 +201,7 @@ Modifiés : annex_f
 
 ## Dépôts nouveaux
 
-Premier passage : tous les dépôts lus sont nouveaux — 8-K 2 436, 10-Q 1 215, 10-K 734, D 565, D/A 318, S-1 260, S-1/A 179, F-1 105, DEF 14A 103, 8-K/A 73, S-4/A 73, F-1/A 54, 10-12G 40, 10-K/A 33, S-4 32, 10-12G/A 30, 10-Q/A 25, F-4/A 16, 10-12B/A 14, 20-F 13, F-4 13, 10-12B 7, S-11 5, S-11/A 4, 11-K 2, 20-F/A 2, 424B4 2, 40-F 1, 6-K 1, 8-K12B 1.
+Premier passage : tous les dépôts lus sont nouveaux — 8-K 2 436, 10-Q 1 216, 10-K 734, D 565, D/A 318, S-1 260, S-1/A 179, F-1 105, DEF 14A 103, 8-K/A 73, S-4/A 73, F-1/A 54, 10-12G 40, 10-K/A 33, S-4 32, 10-12G/A 30, 10-Q/A 25, F-4/A 16, 10-12B/A 14, 20-F 13, F-4 13, 10-12B 7, S-11 5, S-11/A 4, 11-K 2, 20-F/A 2, 424B4 2, 40-F 1, 6-K 1, 8-K12B 1.
 
 ## Valeurs changées pour des périodes déjà publiées
 
@@ -208,7 +209,7 @@ Même identité de fait, valeurs différentes selon le dépôt (C4), publiées s
 
 ## Arêtes nouvelles
 
-Premier passage : toutes les arêtes sont nouvelles — commercial/amount 387, commercial/relation 137, credit_support/amount 15, credit_support/relation 173, customer_consideration/amount 73, customer_consideration/relation 17, financing/amount 622, financing/relation 656.
+Premier passage : toutes les arêtes sont nouvelles — commercial/amount 388, commercial/relation 138, credit_support/amount 16, credit_support/relation 173, customer_consideration/amount 73, customer_consideration/relation 17, financing/amount 624, financing/relation 658.
 
 ## Contrôles qui ont basculé
 

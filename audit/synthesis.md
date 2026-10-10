@@ -1,6 +1,6 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
@@ -9,13 +9,13 @@
   - annexe F, ajout de F12 (D-0045) : « part des intérêts capitalisés du portefeuille d'une BDC (borne basse) en hausse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_pik_share", "condition": "borne(t) > borne(t-1) > borne(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
   - annexe F, ajout de F13 (D-0045) : « part des prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_non_accrual_share", "condition": "borne(t) > borne(t-1) > borne(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
   - annexe F, inchangés : F1, F2, F3, F4, F5, F6, F7, F8, F9, F10 (mêmes observables, mêmes règles)
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des quatorze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des quatorze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 58 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 26 issues ; motifs : précondition non remplie : 8, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 2. Issues déterminées : E.1 non étayé 11. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
 - **Contrôles comptables, vue `as_known`** : `mismatch` 710, `not_testable` 622, `ok` 15 906, `tautological` 688 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 1 039, `not_testable` 853, `ok` 15 674, `tautological` 688.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 101/562, C11 51/497, C12 206/1 153, C13 0/205, C14 19/599, C15 82/350, C16 0/307, C1 106/7 951, C2 39/4 489, C3 60/317, C5 0/64, C6 0/688, C7 1/262, C8 39/95, C9 6/387.
-- **Exclusions principales** : `not_processed` 19 892, `conflicting` 555, `pending_entity` 322, `financial_parties_only` 185, `out_of_scope` 44, `parse_failed` 32, `invalid_aggregate` 30, `submitted_draft` 8, `history_left_censored` 4, `not_public` 2.
+- **Exclusions principales** : `not_processed` 19 892, `conflicting` 555, `pending_entity` 322, `financial_parties_only` 185, `out_of_scope` 96, `parse_failed` 32, `invalid_aggregate` 30, `submitted_draft` 8, `history_left_censored` 4, `not_public` 2.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -1500,6 +1500,7 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | Alphabet → ADT INC. → Alphabet | 2 | oui (0) | commerciale et financière | documenté (L2, L5) | **dépendance documentée** |
 | Alphabet → PLANET LABS PBC → Alphabet | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Alphabet → Marvell → Alphabet | 2 | oui (0) | commerciale et financière | documenté (L2) | **dépendance documentée** |
+| Meta → Blue Owl Capital, Inc. → Meta | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Microsoft → GENERAL MOTORS CO → Microsoft | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | NVIDIA → IREN Ltd → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L1, L3) | **dépendance documentée** |
 | NVIDIA → OpenAI → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
@@ -1510,7 +1511,7 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | SpaceX → Tesla, Inc. → SpaceX | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | TeraWulf → Heorot Power Holdings LLC → TeraWulf | 2 | non (16) | commerciale réciproque | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **achats réciproques seulement** |
 
-Décompte de E.6 (descriptif, hors de E.7) : 25 cycles ; concomitance non : relation commerciale doublée d'un financement 1, achats réciproques seulement 1 ; concomitance oui : relation commerciale doublée d'un financement 12, dépendance documentée 10, achats réciproques seulement 1.
+Décompte de E.6 (descriptif, hors de E.7) : 26 cycles ; concomitance non : relation commerciale doublée d'un financement 1, achats réciproques seulement 1 ; concomitance oui : relation commerciale doublée d'un financement 13, dépendance documentée 10, achats réciproques seulement 1.
 
 ## Form D (bloc form_d, §14)
 
@@ -1782,6 +1783,23 @@ Quartiles de l'univers par date de bilan (premier quartile / médiane / troisiè
 | 2026-06-30 | 157 | 96,66 % / 98,72 % / 99,43 % | 0,65 % / 3,18 % / 5,33 % |
 
 Exclusions du bloc : `invalid_aggregate` 20, `parse_failed` 16 (lignes « Total » de portefeuilles et lignes illisibles, par archive).
+
+## Montages identifiés (bloc `montages`, D-0046)
+
+Un montage que les notes d'un groupe décrivent sans nommer son financeur, identifié par des extraits cités des deux côtés (au moins trois traits concordants). Les montants viennent des lignes validées des deux côtés ; ils ne s'additionnent pas.
+
+**Project Beignet Holdings** — « the Venture » dans les notes de Meta
+
+- Membres : Meta Platforms, Inc. 20 % ; Beignet Investor LLC 80 %.
+- Traits concordants : Richland Parish, Louisiana (10-Q de Meta, note 13) ; In October 2025 (Meta) ; On October 21, 2025 (Blue Owl Real Estate Net Lease Trust) ; 20 % pour Meta, 80 % pour l'investisseur (Meta) ; 80,0 % de Project Beignet Holdings à Beignet Investor LLC (Blue Owl Real Estate Net Lease Trust) ; Meta Platforms, Inc., locataire et exploitante du campus (Blue Owl Real Estate Net Lease Trust).
+- distribution reçue par Meta à la formation : 2,60 Md$ — Meta, 10-Q rendu public le 2025-10-30.
+- baux d'exploitation (engagement initial, à partir de 2029) : 12,30 Md$ (environ) — Meta, 10-Q rendu public le 2025-10-30.
+- garantie de valeur résiduelle de Meta (seuil de départ) : 28,00 Md$ (au plus) — Meta, 10-Q rendu public le 2025-10-30.
+- engagement de fonds propres de Blue Owl Real Estate Net Lease Trust : 1,53 Md$ — Blue Owl Real Estate Net Lease Trust, 10-Q rendu public le 2025-11-07.
+- obligations garanties de Beignet Investor LLC (6,581 %, 2049) : 27,29 Md$ — Blue Owl Real Estate Net Lease Trust, 10-Q rendu public le 2025-11-07.
+- Les notes suivantes de Meta (10-K 2025, 10-Q de 2026) ne nomment plus que « the Venture » : leurs lignes restent des abstentions (`no_named_counterparty`), et l'identification se lit ici.
+
+Exclusions du bloc : `out_of_scope` 52 (relevés de portefeuille non lus, pièces sans paragraphe qualifiant).
 
 ## Évolution
 

@@ -807,6 +807,7 @@ def montages_section(con, T):
         rows = q(con, f"""SELECT obs_key, content_key, group_id, form, knowledge_date, counterparty_name, family, edge_type,
                              amount, amount_qualifier, measurement_basis, instrument_key FROM observations
                           WHERE validation_state = 'valid' AND kind = 'observation' AND amount IS NOT NULL
+                          AND CAST(block_kind AS VARCHAR) = 'montage_text'
                           AND content_key IN ({','.join('?' * len(cks))}) ORDER BY knowledge_date, obs_key""", *cks)
         L.append(f"**{v['name']}** — « {v.get('group_term')} » dans les notes de {GROUP_NAMES.get(v['group'], v['group'])}")
         L.append("")
