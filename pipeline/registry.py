@@ -108,7 +108,8 @@ ENUMS = {
     "coverage_state": ["observed", "explicit_zero", "not_disclosed", "not_applicable", "redacted",
                        "not_collected", "not_processed", "parse_failed", "conflicting",
                        "policy_excluded", "unknown"],
-    "bound_basis": ["rounding", "asc280_major_customer_completeness", "publication_rule", NONE],
+    "bound_basis": ["rounding", "asc280_major_customer_completeness", "publication_rule",
+                    "untagged_counted_as_absent", NONE],
     "period_kind": ["quarter", "fiscal_year", "ytd", "ttm", "instant", "event", "window", NONE],
     "nd_reason": ["not_processed", "search_incomplete", "non_filer", "redacted", "anonymous",
                   "channel_indirect", "parse_failed", "denominator_nonpositive",
@@ -250,6 +251,12 @@ MEASURES = {
     "bdc_fv_to_cost": (2, [NONE], "instant", "14"),
     "bdc_pik_share": (2, [NONE], "instant", "14"),
     "bdc_non_accrual_share": (2, [NONE], "instant", "14"),
+    # §14 portefeuille entier des BDC (bloc lender_portfolio, D-0045), par véhicule et date de bilan
+    "bdc_portfolio_fv_to_cost": (2, [NONE], "instant", "14"),
+    "bdc_portfolio_pik_share": (2, [NONE], "instant", "14"),
+    "bdc_portfolio_non_accrual_share": (2, [NONE], "instant", "14"),
+    "bdc_portfolio_unfunded_ratio": (2, [NONE], "instant", "14"),
+    "bdc_portfolio_software_share": (2, [NONE], "instant", "14"),
     # §14 chemins (bloc paths) : cycles orientés de longueur 2 ou 3 entre groupes
     "documented_path": (2, [NONE], "window", "14"),
     # §14 Form D (bloc form_d) : montant vendu par offre, sur le dernier dépôt connu

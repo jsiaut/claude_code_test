@@ -155,6 +155,39 @@ def criteria_status():
     return out, full, cur, old, new
 
 
+
+def criteria_diff(old, new):
+    """Diff des critères des annexes E et F et des seuils par rapport à leur commit d'origine :
+    événements ajoutés, retirés ou modifiés, clés changées (annexe F, statut)."""
+    out = []
+    oe = ((old.get("annex_f") or {}).get("events") or {})
+    ne = ((new.get("annex_f") or {}).get("events") or {})
+    add = [k for k in ne if k not in oe]
+    rem = [k for k in oe if k not in ne]
+    chg = [k for k in ne if k in oe and json.dumps(ne[k], sort_keys=True) != json.dumps(oe[k], sort_keys=True)]
+    for k in add:
+        e = ne[k]
+        out.append(f"annexe F, ajout de {k} ({e.get('added_by', 'décision non citée')}) : « {e.get('observable')} » ; "
+                   f"règle {json.dumps(e.get('rule'), ensure_ascii=False)} ; sujets : {e.get('subjects', 'groupes')}")
+    for k in rem:
+        out.append(f"annexe F, retrait de {k} : « {oe[k].get('observable')} »")
+    for k in chg:
+        out.append(f"annexe F, {k} modifié : {json.dumps(oe[k], ensure_ascii=False)} → {json.dumps(ne[k], ensure_ascii=False)}")
+    same = [k for k in oe if k in ne and k not in chg]
+    if same:
+        out.append("annexe F, inchangés : " + ", ".join(same) + " (mêmes observables, mêmes règles)")
+    rest = {k: v for k, v in (new.get("annex_f") or {}).items() if k != "events"}
+    orest = {k: v for k, v in (old.get("annex_f") or {}).items() if k != "events"}
+    for k in sorted(set(rest) | set(orest)):
+        if json.dumps(rest.get(k), sort_keys=True) != json.dumps(orest.get(k), sort_keys=True):
+            out.append(f"annexe F, `{k}` : {json.dumps(orest.get(k), ensure_ascii=False)} → {json.dumps(rest.get(k), ensure_ascii=False)}")
+    for blk in ("annex_e", "thresholds"):
+        o, n = old.get(blk) or {}, new.get(blk) or {}
+        ks = sorted(k for k in set(o) | set(n) if json.dumps(o.get(k), sort_keys=True) != json.dumps(n.get(k), sort_keys=True))
+        if ks:
+            out.append(f"`{blk}`, clés modifiées : " + ", ".join(f"`{k}`" for k in ks))
+    return out
+
 CONFIG_DECISIONS = {"concept_anchors": "second candidat de capex, D-0012",
                     "confirmed_entities": "entités confirmées par extrait, D-0021",
                     "entity_aliases": "alias confirmés par extrait, D-0021",
@@ -218,7 +251,10 @@ F_FR = {"F1": "capex décaissé supérieur au CFO deux trimestres de suite", "F2
         "F3": "garantie ou soutien appelé", "F4": "amendement ou dérogation de clause financière",
         "F5": "faiblesse significative du contrôle interne", "F6": "dépréciation d'investissement",
         "F7": "baisse d'une durée d'amortissement publiée", "F8": "croissance annuelle passée sous zéro",
-        "F9": "fin d'un contrat de capacité (8-K item 1.02)", "F10": "doute sur la continuité d'exploitation"}
+        "F9": "fin d'un contrat de capacité (8-K item 1.02)", "F10": "doute sur la continuité d'exploitation",
+        "F11": "juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite",
+        "F12": "intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite",
+        "F13": "prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite"}
 CONC_FR = {"documented_dependency": "dépendance documentée", "commercial_with_financing": "relation commerciale doublée d'un financement",
            "reciprocal_commercial_only": "achats réciproques seulement", "causality_not_established": "causalité non établie"}
 STRUCT_FR = {"commercial_and_financing": "commerciale et financière", "financing_only": "financière seulement",
@@ -296,7 +332,11 @@ def synthesis(con, as_of, stats):
                  f"`{cfg_commit.split()[0] if cfg_commit else 'non commité'}`, plus les changements de cette exécution) "
                  "sans toucher ces critères : " + "; ".join(f"`{k}` ({d})" for k, d in ch) + ".")
     else:
-        L.append("- **Critères modifiés depuis leur commit d'origine** : " + ", ".join(k for k, v in crit.items() if not v))
+        L.append(f"- **Critères modifiés depuis leur commit d'origine** `{crit_commit.split()[0]}` "
+                 f"({' '.join(crit_commit.split()[1:3])}) : " + ", ".join(f"`{k}`" for k, v in crit.items() if not v)
+                 + ". Diff, et ce qui ne change pas :")
+        for line in criteria_diff(old, new):
+            L.append("  - " + line)
     if not blocks_open:
         L.append(f"- **Périmètre couvert : premier passage.** Faits balisés des {n_groups(new)} groupes, puis notes de parties liées, "
                  "Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation et items 1.01, 1.02, 3.03 et 8.01 des 8-K "
@@ -425,7 +465,7 @@ def synthesis(con, as_of, stats):
     agg = defaultdict(list)
     for r in st:
         agg[r["f"]].append(f"{fr(r['status'])}{(' / ' + fr(r['v'])) if r['v'] else ''} {T.n('measures', {'F': r['f'], 'status': r['status'], 'v': r['v']}, r['n'])}")
-    L.append("États de couverture des cellules de l'annexe F (groupe × trimestre), pour lire ce qui n'a pas été observé :")
+    L.append("États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F13 : véhicule BDC × date de bilan, D-0045), pour lire ce qui n'a pas été observé :")
     L.append("")
     for f in sorted(agg, key=lambda x: int(x[1:])):
         L.append(f"- {f} : " + " ; ".join(agg[f]))
@@ -444,6 +484,7 @@ def synthesis(con, as_of, stats):
     L += formd_section(con, T)
     L += foreign_section(con, T)
     L += lender_section(con, T)
+    L += lender_portfolio_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
     L.append("")
@@ -607,6 +648,146 @@ def lender_section(con, T):
     L.append("")
     return L
 
+
+
+LP_MEAS = ("bdc_portfolio_fv_to_cost", "bdc_portfolio_pik_share", "bdc_portfolio_non_accrual_share",
+           "bdc_portfolio_unfunded_ratio", "bdc_portfolio_software_share")
+
+
+def lp_data(con):
+    """Cellules du bloc lender_portfolio par véhicule et date, noms des véhicules, événements F11 à F13."""
+    rows = q(con, """SELECT * FROM measures WHERE measure LIKE 'bdc_portfolio_%' AND view = 'as_known'
+                     ORDER BY subject, period_end, measure""")
+    by = defaultdict(lambda: defaultdict(dict))
+    names = defaultdict(dict)
+    for r in rows:
+        by[r["subject"]][r["period_end"]][r["measure"]] = r
+        fl = json.loads(r["flags"]) if r["flags"] else {}
+        if fl.get("vehicle"):
+            names[r["subject"]][r["period_end"]] = fl["vehicle"]
+    evd = defaultdict(lambda: defaultdict(list))
+    for e in q(con, """SELECT subject, period_end, breakdown_key FROM measures WHERE measure = 'fragility_event'
+                       AND subject LIKE 'cik:%' AND value_text = 'event' ORDER BY period_end"""):
+        evd[e["subject"]][e["breakdown_key"]].append(e["period_end"])
+    return by, names, evd
+
+
+def lp_platform(names, terms):
+    """Véhicules dont une dénomination, actuelle ou ancienne, porte la marque (D-0045, point 3)."""
+    t = [x.lower() for x in terms]
+    return sorted(s for s, d in names.items() if any(x in v.lower() for v in d.values() for x in t))
+
+
+def lp_cell_txt(T, c):
+    if c is None:
+        return "—"
+    if c["status"] == "bounded":
+        return "≥ " + T.m(c, field="value_lower", fmt="pct", dec=2)
+    return T.m(c, fmt="pct", dec=2)
+
+
+def lp_year_before(dates, d):
+    """Date de bilan du même véhicule environ un an plus tôt (330 à 400 jours)."""
+    d0 = dt.date.fromisoformat(d)
+    cand = [x for x in dates if 330 <= (d0 - dt.date.fromisoformat(x)).days <= 400]
+    return min(cand, key=lambda x: abs((d0 - dt.date.fromisoformat(x)).days - 365)) if cand else None
+
+
+def lp_rows(T, by, names, evd, subjects):
+    L = ["| Véhicule | Dernier bilan | Juste valeur ÷ coût | — un an plus tôt | Intérêts capitalisés | — un an plus tôt | "
+         "Engagements non tirés ÷ portefeuille | F11 (dates) | F12 (dates) |",
+         "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |"]
+    for s in subjects:
+        dates = sorted(by.get(s) or {})
+        if not dates:
+            continue
+        d = dates[-1]
+        y = lp_year_before(dates, d)
+        m, my = by[s][d], (by[s][y] if y else {})
+        L.append(f"| {names[s].get(d) or s} | {d} | {lp_cell_txt(T, m.get('bdc_portfolio_fv_to_cost'))} | "
+                 f"{lp_cell_txt(T, my.get('bdc_portfolio_fv_to_cost')) if y else '—'} | "
+                 f"{lp_cell_txt(T, m.get('bdc_portfolio_pik_share'))} | "
+                 f"{lp_cell_txt(T, my.get('bdc_portfolio_pik_share')) if y else '—'} | "
+                 f"{lp_cell_txt(T, m.get('bdc_portfolio_unfunded_ratio'))} | "
+                 f"{', '.join(evd[s].get('F11', [])) or 'aucune'} | {', '.join(evd[s].get('F12', [])) or 'aucune'} |")
+    return L
+
+
+def lender_portfolio_section(con, T):
+    """Bloc lender_portfolio (D-0045) : portefeuille entier des BDC, par véhicule ; plateforme Blue Owl
+    et repères nommés d'avance, quartiles de l'univers par date de bilan ; événements F11 à F13."""
+    import statistics
+    cfg = config.load()
+    if "lender_portfolio" not in (cfg.get("scope") or []):
+        return []
+    lp = cfg.get("lender_portfolio") or {}
+    by, names, evd = lp_data(con)
+    if not by:
+        return []
+    L = ["## Fragilité du financement : portefeuilles entiers des BDC (bloc `lender_portfolio`, D-0045)", ""]
+    L.append("Toutes les BDC des archives en cache, sans sélection ; un véhicule est un déclarant, et rien ne s'additionne "
+             "entre véhicules. Vue `as_known` : le premier dépôt d'un véhicule pour une date de bilan. Juste valeur ÷ coût "
+             "porte sur les prêts. Les intérêts capitalisés (taux PIK pondéré par le principal, sur le taux total) et les "
+             "engagements non tirés sont des bornes basses : une position sans balise compte sans PIK ou sans engagement. "
+             "Les événements F11 (juste valeur ÷ coût en baisse deux trimestres de suite) et F12 (intérêts capitalisés en "
+             "hausse deux trimestres de suite) ont été fixés avant le calcul (D-0045). La plateforme Blue Owl réunit les "
+             "véhicules dont la dénomination EDGAR porte « Blue Owl » ou « Owl Rock » : un regroupement de présentation, "
+             "pas un groupe économique.")
+    L.append("")
+    nveh = len(by)
+    ndates = sum(len(v) for v in by.values())
+    det = {m: sum(1 for v in by.values() for c in v.values() if c.get(m) and c[m]["status"] != "not_determinable")
+           for m in LP_MEAS}
+    lab = {"bdc_portfolio_fv_to_cost": "juste valeur ÷ coût", "bdc_portfolio_pik_share": "intérêts capitalisés",
+           "bdc_portfolio_non_accrual_share": "prêts sans accumulation d'intérêts",
+           "bdc_portfolio_unfunded_ratio": "engagements non tirés", "bdc_portfolio_software_share": "part logiciel"}
+    L.append(f"- Univers : {T.n('measures', {'lp_vehicles': True}, nveh)} véhicules, "
+             f"{T.n('measures', {'lp_vehicle_dates': True}, ndates)} couples véhicule × date de bilan. Mesures déterminées : "
+             + ", ".join(f"{lab[m]} {T.n('measures', {'lp_determined': m}, det[m])}" for m in LP_MEAS) + ".")
+    L.append("- Les prêts sans accumulation d'intérêts ne sont pas balisés dans `num` (ni axe de statut ni membre) : la mesure "
+             "et F13 restent non déterminables. Le secteur n'est presque jamais balisé : la part logiciel aussi. Il faudrait "
+             "lire les notes des portefeuilles (niveau 2).")
+    L.append("")
+    bo = lp_platform(names, (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or ["Blue Owl", "Owl Rock"])
+    L += ["**Véhicules Blue Owl**", ""] + lp_rows(T, by, names, evd, bo) + [""]
+    peers = [f"cik:{p['cik']}" for p in lp.get("peers") or []]
+    L += ["**Repères nommés d'avance**", ""] + lp_rows(T, by, names, evd, [p for p in peers if p in by]) + [""]
+    # quartiles de l'univers aux dernières dates de bilan communes (au moins 20 véhicules)
+    per_date = defaultdict(lambda: defaultdict(list))
+    for s, v in by.items():
+        for d, m in v.items():
+            for k in ("bdc_portfolio_fv_to_cost", "bdc_portfolio_pik_share"):
+                c = m.get(k)
+                if c and c["status"] != "not_determinable":
+                    x = c["value_lower"] if c["status"] == "bounded" else c["value"]
+                    if x is not None:
+                        per_date[d][k].append(Decimal(str(x)))
+    dates = [d for d in sorted(per_date) if len(per_date[d]["bdc_portfolio_fv_to_cost"]) >= 20][-8:]
+    if dates:
+        L.append("Quartiles de l'univers par date de bilan (premier quartile / médiane / troisième quartile ; des repères, "
+                 "jamais des totaux) :")
+        L.append("")
+        L.append("| Date du bilan | Véhicules | Juste valeur ÷ coût | Intérêts capitalisés (bornes basses) |")
+        L.append("| --- | ---: | --- | --- |")
+
+        def qt(meas, d):
+            xs = sorted(per_date[d][meas])
+            if len(xs) < 4:
+                return "—"
+            q1, q2, q3 = statistics.quantiles(xs, n=4, method="inclusive")
+            return " / ".join(T.n("measures", {"lp_quartile": [meas, d, i]}, v, fr_num(v * 100, 2) + " %")
+                              for i, v in ((1, q1), (2, q2), (3, q3)))
+        for d in dates:
+            L.append(f"| {d} | {T.n('measures', {'lp_vehicles_at': d}, len(per_date[d]['bdc_portfolio_fv_to_cost']))} | "
+                     f"{qt('bdc_portfolio_fv_to_cost', d)} | {qt('bdc_portfolio_pik_share', d)} |")
+        L.append("")
+    ex = q(con, """SELECT reason, count(*) AS n FROM exclusions WHERE item_key LIKE 'lender_portfolio:%' GROUP BY 1 ORDER BY 1""")
+    if ex:
+        L.append("Exclusions du bloc : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'lp_excl': r['reason']}, r['n'])}"
+                                                    for r in ex) + " (lignes « Total » de portefeuilles et lignes illisibles, "
+                 "par archive).")
+        L.append("")
+    return L
 
 def LINK_FR(fl):
     """Preuve de lien d'une paire (§3.4) : documenté, recherche complète sans pièce, ou recherche incomplète et pourquoi."""
@@ -1027,13 +1208,24 @@ def delta(con, as_of, stats):
     L.append("## Événements nouveaux de l'annexe F")
     L.append("")
     evs = q(con, """SELECT subject, breakdown_key, count(*) AS n FROM measures WHERE measure = 'fragility_event'
-                    AND value_text = 'event' GROUP BY 1, 2 ORDER BY 1, 2""")
+                    AND value_text = 'event' AND subject NOT LIKE 'cik:%' GROUP BY 1, 2 ORDER BY 1, 2""")
     if evs:
         for r in evs:
             L.append(f"- {GROUP_NAMES.get(r['subject'], r['subject'])} : {r['breakdown_key']} ({F_FR[r['breakdown_key']]}) — "
                      f"{T.n('measures', {'F_event': [r['subject'], r['breakdown_key']]}, r['n'])} trimestre(s)")
     else:
         L.append("- Aucun.")
+    if "lender_portfolio" in (config.load().get("scope") or []):
+        lp = config.load().get("lender_portfolio") or {}
+        by, names, evd = lp_data(con)
+        shown = lp_platform(names, (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or []) + \
+            [f"cik:{p['cik']}" for p in lp.get("peers") or [] if f"cik:{p['cik']}" in by]
+        for sj in shown:
+            for f, ds in sorted(evd[sj].items()):
+                last = sorted(names[sj])[-1] if names[sj] else None
+                L.append(f"- {names[sj].get(last, sj) if last else sj} (véhicule BDC) : {f} ({F_FR[f]}) — "
+                         f"{T.n('measures', {'F_event_vehicle': [sj, f]}, len(ds))} date(s) de bilan")
+        L.append("- Les autres véhicules BDC de l'univers (D-0045) ne sont pas listés ici : leurs cellules sont dans `measures`.")
     L.append("")
     L.append("## Rendement du passage (§11.1)")
     L.append("")
@@ -1044,9 +1236,14 @@ def delta(con, as_of, stats):
     L.append("- Cellules de rang 1, par statut et motif : " + " ; ".join(
         f"{fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} {T.n('measures', {'rank1': [r['status'], r['nd']]}, r['n'])}" for r in r1) + ".")
     fe = q(con, """SELECT status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures WHERE measure = 'fragility_event'
-                   GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""")
-    L.append("- Cellules de l'annexe F, par statut et motif : " + " ; ".join(
+                   AND subject NOT LIKE 'cik:%' GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""")
+    L.append("- Cellules de l'annexe F des groupes, par statut et motif : " + " ; ".join(
         f"{fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} {T.n('measures', {'annexF': [r['status'], r['nd']]}, r['n'])}" for r in fe) + ".")
+    fv = q(con, """SELECT status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures WHERE measure = 'fragility_event'
+                   AND subject LIKE 'cik:%' GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2""")
+    if fv:
+        L.append("- Cellules de F11 à F13 des véhicules BDC (D-0045), par statut et motif : " + " ; ".join(
+            f"{fr(r['status'])}{(' / ' + ND_FR.get(r['nd'], r['nd'])) if r['nd'] else ''} {T.n('measures', {'annexF_vehicles': [r['status'], r['nd']]}, r['n'])}" for r in fv) + ".")
     fin = q(con, """SELECT subject, counterparty FROM measures WHERE measure = 'financed_status' AND value_text = 'active'
                     AND view = 'as_known' AND financing_policy = 'exposure_outstanding' GROUP BY 1, 2 ORDER BY 1, 2""")
     L.append(f"- Paires à financement documenté (F active au moins un trimestre) : {T.n('measures', {'financed_pairs': True}, len(fin))}"
@@ -1208,6 +1405,22 @@ def series(con, as_of, stats):
                            AND value_text = 'event' ORDER BY breakdown_key""", g, pe)
             L.append(f"| {pe} | " + " | ".join(row) + " | " + (", ".join(e["breakdown_key"] for e in ev) or "") + " |")
         L.append("")
+    if "lender_portfolio" in (config.load().get("scope") or []):
+        # véhicules BDC de la plateforme Blue Owl (D-0045) : série complète, vue as_known
+        lp = config.load().get("lender_portfolio") or {}
+        by, names, evd = lp_data(con)
+        for sj in lp_platform(names, (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or []):
+            last = sorted(names[sj])[-1]
+            L.append(f"## {names[sj][last]} (véhicule BDC, {sj})")
+            L.append("")
+            L.append("| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |")
+            L.append("| --- | ---: | ---: | ---: | --- |")
+            for d in sorted(by[sj]):
+                m = by[sj][d]
+                evs = [f for f, ds in sorted(evd[sj].items()) if d in ds]
+                L.append(f"| {d} | {lp_cell_txt(T, m.get('bdc_portfolio_fv_to_cost'))} | {lp_cell_txt(T, m.get('bdc_portfolio_pik_share'))} | "
+                         f"{lp_cell_txt(T, m.get('bdc_portfolio_unfunded_ratio'))} | {', '.join(evs)} |")
+            L.append("")
     return "\n".join(L) + "\n", T.rows
 
 
@@ -1417,7 +1630,7 @@ def text_yield_section(con, T, stats):
             f" ; motif « non traité » {fr_num(Decimal(pres.get('rank1_not_processed', 0)), 0)} → "
             f"{T.n('measures', {'rank1_not_processed_now': True}, npn)}. Le total peut changer : une ligne lue ouvre parfois "
             "des cellules nouvelles (une paire, un instrument).")
-    fe = q(con, "SELECT count(*) AS n FROM measures WHERE measure = 'fragility_event' AND value_text = 'event'")
+    fe = q(con, "SELECT count(*) AS n FROM measures WHERE measure = 'fragility_event' AND value_text = 'event' AND subject NOT LIKE 'cik:%'")
     e7 = pres.get("annex_e_e7") or {}
     # E.7 au point de tête de la grille : issues de E.1 et E.2 réunies, telles que E.7 les compte
     e7r = q(con, """SELECT flags FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'

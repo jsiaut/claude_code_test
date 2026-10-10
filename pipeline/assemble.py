@@ -13,7 +13,7 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, links, load, measures, model, rank2, reader)
+               fsignals, lender, lender_portfolio, links, load, measures, model, rank2, reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
 
@@ -301,6 +301,17 @@ def run(as_of):
         obs_by_group.setdefault(o["group_id"], []).append(o)
     cells += fsignals.fragility_events(groups, quarters_by_group, mdf, sig_cells, obs_by_group, filings, read_cks,
                                        blocks_by_acc, as_of, text_done)
+    # bloc lender_portfolio (D-0045) : portefeuille entier de chaque BDC, puis F11 à F13 par véhicule
+    lp_excl = []
+    if "lender_portfolio" in scope:
+        lp = lender_portfolio.cells(as_of)
+        cells += lp
+        lp_excl = lender_portfolio.exclusions(as_of)
+        stats["lender_portfolio"] = {
+            "vehicles": len({c["subject"] for c in lp}),
+            "cells": dict(Counter(f"{c['measure']}|{c['status']}" for c in lp if c["measure"] != "fragility_event")),
+            "events": dict(Counter(f"{c['breakdown_key']}|{c['value_text'] or c['nd_reason']}" for c in lp
+                                   if c["measure"] == "fragility_event"))}
 
     # 10. invariants d'agrégat (§7.6) sur les sommes d'arêtes
     inv_excl = invariants(cells, edges, rels, reg)
@@ -338,7 +349,7 @@ def run(as_of):
     n_docs = insert(con, "documents", docs)
 
     # 15. exclusions
-    excl = list(obs_excl) + inv_excl + lender_excl + formd_excl + \
+    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + formd_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
 
