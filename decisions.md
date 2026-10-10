@@ -421,3 +421,46 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - identification consignée (`identified_ventures`) : la Louisiane, octobre 2025, la répartition 20/80 et Meta locataire concordent. Project Beignet Holdings entre au registre par extrait (`own_entities`) ; Beignet Investor LLC, détenue par un fonds de Blue Owl, rejoint le regroupement de présentation de la plateforme ;
   - effets : un cycle documenté de plus, 25 → 26 : Meta → Blue Owl Capital, Inc. par les baux et la garantie, Blue Owl Capital, Inc. → Meta par la distribution, concomitants, en « relation commerciale doublée d'un financement ». Pour Meta, l'issue E.6 compte deux cycles au lieu d'un. Paires (64), paires à financement documenté (13) et événements des groupes (169) ne changent pas ;
   - à lire ensemble, sans les additionner : les obligations (27,29 Md$, échéance 2049) et le seuil de départ de la garantie de Meta (28 Md$) sont du même ordre, alors que le premier bail ne court que quatre ans.
+
+- **D-0047 — Blue Owl, niveau 2 : le passif des BDC (couverture, levier, rachats demandés et acceptés, interruptions), règles fixées avant tout calcul et toute lecture.** (1) Décision de l'utilisateur, le 2026-10-10 : « Fais le niveau 2, toujours sans sous-agent ». Le niveau 1 (D-0045) lisait l'actif des BDC. Le niveau 2 lit leur passif : ce que les véhicules doivent, et ce que leurs porteurs demandent à récupérer. Lecture et calcul par l'exécutant, sans sous-agent.
+
+  (2) Périmètre : bloc `lender_liabilities` dans `scope`. Univers, vue, plateforme et repères de D-0045 (point 3), inchangés :
+  - toutes les BDC des 21 archives en cache, soit 209 véhicules et 2 395 dépôts ; un véhicule est un déclarant ;
+  - aucune somme entre véhicules ; à chaque date, les quartiles d'une mesure se prennent sur les véhicules où elle est calculée.
+
+  (3) Relevé de structure, fait avant ces règles et sans calculer de valeur (présence des concepts, ordre de grandeur) :
+  - concepts non dimensionnels à la date du bilan : `Liabilities` dans 2 381 dépôts, l'actif net (`AssetsNet` ou `StockholdersEquity`) dans 2 310 ;
+  - le ratio de couverture standard (`InvestmentCompanySeniorSecurityIndebtednessAssetCoverageRatio`) dans 940 dépôts, chez 98 véhicules sur 209. Tous les véhicules de Blue Owl et les six repères le publient à chaque date, sauf un dépôt d'Ares Capital ;
+  - la dette n'a pas de concept total commun : `LongTermDebt` (1 322 dépôts), `LineOfCredit` (913), `DebtInstrumentCarryingAmount` (855) et une dizaine d'autres, souvent pour une partie de la dette seulement. Le levier ne se reconstruit donc pas ligne à ligne ;
+  - ordre de grandeur du ratio balisé : 930 valeurs entre 1 et 10, 3 entre 10 et 100, 1 entre 100 et 1 000, 2 entre 1 000 et 10 000, 4 sous 1.
+
+  (4) Mesures de bilan, depuis `num.tsv`, sans requête. Par véhicule et date de bilan, vue `as_known`, faits non dimensionnels à la date du bilan du dépôt :
+  - `bdc_liab_asset_coverage` : le ratio de couverture des titres de créance de premier rang publié par le véhicule (loi de 1940, articles 18 et 61). Seul le concept standard sert, pas les concepts propres aux déclarants. Il s'écrit en ratio : 2,0 pour 200 %. Règle d'échelle : de 100 à moins de 1 000, c'est un pourcentage écrit en nombre (÷ 100) ; de 1 000 à moins de 10 000, un montant par tranche de 1 000 $ de dette (÷ 1 000). Sous 1, ou à 10 000 et plus, la cellule est non déterminable ;
+  - `bdc_liab_debt_to_net_assets` : dette de premier rang ÷ actif net, déduite du ratio : 1 ÷ (couverture − 1). La couverture vaut (actif net + dette de premier rang) ÷ dette de premier rang ; c'est donc le levier au sens de la loi. Non déterminable si la couverture l'est, ou si elle vaut 1 ou moins ;
+  - `bdc_liab_liabilities_to_net_assets` : passif total ÷ actif net (`AssetsNet`, à défaut `StockholdersEquity`). Il majore le levier, car le passif comprend aussi les intérêts courus, les frais dus au gestionnaire, les achats de titres non réglés et les distributions à payer. Non déterminable si l'actif net manque ou n'est pas positif.
+
+  (5) Offres de rachat. Une BDC non cotée rachète ses parts par des offres publiques, en général trimestrielles et plafonnées à 5 % des parts. Chaque offre se dépose sous Schedule TO (SC TO-I), et un amendement final en publie le résultat (règle 13e-4(c)(4)) :
+  - inventaire : la liste des dépôts EDGAR de chaque véhicule de l'univers (`submissions`), une requête par véhicule, plus les pages anciennes si la liste récente ne remonte pas au 1er octobre 2022 ;
+  - une offre : un SC TO-I et les SC TO-I/A qui le suivent jusqu'au SC TO-I suivant du même véhicule. Fenêtre : SC TO-I déposés du 2022-10-01 au 2026-10-07 ;
+  - lecture : le document principal du dernier SC TO-I/A de chaque offre ; s'il ne donne pas le résultat, l'amendement qui le précède. Sans résultat, les mesures et F15 sont non déterminables, jamais « sans événement ». Si l'amendement lu ne donne pas le maximum de l'offre, le document principal du SC TO-I ;
+  - relevés, chacun avec sa citation mot pour mot : parts (ou montant) valablement apportées et non retirées, parts (ou montant) acceptées, maximum de l'offre, date d'expiration. Un rapport ne se calcule qu'entre deux grandeurs de même unité, parts ou dollars. Les classes de parts s'additionnent quand le document ne donne que leur détail ;
+  - mesures par offre, datées à l'expiration et connues au dépôt de l'amendement lu : `bdc_tender_acceptance_ratio` (acceptées ÷ apportées) et `bdc_tender_demand_ratio` (apportées ÷ maximum de l'offre).
+
+  (6) Annexe F : trois événements ajoutés à la liste fermée, pour les véhicules de l'univers seulement. Seuils de signe et de durée, sans calibrage :
+  - F14 : `bdc_liab_asset_coverage` en baisse deux trimestres de suite, avec les règles de dates de F11 (trois dates de bilan successives, 120 jours au plus entre deux) ;
+  - F15 : une offre dont les parts acceptées sont inférieures aux parts apportées, ou dont l'amendement annonce une réduction au prorata. Une cellule par offre ;
+  - F16 : l'interruption d'un programme régulier d'offres. Il faut au moins quatre offres successives, chacune déposée 120 jours au plus après la précédente, puis aucune nouvelle offre dans les 120 jours qui suivent la dernière. Une cellule par offre qui clôt une série d'au moins quatre, datée au dépôt de cette offre plus 120 jours ; non déterminable si ces 120 jours ne sont pas écoulés à `as_of`. Une inscription en bourse (8-A12B) ou une sortie du régime (N-54C, ou formulaire 15) déposée dans l'intervalle ferme la cellule « sans événement », avec son motif : le programme s'arrête alors parce que le véhicule cote ou disparaît, pas parce qu'il retient ses porteurs.
+
+  F16 se lit dans l'inventaire seul, sans texte. Comme le veut l'annexe F, le changement de la liste est signalé en tête de la note de synthèse, avec le diff.
+
+  (7) Annonces. Des 8-K se lisent pour nommer la cause d'une interruption, et les fusions ou suspensions annoncées : document principal et annexes 99, si le 8-K porte l'un des items 1.01, 1.02, 2.01, 3.03, 7.01 ou 8.01.
+  - quels 8-K : ceux d'un véhicule où F16 tombe, déposés entre sa dernière offre et la date de l'événement plus 30 jours ; ceux des véhicules de Blue Owl, sur toute la fenêtre ;
+  - unités : les paragraphes qui nomment « tender offer », « repurchase », « redemption », « merger » ou « suspend », avec deux paragraphes de part et d'autre, fondus quand ils se chevauchent (règle de D-0046, point 4). Plafond de 40 unités : d'abord les véhicules où F16 tombe, puis ceux de Blue Owl, du plus récent au plus ancien ; au-delà, `not_processed` ;
+  - relevés : ce qui est annoncé (suspension ou fin des rachats, accord de fusion, abandon de fusion, fusion réalisée, inscription en bourse, remboursement par distributions, autre), la date et la citation mot pour mot. Ces relevés ne créent ni arête ni mesure : ils motivent les cellules F16 et s'affichent dans la synthèse.
+
+  (8) Limites connues avant calcul :
+  - le ratio de couverture n'est publié que par 98 véhicules sur 209 : ses quartiles portent sur ces véhicules, qui ne sont pas tirés au hasard ;
+  - le passif total majore le levier ;
+  - les offres ne concernent que les véhicules non cotés qui en font : une BDC cotée rachète en bourse, sans demandes à mesurer ;
+  - les rapports entre demandes et rachats sont trimestriels et ne disent pas qui demande ;
+  - la lecture des 8-K est plafonnée, et ne couvre les véhicules hors Blue Owl que là où F16 tombe.

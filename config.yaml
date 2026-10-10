@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -109,6 +109,12 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
     question: "nommer Blue Owl sur la coentreprise de Meta en Louisiane et la relier aux montants des notes de Meta (niveau 3)"
     blocks: [montages]           # financeur d'un montage que les notes d'un groupe ne nomment pas (D-0046)
     page: "plan en trois niveaux sur Blue Owl dans la conversation du 2026-10-10 (D-0046)"
+    execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-10
+    decision: "Fais le niveau 2, toujours sans sous-agent"
+    question: "passif des BDC : couverture, levier, rachats demandés et acceptés, interruptions et annonces (niveau 2)"
+    blocks: [lender_liabilities]   # passif des véhicules de l'univers de D-0045 (D-0047)
+    page: "plan en trois niveaux sur Blue Owl dans la conversation du 2026-10-10 (D-0047)"
     execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
@@ -664,6 +670,32 @@ lender_portfolio:
     - {name: "Golub Capital BDC, Inc.", cik: "0001476765"}
     - {name: "FS KKR Capital Corp", cik: "0001422183"}
     - {name: "HPS Corporate Lending Fund", cik: "0001838126"}
+# Bloc lender_liabilities (D-0047) : passif des BDC de l'univers de D-0045 (couverture, levier, offres de rachat).
+lender_liabilities:
+  universe: all_bdc              # univers, plateforme et repères de lender_portfolio (D-0045, point 3)
+  view: as_known
+  consecutive_gap_days_max: 120  # F14 : trois dates de bilan successives, 120 jours au plus entre deux
+  coverage_concept: InvestmentCompanySeniorSecurityIndebtednessAssetCoverageRatio   # concept standard seulement
+  coverage_scale:                # règle d'échelle (D-0047, point 4) ; hors de ces bandes : non déterminable
+    ratio: [1, 100]              # ratio écrit tel quel
+    percent: [100, 1000]         # pourcentage écrit en nombre : ÷ 100
+    per_thousand: [1000, 10000]  # montant par tranche de 1 000 $ de dette : ÷ 1 000
+  net_assets_concepts: [AssetsNet, StockholdersEquity]   # dans cet ordre
+  tenders:
+    window: ["2022-10-01", "2026-10-07"]   # dépôt du SC TO-I
+    initial_form: "SC TO-I"
+    amendment_form: "SC TO-I/A"
+    program_min_offers: 4        # F16 : au moins quatre offres successives
+    program_gap_days_max: 120    # chacune déposée 120 jours au plus après la précédente
+    interruption_days: 120       # puis aucune offre dans les 120 jours
+    listing_forms: ["8-A12B"]
+    exit_forms: ["N-54C", "15-12B", "15-12G", "15-15D"]
+  announcements:
+    eight_k_items: ["1.01", "1.02", "2.01", "3.03", "7.01", "8.01"]
+    terms: ["tender offer", "repurchase", "redemption", "merger", "suspend"]
+    window_paragraphs: 2
+    after_event_days: 30
+    cap: 40
 # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
 annex_f:
   source: "spec v6.14, annexe F"
@@ -734,6 +766,24 @@ annex_f:
       subjects: bdc_vehicles
       added_by: D-0045
       rule: {measure: bdc_portfolio_non_accrual_share, condition: "borne(t) > borne(t-1) > borne(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
+    F14:
+      observable: "ratio de couverture des titres de créance d'une BDC en baisse deux trimestres de suite"
+      source: "bdc_liab_asset_coverage (bloc lender_liabilities, D-0047)"
+      subjects: bdc_vehicles
+      added_by: D-0047
+      rule: {measure: bdc_liab_asset_coverage, condition: "valeur(t) < valeur(t-1) < valeur(t-2)", consecutive_quarters: 2, dated_at: "fin du second trimestre"}
+    F15:
+      observable: "offre de rachat d'une BDC dont les parts acceptées sont inférieures aux parts apportées (réduction au prorata)"
+      source: "amendement final du SC TO-I (bloc lender_liabilities, D-0047)"
+      subjects: bdc_vehicles
+      added_by: D-0047
+      rule: {measure: bdc_tender_acceptance_ratio, condition: "acceptées < apportées, ou réduction au prorata annoncée", dated_at: "expiration de l'offre"}
+    F16:
+      observable: "interruption d'un programme régulier d'offres de rachat d'une BDC"
+      source: "inventaire EDGAR des SC TO-I (bloc lender_liabilities, D-0047)"
+      subjects: bdc_vehicles
+      added_by: D-0047
+      rule: {condition: "au moins quatre offres déposées à 120 jours au plus d'intervalle, puis aucune offre dans les 120 jours ; ni 8-A12B ni N-54C ou formulaire 15 dans l'intervalle", dated_at: "dépôt de la dernière offre + 120 jours"}
 
 concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
   revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
