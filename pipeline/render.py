@@ -46,7 +46,21 @@ VALUE_FR = {"no_event": "sans événement", "event": "événement", "active": "a
             "lower": "borne basse", "upper": "borne haute", "point": "valeur unique"}
 GROUP_NAMES = {"NVDA": "NVIDIA", "GOOGL": "Alphabet", "AMZN": "Amazon", "META": "Meta", "MSFT": "Microsoft",
                "ORCL": "Oracle", "CRWV": "CoreWeave", "SPCX": "SpaceX", "AMD": "AMD", "AVGO": "Broadcom",
-               "MRVL": "Marvell"}
+               "MRVL": "Marvell", "WULF": "TeraWulf", "CIFR": "Cipher", "CORZ": "Core Scientific"}
+NUM_FR = {11: "onze", 12: "douze", 13: "treize", 14: "quatorze", 15: "quinze", 16: "seize"}
+
+
+def n_groups(cfg):
+    n = len(cfg.get("groups") or {})
+    return NUM_FR.get(n, str(n))
+
+
+def composition_line(cfg):
+    """Composition des agrégats entre groupes et date d'entrée de chaque membre (§9.6)."""
+    parts = []
+    for e in cfg.get("group_entry") or []:
+        parts.append(", ".join(GROUP_NAMES.get(g, g) for g in e["groups"]) + f" depuis le {e['date']}")
+    return "; ".join(parts)
 
 
 def fr_num(v, dec=1):
@@ -282,7 +296,7 @@ def synthesis(con, as_of, stats):
     else:
         L.append("- **Critères modifiés depuis leur commit d'origine** : " + ", ".join(k for k, v in crit.items() if not v))
     if not blocks_open:
-        L.append("- **Périmètre couvert : premier passage.** Faits balisés des onze groupes, puis notes de parties liées, "
+        L.append(f"- **Périmètre couvert : premier passage.** Faits balisés des {n_groups(new)} groupes, puis notes de parties liées, "
                  "Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation et items 1.01, 1.02, 3.03 et 8.01 des 8-K "
                  "avec leurs pièces EX-10 et EX-4. Les notes d'investissements, de dette, de baux et d'engagements ne sont "
                  "pas lues : ce qui en dépend est publié partiel ou indéterminé, motif « non traité au premier passage ».")
@@ -293,7 +307,7 @@ def synthesis(con, as_of, stats):
                      f"{', '.join('`' + b + '`' for b in h.get('blocks') or [])} le {h.get('date')}"
                      for h in [dec] + list(new.get("scope_history") or []) if h.get("blocks"))
                  + ", chaque fois après le rendement présenté). "
-                 "Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des "
+                 f"Premier passage : faits balisés des {n_groups(new)} groupes, notes de parties liées, Item 404, Item 9A, Item 4 des "
                  "10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. "
                  + ("Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). " if "lender" in blocks_open else "")
                  + ("Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de "
@@ -308,7 +322,8 @@ def synthesis(con, as_of, stats):
                     "texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; "
                     + (f"la passe A est lue jusqu'au rang {T.n('observations', {'discovery_last_rank_read': True}, discovery_ranks_read())} du classement, puis la lecture est arrêtée sur "
                        "décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». "
-                       if (new.get("scope_history") or [{}])[-1].get("discovery_reading") == "stopped" else
+                       if next((h["discovery_reading"] for h in reversed(new.get("scope_history") or [])
+                                if h.get("discovery_reading")), None) == "stopped" else
                        "la lecture avance par tranches, le reste de la file est « non traité » (D-0038). ")
                     if "discovery" in blocks_open else "")
                  + ("Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). "
@@ -321,6 +336,16 @@ def synthesis(con, as_of, stats):
                  + (lambda closed: "" if not closed else (f"Le bloc `{closed[0]}` reste fermé." if len(closed) == 1 else
                     "Les blocs " + ", ".join(f"`{x}`" for x in closed) + " restent fermés."))(
                      [x for x in ("discovery", "form_d", "paths", "foreign") if x not in blocks_open]))
+    if len(new.get("group_entry") or []) > 1:
+        rcs = new.get("reverse_combinations") or {}
+        L.append("- **Composition des agrégats entre groupes** (§9.6) : " + composition_line(new) + ". Tout agrégat "
+                 "entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : "
+                 "l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique."
+                 + (" Fusions inversées (D-0043) : " + " ; ".join(
+                     f"{GROUP_NAMES.get(g, g)}, réalisée le {r['consummation']} avec {r['legal_registrant']} comme "
+                     f"déclarant légal" for g, r in rcs.items())
+                    + " ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du "
+                      "groupe, dont l'historique est tronqué à gauche." if rcs else ""))
     e7 = q(con, "SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'")
     if e7:
         c = e7[0]

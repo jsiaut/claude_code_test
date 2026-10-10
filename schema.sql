@@ -50,7 +50,7 @@ CREATE TYPE control_status AS ENUM ('ok', 'mismatch', 'not_testable', 'tautologi
 CREATE TYPE tolerance_basis AS ENUM ('declared', 'inferred', 'none');
 CREATE TYPE entity_record AS ENUM ('entity', 'membership', 'alias');
 CREATE TYPE consolidation_treatment AS ENUM ('parent', 'consolidated_subsidiary', 'vie_consolidated', 'vie_unconsolidated', 'equity_method', 'investment_only', 'undetermined', 'none');
-CREATE TYPE combination_method AS ENUM ('acquisition', 'common_control', 'succession', 'reorganization', 'none');
+CREATE TYPE combination_method AS ENUM ('acquisition', 'common_control', 'succession', 'reorganization', 'reverse_recapitalization', 'none');
 CREATE TYPE entity_status AS ENUM ('confirmed', 'pending');
 CREATE TYPE resolution_rule AS ENUM ('same_cik', 'ex21', 'name_jurisdiction_two_documents', 'formerly_known_as', 'notes_consolidated', 'succession_document', 'executor_decision', 'config_seed', 'none');
 CREATE TYPE group_kind AS ENUM ('config_group', 'lab', 'counterparty_group', 'joint_venture', 'none');

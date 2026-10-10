@@ -69,8 +69,19 @@ def grid_outcome(cells_by_year, s, crit):
     return "indeterminate", "interval_straddles_threshold"
 
 
+def composition(cfg, groups):
+    """Composition d'un agrégat entre groupes et date d'entrée de chaque membre dans le modèle
+    (§9.6) : sans elle, l'ajout d'un groupe ressemblerait à une explosion de l'exposition."""
+    entry = {}
+    for e in cfg.get("group_entry") or []:
+        for g in e["groups"]:
+            entry.setdefault(g, str(e["date"]))
+    return {g: entry.get(g) for g in sorted(groups)}
+
+
 def evaluate(ev, cfg, groups_window, deadlines, as_of, paths=None):
     E = cfg["annex_e"]
+    comp = composition(cfg, groups_window)
     grid = [Decimal(str(x)) for x in E["conventions"]["grid"]["high"]]
     head = Decimal(str(E["conventions"]["grid"]["headline"]))
     as_of_d = dt.date.fromisoformat(as_of)
@@ -181,7 +192,8 @@ def evaluate(ev, cfg, groups_window, deadlines, as_of, paths=None):
         out.append(cell("annex_e_outcome", "ALL", None, as_of_d, "as_known", as_of, breakdown=bk("E6"),
                         value_text="descriptive", status="computed", value=len(paths),
                         flags={"counts": tally6(paths), "by_length": dict(Counter(len(p_["nodes"]) for p_ in paths)),
-                               "basis": "chaque cycle compté une fois (bloc paths, §14) ; issue descriptive, hors de E.7"}))
+                               "basis": "chaque cycle compté une fois (bloc paths, §14) ; issue descriptive, hors de E.7",
+                               "composition": comp}))
     # E.7 non-discrimination, E.8 agrégation, E.9 engagements de rendu
     allo = tally["E1"] + tally["E2"]
     n = len(allo)
@@ -191,14 +203,14 @@ def evaluate(ev, cfg, groups_window, deadlines, as_of, paths=None):
     if share is None:
         out.append(cell("annex_e_outcome", "ALL", None, as_of_d, "as_known", as_of, breakdown=bk("E7", f"{head:.2f}"),
                         value_text="indeterminate", status="not_determinable", nd_reason="no_financed_pair",
-                        flags={"basis": "aucune paire à financement établi : E.1 et E.2 sans issue"}))
+                        flags={"basis": "aucune paire à financement établi : E.1 et E.2 sans issue", "composition": comp}))
     else:
         txt = "non_discrimination" if share > thr else "discrimination_possible"
         out.append(cell("annex_e_outcome", "ALL", None, as_of_d, "as_known", as_of, breakdown=bk("E7", f"{head:.2f}"),
                         value=share, numerator=ind, denominator=n, value_text=txt, unit="pure",
                         flags={"headline_result": E["rules"]["E7"]["headline_result"] if share > thr else None,
                                "reasons": dict(reasons), "outcomes_E1": dict(Counter(tally["E1"])),
-                               "outcomes_E2": dict(Counter(tally["E2"]))}))
+                               "outcomes_E2": dict(Counter(tally["E2"])), "composition": comp}))
     shares = {}
     for stmt in ("E1", "E2", "E3", "E4", "E5"):
         cs = [c for c in out if c["measure"] == "annex_e_outcome" and c["breakdown_key"].startswith(stmt + "|")
@@ -207,8 +219,9 @@ def evaluate(ev, cfg, groups_window, deadlines, as_of, paths=None):
         shares[stmt] = {k: {"pairs": v, "share": round(v / len(cs), 4)} for k, v in cnt.items()} if cs else {}
     out.append(cell("annex_e_outcome", "ALL", None, as_of_d, "as_known", as_of, breakdown=bk("E8"),
                     value_text="per_pair", status="computed",
-                    flags={"rule": E["rules"]["E8"]["rule"], "shares_by_statement": shares}))
+                    flags={"rule": E["rules"]["E8"]["rule"], "shares_by_statement": shares, "composition": comp}))
     out.append(cell("annex_e_outcome", "ALL", None, as_of_d, "as_known", as_of, breakdown=bk("E9"),
                     value_text="applied", status="computed",
-                    flags={"empty_numerator_published_with": E["rules"]["E9"]["empty_numerator"]["publish_alongside"]}))
+                    flags={"empty_numerator_published_with": E["rules"]["E9"]["empty_numerator"]["publish_alongside"],
+                           "composition": comp}))
     return out

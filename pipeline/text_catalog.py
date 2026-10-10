@@ -125,7 +125,9 @@ def eight_k_blocks(stats, fetch=True):
     """Sections des items 2.01 et 2.03 des 8-K des groupes, sur la période de la tranche ; un
     document principal absent du cache se tire (client SEC, journal)."""
     inv = pd.read_parquet(config.DB_DIR / "inventory.parquet")
-    k8 = inv[inv["form"].isin(["8-K", "8-K/A"]) & inv["items"].fillna("").str.contains(r"2\.01|2\.03")]
+    # dépôts du déclarant légal antérieurs à une fusion inversée : hors du groupe (D-0043)
+    k8 = inv[inv["form"].isin(["8-K", "8-K/A"]) & inv["items"].fillna("").str.contains(r"2\.01|2\.03")
+             & (inv["inv_class"] != "pre_combination")]
     client = None
     out = []
     for r in k8.sort_values("filingDate").to_dict("records"):

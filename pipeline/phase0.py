@@ -50,6 +50,10 @@ def collect(as_of, cfg=None):
         ciks = [(g["cik"], False, g["title"])] + [(c, True, n) for n, c in g["predecessors"].items()]
         for cik, is_pred, label in ciks:
             main, frows, pages, complete = e.submissions(cik)
+            # une ressource tirée après l'as_of (groupe ajouté plus tard, D-0043) ne donne que les
+            # dépôts connus à l'as_of
+            late = [f for f in frows if (f.get("filingDate") or "") > as_of]
+            frows = [f for f in frows if (f.get("filingDate") or "") <= as_of]
             meta[cik] = {
                 "group": tk, "is_predecessor": is_pred, "name": main.get("name"),
                 "sic": main.get("sic"), "sicDescription": main.get("sicDescription"),
@@ -58,6 +62,7 @@ def collect(as_of, cfg=None):
                 "entityType": main.get("entityType"), "tickers": main.get("tickers"),
                 "exchanges": main.get("exchanges"), "formerNames": main.get("formerNames"),
                 "pages": pages, "pages_complete": complete, "n_filings": len(frows),
+                "filings_after_as_of": len(late),
             }
             for f in frows:
                 f = dict(f)
@@ -68,9 +73,31 @@ def collect(as_of, cfg=None):
     return client, e, groups, excluded, meta, rows
 
 
+def pre_combination(r, rc):
+    """Dépôt du déclarant légal antérieur à une fusion inversée (D-0043) : rapport périodique d'une
+    période close avant la réalisation, ou tout autre dépôt antérieur à la réalisation. Il présente
+    une autre entité que le groupe (l'acquéreur comptable) et reste hors du groupe."""
+    if not rc or r["is_predecessor"]:
+        return False
+    if r["accessionNumber"] in {x["accession"] for x in rc.get("pre_combination_filings") or []}:
+        return True
+    cons = str(rc["consummation"])
+    rd, fd = str(r.get("reportDate") or "")[:10], str(r["filingDate"])[:10]
+    if r["form"] in PERIODIC:
+        return (rd if len(rd) == 10 else fd) < cons
+    return fd < cons
+
+
+def pre_combination_accessions(rows, cfg):
+    """Accessions des dépôts antérieurs à une fusion inversée (D-0043), hors de leur groupe."""
+    rcs = cfg.get("reverse_combinations") or {}
+    return {r["accessionNumber"] for r in rows if pre_combination(r, rcs.get(r["group_id"]))}
+
+
 def build_calendars(groups, meta, rows, cfg, as_of):
     w = cfg["window"]
     out = {}
+    rcs = cfg.get("reverse_combinations") or {}
     for tk, g in groups.items():
         frows = [r for r in rows if r["group_id"] == tk]
         fye = meta[g["cik"]].get("fiscalYearEnd")
@@ -88,6 +115,10 @@ def build_calendars(groups, meta, rows, cfg, as_of):
         win = fcal.window(all_years, w["start_fiscal_year"], w["extended_back_quarters"],
                           w["preceding_quarters"], dt.date.fromisoformat(as_of))
         own_first = min((r["filingDate"] for r in frows if not r["is_predecessor"]), default=None)
+        rc = rcs.get(tk)
+        if rc:
+            # l'historique du groupe commence à la réalisation de la fusion inversée (D-0043)
+            first_filing = max(first_filing or "", str(rc["consummation"]))
         censored = bool(win and first_filing and dt.date.fromisoformat(first_filing) > win["reading_start"])
         out[tk] = {
             "years": [{k: (v.isoformat() if isinstance(v, dt.date) else
@@ -96,19 +127,28 @@ def build_calendars(groups, meta, rows, cfg, as_of):
             "window": {k: (v.isoformat() if isinstance(v, dt.date) else v) for k, v in (win or {}).items()},
             "first_filing": first_filing, "own_first_filing": own_first,
             "history_left_censored": censored,
+            "reverse_combination": ({"consummation": str(rc["consummation"]),
+                                     "legal_registrant": rc.get("legal_registrant"),
+                                     "accounting_acquirer": rc.get("accounting_acquirer")} if rc else None),
             "succession_filings": sorted({r["accessionNumber"] + " " + r["form"] + " " + r["filingDate"]
                                           for r in frows if r["form"].startswith("8-K12")}),
         }
     return out
 
 
-def inventory(rows, cal):
+def inventory(rows, cal, cfg=None):
     """Dépôts de la période de lecture, par société, formulaire et item."""
     inv = []
+    rcs = (cfg or {}).get("reverse_combinations") or {}
     for r in rows:
         tk = r["group_id"]
         win = cal[tk]["window"]
         if not win:
+            continue
+        if pre_combination(r, rcs.get(tk)):
+            rs = win["reading_start"]
+            if (r.get("reportDate") or "") >= rs or r["filingDate"] >= rs:
+                inv.append({**r, "inv_class": "pre_combination"})
             continue
         rs = win["reading_start"]
         ref = r.get("reportDate") or r["filingDate"]
@@ -139,7 +179,7 @@ def run(as_of):
     cfg = config.load()
     client, e, groups, excluded, meta, rows = collect(as_of, cfg)
     cal = build_calendars(groups, meta, rows, cfg, as_of)
-    inv = inventory(rows, cal)
+    inv = inventory(rows, cal, cfg)
     config.DB_DIR.mkdir(exist_ok=True)
     con = duckdb.connect()
     con.execute("CREATE TABLE f AS SELECT * FROM read_json_auto(?)", [_dump(rows, "filings")])

@@ -154,3 +154,47 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - lignes par cadre comptable : 5 765 en US GAAP, 3 en IFRS (IREN), 2 076 sans cadre (contrats, narratifs) ; aucun agrégat ne mêle les cadres (invariant f : aucune exclusion).
 
   (6) Correction liée : un même CIK est une même entité (§10.2). La découverte rattachait chaque bloc au groupe de la dénomination portée par le dépôt : les dépôts d'IREN de 2023 et 2024, au nom d'Iris Energy, formaient ainsi un groupe distinct. Douze CIK lus étaient dans ce cas. Les observations d'un déposant découvert prennent désormais le groupe de sa dénomination la plus récente, et onze anciennes dénominations deviennent des alias (règle `same_cik`) : Iris Energy (IREN), Cipher Mining (Cipher Digital), dMY Technology Group IV (Planet Labs), Acies Acquisition Corp. (PLAYSTUDIOS), Soaring Eagle Acquisition Corp. (Ginkgo Bioworks), NortonLifeLock (Gen Digital), GP Investments Acquisition Corp. (Rimini Street), Torchlight Energy Resources (Meta Materials), Meta Financial Group (Pathward), Oak Street Net Lease Trust (Blue Owl Real Estate Net Lease Trust), IAC Inc. (People Inc.). « IAC/InterActiveCorp », porté par deux CIK (Match Group et People Inc.), reste sans alias. Aucune conclusion de paire ni aucun cycle n'en change. Source : §2.1, §2.2, §7.6 (invariant f), §10.2, §11.5, §14, annexes A et D.
+
+- **D-0043 — Ajout de groupes : TeraWulf (WULF), Cipher (CIFR) et Core Scientific (CORZ).** Décision de l'utilisateur, le 2026-10-10 : « On continue sur l'ajout de nouveaux groupes, toujours sans sous-agent ». Elle fait suite au rapport de livraison du bloc `foreign` (commit 2364e9c). Les trois groupes sont pris dans l'ordre de §14, les hébergeurs endettés d'abord ; Nebius et IREN restent traités par le bloc `foreign`. Lecture séquentielle par l'exécutant, sans sous-agent.
+
+  (1) Configuration :
+  - les trois groupes entrent dans `config.yaml`, jamais dans le code (§14). `company_tickers.json` résout les tickers vers les CIK 1083301, 1819989 et 1839341, conformes aux CIK indicatifs ;
+  - `group_entry` date l'entrée de chaque groupe dans le modèle : les onze groupes de l'annexe B le 2026-10-07, les trois nouveaux le 2026-10-10 ;
+  - les cellules entre groupes de l'annexe E (E.6 à E.9) portent cette composition et ces dates, et `synthesis.md` les énonce (§9.6).
+
+  (2) Date de connaissance :
+  - l'exécution garde l'as_of du 2026-10-07. Les submissions et les companyfacts des trois CIK, tirés le 2026-10-10, sont rangés sous cet as_of ;
+  - les dépôts postérieurs à l'as_of (quatre pour Cipher) et les faits déposés après lui sont écartés en phases 0 et 1 ;
+  - le journal garde l'heure réelle de chaque requête.
+
+  (3) Fusions inversées. Chacun des trois CIK a d'abord été celui d'une autre entité, le déclarant légal :
+  - IKONICS Corporation pour TeraWulf : TeraWulf en est le successeur au sens de la Rule 12g-3(c), à la fusion du 2021-12-13 (8-K12B 0000950142-21-003986). Le 10-K 2021 dit : « For financial accounting purposes, the business combination was treated as a reverse merger whereby the accounting acquirer was TeraCub » ;
+  - Good Works Acquisition Corp. pour Cipher : recapitalisation inversée du 2021-08-27. Le 10-Q du T3 2021 dit : « The Merger was accounted for as a reverse recapitalization in accordance with U.S. GAAP » ;
+  - Power & Digital Infrastructure Acquisition Corp. pour Core Scientific : recapitalisation inversée du 2022-01-19. Le 10-Q du T1 2022 dit : « The Merger is accounted for as a reverse recapitalization with the Company being the accounting acquirer ».
+
+  La règle des prédécesseurs (§10.1) suppose des états consolidés qui se continuent. Ici ils ne se continuent pas : l'historique du groupe est celui de l'acquéreur comptable, publié par les rapports postérieurs à la réalisation. D'où la règle, écrite dans `config.yaml` (`reverse_combinations`) :
+  - hors du groupe : les rapports périodiques du CIK dont la période se clôt avant la réalisation, et ses autres dépôts antérieurs à la réalisation. Ils forment la classe d'inventaire `pre_combination`, hors des séries et du texte ;
+  - leurs faits de companyfacts sont écartés : 8 516 pour TeraWulf, 874 pour Cipher, 384 pour Core Scientific ;
+  - le 10-K 2021 de Core Scientific, déposé après la réalisation, présente encore la SPAC (actif de 346 368 517 $) : il est écarté ;
+  - le 8-K (item 4.02) de Cipher du 23 décembre 2021 ne porte que sur les états de la SPAC : « Therefore, the errors relate to the pre-business combination SPAC and its financial statements ». Il est écarté de même ;
+  - les trois groupes portent `history_left_censored`. Leurs trimestres attendus commencent au premier 10-Q de l'acquéreur comptable (`reporting_start`) ;
+  - l'appartenance du CIK à son groupe porte `combination_method` `reverse_recapitalization`, valeur ajoutée à l'énumération.
+
+  (4) Du code vers la configuration :
+  - les débuts d'obligation de publier de SpaceX et de CoreWeave passent du code (`universe.py`) à `config.yaml` (`reporting_start`). L'univers attendu des onze groupes est inchangé (vérifié ligne à ligne) ;
+  - `history_left_censored` se lit dans la phase 0 au lieu d'une liste codée, avec le même résultat pour les onze groupes. Son exclusion est publiée pour chaque groupe concerné.
+
+  (5) Alias : « Core Scientific, Inc. » est un alias de « Core Scientific, Inc./tx ». Le « /tx » est un suffixe de désambiguïsation d'EDGAR, pas la dénomination légale. La pièce : « Core Scientific, Inc., a Delaware corporation (the "Company") » (0001193125-22-199189).
+
+  (6) Découverte :
+  - les lignes déjà lues dans la découverte pour TeraWulf (8 blocs) et Cipher (9 blocs) vont désormais à leur groupe. Les en-têtes de pièces de même clé de contenu ne se relisent pas ;
+  - les unités de ces déposants encore dans la file en sortent (`out_of_scope`) : leurs dépôts se lisent par le catalogue du groupe ;
+  - côté client, la recherche reste incomplète pour un fournisseur que le lexique de la découverte ne nommait pas, c'est-à-dire pour les trois nouveaux groupes : le scan des Notes Data Sets n'a jamais cherché leurs noms (`search_incomplete`).
+
+  (7) Un 10-K/A ou un 10-Q/A sans instance XBRL ne contient aucun état financier :
+  - TeraWulf, 2025 : « Because no financial statements have been included in this Amendment » ;
+  - Alphabet, 2019 : amendement « for the sole purpose of updating the consent in Exhibit 23.01 ».
+
+  Ce n'est donc plus un échec de parse : ni recherche incomplète, ni exclusion `parse_failed`. L'exclusion d'Alphabet de 2019 disparaît.
+
+  (8) Correction liée : l'en-tête de `synthesis.md` lisait l'état de la lecture de la découverte dans la dernière décision de `scope_history`. Depuis D-0042, il affichait à tort une lecture « par tranches ». Il lit désormais la dernière décision qui fixe cet état (arrêt, D-0041).

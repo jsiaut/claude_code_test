@@ -24,7 +24,11 @@ def run(as_of, workers=4):
     filings = con.execute(f"SELECT * FROM '{config.DB_DIR / 'filings.parquet'}'").fetchdf()
     by_acc = {r["accessionNumber"]: r for r in filings.to_dict("records")}
 
-    # 1. companyfacts, prédécesseurs compris, sans borne de date
+    # 1. companyfacts, prédécesseurs compris, sans borne de date ; les faits des rapports du déclarant
+    # légal antérieurs à une fusion inversée sont hors du groupe (D-0043)
+    from .phase0 import pre_combination_accessions
+    pre = pre_combination_accessions(filings.to_dict("records"), cfg)
+    cf_pre = {}
     cf_rows = []
     for cik, m in p0["meta"].items():
         try:
@@ -32,7 +36,16 @@ def run(as_of, workers=4):
         except NotCollected as exc:
             print("companyfacts non collecté", cik, exc)
             continue
-        cf_rows.extend(phase1.companyfacts_rows(cf, m["group"], cik, by_acc))
+        # faits déposés après l'as_of écartés (ressource tirée plus tard pour un groupe ajouté, D-0043)
+        for r in phase1.companyfacts_rows(cf, m["group"], cik, by_acc):
+            if (r["filing_date"] or "") > as_of:
+                continue
+            if r["accession"] in pre:
+                cf_pre[m["group"]] = cf_pre.get(m["group"], 0) + 1
+                continue
+            cf_rows.append(r)
+    (config.DB_DIR / "phase1_pre_combination.json").write_text(json.dumps(
+        {"facts_excluded": cf_pre, "accessions": len(pre)}, indent=1))
     print("companyfacts :", len(cf_rows), "faits", client.stats, flush=True)
 
     # 2. archives XBRL des rapports périodiques de la période de lecture

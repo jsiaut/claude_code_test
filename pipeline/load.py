@@ -116,11 +116,22 @@ def canonical_filers(catalog):
     return {c: v[1] for c, v in best.items()}
 
 
+def config_group_ciks():
+    """CIK (sans zéros) -> groupe de config.yaml, prédécesseurs compris (phase 0)."""
+    p = config.DB_DIR / "phase0.json"
+    if not p.exists():
+        return {}
+    meta = json.loads(p.read_text())["meta"]
+    return {str(int(c)): m["group"] for c, m in meta.items()}
+
+
 def load_observations(con, catalog, as_of):
     """Charge la passe la plus récente de chaque bloc dont la clé existe encore, après
     validation sémantique ; une ligne rejetée devient une exclusion validation_failed."""
     cat = {b["content_key"]: b for b in catalog}
     canon = canonical_filers(catalog)
+    # un déposant découvert devenu groupe de config.yaml (D-0043) : ses lignes vont à son groupe
+    as_group = config_group_ciks()
     rows, excl = [], []
     for p in sorted(config.OBS_DIR.glob("*.jsonl")):
         if p.name.endswith(".rejected.jsonl"):
@@ -144,7 +155,9 @@ def load_observations(con, catalog, as_of):
             errs, locator = semantic_errors(l, b)
             state = "valid" if not errs else "rejected_semantic"
             row = _obs_row(l, b, n, state, errs, locator)
-            if str(b.get("block_kind", "")).startswith("discovery_") and str(int(b["cik"])) in canon:
+            if str(b.get("block_kind", "")).startswith("discovery_") and str(int(b["cik"])) in as_group:
+                row["group_id"] = as_group[str(int(b["cik"]))]
+            elif str(b.get("block_kind", "")).startswith("discovery_") and str(int(b["cik"])) in canon:
                 from .graph import normalize_name
                 row["group_id"] = "CP:" + normalize_name(canon[str(int(b["cik"]))])
             rows.append(row)

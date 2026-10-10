@@ -14,6 +14,7 @@ import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
                fsignals, lender, links, load, measures, model, rank2, reader)
+from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
 
 NONE = "none"
@@ -64,6 +65,18 @@ def insert(con, table, rows, cols=None):
     con.execute(f"INSERT INTO {table} SELECT {', '.join(sel)} FROM df_ins")
     con.unregister("df_ins")
     return len(df)
+
+
+def phase1_failures():
+    """Échecs de la phase 1, sauf l'amendement sans instance XBRL : il ne contient aucun état
+    financier (tout état financier d'un rapport périodique est balisé, Reg S-T 405) et ne remplace
+    que des pièces ou la partie III ; rien n'y est illisible."""
+    out = []
+    for f in json.loads((config.DB_DIR / "phase1_failures.json").read_text()):
+        if str(f.get("form") or "").endswith("/A") and f.get("error") == "pas d'instance XBRL dans le dépôt":
+            continue
+        out.append(f)
+    return out
 
 
 def windows(p0):
@@ -133,6 +146,11 @@ def run(as_of):
     years_by_group = {g: circularity.fiscal_years(cals[g]["quarters"], gw[g]["window_start"], as_of_d) for g in groups}
     filings = pd.read_parquet(config.DB_DIR / "filings.parquet")
     filings["filingDate"] = filings["filingDate"].map(_d)
+    # dépôts du déclarant légal antérieurs à une fusion inversée : hors du groupe (D-0043)
+    from .phase0 import pre_combination_accessions
+    pre_acc = pre_combination_accessions(filings.to_dict("records"), cfg)
+    filings = filings[~filings["accessionNumber"].isin(pre_acc)].reset_index(drop=True)
+    stats["pre_combination_filings"] = len(pre_acc)
 
     # 5. mesures de rang 1 tirées des faits (phase 1), puis mesures dimensionnelles ; mesures de
     # rang 2 tirées des faits, codées après la seconde page (§11.1)
@@ -190,7 +208,7 @@ def run(as_of):
     # rétrospection de F (huit trimestres, §3.2) couvre sa période
     lookback_days = 92 * cfg["thresholds"]["financed_lookback_quarters"]
     failed_until = {}
-    for f in json.loads((config.DB_DIR / "phase1_failures.json").read_text()):
+    for f in phase1_failures():
         r = filings[filings["accessionNumber"] == f["accession"]]
         if r.empty or not _d(r.iloc[0]["reportDate"]):
             continue
@@ -222,7 +240,9 @@ def run(as_of):
 
     # 8. circularité : paires, statut financé, dépendances, couverture, exposition par contrepartie
     pairs = circularity.build_pairs(edges, set(groups))
-    censored = {"CRWV"}        # history_left_censored (plan.md, phase 0)
+    # history_left_censored (phase 0) : premier dépôt du groupe, ou réalisation d'une fusion inversée
+    # (D-0043), postérieur au début de la période de lecture
+    censored = {g for g in groups if p0["calendars"][g].get("history_left_censored")}
     rd = model.original_report_dates(con)
     # notes de revenu des 10-K lues (bloc text) : leurs exercices ne sont plus « non traités »
     fil = pd.read_parquet(config.DB_DIR / "filings.parquet", columns=["accessionNumber", "reportDate"])
@@ -302,7 +322,7 @@ def run(as_of):
     n_ent = insert(con, "entities", ent_rows)
 
     # 14. documents
-    failed = {f["accession"] for f in json.loads((config.DB_DIR / "phase1_failures.json").read_text())}
+    failed = {f["accession"] for f in phase1_failures()}
     used = set(con.execute("SELECT DISTINCT accession FROM facts").fetchdf()["accession"]) | {b["accession"] for b in catalog}
     if "form_d" in scope:
         from . import formd
@@ -525,9 +545,26 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
     drs = filings[filings["form"].fillna("").str.startswith("DRS")]
     for r in drs.itertuples():
         ex("filing", r.accessionNumber, "submitted_draft", f"{r.form} soumis, pas déposé (§2.1)", r.group_id, r.accessionNumber)
-    for g in ("CRWV",):
-        ex("group", g, "history_left_censored",
-           "premier dépôt après le début de la période de lecture, aucun prédécesseur (plan.md)", g)
+    for g, cal in p0["calendars"].items():
+        if not cal.get("history_left_censored"):
+            continue
+        rc = cal.get("reverse_combination")
+        if rc:
+            ex("group", g, "history_left_censored",
+               f"fusion inversée réalisée le {rc['consummation']} : l'historique du groupe est celui de "
+               f"l'acquéreur comptable ({rc['accounting_acquirer']}), publié par les rapports postérieurs ; "
+               "rien avant (D-0043)", g)
+        else:
+            ex("group", g, "history_left_censored",
+               "premier dépôt après le début de la période de lecture, aucun prédécesseur (plan.md)", g)
+    inv = pd.read_parquet(config.DB_DIR / "inventory.parquet", columns=["group_id", "form", "inv_class"])
+    for g, sub in inv[inv["inv_class"] == "pre_combination"].groupby("group_id"):
+        rc = p0["calendars"][g].get("reverse_combination") or {}
+        n_per = int(sub["form"].isin(PERIODIC_FORMS).sum())
+        ex("group", f"{g}:pre_combination", "out_of_scope",
+           f"{len(sub)} dépôts de la période de lecture, dont {n_per} rapports périodiques, présentent le déclarant "
+           f"légal ({rc.get('legal_registrant')}) avant la fusion inversée du {rc.get('consummation')} : autre "
+           "entité que le groupe, hors des séries et du texte (D-0043)", g)
     ex("aggregate", "datacenter_securitizations", "not_public",
        "couche titrisée des datacenters : selon une réponse du personnel de la SEC du 29 juillet 2026, ces titres ne sont pas des asset-backed securities ; non documentable à la ligne (§5.2)")
     if not text_open:
@@ -553,15 +590,27 @@ def discovery_exclusions(as_of):
     if discovery.UNITS.exists():
         built = discovery.built_units()
         units = pd.read_parquet(discovery.UNITS)
+        # un déposant devenu groupe de config.yaml (D-0043) : ses dépôts se lisent par le catalogue du
+        # groupe ; ses unités non préparées sortent de la file de la découverte
+        cfg = config.load()
+        as_group = {str(int(c)): g for g, c in cfg["groups"].items()}
+        superseded = Counter()
         # dictionnaires et non itertuples : la colonne « pass » est un mot réservé que itertuples renomme
         for u in units.to_dict("records"):
             b = built.get(u["order"])
             if b and b.get("content_key"):
                 continue
+            if str(u["cik"]) in as_group:
+                superseded[as_group[str(u["cik"])]] += 1
+                continue
             why = (b or {}).get("error") or "unité de la file de la découverte non encore préparée ni lue"
             ex("document", f"discovery:{u['adsh']}/{u['doc']}", "not_processed" if not (b or {}).get("error") else "not_collected",
                f"rang {u['rank']}, passe {u['pass']}, {u['kind']} : {why} ; groupes nommés {u['groups']}",
                "CP:cik" + str(u["cik"]), u["adsh"])
+        for g, n in sorted(superseded.items()):
+            ex("group", f"{g}:discovery_units", "out_of_scope",
+               f"{n} unités de la file de la découverte tirées des dépôts du groupe, ajouté à config.yaml après "
+               "la découverte : ces dépôts se lisent par le catalogue du groupe (D-0043)", g)
     todo = discovery.in_period(discovery.archive_list(), discovery.period_start())
     done = set(discovery.scanned_archives())
     for a in todo:

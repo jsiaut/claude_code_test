@@ -40,20 +40,22 @@ GROUP_TIER1 = {
 EVENTS = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10"]
 
 
-# Début de l'obligation de publier, par fréquence (introductions en bourse récentes) :
-# trimestres à partir du premier 10-Q ; exercices présentés par le document d'enregistrement
-# (Reg S-X 3-01, 3-02). Avant, la cellule est not_applicable avec sa pièce.
-REPORTING_START = {
-    "SPCX": {"quarter": ("2026-04-01", "EFFECT 9999999995-26-001968 du 2026-06-11 ; premier 10-Q 0001628280-26-052535 (T2 2026)"),
-             "fiscal_year": ("2023-01-01", "424B4 0001628280-26-042639 : exercices 2023 à 2025 présentés (Reg S-X 3-02)")},
-    "CRWV": {"quarter": ("2025-01-01", "424B4 0001193125-25-067651 du 2025-03-31 ; premier 10-Q pour le T1 2025"),
-             "fiscal_year": ("2022-01-01", "424B4 0001193125-25-067651 : exercices 2022 à 2024 présentés (Reg S-X 3-02)")},
-}
+# Début de l'obligation de publier, par fréquence (introductions en bourse récentes, fusions
+# inversées) : config.yaml, `reporting_start` ; trimestres à partir du premier 10-Q ; exercices
+# présentés par le document d'enregistrement (Reg S-X 3-01, 3-02). Avant, la cellule est
+# not_applicable avec sa pièce. Un groupe s'ajoute dans config.yaml, jamais dans le code (§14).
+def reporting_starts(cfg=None):
+    from . import config
+    cfg = cfg or config.load()
+    return {g: {freq: (str(v[0]), v[1]) for freq, v in (spec or {}).items()}
+            for g, spec in (cfg.get("reporting_start") or {}).items()}
 
 
-def generate(calendars, as_of, reporting_start=REPORTING_START):
+def generate(calendars, as_of, reporting_start=None):
     """calendars : {groupe: {years, window}} de phase0.json ; reporting_start :
-    {groupe: {fréquence: (date, pièce)}} début de l'obligation de publication."""
+    {groupe: {fréquence: (date, pièce)}} début de l'obligation de publication (config.yaml)."""
+    if reporting_start is None:
+        reporting_start = reporting_starts()
     rows = []
     as_of_d = dt.date.fromisoformat(as_of)
     for g, cal in calendars.items():
@@ -96,3 +98,16 @@ def generate(calendars, as_of, reporting_start=REPORTING_START):
                              "term": "none", "breakdown_key": ev, "period_kind": "quarter",
                              "basis": "annexe F", "expected_state": state, "not_applicable_evidence": evidence})
     return rows
+
+
+if __name__ == "__main__":
+    import json
+    import sys
+
+    import pandas as pd
+
+    from . import config
+    p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
+    rows = generate(p0["calendars"], sys.argv[1] if len(sys.argv) > 1 else p0["as_of"])
+    pd.DataFrame(rows).to_parquet(config.DB_DIR / "expected_universe.parquet", index=False)
+    print(len(rows), "cellules attendues")

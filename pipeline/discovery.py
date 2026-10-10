@@ -1200,6 +1200,9 @@ def client_states(read_cks, extended_start):
     filer_cik = {normalize_name(n): str(c) for n, c in zip(cands.get("filer", []), cands.get("cik", []))}
     complete_cov = coverage_ok()
     ext = extended_start.strftime("%Y%m%d") if hasattr(extended_start, "strftime") else str(extended_start)
+    # fournisseurs que le lexique nomme : un groupe ajouté après le scan (D-0043) n'y figure pas, et
+    # les notes des déposants qui le nomment n'ont jamais été cherchées
+    searched = {e["ref"] for e in lexicon()}
 
     def state(norm, s):
         if not complete_cov:
@@ -1211,6 +1214,8 @@ def client_states(read_cks, extended_start):
         reps = [f for c in ciks for f in per.get(c, []) if f[1] >= ext]
         if not reps:
             return True, None, cik                       # aucun rapport périodique dans la fenêtre
+        if s not in searched:
+            return False, "search_incomplete", cik
         if units.empty:
             return False, "not_processed", cik
         mine = units[(units["cik"].isin(ciks)) & (units["groups"].str.split(";").map(lambda g: s in g))]

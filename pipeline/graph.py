@@ -70,6 +70,13 @@ def seed_entities(p0, cfg):
         if m["is_predecessor"]:
             to, ev = succession.get(cik, (None, None))
             mem(eid, m["group"], "none", to, "parent", "succession", rule="succession_document", evidence=ev)
+        elif (cfg.get("reverse_combinations") or {}).get(m["group"]):
+            # fusion inversée (D-0043) : même CIK, mais les rapports antérieurs à la réalisation
+            # présentent le déclarant légal ; ils sont hors du groupe (phase 0, pre_combination)
+            rc = cfg["reverse_combinations"][m["group"]]
+            mem(eid, m["group"], "none", None, "parent", "reverse_recapitalization", rule="same_cik",
+                evidence=f"company_tickers.json {cik} ; réalisation le {rc['consummation']}, déclarant légal "
+                         f"{rc.get('legal_registrant')}, acquéreur comptable {rc.get('accounting_acquirer')} (D-0043)")
         else:
             mem(eid, m["group"], "none", None, "parent", rule="same_cik", evidence=f"company_tickers.json {cik}")
         for fn in m.get("formerNames") or []:

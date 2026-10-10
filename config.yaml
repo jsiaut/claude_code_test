@@ -68,6 +68,17 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 22, indeterminate: 13, result: discrimination_possible}
       discovery_units_not_processed: 18799
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-10
+    decision: "On continue sur l'ajout de nouveaux groupes, toujours sans sous-agent"
+    groups_added: [WULF, CIFR, CORZ]   # hébergeurs endettés, dans l'ordre de §14 ; dates d'entrée : group_entry
+    page: "rapport de livraison du bloc foreign dans la conversation du 2026-10-10 (D-0043)"
+    yield_presented:             # état publié au commit 2364e9c, avant l'ajout
+      relationship_conclusions: {pairs: 53, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 4, causality_not_established: 35}
+      documented_paths: {cycles: 23, documented_dependency: 10, commercial_with_financing: 12, reciprocal_commercial_only: 1}
+      pairs_financed_documented: 12
+      annex_e_e7: {outcomes: 24, indeterminate: 14, result: discrimination_possible}
+      discovery_units_not_processed: 18799
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
@@ -88,6 +99,60 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   AMD: "0000002488"
   AVGO: "0001730168"
   MRVL: "0001835632"
+  WULF: "0001083301"         # ajouts du 2026-10-10 (D-0043) : hébergeurs endettés, dans l'ordre de §14
+  CIFR: "0001819989"
+  CORZ: "0001839341"
+
+group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
+                             # énonce sa composition et ces dates (§9.6)
+  - {date: 2026-10-07, groups: [NVDA, GOOGL, AMZN, META, MSFT, ORCL, CRWV, SPCX, AMD, AVGO, MRVL], basis: "annexe B"}
+  - {date: 2026-10-10, groups: [WULF, CIFR, CORZ], basis: "D-0043, ajout de groupes de §14"}
+
+reverse_combinations:        # déclarant légal distinct de l'acquéreur comptable (ASC 805-40 ; fusion inversée,
+                             # recapitalisation inversée d'une SPAC) : les rapports du CIK pour les périodes closes
+                             # avant la réalisation présentent le déclarant légal, hors du groupe ; l'historique du
+                             # groupe est celui de l'acquéreur comptable, publié par les rapports postérieurs.
+                             # Rupture de périmètre (§10.2) : l'historique antérieur est tronqué à gauche (D-0043)
+  WULF:
+    consummation: "2021-12-13"
+    legal_registrant: "IKONICS Corporation"
+    accounting_acquirer: "TeraCub Inc. (constituée le 8 février 2021)"
+    evidence:
+      - "8-K12B 0000950142-21-003986 : « This Current Report on Form 8-K establishes TeraWulf as the successor issuer to IKONICS pursuant to Rule 12g-3(c) under the Securities Exchange Act of 1934 »"
+      - "10-K 0001104659-22-041168 (exercice 2021) : « For financial accounting purposes, the business combination was treated as a reverse merger whereby the accounting acquirer was TeraCub »"
+  CIFR:
+    consummation: "2021-08-27"
+    legal_registrant: "Good Works Acquisition Corp."
+    accounting_acquirer: "Cipher Mining Technologies Inc. (constituée le 7 janvier 2021)"
+    evidence:
+      - "8-K 0001193125-21-260900 (date de l'événement : 2021-08-27, items 2.01 et 3.03)"
+      - "10-Q 0000950170-21-004222 (T3 2021) : « The Merger was accounted for as a reverse recapitalization in accordance with U.S. GAAP » ; « Cipher was determined to be the accounting acquirer »"
+    pre_combination_filings:   # dépôts postérieurs à la réalisation qui ne portent que sur les états du déclarant légal
+      - {accession: "0001193125-21-366363", form: "8-K", items: "4.02", quote: "Therefore, the errors relate to the pre-business combination SPAC and its financial statements"}
+  CORZ:
+    consummation: "2022-01-19"
+    legal_registrant: "Power & Digital Infrastructure Acquisition Corp."
+    accounting_acquirer: "Core Scientific Holding Co."
+    evidence:
+      - "8-K 0001193125-22-016157 (date de l'événement : 2022-01-19, items 2.01 et 3.03)"
+      - "10-Q 0001628280-22-014350 (T1 2022) : « The Merger is accounted for as a reverse recapitalization with the Company being the accounting acquirer »"
+      - "10-K 0001193125-22-088850 (exercice 2021, déposé après la réalisation) : états de la SPAC (actif de 346 368 517 $ au 31 décembre 2021), hors du groupe"
+
+reporting_start:             # début de l'obligation de publier, par fréquence (§7.5) : trimestres à partir du
+                             # premier 10-Q du groupe ; exercices présentés par le document d'enregistrement
+                             # (Reg S-X 3-01, 3-02) ; avant, la cellule attendue est not_applicable avec sa pièce
+  SPCX:
+    quarter: ["2026-04-01", "EFFECT 9999999995-26-001968 du 2026-06-11 ; premier 10-Q 0001628280-26-052535 (T2 2026)"]
+    fiscal_year: ["2023-01-01", "424B4 0001628280-26-042639 : exercices 2023 à 2025 présentés (Reg S-X 3-02)"]
+  CRWV:
+    quarter: ["2025-01-01", "424B4 0001193125-25-067651 du 2025-03-31 ; premier 10-Q pour le T1 2025"]
+    fiscal_year: ["2022-01-01", "424B4 0001193125-25-067651 : exercices 2022 à 2024 présentés (Reg S-X 3-02)"]
+  WULF:
+    quarter: ["2022-01-01", "fusion inversée du 2021-12-13 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001558370-22-008985 (T1 2022)"]
+  CIFR:
+    quarter: ["2021-07-01", "recapitalisation inversée du 2021-08-27 (D-0043) ; premier 10-Q de l'acquéreur comptable 0000950170-21-004222 (T3 2021)"]
+  CORZ:
+    quarter: ["2022-01-01", "recapitalisation inversée du 2022-01-19 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001628280-22-014350 (T1 2022)"]
 
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
@@ -230,6 +295,7 @@ entity_aliases:
   - {alias: "Oracle", of: "Oracle Corporation", decision: D-0038, block: e8f208676bd328f7a39f08b9d5a6f13b8d06cfd4487c74f8cf1d2802a963430e, accession: 0001193125-26-389753, quote: "Oracle Corporation (\"Oracle\")"}
   - {alias: "Marvell", of: "Marvell Technology Group Ltd.", decision: D-0038, block: 7db407632e69fc96dd2bb3a88478f2d0886fec8c0ee2ebb1c9dd11780a099cf3, accession: 0001193125-21-122807, quote: "Marvell Technology Group Ltd.'s (\"Marvell\")"}
   - {alias: "SpaceX", of: "Space Exploration Technologies Corp.", decision: D-0038, block: 8fb0eaa8e5cc782cb5865c354128d7dad135cc3f3817723ac0e2b9f97e4de558, accession: 0001104659-26-089370, quote: "Space Exploration Technologies Corp., a Texas corporation (\"SpaceX\")"}
+  - {alias: "Core Scientific, Inc.", of: "Core Scientific, Inc./tx", decision: D-0043, block: d2eeccf55611592d82afc9bb5838753aaabd7660e00d8319b021e628c9144bc5, accession: 0001193125-22-199189, quote: "Core Scientific, Inc., a Delaware corporation (the \"Company\")"}   # « /tx » : suffixe de désambiguïsation d'EDGAR, pas la dénomination légale
   - {alias: "AMD", of: "Advanced Micro Devices, Inc.", decision: D-0039, block: b2e6eb4698cf82892444f34ab3c6fb0791b0df02449c7f2ab7bab0f536a03e37, accession: 0000002488-26-000045, quote: "Advanced Micro Devices, Inc. (\"AMD\")"}
 own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
   - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
