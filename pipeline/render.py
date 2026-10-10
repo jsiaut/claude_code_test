@@ -315,6 +315,9 @@ def synthesis(con, as_of, stats):
                     if "paths" in blocks_open else "")
                  + ("Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant "
                     "(D-0041). " if "form_d" in blocks_open else "")
+                 + ("Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà "
+                    "dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). "
+                    if "foreign" in blocks_open else "")
                  + (lambda closed: "" if not closed else (f"Le bloc `{closed[0]}` reste fermé." if len(closed) == 1 else
                     "Les blocs " + ", ".join(f"`{x}`" for x in closed) + " restent fermés."))(
                      [x for x in ("discovery", "form_d", "paths", "foreign") if x not in blocks_open]))
@@ -412,6 +415,7 @@ def synthesis(con, as_of, stats):
     L += circularity_section(con, T, groups)
     L += paths_section(con, T)
     L += formd_section(con, T)
+    L += foreign_section(con, T)
     L += lender_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
@@ -718,6 +722,51 @@ def formd_section(con, T):
     return L
 
 
+def foreign_section(con, T):
+    """Bloc foreign de §14 : émetteurs étrangers retenus, cadre comptable, lignes et arêtes (D-0042)."""
+    if "foreign" not in (config.load().get("scope") or []):
+        return []
+    import pandas as pd
+    from . import foreign
+    L = ["## Émetteurs étrangers (bloc foreign, §14)", ""]
+    inv = pd.read_parquet(foreign.INVENTORY) if foreign.INVENTORY.exists() else None
+    if inv is not None:
+        sel = inv[inv["selected"]]
+        L.append(f"La file de la découverte compte {T.n('observations', {'foreign_filers': True}, len(inv))} émetteurs "
+                 f"étrangers (20-F, 40-F, 6-K, F-1, F-4). La règle fixée avant lecture retient ceux que la spec nomme comme "
+                 f"nœuds de la chaîne et ceux qui sont déjà dans une paire ou un cycle : "
+                 f"{T.n('observations', {'foreign_selected': True}, len(sel))} ("
+                 + ", ".join(sorted(sel["filer"].fillna(sel["cik"]))) + "). Les autres restent dans la file, « non traités ». "
+                 "Un 20-F ou un 40-F porte des états annuels audités ; un 6-K est furnished, admissible seulement s'il est "
+                 "incorporé par référence dans un document d'enregistrement par mention expresse.")
+        L.append("")
+    rows = q(con, """SELECT o.group_id, o.form, o.framework, o.kind, o.family, count(*) AS n
+                     FROM observations o WHERE o.validation_state = 'valid' AND o.form IN
+                     ('20-F', '20-F/A', '40-F', '40-F/A', '6-K', '6-K/A') GROUP BY 1, 2, 3, 4, 5 ORDER BY 1, 2""")
+    if rows:
+        L.append("| Émetteur | Formulaire | Cadre comptable | Lignes | dont arêtes |")
+        L.append("| --- | --- | --- | ---: | ---: |")
+        agg = {}
+        for r in rows:
+            k = (r["group_id"], r["form"], r["framework"])
+            a, e = agg.get(k, (0, 0))
+            agg[k] = (a + r["n"], e + (r["n"] if r["family"] not in (None, NONE) and r["kind"] == "observation" else 0))
+        fw = {"ifrs": "IFRS", "us_gaap": "US GAAP"}
+        for (g, f, w), (n, e) in sorted(agg.items()):
+            L.append(f"| {group_label(g)} | {f} | {fw.get(w, w or '—')} | {T.n('observations', {'foreign_lines': [g, f]}, n)} | "
+                     f"{T.n('observations', {'foreign_edge_lines': [g, f]}, e)} |")
+        L.append("")
+    inc = q(con, """SELECT count(DISTINCT accession) AS n FROM documents WHERE form LIKE '6-K%'
+                    AND incorporated_by_reference""")[0]["n"]
+    mixed = q(con, """SELECT count(*) AS n FROM exclusions WHERE reason = 'invalid_aggregate'
+                      AND invariant LIKE '%f%'""")[0]["n"]
+    L.append(f"6-K incorporés par référence (donc admissibles) : {T.n('documents', {'foreign_6k_incorporated': True}, inc)} ; "
+             f"agrégats écartés pour cadres comptables mêlés (invariant f) : "
+             f"{T.n('exclusions', {'invariant_f': True}, mixed)}.")
+    L.append("")
+    return L
+
+
 def paths_formd_yield_section(con, T):
     """Rendement des blocs paths et form_d de §14 (D-0041)."""
     sc = config.load().get("scope") or []
@@ -734,6 +783,19 @@ def paths_formd_yield_section(con, T):
             f"{TEMP_FR.get(a, a).split(' (')[0]} / {CONC_FR.get(b, b)} {T.n('measures', {'paths_by': [a, b]}, v)}"
             for (a, b), v in sorted(by_t.items())) + ".")
         L.append("- E.6 n'est plus « non traité » : chaque fournisseur porte le décompte des cycles qui passent par lui.")
+        L.append("")
+    if "foreign" in sc:
+        L += ["## Rendement du bloc foreign (§14)", ""]
+        fb = q(con, """SELECT count(DISTINCT content_key) AS b, count(*) FILTER (WHERE kind = 'observation') AS o,
+                              count(*) FILTER (WHERE kind = 'abstention') AS a FROM observations
+                       WHERE validation_state = 'valid' AND form IN ('20-F', '20-F/A', '40-F', '40-F/A', '6-K', '6-K/A')""")[0]
+        fw = q(con, """SELECT coalesce(framework, 'aucun') AS f, count(*) AS n FROM observations WHERE validation_state = 'valid'
+                       GROUP BY 1 ORDER BY 1""")
+        L.append(f"- Blocs de formulaires étrangers lus : {T.n('observations', {'foreign_blocks': True}, fb['b'])} ; "
+                 f"{T.n('observations', {'foreign_obs': True}, fb['o'])} {plural(fb['o'], 'observation')}, "
+                 f"{T.n('observations', {'foreign_abst': True}, fb['a'])} {plural(fb['a'], 'abstention')}.")
+        L.append("- Lignes par cadre comptable de leur pièce : " + ", ".join(
+            f"{r['f']} {T.n('observations', {'framework': r['f']}, r['n'])}" for r in fw) + ".")
         L.append("")
     if "form_d" in sc:
         L += ["## Rendement du bloc form_d (§14)", ""]
@@ -874,8 +936,11 @@ BLOCK_RULES = {
               "ne se somment pas. Un montant qui peut inclure du non monétaire n'est pas du numéraire primaire sans autre "
               "pièce. Un véhicule tiers mesure une demande d'exposition secondaire et n'entre jamais dans une mesure de "
               "financement du nœud sous-jacent.",
-    "foreign": "**Émetteurs étrangers (`foreign`).** 20-F, 40-F et 6-K ; une contrepartie ou un groupe en IFRS est traité "
-               "à part, jamais sommé avec du US GAAP.",
+    "foreign": "**Émetteurs étrangers (`foreign`).** 20-F et 40-F : états annuels audités ; 6-K : furnished (Form 6-K, "
+               "General Instruction B), admissible seulement s'il est incorporé par référence dans un document "
+               "d'enregistrement, par mention expresse (Securities Act, Section 11). Chaque pièce porte son cadre comptable : "
+               "une contrepartie ou un groupe en IFRS est traité à part et jamais sommé avec du US GAAP, les deux cadres ne "
+               "définissant pas de la même façon baux, participations et entités consolidées.",
 }
 
 

@@ -31,16 +31,16 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 
 ## Rendement du passage (§11.1)
 
-- Cellules de rang 1, par statut et motif : calculée 11 561 ; indéterminée / terme manquant 2 044 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 849 ; indéterminée / concept non résolu 1 073 ; indéterminée / non publié 1 025 ; indéterminée / historique tronqué 760 ; indéterminée / précondition non remplie 278 ; bornée 203 ; indéterminée / client anonyme 150 ; indéterminée / lecture impossible 130 ; indéterminée / frontière de retraitement 83 ; partielle / non publié 53 ; indéterminée / dénominateur négatif ou nul 10 ; partielle / terme manquant 10 ; indéterminée / entité non confirmée 6.
+- Cellules de rang 1, par statut et motif : calculée 11 690 ; indéterminée / terme manquant 2 044 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 849 ; indéterminée / concept non résolu 1 073 ; indéterminée / non publié 1 025 ; indéterminée / historique tronqué 760 ; indéterminée / précondition non remplie 290 ; bornée 203 ; indéterminée / client anonyme 150 ; indéterminée / lecture impossible 130 ; indéterminée / frontière de retraitement 83 ; partielle / non publié 53 ; indéterminée / dénominateur négatif ou nul 10 ; partielle / terme manquant 10 ; indéterminée / entité non confirmée 6.
 - Cellules de l'annexe F, par statut et motif : calculée 1 759 ; indéterminée / annuel seulement 394 ; indéterminée / non publié 115 ; indéterminée / terme manquant 91 ; partielle / non publié 90 ; indéterminée / concept non résolu 62 ; indéterminée / période antérieure absente 28 ; indéterminée / lecture impossible 16 ; indéterminée / dénominateur négatif ou nul 5.
-- Paires à financement documenté (F active au moins un trimestre) : 11 — Broadcom → Silicon Manufacturing Partners Pte. Ltd., CoreWeave → MAIV, CoreWeave → OpenAI, Alphabet → SpaceX, Meta → Jio Platforms Limited, Microsoft → GENERAL MOTORS CO, Microsoft → OpenAI, NVIDIA → CoreWeave, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc..
-- Arêtes de montant : commercial 196, credit_support 14, customer_consideration 70, financing 201 ; arêtes de relation : 550.
+- Paires à financement documenté (F active au moins un trimestre) : 12 — Broadcom → Silicon Manufacturing Partners Pte. Ltd., CoreWeave → MAIV, CoreWeave → OpenAI, Alphabet → SpaceX, Meta → Jio Platforms Limited, Microsoft → GENERAL MOTORS CO, Microsoft → OpenAI, NVIDIA → NEBIUS GROUP N.V., NVIDIA → CoreWeave, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc..
+- Arêtes de montant : commercial 198, credit_support 14, customer_consideration 70, financing 202 ; arêtes de relation : 552.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
-- Cellules de la question 4, par statut et motif : calculée 3 625 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 849 ; indéterminée / historique tronqué 760 ; indéterminée / précondition non remplie 278 ; bornée 203 ; indéterminée / client anonyme 150 ; indéterminée / non publié 132 ; indéterminée / lecture impossible 114 ; indéterminée / concept non résolu 86 ; indéterminée / terme manquant 13.
-- Requêtes : 12 506 au journal, dont 12 228 réussies, 25 327 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-10T06:48:52.205+00:00.
-- Blocs lus : 3 305 sur 3 470 clés de contenu ; par item de 8-K : 1.01 92, 1.02 11, 2.01 17, 2.03 37, 3.03 9, 8.01 347 ; pièces arrêtées à leur en-tête : EX-4 165.
+- Cellules de la question 4, par statut et motif : calculée 3 753 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 849 ; indéterminée / historique tronqué 760 ; indéterminée / précondition non remplie 290 ; bornée 203 ; indéterminée / client anonyme 150 ; indéterminée / non publié 132 ; indéterminée / lecture impossible 114 ; indéterminée / concept non résolu 86 ; indéterminée / terme manquant 13.
+- Requêtes : 12 514 au journal, dont 12 236 réussies, 25 344 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-10T07:38:00.379+00:00.
+- Blocs lus : 3 311 sur 3 476 clés de contenu ; par item de 8-K : 1.01 92, 1.02 11, 2.01 17, 2.03 37, 3.03 9, 8.01 347 ; pièces arrêtées à leur en-tête : EX-4 165.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 546 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 625 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -53,10 +53,10 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Blocs lus : 1 781 sur 1 781 (19,1 sur 19,1 millions de caractères) ; par type : paragraphes sur les clients 38/38 ; notes d'investissements 233/233 ; 8-K item 2.01 17/17 ; 8-K item 2.03 37/37 ; notes de dette 319/319 ; notes de baux 183/183 ; notes d'engagements 306/306 ; immobilisations et estimations 396/396 ; notes de revenu 200/200 ; corps d'EX-10 52/52. Aucun bloc du catalogue ne reste à lire.
 - Lignes rendues dans les passes du bloc : 3 857 observations, 1 617 abstentions motivées, 0 rejetées par la validation.
 - Arêtes établies par une ligne du bloc : commercial (montant) 20, commercial (relation) 7, credit_support (montant) 11, credit_support (relation) 138, customer_consideration (montant) 9, financing (montant) 134, financing (relation) 190.
-- Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 19 235 ; calculée 6 322 → 11 561 ; bornée 161 → 203 ; partielle 794 → 63 ; indéterminée 8 489 → 7 408 ; motif « non traité » 3 394 → 1 849. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
-- Événements de l'annexe F : 33 → 69 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 13 sur 22.
-- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 678, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 430, inconnu / historique tronqué 174, actif 120, échu 37, inconnu / lecture impossible 28. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
-- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : terme manquant 2 145 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 850 ; non publié 1 335 ; concept non résolu 1 135 ; historique tronqué 760 ; annuel seulement 394 ; précondition non remplie 296 ; client anonyme 177 ; lecture impossible 147 ; frontière de retraitement 83 ; période antérieure absente 28 ; dénominateur négatif ou nul 15 ; date manquante 12 ; intervalle à cheval sur le seuil 11 ; entité non confirmée 6. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
+- Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 19 376 ; calculée 6 322 → 11 690 ; bornée 161 → 203 ; partielle 794 → 63 ; indéterminée 8 489 → 7 420 ; motif « non traité » 3 394 → 1 849. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
+- Événements de l'annexe F : 33 → 69 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 14 sur 24.
+- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 707, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 430, inconnu / historique tronqué 174, actif 122, échu 37, inconnu / lecture impossible 28. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
+- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : terme manquant 2 145 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 850 ; non publié 1 336 ; concept non résolu 1 135 ; historique tronqué 760 ; annuel seulement 394 ; précondition non remplie 311 ; client anonyme 177 ; lecture impossible 147 ; frontière de retraitement 83 ; période antérieure absente 28 ; dénominateur négatif ou nul 15 ; date manquante 12 ; intervalle à cheval sur le seuil 11 ; entité non confirmée 6. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
 - Clauses financières (`sig_covenant_events`, trimestres-groupes, vue `as_known`) : événement 9, sans événement 194, partielle (sans événement sur la part lue) / non publié 53.
 - Actifs nantis (`sig_pledged_assets`, trimestres-groupes, vue `as_known`) : événement 27, sans événement 176, indéterminée / non publié 53.
 - Pont des baux non commencés (`lease_not_commenced_bridge`) : calculée 130, indéterminée 338, partielle 2.
@@ -67,14 +67,14 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 
 - Sources : 47 archives des Notes Data Sets scannées sur 47 de la période ; 84 requêtes de recherche plein texte consignées (EX-10 et Form D).
 - Candidats (déposants qui nomment un groupe) : 3 074, par meilleure classe de mention : contract 2 042, related_party 32, note 580, form_d 420.
-- File de lecture : 19 194 unités (notes et en-têtes d'EX-10) ; lues : 391 blocs de 61 déposants, ceux des premiers candidats du classement. Le reste est exclu, motif « non traité » (`not_processed`), unité par unité dans `exclusions`.
-- Lignes rendues : 306 observations, 231 abstentions motivées, 0 rejetées par la validation.
-- Arêtes établies par une ligne de la découverte : commercial (montant) 48, commercial (relation) 32, credit_support (montant) 1, credit_support (relation) 10, customer_consideration (montant) 54, customer_consideration (relation) 9, financing (montant) 9, financing (relation) 25.
+- File de lecture : 19 194 unités (notes et en-têtes d'EX-10) ; lues : 397 blocs de 51 déposants, ceux des premiers candidats du classement. Le reste est exclu, motif « non traité » (`not_processed`), unité par unité dans `exclusions`.
+- Lignes rendues : 314 observations, 232 abstentions motivées, 0 rejetées par la validation.
+- Arêtes établies par une ligne de la découverte : commercial (montant) 50, commercial (relation) 34, credit_support (montant) 1, credit_support (relation) 10, customer_consideration (montant) 54, customer_consideration (relation) 9, financing (montant) 10, financing (relation) 25.
 - Lignes à catégorie de lien (L1 à L5, §3.4) dans les blocs de la découverte : L1 12, L2 2, L3 3, L5 4. Pièces d'une paire (S, C) : 5 ; leurs parties sont le fournisseur S et le client C, et l'extrait les nomme tous deux (D-0039). Les autres lignes ne comptent pour aucune paire.
-- Unités de la file encore à lire : 18 799.
-- Statut « financé » (trimestres-paires, vue `as_known`), avant l'ouverture → maintenant : actif 108 → 120 ; historique tronqué 174 → 174 ; échu 37 → 37 ; jamais documenté 291 → 678 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 0 → 430 ; lecture impossible 13 → 28 ; recherche incomplète 375 → 0. La recherche incomplète devient « non traité » quand le client dépose et que ses unités ne sont pas toutes lues, « jamais documenté » quand son côté est complet (D-0037).
-- Paires à financement documenté (F active au moins un trimestre) : 9 → 11.
-- Annexe E, issues de E.1 et E.2 au point de tête (10 %), avant l'ouverture → maintenant : indéterminées 15 sur 18 → 13 sur 22 ; E.7 : non-discrimination → discrimination possible. Issues de E.1 (lien documenté, paires où F est active) : indéterminé 2, non étayé 9. Une issue « non étayé » suppose la recherche complète des deux côtés (E.0) : la découverte la rend possible quand le client ne dépose pas, n'a aucun rapport périodique dans la fenêtre allongée, ou que toutes ses unités qui nomment le fournisseur sont lues (D-0037).
+- Unités de la file encore à lire : 18 793.
+- Statut « financé » (trimestres-paires, vue `as_known`), avant l'ouverture → maintenant : actif 108 → 122 ; historique tronqué 174 → 174 ; échu 37 → 37 ; jamais documenté 291 → 707 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 0 → 430 ; lecture impossible 13 → 28 ; recherche incomplète 375 → 0. La recherche incomplète devient « non traité » quand le client dépose et que ses unités ne sont pas toutes lues, « jamais documenté » quand son côté est complet (D-0037).
+- Paires à financement documenté (F active au moins un trimestre) : 9 → 12.
+- Annexe E, issues de E.1 et E.2 au point de tête (10 %), avant l'ouverture → maintenant : indéterminées 15 sur 18 → 14 sur 24 ; E.7 : non-discrimination → discrimination possible. Issues de E.1 (lien documenté, paires où F est active) : indéterminé 2, non étayé 10. Une issue « non étayé » suppose la recherche complète des deux côtés (E.0) : la découverte la rend possible quand le client ne dépose pas, n'a aucun rapport périodique dans la fenêtre allongée, ou que toutes ses unités qui nomment le fournisseur sont lues (D-0037).
 - Cellules de rang 1 au motif « recherche incomplète » : 1 653 → 0.
 
 ## Rendement du bloc paths (§14)
@@ -82,6 +82,11 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Cycles orientés entre groupes : 23, dont longueur 2 : 20, longueur 3 : 3.
 - Par concomitance et conclusion : non / relation commerciale doublée d'un financement 1 ; oui / relation commerciale doublée d'un financement 11 ; oui / dépendance documentée 10 ; oui / achats réciproques seulement 1.
 - E.6 n'est plus « non traité » : chaque fournisseur porte le décompte des cycles qui passent par lui.
+
+## Rendement du bloc foreign (§14)
+
+- Blocs de formulaires étrangers lus : 6 ; 8 observations, 1 abstention.
+- Lignes par cadre comptable de leur pièce : aucun 2 076, ifrs 3, us_gaap 5 765.
 
 ## Rendement du bloc form_d (§14)
 
@@ -91,7 +96,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 
 ## Exclusions nouvelles, par motif
 
-- `not_processed` : 18 799
+- `not_processed` : 18 793
 - `conflicting` : 377
 - `pending_entity` : 227
 - `financial_parties_only` : 165
@@ -145,6 +150,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0039 — Pièces de lien d'une paire : les parties de la ligne sont S et C ; alias « AMD » ; « the Group ».
 - D-0040 — Deuxième tranche de la découverte lue (rangs 26 à 50) : bons passés en charges, mentions fausses, litiges, filiale d'Amazon.
 - D-0041 — Lecture de la découverte arrêtée ; blocs `paths` et `form_d` ouverts.
+- D-0042 — Bloc `foreign` ouvert : émetteurs étrangers, cadre comptable et invariant (f).
 
 ## Critères des annexes E et F
 
@@ -156,7 +162,7 @@ Inchangés depuis le commit d'origine 3ff3b988a48a.
 
 ## Dépôts nouveaux
 
-Premier passage : tous les dépôts lus sont nouveaux — 8-K 2 305, 10-Q 1 164, 10-K 716, D 565, D/A 318, S-1 253, S-1/A 175, F-1 105, DEF 14A 87, S-4/A 73, 8-K/A 69, F-1/A 54, 10-12G 40, S-4 32, 10-12G/A 30, 10-K/A 29, 10-Q/A 19, F-4/A 16, 10-12B/A 14, F-4 13, 20-F 11, 10-12B 7, S-11 5, S-11/A 4, 424B4 2, 11-K 1, 20-F/A 1, 40-F 1.
+Premier passage : tous les dépôts lus sont nouveaux — 8-K 2 305, 10-Q 1 164, 10-K 716, D 565, D/A 318, S-1 253, S-1/A 175, F-1 105, DEF 14A 87, S-4/A 73, 8-K/A 69, F-1/A 54, 10-12G 40, S-4 32, 10-12G/A 30, 10-K/A 29, 10-Q/A 19, F-4/A 16, 10-12B/A 14, 20-F 13, F-4 13, 10-12B 7, S-11 5, S-11/A 4, 20-F/A 2, 424B4 2, 11-K 1, 40-F 1, 6-K 1.
 
 ## Valeurs changées pour des périodes déjà publiées
 
@@ -164,7 +170,7 @@ Même identité de fait, valeurs différentes selon le dépôt (C4), publiées s
 
 ## Arêtes nouvelles
 
-Premier passage : toutes les arêtes sont nouvelles — commercial/amount 196, commercial/relation 80, credit_support/amount 14, credit_support/relation 160, customer_consideration/amount 70, customer_consideration/relation 17, financing/amount 201, financing/relation 293.
+Premier passage : toutes les arêtes sont nouvelles — commercial/amount 198, commercial/relation 82, credit_support/amount 14, credit_support/relation 160, customer_consideration/amount 70, customer_consideration/relation 17, financing/amount 202, financing/relation 293.
 
 ## Contrôles qui ont basculé
 

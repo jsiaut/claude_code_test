@@ -7,6 +7,7 @@ import duckdb
 import pandas as pd
 
 from . import config, reader, textnorm
+from .foreign import block_framework
 from .registry import ENUMS
 
 DB_PATH = config.DB_DIR / "model.duckdb"
@@ -100,10 +101,26 @@ def mark_conflicts(con, scale_jump_factor):
 OBS_COLS = None
 
 
+def canonical_filers(catalog):
+    """Dénomination courante de chaque déposant découvert : celle de son dépôt le plus récent. Un même
+    CIK est une même entité (§10.2) ; une ancienne dénomination (« Iris Energy », devenue « IREN »)
+    n'en fait pas un autre groupe."""
+    best = {}
+    for b in catalog:
+        if not str(b.get("block_kind", "")).startswith("discovery_") or not b.get("filer_name"):
+            continue
+        c = str(int(b["cik"]))
+        k = (str(b.get("filing_date") or ""), b["filer_name"])
+        if c not in best or k > best[c]:
+            best[c] = k
+    return {c: v[1] for c, v in best.items()}
+
+
 def load_observations(con, catalog, as_of):
     """Charge la passe la plus récente de chaque bloc dont la clé existe encore, après
     validation sémantique ; une ligne rejetée devient une exclusion validation_failed."""
     cat = {b["content_key"]: b for b in catalog}
+    canon = canonical_filers(catalog)
     rows, excl = [], []
     for p in sorted(config.OBS_DIR.glob("*.jsonl")):
         if p.name.endswith(".rejected.jsonl"):
@@ -127,6 +144,9 @@ def load_observations(con, catalog, as_of):
             errs, locator = semantic_errors(l, b)
             state = "valid" if not errs else "rejected_semantic"
             row = _obs_row(l, b, n, state, errs, locator)
+            if str(b.get("block_kind", "")).startswith("discovery_") and str(int(b["cik"])) in canon:
+                from .graph import normalize_name
+                row["group_id"] = "CP:" + normalize_name(canon[str(int(b["cik"]))])
             rows.append(row)
             if errs:
                 excl.append(_excl("observation_line", row["obs_key"], "validation_failed", "; ".join(errs), b,
@@ -221,7 +241,7 @@ def _obs_row(l, b, n, state, errs, locator):
         "group_id": b["group_id"], "cik": b["cik"], "accession": b["accession"], "form": b["form"],
         "item": b.get("item"), "exhibit_type": b.get("exhibit_type"), "knowledge_date": b["knowledge_date"],
         "filing_status": b.get("filing_status", "filed"), "assurance_level": b.get("assurance_level"),
-        "tier": b.get("tier"), "locator": locator, "validation_state": state,
+        "tier": b.get("tier"), "framework": block_framework(b), "locator": locator, "validation_state": state,
         "validation_error": "; ".join(errs) if errs else None,
     }
     for k, v in known.items():

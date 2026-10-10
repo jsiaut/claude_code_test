@@ -1,16 +1,16 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
-- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `ccb65e58ce866975bc8af1d13b4c4127549404c9`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `discovery` (voir decisions.md); `entity_aliases` (alias confirmés par extrait, D-0021); `form_d` (voir decisions.md); `own_entities` (entités propres confirmées par extrait, D-0021); `paths` (voir decisions.md); `reading` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md); `scope_history` (voir decisions.md); `unanchored_quantities` (voir decisions.md).
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 50 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Le bloc `foreign` reste fermé.
-- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 59 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 22 issues ; motifs : précondition non remplie : 6, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, lecture impossible : 1. Issues déterminées : E.1 non étayé 9. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 523, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Critères des annexes E et F et seuils : inchangés** depuis leur commit d'origine `3ff3b988a48a5c904f88f006d263bfa780739d39` (2026-10-07 10:54:38), antérieur à la première requête. `config.yaml` a changé depuis (dernier commit qui le touche : `94b7a1e576c2315d790892a52cd436c858927978`, plus les changements de cette exécution) sans toucher ces critères : `concept_anchors` (second candidat de capex, D-0012); `confirmed_entities` (entités confirmées par extrait, D-0021); `discovery` (voir decisions.md); `entity_aliases` (alias confirmés par extrait, D-0021); `foreign` (voir decisions.md); `form_d` (voir decisions.md); `own_entities` (entités propres confirmées par extrait, D-0021); `paths` (voir decisions.md); `reading` (voir decisions.md); `scope` (voir decisions.md); `scope_decision` (voir decisions.md); `scope_history` (voir decisions.md); `unanchored_quantities` (voir decisions.md); `watched_forms` (voir decisions.md).
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des onze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la lecture avance par tranches, le reste de la file est « non traité » (D-0038). Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
+- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 58 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 24 issues ; motifs : précondition non remplie : 7, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, lecture impossible : 1. Issues déterminées : E.1 non étayé 10. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
+- **Contrôles comptables, vue `as_known`** : `mismatch` 603, `not_testable` 524, `ok` 13 615, `tautological` 613 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 775, `not_testable` 720, `ok` 13 425, `tautological` 613.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/52, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
-- **Exclusions principales** : `not_processed` 18 799, `conflicting` 377, `pending_entity` 227, `financial_parties_only` 165, `out_of_scope` 38, `invalid_aggregate` 8, `submitted_draft` 8, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 78/445, C11 48/462, C12 206/1 153, C13 0/199, C14 9/499, C15 61/273, C16 0/192, C1 79/6 754, C2 29/3 868, C3 54/261, C5 0/53, C6 0/613, C7 1/212, C8 38/78, C9 0/293.
+- **Exclusions principales** : `not_processed` 18 793, `conflicting` 377, `pending_entity` 227, `financial_parties_only` 165, `out_of_scope` 38, `invalid_aggregate` 8, `submitted_draft` 8, `parse_failed` 3, `not_public` 2, `history_left_censored` 1.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -145,7 +145,7 @@ Dernière information balisée utilisée : 2026-08-26.
 | Capex ÷ CFO, additions non monétaires comprises | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
 | Flux disponible (CFO − capex) | 22 115 M$ | 34 904 M$ | 48 587 M$ | 21 400 M$ |
 | Flux disponible après locations-financement | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Flux après financement des contreparties | 22 115 M$ | 32 904 M$ | 48 587 M$ | 21 400 M$ |
+| Flux après financement des contreparties | 22 115 M$ | 32 904 M$ | 46 587 M$ | 21 400 M$ |
 | Délai de recouvrement (créances) | 53 j | 51 j | 45 j | 60 j |
 | Obligations de prestation restantes (RPO) | 2 500 M$ | 2 300 M$ | 2 600 M$ | 3 200 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | 0,08 x | 0,06 x | 0,05 x | 0,17 x |
@@ -681,7 +681,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
 - Annexe E : E4 (engagement) : compatible ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non publié.
 
-### Amazon → 1LIFE HEALTHCARE INC
+### Amazon → 1Life Healthcare Inc
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 5 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
@@ -965,13 +965,21 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
-### NVIDIA → IREN LTD
+### NVIDIA → IREN Ltd
 
 - Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L1, L3) ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 31 trimestres ; sensibilité `ever_financed` : inconnu 31 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-01-30 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-01-29 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-01-28 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-01-26 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2026-01-25 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
 - Annexe E : E5 : indéterminé — non publié.
+
+### NVIDIA → NEBIUS GROUP N.V.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 2 trimestres, jamais documenté 29 trimestres ; sensibilité `ever_financed` : actif 2 trimestres, jamais documenté 29 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (précondition non remplie) ; 2022-01-30 : n.d. (précondition non remplie) ; 2023-01-29 : n.d. (précondition non remplie) ; 2024-01-28 : n.d. (précondition non remplie) ; 2025-01-26 : n.d. (précondition non remplie) ; 2026-01-25 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E5 : indéterminé — non publié.
 
 ### NVIDIA → CoreWeave
 
@@ -1138,7 +1146,7 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | Alphabet → PLANET LABS PBC → Alphabet | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Alphabet → Marvell → Alphabet | 2 | oui (0) | commerciale et financière | documenté (L2) | **dépendance documentée** |
 | Microsoft → GENERAL MOTORS CO → Microsoft | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
-| NVIDIA → IREN LTD → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L1, L3) | **dépendance documentée** |
+| NVIDIA → IREN Ltd → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L1, L3) | **dépendance documentée** |
 | NVIDIA → OpenAI → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
 | Oracle → Ampere Computing Holdings LLC → Oracle | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Oracle → Ampere Computing LLC → Oracle | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
@@ -1192,6 +1200,19 @@ Un Form D donne le montant vendu d'une offre, cumulé depuis sa première vente,
 - SpaceX, plus grandes offres connues au 2026-06-30 : American Ventures QP Opportunity Fund LLC, Series IV SpaceX 202 M$ ; MCF SpaceX LLC 31 M$ ; MCF SpaceX-I LLC 29 M$ ; Vise SpaceX SPV I, LLC 26 M$ ; SpaceX Partners 1 LLC 21 M$.
 
 Offres écartées : 12 dont le terme désigne autre chose qu'une exposition à la cible (homonyme, ou promoteur du fonds ; motif lu dans le Form D, D-0041) ; offres du périmètre antérieures à la fenêtre allongée 26.
+
+## Émetteurs étrangers (bloc foreign, §14)
+
+La file de la découverte compte 263 émetteurs étrangers (20-F, 40-F, 6-K, F-1, F-4). La règle fixée avant lecture retient ceux que la spec nomme comme nœuds de la chaîne et ceux qui sont déjà dans une paire ou un cycle : 2 (IREN Ltd, NEBIUS GROUP N.V.). Les autres restent dans la file, « non traités ». Un 20-F ou un 40-F porte des états annuels audités ; un 6-K est furnished, admissible seulement s'il est incorporé par référence dans un document d'enregistrement par mention expresse.
+
+| Émetteur | Formulaire | Cadre comptable | Lignes | dont arêtes |
+| --- | --- | --- | ---: | ---: |
+| IREN Ltd | 20-F | IFRS | 1 | 0 |
+| IREN Ltd | 20-F/A | IFRS | 1 | 0 |
+| IREN Ltd | 6-K | IFRS | 1 | 0 |
+| NEBIUS GROUP N.V. | 20-F | US GAAP | 6 | 5 |
+
+6-K incorporés par référence (donc admissibles) : 1 ; agrégats écartés pour cadres comptables mêlés (invariant f) : 0.
 
 ## Côté prêteur (BDC Data Sets)
 
@@ -1292,5 +1313,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : concept non résolu 1 762, non publié 1 655, terme manquant 1 655, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 941, non balisé 629, annuel seulement 394, historique tronqué 380, précondition non remplie 158, client anonyme 97, lecture impossible 90, période antérieure absente 45, dénominateur négatif ou nul 41, frontière de retraitement 21, date manquante 12, intervalle à cheval sur le seuil 11, entité non confirmée 3, dénominateur sous le seuil 2.
+Cellules indéterminées en vue `as_known`, par motif : concept non résolu 1 762, non publié 1 656, terme manquant 1 655, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 941, non balisé 629, annuel seulement 394, historique tronqué 380, précondition non remplie 167, client anonyme 97, lecture impossible 90, période antérieure absente 45, dénominateur négatif ou nul 41, frontière de retraitement 21, date manquante 12, intervalle à cheval sur le seuil 11, entité non confirmée 3, dénominateur sous le seuil 2.
 

@@ -118,7 +118,7 @@ ENUMS = {
                   "precondition_not_met", "date_missing", "interval_straddles_threshold",
                   "prior_period_missing", "not_tagged", "no_named_counterparty",
                   "no_financed_pair", "unequal_period_length", "annual_only",
-                  "pending_entity", "blocked_overlap", "out_of_first_pass", NONE],
+                  "pending_entity", "blocked_overlap", "out_of_first_pass", "mixed_framework", NONE],
     # §8.3 contrôles
     "control_status": ["ok", "mismatch", "not_testable", "tautological"],
     "tolerance_basis": ["declared", "inferred", NONE],

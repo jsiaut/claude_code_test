@@ -96,6 +96,7 @@ TABLES = {
         ("filing_status", "filing_status"),
         ("assurance_level", "assurance_level"),
         ("tier", "tier"),
+        ("framework", "framework"),          # cadre comptable de la pièce (bloc foreign, invariant f)
         ("kind", "obs_kind NOT NULL"),
         ("abstention_reason", "abstention_reason"),
         ("quote", "VARCHAR"),

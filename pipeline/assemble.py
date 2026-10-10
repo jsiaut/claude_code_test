@@ -106,9 +106,11 @@ def run(as_of):
                              "rejected_semantic": sum(1 for o in obs_rows if o["validation_state"] != "valid")}
 
     # 3. entités et arêtes
-    discovered = {(b["filer_name"], str(int(b["cik"]))) for b in catalog
-                  if b["block_kind"].startswith("discovery_") and b.get("filer_name")}
-    ent_rows, reg = entities.build(p0, cfg, links.counterparty_names(obs_rows), discovered)
+    canon = load.canonical_filers(catalog)
+    discovered = {(n, c) for c, n in canon.items()}
+    former = {(b["filer_name"], str(int(b["cik"]))) for b in catalog
+              if b["block_kind"].startswith("discovery_") and b.get("filer_name")} - discovered
+    ent_rows, reg = entities.build(p0, cfg, links.counterparty_names(obs_rows), discovered, former)
     edges, pend = links.build_edges(obs_rows, reg)
     rels = links.instrument_relations(edges)
     for o in obs_rows:
@@ -349,15 +351,17 @@ def invariants(cells, edges, rels, reg):
         ks = {l["link_key"] for l in ls}
         if any(a in ks and b in ks for a, b in unresolved):
             bad.append("d")
+        if len({l["_obs"].get("framework") for l in ls} - {None, NONE}) > 1:
+            bad.append("f")          # aucune somme entre cadres comptables (US GAAP et IFRS), bloc foreign
         if any(l["from_group"] is None or l["to_group"] is None for l in ls):
             bad.append("g")
         if bad:
             # motif de la cellule : l'invariant violé, le plus spécifique d'abord ; (a) niveau E ou F :
             # une pièce non admissible dans un agrégat, précondition de la somme non remplie
-            reason = {"d": "blocked_overlap", "b": "mixed_currency", "g": "pending_entity",
+            reason = {"d": "blocked_overlap", "b": "mixed_currency", "f": "mixed_framework", "g": "pending_entity",
                       "a": "precondition_not_met"}
             c["status"] = "blocked_overlap" if bad == ["d"] else "not_determinable"
-            c["nd_reason"] = next(reason[x] for x in ("d", "b", "g", "a") if x in bad)
+            c["nd_reason"] = next(reason[x] for x in ("d", "b", "f", "g", "a") if x in bad)
             c["value"] = None
             out.append({"exclusion_key": f"invalid_aggregate:{c['measure']}:{c['subject']}:{c['counterparty']}:{c['period_end']}:{c['breakdown_key']}",
                         "item_kind": "aggregate", "item_key": f"{c['measure']}/{c['subject']}/{c['counterparty']}/{c['period_end']}",

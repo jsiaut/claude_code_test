@@ -100,7 +100,7 @@ class Registry:
         return None
 
 
-def build(p0, cfg, counterparty_names, discovered=None):
+def build(p0, cfg, counterparty_names, discovered=None, former=None):
     """Lignes de la table entities (entités, appartenances, alias) et le registre. `discovered` :
     déposants trouvés par la découverte (§14), (dénomination EDGAR, CIK) ; chacun est l'entité de
     sa dénomination légale normalisée, avec son CIK (D-0036, point 10)."""
@@ -128,13 +128,13 @@ def build(p0, cfg, counterparty_names, discovered=None):
                      "common_control_start": None, "legal_date": None, "resolution_rule": rule,
                      "evidence": evidence})
 
-    def alias(eid, name, evidence):
+    def alias(eid, name, evidence, rule="executor_decision"):
         rows.append({"entity_id": eid, "record_kind": "alias", "ref": name, "valid_from": "none",
                      "valid_to": None, "name": name, "normalized_name": normalize_name(name), "cik": None,
                      "jurisdiction": None, "is_filer": None, "is_financial_institution": None,
                      "status": "confirmed", "group_kind": None, "consolidation_treatment": None,
                      "combination_method": None, "common_control_start": None, "legal_date": None,
-                     "resolution_rule": "executor_decision", "evidence": evidence})
+                     "resolution_rule": rule, "evidence": evidence})
         by_norm.setdefault(normalize_name(name), eid)
 
     def ev(c):
@@ -193,6 +193,18 @@ def build(p0, cfg, counterparty_names, discovered=None):
             for r in rows:
                 if r["record_kind"] == "entity" and r["entity_id"] == eid and not r.get("cik"):
                     r["cik"], r["is_filer"] = cik, True
+    # anciennes dénominations d'un déposant découvert : même CIK, même entité (§10.2), en alias
+    by_cik = {str(int(r["cik"])): r["entity_id"] for r in rows
+              if r["record_kind"] == "entity" and r.get("cik") and str(r["cik"]).strip().isdigit()}
+    # une dénomination portée par deux CIK (IAC/InterActiveCorp) reste ambiguë : aucun alias
+    ciks_of = {}
+    for name, cik in set(former or []) | set(discovered or []):
+        ciks_of.setdefault(normalize_name(name), set()).add(cik)
+    for name, cik in sorted(former or []):
+        n = normalize_name(name)
+        if n and cik in by_cik and n not in by_norm and len(ciks_of.get(n, ())) == 1:
+            alias(by_cik[cik], name, f"même CIK {cik} : dénomination antérieure du déposant sur EDGAR (§10.2)",
+                  rule="same_cik")
     reg = Registry(rows)
     # contreparties nommées : dénomination légale complète (D-0022), sinon pending
     known = set(reg.names)

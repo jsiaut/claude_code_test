@@ -45,7 +45,7 @@ CREATE TYPE measure_status AS ENUM ('computed', 'bounded', 'partial', 'not_deter
 CREATE TYPE coverage_state AS ENUM ('observed', 'explicit_zero', 'not_disclosed', 'not_applicable', 'redacted', 'not_collected', 'not_processed', 'parse_failed', 'conflicting', 'policy_excluded', 'unknown');
 CREATE TYPE bound_basis AS ENUM ('rounding', 'asc280_major_customer_completeness', 'publication_rule', 'none');
 CREATE TYPE period_kind AS ENUM ('quarter', 'fiscal_year', 'ytd', 'ttm', 'instant', 'event', 'window', 'none');
-CREATE TYPE nd_reason AS ENUM ('not_processed', 'search_incomplete', 'non_filer', 'redacted', 'anonymous', 'channel_indirect', 'parse_failed', 'denominator_nonpositive', 'denominator_below_threshold', 'recast_boundary', 'history_left_censored', 'term_missing', 'not_disclosed', 'not_collected', 'concept_unresolved', 'conflicting', 'mixed_currency', 'end_offset_exceeded', 'no_effect_published', 'precondition_not_met', 'date_missing', 'interval_straddles_threshold', 'prior_period_missing', 'not_tagged', 'no_named_counterparty', 'no_financed_pair', 'unequal_period_length', 'annual_only', 'pending_entity', 'blocked_overlap', 'out_of_first_pass', 'none');
+CREATE TYPE nd_reason AS ENUM ('not_processed', 'search_incomplete', 'non_filer', 'redacted', 'anonymous', 'channel_indirect', 'parse_failed', 'denominator_nonpositive', 'denominator_below_threshold', 'recast_boundary', 'history_left_censored', 'term_missing', 'not_disclosed', 'not_collected', 'concept_unresolved', 'conflicting', 'mixed_currency', 'end_offset_exceeded', 'no_effect_published', 'precondition_not_met', 'date_missing', 'interval_straddles_threshold', 'prior_period_missing', 'not_tagged', 'no_named_counterparty', 'no_financed_pair', 'unequal_period_length', 'annual_only', 'pending_entity', 'blocked_overlap', 'out_of_first_pass', 'mixed_framework', 'none');
 CREATE TYPE control_status AS ENUM ('ok', 'mismatch', 'not_testable', 'tautological');
 CREATE TYPE tolerance_basis AS ENUM ('declared', 'inferred', 'none');
 CREATE TYPE entity_record AS ENUM ('entity', 'membership', 'alias');
@@ -163,6 +163,7 @@ CREATE TABLE observations (
   filing_status filing_status,
   assurance_level assurance_level,
   tier tier,
+  framework framework,
   kind obs_kind NOT NULL,
   abstention_reason abstention_reason,
   quote VARCHAR,

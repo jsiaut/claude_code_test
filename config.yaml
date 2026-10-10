@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text, discovery, paths, form_d]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery, paths, form_d, foreign]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -56,6 +56,17 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 22, indeterminate: 13, result: discrimination_possible}
       discovery_units_not_processed: 18799
       relationship_conclusions: {pairs: 52, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 4, causality_not_established: 34}
+    execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-10
+    decision: "Poursuis sur le bloc foreign, toujours sans sous-agent"
+    blocks: [foreign]
+    page: "rapport de livraison des blocs paths et form_d dans la conversation du 2026-10-10 (D-0042)"
+    yield_presented:             # état publié au commit 94b7a1e, avant l'ouverture
+      relationship_conclusions: {pairs: 52, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 4, causality_not_established: 34}
+      documented_paths: {cycles: 23, documented_dependency: 10, commercial_with_financing: 12, reciprocal_commercial_only: 1}
+      pairs_financed_documented: 11
+      annex_e_e7: {outcomes: 22, indeterminate: 13, result: discrimination_possible}
+      discovery_units_not_processed: 18799
     execution: "sans sous-agent (consigne de l'utilisateur)"
 
 window:
@@ -152,6 +163,16 @@ form_d:                      # bloc de §14 ouvert le 2026-10-10 (décision D-00
        evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
     - {cik: "2079027", name: "OpenAI Startup Fund SPV VI, L.P.", decision: D-0041, kind: sponsor,
        evidence: "fonds de capital-risque (« Venture Capital Fund ») dont la dénomination « OpenAI Startup Fund » nomme le promoteur d'un fonds de démarrage, pas une exposition à OpenAI"}
+
+foreign:                     # bloc de §14 ouvert le 2026-10-10 (décision D-0042)
+  forms: ["20-F", "20-F/A", "40-F", "40-F/A", "6-K", "6-K/A", "F-1", "F-1/A", "F-4", "F-4/A"]
+  named_issuers:             # émetteurs étrangers que la spec nomme comme nœuds de la chaîne (§14, annexe D)
+    - {cik: "1878848", name: "IREN Ltd", source: "§14 et annexe D : 20-F jusqu'à l'exercice clos le 30 juin 2024, 10-K ensuite"}
+    - {cik: "1513845", name: "Nebius Group N.V.", source: "§14 et annexe D : 20-F et 6-K"}
+  # sélection fixée avant de lire : les unités de la file de découverte (D-0036) tirées d'un formulaire
+  # étranger, pour les émetteurs nommés ci-dessus et pour les contreparties étrangères déjà présentes
+  # dans une paire ou un cycle ; les autres unités étrangères restent dans la file, « non traitées »
+  selection: [named_issuers, graph_counterparties]
 
 paths:                       # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
   lengths: [2, 3]            # cycles orientés de longueur 2 ou 3 entre groupes, hors intragroupe
@@ -292,6 +313,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
   periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
   late: ["NT 10-K", "NT 10-Q"]
   eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
+  form_d: ["D", "D/A"]       # Form D des entités suivies, bloc form_d ouvert (§14, D-0041)
+  foreign: ["20-F", "20-F/A", "40-F", "40-F/A", "6-K", "6-K/A"]   # émetteurs étrangers suivis, bloc foreign (§14, D-0042)
 
 # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
 # facts, observations et measures. Chaque paire engendre une relation overlaps

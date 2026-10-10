@@ -10,7 +10,7 @@ import pandas as pd
 
 from . import cache, config
 
-PERIODIC_A = {"10-K", "10-K/A", "10-KT", "10-KT/A"}
+PERIODIC_A = {"10-K", "10-K/A", "10-KT", "10-KT/A", "20-F", "20-F/A", "40-F", "40-F/A"}   # annexe A
 PERIODIC_B = {"10-Q", "10-Q/A", "10-QT", "10-QT/A"}
 
 
@@ -45,6 +45,10 @@ def _classify(kind, form, sgml_type, items):
         return "submitted_draft", "narrative", "unaudited", "E"
     if kind in ("sgml_header", "filing_index", "filing_summary", "metalinks"):
         return "filed", "inventory", "not_applicable", None
+    if form.startswith("6-K"):
+        # un 6-K est furnished (Form 6-K, General Instruction B) : niveau E, sauf incorporation par
+        # référence dans un document d'enregistrement, par mention expresse (§2.1, annexe A)
+        return "furnished", "narrative", "unaudited", "E"
     if kind in ("xbrl_zip", "instance"):
         if form in PERIODIC_A:
             return "filed", "financial_statements", "audited", "A"
@@ -82,6 +86,7 @@ def build(as_of, used_accessions=None, failed=None):
     rows = []
     root = config.CACHE
     disc = _discovery_meta()
+    incorporated = _incorporated()
     for p in sorted((root / "archives").rglob("*.zst")):
         rel = p.relative_to(root)
         cik, acc = rel.parts[1], rel.parts[2]
@@ -90,6 +95,9 @@ def build(as_of, used_accessions=None, failed=None):
         st, desc = sgml.get((acc, name), (None, None))
         kind = "primary_document" if m.get("form") in ("D", "D/A") else _kind(name, st)
         fs, dc, al, tier = _classify(kind, m.get("form"), st, m.get("items"))
+        inc = incorporated.get(acc)
+        if inc and str(m.get("form") or "").startswith("6-K") and tier == "E":
+            tier = "C"          # admissible : exposé à la Section 11 par l'incorporation (§2.1)
         data = cache.read(p)
         fd = m.get("filingDate")
         rows.append({
@@ -98,7 +106,8 @@ def build(as_of, used_accessions=None, failed=None):
             "cik": cik, "group_id": m.get("group_id"), "accession": acc, "document": name,
             "sgml_type": st, "sgml_description": desc, "form": m.get("form"), "items": m.get("items"),
             "filing_date": fd, "acceptance_datetime": m.get("acceptanceDateTime"), "report_date": m.get("reportDate"),
-            "knowledge_date": fd, "filing_status": fs, "incorporated_by_reference": None, "doc_class": dc,
+            "knowledge_date": fd, "filing_status": fs,
+            "incorporated_by_reference": inc if str(m.get("form") or "").startswith("6-K") else None, "doc_class": dc,
             "assurance_level": al, "tier": tier, "sha256": cache.sha256(data), "size_bytes": len(data),
             "cache_path": str(rel), "fetched_as_of": as_of, "amends_accession": None,
             "parse_state": "parse_failed" if acc in failed else
@@ -155,6 +164,18 @@ def build(as_of, used_accessions=None, failed=None):
                      "fetched_as_of": as_of, "amends_accession": None, "parse_state": "parsed",
                      "normalizer_version": None, "classification_note": "taxonomie épinglée (annexe D)"})
     return rows
+
+
+def _incorporated():
+    """6-K incorporés par référence (mention expresse lue dans le 6-K, bloc foreign) : accession -> vrai."""
+    p = config.DB_DIR / "discovery_blocks.jsonl"
+    out = {}
+    if p.exists():
+        for l in p.read_text(encoding="utf-8").splitlines():
+            b = json.loads(l)
+            if b.get("incorporated_by_reference") is not None:
+                out[b["accession"]] = bool(b["incorporated_by_reference"])
+    return out
 
 
 def _discovery_meta():
