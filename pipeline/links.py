@@ -52,6 +52,14 @@ def counterparty_names(obs):
 
 def build_edges(obs, reg):
     links, pend = [], set()
+    # tête de chaque groupe de config.yaml (même CIK, parent) : « we », « the Company » d'un bloc de la
+    # découverte dont le déposant est devenu groupe la désignent (D-0043)
+    heads = {}
+    for eid, ms in reg.members.items():
+        for m in ms:
+            if (m.get("resolution_rule") == "same_cik" and m.get("consolidation_treatment") == "parent"
+                    and not str(m["ref"]).startswith(("CP:", "LAB:")) and eid.startswith("cik:")):
+                heads.setdefault(m["ref"], eid)
     for o in obs:
         if o["kind"] != "observation" or o["validation_state"] != "valid":
             continue
@@ -73,11 +81,12 @@ def build_edges(obs, reg):
         tg_r = E.resolve(reg, payee, d, "revised")[1]
         # bloc de la découverte : « we », « the Company » désignent le déposant découvert (§14)
         decl = o.get("group_id") or ""
-        if decl.startswith("CP:"):
+        head = ("name:" + decl[3:]) if decl.startswith("CP:") else heads.get(decl)
+        if head:
             if payer and normalize_name(payer) in E.FILER_NORM:
-                fe, fg, fs, fg_r = "name:" + decl[3:], decl, "confirmed", decl
+                fe, fg, fs, fg_r = head, decl, "confirmed", decl
             if payee and normalize_name(payee) in E.FILER_NORM:
-                te, tg, ts, tg_r = "name:" + decl[3:], decl, "confirmed", decl
+                te, tg, ts, tg_r = head, decl, "confirmed", decl
 
         for e, s in ((fe, fs), (te, ts)):
             if e and s in ("pending", "unknown"):
