@@ -1,6 +1,6 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
@@ -8,14 +8,17 @@
   - annexe F, ajout de F11 (D-0045) : « juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_fv_to_cost", "condition": "valeur(t) < valeur(t-1) < valeur(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
   - annexe F, ajout de F12 (D-0045) : « part des intérêts capitalisés du portefeuille d'une BDC (borne basse) en hausse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_pik_share", "condition": "borne(t) > borne(t-1) > borne(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
   - annexe F, ajout de F13 (D-0045) : « part des prêts sans accumulation d'intérêts d'une BDC (borne basse) en hausse deux trimestres de suite » ; règle {"measure": "bdc_portfolio_non_accrual_share", "condition": "borne(t) > borne(t-1) > borne(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
+  - annexe F, ajout de F14 (D-0047) : « ratio de couverture des titres de créance d'une BDC en baisse deux trimestres de suite » ; règle {"measure": "bdc_liab_asset_coverage", "condition": "valeur(t) < valeur(t-1) < valeur(t-2)", "consecutive_quarters": 2, "dated_at": "fin du second trimestre"} ; sujets : bdc_vehicles
+  - annexe F, ajout de F15 (D-0047) : « offre de rachat d'une BDC dont les parts acceptées sont inférieures aux parts apportées (réduction au prorata) » ; règle {"measure": "bdc_tender_acceptance_ratio", "condition": "acceptées < apportées, ou réduction au prorata annoncée", "dated_at": "expiration de l'offre"} ; sujets : bdc_vehicles
+  - annexe F, ajout de F16 (D-0047) : « interruption d'un programme régulier d'offres de rachat d'une BDC » ; règle {"condition": "au moins quatre offres déposées à 120 jours au plus d'intervalle, puis aucune offre dans les 120 jours ; ni 8-A12B ni N-54C ou formulaire 15 dans l'intervalle", "dated_at": "dépôt de la dernière offre + 120 jours"} ; sujets : bdc_vehicles
   - annexe F, inchangés : F1, F2, F3, F4, F5, F6, F7, F8, F9, F10 (mêmes observables, mêmes règles)
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des quatorze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des quatorze groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 58 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 26 issues ; motifs : précondition non remplie : 8, intervalle à cheval sur le seuil : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 2. Issues déterminées : E.1 non étayé 11. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
 - **Contrôles comptables, vue `as_known`** : `mismatch` 710, `not_testable` 622, `ok` 15 906, `tautological` 688 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 1 039, `not_testable` 853, `ok` 15 674, `tautological` 688.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 101/562, C11 51/497, C12 206/1 153, C13 0/205, C14 19/599, C15 82/350, C16 0/307, C1 106/7 951, C2 39/4 489, C3 60/317, C5 0/64, C6 0/688, C7 1/262, C8 39/95, C9 6/387.
-- **Exclusions principales** : `not_processed` 19 892, `conflicting` 555, `pending_entity` 322, `financial_parties_only` 185, `out_of_scope` 96, `parse_failed` 32, `invalid_aggregate` 30, `submitted_draft` 8, `history_left_censored` 4, `not_public` 2.
+- **Exclusions principales** : `not_processed` 20 197, `conflicting` 555, `pending_entity` 322, `financial_parties_only` 185, `out_of_scope` 99, `parse_failed` 32, `invalid_aggregate` 30, `submitted_draft` 8, `history_left_censored` 4, `not_public` 2.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -230,7 +233,7 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F2 (flux après financement des contreparties négatif) — rendu public le 2026-07-28, rattaché au trimestre clos le 2026-06-30 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2026-07-28, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001839341-26-000014.
 
-États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F13 : véhicule BDC × date de bilan, D-0045), pour lire ce qui n'a pas été observé :
+États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F14 : véhicule BDC × date de bilan, D-0045 et D-0047 ; F15 : véhicule × offre de rachat ; F16 : véhicule × offre qui clôt une série), pour lire ce qui n'a pas été observé :
 
 - F1 : calculée / événement 21 ; calculée / sans événement 181 ; indéterminée 120
 - F2 : calculée / événement 76 ; calculée / sans événement 189 ; indéterminée 57
@@ -245,6 +248,9 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F11 : calculée / événement 500 ; calculée / sans événement 1 009 ; indéterminée 579
 - F12 : calculée / événement 222 ; calculée / sans événement 562 ; indéterminée 1 304
 - F13 : indéterminée 2 088
+- F14 : calculée / événement 182 ; calculée / sans événement 521 ; indéterminée 1 677
+- F15 : calculée / événement 84 ; calculée / sans événement 478 ; indéterminée 60
+- F16 : calculée / événement 6 ; calculée / sans événement 423 ; indéterminée 44
 
 ## Fragilité, par groupe
 
@@ -1784,6 +1790,136 @@ Quartiles de l'univers par date de bilan (premier quartile / médiane / troisiè
 
 Exclusions du bloc : `invalid_aggregate` 20, `parse_failed` 16 (lignes « Total » de portefeuilles et lignes illisibles, par archive).
 
+## Fragilité du financement : passif des BDC et rachats (bloc `lender_liabilities`, D-0047)
+
+Mêmes véhicules que le bloc `lender_portfolio`, sans sélection ni somme entre véhicules. Le ratio de couverture est celui que publie le véhicule (loi de 1940 : actif net plus dette de premier rang, sur cette dette) ; dette ÷ actif net s'en déduit, et passif total ÷ actif net le majore. Les offres de rachat sont les SC TO-I des véhicules non cotés : parts apportées, parts acceptées et plafond de l'offre se lisent dans l'amendement final. Événements fixés avant tout calcul : F14 (couverture en baisse deux trimestres de suite), F15 (offre réduite au prorata), F16 (interruption d'un programme régulier d'offres). Les demandes ne disent pas qui demande.
+
+- Bilans : 209 véhicules, 2 380 couples véhicule × date. Couverture publiée et retenue 889 fois ; non balisée 1 444 ; contraire à l'identité du bilan, souvent le seuil légal balisé à la place du ratio, 43 ; hors échelle 4. Passif ÷ actif net calculé 2 271 fois.
+- Offres de rachat de parts dans la fenêtre : 622, chez 68 véhicules. F15 tranché : 562 ; réduites au prorata 84 ; encore ouvertes à `as_of` 23 ; résultat non publié 37 (dont les parts acceptées non chiffrées).
+
+**Levier des véhicules Blue Owl**
+
+| Véhicule | Dernier bilan | Couverture | Dette ÷ actif net | — un an plus tôt | Passif ÷ actif net | F14 (dernières dates) |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| BLUE OWL CAPITAL CORP II | 2026-06-30 | 473 % | 0,27 x | 0,70 x | 0,30 x | 2024-06-30, 2024-09-30 |
+| BLUE OWL CAPITAL CORP | 2026-06-30 | 187 % | 1,15 x | 1,23 x | 1,18 x | 2023-03-31, 2024-09-30 |
+| BLUE OWL TECHNOLOGY FINANCE CORP. | 2026-06-30 | 203 % | 0,97 x | 0,61 x | 1,00 x | 2025-12-31, 2026-03-31, 2026-06-30 |
+| BLUE OWL CAPITAL CORP III | 2024-09-30 | 176 % | 1,32 x | 0,92 x | 1,34 x | 2024-03-31, 2024-06-30 |
+| BLUE OWL CREDIT INCOME CORP. | 2026-06-30 | 207 % | 0,93 x | 0,87 x | 0,99 x | 2026-03-31, 2026-06-30 |
+| BLUE OWL TECHNOLOGY INCOME CORP. | 2026-06-30 | 215 % | 0,87 x | 0,79 x | 0,93 x | 2024-12-31, 2025-09-30, 2026-06-30 |
+| BLUE OWL TECHNOLOGY FINANCE CORP. II | 2024-12-31 | 214 % | 0,88 x | 1,14 x | 0,91 x | aucune |
+
+**Levier des repères nommés d'avance**
+
+| Véhicule | Dernier bilan | Couverture | Dette ÷ actif net | — un an plus tôt | Passif ÷ actif net | F14 (dernières dates) |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| ARES CAPITAL CORP | 2026-06-30 | 186 % | 1,16 x | 1,01 x | 1,20 x | 2025-12-31, 2026-03-31, 2026-06-30 |
+| BLACKSTONE SECURED LENDING FUND | 2026-06-30 | 178 % | 1,28 x | 1,13 x | 1,32 x | 2025-03-31, 2025-12-31, 2026-03-31 |
+| BLACKSTONE PRIVATE CREDIT FUND | 2026-06-30 | 221 % | 0,82 x | 0,68 x | 0,90 x | 2024-12-31, 2026-03-31, 2026-06-30 |
+| GOLUB CAPITAL BDC, INC. | 2026-06-30 | 180 % | 1,24 x | 1,30 x | 1,25 x | 2023-06-30, 2024-12-31, 2026-03-31 |
+| FS KKR CAPITAL CORP | 2026-06-30 | 179 % | 1,27 x | 1,30 x | 1,31 x | 2024-09-30, 2025-06-30, 2026-03-31 |
+| HPS CORPORATE LENDING FUND | 2026-06-30 | 198 % | 1,02 x | 0,94 x | 1,09 x | 2025-06-30, 2025-09-30, 2025-12-31 |
+
+Quartiles de l'univers par date de bilan (premier quartile / médiane / troisième quartile ; des repères, jamais des totaux). Dette ÷ actif net sur les seuls véhicules qui publient leur couverture :
+
+| Date du bilan | Véhicules (couverture) | Dette ÷ actif net | Véhicules (passif) | Passif ÷ actif net |
+| --- | ---: | --- | ---: | --- |
+| 2025-03-31 | 64 | 0,71 x / 0,98 x / 1,14 x | 162 | 0,67 x / 0,99 x / 1,27 x |
+| 2025-06-30 | 66 | 0,71 x / 0,98 x / 1,21 x | 162 | 0,62 x / 1,01 x / 1,30 x |
+| 2025-09-30 | 70 | 0,79 x / 1,02 x / 1,19 x | 166 | 0,67 x / 1,05 x / 1,32 x |
+| 2025-12-31 | 73 | 0,82 x / 1,06 x / 1,26 x | 173 | 0,79 x / 1,11 x / 1,35 x |
+| 2026-03-31 | 74 | 0,85 x / 1,02 x / 1,20 x | 173 | 0,74 x / 1,09 x / 1,32 x |
+| 2026-06-30 | 73 | 0,86 x / 1,03 x / 1,22 x | 171 | 0,77 x / 1,08 x / 1,31 x |
+
+**Rachats, par trimestre d'expiration des offres (tous les véhicules qui en font)**
+
+| Trimestre | Offres | F15 tranché | Réduites au prorata (F15) | Demande médiane ÷ plafond | Offres au-delà du plafond |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 2022 T4 | 15 | 14 | 1 | 0,35 (11 offres) | 2 |
+| 2023 T1 | 21 | 20 | 4 | 0,67 (15 offres) | 3 |
+| 2023 T2 | 23 | 21 | 4 | 0,45 (15 offres) | 2 |
+| 2023 T3 | 26 | 24 | 4 | 0,17 (17 offres) | 1 |
+| 2023 T4 | 30 | 28 | 4 | 0,14 (21 offres) | 1 |
+| 2024 T1 | 34 | 32 | 4 | 0,11 (25 offres) | 3 |
+| 2024 T2 | 35 | 33 | 5 | 0,15 (26 offres) | 3 |
+| 2024 T3 | 39 | 38 | 5 | 0,16 (31 offres) | 1 |
+| 2024 T4 | 41 | 40 | 4 | 0,13 (33 offres) | 1 |
+| 2025 T1 | 44 | 42 | 3 | 0,10 (34 offres) | 2 |
+| 2025 T2 | 44 | 42 | 4 | 0,14 (36 offres) | 3 |
+| 2025 T3 | 48 | 47 | 3 | 0,20 (41 offres) | 3 |
+| 2025 T4 | 49 | 48 | 3 | 0,32 (41 offres) | 3 |
+| 2026 T1 | 51 | 50 | 11 | 0,58 (39 offres) | 8 |
+| 2026 T2 | 51 | 50 | 18 | 0,64 (36 offres) | 13 |
+| 2026 T3 | 70 | 33 | 7 | 0,22 (21 offres) | 2 |
+| 2026 T4 | 1 | 0 | 0 | — (0 offres) | 0 |
+
+La demande rapporte les parts apportées au plafond de l'offre (en général 5 % des parts) ; elle n'est calculée que si l'amendement ou l'offre donne ce plafond dans la même unité.
+
+**Rachats des véhicules Blue Owl (six dernières offres)**
+
+| Véhicule | Expiration | Demande ÷ plafond | Acceptées ÷ apportées | F15 |
+| --- | --- | ---: | ---: | --- |
+| Blue Owl Capital Corp II | 2024-06-24 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Capital Corp II | 2024-09-23 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Capital Corp II | 2024-12-23 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Capital Corp II | 2025-03-24 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Capital Corp II | 2025-06-23 | 1,08 x | 100 % | servie en entier |
+| Blue Owl Capital Corp II | 2025-09-22 | 1,19 x | 100 % | servie en entier |
+| Blue Owl Credit Income Corp. | 2025-06-30 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Credit Income Corp. | 2025-09-30 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Credit Income Corp. | 2025-12-31 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Credit Income Corp. | 2026-03-31 | 4,38 x | 23 % | réduite |
+| Blue Owl Credit Income Corp. | 2026-06-30 | 3,76 x | 27 % | réduite |
+| Blue Owl Credit Income Corp. | 2026-08-26 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
+| Blue Owl Technology Income Corp. | 2025-06-30 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Technology Income Corp. | 2025-09-30 | n.d. (non publié) | 100 % | servie en entier |
+| Blue Owl Technology Income Corp. | 2026-01-08 | 0,77 x | 100 % | servie en entier |
+| Blue Owl Technology Income Corp. | 2026-03-31 | 8,08 x | 14 % | réduite |
+| Blue Owl Technology Income Corp. | 2026-06-30 | 7,62 x | 13 % | réduite |
+| Blue Owl Technology Income Corp. | 2026-08-26 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
+
+**Rachats des repères non cotés (six dernières offres)**
+
+| Véhicule | Expiration | Demande ÷ plafond | Acceptées ÷ apportées | F15 |
+| --- | --- | ---: | ---: | --- |
+| Blackstone Private Credit Fund | 2025-05-30 | 0,53 x | 100 % | servie en entier |
+| Blackstone Private Credit Fund | 2025-08-29 | 0,36 x | 100 % | servie en entier |
+| Blackstone Private Credit Fund | 2025-12-02 | 0,91 x | 100 % | servie en entier |
+| Blackstone Private Credit Fund | 2026-03-02 | 1,39 x | 100 % | servie en entier |
+| Blackstone Private Credit Fund | 2026-05-29 | 2,06 x | 49 % | réduite |
+| Blackstone Private Credit Fund | 2026-08-04 | n.d. (non publié) | n.d. (non publié) | n.d. (résultat non publié) |
+| HPS Corporate Lending Fund | 2025-05-30 | 0,39 x | 100 % | servie en entier |
+| HPS Corporate Lending Fund | 2025-08-29 | 0,33 x | 100 % | servie en entier |
+| HPS Corporate Lending Fund | 2025-12-02 | 0,82 x | 100 % | servie en entier |
+| HPS Corporate Lending Fund | 2026-03-04 | 1,85 x | 54 % | réduite |
+| HPS Corporate Lending Fund | 2026-06-08 | 2,66 x | 38 % | réduite |
+| HPS Corporate Lending Fund | 2026-08-10 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
+
+**F16, interruptions d'un programme régulier d'offres**
+
+- Cellules : 6 événements, 423 sans événement, 44 dont les 120 jours ne sont pas écoulés.
+- Audax Credit BDC Inc. : dernière offre le 2023-07-12, aucune dans les 120 jours (événement daté du 2023-11-09). Aucun 8-K lu n'en donne la cause.
+- MSC INCOME FUND, INC. : dernière offre le 2024-09-26, aucune dans les 120 jours (événement daté du 2025-01-24). 8-K lus : suspension des rachats (2024-11-14 : suspension des rachats en vue d'une cotation).
+- Blue Owl Capital Corp II : dernière offre le 2025-08-18, aucune dans les 120 jours (événement daté du 2025-12-16). 8-K lus : fusion abandonnée (2025-11-19 : fusion avec Blue Owl Capital Corporation abandonnée le 18 novembre 2025) ; accord de fusion (2025-11-05 : accord de fusion avec Blue Owl Capital Corporation (cotée), 5 novembre 2025) ; accord de fusion (2025-11-05 : communiqué de l'accord de fusion) ; suspension des rachats (2025-11-05 : plus d'offre de rachat avant la fusion).
+- Stellus Private Credit BDC : dernière offre le 2026-03-23, aucune dans les 120 jours (événement daté du 2026-07-21). Aucun 8-K lu n'en donne la cause.
+- Hancock Park Corporate Income, Inc. : dernière offre le 2026-05-22, aucune dans les 120 jours (événement daté du 2026-09-19). 8-K lus : autre annonce (2026-06-30 : fin d'une ligne de crédit bancaire peu utilisée ; aucune mention des offres de rachat).
+- Steele Creek Capital Corp : dernière offre le 2026-05-29, aucune dans les 120 jours (événement daté du 2026-09-26). 8-K lus : autre annonce (2026-08-25 : cession de 75,8 % du portefeuille pour rembourser la ligne de crédit) ; autre annonce (2026-08-25 : plan de désendettement en vue d'une liquidation probable).
+
+**Annonces des véhicules Blue Owl lues dans leurs 8-K (les plus récentes d'abord, plafond de 40 unités)**
+
+- 2026-10-02, Blue Owl Credit Income Corp. — autre annonce : demande estimée du troisième trimestre 2026 (16,8 % des parts), servie au prorata à environ 30 % ; publiée hors SC TO-I. « the Fund received an estimated third-quarter total repurchase request of $3.1 billion, or 16.8% »
+- 2026-10-02, Blue Owl Credit Income Corp. — autre annonce : même annonce, FAQ. « All repurchase requests will be satisfied on a pro rata basis, representing approximately 30% of total shares tendered »
+- 2026-10-02, Blue Owl Technology Income Corp. — autre annonce : demande estimée du troisième trimestre 2026 (39,0 % des parts), servie au prorata à environ 13 % ; publiée hors SC TO-I. « OTIC received an estimated total repurchase request of 39.0% »
+- 2026-07-02, Blue Owl Credit Income Corp. — autre annonce : demande estimée du deuxième trimestre 2026 (18,8 %), servie au prorata à environ 27 %. « OCIC received an estimated total repurchase request of 18.8% »
+- 2026-07-02, Blue Owl Technology Income Corp. — autre annonce : demande estimée du deuxième trimestre 2026 (38,1 %), servie au prorata à environ 13 %. « OTIC received an estimated total repurchase request of 38.1% »
+- 2026-04-23, Blue Owl Credit Income Corp. — autre annonce : levier net après règlement de l'offre du premier trimestre 2026. « Pro-forma for the settlement of our most recent tender offer the net debt-to-equity leverage was 0.88x as of March 31, 2026. »
+- 2026-04-23, Blue Owl Technology Income Corp. — autre annonce : levier net après règlement de l'offre du premier trimestre 2026. « Pro-forma for the settlement of our most recent tender offer, the net debt-to-equity leverage ratio was 0.85x as of March 31, 2026. »
+- 2026-04-02, Blue Owl Credit Income Corp. — autre annonce : le gestionnaire décrit une vague de demandes de rachat dans toutes les BDC non cotées. « Tender activity was elevated across the non-traded BDC industry in the first quarter of 2026 »
+- 2026-04-02, Blue Owl Credit Income Corp. — autre annonce : premier trimestre 2026 : 21,9 % demandés, environ 23 % servis. « All repurchase requests will be satisfied on a pro rata basis, representing approximately 23% of total shares tendered »
+- 2026-04-02, Blue Owl Technology Income Corp. — autre annonce : le gestionnaire attribue la demande d'OTIC à une base de porteurs concentrée et aux craintes sur le logiciel face à l'IA. « For OTIC, this dynamic was amplified by the fund's more concentrated shareholder base »
+
+Exclusions du bloc : `not_processed` 305, `out_of_scope` 3 (offres sur des obligations ou des actions de préférence ; 8-K au-delà du plafond de lecture).
+
 ## Montages identifiés (bloc `montages`, D-0046)
 
 Un montage que les notes d'un groupe décrivent sans nommer son financeur, identifié par des extraits cités des deux côtés (au moins trois traits concordants). Les montants viennent des lignes validées des deux côtés ; ils ne s'additionnent pas.
@@ -1807,5 +1943,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 10 334, terme manquant 2 298, concept non résolu 2 269, non publié 2 130, période antérieure absente 1 236, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 921, historique tronqué 793, annuel seulement 496, précondition non remplie 193, dénominateur négatif ou nul 185, client anonyme 113, frontière de retraitement 106, date manquante 12, intervalle à cheval sur le seuil 11, entité non confirmée 3, dénominateur sous le seuil 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 14 585, non publié 2 319, terme manquant 2 298, concept non résolu 2 269, période antérieure absente 1 648, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 921, historique tronqué 793, annuel seulement 496, dénominateur négatif ou nul 299, précondition non remplie 250, client anonyme 113, période non écoulée à la date de coupure 113, frontière de retraitement 106, faits en conflit 86, date manquante 12, intervalle à cheval sur le seuil 11, lecture impossible 8, entité non confirmée 3, dénominateur sous le seuil 2.
 

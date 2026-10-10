@@ -45,41 +45,58 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - TeraWulf : F5 (faiblesse significative du contrôle interne) — 2 trimestre(s)
 - TeraWulf : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
 - BLUE OWL CAPITAL CORP II (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
+- BLUE OWL CAPITAL CORP II (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
+- BLUE OWL CAPITAL CORP II (véhicule BDC) : F16 (interruption d'un programme régulier d'offres de rachat d'une BDC) — 1 interruption(s)
 - BLUE OWL CAPITAL CORP (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
+- BLUE OWL CAPITAL CORP (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
 - BLUE OWL TECHNOLOGY FINANCE CORP. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
+- BLUE OWL TECHNOLOGY FINANCE CORP. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
 - BLUE OWL CAPITAL CORP III (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
+- BLUE OWL CAPITAL CORP III (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
 - BLUE OWL CREDIT INCOME CORP. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 7 date(s) de bilan
+- BLUE OWL CREDIT INCOME CORP. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
+- BLUE OWL CREDIT INCOME CORP. (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 2 offre(s)
 - BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
+- BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
+- BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 2 offre(s)
 - ARES CAPITAL CORP (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
+- ARES CAPITAL CORP (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
 - BLACKSTONE SECURED LENDING FUND (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 6 date(s) de bilan
 - BLACKSTONE SECURED LENDING FUND (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 5 date(s) de bilan
+- BLACKSTONE SECURED LENDING FUND (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
 - BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
 - BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 6 date(s) de bilan
+- BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
+- BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 1 offre(s)
 - GOLUB CAPITAL BDC, INC. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
 - GOLUB CAPITAL BDC, INC. (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 9 date(s) de bilan
+- GOLUB CAPITAL BDC, INC. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
 - FS KKR CAPITAL CORP (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
+- FS KKR CAPITAL CORP (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
 - HPS CORPORATE LENDING FUND (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
 - HPS CORPORATE LENDING FUND (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 3 date(s) de bilan
-- Les autres véhicules BDC de l'univers (D-0045) ne sont pas listés ici : leurs cellules sont dans `measures`.
+- HPS CORPORATE LENDING FUND (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 5 date(s) de bilan
+- HPS CORPORATE LENDING FUND (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 2 offre(s)
+- Les autres véhicules BDC de l'univers (D-0045, D-0047) ne sont pas listés ici : leurs cellules sont dans `measures`.
 
 ## Rendement du passage (§11.1)
 
 - Cellules de rang 1, par statut et motif : calculée 14 016 ; indéterminée / terme manquant 2 760 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 832 ; indéterminée / historique tronqué 1 586 ; indéterminée / concept non résolu 1 373 ; indéterminée / non publié 1 301 ; indéterminée / précondition non remplie 335 ; bornée 236 ; indéterminée / frontière de retraitement 185 ; indéterminée / client anonyme 172 ; indéterminée / dénominateur négatif ou nul 116 ; partielle / non publié 75 ; partielle / terme manquant 10 ; indéterminée / entité non confirmée 6.
 - Cellules de l'annexe F des groupes, par statut et motif : calculée 2 160 ; indéterminée / annuel seulement 496 ; indéterminée / non publié 146 ; indéterminée / terme manquant 128 ; partielle / non publié 121 ; indéterminée / concept non résolu 80 ; indéterminée / période antérieure absente 43 ; indéterminée / dénominateur négatif ou nul 34 ; indéterminée / frontière de retraitement 12.
-- Cellules de F11 à F13 des véhicules BDC (D-0045), par statut et motif : indéterminée / non balisé 2 807 ; calculée 2 293 ; indéterminée / période antérieure absente 1 164.
+- Cellules de F11 à F16 des véhicules BDC (D-0045, D-0047), par statut et motif : indéterminée / non balisé 4 072 ; calculée 3 987 ; indéterminée / période antérieure absente 1 576 ; indéterminée / période non écoulée à la date de coupure 67 ; indéterminée / non publié 37.
 - Paires à financement documenté (F active au moins un trimestre) : 13 — Broadcom → Silicon Manufacturing Partners Pte. Ltd., CoreWeave → MAIV, CoreWeave → OpenAI, Alphabet → SpaceX, Meta → Jio Platforms Limited, Microsoft → GENERAL MOTORS CO, Microsoft → OpenAI, NVIDIA → INTEL CORP, NVIDIA → NEBIUS GROUP N.V., NVIDIA → CoreWeave, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc..
 - Arêtes de montant : commercial 388, credit_support 16, customer_consideration 73, financing 624 ; arêtes de relation : 986.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; Cipher (exercice clos le 2025-12-31) : nommés 70,0 %, anonymes d'au moins 10 % 0,0 % ; Core Scientific (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TeraWulf (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
 - Cellules de la question 4, par statut et motif : calculée 4 416 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 832 ; indéterminée / historique tronqué 1 586 ; indéterminée / précondition non remplie 335 ; bornée 236 ; indéterminée / client anonyme 172 ; indéterminée / non publié 138 ; indéterminée / concept non résolu 110 ; indéterminée / terme manquant 22.
-- Requêtes : 13 980 au journal, dont 13 701 réussies, 44 449 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-10T15:59:58.296+00:00.
+- Requêtes : 15 817 au journal, dont 15 538 réussies, 44 530 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-10T18:05:49.279+00:00.
 - Blocs lus : 4 236 sur 4 421 clés de contenu ; par item de 8-K : 1.01 179, 1.02 20, 2.01 19, 2.03 60, 3.03 15, 8.01 414 ; pièces arrêtées à leur en-tête : EX-4 185.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 822 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 795 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
 - Faits de BDC rattachés : 1 478, dans 212 dépôts de 39 fonds.
-- Cellules par mesure, statut et motif : bdc_fv_to_cost calculée 363 ; bdc_fv_to_cost indéterminée / dénominateur négatif ou nul 9 ; bdc_fv_to_cost indéterminée / non balisé 25 ; bdc_fv_to_cost partielle 45 ; bdc_non_accrual_share indéterminée / non balisé 442 ; bdc_pik_share calculée 50 ; bdc_pik_share indéterminée / non balisé 392 ; bdc_portfolio_fv_to_cost calculée 1 173 ; bdc_portfolio_fv_to_cost indéterminée / non balisé 184 ; bdc_portfolio_fv_to_cost partielle 731 ; bdc_portfolio_non_accrual_share indéterminée / non balisé 2 088 ; bdc_portfolio_pik_share bornée 1 078 ; bdc_portfolio_pik_share indéterminée / dénominateur négatif ou nul 8 ; bdc_portfolio_pik_share indéterminée / non balisé 1 002 ; bdc_portfolio_software_share calculée 3 ; bdc_portfolio_software_share indéterminée / non balisé 2 085 ; bdc_portfolio_unfunded_ratio bornée 847 ; bdc_portfolio_unfunded_ratio indéterminée / dénominateur négatif ou nul 12 ; bdc_portfolio_unfunded_ratio indéterminée / non balisé 1 229.
+- Cellules par mesure, statut et motif : bdc_fv_to_cost calculée 363 ; bdc_fv_to_cost indéterminée / dénominateur négatif ou nul 9 ; bdc_fv_to_cost indéterminée / non balisé 25 ; bdc_fv_to_cost partielle 45 ; bdc_liab_asset_coverage calculée 889 ; bdc_liab_asset_coverage indéterminée / faits en conflit 43 ; bdc_liab_asset_coverage indéterminée / non balisé 1 444 ; bdc_liab_asset_coverage indéterminée / lecture impossible 4 ; bdc_liab_debt_to_net_assets calculée 889 ; bdc_liab_debt_to_net_assets indéterminée / faits en conflit 43 ; bdc_liab_debt_to_net_assets indéterminée / non balisé 1 444 ; bdc_liab_debt_to_net_assets indéterminée / lecture impossible 4 ; bdc_liab_liabilities_to_net_assets calculée 2 271 ; bdc_liab_liabilities_to_net_assets indéterminée / dénominateur négatif ou nul 11 ; bdc_liab_liabilities_to_net_assets indéterminée / non balisé 98 ; bdc_non_accrual_share indéterminée / non balisé 442 ; bdc_pik_share calculée 50 ; bdc_pik_share indéterminée / non balisé 392 ; bdc_portfolio_fv_to_cost calculée 1 173 ; bdc_portfolio_fv_to_cost indéterminée / non balisé 184 ; bdc_portfolio_fv_to_cost partielle 731 ; bdc_portfolio_non_accrual_share indéterminée / non balisé 2 088 ; bdc_portfolio_pik_share bornée 1 078 ; bdc_portfolio_pik_share indéterminée / dénominateur négatif ou nul 8 ; bdc_portfolio_pik_share indéterminée / non balisé 1 002 ; bdc_portfolio_software_share calculée 3 ; bdc_portfolio_software_share indéterminée / non balisé 2 085 ; bdc_portfolio_unfunded_ratio bornée 847 ; bdc_portfolio_unfunded_ratio indéterminée / dénominateur négatif ou nul 12 ; bdc_portfolio_unfunded_ratio indéterminée / non balisé 1 229 ; bdc_tender_acceptance_ratio calculée 444 ; bdc_tender_acceptance_ratio indéterminée / dénominateur négatif ou nul 103 ; bdc_tender_acceptance_ratio indéterminée / période non écoulée à la date de coupure 23 ; bdc_tender_acceptance_ratio indéterminée / non publié 51 ; bdc_tender_acceptance_ratio indéterminée / précondition non remplie 1 ; bdc_tender_demand_ratio calculée 442 ; bdc_tender_demand_ratio indéterminée / période non écoulée à la date de coupure 23 ; bdc_tender_demand_ratio indéterminée / non publié 101 ; bdc_tender_demand_ratio indéterminée / précondition non remplie 56.
 - Groupes d'émetteurs couverts : Broadcom, Core Scientific, AbbVie Inc., Barings BDC, Inc., ECHOSTAR CORP, GEN DIGITAL INC., IROBOT CORP, Jane Street Group, LLC, PEOPLE INC, PLANET LABS PBC, Technology Finance Corporation, Tempus AI, Inc., Trinity Capital Inc., Twitter, Inc., UBER TECHNOLOGIES, INC, VMware, Inc., X.AI Corp., X.AI LLC, X Corp., X Holdings Corp., CoreWeave, Oracle, SpaceX.
 
 ## Rendement du bloc text (§14)
@@ -90,7 +107,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 24 003 ; calculée 6 322 → 14 016 ; bornée 161 → 236 ; partielle 794 → 85 ; indéterminée 8 489 → 9 666 ; motif « non traité » 3 394 → 1 832. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
 - Événements de l'annexe F : 33 → 169 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 15 sur 26.
 - Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 851, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 421, inconnu / historique tronqué 363, actif 135, échu 37. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
-- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : terme manquant 2 898 ; non balisé 2 807 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 834 ; non publié 1 707 ; historique tronqué 1 586 ; concept non résolu 1 453 ; période antérieure absente 1 207 ; annuel seulement 496 ; précondition non remplie 359 ; client anonyme 202 ; frontière de retraitement 197 ; dénominateur négatif ou nul 150 ; date manquante 12 ; intervalle à cheval sur le seuil 11 ; entité non confirmée 6. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
+- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : non balisé 4 072 ; terme manquant 2 898 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 834 ; non publié 1 744 ; période antérieure absente 1 619 ; historique tronqué 1 586 ; concept non résolu 1 453 ; annuel seulement 496 ; précondition non remplie 359 ; client anonyme 202 ; frontière de retraitement 197 ; dénominateur négatif ou nul 150 ; période non écoulée à la date de coupure 67 ; date manquante 12 ; intervalle à cheval sur le seuil 11 ; entité non confirmée 6. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
 - Clauses financières (`sig_covenant_events`, trimestres-groupes, vue `as_known`) : événement 9, sans événement 238, partielle (sans événement sur la part lue) / non publié 75.
 - Actifs nantis (`sig_pledged_assets`, trimestres-groupes, vue `as_known`) : événement 29, sans événement 218, indéterminée / non publié 75.
 - Pont des baux non commencés (`lease_not_commenced_bridge`) : calculée 130, indéterminée 458, partielle 2.
@@ -131,11 +148,11 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 
 ## Exclusions nouvelles, par motif
 
-- `not_processed` : 19 892
+- `not_processed` : 20 197
 - `conflicting` : 555
 - `pending_entity` : 322
 - `financial_parties_only` : 185
-- `out_of_scope` : 96
+- `out_of_scope` : 99
 - `parse_failed` : 32
 - `invalid_aggregate` : 30
 - `submitted_draft` : 8
@@ -190,6 +207,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0044 — SoftBank, groupe économique non déposant (§10.4) : entités confirmées et découverte dédiée, règles fixées avant de voir les candidats.
 - D-0045 — Fragilité du financement : Blue Owl, niveau 1. Signaux de portefeuille de toutes les BDC et événements F11 à F13 de l'annexe F, règles fixées avant tout calcul.
 - D-0046 — Blue Owl, niveau 3 : nommer le financeur de la coentreprise de Meta en Louisiane, règles fixées avant la recherche.
+- D-0047 — Blue Owl, niveau 2 : le passif des BDC (couverture, levier, rachats demandés et acceptés, interruptions), règles fixées avant tout calcul et toute lecture.
 
 ## Critères des annexes E et F
 
