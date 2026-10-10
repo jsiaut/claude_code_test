@@ -45,7 +45,11 @@ def _longest_section(lines, start_rx, end_rx, min_chars=200, start_filter=None):
 
 
 ITEM_9A = re.compile(_ITEM + r"9a\b", re.I)
-ITEM_9A_END = re.compile(_ITEM + r"(9b|9c|10)\b|^\W{0,3}part\s+iii\b", re.I)
+# d4 : tout titre d'item autre que 9A ferme la section. Un amendement ne reprend que les items
+# qu'il modifie : le 10-K/A 2024 de Core Scientific passe de l'Item 9A à l'Item 15, sans 9B,
+# 9C, 10 ni partie III, et la puce de sa note explicative qui nomme l'Item 9A ouvrait une
+# section courant jusqu'à la fin du document
+ITEM_9A_END = re.compile(_ITEM + r"(?!9a\b)\d{1,2}[a-c]?\b|^\W{0,3}part\s+(iii|iv)\b|^\W{0,3}signatures?\b", re.I)
 
 
 def item_9a(raw):

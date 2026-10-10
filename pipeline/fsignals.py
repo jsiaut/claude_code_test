@@ -35,6 +35,16 @@ def reports_by_quarter(filings, g, q):
     return m.sort_values("filingDate")
 
 
+def _first_report(reps, bl, obs_by_ck, signal):
+    """Date de publicité d'un signal présent : celle du premier rapport du trimestre dont le bloc
+    le porte. Un 10-K/A de 2026 qui révèle une faiblesse ne dit pas ce qu'on savait en 2025 au
+    dépôt du 10-K d'origine (§7.3, D-0043)."""
+    accs = {b["accession"] for b in bl
+            if any(o.get("signal") == signal and o.get("signal_present") is True for o in obs_by_ck.get(b["content_key"], []))}
+    r = reps[reps["accessionNumber"].isin(accs)]
+    return str(min(r["filingDate"])) if not r.empty else str(min(reps["filingDate"]))
+
+
 def observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_ck, read_cks, parsed_accs, as_of):
     out = []
     for g in groups:
@@ -57,7 +67,7 @@ def observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_c
             else:
                 lines = [o for b in bl for o in obs_by_ck.get(b["content_key"], []) if o.get("signal") == "material_weakness"]
                 hits = [o for o in lines if o.get("signal_present") is True]
-                kd = str(min(reps["filingDate"]))
+                kd = _first_report(reps, bl, obs_by_ck, "material_weakness") if hits else str(min(reps["filingDate"]))
                 out.append(cell("sig_material_weakness", g, ps, pe, "as_known", as_of,
                                 value_text="event" if hits else "no_event", status="computed", knowledge_date=kd,
                                 flags={"observations": [o["obs_key"] for o in (hits or lines)], "accessions": accs}))
@@ -69,8 +79,9 @@ def observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_c
             elif gc:
                 lines = [o for b in gc for o in obs_by_ck.get(b["content_key"], []) if o.get("signal") == "going_concern"]
                 hits = [o for o in lines if o.get("signal_present") is True]
+                kd = _first_report(reps, gc, obs_by_ck, "going_concern") if hits else str(min(reps["filingDate"]))
                 out.append(cell("sig_going_concern", g, ps, pe, "as_known", as_of, value_text="event" if hits else "no_event",
-                                status="computed", knowledge_date=str(min(reps["filingDate"])),
+                                status="computed", knowledge_date=kd,
                                 flags={"observations": [o["obs_key"] for o in lines]}))
             elif any(a in parsed_accs for a in accs):
                 out.append(cell("sig_going_concern", g, ps, pe, "as_known", as_of, value_text="no_event", status="computed",
@@ -370,6 +381,9 @@ def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_g
                 else:
                     o9 = [o for o in obs_by_group.get(g, []) if o["content_key"] in {b["content_key"] for b in bl}]
                     hit = [o for o in o9 if o.get("signal") == "capacity_contract_termination" and o.get("signal_present")]
-                    ev("F9", "computed", "event" if hit else "no_event", kd=str(min(k["filingDate"])),
+                    hit_cks = {o["content_key"] for o in hit}
+                    hit_accs = {b["accession"] for b in bl if b["content_key"] in hit_cks}
+                    kd9 = k[k["accessionNumber"].isin(hit_accs)] if hit else k
+                    ev("F9", "computed", "event" if hit else "no_event", kd=str(min((kd9 if not kd9.empty else k)["filingDate"])),
                        flags={"accessions": accs, "observations": [o["obs_key"] for o in (hit or o9)]})
     return out

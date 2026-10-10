@@ -194,9 +194,14 @@ def run(as_of):
     fl = filings.rename(columns={})
     sig_cells = events.structural_signals(groups, quarters_by_group, fl, as_of, err)
     blocks = {b["content_key"]: b for b in catalog}
+    # un même texte revient parfois à l'identique dans plusieurs dépôts (Item 4 d'Amazon d'un
+    # trimestre à l'autre, doute sur la continuité de Core Scientific) : lu une fois, il reste
+    # rattaché à chacun de ses dépôts (D-0043)
     blocks_by_acc = {}
-    for b in blocks.values():
-        blocks_by_acc.setdefault(b["accession"], []).append(b)
+    for b in catalog:
+        lst = blocks_by_acc.setdefault(b["accession"], [])
+        if all(x["content_key"] != b["content_key"] for x in lst):
+            lst.append(b)
     read_cks = {p.stem for p in config.OBS_DIR.glob("*.jsonl") if not p.name.endswith(".rejected.jsonl")}
     # groupes dont tout le texte du catalogue est lu, bloc text compris (§11.1, E.0) : un corps de
     # pièce exclu avec son motif (financial_parties_only) ne compte pas comme non lu
