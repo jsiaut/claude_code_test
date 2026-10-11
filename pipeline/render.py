@@ -1059,8 +1059,8 @@ def montages_section(con, T):
     ex = q(con, """SELECT reason, count(*) AS n FROM exclusions WHERE item_key LIKE 'montages:%' GROUP BY 1 ORDER BY 1""")
     if ex:
         L.append("Exclusions du bloc : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'mt_excl': r['reason']}, r['n'])}"
-                                                    for r in ex) + " (relevés de portefeuille non lus, pièces sans "
-                 "paragraphe qualifiant).")
+                                                    for r in ex) + " (relevés de portefeuille non lus, pièces écartées "
+                 "par la règle d'un montage ou sans paragraphe qualifiant, textes au-delà du plafond ; D-0046, D-0049).")
         L.append("")
     return L
 
