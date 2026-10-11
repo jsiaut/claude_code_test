@@ -981,5 +981,12 @@ montages:
       - {rx: '\bCoreWeave\b', owner: ["coreweave"]}
       - {rx: '\bGalaxy\b', owner: ["galaxy digital"]}
     noted_terms: ['\bHelios\b', '\bCoreWeave\b', '\bGalaxy\b']
-    cap: 40
+    cap: 71                           # amendement de D-0049, point 11 (plafond initial : 40)
+    focus: "galaxy digital"           # ordre : autres déposants, 8-K, rapports périodiques ; plus récent d'abord
+    dedupe: true                      # un texte distinct se lit une fois
+    exclude:                          # comptés, non lus (D-0049, point 11)
+      - {filer: "galaxy digital", forms: ["S-1", "S-1/A", "S-4/A", "DRS", "DRS/A", "424B3", "424B4"],
+         reason: "prospectus ou déclaration d'enregistrement qui reprend les rapports périodiques ou décrit une offre"}
+      - {filer: "galaxy digital", forms: ["8-K"], file_types: ["EX-99.2"], reason: "présentation trimestrielle des résultats"}
+      - {filer: "galaxy digital", forms: ["8-K"], file_rx: "xpressrelease", reason: "communiqué trimestriel des résultats"}
 

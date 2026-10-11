@@ -189,6 +189,35 @@ def windows(paras, rx):
     return spans
 
 
+def _excluded(d, spec):
+    """Règle d'exclusion du montage qui écarte une pièce (D-0049, point 11), ou None."""
+    own = (d["filer"] or "").lower()
+    for r in spec.get("exclude") or []:
+        if r.get("filer") and r["filer"] not in own:
+            continue
+        if r.get("forms") and d["form"] not in r["forms"]:
+            continue
+        if r.get("file_types") and d.get("file_type") not in r["file_types"]:
+            continue
+        if r.get("file_rx") and not re.search(r["file_rx"], d["file"] or "", re.I):
+            continue
+        return r
+    return None
+
+
+def _order_key(d, k, spec):
+    """Ordre de lecture : dates de dépôt croissantes (D-0046) ; pour un montage à `focus`, autres
+    déposants, puis pièces de 8-K du déposant central, puis ses rapports périodiques, puis le reste,
+    chaque classe du plus récent au plus ancien (D-0049, point 11)."""
+    focus = spec.get("focus")
+    if not focus:
+        return (d["file_date"], d["adsh"], d["file"], k)
+    own = (d["filer"] or "").lower()
+    cls = 0 if focus not in own else 1 if d["form"] in ("8-K", "8-K/A") else 2 if d["form"] in ("10-Q", "10-K") else 3
+    neg = "".join(chr(0x10FFFF - ord(c)) for c in d["file_date"])   # plus récent d'abord
+    return (cls, neg, d["adsh"], d["file"], k)
+
+
 def _prepare_one(mid, spec, groups_by_cik):
     from . import blocks
     from .graph import normalize_name
@@ -196,9 +225,14 @@ def _prepare_one(mid, spec, groups_by_cik):
     if not docs_path.exists():
         return []
     docs = pd.read_parquet(docs_path)
-    units, no_window = [], []
+    units, no_window, excluded = [], [], []
     for d in docs.to_dict("records"):
         if not d["state"].startswith(("cached", "fetched")):
+            continue
+        rule = _excluded(d, spec)
+        if rule:
+            excluded.append({"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"],
+                             "reason": rule["reason"]})
             continue
         raw = cache.read(cache.archive_path(d["cik"], d["adsh"], d["file"]))
         text, how = D.plain_text(raw)
@@ -209,7 +243,19 @@ def _prepare_one(mid, spec, groups_by_cik):
             continue
         for k, (a, b) in enumerate(sp):
             units.append((d, k, "\n".join(paras[a:b]), how))
-    units.sort(key=lambda u: (u[0]["file_date"], u[0]["adsh"], u[0]["file"], u[1]))
+    units.sort(key=lambda u: _order_key(u[0], u[1], spec))
+    if spec.get("dedupe"):           # un texte distinct se lit une fois (D-0049, point 11)
+        seen, kept, dup = set(), [], []
+        for u in units:
+            ck = blocks.content_key(u[2], [])
+            if ck in seen:
+                dup.append({"adsh": u[0]["adsh"], "file": u[0]["file"], "window": u[1]})
+                continue
+            seen.add(ck)
+            kept.append(u)
+        units = kept
+    else:
+        dup = []
     noted = noted_rx(spec)
     out, over = [], []
     for n, (d, k, text, how) in enumerate(units):
@@ -231,10 +277,11 @@ def _prepare_one(mid, spec, groups_by_cik):
                     "exhibit_type": d["file_type"], "window": k, "text_extraction": how,
                     "terms": sorted(set(noted.findall(text))), "queries": d["queries"], "montage": mid})
     info = json.loads(info_path.read_text())
-    info.update({"no_window": no_window, "over_cap": over, "units": len(units)})
+    info.update({"no_window": no_window, "over_cap": over, "units": len(units) + len(dup), "excluded": excluded,
+                 "duplicates": dup})
     info_path.write_text(json.dumps(info, ensure_ascii=False))
-    print(mid, ":", len(units), "fenêtres ;", len(out), "blocs ;", len(no_window), "pièces sans fenêtre ;",
-          len(over), "au-delà du plafond")
+    print(mid, ":", len(units) + len(dup), "fenêtres ;", len(units), "textes distincts ;", len(out), "blocs ;",
+          len(no_window), "pièces sans fenêtre ;", len(excluded), "pièces écartées ;", len(over), "au-delà du plafond")
     return out
 
 
@@ -276,6 +323,8 @@ def exclusions(as_of):
                       "(« Beignet », « Richland Parish », « Meta », « Blue Owl » ; D-0046, points 8 et 9)") if mid == FIRST else \
                      f"aucun paragraphe ne nomme un terme qualifiant hors du nom du déposant (« {terms} » ; {dec})"
             ex(f"{d['adsh']}/{d['file']}", "out_of_scope", f"{d['filer']} ({d['form']}) : {detail}", d["adsh"])
+        for d in info.get("excluded") or []:
+            ex(f"{d['adsh']}/{d['file']}", "out_of_scope", f"{d['filer']} ({d['form']}) : {d['reason']} ({dec})", d["adsh"])
         for d in info.get("over_cap") or []:
             ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
                f"fenêtre au-delà du plafond de {spec['cap']} unités ({'D-0046, point 4' if mid == FIRST else dec})", d["adsh"])

@@ -53,5 +53,32 @@ class Windows(unittest.TestCase):
         self.assertEqual(M.windows(paras, rx), [[1, 12]])   # fenêtres contiguës fondues
 
 
+class GalaxyAmendment(unittest.TestCase):
+    """D-0049, point 11 : pièces écartées, ordre des classes, plus récent d'abord."""
+
+    @staticmethod
+    def _d(filer, form, ft, f, date):
+        return {"filer": filer, "form": form, "file_type": ft, "file": f, "file_date": date, "adsh": "x"}
+
+    def test_exclusions(self):
+        sp, d = S["galaxy_helios"], self._d
+        self.assertIsNotNone(M._excluded(d("Galaxy Digital Inc.", "424B3", "424B3", "a.htm", "2026-01-01"), sp))
+        self.assertIsNotNone(M._excluded(d("Galaxy Digital Inc.", "8-K", "EX-99.2", "exhibit992-q12026overvie.htm", "2026-04-28"), sp))
+        self.assertIsNotNone(M._excluded(d("Galaxy Digital Inc.", "8-K", "EX-99.1", "glxy-2026331xpressrelease.htm", "2026-04-28"), sp))
+        self.assertIsNone(M._excluded(d("Galaxy Digital Inc.", "8-K", "EX-4.1", "closing8-kxex41indenture.htm", "2026-07-28"), sp))
+        self.assertIsNone(M._excluded(d("CoreWeave, Inc.", "424B4", "424B4", "x.htm", "2025-03-31"), sp))
+
+    def test_order(self):
+        sp, d = S["galaxy_helios"], self._d
+        docs = [d("Galaxy Digital Inc.", "10-Q", "10-Q", "q1", "2026-05-08"), d("Galaxy Digital Inc.", "10-Q", "10-Q", "q2", "2026-08-10"),
+                d("Galaxy Digital Inc.", "8-K", "EX-4.1", "ind", "2026-07-28"), d("MSD Investment Corp.", "10-Q", "10-Q", "m", "2026-05-14")]
+        self.assertEqual([x["file"] for x in sorted(docs, key=lambda x: M._order_key(x, 0, sp))], ["m", "ind", "q2", "q1"])
+
+    def test_first_montages_keep_date_order(self):
+        for mid in ("meta_hyperion", "athene_whco"):
+            a = {"filer": "X", "form": "8-K", "file": "a", "file_date": "2025-01-01", "adsh": "1"}
+            self.assertLess(M._order_key(a, 0, S[mid]), M._order_key(dict(a, file_date="2026-01-01"), 0, S[mid]))
+
+
 if __name__ == "__main__":
     unittest.main()
