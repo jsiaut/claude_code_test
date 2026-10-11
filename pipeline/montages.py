@@ -1,15 +1,17 @@
-"""Bloc `montages` (D-0046) : nommer le financeur d'un montage que les notes d'un groupe décrivent
-sans le nommer (« the Venture » de Meta en Louisiane), par les pièces qui le décrivent.
+"""Bloc `montages` (D-0046, D-0049) : nommer les parties d'un montage que les notes d'un groupe
+décrivent sans les nommer, par les pièces qui le décrivent.
 
-Sources : la recherche plein texte d'EDGAR (requêtes fixées par D-0046, point 3) et les rapports
-périodiques de Blue Owl Capital Inc. de la période. Unités : les paragraphes qui nomment un terme
-du lexique, avec deux paragraphes avant et après (D-0046, points 4 et 8). Chaque pièce se tire une
-fois, en cache, par le client SEC journalisé.
+Chaque montage est décrit dans config.yaml (`montages`) : période, requêtes de la recherche plein
+texte d'EDGAR, déposants dont les rapports périodiques se tirent, termes qualifiants, plafond.
+Unités : les paragraphes qui nomment un terme qualifiant, avec deux paragraphes avant et deux après,
+fondus quand ils se chevauchent (D-0046, points 4, 8 et 9). Un terme ne qualifie jamais une pièce
+d'un déposant dont il est le nom (`owner`) ; `only_in` le réserve aux pièces de déposants nommés.
+Chaque pièce se tire une fois, en cache, par le client SEC journalisé.
 
-    python -m pipeline.montages fetch      # pièces en cache, résultats de la recherche
-    python -m pipeline.montages prepare    # fenêtres -> db/montages_blocks.jsonl
+    python -m pipeline.montages search <montage>    # recherche plein texte -> work/tmp
+    python -m pipeline.montages fetch <montage>     # pièces en cache, relevés de portefeuille comptés
+    python -m pipeline.montages prepare             # fenêtres de tous les montages -> db/montages_blocks.jsonl
 """
-import datetime as dt
 import json
 import re
 import sys
@@ -19,29 +21,43 @@ import pandas as pd
 from . import cache, config, net
 from . import discovery as D
 
-HITS = config.ROOT / "work" / "tmp" / "montages_hits.json"
-DOCS = config.DB_DIR / "montages_docs.parquet"
 CATALOG = config.DB_DIR / "montages_blocks.jsonl"
-INFO = config.DB_DIR / "montages_info.json"
-OWL_CIK = "0001823945"
-START, END = "2025-10-01", "2026-10-07"
 HOLDINGS_FORMS = {"NPORT-P", "NPORT-P/A", "NT NPORT-P", "N-CSR", "N-CSR/A", "N-CSRS", "N-MFP3", "13F-HR", "13F-HR/A",
                   "N-PX", "N-PX/A", "486BPOS", "POS EX", "11-K"}
-QUALIFY = re.compile(r"\bBeignet\b|Richland Parish|\bMeta\b")
-
-
-def qualify_rx(filer):
-    """Termes qualifiants d'une pièce : jamais le nom de son déposant (D-0046, point 9)."""
-    t = [r"\bBeignet\b", r"Richland Parish"]
-    own = (filer or "").lower()
-    if not own.startswith("meta platforms"):
-        t.append(r"\bMeta\b")
-    if "blue owl" not in own:
-        t.append(r"\bBlue Owl\b")
-    return re.compile("|".join(t))
-TERMS = re.compile(r"\bBeignet\b|Richland Parish|\bMeta\b|\bHyperion\b|\bBlue Owl\b")
-CAP = 40
 WINDOW = 2
+FIRST = "meta_hyperion"        # montage de D-0046 : chemins et clés d'origine, inchangés
+
+
+def specs(cfg=None):
+    cfg = cfg or config.load()
+    return cfg.get("montages") or {}
+
+
+def _paths(mid):
+    """Fichiers d'un montage ; ceux de D-0046 gardent leur nom d'origine."""
+    if mid == FIRST:
+        return (config.ROOT / "work" / "tmp" / "montages_hits.json", config.DB_DIR / "montages_docs.parquet",
+                config.DB_DIR / "montages_info.json")
+    return (config.ROOT / "work" / "tmp" / f"montages_hits_{mid}.json", config.DB_DIR / f"montages_docs_{mid}.parquet",
+            config.DB_DIR / f"montages_info_{mid}.json")
+
+
+def qualify_rx(filer, spec):
+    """Termes qualifiants d'une pièce : jamais le nom de son déposant (D-0046, point 9) ; un terme
+    `only_in` ne qualifie que les pièces des déposants nommés (D-0049, point 4)."""
+    own = (filer or "").lower()
+    t = []
+    for term in spec["terms"]:
+        if any(o in own for o in term.get("owner") or []):
+            continue
+        if term.get("only_in") and not any(o in own for o in term["only_in"]):
+            continue
+        t.append(term["rx"])
+    return re.compile("|".join(t)) if t else None
+
+
+def noted_rx(spec):
+    return re.compile("|".join(spec["noted_terms"]))
 
 
 def _client(rate=4.0):
@@ -50,10 +66,46 @@ def _client(rate=4.0):
     return c
 
 
-def owl_periodic(client):
-    """Rapports périodiques de Blue Owl Capital Inc. déposés dans la période (D-0046, point 3)."""
-    url = f"https://data.sec.gov/submissions/CIK{OWL_CIK}.json"
-    p = config.CACHE / "edgar" / "submissions" / f"CIK{OWL_CIK}.json.zst"
+def search(mid, rate=4.0):
+    """Toutes les pages de chaque requête du montage, tous formulaires, sur sa période (D-0049) ;
+    pages gardées en cache (cache/search) et requêtes consignées."""
+    spec = specs()[mid]
+    client = _client(rate)
+    start, end = spec["period"]
+    hits_path = _paths(mid)[0]
+    out, totals = [], []
+    for qd in spec["queries"]:
+        params = {"q": qd["q"], "dateRange": "custom", "startdt": start, "enddt": end}
+        if qd.get("cik"):
+            params["ciks"] = qd["cik"]
+        data, url, _ = D._efts(client, dict(params, **{"from": 0}))
+        tot = data["hits"]["total"]
+        n = tot["value"]
+        pages = [data] + [D._efts(client, dict(params, **{"from": f}))[0] for f in range(100, min(n, 10000), 100)]
+        for page in pages:
+            for h in page["hits"]["hits"]:
+                s = h["_source"]
+                out.append({"query": qd["q"], "cik_filter": qd.get("cik"), "id": h["_id"],
+                            "adsh": s.get("adsh") or h["_id"].split(":")[0],
+                            "file": h["_id"].split(":", 1)[1] if ":" in h["_id"] else None,
+                            "file_type": s.get("file_type"), "form": s.get("form"), "file_date": s.get("file_date"),
+                            "names": s.get("display_names"), "ciks": s.get("ciks")})
+        totals.append({"query": qd["q"], "cik_filter": qd.get("cik"), "total": n, "relation": tot.get("relation"),
+                       "url": url})
+        D._log_query({"montage": mid, "query": qd["q"], "cik": qd.get("cik"), "start": start, "end": end,
+                      "total": n, "status": "complete"}, config.WORK / "montages" / "efts_queries.jsonl")
+    hits_path.parent.mkdir(parents=True, exist_ok=True)
+    hits_path.write_text(json.dumps(out, ensure_ascii=False))
+    for t in totals:
+        print(t["query"], t["cik_filter"] or "", t["total"], t["relation"] or "")
+    return totals
+
+
+def periodic(client, cik, start, end):
+    """Rapports périodiques (10-Q, 10-K) d'un déposant, déposés dans la période."""
+    cik = str(cik).zfill(10)
+    url = f"https://data.sec.gov/submissions/CIK{cik}.json"
+    p = config.CACHE / "edgar" / "submissions" / f"CIK{cik}.json.zst"
     if p.exists():
         sub = json.loads(cache.read(p))
     else:
@@ -63,17 +115,20 @@ def owl_periodic(client):
     r = sub["filings"]["recent"]
     out = []
     for form, acc, date, doc in zip(r["form"], r["accessionNumber"], r["filingDate"], r["primaryDocument"]):
-        if form in ("10-Q", "10-K") and START <= date <= END:
+        if form in ("10-Q", "10-K") and start <= date <= end:
             out.append({"adsh": acc, "file": doc, "form": form, "file_type": form, "file_date": date,
-                        "cik": OWL_CIK, "filer": sub["name"], "source": "owl_periodic"})
+                        "cik": cik, "filer": sub["name"], "source": "periodic"})
     return out, sub["name"]
 
 
-def fetch(rate=4.0):
-    """Pièces narratives des résultats et rapports de Blue Owl Capital Inc. ; les relevés de
-    portefeuille sont comptés, pas tirés (D-0046, point 8)."""
+def fetch(mid, rate=4.0):
+    """Pièces narratives des résultats et rapports périodiques des déposants nommés ; les relevés
+    de portefeuille sont comptés, pas tirés (D-0046, point 8)."""
+    spec = specs()[mid]
+    hits_path, docs_path, info_path = _paths(mid)
+    start, end = spec["period"]
     client = _client(rate)
-    hits = json.loads(HITS.read_text())
+    hits = json.loads(hits_path.read_text())
     docs, holdings = {}, {}
     for h in hits:
         if h["form"] in HOLDINGS_FORMS:
@@ -87,9 +142,12 @@ def fetch(rate=4.0):
                                                  "file_type": h["file_type"], "file_date": h["file_date"],
                                                  "cik": cik, "filer": name, "source": "efts", "queries": set()})
         docs[(h["adsh"], h["file"])]["queries"].add(h["query"] + (f" [CIK {h['cik_filter']}]" if h.get("cik_filter") else ""))
-    owl, owl_name = owl_periodic(client)
-    for d in owl:
-        docs.setdefault((d["adsh"], d["file"]), {**d, "queries": set()})
+    names = {}
+    for c in spec.get("periodic") or []:
+        rows, nm = periodic(client, c, start, end)
+        names[str(c).zfill(10)] = nm
+        for d in rows:
+            docs.setdefault((d["adsh"], d["file"]), {**d, "queries": set()})
     rows = []
     for (adsh, f), d in sorted(docs.items(), key=lambda kv: (kv[1]["file_date"], kv[0])):
         path = cache.archive_path(d["cik"], adsh, f)
@@ -103,8 +161,13 @@ def fetch(rate=4.0):
             except net.NotCollected as exc:
                 state = f"not_collected: {exc}"
         rows.append({**d, "queries": ";".join(sorted(d["queries"])), "state": state})
-    pd.DataFrame(rows).to_parquet(DOCS, index=False)
-    INFO.write_text(json.dumps({"holdings_not_read": holdings, "owl_name": owl_name, "requests": client.stats}))
+    pd.DataFrame(rows).to_parquet(docs_path, index=False)
+    info = {"holdings_not_read": holdings, "requests": client.stats}
+    if mid == FIRST:
+        info["owl_name"] = names.get(str(spec["periodic"][0]).zfill(10))
+    else:
+        info["periodic_names"] = names
+    info_path.write_text(json.dumps(info))
     print(len(rows), "pièces ;", sum(r["state"] == "fetched" for r in rows), "tirées ; relevés écartés", holdings)
 
 
@@ -112,10 +175,10 @@ def paragraphs(text):
     return [p for p in (x.strip() for x in text.split("\n")) if p]
 
 
-def windows(paras, rx=QUALIFY):
+def windows(paras, rx):
     """Fenêtres de lecture : paragraphes qui nomment un terme qualifiant, deux avant, deux après,
     fondues quand elles se chevauchent (D-0046, points 4, 8 et 9)."""
-    hits = [i for i, p in enumerate(paras) if rx.search(p)]
+    hits = [i for i, p in enumerate(paras) if rx is not None and rx.search(p)]
     spans = []
     for i in hits:
         a, b = max(0, i - WINDOW), min(len(paras), i + WINDOW + 1)
@@ -126,16 +189,13 @@ def windows(paras, rx=QUALIFY):
     return spans
 
 
-def prepare():
-    """Blocs des fenêtres, dans l'ordre des dates de dépôt ; plafond de 40 unités."""
+def _prepare_one(mid, spec, groups_by_cik):
     from . import blocks
     from .graph import normalize_name
-    cfg = config.load()
-    groups_by_cik = {}
-    p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
-    for cik, m in p0["meta"].items():
-        groups_by_cik[str(cik).zfill(10)] = m["group"]
-    docs = pd.read_parquet(DOCS)
+    _, docs_path, info_path = _paths(mid)
+    if not docs_path.exists():
+        return []
+    docs = pd.read_parquet(docs_path)
     units, no_window = [], []
     for d in docs.to_dict("records"):
         if not d["state"].startswith(("cached", "fetched")):
@@ -143,23 +203,25 @@ def prepare():
         raw = cache.read(cache.archive_path(d["cik"], d["adsh"], d["file"]))
         text, how = D.plain_text(raw)
         paras = paragraphs(text)
-        sp = windows(paras, qualify_rx(d["filer"]))
+        sp = windows(paras, qualify_rx(d["filer"], spec))
         if not sp:
             no_window.append({"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"]})
             continue
         for k, (a, b) in enumerate(sp):
             units.append((d, k, "\n".join(paras[a:b]), how))
     units.sort(key=lambda u: (u[0]["file_date"], u[0]["adsh"], u[0]["file"], u[1]))
+    noted = noted_rx(spec)
     out, over = [], []
     for n, (d, k, text, how) in enumerate(units):
-        if n >= CAP:
+        if n >= spec["cap"]:
             over.append({"adsh": d["adsh"], "file": d["file"], "window": k})
             continue
         grp = groups_by_cik.get(d["cik"]) or ("CP:" + normalize_name(d["filer"]))
         tier, assurance, status = D.form_evidence(d["form"], None)
         fd = d["file_date"]
         out.append({"content_key": blocks.content_key(text, []), "block_kind": "montage_text", "signal_class": 5,
-                    "sort_key": f"mt{n:05d}", "group_id": grp, "cik": d["cik"], "accession": d["adsh"],
+                    "sort_key": f"mt{n:05d}" if mid == FIRST else f"mt:{mid}:{n:05d}",
+                    "group_id": grp, "cik": d["cik"], "accession": d["adsh"],
                     "form": d["form"], "filing_date": fd, "acceptance": None, "knowledge_date": fd,
                     "period_start": None, "period_end": fd, "document": d["file"],
                     "locator": {"file": d["file"], "accession": d["adsh"], "cik": d["cik"], "byte_range": None},
@@ -167,44 +229,65 @@ def prepare():
                     "normalizer_version": config.NORMALIZER_VERSION, "delimiter_version": config.DELIMITER_VERSION,
                     "filing_status": status, "assurance_level": assurance, "tier": tier, "filer_name": d["filer"],
                     "exhibit_type": d["file_type"], "window": k, "text_extraction": how,
-                    "terms": sorted(set(TERMS.findall(text))), "queries": d["queries"]})
-    with open(CATALOG, "w", encoding="utf-8") as fh:
+                    "terms": sorted(set(noted.findall(text))), "queries": d["queries"], "montage": mid})
+    info = json.loads(info_path.read_text())
+    info.update({"no_window": no_window, "over_cap": over, "units": len(units)})
+    info_path.write_text(json.dumps(info, ensure_ascii=False))
+    print(mid, ":", len(units), "fenêtres ;", len(out), "blocs ;", len(no_window), "pièces sans fenêtre ;",
+          len(over), "au-delà du plafond")
+    return out
+
+
+def prepare():
+    """Blocs des fenêtres de chaque montage, dans l'ordre des dates de dépôt ; plafond par montage."""
+    p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
+    groups_by_cik = {str(cik).zfill(10): m["group"] for cik, m in p0["meta"].items()}
+    out = []
+    for mid, spec in specs().items():
+        out += _prepare_one(mid, spec, groups_by_cik)
+    tmp = CATALOG.with_suffix(".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
         for b in out:
             fh.write(json.dumps(b, ensure_ascii=False) + "\n")
-    info = json.loads(INFO.read_text())
-    info.update({"no_window": no_window, "over_cap": over, "units": len(units)})
-    INFO.write_text(json.dumps(info, ensure_ascii=False))
-    print(len(units), "fenêtres ;", len(out), "blocs ;", len(no_window), "pièces sans fenêtre ;", len(over), "au-delà du plafond")
+    tmp.replace(CATALOG)
 
 
 def exclusions(as_of):
     """Relevés de portefeuille non lus, pièces sans fenêtre qualifiante, fenêtres au-delà du plafond."""
-    if not INFO.exists():
-        return []
-    info = json.loads(INFO.read_text())
     out = []
+    for mid, spec in specs().items():
+        info_path = _paths(mid)[2]
+        if not info_path.exists():
+            continue
+        info = json.loads(info_path.read_text())
+        dec = spec.get("decision", "D-0046")
+        pre = "montages" if mid == FIRST else f"montages:{mid}"
 
-    def ex(key, reason, detail, acc=None):
-        out.append({"exclusion_key": f"{reason}:montages:{key}", "item_kind": "document", "item_key": f"montages:{key}",
-                    "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
-                    "as_of": as_of})
-    for form, n in sorted((info.get("holdings_not_read") or {}).items()):
-        ex(f"holdings:{form}", "out_of_scope",
-           f"{n} résultat(s) de la recherche plein texte en {form} : relevés de portefeuille, non lus (D-0046, point 8)")
-    for d in info.get("no_window") or []:
-        ex(f"{d['adsh']}/{d['file']}", "out_of_scope",
-           f"{d['filer']} ({d['form']}) : aucun paragraphe ne nomme un terme qualifiant hors du nom du déposant "
-           "(« Beignet », « Richland Parish », « Meta », « Blue Owl » ; D-0046, points 8 et 9)", d["adsh"])
-    for d in info.get("over_cap") or []:
-        ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
-           "fenêtre au-delà du plafond de 40 unités (D-0046, point 4)", d["adsh"])
+        def ex(key, reason, detail, acc=None):
+            out.append({"exclusion_key": f"{reason}:{pre}:{key}", "item_kind": "document", "item_key": f"{pre}:{key}",
+                        "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
+                        "as_of": as_of})
+        terms = " », « ".join(re.sub(r"\\b", "", t["rx"]) for t in spec["terms"])
+        for form, n in sorted((info.get("holdings_not_read") or {}).items()):
+            ex(f"holdings:{form}", "out_of_scope",
+               f"{n} résultat(s) de la recherche plein texte en {form} : relevés de portefeuille, non lus (D-0046, point 8)")
+        for d in info.get("no_window") or []:
+            detail = ("aucun paragraphe ne nomme un terme qualifiant hors du nom du déposant "
+                      "(« Beignet », « Richland Parish », « Meta », « Blue Owl » ; D-0046, points 8 et 9)") if mid == FIRST else \
+                     f"aucun paragraphe ne nomme un terme qualifiant hors du nom du déposant (« {terms} » ; {dec})"
+            ex(f"{d['adsh']}/{d['file']}", "out_of_scope", f"{d['filer']} ({d['form']}) : {detail}", d["adsh"])
+        for d in info.get("over_cap") or []:
+            ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
+               f"fenêtre au-delà du plafond de {spec['cap']} unités ({'D-0046, point 4' if mid == FIRST else dec})", d["adsh"])
     return out
 
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
-    if cmd == "fetch":
-        fetch()
+    if cmd == "search":
+        search(sys.argv[2])
+    elif cmd == "fetch":
+        fetch(sys.argv[2])
     elif cmd == "prepare":
         prepare()
     else:

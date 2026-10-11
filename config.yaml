@@ -126,6 +126,17 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       pairs_financed_documented: 13
       fragility_events: 169
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-11
+    decision: "Ok on part là-dessus, toujours sans sous-agent"
+    groups_added: [APLD]         # hébergeur endetté ; date d'entrée : group_entry (D-0049)
+    montages_added: [athene_whco, galaxy_helios]   # bloc montages, deuxième et troisième montages (D-0049)
+    page: "remue-méninges du 2026-10-11 dans la conversation (D-0049)"
+    yield_presented:             # état publié au commit ee55894, avant les ajouts
+      relationship_conclusions: {pairs: 69, documented_dependency: 8, commercial_with_financing: 7, reciprocal_commercial_only: 7, causality_not_established: 47}
+      documented_paths: {cycles: 27}
+      annex_e_e7: {outcomes: 26, indeterminate: 15, result: discrimination_possible}
+      fragility_events: 183
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
@@ -150,12 +161,14 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   CORZ: "0001839341"
   NBIS: "0001513845"         # ajouts du 2026-10-11 (D-0048) : hébergeurs endettés, suite de §14
   IREN: "0001878848"
+  APLD: "0001144879"         # ajout du 2026-10-11 (D-0049) : hébergeur endetté, locataire principal CoreWeave
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
   - {date: 2026-10-07, groups: [NVDA, GOOGL, AMZN, META, MSFT, ORCL, CRWV, SPCX, AMD, AVGO, MRVL], basis: "annexe B"}
   - {date: 2026-10-10, groups: [WULF, CIFR, CORZ], basis: "D-0043, ajout de groupes de §14"}
   - {date: 2026-10-11, groups: [NBIS, IREN], basis: "D-0048, ajout de groupes de §14"}
+  - {date: 2026-10-11, groups: [APLD], basis: "D-0049, ajout de groupes de §14"}
 
 history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
                              # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
@@ -908,3 +921,63 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
    debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
    interest_expense, interest_paid, operating_lease_payments_12m, finance_lease_payments_12m]
+
+# Bloc montages (D-0046, D-0049) : un montage = une recherche plein texte d'EDGAR fixée d'avance, les
+# rapports périodiques de déposants nommés, des termes qualifiants et un plafond d'unités. Un terme ne
+# qualifie jamais une pièce d'un déposant dont il est le nom (owner) ; only_in le réserve aux pièces de
+# déposants nommés. Les fenêtres : deux paragraphes avant et deux après, fondues (D-0046, point 4).
+montages:
+  meta_hyperion:
+    decision: D-0046
+    period: ["2025-10-01", "2026-10-07"]
+    queries:
+      - {q: '"Beignet Investor"'}
+      - {q: '"Blue Owl" Hyperion'}
+      - {q: '"Blue Owl" "Richland Parish"'}
+      - {q: '"Blue Owl" "Meta Platforms"'}
+      - {q: '"Blue Owl"', cik: "0001326801"}
+    periodic: ["0001823945"]          # Blue Owl Capital Inc.
+    terms:
+      - {rx: '\bBeignet\b'}
+      - {rx: 'Richland Parish'}
+      - {rx: '\bMeta\b', owner: ["meta platforms"]}
+      - {rx: '\bBlue Owl\b', owner: ["blue owl"]}
+    noted_terms: ['\bBeignet\b', 'Richland Parish', '\bMeta\b', '\bHyperion\b', '\bBlue Owl\b']
+    cap: 40
+  athene_whco:
+    decision: D-0049
+    period: ["2026-01-01", "2026-10-07"]
+    queries:
+      - {q: '"WarehouseCo Intermediate Holdings"'}
+      - {q: '"WarehouseCo"'}
+      - {q: '"capital solution" "Broadcom"'}
+      - {q: '"Apollo"', cik: "0001730168"}
+      - {q: '"Athene"', cik: "0001730168"}
+      - {q: '"Broadcom"', cik: "0001527469"}
+      - {q: '"Broadcom"', cik: "0001858681"}
+    periodic: ["0001527469", "0001858681"]   # Athene Holding Ltd., Apollo Global Management, Inc.
+    terms:
+      - {rx: '\bWarehouseCo\b'}
+      - {rx: '\bWHCO\b'}
+      - {rx: '[Cc]apital [Ss]olution'}
+      - {rx: '\bBroadcom\b', owner: ["broadcom"]}
+      - {rx: '\bAnthropic\b'}
+      - {rx: '\bApollo\b', owner: ["apollo global management", "athene"]}
+      - {rx: '\bAthene\b', owner: ["apollo global management", "athene"]}
+    noted_terms: ['\bWarehouseCo\b', '\bWHCO\b', '[Cc]apital [Ss]olution', '\bBroadcom\b', '\bAnthropic\b', '\bApollo\b', '\bAthene\b']
+    cap: 40
+  galaxy_helios:
+    decision: D-0049
+    period: ["2025-01-01", "2026-10-07"]
+    queries:
+      - {q: '"Helios" "CoreWeave"'}
+      - {q: '"Galaxy Digital"', cik: "0001769628"}
+      - {q: '"CoreWeave"', cik: "0001859392"}
+    periodic: ["0001859392"]          # Galaxy Digital Inc.
+    terms:
+      - {rx: '\bHelios\b', only_in: ["galaxy digital", "coreweave"]}
+      - {rx: '\bCoreWeave\b', owner: ["coreweave"]}
+      - {rx: '\bGalaxy\b', owner: ["galaxy digital"]}
+    noted_terms: ['\bHelios\b', '\bCoreWeave\b', '\bGalaxy\b']
+    cap: 40
+
