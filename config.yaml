@@ -959,7 +959,7 @@ montages:
     terms:
       - {rx: '\bWarehouseCo\b'}
       - {rx: '\bWHCO\b'}
-      - {rx: '[Cc]apital [Ss]olution'}
+      - {rx: '[Cc]apital [Ss]olution', owner: ["apollo global management", "athene"]}   # métier d'Apollo (Apollo Capital Solutions) : amendement du point 7
       - {rx: '\bBroadcom\b', owner: ["broadcom"]}
       - {rx: '\bAnthropic\b'}
       - {rx: '\bApollo\b', owner: ["apollo global management", "athene"]}
