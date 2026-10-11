@@ -1235,7 +1235,8 @@ def foreign_section(con, T):
             a, e = agg.get(k, (0, 0))
             agg[k] = (a + r["n"], e + (r["n"] if r["family"] not in (None, NONE) and r["kind"] == "observation" else 0))
         fw = {"ifrs": "IFRS", "us_gaap": "US GAAP"}
-        for (g, f, w), (n, e) in sorted(agg.items()):
+        # une unité 6-K narrative n'a pas de cadre comptable (D-0042, D-0048) : clé vide en dernier
+        for (g, f, w), (n, e) in sorted(agg.items(), key=lambda kv: tuple(x or "" for x in kv[0])):
             L.append(f"| {group_label(g)} | {f} | {fw.get(w, w or '—')} | {T.n('observations', {'foreign_lines': [g, f]}, n)} | "
                      f"{T.n('observations', {'foreign_edge_lines': [g, f]}, e)} |")
         L.append("")
