@@ -8,7 +8,7 @@ import unittest
 
 import pandas as pd
 
-from pipeline import calendar, events, phase0, sections, sixk
+from pipeline import annex_e, calendar, events, phase0, sections, sixk
 
 FILLER = "Management evaluated the effectiveness of the disclosure controls and procedures. " * 5
 
@@ -158,6 +158,16 @@ class Regime6K(unittest.TestCase):
              "knowledge_date": "2025-03-20", "accession": "s1", "obs_key": "k/p/0"}
         c = self.cells([o])[("sig_auditor_change_or_nonreliance", "2025-03-31")]
         self.assertEqual((c["status"], c["value_text"], c["knowledge_date"]), ("computed", "event", "2025-03-20"))
+
+
+class CustomerConsideration(unittest.TestCase):
+    def test_capitalized_supplier_rights_are_not_customer_consideration(self):
+        # IREN : droits remis à NVIDIA, capitalisés dans le coût des GPU (lien L3, pas E.5)
+        self.assertFalse(annex_e.customer_consideration(
+            {"link_category": "L3", "family": "commercial", "edge_type": "purchase", "amount_nature": "purchase_capitalized"}))
+        self.assertTrue(annex_e.customer_consideration(
+            {"link_category": "L3", "family": "customer_consideration", "edge_type": "equity_or_warrants_to_customer",
+             "amount_nature": "consideration_payable_to_customer"}))
 
 
 if __name__ == "__main__":

@@ -12,6 +12,17 @@ from decimal import Decimal
 from .measures import cell
 
 NONE = "none"
+CUSTOMER_EDGES = {"equity_or_warrants_to_customer", "credits_to_customer", "cash_incentive_to_customer"}
+CUSTOMER_NATURES = {"consideration_payable_to_customer", "noncash_consideration_received"}
+
+
+def customer_consideration(o):
+    """Pièce L3 qui vaut pour E.5 : contrepartie payable au client (ASC 606-10-32-25) ou
+    contrepartie non monétaire reçue de lui (32-21). Un traitement publié qui lie un financement à
+    des achats (droits remis au fournisseur et capitalisés dans le coût des biens) reste L3 pour
+    E.1 à E.3, mais n'est pas une contrepartie au client (D-0048)."""
+    return (o.get("family") == "customer_consideration" or o.get("edge_type") in CUSTOMER_EDGES
+            or o.get("amount_nature") in CUSTOMER_NATURES)
 
 
 def _d(x):
@@ -160,7 +171,8 @@ def evaluate(ev, cfg, groups_window, deadlines, as_of, paths=None):
                                        "financing_links": [l["link_key"] for l in fins],
                                        "purchase_links": [l["link_key"] for l in purs]}))
         # E.5 contrepartie au client (unilatéral) : publiée et comptabilisée en réduction du revenu
-        l3 = [o for o in e["pieces"] if o.get("link_category") == "L3" and o["group_id"] == s]
+        l3 = [o for o in e["pieces"] if o.get("link_category") == "L3" and o["group_id"] == s
+              and customer_consideration(o)]
         rec = [cs.get("consideration_to_customer") for cs in years.values()
                if cs.get("consideration_to_customer") and cs["consideration_to_customer"]["status"] == "computed"]
         if p.com or p.fin:
