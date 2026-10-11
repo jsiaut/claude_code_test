@@ -13,7 +13,7 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, model, montages, rank2,
+               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, model, montages, rank2, sixk,
                reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
@@ -255,7 +255,7 @@ def run(as_of):
     acc_rd = {a: str(r)[:10] for a, r in zip(fil["accessionNumber"], fil["reportDate"])
               if r is not None and len(str(r)) >= 10 and str(r)[:4].isdigit()}
     rev_read = frozenset((o["group_id"], dt.date.fromisoformat(acc_rd[o["accession"]])) for o in obs_rows
-                         if o["block_kind"] == "revenue_note" and str(o.get("form") or "").startswith("10-K")
+                         if o["block_kind"] == "revenue_note" and str(o.get("form") or "").startswith(("10-K", "20-F"))
                          and o["validation_state"] == "valid" and o["accession"] in acc_rd)
     # découverte ouverte (§14, D-0037) : état de la recherche côté client hors périmètre
     client_state = None
@@ -363,6 +363,8 @@ def run(as_of):
     # 15. exclusions
     # bloc montages (D-0046) : relevés de portefeuille non lus, pièces sans fenêtre, fenêtres au-delà du plafond
     mt_excl = montages.exclusions(as_of) if "montages" in scope else []
+    # 6-K des groupes émetteurs étrangers (D-0048) : sans fenêtre, hors texte, au-delà du plafond
+    mt_excl += sixk.exclusions(as_of)
     excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
@@ -579,18 +581,31 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
         if not cal.get("history_left_censored"):
             continue
         rc = cal.get("reverse_combination")
+        hb = cal.get("history_break")
         if rc:
             ex("group", g, "history_left_censored",
                f"fusion inversée réalisée le {rc['consummation']} : l'historique du groupe est celui de "
                f"l'acquéreur comptable ({rc['accounting_acquirer']}), publié par les rapports postérieurs ; "
                "rien avant (D-0043)", g)
+        elif hb:
+            what = {"divestiture": "cession d'un périmètre", "framework_change": "changement de référentiel comptable"}
+            ex("group", g, "history_left_censored",
+               f"rupture d'historique le {hb['effective']} ({what.get(hb.get('kind'), hb.get('kind'))}) : avant, "
+               f"{hb.get('before')} ; l'historique du groupe commence aux rapports postérieurs (D-0048)", g)
         else:
             ex("group", g, "history_left_censored",
                "premier dépôt après le début de la période de lecture, aucun prédécesseur (plan.md)", g)
     inv = pd.read_parquet(config.DB_DIR / "inventory.parquet", columns=["group_id", "form", "inv_class"])
     for g, sub in inv[inv["inv_class"] == "pre_combination"].groupby("group_id"):
         rc = p0["calendars"][g].get("reverse_combination") or {}
+        hb = p0["calendars"][g].get("history_break") or {}
         n_per = int(sub["form"].isin(PERIODIC_FORMS).sum())
+        if hb:
+            ex("group", f"{g}:pre_combination", "out_of_scope",
+               f"{len(sub)} dépôts de la période de lecture, dont {n_per} rapports périodiques, sont antérieurs à la "
+               f"rupture d'historique du {hb.get('effective')} ({hb.get('before')}) : hors des séries et du texte du "
+               "groupe (D-0048)", g)
+            continue
         ex("group", f"{g}:pre_combination", "out_of_scope",
            f"{len(sub)} dépôts de la période de lecture, dont {n_per} rapports périodiques, présentent le déclarant "
            f"légal ({rc.get('legal_registrant')}) avant la fusion inversée du {rc.get('consummation')} : autre "

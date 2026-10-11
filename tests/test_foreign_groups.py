@@ -1,0 +1,134 @@
+"""Groupes émetteurs privés étrangers (D-0048) : sections du 20-F, unités 6-K, exercices sans
+rapport trimestriel, ruptures d'historique.
+
+Lancement : python3 -m unittest discover -s tests -t .
+"""
+import datetime as dt
+import unittest
+
+from pipeline import calendar, phase0, sections, sixk
+
+FILLER = "Management evaluated the effectiveness of the disclosure controls and procedures. " * 5
+
+
+def page(*paragraphs):
+    return ("<html><body>" + "".join(f"<p>{p}</p>" for p in paragraphs) + "</body></html>").encode("utf-8")
+
+
+TOC = ("Item 7. | Major Shareholders and Related Party Transactions | 56", "Item 8. | Financial Information | 58",
+       "Item 10. | Additional Information | 60", "Item 11. | Quantitative and Qualitative Disclosures | 75",
+       "Item 15. | Controls and Procedures | 76", "Item 16A. | Audit Committee Financial Expert | 78")
+
+
+class TwentyF(unittest.TestCase):
+    def test_unlettered_subsections(self):
+        # Nebius : sous-sections sans lettre ; sommaire et note des états financiers écartés
+        raw = page(*TOC, "Item 7. Major Shareholders and Related Party Transactions.", "Major Shareholders",
+                   "Holdings table. " * 40, "Related Party Transactions", "None.", "Item 8. Financial Information.",
+                   "Item 10. Additional Information.", "Articles of Association", "Rights. " * 40, "Material Contracts",
+                   "Share Purchase Agreement", "On February 4, 2024, the Company entered into a share purchase agreement.",
+                   "Exchange Controls", "No exchange controls.", "Item 11. Quantitative and Qualitative Disclosures.",
+                   "Item 15. Controls and Procedures.", FILLER, "Management concluded that internal control was not effective.",
+                   "Item 16A. Audit Committee Financial Expert.", "Mr. X qualifies.",
+                   "Notes to the consolidated financial statements", "Related Party Transactions",
+                   "The Company sold services to an affiliate. " * 30)
+        self.assertEqual(sections.item_7b_20f(raw), "Related Party Transactions\nNone.")
+        c = sections.item_10c_20f(raw)
+        self.assertTrue(c.startswith("Material Contracts"))
+        self.assertIn("share purchase agreement", c)
+        self.assertNotIn("exchange controls", c.lower())
+        i15 = sections.item_15_20f(raw)
+        self.assertTrue(i15.startswith("Item 15. Controls and Procedures."))
+        self.assertIn("not effective", i15)
+        self.assertNotIn("Audit Committee", i15)
+
+    def test_lettered_subsections(self):
+        raw = page("Item 7. Major Shareholders and Related Party Transactions", "A. Major Shareholders", "Table. " * 40,
+                   "B. Related Party Transactions", "We lease offices from an entity controlled by a director.",
+                   "C. Interests of Experts and Counsel", "Not applicable.", "Item 8. Financial Information",
+                   "Item 10. Additional Information", "B. Memorandum and Articles", "Text. " * 40,
+                   "C. Material Contracts", "Loan agreement with a bank.", "D. Exchange Controls", "None.",
+                   "Item 11. Market Risk")
+        self.assertEqual(sections.item_7b_20f(raw),
+                         "B. Related Party Transactions\nWe lease offices from an entity controlled by a director.")
+        self.assertEqual(sections.item_10c_20f(raw), "C. Material Contracts\nLoan agreement with a bank.")
+
+    def test_missing_item(self):
+        self.assertIsNone(sections.item_15_20f(page("Item 9A. Controls and Procedures", FILLER)))
+
+
+CFG = {"foreign_6k": {"lexicon": ["agreement", "agreements", "notes due", "credit facility", "credit facilities", "lease"],
+                      "group_names": [{"term": "Nebius", "ref": "NBIS"},
+                                      {"term": "IREN", "ref": "IREN", "case_sensitive": True}]},
+       "discovery": {"lexicon": {"seed": [{"term": "Microsoft", "ref": "MSFT"},
+                                          {"term": "Meta", "ref": "META", "case_sensitive": True}]}}}
+
+
+class SixK(unittest.TestCase):
+    def test_lexicon_excludes_own_name(self):
+        rx = sixk.lexicon_rx("NBIS", CFG)
+        self.assertIsNone(rx.search("Nebius reports results"))
+        self.assertTrue(rx.search("IREN signs with Microsoft"))
+        rx = sixk.lexicon_rx("IREN", CFG)
+        self.assertIsNone(rx.search("IREN reports results"))
+        self.assertTrue(rx.search("a deal with nebius"))
+
+    def test_terms_whole_words_and_case(self):
+        rx = sixk.lexicon_rx("NBIS", CFG)
+        self.assertTrue(rx.search("new Credit Facilities were signed"))
+        self.assertTrue(rx.search("Convertible Senior Notes Due 2030"))
+        self.assertIsNone(rx.search("the leaseholds and the agreementless"))
+        self.assertIsNone(rx.search("a siren and metadata"))           # IREN et Meta : casse et mot entier
+        self.assertIsNone(rx.search("iren"))
+        self.assertTrue(rx.search("Meta"))
+
+    def test_windows_merge(self):
+        rx = sixk.lexicon_rx("NBIS", CFG)
+        paras = [f"p{i}" for i in range(15)]
+        paras[3], paras[6], paras[12] = "an agreement", "a lease", "Microsoft"
+        self.assertEqual(sixk.windows(paras, rx, 2), [[1, 9], [10, 15]])
+        paras[11] = "credit facility"                                  # fenêtres contiguës : fondues
+        self.assertEqual(sixk.windows(paras, rx, 2), [[1, 15]])
+
+    def test_incorporation(self):
+        t = ("This report on Form 6-K is hereby incorporated by reference into the Company's registration statements "
+             "on Form F-3 (File No. 333-1). Other text.")
+        inc, quote, doc = sixk.incorporation([("d.htm", "Press release."), ("e.htm", t)])
+        self.assertTrue(inc)
+        self.assertEqual(doc, "e.htm")
+        self.assertIn("incorporated by reference", quote)
+        self.assertEqual(sixk.incorporation([("d.htm", "Press release.")])[0], False)
+
+
+class AnnualOnly(unittest.TestCase):
+    def test_year_without_quarterly_reports_is_split(self):
+        f = [{"form": "20-F", "reportDate": "2024-12-31"}, {"form": "20-F", "reportDate": "2025-12-31"}]
+        years = calendar.fiscal_calendar(f, "1231", "2026-10-07")
+        y = [x for x in years if x["fy_end"] == dt.date(2025, 12, 31)][0]
+        self.assertEqual(y["q_ends"], [dt.date(2025, 3, 31), dt.date(2025, 6, 30), dt.date(2025, 9, 30),
+                                       dt.date(2025, 12, 31)])
+        self.assertEqual(y["quarters_source"], "synthetic")
+
+    def test_june_year_end(self):
+        self.assertEqual(calendar._three_month_ends(dt.date(2024, 7, 1)),
+                         [dt.date(2024, 9, 30), dt.date(2024, 12, 31), dt.date(2025, 3, 31)])
+        self.assertEqual(calendar._year_before(dt.date(2025, 6, 30)), dt.date(2024, 7, 1))
+
+
+class Breaks(unittest.TestCase):
+    def test_history_break_like_reverse_combination(self):
+        cfg = {"reverse_combinations": {"WULF": {"consummation": "2021-12-13", "accounting_acquirer": "TeraCub"}},
+               "history_breaks": {"NBIS": {"effective": "2024-07-12", "kind": "divestiture"}}}
+        b = phase0.breaks(cfg)
+        self.assertEqual(b["WULF"]["kind"], "reverse_combination")
+        self.assertEqual(b["NBIS"]["consummation"], "2024-07-12")
+        old = {"form": "20-F", "reportDate": "2023-12-31", "filingDate": "2024-03-01", "accessionNumber": "a",
+               "is_predecessor": False}
+        new = {"form": "20-F", "reportDate": "2024-12-31", "filingDate": "2025-04-30", "accessionNumber": "b",
+               "is_predecessor": False}
+        self.assertTrue(phase0.pre_combination(old, b["NBIS"]))
+        self.assertFalse(phase0.pre_combination(new, b["NBIS"]))
+
+
+if __name__ == "__main__":
+    unittest.main()

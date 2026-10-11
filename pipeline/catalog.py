@@ -39,10 +39,15 @@ def _filing(r, form=None):
             "report_date": str(r.get("reportDate") or r.get("report_date") or "")[:10] or None}
 
 
+def is_annual(form):
+    """Rapport annuel : 10-K, ou 20-F d'un émetteur privé étranger (états audités, D-0048)."""
+    return str(form or "").startswith(("10-K", "20-F"))
+
+
 def evidence_attrs(kind, form):
     """filing_status, assurance, tier d'un bloc (§2.2)."""
     if kind in ("related_party_note", "going_concern", "spacex_annual_note"):
-        if form.startswith("10-K") or form == "424B4":
+        if is_annual(form) or form == "424B4":
             return "filed", "audited", "A"
         return "filed", "reviewed", "B"
     if kind in ("exhibit_header", "exhibit_body"):
@@ -115,6 +120,18 @@ def build(as_of):
         raw = _cache_member(cik, acc, prim, zb)
         if raw is None:
             stats["primary_missing"] += 1
+            continue
+        if r["form"].startswith("20-F"):
+            # 20-F (D-0048, point 6) : Item 15 en item_9a, Item 7.B en item_404, Item 10.C en item_8k_101
+            for kind, fn, item in (("item_9a", sections.item_15_20f, "15"), ("item_404", sections.item_7b_20f, "7.B"),
+                                   ("item_8k_101", sections.item_10c_20f, "10.C")):
+                text = fn(raw)
+                if not text:
+                    stats[f"20f_item_{item}_not_found"] += 1
+                    continue
+                b = blocks._block(kind, f, text, [], prim, None, item=item)
+                b["filing_status"], b["assurance_level"], b["tier"] = evidence_attrs(kind, f["form"])
+                out.append(b)
             continue
         kind = "item_9a" if r["form"].startswith("10-K") else "item_4_10q"
         text = sections.item_9a(raw) if kind == "item_9a" else sections.item_4_10q(raw)

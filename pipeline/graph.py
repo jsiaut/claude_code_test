@@ -77,6 +77,12 @@ def seed_entities(p0, cfg):
             mem(eid, m["group"], "none", None, "parent", "reverse_recapitalization", rule="same_cik",
                 evidence=f"company_tickers.json {cik} ; réalisation le {rc['consummation']}, déclarant légal "
                          f"{rc.get('legal_registrant')}, acquéreur comptable {rc.get('accounting_acquirer')} (D-0043)")
+        elif (cfg.get("history_breaks") or {}).get(m["group"]):
+            # autre rupture d'historique (D-0048) : même CIK, rapports antérieurs hors du groupe
+            hb = cfg["history_breaks"][m["group"]]
+            mem(eid, m["group"], "none", None, "parent", rule="same_cik",
+                evidence=f"company_tickers.json {cik} ; rupture d'historique le {hb['effective']} ({hb.get('kind')}) : "
+                         f"avant, {hb.get('before')} (D-0048)")
         else:
             mem(eid, m["group"], "none", None, "parent", rule="same_cik", evidence=f"company_tickers.json {cik}")
         for fn in m.get("formerNames") or []:

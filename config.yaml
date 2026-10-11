@@ -316,7 +316,27 @@ foreign:                     # bloc de §14 ouvert le 2026-10-10 (décision D-00
   # dans une paire ou un cycle ; les autres unités étrangères restent dans la file, « non traitées »
   selection: [named_issuers, graph_counterparties]
 
-paths:                       # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
+foreign_6k:                  # unités 6-K des groupes émetteurs privés étrangers (D-0048, point 6)
+  groups: [NBIS, IREN]       # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K
+  forms: ["6-K", "6-K/A"]
+  documents: [primary, EX-99] # document principal et annexes 99 (type lu dans l'en-tête SGML, §2.3)
+  # lexique de D-0048 ; mots entiers, casse indifférente, singulier et pluriel écrits (D-0048, point 9)
+  lexicon: [agreement, agreements, contract, contracts, financing, financings, convertible, "notes due",
+            "credit facility", "credit facilities", loan, loans, warrant, warrants, offering, offerings,
+            lease, leases]
+  # noms des groupes : lexique de la découverte (onze groupes de l'annexe B, laboratoires, Stargate)
+  # et groupes ajoutés depuis ; jamais le nom du déposant lui-même (D-0046, point 9 ; D-0048, point 9)
+  group_names:
+    - {term: TeraWulf, ref: WULF}
+    - {term: Cipher, ref: CIFR, case_sensitive: true}
+    - {term: "Core Scientific", ref: CORZ}
+    - {term: Nebius, ref: NBIS}
+    - {term: IREN, ref: IREN, case_sensitive: true}
+    - {term: "Iris Energy", ref: IREN}
+  window: 2                  # paragraphes de part et d'autre, fenêtres fondues quand elles se chevauchent
+  cap_per_group: 80          # du plus récent au plus ancien ; au-delà, not_processed
+
+paths:                     # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
   lengths: [2, 3]            # cycles orientés de longueur 2 ou 3 entre groupes, hors intragroupe
   temporal_max_quarters: 4   # arêtes actives ensemble ou à moins de quatre trimestres d'écart
 

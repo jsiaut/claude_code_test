@@ -12,7 +12,8 @@ from . import config, phase1
 from .edgar import Edgar, cik10
 from .net import NotCollected, SecClient
 
-PERIODIC = ("10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A")
+PERIODIC = ("10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A",
+            "20-F", "20-F/A")        # 20-F : rapport annuel d'un émetteur privé étranger (D-0048)
 
 
 def run(as_of, workers=4):

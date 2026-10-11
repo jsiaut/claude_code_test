@@ -168,9 +168,11 @@ def build(as_of, used_accessions=None, failed=None):
 
 def _incorporated():
     """6-K incorporés par référence (mention expresse lue dans le 6-K, bloc foreign) : accession -> vrai."""
-    p = config.DB_DIR / "discovery_blocks.jsonl"
     out = {}
-    if p.exists():
+    # unités de la file de découverte (bloc foreign) et paragraphes des 6-K des groupes (D-0048)
+    for p in (config.DB_DIR / "discovery_blocks.jsonl", config.DB_DIR / "foreign_6k_blocks.jsonl"):
+        if not p.exists():
+            continue
         for l in p.read_text(encoding="utf-8").splitlines():
             b = json.loads(l)
             if b.get("incorporated_by_reference") is not None:

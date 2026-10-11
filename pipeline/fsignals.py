@@ -16,7 +16,8 @@ import pandas as pd
 from .measures import cell
 
 NONE = "none"
-PERIODIC = {"10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A"}
+PERIODIC = {"10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A",
+            "20-F", "20-F/A"}        # signaux du 20-F au trimestre de clôture de l'exercice (D-0048)
 COVENANT = {"covenant_amendment", "covenant_waiver", "covenant_breach"}
 
 

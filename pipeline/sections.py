@@ -71,6 +71,60 @@ def item_4_10q(raw):
     return textnorm.lines_to_text(sec) if sec else None
 
 
+# 20-F d'un émetteur privé étranger (D-0048, point 6) : Item 15 (Controls and Procedures) au
+# lieu de l'Item 9A, Item 7.B (Related Party Transactions) au lieu de l'Item 404, Item 10.C
+# (Material Contracts) au lieu des items 1.01 de 8-K. Les sous-sections B et C se cherchent
+# dans leur item, lettrées (« B. Related Party Transactions ») ou non (Nebius)
+ITEM_15 = re.compile(_ITEM + r"15\b", re.I)
+ITEM_15_END = re.compile(_ITEM + r"(16[a-k]?|1[7-9])\b|^\W{0,3}part\s+(iii|iv)\b|^\W{0,3}signatures?\b", re.I)
+ITEM_7 = re.compile(_ITEM + r"7\b", re.I)
+ITEM_7_END = re.compile(_ITEM + r"8\b|^\W{0,3}part\s+(ii|iii)\b", re.I)
+ITEM_10 = re.compile(_ITEM + r"10\b", re.I)
+ITEM_10_END = re.compile(_ITEM + r"11\b|^\W{0,3}part\s+(ii|iii)\b", re.I)
+SUB_7B = re.compile(r"^\W{0,3}(b\.\s*)?related\s+party\s+transactions?\W{0,3}$", re.I)
+SUB_7B_END = re.compile(r"^\W{0,3}(c\.\s*)?interests\s+of\s+experts", re.I)
+SUB_10C = re.compile(r"^\W{0,3}(c\.\s*)?material\s+contracts?\W{0,3}$", re.I)
+SUB_10C_END = re.compile(r"^\W{0,3}([d-j]\.\s*)?(exchange\s+controls|taxation|dividends\s+and\s+paying|"
+                         r"statement\s+by\s+experts|documents\s+on\s+display|subsidiary\s+information|"
+                         r"annual\s+report\s+to\s+security)\b", re.I)
+
+
+def _item_lines(lines, start_rx, end_rx):
+    if not any(start_rx.search(t) and len(t) < 400 for t, _ in lines):
+        return None
+    return _longest_section(lines, start_rx, end_rx)
+
+
+def _subsection(sec, start_rx, end_rx):
+    """Sous-section d'un item, de son titre au titre suivant de même rang ou à la fin de l'item ;
+    la plus longue l'emporte (renvois dans le texte de l'item)."""
+    best = None
+    for s, (t, _) in enumerate(sec):
+        if not start_rx.search(t):
+            continue
+        e = next((j for j in range(s + 1, len(sec)) if end_rx.search(sec[j][0]) and len(sec[j][0]) < 200), len(sec))
+        if best is None or e - s > best[1] - best[0]:
+            best = (s, e)
+    return sec[best[0]:best[1]] if best else None
+
+
+def item_15_20f(raw):
+    sec = _item_lines(_lines(raw), ITEM_15, ITEM_15_END)
+    return textnorm.lines_to_text(sec) if sec else None
+
+
+def item_7b_20f(raw):
+    sec = _item_lines(_lines(raw), ITEM_7, ITEM_7_END)
+    sub = _subsection(sec, SUB_7B, SUB_7B_END) if sec else None
+    return textnorm.lines_to_text(sub) if sub else None
+
+
+def item_10c_20f(raw):
+    sec = _item_lines(_lines(raw), ITEM_10, ITEM_10_END)
+    sub = _subsection(sec, SUB_10C, SUB_10C_END) if sec else None
+    return textnorm.lines_to_text(sub) if sub else None
+
+
 EIGHT_K_ITEM = re.compile(_ITEM + r"(\d{1,2}\.\d{2})\b", re.I)
 SIGNATURE = re.compile(r"^\W{0,3}signatures?\b", re.I)
 

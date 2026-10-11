@@ -46,7 +46,8 @@ VALUE_FR = {"no_event": "sans événement", "event": "événement", "active": "a
             "lower": "borne basse", "upper": "borne haute", "point": "valeur unique"}
 GROUP_NAMES = {"NVDA": "NVIDIA", "GOOGL": "Alphabet", "AMZN": "Amazon", "META": "Meta", "MSFT": "Microsoft",
                "ORCL": "Oracle", "CRWV": "CoreWeave", "SPCX": "SpaceX", "AMD": "AMD", "AVGO": "Broadcom",
-               "MRVL": "Marvell", "WULF": "TeraWulf", "CIFR": "Cipher", "CORZ": "Core Scientific"}
+               "MRVL": "Marvell", "WULF": "TeraWulf", "CIFR": "Cipher", "CORZ": "Core Scientific",
+               "NBIS": "Nebius", "IREN": "IREN"}
 NUM_FR = {11: "onze", 12: "douze", 13: "treize", 14: "quatorze", 15: "quinze", 16: "seize"}
 
 
@@ -390,7 +391,11 @@ def synthesis(con, as_of, stats):
                      f"{GROUP_NAMES.get(g, g)}, réalisée le {r['consummation']} avec {r['legal_registrant']} comme "
                      f"déclarant légal" for g, r in rcs.items())
                     + " ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du "
-                      "groupe, dont l'historique est tronqué à gauche." if rcs else ""))
+                      "groupe, dont l'historique est tronqué à gauche." if rcs else "")
+                 + (" Autres ruptures d'historique (D-0048) : " + " ; ".join(
+                     f"{GROUP_NAMES.get(g, g)} au {h['effective']} ({h.get('before')})"
+                     for g, h in (new.get("history_breaks") or {}).items())
+                    + " ; les dépôts antérieurs restent hors du groupe." if new.get("history_breaks") else ""))
     e7 = q(con, "SELECT * FROM measures WHERE measure = 'annex_e_outcome' AND breakdown_key LIKE 'E7|%'")
     if e7:
         c = e7[0]

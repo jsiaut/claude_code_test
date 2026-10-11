@@ -28,7 +28,14 @@ def fiscal_calendar(filings, fiscal_year_end_mmdd=None, as_of=None):
     for fe in fy_ends:
         start = prev_end + dt.timedelta(days=1) if prev_end else None
         qs = [q for q in q_ends if (start is None or q >= start) and q < fe]
-        years.append({"fy_end": fe, "fy_start": start, "q_ends": qs + [fe], "source": "filings"})
+        y = {"fy_end": fe, "fy_start": start, "q_ends": qs + [fe], "source": "filings"}
+        if not qs:
+            # exercice sans rapport trimestriel (émetteur étranger, premier exercice d'un nouveau
+            # déclarant) : quatre trimestres de trois mois, comme un exercice synthétique (D-0048)
+            s0 = start or _year_before(fe)
+            y["q_ends"] = _three_month_ends(s0) + [fe]
+            y["quarters_source"] = "synthetic"
+        years.append(y)
         prev_end = fe
     # exercice en cours : trimestres déposés après la dernière clôture annuelle
     last = fy_ends[-1] if fy_ends else None
@@ -43,6 +50,24 @@ def fiscal_calendar(filings, fiscal_year_end_mmdd=None, as_of=None):
         years.append({"fy_end": exp_end, "fy_start": last + dt.timedelta(days=1) if last else None,
                       "q_ends": tail, "source": "filings_partial", "in_progress": True})
     return years
+
+
+def _year_before(fe):
+    """Début d'un exercice de douze mois clos le `fe`."""
+    try:
+        return fe.replace(year=fe.year - 1) + dt.timedelta(days=1)
+    except ValueError:                                   # 29 février
+        return fe.replace(year=fe.year - 1, day=28) + dt.timedelta(days=1)
+
+
+def _three_month_ends(start):
+    """Fins des trois premiers trimestres d'un exercice qui commence le `start`."""
+    out = []
+    for k in (3, 6, 9):
+        mm = (start.month - 1 + k) % 12 + 1
+        yy = start.year + (start.month - 1 + k) // 12
+        out.append(dt.date(yy, mm, 1) - dt.timedelta(days=1))
+    return out
 
 
 def _fy_end_on_or_after(day, mmdd):
@@ -71,12 +96,7 @@ def synthetic_years(fiscal_year_end_mmdd, first_year, last_year):
     for y in range(first_year, last_year + 1):
         end = dt.date(y, m, dd)
         start = dt.date(y - 1, m, dd) + dt.timedelta(days=1)
-        qs = []
-        for k in (3, 6, 9):
-            mm = (start.month - 1 + k) % 12 + 1
-            yy = start.year + (start.month - 1 + k) // 12
-            qs.append(dt.date(yy, mm, 1) - dt.timedelta(days=1))
-        out.append({"fy_end": end, "fy_start": start, "q_ends": qs + [end], "source": "synthetic"})
+        out.append({"fy_end": end, "fy_start": start, "q_ends": _three_month_ends(start) + [end], "source": "synthetic"})
     return out
 
 

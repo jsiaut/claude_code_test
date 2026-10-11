@@ -17,7 +17,8 @@ from .net import SecClient
 
 FIRST_PASS_8K_ITEMS = {"1.01", "1.02", "3.03", "8.01"}
 SIGNAL_8K_ITEMS = {"1.03", "2.04", "2.06", "3.01", "4.01", "4.02"}
-PERIODIC = {"10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A"}
+PERIODIC = {"10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A",
+            "20-F", "20-F/A"}        # 20-F : rapport annuel d'un émetteur privé étranger (D-0048)
 
 
 def _items(s):
@@ -73,6 +74,16 @@ def collect(as_of, cfg=None):
     return client, e, groups, excluded, meta, rows
 
 
+def breaks(cfg):
+    """Ruptures d'historique d'un groupe : fusions inversées (D-0043) et autres ruptures (cession d'un
+    périmètre, changement de référentiel : `history_breaks`, D-0048), sous la même forme. La date de
+    la rupture prend la clé `consummation`."""
+    out = {g: dict(rc, kind="reverse_combination") for g, rc in (cfg.get("reverse_combinations") or {}).items()}
+    for g, hb in (cfg.get("history_breaks") or {}).items():
+        out[g] = dict(hb, consummation=hb["effective"])
+    return out
+
+
 def pre_combination(r, rc):
     """Dépôt du déclarant légal antérieur à une fusion inversée (D-0043) : rapport périodique d'une
     période close avant la réalisation, ou tout autre dépôt antérieur à la réalisation. Il présente
@@ -89,15 +100,16 @@ def pre_combination(r, rc):
 
 
 def pre_combination_accessions(rows, cfg):
-    """Accessions des dépôts antérieurs à une fusion inversée (D-0043), hors de leur groupe."""
-    rcs = cfg.get("reverse_combinations") or {}
+    """Accessions des dépôts antérieurs à une fusion inversée (D-0043) ou à une autre rupture
+    d'historique (D-0048), hors de leur groupe."""
+    rcs = breaks(cfg)
     return {r["accessionNumber"] for r in rows if pre_combination(r, rcs.get(r["group_id"]))}
 
 
 def build_calendars(groups, meta, rows, cfg, as_of):
     w = cfg["window"]
     out = {}
-    rcs = cfg.get("reverse_combinations") or {}
+    rcs = breaks(cfg)
     for tk, g in groups.items():
         frows = [r for r in rows if r["group_id"] == tk]
         fye = meta[g["cik"]].get("fiscalYearEnd")
@@ -129,7 +141,11 @@ def build_calendars(groups, meta, rows, cfg, as_of):
             "history_left_censored": censored,
             "reverse_combination": ({"consummation": str(rc["consummation"]),
                                      "legal_registrant": rc.get("legal_registrant"),
-                                     "accounting_acquirer": rc.get("accounting_acquirer")} if rc else None),
+                                     "accounting_acquirer": rc.get("accounting_acquirer")}
+                                    if rc and rc.get("kind") == "reverse_combination" else None),
+            "history_break": ({"effective": str(rc["consummation"]), "kind": rc.get("kind"),
+                               "before": rc.get("before"), "evidence": rc.get("evidence")}
+                              if rc and rc.get("kind") != "reverse_combination" else None),
             "succession_filings": sorted({r["accessionNumber"] + " " + r["form"] + " " + r["filingDate"]
                                           for r in frows if r["form"].startswith("8-K12")}),
         }
@@ -139,7 +155,7 @@ def build_calendars(groups, meta, rows, cfg, as_of):
 def inventory(rows, cal, cfg=None):
     """Dépôts de la période de lecture, par société, formulaire et item."""
     inv = []
-    rcs = (cfg or {}).get("reverse_combinations") or {}
+    rcs = breaks(cfg or {})
     for r in rows:
         tk = r["group_id"]
         win = cal[tk]["window"]

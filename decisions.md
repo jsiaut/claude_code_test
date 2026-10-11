@@ -524,3 +524,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Nebius n'a pas de séries trimestrielles, et deux exercices seulement dans son périmètre actuel (2024, dont la première moitié avec les activités cédées, et 2025) ;
   - les séries d'IREN commencent avec l'exercice 2025 ;
   - l'Item 15 du 20-F 2024 de Nebius dit déjà une difficulté de contrôle (« we were unable to complete the implementation of all necessary controls for our newly constituted group during 2024 ») : vu en relevant la date de la cession, avant toute règle de lecture. La lecture de l'Item 15 dira s'il s'agit d'une faiblesse significative.
+
+  (9) Précisions d'application, écrites avant de construire les unités et les blocs (aucun bloc ni aucune unité vus) :
+  - délimitation du 20-F : l'Item 15 court jusqu'au premier titre d'Item 16 (16, 16A à 16K) ; l'Item 7.B et l'Item 10.C se cherchent à l'intérieur de leur item, de leur titre au titre suivant de même rang (« C. Interests of Experts and Counsel » ; « Exchange Controls », « Taxation » et suivants), lettrés ou non. Le 20-F de Nebius ne les lettre pas : « Related Party Transactions », « Material Contracts » ;
+  - lexique des 6-K : mots entiers, casse indifférente, singulier et pluriel écrits dans `config.yaml` (`foreign_6k`), au lieu d'une règle de pluriel dans le code ;
+  - un nom de groupe ne qualifie pas un paragraphe du groupe qui dépose : jamais le nom du déposant lui-même (même règle que D-0046, point 9). Sinon chaque paragraphe d'un communiqué de Nebius ou d'IREN ferait une unité. « Iris Energy », dénomination d'IREN jusqu'au 29 novembre 2024 (submissions, `formerNames`), est un nom d'IREN ;
+  - noms des groupes : ceux du lexique de la découverte (onze groupes de l'annexe B, laboratoires, Stargate, avec leur casse) et ceux des groupes ajoutés depuis (TeraWulf, Cipher, Core Scientific, Nebius, IREN) ;
+  - pièces lues : le document principal et les annexes dont l'en-tête SGML donne un type EX-99, au format texte (htm, html, txt). Une image ou un PDF n'est pas lu : exclusion `out_of_scope`, comptée ;
+  - un 6-K sans aucun paragraphe qualifiant sort avec `out_of_scope` ; les unités entrent dans la classe 3 (texte du groupe), du 6-K le plus récent au plus ancien, et le plafond de 80 compte dans cet ordre.

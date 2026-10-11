@@ -94,7 +94,7 @@ def original_report_dates(con):
     pre = sorted(pre_combination_accessions(fil.to_dict("records"), config.load())) or ["none"]
     rows = con.execute(f"""SELECT group_id, reportDate, min(filingDate) AS d
                            FROM '{config.DB_DIR / 'filings.parquet'}'
-                           WHERE form IN ('10-K','10-Q','10-KT','10-QT') AND reportDate IS NOT NULL
+                           WHERE form IN ('10-K','10-Q','10-KT','10-QT','20-F') AND reportDate IS NOT NULL
                              AND accessionNumber NOT IN (SELECT unnest(?::VARCHAR[]))
                            GROUP BY 1, 2""", [pre]).fetchall()
     return {(g, r if isinstance(r, dt.date) else dt.date.fromisoformat(str(r))): d for g, r, d in rows}

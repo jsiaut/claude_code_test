@@ -172,7 +172,7 @@ def debt_rollforward(con, as_of):
     pro = _facts(con, "debt_proceeds")
     rep = _facts(con, "debt_repayments")
     annual = con.execute("""SELECT DISTINCT group_id, accession FROM facts
-                            WHERE source = 'instance' AND form IN ('10-K', '10-K/A', '10-KT')""").fetchall()
+                            WHERE source = 'instance' AND form IN ('10-K', '10-K/A', '10-KT', '20-F', '20-F/A')""").fetchall()
     debt = debt[debt["n_dims"] == 0]
     for g, acc in annual:
         fa = debt[debt["accession"] == acc]

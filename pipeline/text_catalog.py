@@ -17,7 +17,7 @@ from collections import Counter, defaultdict
 import pandas as pd
 
 from . import blocks, cache, config, sections, textnorm, xbrl
-from .catalog import _cache_member, _filing
+from .catalog import _cache_member, _filing, is_annual
 from .edgar import cik10
 
 # rôles de note, par définition de rôle (§9.2) ; une note peut relever de deux familles
@@ -217,8 +217,8 @@ def build(as_of, limit=None):
         for b in bl:
             b["signal_class"] = 3
             b["filing_status"] = "filed"
-            b["assurance_level"] = "audited" if f["form"].startswith("10-K") else "reviewed"
-            b["tier"] = "A" if f["form"].startswith("10-K") else "B"
+            b["assurance_level"] = "audited" if is_annual(f["form"]) else "reviewed"
+            b["tier"] = "A" if is_annual(f["form"]) else "B"
             out.append(b)
     return out, stats
 
