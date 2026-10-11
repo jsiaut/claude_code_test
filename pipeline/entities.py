@@ -145,8 +145,10 @@ def build(p0, cfg, counterparty_names, discovered=None, former=None):
         n = normalize_name(c["name"])
         eid = by_norm.get(n) or f"name:{n}"
         if eid not in {r["entity_id"] for r in rows if r["record_kind"] == "entity"}:
+            # filiale d'une contrepartie (D-0049) : groupe économique de la contrepartie, pas un groupe suivi
             kind = ("lab" if str(c["group"]).startswith("LAB:") else
-                    "non_filer" if str(c["group"]).startswith("NF:") else "config_group")
+                    "non_filer" if str(c["group"]).startswith("NF:") else
+                    "counterparty_group" if str(c["group"]).startswith("CP:") else "config_group")
             ent(eid, c["name"], "executor_decision", ev(c), kind=kind)
         frm = c.get("valid_from") or "none"
         if frm != "none":

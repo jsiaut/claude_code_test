@@ -80,5 +80,21 @@ class GalaxyAmendment(unittest.TestCase):
             self.assertLess(M._order_key(a, 0, S[mid]), M._order_key(dict(a, file_date="2026-01-01"), 0, S[mid]))
 
 
+class CounterpartyMembership(unittest.TestCase):
+    """D-0049, point 13 : filiale d'une contrepartie rattachée par extrait au groupe de la contrepartie."""
+
+    def test_vehicle_joins_counterparty_group_only_by_extract(self):
+        from pipeline import entities as E
+        cfg = {"labs": [], "confirmed_entities": [
+            {"name": "Galaxy Helios I LLC", "group": "CP:galaxy digital inc", "treatment": "consolidated_subsidiary",
+             "valid_from": "none", "decision": "D-0049", "block": "x", "accession": "y",
+             "quote": "Galaxy Helios I LLC, a wholly owned subsidiary of GDH LP"}]}
+        rows, reg = E.build({"meta": {}}, cfg, {"Galaxy Helios LLC": False, "Galaxy Helios I LLC": False})
+        self.assertEqual(E.resolve(reg, "Galaxy Helios I LLC", "2026-06-30")[1], "CP:galaxy digital inc")
+        self.assertEqual(E.resolve(reg, "Galaxy Helios LLC", "2026-06-30")[1], "CP:galaxy helios llc")   # pas de fusion
+        kinds = {r["name"]: r["group_kind"] for r in rows if r["record_kind"] == "entity"}
+        self.assertEqual(kinds["Galaxy Helios I LLC"], "counterparty_group")
+
+
 if __name__ == "__main__":
     unittest.main()
