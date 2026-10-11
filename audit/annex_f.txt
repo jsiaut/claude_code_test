@@ -89,10 +89,10 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..2f517bc 100644
+index 1378604..c88a26a 100644
 --- a/config.yaml
 +++ b/config.yaml
-@@ -16,9 +16,116 @@ user_agent:
+@@ -16,9 +16,127 @@ user_agent:
    value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
    sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
  
@@ -208,10 +208,21 @@ index 1378604..2f517bc 100644
 +      pairs_financed_documented: 13
 +      fragility_events: 169
 +    execution: "sans sous-agent (consigne de l'utilisateur)"
++  - date: 2026-10-11
++    decision: "Ok on part là-dessus, toujours sans sous-agent"
++    groups_added: [APLD]         # hébergeur endetté ; date d'entrée : group_entry (D-0049)
++    montages_added: [athene_whco, galaxy_helios]   # bloc montages, deuxième et troisième montages (D-0049)
++    page: "remue-méninges du 2026-10-11 dans la conversation (D-0049)"
++    yield_presented:             # état publié au commit ee55894, avant les ajouts
++      relationship_conclusions: {pairs: 69, documented_dependency: 8, commercial_with_financing: 7, reciprocal_commercial_only: 7, causality_not_established: 47}
++      documented_paths: {cycles: 27}
++      annex_e_e7: {outcomes: 26, indeterminate: 15, result: discrimination_possible}
++      fragility_events: 183
++    execution: "sans sous-agent (consigne de l'utilisateur)"
  window:
    start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
    include_interim: true
-@@ -38,6 +145,81 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+@@ -38,6 +156,85 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
    AMD: "0000002488"
    AVGO: "0001730168"
    MRVL: "0001835632"
@@ -220,12 +231,14 @@ index 1378604..2f517bc 100644
 +  CORZ: "0001839341"
 +  NBIS: "0001513845"         # ajouts du 2026-10-11 (D-0048) : hébergeurs endettés, suite de §14
 +  IREN: "0001878848"
++  APLD: "0001144879"         # ajout du 2026-10-11 (D-0049) : hébergeur endetté, locataire principal CoreWeave
 +
 +group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
 +                             # énonce sa composition et ces dates (§9.6)
 +  - {date: 2026-10-07, groups: [NVDA, GOOGL, AMZN, META, MSFT, ORCL, CRWV, SPCX, AMD, AVGO, MRVL], basis: "annexe B"}
 +  - {date: 2026-10-10, groups: [WULF, CIFR, CORZ], basis: "D-0043, ajout de groupes de §14"}
 +  - {date: 2026-10-11, groups: [NBIS, IREN], basis: "D-0048, ajout de groupes de §14"}
++  - {date: 2026-10-11, groups: [APLD], basis: "D-0049, ajout de groupes de §14"}
 +
 +history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
 +                             # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
@@ -288,12 +301,14 @@ index 1378604..2f517bc 100644
 +    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0048)"]
 +  IREN:
 +    quarter: ["2025-07-01", "premier 10-Q 0001878848-25-000081 (trimestre clos le 2025-09-30) ; auparavant émetteur privé étranger (D-0048)"]
++  APLD:
++    quarter: ["2021-12-01", "EFFECT du 2022-04-12, 424B4 0001104659-22-045562 du 2022-04-13 ; premier 10-Q 0001628280-22-014389 (trimestre clos le 2022-02-28) (D-0049)"]
 +  CORZ:
 +    quarter: ["2022-01-01", "recapitalisation inversée du 2022-01-19 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001628280-22-014350 (T1 2022)"]
  
  predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
    AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
-@@ -48,6 +230,8 @@ known_entities:              # appartenances et dates lues en phase 0 (§10.3)
+@@ -48,6 +245,8 @@ known_entities:              # appartenances et dates lues en phase 0 (§10.3)
           "X.AI LLC", "CTC Property, LLC"]
  cik_hints: {"X.AI Corp.": "0002002695"}
  labs: [OpenAI, Anthropic]    # groupes économiques non déposants (§10.4)
@@ -302,7 +317,7 @@ index 1378604..2f517bc 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +239,183 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +254,190 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -448,6 +463,10 @@ index 1378604..2f517bc 100644
 +  - {name: "SoftBank Corp.", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 5e7283844e0396ffadb3e40d02dfa6ed695a51b86995d5ef095c6f24cb165b2b, accession: 0001558370-24-009515, quote: "SoftBank Corp. (\"SoftBank\")", membership_note: "désignée dans le dépôt par le terme défini « SoftBank », alias confirmé du groupe (D-0044, règle B) ; même désignation dans le 10-K 2023 de Bloom Energy (Softbank Corp.)"}
 +  - {name: "SVF II Energy (DE) LLC", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 48a0ae360ae0e05b81e498f9f32e0d82f004faf28cde5b3fa9a1af3b2a0a659a, accession: 0001628280-26-062846, quote: "\"SoftBank Holders\" has the meaning set forth in the preamble, and includes any other Affiliate of SoftBank that holds Shares from time to time", membership_note: "appartenance affirmée par l'extrait (D-0044, règle A) : le même bloc définit « SoftBank » comme SoftBank Group Corp., et « any other Affiliate » fait des SoftBank Holders du préambule (SB Energy HoldCo, LLC et SVF II Energy (DE) LLC) des affiliés de SoftBank"}
 +  - {name: "SB Energy HoldCo, LLC", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0044, block: 48a0ae360ae0e05b81e498f9f32e0d82f004faf28cde5b3fa9a1af3b2a0a659a, accession: 0001628280-26-062846, quote: "\"SoftBank Holders\" has the meaning set forth in the preamble, and includes any other Affiliate of SoftBank that holds Shares from time to time", membership_note: "appartenance affirmée par l'extrait (D-0044, règle A) : le même bloc définit « SoftBank » comme SoftBank Group Corp., et « any other Affiliate » fait des SoftBank Holders du préambule (SB Energy HoldCo, LLC et SVF II Energy (DE) LLC) des affiliés de SoftBank"}
++  - {name: "Galaxy Digital Holdings LP", group: "CP:galaxy digital inc", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0049, block: 86499fdf9bed7ed930064847f42630a1fd49588078c992c466c742d69174e85f, accession: 0001859392-25-000088, quote: "Galaxy is organized as an Up-C structure, with a publicly traded holding company (Pubco) above an operating partnership, Galaxy Digital Holdings LP (GDH LP)", membership_note: "même bloc : « Galaxy Digital Inc. (Pubco) serves as the general partner and consolidates GDH LP for financial reporting » ; Galaxy Digital Inc. reste une contrepartie, son groupe économique est celui de la contrepartie (D-0049, points 4 et 13)"}
++  - {name: "Galaxy Helios I LLC", group: "CP:galaxy digital inc", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0049, block: 4b2bab56709ec26e02cb2429f78713a8399db6ddfd48d6ee9052b341806237bf, accession: 0001859392-26-000091, quote: "Galaxy Helios I LLC (\"Galaxy Helios I\"), a wholly owned subsidiary of GDH LP", membership_note: "GDH LP : Galaxy Digital Holdings LP, consolidée par Galaxy Digital Inc. (bloc 86499fdf9bed)"}
++  - {name: "Galaxy Helios Data Centers II LLC", group: "CP:galaxy digital inc", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0049, block: a62a90628028bbc6a59d7a44c9c22a6ef3b760b91554e43e3cb1441b7a89f4bd, accession: 0001859392-26-000079, quote: "Galaxy Helios Data Centers II LLC (\"Issuer\"), an indirect wholly owned subsidiary of Galaxy Digital Inc."}
++  - {name: "Galaxy Helios II LLC", group: "CP:galaxy digital inc", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0049, block: a62a90628028bbc6a59d7a44c9c22a6ef3b760b91554e43e3cb1441b7a89f4bd, accession: 0001859392-26-000079, quote: "Galaxy Helios II LLC, a wholly owned direct subsidiary of the Issuer", membership_note: "« the Issuer » : Galaxy Helios Data Centers II LLC, filiale indirecte à 100 % de Galaxy Digital Inc. (même bloc)"}
 +entity_aliases:
 +  - {alias: "NVIDIA", of: "NVIDIA Corporation", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "NVIDIA Corporation (\"NVIDIA\")"}
 +  - {alias: "Meta", of: "Meta Platforms, Inc.", decision: D-0021, block: 943d65c0fd815aa4a4da6c197bb4d1dcd7c2ee6576608488dc012e6dbb28423e, accession: 0001769628-25-000050, quote: "Meta Platforms, Inc. (\"Meta\")"}
@@ -477,6 +496,9 @@ index 1378604..2f517bc 100644
 +  - {alias: "SoftBank", of: "NF:SOFTBANK", decision: D-0044, block: 82149ed7d79ec736d122b98fecd3e9e9d6b7aae9a10f2b3d80f047140fcf4cfb, accession: 0001193125-25-017265, quote: "SoftBank Group Corp. (\"SoftBank\")"}
 +  - {alias: "SBG", of: "NF:SOFTBANK", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "All references to \"SBG\" are references to SoftBank Group Corp. or a controlled affiliate or subsidiary thereof"}
 +  - {alias: "SVF II", of: "SoftBank Vision Fund II-2 L.P.", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "the SoftBank Vision Fund II-2 L.P. (\"SVF II\")"}
++  - {alias: "CoreWeave", of: "CoreWeave, Inc.", decision: D-0049, block: 34ebaac05d366d2aa5be55845d9c635769615eff5f3492f442531efa372aae66, accession: 0001859392-26-000091, quote: "CoreWeave, Inc. (\"CoreWeave\")"}
++  - {alias: "Ekso", of: "Ekso Bionics Holdings, Inc.", decision: D-0049, block: 95dedecfa1667a8512a704ccd0bd9826c7003b987639ff709739e8f29a10298c, accession: 0001144879-26-000048, quote: "Ekso Bionics Holdings, Inc. (\"Ekso\")"}
++  - {alias: "Sai Computing", of: "Sai Computing, LLC", decision: D-0049, block: e7b28ca388d99d6cfc3443fbd2bcb24600ea056640e015fdea0397c977f7776e, accession: 0001144879-23-000163, quote: "Sai Computing, LLC (\"Sai Computing\")"}
 +own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
 +  - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
 +  - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
@@ -486,7 +508,7 @@ index 1378604..2f517bc 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +477,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +499,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -494,7 +516,7 @@ index 1378604..2f517bc 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +493,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +515,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -503,7 +525,7 @@ index 1378604..2f517bc 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +682,71 @@ annex_e:
+@@ -318,6 +704,71 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -575,7 +597,7 @@ index 1378604..2f517bc 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +799,42 @@ annex_f:
+@@ -370,6 +821,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -618,7 +640,7 @@ index 1378604..2f517bc 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +854,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +876,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -629,9 +651,76 @@ index 1378604..2f517bc 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +907,4 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +929,71 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
 -   interest_expense, interest_paid]
 +   interest_expense, interest_paid, operating_lease_payments_12m, finance_lease_payments_12m]
++
++# Bloc montages (D-0046, D-0049) : un montage = une recherche plein texte d'EDGAR fixée d'avance, les
++# rapports périodiques de déposants nommés, des termes qualifiants et un plafond d'unités. Un terme ne
++# qualifie jamais une pièce d'un déposant dont il est le nom (owner) ; only_in le réserve aux pièces de
++# déposants nommés. Les fenêtres : deux paragraphes avant et deux après, fondues (D-0046, point 4).
++montages:
++  meta_hyperion:
++    decision: D-0046
++    period: ["2025-10-01", "2026-10-07"]
++    queries:
++      - {q: '"Beignet Investor"'}
++      - {q: '"Blue Owl" Hyperion'}
++      - {q: '"Blue Owl" "Richland Parish"'}
++      - {q: '"Blue Owl" "Meta Platforms"'}
++      - {q: '"Blue Owl"', cik: "0001326801"}
++    periodic: ["0001823945"]          # Blue Owl Capital Inc.
++    terms:
++      - {rx: '\bBeignet\b'}
++      - {rx: 'Richland Parish'}
++      - {rx: '\bMeta\b', owner: ["meta platforms"]}
++      - {rx: '\bBlue Owl\b', owner: ["blue owl"]}
++    noted_terms: ['\bBeignet\b', 'Richland Parish', '\bMeta\b', '\bHyperion\b', '\bBlue Owl\b']
++    cap: 40
++  athene_whco:
++    decision: D-0049
++    period: ["2026-01-01", "2026-10-07"]
++    queries:
++      - {q: '"WarehouseCo Intermediate Holdings"'}
++      - {q: '"WarehouseCo"'}
++      - {q: '"capital solution" "Broadcom"'}
++      - {q: '"Apollo"', cik: "0001730168"}
++      - {q: '"Athene"', cik: "0001730168"}
++      - {q: '"Broadcom"', cik: "0001527469"}
++      - {q: '"Broadcom"', cik: "0001858681"}
++    periodic: ["0001527469", "0001858681"]   # Athene Holding Ltd., Apollo Global Management, Inc.
++    terms:
++      - {rx: '\bWarehouseCo\b'}
++      - {rx: '\bWHCO\b'}
++      - {rx: '[Cc]apital [Ss]olution', owner: ["apollo global management", "athene"]}   # métier d'Apollo (Apollo Capital Solutions) : amendement du point 7
++      - {rx: '\bBroadcom\b', owner: ["broadcom"]}
++      - {rx: '\bAnthropic\b'}
++      - {rx: '\bApollo\b', owner: ["apollo global management", "athene"]}
++      - {rx: '\bAthene\b', owner: ["apollo global management", "athene"]}
++    noted_terms: ['\bWarehouseCo\b', '\bWHCO\b', '[Cc]apital [Ss]olution', '\bBroadcom\b', '\bAnthropic\b', '\bApollo\b', '\bAthene\b']
++    cap: 40
++  galaxy_helios:
++    decision: D-0049
++    period: ["2025-01-01", "2026-10-07"]
++    queries:
++      - {q: '"Helios" "CoreWeave"'}
++      - {q: '"Galaxy Digital"', cik: "0001769628"}
++      - {q: '"CoreWeave"', cik: "0001859392"}
++    periodic: ["0001859392"]          # Galaxy Digital Inc.
++    terms:
++      - {rx: '\bHelios\b', only_in: ["galaxy digital", "coreweave"]}
++      - {rx: '\bCoreWeave\b', owner: ["coreweave"]}
++      - {rx: '\bGalaxy\b', owner: ["galaxy digital"]}
++    noted_terms: ['\bHelios\b', '\bCoreWeave\b', '\bGalaxy\b']
++    cap: 71                           # amendement de D-0049, point 11 (plafond initial : 40)
++    focus: "galaxy digital"           # ordre : autres déposants, 8-K, rapports périodiques ; plus récent d'abord
++    dedupe: true                      # un texte distinct se lit une fois
++    exclude:                          # comptés, non lus (D-0049, point 11)
++      - {filer: "galaxy digital", forms: ["S-1", "S-1/A", "S-4/A", "DRS", "DRS/A", "424B3", "424B4"],
++         reason: "prospectus ou déclaration d'enregistrement qui reprend les rapports périodiques ou décrit une offre"}
++      - {filer: "galaxy digital", forms: ["8-K"], file_types: ["EX-99.2"], reason: "présentation trimestrielle des résultats"}
++      - {filer: "galaxy digital", forms: ["8-K"], file_rx: "xpressrelease", reason: "communiqué trimestriel des résultats"}
++

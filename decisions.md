@@ -647,3 +647,36 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - sans extrait d'appartenance dans les blocs lus, Galaxy Power LLC, Galaxy Helios LLC (nom écrit par Ares) et Galaxy Digital Partners LLC restent des contreparties propres ;
     - « Coreweave Financing DDTL V, LLC » et « CoreWeave Compute Acquisition Co., IV, LLC » ne rejoignent CoreWeave que sur extrait ; « CoreWeave » et « CoreWeave, Inc. » désignent CoreWeave, Inc. ;
     - Galaxy Digital Inc. reste une contrepartie (point 4).
+
+  (13) Intégration (17 groupes, vue `as_known`), dans l'ordre de D-0048 : premier réassemblage, extraction refaite des BDC Data Sets (D-0043, point 14), second réassemblage, rendus. Le second réassemblage a été relancé une fois, pour y inclure les rattachements des véhicules de Galaxy décrits plus bas.
+  - Corrections dans la passe, avant l'assemblage (la passe n'est pas close, comme en D-0020) :
+    - une clé d'instrument d'Applied Digital, `apld:computeco2_notes_2026`, devient `apld:computeco2_notes_2031` (1 ligne) ;
+    - dans les pièces de Galaxy, les véhicules écrits en payeur ou en receveur (Galaxy Power LLC, Galaxy Helios I LLC et « Galaxy Helios I », Galaxy Helios Data Centers II LLC, Galaxy Digital Holdings LP) deviennent « the Company » (7 lignes), en application du point 4 ; leurs noms restent dans les notes.
+  - Entités, sur extraits cités (D-0021) :
+    - alias : « CoreWeave » → CoreWeave, Inc. (10-Q de Galaxy du deuxième trimestre 2026 : « CoreWeave, Inc. ("CoreWeave") ») ; « Ekso » → Ekso Bionics Holdings, Inc. (10-K 2026 d'Applied Digital) ; « Sai Computing » → Sai Computing, LLC (8-K d'Applied Digital de 2023). L'alias « CoreWeave » rattache aussi à CoreWeave une ligne de NVIDIA jusque-là en attente ;
+    - rattachements au groupe économique de la contrepartie Galaxy Digital Inc. (`confirmed_entities`, groupe `CP:galaxy digital inc`), avec les extraits du point 12 : Galaxy Digital Holdings LP, Galaxy Helios I LLC, Galaxy Helios Data Centers II LLC et Galaxy Helios II LLC. Ce sont les premières filiales d'une contrepartie au registre : leur type devient `counterparty_group` (correction de code, test unitaire). Galaxy Digital Inc. reste une contrepartie (point 4) ;
+    - « Applied Blockchain, Inc. », ancienne dénomination du CIK d'Applied Digital, se rattache par ses formerNames ;
+    - restent en attente, faute d'extrait qui les définisse :
+      - « CoreWeave Parent » : le 8-K/A du 1er avril 2026 l'emploie sans la définir ;
+      - « GOI » : aucun bloc lu ne le définit comme Global Operating Infrastructure LLC ;
+      - « Base Electron » : Base Electron Corp. (ou Corporation) et Base Electron, Inc. restent deux entités, aucun extrait ne les reliant ;
+      - les banques sans suffixe juridique, comme dans les groupes précédents : Starion Bank, Cornerstone Bank et sa coquille, Vantage Bank, Vantage Bank Texas, First National Bank of Omaha, Goldman Sachs Bank USA, Texas Capital Bank, Frost Bank, Bank of North Dakota ;
+      - « Deutsche Bank » (journée analystes de Galaxy), « Argo Blockchain » et « Apollo » (10-Q de Broadcom, point 8).
+  - Effets :
+    - événements de l'annexe F : 183 → 220, tous chez Applied Digital (F1 6 fois, F2 17 fois, F5 14 trimestres, de février 2022 à mai 2025) ; ceux des seize autres groupes sont inchangés ;
+    - paires (conclusions de relation) : 69 → 83, toutes nouvelles avec Applied Digital. Treize en causalité non établie : CoreWeave, Oracle, AI Bridge Funding LLC, B. Riley Commercial Capital, LLC, B. Riley Financial, Inc., Base Electron (deux dénominations), CIM APLD Lender Holdings, LLC, Ekso Bionics Holdings, Inc., Global Operating Infrastructure LLC, Macquarie Equipment Capital, Inc., MIP HPC Holdings, LLC et MIP VI HPC Holdings, LLC. Une en achats réciproques seulement : GMR Limited. Les dépendances documentées restent 8 ;
+    - cycles : 27 → 30. Les trois nouveaux sont des boucles de financement seul (prêt reçu ; intérêts, commission ou bons rendus au prêteur) entre Applied Digital et AI Bridge Funding LLC, B. Riley Commercial Capital, LLC et B. Riley Financial, Inc., en causalité non établie ;
+    - paires à financement documenté : 13 → 16 (Applied Digital avec AI Bridge Funding LLC et avec les deux dénominations de Base Electron). E.1 et E.2 : 26 issues dont 15 indéterminées → 32 dont 18, avec trois issues E.1 nouvelles « non étayé » ; E.7 reste « discrimination possible ». E.5 : 83 issues, toutes indéterminées. E.6 : 18 cycles décrits ;
+    - Galaxy : arêtes CoreWeave → Galaxy Digital Inc. (baux, paiement d'options de 100 M$, revenus du deuxième trimestre 2026), Morgan Stanley & Co. LLC → Galaxy Digital Inc. (obligations de 3,507 Md$) et Deutsche Bank AG → Galaxy Digital Inc. (contrat de crédit). Aucune paire nouvelle : Galaxy n'est pas un groupe, et aucun financement de CoreWeave par Galaxy Digital Inc. n'est écrit (la souscription de Galaxy Digital Partners LLC à l'introduction en bourse de CoreWeave va à cette contrepartie propre) ;
+    - bloc `lender` : extraction refaite (2 098 dépôts). Positions nouvelles :
+      - Trinity Capital Inc. et Eagle Point Trinity Senior Secured Lending Co sur Applied Digital Corp (financement d'équipement de mars 2024, dont une tranche à 19 % ; juste valeur sur coût entre 1,00 et 1,03, de mars 2024 à mars 2026) ;
+      - Crestline Lending Solutions, LLC sur Galaxy Helios I LLC (12,75 M$ de principal au 30 juin 2026, juste valeur sur coût 1,00), rattachée à Galaxy Digital Inc. par les rattachements ci-dessus ;
+      - Ares Core Infrastructure Fund sur Galaxy Helios LLC (90,6 M$), contrepartie propre ;
+      - les lignes « Total » du portefeuille de Trinity sont écartées (`invalid_aggregate`, 5) ;
+    - exclusions :
+      - `not_processed` +71 : 98 textes du montage Galaxy au-delà du plafond, moins 27 unités de la découverte tirées des dépôts d'Applied Digital, désormais une seule exclusion `out_of_scope` du groupe ;
+      - `conflicting` +81 (faits d'Applied Digital) ;
+      - `out_of_scope` +55 : 54 pour les montages (pièces écartées par la règle du point 11, pièces sans fenêtre, relevés de portefeuille) et 1 pour Applied Digital ;
+      - `pending_entity` +22, `financial_parties_only` +10 (corps d'EX-4 d'Applied Digital), `invalid_aggregate` +5.
+  - Limite relevée : les véhicules d'un hébergeur (« APLD ELN-02 LLC », « APLD HPC TopCo 2 LLC », etc.) restent des contreparties propres faute de rattachement par extrait, comme ceux de TeraWulf, Cipher, Core Scientific, Nebius et IREN. 113 arêtes d'Applied Digital passent par eux, dont 15 avec CoreWeave (baux, garanties) et 34 avec MIP HPC Holdings, LLC et Macquarie Equipment Capital, Inc. Les extraits existent (« APLD ELN-02 LLC, a subsidiary of the Company »). Rattacher par extrait les véhicules des six hébergeurs est la prochaine correction utile : elle changerait leurs paires et leurs expositions.
+  - Tests unitaires : 104 (98 à D-0048), dont le rattachement d'une filiale à une contrepartie. Source : §2.1, §3.6, §10.2, §14, annexes E et F.
