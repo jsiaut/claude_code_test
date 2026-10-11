@@ -178,7 +178,7 @@ def prepare():
     tmp = CATALOG.with_suffix(".jsonl.tmp")
     with open(tmp, "w", encoding="utf-8") as fh:
         for b in out:
-            fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+            fh.write(json.dumps(b, ensure_ascii=False, default=str) + "\n")
     tmp.replace(CATALOG)
     info = json.loads(INFO.read_text()) if INFO.exists() else {}
     info.update({"filings": len(inv), "blocks": len(out), "units_by_group": n_by, "no_window": no_window,
