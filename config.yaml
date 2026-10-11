@@ -425,6 +425,9 @@ entity_aliases:
   - {alias: "SoftBank", of: "NF:SOFTBANK", decision: D-0044, block: 82149ed7d79ec736d122b98fecd3e9e9d6b7aae9a10f2b3d80f047140fcf4cfb, accession: 0001193125-25-017265, quote: "SoftBank Group Corp. (\"SoftBank\")"}
   - {alias: "SBG", of: "NF:SOFTBANK", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "All references to \"SBG\" are references to SoftBank Group Corp. or a controlled affiliate or subsidiary thereof"}
   - {alias: "SVF II", of: "SoftBank Vision Fund II-2 L.P.", decision: D-0044, block: f35c0d8ac79f40952f5fc1b074fdb299d73b33d339d4f6ffeba56d3bb7970380, accession: 0001813756-23-000059, quote: "the SoftBank Vision Fund II-2 L.P. (\"SVF II\")"}
+  - {alias: "CoreWeave", of: "CoreWeave, Inc.", decision: D-0049, block: 34ebaac05d366d2aa5be55845d9c635769615eff5f3492f442531efa372aae66, accession: 0001859392-26-000091, quote: "CoreWeave, Inc. (\"CoreWeave\")"}
+  - {alias: "Ekso", of: "Ekso Bionics Holdings, Inc.", decision: D-0049, block: 95dedecfa1667a8512a704ccd0bd9826c7003b987639ff709739e8f29a10298c, accession: 0001144879-26-000048, quote: "Ekso Bionics Holdings, Inc. (\"Ekso\")"}
+  - {alias: "Sai Computing", of: "Sai Computing, LLC", decision: D-0049, block: e7b28ca388d99d6cfc3443fbd2bcb24600ea056640e015fdea0397c977f7776e, accession: 0001144879-23-000163, quote: "Sai Computing, LLC (\"Sai Computing\")"}
 own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
   - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
   - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
