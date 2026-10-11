@@ -231,6 +231,8 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0048)"]
   IREN:
     quarter: ["2025-07-01", "premier 10-Q 0001878848-25-000081 (trimestre clos le 2025-09-30) ; auparavant émetteur privé étranger (D-0048)"]
+  APLD:
+    quarter: ["2021-12-01", "EFFECT du 2022-04-12, 424B4 0001104659-22-045562 du 2022-04-13 ; premier 10-Q 0001628280-22-014389 (trimestre clos le 2022-02-28) (D-0049)"]
   CORZ:
     quarter: ["2022-01-01", "recapitalisation inversée du 2022-01-19 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001628280-22-014350 (T1 2022)"]
 
