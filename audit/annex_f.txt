@@ -89,10 +89,10 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..b2fb7e8 100644
+index 1378604..2f517bc 100644
 --- a/config.yaml
 +++ b/config.yaml
-@@ -16,9 +16,106 @@ user_agent:
+@@ -16,9 +16,116 @@ user_agent:
    value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
    sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
  
@@ -198,21 +198,48 @@ index 1378604..b2fb7e8 100644
 +    blocks: [lender_liabilities]   # passif des véhicules de l'univers de D-0045 (D-0047)
 +    page: "plan en trois niveaux sur Blue Owl dans la conversation du 2026-10-10 (D-0047)"
 +    execution: "sans sous-agent (consigne de l'utilisateur)"
++  - date: 2026-10-11
++    decision: "Ok on continue avec Nebius et IREN"
++    groups_added: [NBIS, IREN]   # hébergeurs endettés, suite de §14 ; dates d'entrée : group_entry (D-0048)
++    page: "point d'étape du 2026-10-11 dans la conversation (D-0048)"
++    yield_presented:             # état publié au commit b731268, avant l'ajout
++      relationship_conclusions: {pairs: 64, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 6, causality_not_established: 44}
++      documented_paths: {cycles: 26, documented_dependency: 10, commercial_with_financing: 14, reciprocal_commercial_only: 2}
++      pairs_financed_documented: 13
++      fragility_events: 169
++    execution: "sans sous-agent (consigne de l'utilisateur)"
  window:
    start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
    include_interim: true
-@@ -38,6 +135,60 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+@@ -38,6 +145,81 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
    AMD: "0000002488"
    AVGO: "0001730168"
    MRVL: "0001835632"
 +  WULF: "0001083301"         # ajouts du 2026-10-10 (D-0043) : hébergeurs endettés, dans l'ordre de §14
 +  CIFR: "0001819989"
 +  CORZ: "0001839341"
++  NBIS: "0001513845"         # ajouts du 2026-10-11 (D-0048) : hébergeurs endettés, suite de §14
++  IREN: "0001878848"
 +
 +group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
 +                             # énonce sa composition et ces dates (§9.6)
 +  - {date: 2026-10-07, groups: [NVDA, GOOGL, AMZN, META, MSFT, ORCL, CRWV, SPCX, AMD, AVGO, MRVL], basis: "annexe B"}
 +  - {date: 2026-10-10, groups: [WULF, CIFR, CORZ], basis: "D-0043, ajout de groupes de §14"}
++  - {date: 2026-10-11, groups: [NBIS, IREN], basis: "D-0048, ajout de groupes de §14"}
++
++history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
++                             # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
++                             # et les autres dépôts antérieurs ; historique tronqué à gauche)
++  NBIS:
++    effective: "2024-07-12"
++    kind: divestiture
++    before: "Yandex N.V. (activités russes cédées)"
++    evidence: "20-F 2024, 0001558370-25-005991 : « July 12, 2024, at which the Company sold its remaining stake in the Divested Businesses »"
++  IREN:
++    effective: "2024-07-01"
++    kind: framework_change
++    before: "rapports en IFRS (20-F, 6-K)"
++    evidence: "10-K 2025, 0001878848-25-000063 : « Effective this fiscal year, we have transitioned from International Financial Reporting Standards [...] to GAAP »"
 +
 +reverse_combinations:        # déclarant légal distinct de l'acquéreur comptable (ASC 805-40 ; fusion inversée,
 +                             # recapitalisation inversée d'une SPAC) : les rapports du CIK pour les périodes closes
@@ -257,12 +284,16 @@ index 1378604..b2fb7e8 100644
 +    quarter: ["2022-01-01", "fusion inversée du 2021-12-13 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001558370-22-008985 (T1 2022)"]
 +  CIFR:
 +    quarter: ["2021-07-01", "recapitalisation inversée du 2021-08-27 (D-0043) ; premier 10-Q de l'acquéreur comptable 0000950170-21-004222 (T3 2021)"]
++  NBIS:
++    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0048)"]
++  IREN:
++    quarter: ["2025-07-01", "premier 10-Q 0001878848-25-000081 (trimestre clos le 2025-09-30) ; auparavant émetteur privé étranger (D-0048)"]
 +  CORZ:
 +    quarter: ["2022-01-01", "recapitalisation inversée du 2022-01-19 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001628280-22-014350 (T1 2022)"]
  
  predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
    AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
-@@ -48,6 +199,8 @@ known_entities:              # appartenances et dates lues en phase 0 (§10.3)
+@@ -48,6 +230,8 @@ known_entities:              # appartenances et dates lues en phase 0 (§10.3)
           "X.AI LLC", "CTC Property, LLC"]
  cik_hints: {"X.AI Corp.": "0002002695"}
  labs: [OpenAI, Anthropic]    # groupes économiques non déposants (§10.4)
@@ -271,7 +302,7 @@ index 1378604..b2fb7e8 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +208,163 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +239,183 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -352,7 +383,27 @@ index 1378604..b2fb7e8 100644
 +  # dans une paire ou un cycle ; les autres unités étrangères restent dans la file, « non traitées »
 +  selection: [named_issuers, graph_counterparties]
 +
-+paths:                       # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
++foreign_6k:                  # unités 6-K des groupes émetteurs privés étrangers (D-0048, point 6)
++  groups: [NBIS, IREN]       # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K
++  forms: ["6-K", "6-K/A"]
++  documents: [primary, EX-99] # document principal et annexes 99 (type lu dans l'en-tête SGML, §2.3)
++  # lexique de D-0048 ; mots entiers, casse indifférente, singulier et pluriel écrits (D-0048, point 9)
++  lexicon: [agreement, agreements, contract, contracts, financing, financings, convertible, "notes due",
++            "credit facility", "credit facilities", loan, loans, warrant, warrants, offering, offerings,
++            lease, leases]
++  # noms des groupes : lexique de la découverte (onze groupes de l'annexe B, laboratoires, Stargate)
++  # et groupes ajoutés depuis ; jamais le nom du déposant lui-même (D-0046, point 9 ; D-0048, point 9)
++  group_names:
++    - {term: TeraWulf, ref: WULF}
++    - {term: Cipher, ref: CIFR, case_sensitive: true}
++    - {term: "Core Scientific", ref: CORZ}
++    - {term: Nebius, ref: NBIS}
++    - {term: IREN, ref: IREN, case_sensitive: true}
++    - {term: "Iris Energy", ref: IREN}
++  window: 2                  # paragraphes de part et d'autre, fenêtres fondues quand elles se chevauchent
++  cap_per_group: 80          # du plus récent au plus ancien ; au-delà, not_processed
++
++paths:                     # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
 +  lengths: [2, 3]            # cycles orientés de longueur 2 ou 3 entre groupes, hors intragroupe
 +  temporal_max_quarters: 4   # arêtes actives ensemble ou à moins de quatre trimestres d'écart
 +
@@ -435,7 +486,7 @@ index 1378604..b2fb7e8 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +426,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +477,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -443,7 +494,7 @@ index 1378604..b2fb7e8 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +442,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +493,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -452,7 +503,7 @@ index 1378604..b2fb7e8 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +631,71 @@ annex_e:
+@@ -318,6 +682,71 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -524,7 +575,7 @@ index 1378604..b2fb7e8 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +748,42 @@ annex_f:
+@@ -370,6 +799,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -567,7 +618,7 @@ index 1378604..b2fb7e8 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +803,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +854,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -578,7 +629,7 @@ index 1378604..b2fb7e8 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +856,4 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +907,4 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
