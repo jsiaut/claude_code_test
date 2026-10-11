@@ -193,7 +193,7 @@ def run(as_of):
                                       AND lower(coalesce(value_text, '')) = 'true' GROUP BY 1, 2""").fetchall():
         err.setdefault(g, []).append((acc, d))
     fl = filings.rename(columns={})
-    sig_cells = events.structural_signals(groups, quarters_by_group, fl, as_of, err)
+    sig_cells = events.structural_signals(groups, quarters_by_group, fl, as_of, err, valid)
     blocks = {b["content_key"]: b for b in catalog}
     # un même texte revient parfois à l'identique dans plusieurs dépôts (Item 4 d'Amazon d'un
     # trimestre à l'autre, doute sur la continuité de Core Scientific) : lu une fois, il reste

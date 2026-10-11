@@ -13,6 +13,7 @@ from decimal import Decimal
 
 import pandas as pd
 
+from .events import REGIME_6K, regime_6k
 from .measures import cell
 
 NONE = "none"
@@ -271,6 +272,7 @@ def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_g
     eightk = filings[filings["form"].isin(["8-K", "8-K/A"])]
     for g in groups:
         qs = quarters_by_group[g]
+        fg = filings[filings["group_id"] == g]
         mg = m[(m["subject"] == g) & (m["view"] == "as_known")]
 
         def get(measure, pe, term=NONE, breakdown=NONE):
@@ -372,7 +374,12 @@ def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_g
             # F9 : item 1.02 sur un contrat de capacité ; la structure dit s'il y a eu un 1.02
             k = eightk[(eightk["group_id"] == g) & eightk["filingDate"].map(lambda x: ps <= _d(x) <= pe)
                        & eightk["items"].fillna("").map(lambda s: "1.02" in [x.strip() for x in s.split(",")])]
-            if k.empty:
+            six = regime_6k(fg[fg["filingDate"].map(lambda x: ps <= _d(x) <= pe)])
+            if six:
+                # régime 6-K : pas d'items, 6-K lus par unités plafonnées (D-0048)
+                ev("F9", "not_determinable", nd="not_collected", coverage="not_collected",
+                   flags={"basis": REGIME_6K, "accessions": six})
+            elif k.empty:
                 ev("F9", "computed", "no_event", flags={"basis": "aucun 8-K item 1.02 dans le trimestre (submissions, toutes pages)"})
             else:
                 accs = list(k["accessionNumber"])

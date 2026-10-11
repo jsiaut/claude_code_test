@@ -6,7 +6,9 @@ Lancement : python3 -m unittest discover -s tests -t .
 import datetime as dt
 import unittest
 
-from pipeline import calendar, phase0, sections, sixk
+import pandas as pd
+
+from pipeline import calendar, events, phase0, sections, sixk
 
 FILLER = "Management evaluated the effectiveness of the disclosure controls and procedures. " * 5
 
@@ -128,6 +130,34 @@ class Breaks(unittest.TestCase):
                "is_predecessor": False}
         self.assertTrue(phase0.pre_combination(old, b["NBIS"]))
         self.assertFalse(phase0.pre_combination(new, b["NBIS"]))
+
+
+class Regime6K(unittest.TestCase):
+    """Signaux tirés des items de 8-K, trimestre sans 8-K mais avec des 6-K (D-0048)."""
+
+    def setUp(self):
+        d = dt.date
+        self.q = {"G": [{"start": d(2025, 1, 1), "end": d(2025, 3, 31)}, {"start": d(2025, 7, 1), "end": d(2025, 9, 30)}]}
+        self.filings = pd.DataFrame([
+            {"group_id": "G", "form": "6-K", "accessionNumber": "s1", "filingDate": d(2025, 3, 20), "items": None},
+            {"group_id": "G", "form": "8-K", "accessionNumber": "e1", "filingDate": d(2025, 8, 1), "items": "7.01"}])
+
+    def cells(self, obs=()):
+        out = events.structural_signals(["G"], self.q, self.filings, "2026-10-07", {}, obs)
+        return {(c["measure"], c["period_end"]): c for c in out}
+
+    def test_absence_not_established_under_6k(self):
+        c = self.cells()
+        for m in ("sig_distress_8k_items", "sig_auditor_change_or_nonreliance"):
+            self.assertEqual(c[(m, "2025-03-31")]["status"], "not_determinable")
+            self.assertEqual(c[(m, "2025-03-31")]["nd_reason"], "not_collected")
+            self.assertEqual(c[(m, "2025-09-30")]["value_text"], "no_event")
+
+    def test_observed_nonreliance_is_an_event(self):
+        o = {"group_id": "G", "signal": "nonreliance", "signal_present": True, "event_date": "2025-03-20",
+             "knowledge_date": "2025-03-20", "accession": "s1", "obs_key": "k/p/0"}
+        c = self.cells([o])[("sig_auditor_change_or_nonreliance", "2025-03-31")]
+        self.assertEqual((c["status"], c["value_text"], c["knowledge_date"]), ("computed", "event", "2025-03-20"))
 
 
 if __name__ == "__main__":
