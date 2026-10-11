@@ -116,6 +116,16 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
     blocks: [lender_liabilities]   # passif des véhicules de l'univers de D-0045 (D-0047)
     page: "plan en trois niveaux sur Blue Owl dans la conversation du 2026-10-10 (D-0047)"
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-11
+    decision: "Ok on continue avec Nebius et IREN"
+    groups_added: [NBIS, IREN]   # hébergeurs endettés, suite de §14 ; dates d'entrée : group_entry (D-0048)
+    page: "point d'étape du 2026-10-11 dans la conversation (D-0048)"
+    yield_presented:             # état publié au commit b731268, avant l'ajout
+      relationship_conclusions: {pairs: 64, documented_dependency: 8, commercial_with_financing: 6, reciprocal_commercial_only: 6, causality_not_established: 44}
+      documented_paths: {cycles: 26, documented_dependency: 10, commercial_with_financing: 14, reciprocal_commercial_only: 2}
+      pairs_financed_documented: 13
+      fragility_events: 169
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
@@ -138,11 +148,28 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   WULF: "0001083301"         # ajouts du 2026-10-10 (D-0043) : hébergeurs endettés, dans l'ordre de §14
   CIFR: "0001819989"
   CORZ: "0001839341"
+  NBIS: "0001513845"         # ajouts du 2026-10-11 (D-0048) : hébergeurs endettés, suite de §14
+  IREN: "0001878848"
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
   - {date: 2026-10-07, groups: [NVDA, GOOGL, AMZN, META, MSFT, ORCL, CRWV, SPCX, AMD, AVGO, MRVL], basis: "annexe B"}
   - {date: 2026-10-10, groups: [WULF, CIFR, CORZ], basis: "D-0043, ajout de groupes de §14"}
+  - {date: 2026-10-11, groups: [NBIS, IREN], basis: "D-0048, ajout de groupes de §14"}
+
+history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
+                             # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
+                             # et les autres dépôts antérieurs ; historique tronqué à gauche)
+  NBIS:
+    effective: "2024-07-12"
+    kind: divestiture
+    before: "Yandex N.V. (activités russes cédées)"
+    evidence: "20-F 2024, 0001558370-25-005991 : « July 12, 2024, at which the Company sold its remaining stake in the Divested Businesses »"
+  IREN:
+    effective: "2024-07-01"
+    kind: framework_change
+    before: "rapports en IFRS (20-F, 6-K)"
+    evidence: "10-K 2025, 0001878848-25-000063 : « Effective this fiscal year, we have transitioned from International Financial Reporting Standards [...] to GAAP »"
 
 reverse_combinations:        # déclarant légal distinct de l'acquéreur comptable (ASC 805-40 ; fusion inversée,
                              # recapitalisation inversée d'une SPAC) : les rapports du CIK pour les périodes closes
@@ -187,6 +214,10 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["2022-01-01", "fusion inversée du 2021-12-13 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001558370-22-008985 (T1 2022)"]
   CIFR:
     quarter: ["2021-07-01", "recapitalisation inversée du 2021-08-27 (D-0043) ; premier 10-Q de l'acquéreur comptable 0000950170-21-004222 (T3 2021)"]
+  NBIS:
+    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0048)"]
+  IREN:
+    quarter: ["2025-07-01", "premier 10-Q 0001878848-25-000081 (trimestre clos le 2025-09-30) ; auparavant émetteur privé étranger (D-0048)"]
   CORZ:
     quarter: ["2022-01-01", "recapitalisation inversée du 2022-01-19 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001628280-22-014350 (T1 2022)"]
 

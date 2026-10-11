@@ -490,3 +490,37 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - F16 : 6 interruptions sur 473 cellules (423 sans événement, 44 dont les 120 jours ne sont pas écoulés). Blue Owl Capital Corp II : dernière offre en août 2025 (1,19 fois le plafond, tout racheté grâce à la marge de 2 % de la règle 13e-4(f)(1)(ii)), puis accord de fusion avec Blue Owl Capital Corporation le 5 novembre 2025, sans nouvelle offre avant la fusion, et fusion abandonnée le 18 novembre ; MSC Income Fund (rachats suspendus en vue d'une cotation) ; Steele Creek Capital (plan de désendettement en vue d'une liquidation probable) ; Hancock Park Corporate Income et Audax Credit BDC (aucune cause lue) ; Stellus Private Credit BDC (offre suivante 133 jours après la précédente) ;
   - 8-K : 40 unités lues (14 pour les interruptions, 26 pour Blue Owl), 305 8-K ou fenêtres au-delà du plafond (`not_processed`). Les lettres de Blue Owl aux porteurs, hors SC TO-I, annoncent pour le troisième trimestre 2026 une demande estimée de 16,8 % des parts chez Blue Owl Credit Income (environ 30 % servis) et de 39,0 % chez Blue Owl Technology Income (environ 13 % servis). Le gestionnaire attribue la demande de Blue Owl Technology Income à une base de porteurs concentrée et aux craintes sur les éditeurs de logiciels face à l'IA ;
   - requêtes : 209 listes de dépôts, 1 357 documents d'offres, 14 annexes, 123 pour les 8-K. Exclusions : `out_of_scope` 3 (offres sur obligations ou actions de préférence), `not_processed` 305 (8-K au-delà du plafond).
+
+- **D-0048 — Ajout de groupes : Nebius (NBIS) et IREN (IREN), règles fixées avant tout calcul.** (1) Décision de l'utilisateur, le 2026-10-11 : « Ok on continue avec Nebius et IREN ». Ils suivent TeraWulf, Cipher et Core Scientific dans l'ordre de §14 (hébergeurs endettés). Jusqu'ici, le bloc `foreign` ne les lisait qu'au titre de nœuds de la chaîne (D-0042 : six unités, aucune mesure propre, aucune paire avec leurs clients). Lecture séquentielle par l'exécutant, sans sous-agent, un commit par groupe.
+
+  (2) Configuration et date de connaissance :
+  - `company_tickers.json` (2026-10-07) résout NBIS vers le CIK 1513845 (Nebius Group N.V.) et IREN vers le CIK 1878848 (IREN Ltd). Les deux groupes entrent dans `config.yaml`, avec `group_entry` au 2026-10-11 ;
+  - l'exécution garde l'as_of du 2026-10-07. Ce qui est tiré le 2026-10-11 se range sous cet as_of ; les dépôts postérieurs sont écartés ; le journal garde l'heure réelle des requêtes.
+
+  (3) Nebius, rupture de périmètre. Le CIK 1513845 est celui de Yandex N.V. jusqu'à la cession de ses activités russes, achevée le 12 juillet 2024 (20-F 2024, 0001558370-25-005991 : « July 12, 2024, at which the Company sold its remaining stake in the Divested Businesses »). Les rapports antérieurs présentent une autre entité économique. Même règle que les fusions inversées (D-0043, point 3), écrite dans `config.yaml` (`history_breaks`) :
+  - hors du groupe : les rapports périodiques dont la période se clôt avant le 12 juillet 2024 et les autres dépôts antérieurs à cette date (classe d'inventaire `pre_combination`, hors des séries et du texte) ;
+  - l'exercice 2024 reste, puisqu'il se clôt après la cession ; ses états présentent les activités cédées en activités abandonnées jusqu'au 12 juillet ;
+  - le groupe porte `history_left_censored`.
+
+  (4) IREN, changement de référentiel. IREN publiait en IFRS (20-F des exercices clos les 30 juin 2022 à 2024, et 6-K), puis en US GAAP à partir de l'exercice clos le 30 juin 2025 (10-K 0001878848-25-000063 : « Effective this fiscal year, we have transitioned from International Financial Reporting Standards [...] to GAAP »). L'invariant (f) interdit de mêler les deux cadres :
+  - hors des séries : les rapports dont la période se clôt avant le 1er juillet 2024 et les dépôts antérieurs à cette date (`history_breaks`, même règle). Leurs notes en IFRS restent lues par le bloc `foreign` (D-0042) ;
+  - le groupe porte `history_left_censored` ; ses séries commencent avec l'exercice 2025.
+
+  (5) Rapports annuels sans rapports trimestriels :
+  - Nebius est un émetteur privé étranger : un 20-F par an, aucun rapport trimestriel déposé (la règle 13a-13 ne s'applique pas ; les 6-K sont furnished, sans états balisés). IREN n'a déposé de 10-Q qu'à partir du trimestre clos le 30 septembre 2025 ;
+  - le 20-F entre dans les rapports périodiques du pipeline (inventaire, archives XBRL, dates de publicité de la vue `as_known`, signaux) ;
+  - un exercice qui n'a qu'un rapport annuel se découpe en quatre trimestres de trois mois, comme les exercices synthétiques. Sinon l'exercice entier passerait pour un trimestre, et des montants annuels pour des montants trimestriels. Aucun groupe présent n'a un tel exercice dans la fenêtre (vérifié : seul AMD en 1993) ;
+  - `reporting_start` : les trimestres de Nebius sont `not_applicable`, avec la règle 13a-13 pour pièce ; ceux d'IREN commencent au 1er juillet 2025 (premier 10-Q, 0001878848-25-000081) ;
+  - les signaux du rapport annuel (faiblesse du contrôle interne, continuité d'exploitation) se lisent au trimestre de clôture de l'exercice, comme pour un 10-K.
+
+  (6) Textes lus :
+  - 20-F de Nebius (exercices 2024 et 2025, et l'amendement de 2026) : notes par rôles XBRL, comme les 10-K. Item 15 (Controls and Procedures) en bloc `item_9a` ; Item 7.B (Related Party Transactions) en bloc `item_404`, l'Item 404 de Reg S-K ne s'appliquant pas aux émetteurs étrangers ; Item 10.C (Material Contracts) en bloc `item_8k_101`. Mêmes contenus, mêmes règles de lecture. Les états d'un 20-F sont audités (niveau A) ;
+  - IREN, à partir de son 10-K de l'exercice 2025 : 10-K, 10-Q, 8-K et DEF 14A, règles des groupes présents ;
+  - 6-K (Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K) : un 6-K n'a pas d'items. Unités : les paragraphes du document principal et des annexes 99 qui nomment un terme du lexique fixé ici, avec deux paragraphes de part et d'autre, fondus quand ils se chevauchent (règle de D-0046) ; bloc `foreign_6k_text`. Lexique : « agreement », « contract », « financing », « convertible », « notes due », « credit facility », « loan », « warrant », « offering », « lease », et les noms des groupes et des laboratoires de `config.yaml`. Plafond : 80 unités par groupe, du plus récent au plus ancien ; au-delà, `not_processed`. Un 6-K est furnished (niveau E), sauf incorporation par référence lue dans le 6-K (D-0042).
+
+  (7) Découverte et `foreign` : comme en D-0043, point 6. Les lignes déjà lues pour ces déposants vont à leur groupe ; leurs unités encore dans la file en sortent (`out_of_scope`) ; côté client, la recherche reste incomplète, puisque le scan des Notes Data Sets n'a jamais cherché leurs noms (`search_incomplete`).
+
+  (8) Limites connues avant calcul :
+  - Nebius n'a pas de séries trimestrielles, et deux exercices seulement dans son périmètre actuel (2024, dont la première moitié avec les activités cédées, et 2025) ;
+  - les séries d'IREN commencent avec l'exercice 2025 ;
+  - l'Item 15 du 20-F 2024 de Nebius dit déjà une difficulté de contrôle (« we were unable to complete the implementation of all necessary controls for our newly constituted group during 2024 ») : vu en relevant la date de la cession, avant toute règle de lecture. La lecture de l'Item 15 dira s'il s'agit d'une faiblesse significative.
