@@ -15,9 +15,9 @@
 - **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des dix-sept groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 56 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 32 issues ; motifs : précondition non remplie : 10, intervalle à cheval sur le seuil : 6, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 2. Issues déterminées : E.1 non étayé 14. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 824, `not_testable` 715, `ok` 16 941, `tautological` 745 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Contrôles comptables, vue `as_known`** : `mismatch` 824, `not_testable` 717, `ok` 16 941, `tautological` 745 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 1 281, `not_testable` 940, `ok` 16 698, `tautological` 745.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 110/604, C11 56/542, C12 206/1 170, C13 0/217, C14 24/645, C15 85/374, C16 2/350, C1 142/8 561, C2 79/4 789, C3 69/347, C5 0/83, C6 0/745, C7 5/273, C8 40/107, C9 6/418.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 110/604, C11 56/542, C12 206/1 170, C13 0/217, C14 24/645, C15 85/374, C16 2/350, C1 142/8 561, C2 79/4 789, C3 69/347, C5 0/85, C6 0/745, C7 5/273, C8 40/107, C9 6/418.
 - **Exclusions principales** : `not_processed` 20 863, `conflicting` 679, `pending_entity` 373, `financial_parties_only` 199, `out_of_scope` 164, `invalid_aggregate` 35, `parse_failed` 32, `submitted_draft` 8, `history_left_censored` 6, `not_public` 2.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
@@ -1217,7 +1217,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Applied Digital → B. RILEY COMMERCIAL CAPITAL, LLC
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 12 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 21 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (1 sur 1).
@@ -1251,15 +1251,15 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Applied Digital → CIM APLD LENDER HOLDINGS, LLC
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 15 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 33 % (1 sur 3).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Applied Digital → Ekso Bionics Holdings, Inc.
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client dépose hors du périmètre et ses dépôts ne sont pas tous lus (découverte, §14)) ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client dépose hors du périmètre et ses dépôts ne sont pas tous lus (découverte, §14)) ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 30 trimestres ; sensibilité `ever_financed` : inconnu 30 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (recherche incomplète) ; 2022-05-31 : n.d. (recherche incomplète) ; 2023-05-31 : n.d. (recherche incomplète) ; 2024-05-31 : n.d. (recherche incomplète) ; 2025-05-31 : n.d. (recherche incomplète) ; 2026-05-31 : n.d. (recherche incomplète).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -1283,35 +1283,35 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Applied Digital → Macquarie Equipment Capital, Inc.
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 19 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 33 % (2 sur 6).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Applied Digital → MIP HPC HOLDINGS, LLC
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 20 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (1 sur 1).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (2 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Applied Digital → MIP VI HPC HOLDINGS, LLC
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (1 sur 1).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (2 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Applied Digital → CoreWeave
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 6 arêtes.
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 18 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 30 trimestres ; sensibilité `ever_financed` : jamais documenté 30 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-05-31 : n.d. (précondition non remplie) ; 2022-05-31 : n.d. (précondition non remplie) ; 2023-05-31 : n.d. (précondition non remplie) ; 2024-05-31 : n.d. (précondition non remplie) ; 2025-05-31 : n.d. (précondition non remplie) ; 2026-05-31 : n.d. (précondition non remplie).
 - Contrepartie payable au client : 6 cellules indéterminées (non publié).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 20 % (1 sur 5).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 44 % (4 sur 9).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Applied Digital → Oracle
@@ -1374,6 +1374,14 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 ### Cipher → Amazon
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Cipher → Fluidstack USA II Inc.
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -1467,7 +1475,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Alphabet → Cipher
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 12 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 13 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (2 sur 2).
@@ -1540,18 +1548,18 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Alphabet → TeraWulf
 
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 8 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 9 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 67 % (2 sur 3).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 75 % (3 sur 4).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### IREN → Microsoft
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (une clause de la paire est caviardée) ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (une clause de la paire est caviardée) ; 4 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 29 trimestres ; sensibilité `ever_financed` : inconnu 29 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (historique tronqué) ; 2022-06-30 : n.d. (historique tronqué) ; 2023-06-30 : n.d. (historique tronqué) ; 2024-06-30 : n.d. (historique tronqué) ; 2025-06-30 : n.d. (historique tronqué) ; 2026-06-30 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### IREN → NVIDIA
@@ -1618,7 +1626,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Nebius → Meta
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 8 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 25 trimestres ; sensibilité `ever_financed` : inconnu 25 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
@@ -1626,7 +1634,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Nebius → Microsoft
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 25 trimestres ; sensibilité `ever_financed` : inconnu 25 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -1800,7 +1808,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### TeraWulf → Fluidstack USA I Inc.
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -1814,12 +1822,20 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
-### TeraWulf → Anthropic
+### TeraWulf → NAUTILUS CRYPTOMINE LLC
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (1 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### TeraWulf → Anthropic
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Sorties de couverture par fournisseur (§3.6)
@@ -1863,6 +1879,14 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | Applied Digital → AI Bridge Funding LLC → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
 | Applied Digital → B. RILEY COMMERCIAL CAPITAL, LLC → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
 | Applied Digital → B. Riley Financial, Inc. → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Applied Digital → CIM APLD LENDER HOLDINGS, LLC → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Applied Digital → Macquarie Equipment Capital, Inc. → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Applied Digital → MIP HPC HOLDINGS, LLC → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Applied Digital → MIP VI HPC HOLDINGS, LLC → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Applied Digital → SUMITOMO MITSUI BANKING CORPORATION → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Applied Digital → CoreWeave → Applied Digital | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
+| Cipher → BITFURY TOP HOLDCO B.V. → Cipher | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Cipher → LUMINANT ET SERVICES COMPANY LLC → Cipher | 2 | non (4) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Core Scientific → BITMAIN TECHNOLOGIES DELAWARE LIMITED → Core Scientific | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | CoreWeave → OpenAI → CoreWeave | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
 | CoreWeave → OpenAI → NVIDIA → CoreWeave | 3 | non (4) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
@@ -1883,7 +1907,7 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | SpaceX → Tesla, Inc. → SpaceX | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | TeraWulf → Heorot Power Holdings LLC → TeraWulf | 2 | non (16) | commerciale réciproque | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **achats réciproques seulement** |
 
-Décompte de E.6 (descriptif, hors de E.7) : 30 cycles ; concomitance non : relation commerciale doublée d'un financement 1, achats réciproques seulement 1 ; concomitance oui : causalité non établie 3, relation commerciale doublée d'un financement 14, dépendance documentée 10, achats réciproques seulement 1.
+Décompte de E.6 (descriptif, hors de E.7) : 38 cycles ; concomitance non : relation commerciale doublée d'un financement 2, achats réciproques seulement 1 ; concomitance oui : causalité non établie 8, relation commerciale doublée d'un financement 16, dépendance documentée 10, achats réciproques seulement 1.
 
 ## Form D (bloc form_d, §14)
 
@@ -2345,5 +2369,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 14 729, terme manquant 3 455, non publié 3 239, concept non résolu 2 829, période antérieure absente 1 672, historique tronqué 1 086, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 853, annuel seulement 600, dénominateur négatif ou nul 352, précondition non remplie 329, client anonyme 138, frontière de retraitement 133, recherche incomplète 132, période non écoulée à la date de coupure 113, faits en conflit 86, non collecté 29, intervalle à cheval sur le seuil 14, date manquante 12, lecture impossible 8, dénominateur sous le seuil 3, entité non confirmée 3.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 14 729, terme manquant 3 455, non publié 3 242, concept non résolu 2 829, période antérieure absente 1 672, historique tronqué 1 204, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 853, annuel seulement 600, dénominateur négatif ou nul 352, précondition non remplie 329, client anonyme 138, frontière de retraitement 133, recherche incomplète 132, période non écoulée à la date de coupure 113, faits en conflit 86, non collecté 29, intervalle à cheval sur le seuil 14, date manquante 12, lecture impossible 8, dénominateur sous le seuil 3, entité non confirmée 3.
 

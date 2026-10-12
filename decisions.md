@@ -710,3 +710,14 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les coentreprises de TeraWulf avec Fluidstack : FS CS I LLC (détenue à 50,1 %), Flash Compute LLC et FS AB LLC, qu'aucun extrait ne dit consolidées ; Allin WULF LLC ;
     - les coentreprises mises en équivalence (Nautilus Cryptomine LLC chez TeraWulf, Alborz LLC chez Cipher), les apparentés (Beowulf, Bitfury) et tous les tiers.
   - Aucune dénomination nouvelle n'entre au registre : l'extraction des BDC Data Sets n'est pas refaite (point 8).
+
+  (10) Effets, au réassemblage (17 groupes, vue `as_known`) :
+  - arêtes : 203 arêtes allaient à une contrepartie propre portant le nom d'un véhicule retenu ; elles vont désormais à son groupe (les six hébergeurs passent de 1 050 à 1 278 arêtes). 7 deviennent internes et s'éliminent (132 → 139). Avec les grands groupes : CoreWeave → Applied Digital 0 → 15 arêtes (baux des bâtiments 2 à 4 de Polaris Forge 1, environ 3, 4 et 4 Md$ ; lettre de crédit de 50 M$ ; garanties), Meta → Nebius 4 → 8, Microsoft → Nebius 2 → 4, Microsoft → IREN 2 → 4, Alphabet → Cipher 12 → 13, Alphabet → TeraWulf 8 → 9 ;
+  - paires (conclusions de relation) : 83 → 85. Nouvelles, en causalité non établie : Cipher → Fluidstack USA II Inc. (bail de Barber Lake) et TeraWulf → Nautilus Cryptomine LLC (coentreprise mise en équivalence). Applied Digital → CoreWeave passe de « causalité non établie » à « relation commerciale doublée d'un financement » : baux, lettre de crédit et garanties de CoreWeave d'un côté, bons de souscription et garanties d'Applied Digital de l'autre ; recherche complète, aucune pièce de lien (E.0). Les dépendances documentées restent 8 ;
+  - cycles : 30 → 38 :
+    - Applied Digital → CoreWeave → Applied Digital, concomitant, commercial et financier ;
+    - Cipher avec Bitfury Top HoldCo B.V. (concomitant) et avec Luminant ET Services Company LLC (non concomitant), commerciaux et financiers ;
+    - cinq boucles de financement seul d'Applied Digital, en causalité non établie : CIM APLD Lender Holdings, LLC, Macquarie Equipment Capital, Inc., MIP HPC Holdings, LLC, MIP VI HPC Holdings, LLC et Sumitomo Mitsui Banking Corporation ;
+  - inchangés : événements de l'annexe F (220), paires à financement documenté (16), E.1 et E.2 (32 issues, dont 18 indéterminées ; E.7 « discrimination possible »), E.6 (18 cycles décrits). E.5 : 85 issues, toutes indéterminées ;
+  - limite : les véhicules sans extrait (point 9) restent des contreparties propres. Si un extrait disait consolidée la coentreprise de TeraWulf avec Fluidstack (50,1 %), ses arêtes iraient à TeraWulf ;
+  - tests unitaires : 104. Source : §3.6, §10.2, §10.3, annexe E.
