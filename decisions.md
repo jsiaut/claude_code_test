@@ -695,3 +695,18 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   (7) Écritures : `config.yaml`, `confirmed_entities`, un enregistrement par entité (décision D-0050, bloc, accession, extrait ; note d'appartenance pour une chaîne, une date ou un traitement d'entité à intérêts variables). Les entités vues sans extrait restent des contreparties propres et sont comptées par groupe.
 
   (8) Ordre et commits : la décision ; l'inventaire et les extraits (un commit) ; le réassemblage (l'extraction des BDC Data Sets n'est refaite que si une dénomination nouvelle entre au registre, D-0043, point 14) ; les rendus ; les résultats ici ; tests, commit, push, rapport.
+
+  (9) Inventaire et extraits, avant tout réassemblage.
+  - Candidats (point 3) : WULF 50 entités, CIFR 33, CORZ 100, NBIS 9, IREN 16, APLD 62, surtout des tiers (banques, fournisseurs, clients). Les phrases qui les nomment avec un terme de filiale ont été cherchées mécaniquement dans 554 blocs lus, puis chaque phrase a été relue par l'exécutant. Un premier découpage en phrases coupait après « Inc. » ou « Ltd. » et cachait des extraits (IREN, Nebius) ; il a été corrigé avant la relecture.
+  - Retenus : 52 rattachements (`confirmed_entities`, D-0050) et un alias, chaque extrait vérifié mot pour mot dans son bloc, avec son accession :
+    - Applied Digital (25) : APLD - Rattlesnake Den I, LLC ; APLD ChronoScale HoldCo LLC ; APLD ComputeCo LLC, 2 et 3 ; APLD DevCo LLC ; APLD ELN-01, ELN-02, ELN-02 C et ELN-03 LLC ; APLD-ELN-02 LLC (graphie à trait d'union, rattachée sans fusion) ; APLD ELN-02 Holdings LLC et APLD HPC Holdings LLC (ancienne et nouvelle dénomination) ; APLD FAR-01 LLC ; APLD GPU-01, LLC ; APLD Holdings 2 LLC ; APLD Hosting, LLC ; APLD HPC TopCo LLC et TopCo 2 LLC ; APLD Intermediate HoldCo LLC ; Applied Digital Cloud Corporation ; Applied Hosting, LLC ; Sai Computing LLC et Sai Computing Holdings LLC ; Ekso Bionics Holdings, Inc., à partir du 5 mai 2026 (acquise par regroupement d'entreprises), avec l'alias ChronoScale Corporation (« Ekso will change its name to ChronoScale Corporation ») ;
+    - TeraWulf (11) : Lake Mariner Data LLC, TeraWulf Brookings LLC, WULF Compute LLC, Lake Hawkeye LLC, Big Country Wulf LLC, Raylan Data LLC, DB Long Hunts Data LLC, TeraLease LLC, TeraCub Inc., TeraWulf (Thales) LLC, Akela Data LLC ;
+    - Cipher (7) : Cipher Mining Technologies Inc., Cipher Mining Infrastructure LLC, Cipher Compute LLC, Cipher Barber Lake LLC, Cipher Black Pearl LLC, Black Pearl Compute LLC, Stingray Compute LLC ;
+    - Core Scientific (2) : Core Scientific Finance I LLC ; Polaris DS LLC, à partir du 13 août 2026 (acquisition réalisée) ;
+    - Nebius (3) : Nebius, Inc. ; Nebius Compute II, LLC ; AlphaAI Technologies, Inc. (Tavily), à partir du 19 février 2026 ;
+    - IREN (4) : IE US Hardware 3 LLC, IE US Hardware 3 Inc., IE US Hardware 4 Inc., IE CA Leasing Ltd.
+  - Restent des contreparties propres, faute d'extrait :
+    - APLD FAR Holdings LLC et APLD HPC Holdings 2 LLC, dites seulement « parent » d'un émetteur ;
+    - les coentreprises de TeraWulf avec Fluidstack : FS CS I LLC (détenue à 50,1 %), Flash Compute LLC et FS AB LLC, qu'aucun extrait ne dit consolidées ; Allin WULF LLC ;
+    - les coentreprises mises en équivalence (Nautilus Cryptomine LLC chez TeraWulf, Alborz LLC chez Cipher), les apparentés (Beowulf, Bitfury) et tous les tiers.
+  - Aucune dénomination nouvelle n'entre au registre : l'extraction des BDC Data Sets n'est pas refaite (point 8).
