@@ -47,8 +47,9 @@ VALUE_FR = {"no_event": "sans événement", "event": "événement", "active": "a
 GROUP_NAMES = {"NVDA": "NVIDIA", "GOOGL": "Alphabet", "AMZN": "Amazon", "META": "Meta", "MSFT": "Microsoft",
                "ORCL": "Oracle", "CRWV": "CoreWeave", "SPCX": "SpaceX", "AMD": "AMD", "AVGO": "Broadcom",
                "MRVL": "Marvell", "WULF": "TeraWulf", "CIFR": "Cipher", "CORZ": "Core Scientific",
-               "NBIS": "Nebius", "IREN": "IREN", "APLD": "Applied Digital"}
-NUM_FR = {11: "onze", 12: "douze", 13: "treize", 14: "quatorze", 15: "quinze", 16: "seize", 17: "dix-sept"}
+               "NBIS": "Nebius", "IREN": "IREN", "APLD": "Applied Digital", "DELL": "Dell", "SMCI": "Supermicro"}
+NUM_FR = {11: "onze", 12: "douze", 13: "treize", 14: "quatorze", 15: "quinze", 16: "seize", 17: "dix-sept", 18: "dix-huit",
+          19: "dix-neuf"}
 
 
 def n_groups(cfg):
