@@ -722,3 +722,26 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - limite : les véhicules sans extrait (point 9) restent des contreparties propres. Si un extrait disait consolidée la coentreprise de TeraWulf avec Fluidstack (50,1 %), ses arêtes iraient à TeraWulf ;
   - tests unitaires : 104. Source : §3.6, §10.2, §10.3, annexe E.
 - **D-0051 — Noms de personnes déjà présents dans les lignes : conservés.** Décision de l'utilisateur, le 2026-10-16 : « Non on les garde, c'est de l'information ». Elle répond au contrôle signalé à la fin de D-0050 : environ 80 mentions de personnes physiques (dirigeants et actionnaires de contrôle nommés par les dépôts) dans les citations, les notes et les rendus de lignes antérieures, dont une ligne hors graphe qui nomme une personne comme contrepartie. Elles restent telles quelles ; aucune correction rétroactive.
+- **D-0052 — Ajout de groupes : Dell Technologies (DELL) et Super Micro Computer (SMCI). Règles fixées avant tout tirage.** (1) Décision de l'utilisateur, le 2026-10-16 : « Ok ajoute Dell et SMCI au modèle ». Elle suit le point d'étape du même jour sur les entités du modèle. Deux fournisseurs de serveurs d'IA, liés aux groupes présents (NVIDIA, CoreWeave, SpaceX et xAI, IREN, Core Scientific). Lecture séquentielle par l'exécutant, sans sous-agent.
+
+  (2) Configuration et date de connaissance : `company_tickers.json` doit résoudre DELL et SMCI ; les CIK attendus sont 1571996 (Dell Technologies Inc.) et 1375365 (Super Micro Computer, Inc.), à vérifier en phase 0. Les deux groupes entrent dans `config.yaml`, avec `group_entry` au 2026-10-16. L'exécution garde l'as_of du 2026-10-07 (D-0048, point 2) : ce qui est tiré maintenant se range sous cet as_of, les dépôts postérieurs sont écartés, le journal garde l'heure réelle des requêtes.
+
+  (3) Mêmes phases et mêmes règles de lecture que les groupes présents (D-0043, D-0048, D-0049) : inventaire, archives XBRL, catalogue des notes, des items et des pièces, lecture complète du texte.
+
+  (4) Calendriers : Dell clôt un exercice de 52 ou 53 semaines fin janvier ou début février, SMCI le 30 juin. Le calendrier les traite comme les exercices décalés déjà présents (clôtures lues sur `period_end`).
+
+  (5) Ruptures d'historique : seulement une fusion inversée, une reprise de coquille ou une cession de l'essentiel de l'activité après laquelle les rapports présentent une autre entité économique (D-0043, point 3 ; D-0048, point 3). N'en sont pas : chez Dell, l'échange des actions de classe V (décembre 2018) et la scission de VMware (1er novembre 2021), présentée ensuite en activités abandonnées, Dell restant la même entité économique ; un retard de dépôt, même de plusieurs exercices, qui relève des signaux de structure (dépôt tardif, changement d'auditeur), comptés comme pour les autres groupes.
+
+  (6) Filiales : la règle de D-0050 (points 3 à 7) s'applique aux véhicules des deux groupes nommés dans les lignes, y compris dans celles des autres groupes (par exemple Dell Marketing L.P., Dell Canada Inc. ou Dell Financial Services L.L.C.). Elle s'applique à l'intégration, après la lecture.
+
+  (7) Découverte (D-0043, point 6) : les lignes déjà lues pour ces déposants vont à leur groupe ; leurs unités encore en file en sortent (`out_of_scope`) ; côté client, la recherche reste incomplète pour un fournisseur que le lexique de la découverte ne nommait pas.
+
+  (8) Les lexiques déjà fixés (unités 6-K de D-0048, point 9 ; termes des montages) ne changent pas.
+
+  (9) Ordre et commits :
+  - la décision ;
+  - la configuration, la phase 0 et l'univers attendu ;
+  - l'index, les archives XBRL et les pièces (phases 0, 1 et 2, réseau en série) ;
+  - le catalogue et les listes de lecture, avec leur volume consigné ici avant toute lecture ;
+  - la lecture de Dell, puis celle de SMCI, un commit par partie ;
+  - l'intégration : filiales par extrait, noms au rendu, premier réassemblage, extraction refaite des BDC Data Sets (D-0043, point 14), second réassemblage, rendus, résultats ici, tests, commit, push, rapport.
