@@ -325,7 +325,21 @@ def exclusions(as_of):
             ex(f"{d['adsh']}/{d['file']}", "out_of_scope", f"{d['filer']} ({d['form']}) : {detail}", d["adsh"])
         for d in info.get("excluded") or []:
             ex(f"{d['adsh']}/{d['file']}", "out_of_scope", f"{d['filer']} ({d['form']}) : {d['reason']} ({dec})", d["adsh"])
+        # déposant devenu groupe suivi (D-0053, point 7) : ses dépôts se lisent par le catalogue du groupe
+        docs_path = _paths(mid)[1]
+        filer_cik = {}
+        if docs_path.exists() and info.get("over_cap"):
+            docs = pd.read_parquet(docs_path, columns=["adsh", "cik"])
+            filer_cik = {a: str(int(c)) for a, c in zip(docs["adsh"], docs["cik"]) if str(c).strip().isdigit()}
+        from .load import config_group_ciks
+        as_group = config_group_ciks()
         for d in info.get("over_cap") or []:
+            grp = as_group.get(filer_cik.get(d["adsh"], ""))
+            if grp:
+                ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
+                   f"fenêtre au-delà du plafond de {spec['cap']} unités, dépôt du groupe {grp} lu par son catalogue (D-0053, point 7)",
+                   d["adsh"])
+                continue
             ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
                f"fenêtre au-delà du plafond de {spec['cap']} unités ({'D-0046, point 4' if mid == FIRST else dec})", d["adsh"])
     return out

@@ -125,6 +125,22 @@ def config_group_ciks():
     return {str(int(c)): m["group"] for c, m in meta.items()}
 
 
+def line_group(b, as_group, canon):
+    """Groupe des lignes d'un bloc lu hors de la liste d'un groupe suivi, ou None pour garder celui du
+    bloc : un déposant découvert devenu groupe de config.yaml (D-0043) ou dont un montage a lu les dépôts
+    (D-0053, point 7) passe à son groupe ; un autre déposant découvert forme le groupe de sa contrepartie."""
+    kind = str(b.get("block_kind", ""))
+    cik = str(int(b["cik"])) if str(b.get("cik") or "").strip().isdigit() else None
+    if kind.startswith("discovery_") and cik in as_group:
+        return as_group[cik]
+    if kind == "montage_text" and str(b.get("group_id") or "").startswith("CP:") and cik in as_group:
+        return as_group[cik]
+    if kind.startswith("discovery_") and cik in canon:
+        from .graph import normalize_name
+        return "CP:" + normalize_name(canon[cik])
+    return None
+
+
 def load_observations(con, catalog, as_of):
     """Charge la passe la plus récente de chaque bloc dont la clé existe encore, après
     validation sémantique ; une ligne rejetée devient une exclusion validation_failed."""
@@ -155,11 +171,9 @@ def load_observations(con, catalog, as_of):
             errs, locator = semantic_errors(l, b)
             state = "valid" if not errs else "rejected_semantic"
             row = _obs_row(l, b, n, state, errs, locator)
-            if str(b.get("block_kind", "")).startswith("discovery_") and str(int(b["cik"])) in as_group:
-                row["group_id"] = as_group[str(int(b["cik"]))]
-            elif str(b.get("block_kind", "")).startswith("discovery_") and str(int(b["cik"])) in canon:
-                from .graph import normalize_name
-                row["group_id"] = "CP:" + normalize_name(canon[str(int(b["cik"]))])
+            g = line_group(b, as_group, canon)
+            if g:
+                row["group_id"] = g
             rows.append(row)
             if errs:
                 excl.append(_excl("observation_line", row["obs_key"], "validation_failed", "; ".join(errs), b,

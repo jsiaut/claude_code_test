@@ -96,5 +96,26 @@ class CounterpartyMembership(unittest.TestCase):
         self.assertEqual(kinds["Galaxy Helios I LLC"], "counterparty_group")
 
 
+
+class FilerBecomesGroup(unittest.TestCase):
+    """D-0053, point 7 : lignes d'un montage lues dans les dépôts d'un déposant devenu groupe suivi."""
+
+    def test_montage_lines_follow_the_filer_group(self):
+        from pipeline.load import line_group
+        as_group = {"1859392": "GLXY"}
+        b = {"block_kind": "montage_text", "group_id": "CP:galaxy digital inc", "cik": "0001859392"}
+        self.assertEqual(line_group(b, as_group, {}), "GLXY")
+        # dépôt d'un autre déposant (CoreWeave lu pour le même montage) : le groupe du bloc reste
+        self.assertIsNone(line_group(dict(b, cik="0001769628"), as_group, {}))
+        # bloc d'un groupe suivi : inchangé
+        self.assertIsNone(line_group(dict(b, group_id="CRWV"), as_group, {}))
+
+    def test_discovery_lines(self):
+        from pipeline.load import line_group
+        b = {"block_kind": "discovery_note", "group_id": "X", "cik": "0000000042"}
+        self.assertEqual(line_group(b, {"42": "HUT"}, {}), "HUT")
+        self.assertEqual(line_group(b, {}, {"42": "Acme Corp."}), "CP:acme corp")
+
+
 if __name__ == "__main__":
     unittest.main()
