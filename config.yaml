@@ -174,6 +174,8 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   APLD: "0001144879"         # ajout du 2026-10-11 (D-0049) : hébergeur endetté, locataire principal CoreWeave
   DELL: "0001571996"         # ajouts du 2026-10-16 (D-0052) : fournisseurs de serveurs d'IA
   SMCI: "0001375365"
+  HUT: "0001964789"          # ajouts du 2026-10-16 (D-0053) : mineurs devenus hébergeurs de centres de données
+  GLXY: "0001859392"
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -182,6 +184,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-11, groups: [NBIS, IREN], basis: "D-0048, ajout de groupes de §14"}
   - {date: 2026-10-11, groups: [APLD], basis: "D-0049, ajout de groupes de §14"}
   - {date: 2026-10-16, groups: [DELL, SMCI], basis: "D-0052, ajout de groupes de §14"}
+  - {date: 2026-10-16, groups: [HUT, GLXY], basis: "D-0053, ajout de groupes de §14"}
 
 history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
                              # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
