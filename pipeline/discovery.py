@@ -134,10 +134,13 @@ def archive_list():
 
 
 def period_start(cfg=None):
-    """Début de la période de lecture la plus ancienne des groupes (fenêtre allongée et huit
-    trimestres qui la précèdent, §11.1), lu dans les calendriers de la phase 0."""
+    """Début de la période de lecture la plus ancienne des groupes que nomme le lexique (fenêtre
+    allongée et huit trimestres qui la précèdent, §11.1), lu dans les calendriers de la phase 0.
+    Un groupe ajouté après le scan n'est pas cherché côté client (D-0043 ; D-0052, points 7 et 8) :
+    sa fenêtre ne déplace pas la période des archives (D-0036, point 2 ; D-0052, point 13)."""
     p = json.load(open(config.DB_DIR / "phase0.json", encoding="utf-8"))
-    starts = [c["window"]["reading_start"] for c in p["calendars"].values() if c.get("window")]
+    refs = {e["ref"] for e in lexicon(cfg)}
+    starts = [c["window"]["reading_start"] for g, c in p["calendars"].items() if c.get("window") and g in refs]
     return min(starts)
 
 
