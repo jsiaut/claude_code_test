@@ -146,8 +146,11 @@ def load_observations(con, catalog, as_of):
     validation sémantique ; une ligne rejetée devient une exclusion validation_failed."""
     cat = {b["content_key"]: b for b in catalog}
     canon = canonical_filers(catalog)
-    # un déposant découvert devenu groupe de config.yaml (D-0043) : ses lignes vont à son groupe
+    # un déposant découvert devenu groupe de config.yaml (D-0043) : ses lignes vont à son groupe ; la
+    # tête d'un groupe non déposant qui a déposé son document d'enregistrement (D-0054, point 13) aussi
     as_group = config_group_ciks()
+    from .nf_discovery import own_filer_ciks
+    as_group.update(own_filer_ciks())
     rows, excl = [], []
     for p in sorted(config.OBS_DIR.glob("*.jsonl")):
         if p.name.endswith(".rejected.jsonl"):

@@ -103,5 +103,50 @@ class LevelOne(unittest.TestCase):
         self.assertIsNone(g["SoftBank Group"])      # nom sans extrait : en attente, hors du groupe
 
 
+def html(*lines):
+    return ("<html><body>" + "".join(f"<p>{l}</p>" for l in lines) + "</body></html>").encode("utf-8")
+
+
+class OwnFiling(unittest.TestCase):
+    """Document d'enregistrement de la tête d'un groupe non déposant (D-0054, point 13)."""
+
+    def test_notes_cut_by_numbered_titles_in_each_set(self):
+        raw = html("Index to Consolidated Financial Statements",
+                   "Notes to Consolidated Financial Statements | F-7",
+                   "CONSOLIDATED BALANCE SHEETS", "Total assets | 10",
+                   "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+                   "1. BASIS OF PREPARATION", "The company was formed in 2024.",
+                   "2. DEBT", "1. The facility bears interest.", "F-9", "EXAMPLE LIMITED",
+                   "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS", "The loan matures in 2030.",
+                   "CONDENSED CONSOLIDATED BALANCE SHEETS", "Total assets | 12",
+                   "NOTES TO CONDENSED CONSOLIDATED FINANCIAL STATEMENTS",
+                   "1. OVERVIEW", "Interim overview.", "PART II", "Exhibits")
+        notes = N.financial_notes_html(raw, running_headers=["EXAMPLE LIMITED"])
+        self.assertEqual([(n["set"], n["number"], n["title"]) for n in notes],
+                         [(0, 1, "BASIS OF PREPARATION"), (0, 2, "DEBT"), (1, 1, "OVERVIEW")])
+        debt = notes[1]["text"]
+        self.assertIn("1. The facility bears interest.", debt)      # puce numérotée, pas un titre
+        self.assertIn("The loan matures in 2030.", debt)             # la note continue après le saut de page
+        self.assertNotIn("F-9", debt)
+        self.assertNotIn("EXAMPLE LIMITED", debt)
+        self.assertNotIn("Total assets", debt)
+        self.assertNotIn("Exhibits", notes[2]["text"])
+
+    def test_section_bounded_by_next_table_of_contents_title(self):
+        raw = html("Principal Shareholders | 141", "Certain Relationships and Related Party Transactions | 143",
+                   "Description of Certain Indebtedness | 149",
+                   "<b>Certain Relationships and Related Party Transactions</b>", "We sold shares to an investor.",
+                   "<b>DESCRIPTION OF CERTAIN INDEBTEDNESS</b>", "Vendor financing.")
+        sec = N.toc_section(raw, "Certain Relationships and Related Party Transactions")
+        self.assertIn("We sold shares to an investor.", sec)
+        self.assertNotIn("Vendor financing.", sec)
+
+    def test_lines_of_the_registrant_go_to_its_non_filer_group(self):
+        from pipeline.load import line_group
+        b = {"block_kind": "discovery_note", "cik": "0002110365", "group_id": "NF:NSCALE"}
+        self.assertEqual(line_group(b, {"2110365": "NF:NSCALE"}, {"2110365": "NSCALE Ltd"}), "NF:NSCALE")
+        self.assertEqual(line_group(b, {}, {"2110365": "NSCALE Ltd"}), "CP:nscale ltd")   # sans l'entrée : groupe de contrepartie
+
+
 if __name__ == "__main__":
     unittest.main()

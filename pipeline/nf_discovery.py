@@ -11,11 +11,14 @@ cibles une ligne nomme ; ne sont gardées que les lignes qui nomment un non-dép
     python -m pipeline.nf_discovery verify        # EX-10 tirés, règles du lexique appliquées
     python -m pipeline.nf_discovery candidates    # candidats, classement, unités, règle de lecture
     python -m pipeline.nf_discovery prepare N     # blocs des N unités retenues suivantes
+    python -m pipeline.nf_discovery own           # unités du document d'enregistrement d'un non-déposant
+    python -m pipeline.nf_discovery prepare_own   # blocs de ses unités retenues
     python -m pipeline.nf_discovery status
 """
 import datetime as dt
 import hashlib
 import json
+import re
 import sys
 
 import pandas as pd
@@ -571,6 +574,212 @@ def prepare_body(adsh, doc):
     print(f"corps ajouté : {b['content_key']} ({len(full)} caractères)")
 
 
+# -- document d'enregistrement de la tête d'un groupe non déposant (D-0054, point 13) ----------
+# La règle du nom propre écarte les pièces d'un déclarant qui est lui-même la tête du non-déposant :
+# son S-1 entre dans la piste comme texte propre de son groupe, lu en entier (D-0033).
+
+OWN_UNITS = config.DB_DIR / "nf_discovery_own_units.parquet"
+
+
+def own_filings(cfg=None):
+    cfg = cfg or config.load()
+    return ((cfg.get("discovery") or {}).get("non_filer") or {}).get("own_filings") or []
+
+
+def own_filer_ciks(cfg=None):
+    """CIK (sans zéros) du déclarant -> groupe non déposant dont il est la tête."""
+    return {str(int(f["cik"])): f["ref"] for f in own_filings(cfg)}
+
+
+NOTES_SET = re.compile(
+    r"^notes to (the )?(unaudited )?(condensed )?(consolidated )?(interim )?financial statements", re.I)
+NOTE_TITLE = re.compile(r"^\W{0,3}(?:note\s+)?(\d{1,2})\s*[\.\-–—:]\s*[-–—]?\s*(\S.*)$", re.I)
+SET_END = re.compile(
+    r"^(condensed )?consolidated (balance sheets?|statements? of)|^part ii\b|^information not required in"
+    r"|^\*?listed in alphabetical order|^(lead |joint )?(book-?running managers?|bookrunners)\b|^through and including\b", re.I)
+PAGE_NOISE = re.compile(
+    r"^F-\d+$|^notes to (the )?(unaudited )?(condensed )?(consolidated )?(interim )?financial statements(\s*\(continued\))?$"
+    r"|^table of contents$", re.I)
+
+
+TOC_ROW = re.compile(r"^(.+?)\s*\|\s*(?:[ivxlc]+|[A-Z]{0,2}-?\d+)$", re.I)
+
+
+def toc_section(raw, title):
+    """Section d'un document d'enregistrement, de son titre au titre suivant du sommaire (titres
+    lus dans les lignes « Titre | page » du début du document) ; None sans entrée au sommaire."""
+    from . import sections, textnorm
+    lines = sections._lines(raw)
+    toc = [m.group(1).strip().lower() for m in (TOC_ROW.match(t.strip()) for t, _ in lines[:600]) if m]
+    tl = title.lower()
+    if tl not in toc:
+        return None
+    others = set(toc) - {tl}
+    start = next((i for i, (t, h) in enumerate(lines) if h and t.strip().lower() == tl and not TOC_ROW.match(t.strip())), None)
+    if start is None:
+        return None
+    end = next((j for j in range(start + 1, len(lines)) if lines[j][1] and lines[j][0].strip().lower() in others), len(lines))
+    return textnorm.lines_to_text([ln for ln in lines[start:end] if not PAGE_NOISE.search(ln[0].strip())])
+
+
+def financial_notes_html(raw, running_headers=()):
+    """Notes des états financiers d'un document d'enregistrement en HTML : un jeu s'ouvre à un titre
+    « Notes to ... Financial Statements » suivi de la note 1 ; une note va de son titre « N. TITRE »
+    (numérotation suivie, titre court) au titre suivant ; un jeu se ferme au titre d'un état
+    financier ou à la partie II. Les pieds de page (F-n) et les titres courants sont retirés."""
+    from . import sections, textnorm
+    lines = sections._lines(raw)
+    heads = {h.upper() for h in running_headers}
+    out, cur_set, expect, cur = [], -1, None, None
+
+    def close(end):
+        if cur is not None:
+            body = [ln for ln in lines[cur["start"]:end]
+                    if not PAGE_NOISE.search(ln[0].strip()) and ln[0].strip().upper() not in heads]
+            cur["text"] = textnorm.lines_to_text(body)
+            out.append(cur)
+
+    i = 0
+    while i < len(lines):
+        t = lines[i][0].strip()
+        m = NOTE_TITLE.match(t) if len(t) < 120 else None
+        if expect is None:
+            if NOTES_SET.search(t) and len(t) < 160:
+                expect = 1
+                cur_set += 1
+        elif m and int(m.group(1)) == expect and (m.group(2).isupper() or t.lower().startswith("note")):
+            close(i)
+            cur = {"set": cur_set, "number": expect, "title": m.group(2).strip(), "start": i}
+            expect += 1
+        elif cur is not None and SET_END.search(t) and len(t) < 160:
+            close(i)
+            cur, expect = None, None
+            continue
+        i += 1
+    close(len(lines))
+    return out
+
+
+def _co_mentions(text, rx, lex, names, own_ref, period):
+    refs = set()
+    for i, a, b in D.find_mentions(text, rx, lex, lambda t: D.own_name_spans(t, names)):
+        e = lex[i]
+        if D.ref_valid(e, period):
+            refs.add(e["ref"])
+    return sorted(refs - {own_ref})
+
+
+def own_filing_units(cfg=None, fetch=True):
+    """Unités du document d'enregistrement de chaque tête de non-déposant (D-0054, point 13) :
+    pièces EX-10 (en-tête), Item 404 et notes des états financiers du document principal, toutes lues
+    comme le texte d'un groupe ; la liste des filiales (EX-21) au niveau 1. Les co-mentions du lexique
+    d'ensemble sont gardées pour information."""
+    from . import edgar, sections
+    cfg = cfg or config.load()
+    lex = union_lexicon(cfg)
+    rx, _ = D.compile_lexicon(lex)
+    e = edgar.Edgar(net.SecClient(D.AS_OF, cfg), D.AS_OF) if fetch else None
+    rows = []
+    for f in own_filings(cfg):
+        cik10, acc, names = str(f["cik"]).zfill(10), f["accession"], [f["filer"]]
+        period = str(f["filed"]).replace("-", "")
+
+        def raw_of(doc):
+            p = cache.archive_path(cik10, acc, doc)
+            return cache.read(p) if p.exists() or e is None else e.archive(cik10, acc, doc)
+        docs = edgar.parse_sgml_header(raw_of(f"{acc}-index-headers.html"))["documents"]
+        base = {"ref": f["ref"], "cik": str(int(f["cik"])), "filer": f["filer"], "adsh": acc, "form": f["form"],
+                "date": period}
+        for d in docs:
+            t = d["TYPE"].upper().strip()
+            if re.match(r"^EX-10(\.\d+[A-Z]?)?$", t):
+                text, _ = D.plain_text(raw_of(d["FILENAME"]))
+                co = _co_mentions(text, rx, lex, names, f["ref"], period)
+                rows.append(dict(base, kind="exhibit_header", doc=d["FILENAME"], exhibit_type=t, section=None,
+                                 chars=len(text), co_refs=";".join(co)))
+            elif t.startswith("EX-21") and d["FILENAME"] == f.get("entity_list"):
+                rows.append(dict(base, kind="entity_list", doc=d["FILENAME"], exhibit_type=t, section=None,
+                                 chars=None, co_refs=""))
+        raw = raw_of(f["primary"])
+        sec = toc_section(raw, "Certain Relationships and Related Party Transactions")
+        if sec:
+            rows.append(dict(base, kind="item_404", doc=f["primary"] + "#item404", exhibit_type=None,
+                             section="Certain Relationships and Related Party Transactions", chars=len(sec),
+                             co_refs=";".join(_co_mentions(sec, rx, lex, names, f["ref"], period))))
+        for n in financial_notes_html(raw, running_headers=[f["filer"].upper().replace("LTD", "LIMITED"), f["filer"].upper()]):
+            rows.append(dict(base, kind="note", doc=f"{f['primary']}#s{n['set'] + 1}n{n['number']:02d}", exhibit_type=None,
+                             section=f"{n['number']}. {n['title']}", note_set=n["set"], chars=len(n["text"]),
+                             co_refs=";".join(_co_mentions(n["text"], rx, lex, names, f["ref"], period))))
+    u = pd.DataFrame(rows)
+    if u.empty:
+        return u
+    u["rule"] = "own_text"                    # lu en entier, comme le texte d'un groupe (D-0033)
+    u.loc[u["kind"] == "entity_list", "rule"] = "N1"
+    u["status"] = "queued"
+    u.insert(0, "order", range(1, len(u) + 1))
+    u.to_parquet(OWN_UNITS, index=False)
+    print(u.groupby(["kind", "status"]).size().to_dict())
+    return u
+
+
+def _own_block(u, f):
+    """Bloc d'une unité du document d'enregistrement : en-tête de pièce, Item 404, note ou liste des
+    filiales ; les lignes vont au groupe non déposant (load.line_group)."""
+    from . import blocks, sections
+    cik10, acc = str(f["cik"]).zfill(10), f["accession"]
+    sk = f"nfo{int(u['order']):05d}"
+    common = {"signal_class": 5, "sort_key": sk, "group_id": f["ref"], "cik": cik10, "accession": acc,
+              "form": f["form"], "filing_date": f["filed"], "acceptance": None, "knowledge_date": f["filed"],
+              "normalizer_version": config.NORMALIZER_VERSION, "delimiter_version": config.DELIMITER_VERSION,
+              "filing_status": "filed", "filer_name": f["filer"], "groups_named": [f["ref"]] + _split_refs(u["co_refs"]),
+              "nf_rule": u["rule"], "own_filing": True}
+    doc = u["doc"].split("#")[0]
+    raw = cache.read(cache.archive_path(cik10, acc, doc))
+    if u["kind"] in ("exhibit_header", "entity_list"):
+        text = sections.first_page(raw) if u["kind"] == "exhibit_header" else sections.full_text(raw)
+        kind = "discovery_exhibit_header" if u["kind"] == "exhibit_header" else "discovery_entity_list"
+        return dict(common, content_key=blocks.content_key(text, []), block_kind=kind, period_start=None,
+                    period_end=f["filed"], document=doc, locator={"file": doc, "accession": acc, "cik": cik10, "byte_range": None},
+                    text=text, candidate_facts=[], chars=len(text), exhibit_type=u["exhibit_type"],
+                    assurance_level="not_applicable", tier="D", mention_class="contract")
+    if u["kind"] == "item_404":
+        text = toc_section(raw, "Certain Relationships and Related Party Transactions")
+        return dict(common, content_key=blocks.content_key(text, []), block_kind="discovery_item_404", period_start=None,
+                    period_end=f["filed"], document=doc, locator={"file": doc, "accession": acc, "cik": cik10, "byte_range": None,
+                                                                   "section": u["section"]},
+                    text=text, candidate_facts=[], chars=len(text), note_label=u["section"],
+                    assurance_level="not_applicable", tier="C", mention_class="related_party")
+    sets = f.get("note_sets") or []
+    notes = financial_notes_html(raw, running_headers=[f["filer"].upper().replace("LTD", "LIMITED"), f["filer"].upper()])
+    n = next(x for x in notes if f"{doc}#s{x['set'] + 1}n{x['number']:02d}" == u["doc"])
+    st = sets[n["set"]] if n["set"] < len(sets) else {}
+    tier, assurance, _ = D.form_evidence(f["form"], "FY" if st.get("assurance") == "audited" else None)
+    return dict(common, content_key=blocks.content_key(n["text"], []), block_kind="discovery_note",
+                period_start=st.get("period_start"), period_end=st.get("period_end"), document=doc,
+                locator={"file": doc, "accession": acc, "cik": cik10, "byte_range": None, "section": u["section"]},
+                text=n["text"], candidate_facts=[], chars=len(n["text"]),
+                note_label=f"{st.get('label', '')} — note {u['section']}", assurance_level=assurance, tier=tier,
+                mention_class="related_party" if D.RELATED_TAG.search(n["title"].replace(" ", "")) else "note")
+
+
+def prepare_own():
+    """Blocs des unités retenues du document d'enregistrement, ajoutés au catalogue de la piste ;
+    l'état se garde sous la clé (accession, document)."""
+    fs = {f["accession"]: f for f in own_filings()}
+    u = pd.read_parquet(OWN_UNITS)
+    done = built_units()
+    todo = [x for x in u[u["status"] == "queued"].to_dict("records") if (x["adsh"], x["doc"]) not in done]
+    for x in todo:
+        b = _own_block(x, fs[x["adsh"]])
+        with open(CATALOG, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+        rec = {"order": int(x["order"]), "queue": None, "rank": None, "cik": x["cik"], "kind": x["kind"], "adsh": x["adsh"],
+               "doc": x["doc"], "rule": x["rule"], "content_key": b["content_key"], "error": None, "own_filing": True}
+        with open(BUILT, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    print(f"blocs préparés : {len(todo)}")
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "fetch":
@@ -585,5 +794,9 @@ if __name__ == "__main__":
         prepare(int(sys.argv[2]) if len(sys.argv) > 2 else 50)
     elif cmd == "body":
         prepare_body(sys.argv[2], sys.argv[3])
+    elif cmd == "own":
+        own_filing_units()
+    elif cmd == "prepare_own":
+        prepare_own()
     else:
         status()

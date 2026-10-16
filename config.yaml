@@ -373,6 +373,12 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
       r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
       r2_documented_amount: latest   # montant documenté : notes du dépôt le plus récent
       cap_units: 300         # au-delà, arrêt et rendement présenté
+    own_filings:             # document d'enregistrement public de la tête d'un groupe non déposant (D-0054, point 13)
+      - {ref: "NF:NSCALE", cik: "2110365", filer: "NSCALE Ltd", accession: "0001193125-26-395475", form: S-1,
+         filed: "2026-09-18", primary: ck0002110365-20260918.htm, entity_list: ck0002110365-ex21_1.htm,
+         note_sets: [{period_start: "2025-01-01", period_end: "2025-12-31", label: "états annuels audités, exercices 2025 et 2024", assurance: audited},
+                     {period_start: "2026-01-01", period_end: "2026-06-30", label: "états intermédiaires résumés au 30 juin 2026", assurance: reviewed}],
+         decision: D-0054}
 
 form_d:                      # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
   excluded_issuers:          # le terme y désigne autre chose qu'une exposition à la cible ; motif lu dans le Form D
