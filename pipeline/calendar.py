@@ -73,6 +73,23 @@ def apply_transition(years, tp):
     return years
 
 
+def fill_first_year(years, spec):
+    """Premier exercice d'un nouveau déclarant (D-0054, point 11) : un exercice de douze mois dont
+    les premiers trimestres précèdent le premier 10-Q reçoit des trimestres de trois mois depuis son
+    début aux places qu'aucun rapport trimestriel ne couvre ; les fins de trimestre déposées restent.
+    Sans cela, le premier trimestre déposé couvrirait tout le début de l'exercice."""
+    fe = d(str(spec["fy_end"]))
+    for y in years:
+        if y.get("fy_end") != fe or not y.get("fy_start"):
+            continue
+        filed = list(y["q_ends"][:-1])
+        synth = [e for e in _three_month_ends(y["fy_start"]) if all(abs((e - f).days) > 10 for f in filed)]
+        y["q_ends"] = sorted(set(filed) | set(synth)) + [fe]
+        y["quarters_source"] = "partial_synthetic"
+        y["synthetic_q_ends"] = sorted(synth)
+    return years
+
+
 def _year_before(fe):
     """Début d'un exercice de douze mois clos le `fe`."""
     try:

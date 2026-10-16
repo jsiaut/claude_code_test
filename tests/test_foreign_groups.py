@@ -139,6 +139,20 @@ class AnnualOnly(unittest.TestCase):
         self.assertEqual(years[0]["q_ends"], [dt.date(2023, 9, 30), dt.date(2023, 12, 31)])
         self.assertEqual(years[0]["quarters_source"], "synthetic")
 
+    def test_first_year_of_a_new_registrant(self):
+        # D-0054, point 11 : un seul 10-Q dans l'exercice d'introduction ; trimestres de trois mois
+        f = [{"form": "10-Q", "reportDate": "2021-09-30"}, {"form": "10-K", "reportDate": "2021-12-31"},
+             {"form": "10-Q", "reportDate": "2022-03-31"}, {"form": "10-K", "reportDate": "2022-12-31"}]
+        years = calendar.fiscal_calendar(f, "1231", "2026-10-07")
+        years[0]["fy_start"] = dt.date(2021, 1, 1)
+        years = calendar.fill_first_year(years, {"fy_end": "2021-12-31"})
+        y = years[0]
+        self.assertEqual(y["q_ends"], [dt.date(2021, 3, 31), dt.date(2021, 6, 30), dt.date(2021, 9, 30),
+                                       dt.date(2021, 12, 31)])
+        self.assertEqual(y["synthetic_q_ends"], [dt.date(2021, 3, 31), dt.date(2021, 6, 30)])
+        qs = [q for q in calendar.quarters(years) if q["fy_end"] == dt.date(2021, 12, 31)]
+        self.assertEqual(qs[2]["start"], dt.date(2021, 7, 1))     # le trimestre déposé garde trois mois
+
 
 class Breaks(unittest.TestCase):
     def test_history_break_like_reverse_combination(self):

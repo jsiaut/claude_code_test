@@ -132,6 +132,10 @@ def build_calendars(groups, meta, rows, cfg, as_of):
             synth = fcal.synthetic_years(synth_fye, w["start_fiscal_year"] - 4, last_synth)
             if years and years[0].get("fy_start") is None and synth:
                 years[0]["fy_start"] = synth[-1]["fy_end"] + dt.timedelta(days=1)
+        # premier exercice d'un nouveau déclarant avec moins de trois 10-Q (D-0054, point 11)
+        fy1 = (cfg.get("first_year_quarters") or {}).get(tk)
+        if fy1:
+            years = fcal.fill_first_year(years, fy1)
         all_years = synth + years
         win = fcal.window(all_years, w["start_fiscal_year"], w["extended_back_quarters"],
                           w["preceding_quarters"], dt.date.fromisoformat(as_of))

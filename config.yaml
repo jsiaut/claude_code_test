@@ -147,6 +147,27 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 32, indeterminate: 18, result: discrimination_possible}
       fragility_events: 220
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-16
+    decision: "Ajoute Hut 8 et Galaxy Digital"
+    groups_added: [HUT, GLXY]    # mineurs devenus hébergeurs de centres de données ; date d'entrée : group_entry (D-0053)
+    page: "rapport d'intégration de Dell et SMCI dans la conversation (D-0053) ; entrée ajoutée avec D-0054, omise alors"
+    yield_presented:             # état publié au commit 401fcf1, avant l'ajout
+      relationship_conclusions: {pairs: 103, documented_dependency: 8, commercial_with_financing: 11, reciprocal_commercial_only: 15, causality_not_established: 69}
+      documented_paths: {cycles: 46}
+      annex_e_e7: {outcomes: 34, indeterminate: 19, result: discrimination_possible}
+      fragility_events: 265
+    execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-16
+    decision: "Ajoute Akamai, Backblaze, Riot Platforms, Nscale et Lambda"
+    groups_added: [AKAM, BLZE, RIOT]   # date d'entrée : group_entry (D-0054)
+    non_filers_added: ["NF:LAMBDA", "NF:NSCALE"]   # sans titre coté à l'as_of : piste des non-déposants (D-0044, D-0054)
+    page: "rapport d'intégration de Hut 8 et Galaxy dans la conversation (D-0054)"
+    yield_presented:             # état publié au commit 233b31f, avant l'ajout
+      relationship_conclusions: {pairs: 108, documented_dependency: 8, commercial_with_financing: 11, reciprocal_commercial_only: 15, causality_not_established: 74}
+      documented_paths: {cycles: 46}
+      annex_e_e7: {outcomes: 36, indeterminate: 20, result: discrimination_possible}
+      fragility_events: 277
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
@@ -176,6 +197,9 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   SMCI: "0001375365"
   HUT: "0001964789"          # ajouts du 2026-10-16 (D-0053) : mineurs devenus hébergeurs de centres de données
   GLXY: "0001859392"
+  AKAM: "0001086222"         # ajouts du 2026-10-16 (D-0054) : nuage et diffusion de contenu, stockage, mineur devenu hébergeur
+  BLZE: "0001462056"
+  RIOT: "0001167419"
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -185,6 +209,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-11, groups: [APLD], basis: "D-0049, ajout de groupes de §14"}
   - {date: 2026-10-16, groups: [DELL, SMCI], basis: "D-0052, ajout de groupes de §14"}
   - {date: 2026-10-16, groups: [HUT, GLXY], basis: "D-0053, ajout de groupes de §14"}
+  - {date: 2026-10-16, groups: [AKAM, BLZE, RIOT], basis: "D-0054, ajout de groupes de §14"}
 
 history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
                              # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
@@ -247,6 +272,12 @@ transition_periods:          # changement de date de clôture : le rapport de tr
     prior_fiscal_year_end: "0630"
     evidence: "10-KT 0001558370-24-004176 : « presented in this Annual Report are for the six months ended December 31, 2023, whereas its fiscal year 2023, 2022, and 2021 are for the twelve months ended June 30 »"
 
+first_year_quarters:         # premier exercice d'un nouveau déclarant dont les premiers trimestres précèdent le
+                             # premier 10-Q : trimestres de trois mois aux places qu'aucun rapport ne couvre (D-0054, point 11)
+  BLZE:
+    fy_end: "2021-12-31"
+    evidence: "premier 10-Q 0001628280-21-025028 (trimestre clos le 2021-09-30) ; 10-K 0001628280-22-007434 (exercice 2021)"
+
 reporting_start:             # début de l'obligation de publier, par fréquence (§7.5) : trimestres à partir du
                              # premier 10-Q du groupe ; exercices présentés par le document d'enregistrement
                              # (Reg S-X 3-01, 3-02) ; avant, la cellule attendue est not_applicable avec sa pièce
@@ -272,6 +303,8 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["2023-07-01", "premier 10-Q 0001104659-23-127101 (trimestre clos le 2023-09-30), déposé le 2023-12-19 après le regroupement du 2023-11-30 : états de US Bitcoin, acquéreur comptable (D-0053)"]
   GLXY:
     quarter: ["2025-04-01", "recapitalisation inversée du 2025-05-13 (D-0053) ; premier 10-Q de l'acquéreur comptable 0001859392-25-000030 (T2 2025)"]
+  BLZE:
+    quarter: ["2021-07-01", "EFFECT 9999999995-21-004291 du 2021-11-10, 424B4 0001193125-21-327209 du 2021-11-12 ; premier 10-Q 0001628280-21-025028 (trimestre clos le 2021-09-30) (D-0054)"]
 
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
@@ -284,6 +317,8 @@ cik_hints: {"X.AI Corp.": "0002002695"}
 labs: [OpenAI, Anthropic]    # groupes économiques non déposants (§10.4)
 non_filers:                  # autres groupes économiques non déposants (§10.4), ni laboratoires ni sous-jacents de form_d (D-0044)
   - {name: SoftBank, ref: "NF:SOFTBANK"}
+  - {name: Lambda, ref: "NF:LAMBDA"}     # D-0054 : sans titre coté à l'as_of
+  - {name: Nscale, ref: "NF:NSCALE"}
 
 lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
@@ -329,6 +364,10 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
   non_filer:                 # piste des non-déposants (D-0044) : extraits, file et état de lecture propres
     lexicon:                 # mots entiers ; scan avec le lexique d'ensemble pour les co-mentions
       - {term: SoftBank, ref: "NF:SOFTBANK"}
+      - {term: Nscale, ref: "NF:NSCALE"}                          # D-0054, point 8
+      - {term: "Lambda, Inc.", ref: "NF:LAMBDA", case_sensitive: true}   # jamais « Lambda » seul (AWS Lambda)
+      - {term: "Lambda Inc.", ref: "NF:LAMBDA", case_sensitive: true}
+      - {term: "Lambda Labs", ref: "NF:LAMBDA", case_sensitive: true}
     search_forms: ex10       # recherche plein texte des EX-10 seulement ; pas de Form D
     reading:                 # règle fixée avant de voir les candidats
       r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
