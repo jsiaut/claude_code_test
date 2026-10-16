@@ -745,3 +745,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - le catalogue et les listes de lecture, avec leur volume consigné ici avant toute lecture ;
   - la lecture de Dell, puis celle de SMCI, un commit par partie ;
   - l'intégration : filiales par extrait, noms au rendu, premier réassemblage, extraction refaite des BDC Data Sets (D-0043, point 14), second réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (10) Phases 0 à 2 et catalogue, avant toute lecture :
+  - CIK confirmés par `company_tickers.json` : 1571996 (Dell Technologies Inc., anciennement Denali Holding Inc.) et 1375365 (Super Micro Computer, Inc.). Exercices clos fin janvier ou début février pour Dell, le 30 juin pour SMCI. Aucune rupture d'historique (point 5) ;
+  - inventaire : Dell 38 rapports périodiques, 67 8-K de la tranche, 10 circulaires ; SMCI 39 rapports périodiques, 70 8-K de la tranche, 15 8-K à items de signal, 13 avis de retard (NT 10-K et NT 10-Q), 8 circulaires. Chez SMCI, les rapports des exercices 2017 à 2019 ont été déposés en mai et décembre 2019, et le 10-K 2024 en février 2025 : ce sont des signaux de dépôt tardif (point 5) ;
+  - univers attendu : 1 640 cellules pour les deux groupes ;
+  - index : 1 467 dépôts, aucun échec. Archives XBRL : 499 dépôts lus ; les 3 échecs sont les amendements sans instance déjà connus (D-0043, point 7). Pièces : 1 485 documents, aucun échec ;
+  - catalogue : aucune clé de bloc existante ne change. Dell : 484 blocs à lire, 8,45 M de caractères. SMCI : 450 blocs, 7,72 M de caractères. Les deux fichiers de catalogue s'allongent de 525 blocs pour la tranche et de 409 pour le bloc `text` ;
+  - découverte : aucune ligne déjà lue pour ces déposants ; leurs 85 unités encore en file en sortent au réassemblage (point 7).
