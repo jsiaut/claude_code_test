@@ -137,6 +137,16 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 26, indeterminate: 15, result: discrimination_possible}
       fragility_events: 183
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-16
+    decision: "Ok ajoute Dell et SMCI au modèle"
+    groups_added: [DELL, SMCI]   # fournisseurs de serveurs d'IA ; date d'entrée : group_entry (D-0052)
+    page: "point d'étape du 2026-10-16 sur les entités du modèle, dans la conversation (D-0052)"
+    yield_presented:             # état publié au commit 7492a8b, avant l'ajout
+      relationship_conclusions: {pairs: 85, documented_dependency: 8, commercial_with_financing: 8, reciprocal_commercial_only: 8, causality_not_established: 61}
+      documented_paths: {cycles: 38}
+      annex_e_e7: {outcomes: 32, indeterminate: 18, result: discrimination_possible}
+      fragility_events: 220
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
@@ -162,6 +172,8 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   NBIS: "0001513845"         # ajouts du 2026-10-11 (D-0048) : hébergeurs endettés, suite de §14
   IREN: "0001878848"
   APLD: "0001144879"         # ajout du 2026-10-11 (D-0049) : hébergeur endetté, locataire principal CoreWeave
+  DELL: "0001571996"         # ajouts du 2026-10-16 (D-0052) : fournisseurs de serveurs d'IA
+  SMCI: "0001375365"
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -169,6 +181,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-10, groups: [WULF, CIFR, CORZ], basis: "D-0043, ajout de groupes de §14"}
   - {date: 2026-10-11, groups: [NBIS, IREN], basis: "D-0048, ajout de groupes de §14"}
   - {date: 2026-10-11, groups: [APLD], basis: "D-0049, ajout de groupes de §14"}
+  - {date: 2026-10-16, groups: [DELL, SMCI], basis: "D-0052, ajout de groupes de §14"}
 
 history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
                              # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
