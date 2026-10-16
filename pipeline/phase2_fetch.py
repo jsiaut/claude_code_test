@@ -1,9 +1,12 @@
 """Téléchargement des documents de la tranche texte (§11.1, phase 2) : document principal
-des 8-K de la tranche et leurs pièces EX-10 et EX-4, DEF 14A, 424B4 des introductions."""
+des 8-K de la tranche et leurs pièces EX-10 et EX-4, DEF 14A, 424B4 des introductions, et
+document principal des rapports périodiques antérieurs à l'iXBRL (D-0054, point 12)."""
 import json
 import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+import pandas as pd
 
 from . import config
 from .edgar import Edgar
@@ -13,8 +16,18 @@ EX10 = re.compile(r"^EX-10(\.\d+[A-Z]?)?$", re.I)
 EX4 = re.compile(r"^EX-4(\.\d+[A-Z]?)?$", re.I)
 
 
-def targets():
-    recs = json.loads((config.DB_DIR / "filing_index.json").read_text())
+def pre_ixbrl():
+    """Rapports périodiques balisés en XBRL mais pas en iXBRL : leur document principal n'est pas
+    dans l'archive XBRL, il se tire ici pour l'Item 9A et l'Item 4 (D-0054, point 12)."""
+    inv = pd.read_parquet(config.DB_DIR / "inventory.parquet",
+                          columns=["accessionNumber", "inv_class", "isXBRL", "isInlineXBRL"])
+    p = inv[(inv["inv_class"] == "periodic") & (inv["isXBRL"] == 1) & (inv["isInlineXBRL"] == 0)]
+    return set(p["accessionNumber"])
+
+
+def targets(recs=None, pre_ix=None):
+    recs = recs if recs is not None else json.loads((config.DB_DIR / "filing_index.json").read_text())
+    pre_ix = pre_ix if pre_ix is not None else pre_ixbrl()
     out = []
     for r in recs:
         cls = r["inv_class"]
@@ -27,6 +40,8 @@ def targets():
         elif cls == "proxy":
             out.append((r["cik"], r["accession"], r["primary"], "primary"))
         elif cls == "ipo" and r["form"] == "424B4":
+            out.append((r["cik"], r["accession"], r["primary"], "primary"))
+        elif cls == "periodic" and r["accession"] in pre_ix:
             out.append((r["cik"], r["accession"], r["primary"], "primary"))
     return out
 

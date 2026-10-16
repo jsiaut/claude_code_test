@@ -207,5 +207,16 @@ class CustomerConsideration(unittest.TestCase):
              "amount_nature": "consideration_payable_to_customer"}))
 
 
+class PreIxbrlPrimary(unittest.TestCase):
+    def test_primary_of_a_pre_ixbrl_report_is_fetched(self):
+        # D-0054, point 12 : avant l'iXBRL, le document principal n'est pas dans l'archive XBRL
+        from pipeline import phase2_fetch
+        recs = [{"inv_class": "periodic", "cik": "1", "accession": "a-18", "primary": "q118.htm", "form": "10-Q"},
+                {"inv_class": "periodic", "cik": "1", "accession": "a-24", "primary": "q124.htm", "form": "10-Q"},
+                {"inv_class": "proxy", "cik": "1", "accession": "p-24", "primary": "def14a.htm", "form": "DEF 14A"}]
+        t = phase2_fetch.targets(recs, pre_ix={"a-18"})
+        self.assertEqual([(x[1], x[2]) for x in t], [("a-18", "q118.htm"), ("p-24", "def14a.htm")])
+
+
 if __name__ == "__main__":
     unittest.main()
