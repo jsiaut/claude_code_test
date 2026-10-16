@@ -52,6 +52,27 @@ def fiscal_calendar(filings, fiscal_year_end_mmdd=None, as_of=None):
     return years
 
 
+def apply_transition(years, tp):
+    """Période de transition (D-0053, point 5) : l'exercice clos à la fin de la période couvre la
+    durée de celle-ci, en trimestres de trois mois depuis son début ; il ne passe jamais pour un
+    exercice de douze mois."""
+    t0, t1 = d(str(tp["start"])), d(str(tp["end"]))
+    for y in years:
+        if y.get("fy_end") != t1:
+            continue
+        filed = ([q for q in y["q_ends"][:-1] if t0 <= q < t1]
+                 if y.get("quarters_source") != "synthetic" else [])
+        y["fy_start"] = t0
+        if filed:
+            y["q_ends"] = filed + [t1]
+            y.pop("quarters_source", None)
+        else:
+            y["q_ends"] = [e for e in _three_month_ends(t0) if e < t1] + [t1]
+            y["quarters_source"] = "synthetic"
+        y["transition"] = True
+    return years
+
+
 def _year_before(fe):
     """Début d'un exercice de douze mois clos le `fe`."""
     try:

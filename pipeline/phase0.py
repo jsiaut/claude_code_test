@@ -114,13 +114,22 @@ def build_calendars(groups, meta, rows, cfg, as_of):
         frows = [r for r in rows if r["group_id"] == tk]
         fye = meta[g["cik"]].get("fiscalYearEnd")
         years = fcal.fiscal_calendar(frows, fye, as_of)
+        # période de transition consignée (D-0053, point 5) : exercice de sa durée ; les exercices
+        # synthétiques qui la précèdent suivent l'ancienne date de clôture
+        tp = (cfg.get("transition_periods") or {}).get(tk)
+        if tp:
+            years = fcal.apply_transition(years, tp)
         first_filing = min((r["filingDate"] for r in frows), default=None)
         # exercices synthétiques avant le premier rapport périodique (introduction récente)
         known_first = years[0]["fy_end"] if years and years[0].get("fy_end") else None
         synth = []
         if fye and (known_first is None or known_first.year > w["start_fiscal_year"] - 3):
             last_synth = (known_first.year - 1) if known_first else dt.date.fromisoformat(as_of).year
-            synth = fcal.synthetic_years(fye, w["start_fiscal_year"] - 4, last_synth)
+            synth_fye = fye
+            if tp and years and years[0].get("transition"):
+                synth_fye = tp["prior_fiscal_year_end"]
+                last_synth = (years[0]["fy_start"] - dt.timedelta(days=1)).year
+            synth = fcal.synthetic_years(synth_fye, w["start_fiscal_year"] - 4, last_synth)
             if years and years[0].get("fy_start") is None and synth:
                 years[0]["fy_start"] = synth[-1]["fy_end"] + dt.timedelta(days=1)
         all_years = synth + years

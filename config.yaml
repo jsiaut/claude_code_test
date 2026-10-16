@@ -229,6 +229,23 @@ reverse_combinations:        # déclarant légal distinct de l'acquéreur compta
       - "8-K 0001193125-22-016157 (date de l'événement : 2022-01-19, items 2.01 et 3.03)"
       - "10-Q 0001628280-22-014350 (T1 2022) : « The Merger is accounted for as a reverse recapitalization with the Company being the accounting acquirer »"
       - "10-K 0001193125-22-088850 (exercice 2021, déposé après la réalisation) : états de la SPAC (actif de 346 368 517 $ au 31 décembre 2021), hors du groupe"
+  GLXY:
+    consummation: "2025-05-13"
+    legal_registrant: "Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation"
+    accounting_acquirer: "Galaxy Digital Holdings LP"
+    evidence:
+      - "10-Q 0001859392-25-000030 (T2 2025) : « On May 13, 2025, the Company (as defined below), GDH Ltd. and GDH LP consummated a series of transactions resulting in the reorganization of the Company’s corporate structure »"
+      - "même rapport : « The Reorganization Transactions were accounted for as a reverse recapitalization with the Company consolidating GDH LP, which was the accounting acquirer and the predecessor entity »"
+      - "10-Q 0001859392-25-000005 (T1 2025) : « the Corporation did not have any subsidiaries and as such the numbers presented as of the three months ended March 31, 2025 and the year ended December 31, 2024 are on a stand-alone basis » : hors du groupe (D-0053)"
+
+transition_periods:          # changement de date de clôture : le rapport de transition forme un exercice de la
+                             # durée qu'il couvre, en trimestres de trois mois depuis son début ; les exercices
+                             # synthétiques antérieurs suivent l'ancienne clôture (D-0053, point 5)
+  HUT:
+    start: "2023-07-01"
+    end: "2023-12-31"
+    prior_fiscal_year_end: "0630"
+    evidence: "10-KT 0001558370-24-004176 : « presented in this Annual Report are for the six months ended December 31, 2023, whereas its fiscal year 2023, 2022, and 2021 are for the twelve months ended June 30 »"
 
 reporting_start:             # début de l'obligation de publier, par fréquence (§7.5) : trimestres à partir du
                              # premier 10-Q du groupe ; exercices présentés par le document d'enregistrement
@@ -251,6 +268,10 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["2021-12-01", "EFFECT du 2022-04-12, 424B4 0001104659-22-045562 du 2022-04-13 ; premier 10-Q 0001628280-22-014389 (trimestre clos le 2022-02-28) (D-0049)"]
   CORZ:
     quarter: ["2022-01-01", "recapitalisation inversée du 2022-01-19 (D-0043) ; premier 10-Q de l'acquéreur comptable 0001628280-22-014350 (T1 2022)"]
+  HUT:
+    quarter: ["2023-07-01", "premier 10-Q 0001104659-23-127101 (trimestre clos le 2023-09-30), déposé le 2023-12-19 après le regroupement du 2023-11-30 : états de US Bitcoin, acquéreur comptable (D-0053)"]
+  GLXY:
+    quarter: ["2025-04-01", "recapitalisation inversée du 2025-05-13 (D-0053) ; premier 10-Q de l'acquéreur comptable 0001859392-25-000030 (T2 2025)"]
 
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}

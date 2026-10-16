@@ -116,6 +116,29 @@ class AnnualOnly(unittest.TestCase):
                          [dt.date(2024, 9, 30), dt.date(2024, 12, 31), dt.date(2025, 3, 31)])
         self.assertEqual(calendar._year_before(dt.date(2025, 6, 30)), dt.date(2024, 7, 1))
 
+    def test_transition_period_is_its_own_length(self):
+        # D-0053, point 5 : six mois de transition, deux trimestres, jamais douze mois
+        f = [{"form": "10-Q", "reportDate": "2023-09-30"}, {"form": "10-KT", "reportDate": "2023-12-31"},
+             {"form": "10-Q", "reportDate": "2024-03-31"}, {"form": "10-K", "reportDate": "2024-12-31"}]
+        tp = {"start": "2023-07-01", "end": "2023-12-31"}
+        years = calendar.apply_transition(calendar.fiscal_calendar(f, "1231", "2026-10-07"), tp)
+        t = [x for x in years if x["fy_end"] == dt.date(2023, 12, 31)][0]
+        self.assertEqual(t["fy_start"], dt.date(2023, 7, 1))
+        self.assertEqual(t["q_ends"], [dt.date(2023, 9, 30), dt.date(2023, 12, 31)])
+        self.assertTrue(t["transition"])
+        qs = [q for q in calendar.quarters(years) if q["fy_end"] == dt.date(2023, 12, 31)]
+        self.assertEqual([(q["start"], q["end"]) for q in qs],
+                         [(dt.date(2023, 7, 1), dt.date(2023, 9, 30)), (dt.date(2023, 10, 1), dt.date(2023, 12, 31))])
+        nxt = [x for x in years if x["fy_end"] == dt.date(2024, 12, 31)][0]
+        self.assertEqual(nxt["fy_start"], dt.date(2024, 1, 1))
+
+    def test_transition_without_quarterly_report(self):
+        f = [{"form": "10-KT", "reportDate": "2023-12-31"}]
+        years = calendar.apply_transition(calendar.fiscal_calendar(f, "1231", "2026-10-07"),
+                                          {"start": "2023-07-01", "end": "2023-12-31"})
+        self.assertEqual(years[0]["q_ends"], [dt.date(2023, 9, 30), dt.date(2023, 12, 31)])
+        self.assertEqual(years[0]["quarters_source"], "synthetic")
+
 
 class Breaks(unittest.TestCase):
     def test_history_break_like_reverse_combination(self):
