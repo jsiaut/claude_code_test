@@ -675,6 +675,87 @@
 | 2026-03-31 | 3,6 % | 42,4 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -298 M$ | n.d. (concept non résolu) | -298 M$ | 36 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
 | 2026-06-30 | 13,9 % | 24,5 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -151 M$ | n.d. (concept non résolu) | -151 M$ | 22 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
 
+## Blue Owl (OWL)
+
+| Trimestre clos le | Croissance du revenu (glissement annuel) | Croissance du revenu (douze mois glissants) | Capex décaissé ÷ CFO | Capex ÷ CFO, additions non monétaires comprises | Flux disponible (CFO − capex) | Flux disponible après locations-financement | Flux après financement des contreparties | Délai de recouvrement (créances) | Obligations de prestation restantes (RPO) | Dette ÷ (résultat opérationnel + dotations) | Passifs locatifs ÷ (résultat opérationnel + dotations) | Événements (annexe F) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 2021-03-31 | n.d. (non publié) | n.d. (terme manquant) | 0,50 x | n.d. (terme manquant) | 292 000 $ | n.d. (concept non résolu) | 292 000 $ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-06-30 | 342,6 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-09-30 | 358,7 % | n.d. (terme manquant) | 0,01 x | n.d. (terme manquant) | 108 M$ | n.d. (concept non résolu) | 108 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-12-31 | 172,2 % | n.d. (non publié) | 0,02 x | n.d. (terme manquant) | 151 M$ | n.d. (concept non résolu) | 151 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-03-31 | 155,0 % | 221,2 % | 0,20 x | n.d. (terme manquant) | 75 M$ | n.d. (concept non résolu) | 75 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-06-30 | 82,6 % | 154,6 % | 0,06 x | n.d. (terme manquant) | 143 M$ | n.d. (concept non résolu) | 143 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-09-30 | 49,7 % | 96,9 % | 0,07 x | n.d. (terme manquant) | 193 M$ | n.d. (concept non résolu) | 193 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-12-31 | 37,1 % | 66,3 % | 0,09 x | n.d. (terme manquant) | 252 M$ | n.d. (concept non résolu) | 252 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-03-31 | 41,7 % | 49,7 % | 0,05 x | n.d. (terme manquant) | 115 M$ | n.d. (concept non résolu) | 113 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-06-30 | 27,4 % | 38,2 % | 0,04 x | n.d. (terme manquant) | 228 M$ | n.d. (concept non résolu) | 228 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-09-30 | 15,8 % | 29,3 % | 0,07 x | n.d. (terme manquant) | 263 M$ | n.d. (concept non résolu) | 263 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-12-31 | 24,9 % | 26,4 % | 0,11 x | n.d. (terme manquant) | 275 M$ | n.d. (concept non résolu) | 275 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-03-31 | 31,3 % | 24,9 % | 0,13 x | n.d. (terme manquant) | 41 M$ | n.d. (concept non résolu) | 41 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-06-30 | 31,9 % | 26,2 % | 0,11 x | n.d. (terme manquant) | 269 M$ | n.d. (concept non résolu) | 269 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-09-30 | 39,9 % | 32,1 % | 0,03 x | n.d. (terme manquant) | 315 M$ | n.d. (concept non résolu) | 315 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F4 |
+| 2024-12-31 | 27,8 % | 32,6 % | 0,04 x | n.d. (terme manquant) | 310 M$ | n.d. (concept non résolu) | 310 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-03-31 | 33,1 % | 33,0 % | 0,76 x | n.d. (terme manquant) | 4 M$ | n.d. (concept non résolu) | 4 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-06-30 | 27,9 % | 31,8 % | 0,02 x | n.d. (terme manquant) | 412 M$ | n.d. (concept non résolu) | 412 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-09-30 | 21,2 % | 27,2 % | 0,02 x | n.d. (terme manquant) | 422 M$ | n.d. (concept non résolu) | 422 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F4 |
+| 2025-12-31 | 19,7 % | 25,0 % | 0,06 x | n.d. (terme manquant) | 359 M$ | n.d. (concept non résolu) | 359 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-03-31 | 10,3 % | 19,3 % | 0,13 x | n.d. (terme manquant) | 89 M$ | n.d. (concept non résolu) | 89 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-06-30 | 7,1 % | 14,2 % | 0,02 x | n.d. (terme manquant) | 453 M$ | n.d. (concept non résolu) | 453 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+
+## Apollo (APO)
+
+| Trimestre clos le | Croissance du revenu (glissement annuel) | Croissance du revenu (douze mois glissants) | Capex décaissé ÷ CFO | Capex ÷ CFO, additions non monétaires comprises | Flux disponible (CFO − capex) | Flux disponible après locations-financement | Flux après financement des contreparties | Délai de recouvrement (créances) | Obligations de prestation restantes (RPO) | Dette ÷ (résultat opérationnel + dotations) | Passifs locatifs ÷ (résultat opérationnel + dotations) | Événements (annexe F) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 2021-03-31 | n.d. (dénominateur négatif ou nul) | 679,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -234 M$ | n.d. (concept non résolu) | -234 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F2 |
+| 2021-06-30 | -8,4 % | 261,7 % | 0,01 x | n.d. (terme manquant) | 1 314 M$ | n.d. (concept non résolu) | 1 314 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-09-30 | 6,0 % | 206,9 % | 0,01 x | n.d. (terme manquant) | 1 029 M$ | n.d. (concept non résolu) | 1 029 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-12-31 | -7,8 % | 152,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -1 110 M$ | n.d. (concept non résolu) | -1 110 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F2, F8 |
+| 2022-03-31 | -61,9 % | -25,9 % | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-06-30 | 64,3 % | -9,5 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-09-30 | 176,3 % | ↯ | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-12-31 | 305,2 % | 84,3 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-03-31 | 515,0 % | 240,7 % | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-06-30 | 499,4 % | ↯ | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-09-30 | -12,9 % | ↯ | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2023-12-31 | 128,2 % | 197,6 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-03-31 | 32,8 % | 123,2 % | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-06-30 | -56,1 % | -0,5 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2024-09-30 | 199,5 % | 20,6 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-12-31 | -52,2 % | -20,0 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2025-03-31 | -21,2 % | -28,4 % | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-06-30 | 13,2 % | -4,8 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-09-30 | 26,4 % | -13,8 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-12-31 | 86,7 % | 22,7 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-03-31 | -8,8 % | 28,2 % | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2026-06-30 | 63,7 % | 41,2 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+
+## Blackstone (BX)
+
+| Trimestre clos le | Croissance du revenu (glissement annuel) | Croissance du revenu (douze mois glissants) | Capex décaissé ÷ CFO | Capex ÷ CFO, additions non monétaires comprises | Flux disponible (CFO − capex) | Flux disponible après locations-financement | Flux après financement des contreparties | Délai de recouvrement (créances) | Obligations de prestation restantes (RPO) | Dette ÷ (résultat opérationnel + dotations) | Passifs locatifs ÷ (résultat opérationnel + dotations) | Événements (annexe F) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 2021-03-31 | n.d. (dénominateur négatif ou nul) | 547,0 % | 0,01 x | n.d. (terme manquant) | 2 276 M$ | n.d. (concept non résolu) | 2 276 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-06-30 | 110,3 % | 428,1 % | 0,02 x | n.d. (terme manquant) | 886 M$ | n.d. (concept non résolu) | 886 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-09-30 | 105,2 % | 347,9 % | 0,01 x | n.d. (terme manquant) | 1 594 M$ | n.d. (concept non résolu) | 1 594 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2021-12-31 | 58,8 % | 270,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -834 M$ | n.d. (concept non résolu) | -3 034 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F2 |
+| 2022-03-31 | -3,3 % | 54,8 % | 0,02 x | n.d. (terme manquant) | 2 692 M$ | n.d. (concept non résolu) | 2 692 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2022-06-30 | -88,1 % | 2,8 % | 0,02 x | n.d. (terme manquant) | 1 844 M$ | n.d. (concept non résolu) | 1 844 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-09-30 | -83,0 % | -38,5 % | 0,09 x | n.d. (terme manquant) | 898 M$ | n.d. (concept non résolu) | 898 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2022-12-31 | -70,4 % | -62,3 % | 0,07 x | n.d. (terme manquant) | 666 M$ | n.d. (concept non résolu) | 666 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-03-31 | -73,0 % | -78,7 % | 0,20 x | n.d. (terme manquant) | 283 M$ | n.d. (concept non résolu) | 283 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-06-30 | 347,3 % | -60,8 % | 0,04 x | n.d. (terme manquant) | 1 665 M$ | n.d. (concept non résolu) | 1 665 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-09-30 | 140,2 % | -32,9 % | 0,06 x | n.d. (terme manquant) | 1 020 M$ | n.d. (concept non résolu) | 1 020 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2023-12-31 | -24,6 % | -5,8 % | 0,03 x | n.d. (terme manquant) | 864 M$ | n.d. (concept non résolu) | 864 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2024-03-31 | 166,9 % | 116,4 % | 0,02 x | n.d. (terme manquant) | 922 M$ | n.d. (concept non résolu) | 922 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-06-30 | -0,7 % | 48,2 % | 0,01 x | n.d. (terme manquant) | 1 146 M$ | n.d. (concept non résolu) | 1 146 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2024-09-30 | 44,1 % | 35,4 % | 0,02 x | n.d. (terme manquant) | 1 202 M$ | n.d. (concept non résolu) | 1 202 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2024-12-31 | 139,9 % | 64,9 % | 0,07 x | n.d. (terme manquant) | 150 M$ | n.d. (concept non résolu) | 150 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-03-31 | -10,8 % | 24,2 % | 0,03 x | n.d. (terme manquant) | 1 080 M$ | n.d. (concept non résolu) | 1 080 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2025-06-30 | 32,7 % | 33,3 % | 0,05 x | n.d. (terme manquant) | 848 M$ | n.d. (concept non résolu) | 848 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2025-09-30 | -15,7 % | 15,2 % | 0,01 x | n.d. (terme manquant) | 1 574 M$ | n.d. (concept non résolu) | 1 574 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
+| 2025-12-31 | 41,4 % | 9,2 % | 0,02 x | n.d. (terme manquant) | 1 045 M$ | n.d. (concept non résolu) | 1 045 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-03-31 | 10,0 % | 15,2 % | 0,03 x | n.d. (terme manquant) | 958 M$ | n.d. (concept non résolu) | 958 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-06-30 | 35,9 % | 17,2 % | 0,02 x | n.d. (terme manquant) | 1 909 M$ | n.d. (concept non résolu) | 1 909 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+
 ## BLUE OWL CAPITAL CORP II (véhicule BDC, cik:0001655887)
 
 | Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
@@ -977,4 +1058,301 @@ Passif (D-0047) :
 | 2024-06-30 | 200 % | 1,00 x | 1,02 x |  |
 | 2024-09-30 | 207 % | 0,93 x | 0,95 x |  |
 | 2024-12-31 | 214 % | 0,88 x | 0,91 x |  |
+
+## MIDCAP FINANCIAL INVESTMENT CORP (véhicule BDC, cik:0001278752)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2022-12-31 | n.d. (non balisé) | n.d. (non balisé) | ≥ 5,83 % |  |
+| 2023-03-31 | n.d. (non balisé) | n.d. (non balisé) | ≥ 1,93 % |  |
+| 2023-06-30 | 98,54 % (partiel) | n.d. (non balisé) | ≥ 1,40 % |  |
+| 2023-09-30 | 98,40 % (partiel) | n.d. (non balisé) | ≥ 1,39 % |  |
+| 2023-12-31 | 98,40 % (partiel) | n.d. (non balisé) | ≥ 1,86 % |  |
+| 2024-03-31 | 99,12 % (partiel) | n.d. (non balisé) | ≥ 1,92 % |  |
+| 2024-06-30 | 98,90 % (partiel) | n.d. (non balisé) | ≥ 1,98 % |  |
+| 2024-09-30 | 98,76 % (partiel) | n.d. (non balisé) | ≥ 2,00 % | F11 |
+| 2024-12-31 | 98,30 % (partiel) | n.d. (non balisé) | ≥ 2,04 % | F11 |
+| 2025-03-31 | n.d. (non balisé) | n.d. (non balisé) | ≥ 2,10 % |  |
+| 2025-06-30 | 98,57 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F14 |
+| 2025-09-30 | 98,01 % (partiel) | n.d. (non balisé) | n.d. (non balisé) |  |
+| 2025-12-31 | 97,17 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11 |
+| 2026-03-31 | 95,37 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11, F14 |
+| 2026-06-30 | 94,81 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11 |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2022-09-30 | n.d. (non balisé) | n.d. (non balisé) | 1,54 x |  |
+| 2022-12-31 | n.d. (non balisé) | n.d. (non balisé) | 1,56 x |  |
+| 2023-03-31 | n.d. (non balisé) | n.d. (non balisé) | 1,51 x |  |
+| 2023-06-30 | 164 % | 1,56 x | 1,52 x |  |
+| 2023-09-30 | 169 % | 1,45 x | 1,46 x |  |
+| 2023-12-31 | 168 % | 1,47 x | 1,49 x |  |
+| 2024-03-31 | 171 % | 1,41 x | 1,43 x |  |
+| 2024-06-30 | 166 % | 1,52 x | 1,54 x |  |
+| 2024-09-30 | 180 % | 1,25 x | 1,27 x |  |
+| 2024-12-31 | 180 % | 1,25 x | 1,27 x |  |
+| 2025-03-31 | 172 % | 1,39 x | 1,41 x |  |
+| 2025-06-30 | 166 % | 1,52 x | 1,52 x | oui |
+| 2025-09-30 | 171 % | 1,41 x | 1,42 x |  |
+| 2025-12-31 | 165 % | 1,54 x | 1,54 x |  |
+| 2026-03-31 | 163 % | 1,59 x | 1,61 x | oui |
+| 2026-06-30 | 163 % | 1,59 x | 1,60 x |  |
+
+## APOLLO DEBT SOLUTIONS BDC (véhicule BDC, cik:0001837532)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | n.d. (non balisé) | n.d. (non balisé) | ≥ 1,53 % |  |
+| 2023-06-30 | 99,48 % (partiel) | n.d. (non balisé) | ≥ 1,90 % |  |
+| 2023-09-30 | 99,59 % (partiel) | n.d. (non balisé) | ≥ 1,96 % |  |
+| 2023-12-31 | 100,53 % (partiel) | n.d. (non balisé) | ≥ 2,62 % |  |
+| 2024-03-31 | 100,63 % (partiel) | n.d. (non balisé) | ≥ 3,65 % |  |
+| 2024-06-30 | 100,33 % (partiel) | n.d. (non balisé) | ≥ 2,42 % |  |
+| 2024-09-30 | 100,90 % (partiel) | n.d. (non balisé) | ≥ 2,79 % |  |
+| 2024-12-31 | 99,69 % (partiel) | n.d. (non balisé) | ≥ 3,36 % |  |
+| 2025-03-31 | 99,85 % (partiel) | n.d. (non balisé) | ≥ 2,64 % |  |
+| 2025-06-30 | 101,15 % (partiel) | n.d. (non balisé) | n.d. (non balisé) |  |
+| 2025-09-30 | 100,91 % (partiel) | n.d. (non balisé) | n.d. (non balisé) |  |
+| 2025-12-31 | 100,48 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11, F14 |
+| 2026-03-31 | 98,94 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11, F14 |
+| 2026-06-30 | 98,98 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F14 |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2023-03-31 | 215 % | 0,87 x | 0,98 x |  |
+| 2023-06-30 | 221 % | 0,83 x | 0,92 x |  |
+| 2023-09-30 | 237 % | 0,73 x | 0,80 x |  |
+| 2023-12-31 | 255 % | 0,64 x | 0,73 x |  |
+| 2024-03-31 | 280 % | 0,56 x | 0,67 x |  |
+| 2024-06-30 | 247 % | 0,68 x | 0,78 x |  |
+| 2024-09-30 | 271 % | 0,58 x | 0,67 x |  |
+| 2024-12-31 | 291 % | 0,52 x | 0,60 x |  |
+| 2025-03-31 | 278 % | 0,56 x | 0,68 x |  |
+| 2025-06-30 | 287 % | 0,54 x | 0,66 x |  |
+| 2025-09-30 | 274 % | 0,57 x | 0,73 x |  |
+| 2025-12-31 | 255 % | 0,64 x | 0,75 x | oui |
+| 2026-03-31 | 236 % | 0,73 x | 0,86 x | oui |
+| 2026-06-30 | 214 % | 0,88 x | 0,99 x | oui |
+
+Offres de rachat (D-0047) :
+
+| SC TO-I | Expiration | Demande ÷ plafond | Acceptées ÷ apportées | F15 |
+| --- | --- | ---: | ---: | --- |
+| 2022-11-15 | 2022-12-14 | 0,42 x | 100,0 % | servie en entier |
+| 2023-02-14 | 2023-03-15 | 1,19 x | 100,0 % | servie en entier |
+| 2023-05-16 | 2023-06-14 | 0,76 x | 100,0 % | servie en entier |
+| 2023-08-16 | 2023-09-14 | 0,37 x | 100,0 % | servie en entier |
+| 2023-11-02 | 2023-12-04 | 0,27 x | 100,0 % | servie en entier |
+| 2024-02-15 | 2024-03-15 | 0,61 x | 100,0 % | servie en entier |
+| 2024-05-15 | 2024-06-13 | 0,15 x | 100,0 % | servie en entier |
+| 2024-08-15 | 2024-09-13 | 0,20 x | 100,0 % | servie en entier |
+| 2024-11-15 | 2024-12-16 | 0,15 x | 100,0 % | servie en entier |
+| 2025-02-14 | 2025-03-17 | 0,28 x | 100,0 % | servie en entier |
+| 2025-05-16 | 2025-06-16 | 0,37 x | 100,0 % | servie en entier |
+| 2025-08-15 | 2025-09-15 | 0,61 x | 100,0 % | servie en entier |
+| 2025-11-14 | 2025-12-15 | 0,97 x | 100,0 % | servie en entier |
+| 2026-02-13 | 2026-03-16 | 2,21 x | 45,2 % | réduite |
+| 2026-05-15 | 2026-06-15 | 3,36 x | 29,8 % | réduite |
+| 2026-08-14 | 2026-08-14 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
+
+## MIDCAP APOLLO INSTITUTIONAL PRIVATE LENDING (véhicule BDC, cik:0002006758)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2024-06-30 | 99,84 % | n.d. (non balisé) | ≥ 0,06 % |  |
+| 2024-09-30 | 99,41 % (partiel) | n.d. (non balisé) | ≥ 0,27 % |  |
+| 2024-12-31 | 99,05 % (partiel) | n.d. (non balisé) | ≥ 0,24 % | F11, F14 |
+| 2025-03-31 | 99,26 % (partiel) | n.d. (non balisé) | ≥ 0,55 % |  |
+| 2025-06-30 | 99,03 % (partiel) | n.d. (non balisé) | ≥ 2,82 % |  |
+| 2025-09-30 | 98,72 % (partiel) | n.d. (non balisé) | ≥ 4,00 % | F11 |
+| 2025-12-31 | 98,32 % (partiel) | n.d. (non balisé) | ≥ 4,97 % | F11 |
+| 2026-03-31 | 96,91 % (partiel) | n.d. (non balisé) | ≥ 6,00 % | F11, F14 |
+| 2026-06-30 | 96,90 % (partiel) | n.d. (non balisé) | ≥ 6,41 % | F11, F14 |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2024-06-30 | 185 % | 1,18 x | 1,18 x |  |
+| 2024-09-30 | 167 % | 1,49 x | 1,49 x |  |
+| 2024-12-31 | 163 % | 1,59 x | 1,63 x | oui |
+| 2025-03-31 | 166 % | 1,51 x | 1,54 x |  |
+| 2025-06-30 | 168 % | 1,47 x | 1,50 x |  |
+| 2025-09-30 | 178 % | 1,29 x | 1,32 x |  |
+| 2025-12-31 | 171 % | 1,41 x | 1,44 x |  |
+| 2026-03-31 | 167 % | 1,50 x | 1,53 x | oui |
+| 2026-06-30 | 165 % | 1,54 x | 1,57 x | oui |
+
+## APOLLO ORIGINATION II (LEVERED) CAPITAL TRUST (véhicule BDC, cik:0002052152)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2025-03-31 | 100,00 % | n.d. (non balisé) | ≥ 3,52 % |  |
+| 2025-06-30 | 99,98 % | n.d. (non balisé) | n.d. (non balisé) |  |
+| 2025-09-30 | 100,42 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F14 |
+| 2025-12-31 | 100,26 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F14 |
+| 2026-03-31 | 99,17 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11 |
+| 2026-06-30 | 99,22 % | n.d. (non balisé) | n.d. (non balisé) |  |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2025-03-31 | 197 % | 1,03 x | 1,05 x |  |
+| 2025-06-30 | 195 % | 1,05 x | 1,07 x |  |
+| 2025-09-30 | 192 % | 1,08 x | 1,10 x | oui |
+| 2025-12-31 | 188 % | 1,14 x | 1,15 x | oui |
+| 2026-03-31 | 203 % | 0,97 x | 0,98 x |  |
+| 2026-06-30 | 202 % | 0,98 x | 0,99 x |  |
+
+## APOLLO ORIGINATION II (UL) CAPITAL TRUST (véhicule BDC, cik:0002052153)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2025-03-31 | 100,00 % | n.d. (non balisé) | ≥ 2,94 % |  |
+| 2025-06-30 | 99,98 % | n.d. (non balisé) | n.d. (non balisé) |  |
+| 2025-09-30 | 100,41 % | n.d. (non balisé) | n.d. (non balisé) |  |
+| 2025-12-31 | 100,24 % | n.d. (non balisé) | n.d. (non balisé) |  |
+| 2026-03-31 | 99,14 % | n.d. (non balisé) | n.d. (non balisé) | F11 |
+| 2026-06-30 | 99,23 % | n.d. (non balisé) | n.d. (non balisé) |  |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2025-03-31 | n.d. (non balisé) | n.d. (non balisé) | 0,00 x |  |
+| 2025-06-30 | n.d. (non balisé) | n.d. (non balisé) | 0,00 x |  |
+| 2025-09-30 | n.d. (non balisé) | n.d. (non balisé) | 0,00 x |  |
+| 2025-12-31 | n.d. (non balisé) | n.d. (non balisé) | 0,00 x |  |
+| 2026-03-31 | n.d. (non balisé) | n.d. (non balisé) | 0,00 x |  |
+| 2026-06-30 | n.d. (non balisé) | n.d. (non balisé) | 0,01 x |  |
+
+## BLACKSTONE SECURED LENDING FUND (véhicule BDC, cik:0001736035)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2022-09-30 | 99,40 % | ≥ 2,94 % | ≥ 8,66 % |  |
+| 2022-12-31 | 99,19 % | ≥ 4,21 % | ≥ 7,08 % |  |
+| 2023-03-31 | 99,13 % | ≥ 4,24 % | ≥ 6,15 % | F11, F12 |
+| 2023-06-30 | 98,96 % | ≥ 4,09 % | ≥ 5,84 % | F11 |
+| 2023-09-30 | 99,11 % | ≥ 4,51 % | ≥ 7,89 % |  |
+| 2023-12-31 | 99,05 % | ≥ 2,92 % | ≥ 9,84 % |  |
+| 2024-03-31 | 99,17 % | ≥ 3,11 % | ≥ 13,43 % |  |
+| 2024-06-30 | 99,43 % | ≥ 3,69 % | ≥ 15,05 % | F12, F14 |
+| 2024-09-30 | 99,53 % | ≥ 3,97 % | ≥ 15,20 % | F12 |
+| 2024-12-31 | 99,03 % | ≥ 5,05 % | ≥ 12,81 % | F12 |
+| 2025-03-31 | 100,60 % | ≥ 7,50 % | ≥ 12,92 % | F12, F14 |
+| 2025-06-30 | 100,27 % | ≥ 5,41 % | ≥ 13,84 % |  |
+| 2025-09-30 | 98,98 % | ≥ 7,85 % | ≥ 14,06 % | F11 |
+| 2025-12-31 | 98,62 % | ≥ 6,05 % | ≥ 12,34 % | F11, F14 |
+| 2026-03-31 | 97,42 % | ≥ 6,15 % | ≥ 11,50 % | F11, F14 |
+| 2026-06-30 | 96,34 % | ≥ 5,33 % | ≥ 10,38 % | F11 |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2022-09-30 | 175 % | 1,33 x | 1,38 x |  |
+| 2022-12-31 | 175 % | 1,34 x | 1,38 x |  |
+| 2023-03-31 | 176 % | 1,31 x | 1,35 x |  |
+| 2023-06-30 | 187 % | 1,15 x | 1,20 x |  |
+| 2023-09-30 | 192 % | 1,08 x | 1,13 x |  |
+| 2023-12-31 | 200 % | 1,00 x | 1,05 x |  |
+| 2024-03-31 | 197 % | 1,03 x | 1,08 x |  |
+| 2024-06-30 | 188 % | 1,13 x | 1,18 x | oui |
+| 2024-09-30 | 189 % | 1,12 x | 1,17 x |  |
+| 2024-12-31 | 186 % | 1,17 x | 1,22 x |  |
+| 2025-03-31 | 184 % | 1,19 x | 1,24 x | oui |
+| 2025-06-30 | 188 % | 1,13 x | 1,18 x |  |
+| 2025-09-30 | 182 % | 1,22 x | 1,27 x |  |
+| 2025-12-31 | 177 % | 1,30 x | 1,35 x | oui |
+| 2026-03-31 | 176 % | 1,32 x | 1,37 x | oui |
+| 2026-06-30 | 178 % | 1,28 x | 1,32 x |  |
+
+## BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC, cik:0001803498)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2022-09-30 | 97,52 % | ≥ 1,73 % | ≥ 12,62 % |  |
+| 2022-12-31 | 97,98 % | ≥ 3,55 % | ≥ 11,36 % |  |
+| 2023-03-31 | 98,27 % | ≥ 3,98 % | ≥ 10,66 % | F12 |
+| 2023-06-30 | 98,40 % | ≥ 3,86 % | ≥ 10,08 % |  |
+| 2023-09-30 | 98,91 % | ≥ 4,68 % | ≥ 10,44 % |  |
+| 2023-12-31 | 99,28 % | ≥ 6,53 % | ≥ 9,36 % | F12 |
+| 2024-03-31 | 99,38 % | ≥ 3,24 % | ≥ 9,22 % |  |
+| 2024-06-30 | 99,36 % | ≥ 3,17 % | ≥ 13,12 % |  |
+| 2024-09-30 | 99,47 % | ≥ 3,28 % | ≥ 14,07 % |  |
+| 2024-12-31 | 98,97 % | ≥ 4,19 % | ≥ 14,17 % | F12, F14 |
+| 2025-03-31 | 98,98 % | ≥ 5,09 % | ≥ 12,94 % | F12 |
+| 2025-06-30 | 99,48 % | ≥ 5,14 % | ≥ 13,32 % | F12 |
+| 2025-09-30 | 99,15 % | ≥ 5,77 % | ≥ 14,33 % | F12 |
+| 2025-12-31 | 99,17 % | ≥ 4,83 % | ≥ 29,32 % |  |
+| 2026-03-31 | 97,62 % | ≥ 4,97 % | ≥ 24,12 % | F14 |
+| 2026-06-30 | 96,64 % | ≥ 4,79 % | ≥ 22,70 % | F11, F14 |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2022-09-30 | 182 % | 1,22 x | 1,34 x |  |
+| 2022-12-31 | 184 % | 1,18 x | 1,32 x |  |
+| 2023-03-31 | 191 % | 1,10 x | 1,22 x |  |
+| 2023-06-30 | 198 % | 1,02 x | 1,17 x |  |
+| 2023-09-30 | 212 % | 0,89 x | 0,98 x |  |
+| 2023-12-31 | 222 % | 0,82 x | 0,87 x |  |
+| 2024-03-31 | 229 % | 0,78 x | 0,83 x |  |
+| 2024-06-30 | 248 % | 0,68 x | 0,72 x |  |
+| 2024-09-30 | 237 % | 0,73 x | 0,77 x |  |
+| 2024-12-31 | 226 % | 0,79 x | 0,83 x | oui |
+| 2025-03-31 | 239 % | 0,72 x | 0,76 x |  |
+| 2025-06-30 | 248 % | 0,68 x | 0,73 x |  |
+| 2025-09-30 | 249 % | 0,67 x | 0,72 x |  |
+| 2025-12-31 | 236 % | 0,74 x | 0,81 x |  |
+| 2026-03-31 | 228 % | 0,78 x | 0,88 x | oui |
+| 2026-06-30 | 221 % | 0,82 x | 0,90 x | oui |
+
+Offres de rachat (D-0047) :
+
+| SC TO-I | Expiration | Demande ÷ plafond | Acceptées ÷ apportées | F15 |
+| --- | --- | ---: | ---: | --- |
+| 2022-11-02 | 2022-11-30 | 1,04 x | 100,0 % | servie en entier |
+| 2023-01-31 | 2023-02-28 | 0,78 x | 100,0 % | servie en entier |
+| 2023-05-03 | 2023-05-31 | 1,04 x | 100,0 % | servie en entier |
+| 2023-08-04 | 2023-08-31 | 0,41 x | 100,0 % | servie en entier |
+| 2023-11-02 | 2023-11-30 | 0,40 x | 100,0 % | servie en entier |
+| 2024-02-01 | 2024-02-29 | 0,39 x | 100,0 % | servie en entier |
+| 2024-05-03 | 2024-05-31 | 0,30 x | 100,0 % | servie en entier |
+| 2024-08-02 | 2024-08-30 | 0,32 x | 100,0 % | servie en entier |
+| 2024-11-01 | 2024-12-02 | 0,29 x | 100,0 % | servie en entier |
+| 2025-02-03 | 2025-03-03 | 0,30 x | 100,0 % | servie en entier |
+| 2025-05-02 | 2025-05-30 | 0,53 x | 100,0 % | servie en entier |
+| 2025-08-04 | 2025-08-29 | 0,36 x | 100,0 % | servie en entier |
+| 2025-11-03 | 2025-12-02 | 0,91 x | 100,0 % | servie en entier |
+| 2026-02-02 | 2026-03-02 | 1,39 x | 100,0 % | servie en entier |
+| 2026-05-01 | 2026-05-29 | 2,06 x | 48,5 % | réduite |
+| 2026-08-04 | 2026-08-04 | n.d. (non publié) | n.d. (non publié) | n.d. (résultat non publié) |
+
+## BLACKSTONE PRIVATE REAL ESTATE CREDIT & INCOME FUND (véhicule BDC, cik:0002049733)
+
+| Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
+| --- | ---: | ---: | ---: | --- |
+| 2025-06-30 | 100,50 % | ≥ 0,00 % | n.d. (non balisé) |  |
+| 2025-09-30 | 100,82 % | ≥ 0,00 % | n.d. (non balisé) |  |
+| 2025-12-31 | 100,80 % | ≥ 0,00 % | n.d. (non balisé) |  |
+| 2026-03-31 | 100,49 % | ≥ 0,00 % | n.d. (non balisé) | F11, F14 |
+| 2026-06-30 | 100,38 % | ≥ 0,00 % | n.d. (non balisé) | F11 |
+
+Passif (D-0047) :
+
+| Date du bilan | Couverture | Dette ÷ actif net | Passif ÷ actif net | F14 |
+| --- | ---: | ---: | ---: | --- |
+| 2025-06-30 | 181 % | 1,23 x | 1,30 x |  |
+| 2025-09-30 | 205 % | 0,95 x | 1,04 x |  |
+| 2025-12-31 | 191 % | 1,10 x | 1,11 x |  |
+| 2026-03-31 | 185 % | 1,18 x | 1,19 x | oui |
+| 2026-06-30 | 193 % | 1,07 x | 1,08 x |  |
 
