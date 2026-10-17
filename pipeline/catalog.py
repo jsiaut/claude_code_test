@@ -72,8 +72,10 @@ def build(as_of):
     tb_by = {a: set(g[g["xbrltype"].fillna("").str.endswith("textBlockItemType")]["concept"])
              for a, g in tags.groupby("accession")}
 
-    # 1. rapports périodiques : notes balisées, Item 9A, Item 4
+    # 1. rapports périodiques : notes balisées, Item 9A, Item 4 ; Item 13 des 10-K d'un groupe qui ne dépose
+    # aucune circulaire, où il publie l'information de l'Item 404 (D-0055)
     per = inv[inv["inv_class"] == "periodic"]
+    no_proxy = set(inv["group_id"]) - set(inv[inv["inv_class"] == "proxy"]["group_id"])
     for r in per.to_dict("records"):
         acc = r["accessionNumber"]
         if acc not in xd.index:
@@ -133,6 +135,14 @@ def build(as_of):
                 b["filing_status"], b["assurance_level"], b["tier"] = evidence_attrs(kind, f["form"])
                 out.append(b)
             continue
+        if r["form"].startswith("10-K") and r["group_id"] in no_proxy:
+            t13 = sections.item_13_10k(raw)
+            if t13:
+                b = blocks._block("item_404", f, t13, [], prim, None, item="13")
+                b["filing_status"], b["assurance_level"], b["tier"] = evidence_attrs("item_404", f["form"])
+                out.append(b)
+            else:
+                stats["item_13_not_found"] += 1
         kind = "item_9a" if r["form"].startswith("10-K") else "item_4_10q"
         text = sections.item_9a(raw) if kind == "item_9a" else sections.item_4_10q(raw)
         if not text:

@@ -57,6 +57,19 @@ def item_9a(raw):
     return textnorm.lines_to_text(sec) if sec else None
 
 
+# Item 13 de la partie III d'un 10-K (« Certain Relationships and Related Transactions, and Director
+# Independence ») : l'information de l'Item 404 d'un déposant qui ne dépose pas de circulaire (D-0055)
+ITEM_13 = re.compile(_ITEM + r"13\b", re.I)
+ITEM_13_END = re.compile(_ITEM + r"(?!13\b)\d{1,2}[a-c]?\b|^\W{0,3}part\s+iv\b|^\W{0,3}signatures?\b", re.I)
+
+
+def item_13_10k(raw, min_chars=1500):
+    """Item 13 d'un 10-K rédigé dans le rapport ; un renvoi à une circulaire (quelques lignes) n'en est pas un."""
+    sec = _longest_section(_lines(raw), ITEM_13, ITEM_13_END)
+    text = textnorm.lines_to_text(sec) if sec else None
+    return text if text and len(text) >= min_chars else None
+
+
 ITEM_4 = re.compile(_ITEM + r"4\b", re.I)
 ITEM_4_END = re.compile(r"^\W{0,3}part\s+ii\b|" + _ITEM + r"1\.?\s*(legal|\|)|" + _ITEM + r"1a\b", re.I)
 

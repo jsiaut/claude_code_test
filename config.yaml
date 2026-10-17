@@ -277,6 +277,14 @@ reverse_combinations:        # déclarant légal distinct de l'acquéreur compta
       - "même rapport : « The Reorganization Transactions were accounted for as a reverse recapitalization with the Company consolidating GDH LP, which was the accounting acquirer and the predecessor entity »"
       - "10-Q 0001859392-25-000005 (T1 2025) : « the Corporation did not have any subsidiaries and as such the numbers presented as of the three months ended March 31, 2025 and the year ended December 31, 2024 are on a stand-alone basis » : hors du groupe (D-0053)"
 
+  OWL:
+    consummation: "2021-05-19"
+    legal_registrant: "Altimar Acquisition Corporation (SPAC)"
+    accounting_acquirer: "Owl Rock (présentation combinée d'Owl Rock Capital Group LLC et de Blue Owl Securities LLC)"
+    evidence:
+      - "8-K 0001193125-21-169371 (date de l'événement : 2021-05-19, items 2.01 et 3.03) : « On May 19, 2021 (the “Closing Date”), Altimar Acquisition Corporation, a blank check company incorporated as a Cayman Islands exempted company (“Altimar”), domesticated as a Delaware corporation (the “Domestication”) and changed its names to Blue Owl Capital Inc. (“Blue Owl”) »"
+      - "10-Q 0001823945-21-000007 (T2 2021) : « for both the ALT merger and the Dyal Acquisition, Owl Rock was deemed to be the acquirer for accounting purposes. Therefore, the predecessor to Blue Owl is “Owl Rock,” a combined carve-out of Owl Rock Capital Group LLC and Blue Owl Securities LLC »"
+
 transition_periods:          # changement de date de clôture : le rapport de transition forme un exercice de la
                              # durée qu'il couvre, en trimestres de trois mois depuis son début ; les exercices
                              # synthétiques antérieurs suivent l'ancienne clôture (D-0053, point 5)
@@ -319,17 +327,20 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["2025-04-01", "recapitalisation inversée du 2025-05-13 (D-0053) ; premier 10-Q de l'acquéreur comptable 0001859392-25-000030 (T2 2025)"]
   BLZE:
     quarter: ["2021-07-01", "EFFECT 9999999995-21-004291 du 2021-11-10, 424B4 0001193125-21-327209 du 2021-11-12 ; premier 10-Q 0001628280-21-025028 (trimestre clos le 2021-09-30) (D-0054)"]
+  OWL:
+    quarter: ["2021-04-01", "regroupement du 2021-05-19 avec la SPAC Altimar (D-0055) ; premier 10-Q de l'acquéreur comptable 0001823945-21-000007 (T2 2021)"]
 
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
   MRVL: {"Marvell Technology Group Ltd.": "0001058057"}
-  APO: {"Apollo Asset Management, Inc.": "0001411494"}   # D-0055, point 4 : à vérifier en phase 0 (8-K12B)
+  APO: {"Apollo Asset Management, Inc.": "0001411494"}   # D-0055, point 4 : successeur et acquéreur comptable établis (successions)
 successions:                 # date de succession de chaque prédécesseur et sa pièce (§10.1) ; avant D-0055, écrites
                              # dans graph.py. Le prédécesseur est tête de son groupe jusqu'à cette date ; ses rapports
                              # de périodes closes à partir d'elle sont des rapports de filiale (D-0055, point 4)
   "0001649338": {date: "2018-04-04", evidence: "8-K12B 0001193125-18-107559"}
   "0001441634": {date: "2016-02-01", evidence: "8-K12B 0001193125-16-446865"}
   "0001058057": {date: "2021-04-20", evidence: "8-K12B 0001193125-21-122938"}
+  "0001411494": {date: "2022-01-01", evidence: "8-K12B 0001193125-22-000274 : « This Current Report on Form 8-K (this “Current Report”) establishes AGM as the successor issuer to AAM and AHL pursuant to Rule 12g-3(c) » ; 10-Q 0001858681-22-000029 (T1 2022) : « Apollo was deemed to be the accounting acquirer and Athene the accounting acquiree, which, for financial reporting purposes, results in Apollo’s historical financial information prior to the Mergers becoming that of the Company » (D-0055)"}
 
 known_entities:              # appartenances et dates lues en phase 0 (§10.3)
   SPCX: ["X.AI Holdings Corp.", "X.AI Corp.", "X Holdings Corp.", "X Corp.",
