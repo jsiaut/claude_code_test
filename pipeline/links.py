@@ -60,6 +60,13 @@ def build_edges(obs, reg):
             if (m.get("resolution_rule") == "same_cik" and m.get("consolidation_treatment") == "parent"
                     and not str(m["ref"]).startswith(("CP:", "LAB:", "NF:")) and eid.startswith("cik:")):
                 heads.setdefault(m["ref"], eid)
+    # tête d'un groupe non déposant confirmée par extrait : « we », « the Company » de son propre document
+    # d'enregistrement la désignent (D-0054, point 13)
+    for eid, ms in reg.members.items():
+        for m in ms:
+            if (str(m["ref"]).startswith("NF:") and m.get("consolidation_treatment") == "parent"
+                    and m.get("status") != "pending" and m.get("valid_from") in (None, "none")):
+                heads.setdefault(m["ref"], eid)
     for o in obs:
         if o["kind"] != "observation" or o["validation_state"] != "valid":
             continue
