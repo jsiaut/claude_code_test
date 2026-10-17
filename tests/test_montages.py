@@ -110,6 +110,17 @@ class FilerBecomesGroup(unittest.TestCase):
         # bloc d'un groupe suivi : inchangé
         self.assertIsNone(line_group(dict(b, group_id="CRWV"), as_group, {}))
 
+    def test_attached_filer(self):
+        """D-0055, point 8 : les dépôts d'Athene Holding Ltd., rattachée à APO au 1er janvier 2022 par extrait,
+        vont au groupe après cette date ; avant, le bloc garde son groupe."""
+        from pipeline.load import line_group
+        att = {"1527469": ("APO", "2022-01-01")}
+        b = {"block_kind": "montage_text", "group_id": "CP:athene holding ltd", "cik": "0001527469",
+             "filing_date": "2026-08-07"}
+        self.assertEqual(line_group(b, {}, {}, att), "APO")
+        self.assertIsNone(line_group(dict(b, filing_date="2021-11-09"), {}, {}, att))
+        self.assertIsNone(line_group(b, {}, {}))
+
     def test_discovery_lines(self):
         from pipeline.load import line_group
         b = {"block_kind": "discovery_note", "group_id": "X", "cik": "0000000042"}

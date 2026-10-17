@@ -48,9 +48,11 @@ GROUP_NAMES = {"NVDA": "NVIDIA", "GOOGL": "Alphabet", "AMZN": "Amazon", "META": 
                "ORCL": "Oracle", "CRWV": "CoreWeave", "SPCX": "SpaceX", "AMD": "AMD", "AVGO": "Broadcom",
                "MRVL": "Marvell", "WULF": "TeraWulf", "CIFR": "Cipher", "CORZ": "Core Scientific",
                "NBIS": "Nebius", "IREN": "IREN", "APLD": "Applied Digital", "DELL": "Dell", "SMCI": "Supermicro",
-               "HUT": "Hut 8", "GLXY": "Galaxy", "AKAM": "Akamai", "BLZE": "Backblaze", "RIOT": "Riot"}
+               "HUT": "Hut 8", "GLXY": "Galaxy", "AKAM": "Akamai", "BLZE": "Backblaze", "RIOT": "Riot",
+               "OWL": "Blue Owl", "APO": "Apollo", "BX": "Blackstone"}
 NUM_FR = {11: "onze", 12: "douze", 13: "treize", 14: "quatorze", 15: "quinze", 16: "seize", 17: "dix-sept", 18: "dix-huit",
-          19: "dix-neuf", 20: "vingt", 21: "vingt et un", 22: "vingt-deux", 23: "vingt-trois", 24: "vingt-quatre"}
+          19: "dix-neuf", 20: "vingt", 21: "vingt et un", 22: "vingt-deux", 23: "vingt-trois", 24: "vingt-quatre",
+          25: "vingt-cinq", 26: "vingt-six", 27: "vingt-sept"}
 
 
 def n_groups(cfg):
@@ -692,6 +694,23 @@ def lp_platform(names, terms):
     return sorted(s for s, d in names.items() if any(x in v.lower() for v in d.values() for x in t))
 
 
+def lp_platforms(names, lp):
+    """Plateformes de présentation, dans l'ordre de config.yaml : [(marque, véhicules)] (D-0045, point 3 ;
+    Apollo et Blackstone depuis D-0055, point 7)."""
+    pl = lp.get("platforms") or {"Blue Owl": {"name_terms": ["Blue Owl", "Owl Rock"]}}
+    return [(b, lp_platform(names, p.get("name_terms") or [b])) for b, p in pl.items()]
+
+
+def lp_platform_text(lp):
+    """Phrase de présentation des plateformes (marques et termes de dénomination)."""
+    pl = lp.get("platforms") or {"Blue Owl": {"name_terms": ["Blue Owl", "Owl Rock"]}}
+    parts = [f"{b} (« " + " » ou « ".join(p.get("name_terms") or [b]) + " »)" for b, p in pl.items()]
+    return ("Les plateformes " + ", ".join(parts[:-1]) + " et " + parts[-1] if len(parts) > 1 else "La plateforme " + parts[0]) + \
+        (" réunissent" if len(parts) > 1 else " réunit") + " les véhicules dont la dénomination EDGAR, actuelle ou ancienne, " \
+        "porte la marque : " + ("des regroupements de présentation, pas des groupes économiques." if len(parts) > 1 else
+                                "un regroupement de présentation, pas un groupe économique.")
+
+
 def lp_cell_txt(T, c):
     if c is None:
         return "—"
@@ -728,7 +747,7 @@ def lp_rows(T, by, names, evd, subjects):
 
 
 def lender_portfolio_section(con, T):
-    """Bloc lender_portfolio (D-0045) : portefeuille entier des BDC, par véhicule ; plateforme Blue Owl
+    """Bloc lender_portfolio (D-0045) : portefeuille entier des BDC, par véhicule ; plateformes de présentation
     et repères nommés d'avance, quartiles de l'univers par date de bilan ; événements F11 à F13."""
     import statistics
     cfg = config.load()
@@ -744,9 +763,7 @@ def lender_portfolio_section(con, T):
              "porte sur les prêts. Les intérêts capitalisés (taux PIK pondéré par le principal, sur le taux total) et les "
              "engagements non tirés sont des bornes basses : une position sans balise compte sans PIK ou sans engagement. "
              "Les événements F11 (juste valeur ÷ coût en baisse deux trimestres de suite) et F12 (intérêts capitalisés en "
-             "hausse deux trimestres de suite) ont été fixés avant le calcul (D-0045). La plateforme Blue Owl réunit les "
-             "véhicules dont la dénomination EDGAR porte « Blue Owl » ou « Owl Rock » : un regroupement de présentation, "
-             "pas un groupe économique.")
+             "hausse deux trimestres de suite) ont été fixés avant le calcul (D-0045). " + lp_platform_text(lp))
     L.append("")
     nveh = len(by)
     ndates = sum(len(v) for v in by.values())
@@ -762,8 +779,8 @@ def lender_portfolio_section(con, T):
              "et F13 restent non déterminables. Le secteur n'est presque jamais balisé : la part logiciel aussi. Il faudrait "
              "lire les notes des portefeuilles (niveau 2).")
     L.append("")
-    bo = lp_platform(names, (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or ["Blue Owl", "Owl Rock"])
-    L += ["**Véhicules Blue Owl**", ""] + lp_rows(T, by, names, evd, bo) + [""]
+    for b, vs in lp_platforms(names, lp):
+        L += [f"**Véhicules {b}**", ""] + lp_rows(T, by, names, evd, vs) + [""]
     peers = [f"cik:{p['cik']}" for p in lp.get("peers") or []]
     L += ["**Repères nommés d'avance**", ""] + lp_rows(T, by, names, evd, [p for p in peers if p in by]) + [""]
     # quartiles de l'univers aux dernières dates de bilan communes (au moins 20 véhicules)
@@ -895,8 +912,7 @@ def lender_liabilities_section(con, T):
         if fmt == "x":
             return T.m(c, fmt="x") if c["value"] is not None else T.m(c)
         return T.m(c, fmt="pct", dec=0)
-    bo = lp_platform({s: {"_": n} for s, n in names.items()},
-                     (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or ["Blue Owl", "Owl Rock"])
+    plats = lp_platforms({s: {"_": n} for s, n in names.items()}, lp)
     peers = [f"cik:{p['cik']}" for p in lp.get("peers") or [] if f"cik:{p['cik']}" in names]
     ev14 = defaultdict(list)
     for r in q(con, """SELECT subject, period_end FROM measures WHERE measure = 'fragility_event' AND breakdown_key = 'F14'
@@ -919,7 +935,8 @@ def lender_liabilities_section(con, T):
                        f"{cell_txt(m.get('bdc_liab_liabilities_to_net_assets'), 'x')} | "
                        f"{', '.join(ev14[s][-3:]) or 'aucune'} |")
         return out
-    L += ["**Levier des véhicules Blue Owl**", ""] + lev_rows(bo) + [""]
+    for b, vs in plats:
+        L += [f"**Levier des véhicules {b}**", ""] + lev_rows(vs) + [""]
     L += ["**Levier des repères nommés d'avance**", ""] + lev_rows(peers) + [""]
     per = defaultdict(lambda: defaultdict(list))
     for (s, d), m in by.items():
@@ -985,9 +1002,11 @@ def lender_liabilities_section(con, T):
                 out.append(f"| {o['vehicle']} | {o['end']} | {cell_txt(o.get('bdc_tender_demand_ratio'), 'x')} | "
                            f"{cell_txt(o.get('bdc_tender_acceptance_ratio'), 'pct')} | {f15_txt(o.get('F15'))} |")
         return out
-    owl_t = [s for s in bo if any(o["subject"] == s for o in offers.values())]
     peer_t = [s for s in peers if any(o["subject"] == s for o in offers.values())]
-    L += ["**Rachats des véhicules Blue Owl (six dernières offres)**", ""] + offer_rows(owl_t) + [""]
+    for b, vs in plats:
+        pl_t = [s for s in vs if any(o["subject"] == s for o in offers.values())]
+        if pl_t:
+            L += [f"**Rachats des véhicules {b} (six dernières offres)**", ""] + offer_rows(pl_t) + [""]
     L += ["**Rachats des repères non cotés (six dernières offres)**", ""] + offer_rows(peer_t) + [""]
     ann = LL.announcements_by_cik()
     L.append("**F16, interruptions d'un programme régulier d'offres**")
@@ -1496,8 +1515,8 @@ def delta(con, as_of, stats):
     if "lender_portfolio" in (config.load().get("scope") or []):
         lp = config.load().get("lender_portfolio") or {}
         by, names, evd = lp_data(con)
-        shown = lp_platform(names, (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or []) + \
-            [f"cik:{p['cik']}" for p in lp.get("peers") or [] if f"cik:{p['cik']}" in by]
+        shown = list(dict.fromkeys([s for _, vs in lp_platforms(names, lp) for s in vs] +
+                                   [f"cik:{p['cik']}" for p in lp.get("peers") or [] if f"cik:{p['cik']}" in by]))
         for sj in shown:
             for f, ds in sorted(evd[sj].items()):
                 last = sorted(names[sj])[-1] if names[sj] else None
@@ -1685,10 +1704,10 @@ def series(con, as_of, stats):
             L.append(f"| {pe} | " + " | ".join(row) + " | " + (", ".join(e["breakdown_key"] for e in ev) or "") + " |")
         L.append("")
     if "lender_portfolio" in (config.load().get("scope") or []):
-        # véhicules BDC de la plateforme Blue Owl (D-0045) : série complète, vue as_known
+        # véhicules BDC des plateformes de présentation (D-0045 ; D-0055, point 7) : série complète, vue as_known
         lp = config.load().get("lender_portfolio") or {}
         by, names, evd = lp_data(con)
-        for sj in lp_platform(names, (lp.get("platforms") or {}).get("Blue Owl", {}).get("name_terms") or []):
+        for sj in dict.fromkeys(s for _, vs in lp_platforms(names, lp) for s in vs):
             last = sorted(names[sj])[-1]
             L.append(f"## {names[sj][last]} (véhicule BDC, {sj})")
             L.append("")

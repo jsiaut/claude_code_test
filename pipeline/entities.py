@@ -16,10 +16,11 @@ from . import graph
 from .graph import normalize_name
 
 # formes ponctuées (« L.P. », « p.l.c. », « S.à r.l. ») : la normalisation retire les points avant de ramener
-# les suffixes, il faut donc aussi leurs formes espacées ; formes nordiques, japonaises, ibériques et malaises (D-0054)
-LEGAL_SUFFIX = re.compile(r"\b(inc|corp|llc|lp|ltd|plc|pbc|co|n a|ag|gmbh|s a|sa|b v|bv|n v|nv|pte|llp|lllp|"
+# les suffixes, il faut donc aussi leurs formes espacées ; formes nordiques, japonaises, ibériques et malaises (D-0054),
+# brésilienne (« Ltda ») et forme développée de « N.A. » des banques nationales américaines (D-0055)
+LEGAL_SUFFIX = re.compile(r"\b(inc|corp|llc|lp|ltd|plc|pbc|co|n a|national association|ag|gmbh|s a|sa|b v|bv|n v|nv|pte|llp|lllp|"
                           r"sarl|s a r l|kk|spa|s p a|se|limited|l l c|"
-                          r"l p|p l c|s à r l|as|asa|a/s|ab|abp|oy|oyj|ehf|da|gk|lda|sdn bhd|nuf|sl|s l|srl|s r l)$")
+                          r"l p|p l c|s à r l|as|asa|a/s|ab|abp|oy|oyj|ehf|da|gk|lda|ltda|sdn bhd|nuf|sl|s l|srl|s r l)$")
 FILER_WORDS = {"we", "us", "the company", "our company"}
 # mêmes mots sous leur forme normalisée (« the Company » devient « co ») : c'est elle qu'on compare (D-0038)
 FILER_NORM = {normalize_name(w) for w in FILER_WORDS}
@@ -67,7 +68,8 @@ class Registry:
             if r["record_kind"] in ("entity", "alias") and r.get("status") != "pending" and r.get("normalized_name"):
                 self.names.setdefault(r["normalized_name"], r["entity_id"])
 
-    def group_at(self, eid, date, view="as_known"):
+    def membership_at(self, eid, date, view="as_known"):
+        """Appartenance valide à la date (la dernière inscrite l'emporte), ou None."""
         ms = self.members.get(eid) or []
         d = _d(date)
         hit = None
@@ -86,8 +88,13 @@ class Registry:
                 ok = (lo is None or lo <= d) and (hi is None or d <= hi)
             if ok:
                 hit = m
+        return hit
+
+    def group_at(self, eid, date, view="as_known"):
+        hit = self.membership_at(eid, date, view)
         if hit:
             return hit["ref"]
+        ms = self.members.get(eid) or []
         e = self.entities.get(eid)
         if e and e.get("status") != "pending" and e.get("normalized_name") and ms:
             # hors de toute appartenance datée (avant la date légale d'une combinaison, après une
@@ -96,11 +103,8 @@ class Registry:
         return None
 
     def treatment_at(self, eid, date, view="as_known"):
-        g = self.group_at(eid, date, view)
-        for m in self.members.get(eid) or []:
-            if m["ref"] == g:
-                return m.get("consolidation_treatment")
-        return None
+        hit = self.membership_at(eid, date, view)
+        return hit.get("consolidation_treatment") if hit else None
 
 
 def build(p0, cfg, counterparty_names, discovered=None, former=None):
@@ -143,6 +147,9 @@ def build(p0, cfg, counterparty_names, discovered=None, former=None):
     def ev(c):
         return f"{c.get('decision')} ; {c.get('accession')} ; bloc {c.get('block')} ; « {c.get('quote')} »"
 
+    # prédécesseurs (§10.1) : tête de leur groupe jusqu'à la succession, filiales ensuite par extrait (AAM, D-0055)
+    predecessors = {r["entity_id"] for r in rows if r["record_kind"] == "membership"
+                    and r.get("resolution_rule") == "succession_document"}
     # appartenances établies par un extrait (D-0021)
     for c in cfg.get("confirmed_entities") or []:
         n = normalize_name(c["name"])
@@ -154,8 +161,9 @@ def build(p0, cfg, counterparty_names, discovered=None, former=None):
                     "counterparty_group" if str(c["group"]).startswith("CP:") else "config_group")
             ent(eid, c["name"], "executor_decision", ev(c), kind=kind)
         frm = c.get("valid_from") or "none"
-        if frm != "none":
-            # avant l'entrée dans le groupe, l'entité forme son propre groupe
+        if frm != "none" and eid not in predecessors:
+            # avant l'entrée dans le groupe, l'entité forme son propre groupe ; un prédécesseur, lui, est
+            # jusque-là tête de son groupe (garde de D-0055 : aucune appartenance propre ne la masque)
             prev = (_d(frm) - dt.timedelta(days=1)).isoformat()
             mem(eid, _cp_group(n), "none", prev, "parent", evidence=ev(c) + " (avant l'entrée dans le groupe)")
         mem(eid, c["group"], frm, c.get("valid_to"), c.get("treatment", "consolidated_subsidiary"),

@@ -125,16 +125,30 @@ def config_group_ciks():
     return {str(int(c)): m["group"] for c, m in meta.items()}
 
 
-def line_group(b, as_group, canon):
+def attached_filer_ciks(cfg=None):
+    """CIK (sans zéros) d'un déposant rattaché à un groupe par extrait -> (groupe, entrée) : ses dépôts
+    vont à ce groupe aux dates de l'appartenance (Athene Holding Ltd., D-0055, point 8)."""
+    cfg = cfg or config.load()
+    return {str(int(c["cik"])): (c["group"], c.get("valid_from") or "none")
+            for c in cfg.get("confirmed_entities") or [] if str(c.get("cik") or "").strip().isdigit()}
+
+
+def line_group(b, as_group, canon, attached=None):
     """Groupe des lignes d'un bloc lu hors de la liste d'un groupe suivi, ou None pour garder celui du
     bloc : un déposant découvert devenu groupe de config.yaml (D-0043) ou dont un montage a lu les dépôts
-    (D-0053, point 7) passe à son groupe ; un autre déposant découvert forme le groupe de sa contrepartie."""
+    (D-0053, point 7) passe à son groupe ; un déposant rattaché à un groupe par extrait aussi, pour ses
+    dépôts postérieurs à l'entrée (D-0055, point 8) ; un autre déposant découvert forme le groupe de sa
+    contrepartie."""
     kind = str(b.get("block_kind", ""))
     cik = str(int(b["cik"])) if str(b.get("cik") or "").strip().isdigit() else None
     if kind.startswith("discovery_") and cik in as_group:
         return as_group[cik]
     if kind == "montage_text" and str(b.get("group_id") or "").startswith("CP:") and cik in as_group:
         return as_group[cik]
+    if (kind.startswith("discovery_") or kind == "montage_text") and cik in (attached or {}):
+        g, frm = attached[cik]
+        if frm == "none" or str(b.get("filing_date") or "") >= str(frm):
+            return g
     if kind.startswith("discovery_") and cik in canon:
         from .graph import normalize_name
         return "CP:" + normalize_name(canon[cik])
@@ -151,6 +165,7 @@ def load_observations(con, catalog, as_of):
     as_group = config_group_ciks()
     from .nf_discovery import own_filer_ciks
     as_group.update(own_filer_ciks())
+    attached = attached_filer_ciks()
     rows, excl = [], []
     for p in sorted(config.OBS_DIR.glob("*.jsonl")):
         if p.name.endswith(".rejected.jsonl"):
@@ -174,7 +189,7 @@ def load_observations(con, catalog, as_of):
             errs, locator = semantic_errors(l, b)
             state = "valid" if not errs else "rejected_semantic"
             row = _obs_row(l, b, n, state, errs, locator)
-            g = line_group(b, as_group, canon)
+            g = line_group(b, as_group, canon, attached)
             if g:
                 row["group_id"] = g
             rows.append(row)
