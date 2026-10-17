@@ -287,7 +287,7 @@ def group_label(g):
     if g.startswith("LAB:"):
         return {"LAB:OPENAI": "OpenAI", "LAB:ANTHROPIC": "Anthropic"}.get(g, g[4:].title())
     if g.startswith("NF:"):
-        return {"NF:SOFTBANK": "SoftBank"}.get(g, g[3:].title())
+        return {"NF:SOFTBANK": "SoftBank", "NF:NSCALE": "Nscale", "NF:LAMBDA": "Lambda"}.get(g, g[3:].title())
     if g.startswith("CP:"):
         return CP_NAMES.get(g, g[3:])
     return GROUP_NAMES.get(g, g)
