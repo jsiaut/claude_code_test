@@ -99,11 +99,28 @@ def pre_combination(r, rc):
     return fd < cons
 
 
+def successions(cfg):
+    """Date de succession de chaque prédécesseur, par CIK (§10.1 ; config.yaml depuis D-0055)."""
+    return {str(c): s for c, s in ((cfg or {}).get("successions") or {}).items()}
+
+
+def post_succession(r, succ):
+    """Rapport périodique d'un prédécesseur pour une période close à partir de sa succession : rapport
+    d'une filiale du groupe, hors de ses séries et de son texte (D-0055, point 4). Les autres dépôts du
+    prédécesseur restent, comme les 8-K du jour de la succession."""
+    s = succ.get(str(r.get("filer_cik")))
+    rd = str(r.get("reportDate") or "")[:10]
+    return bool(r.get("is_predecessor") and s and r["form"] in PERIODIC and len(rd) == 10 and rd >= str(s["date"]))
+
+
 def pre_combination_accessions(rows, cfg):
-    """Accessions des dépôts antérieurs à une fusion inversée (D-0043) ou à une autre rupture
-    d'historique (D-0048), hors de leur groupe."""
+    """Accessions hors de leur groupe : dépôts antérieurs à une fusion inversée (D-0043) ou à une autre
+    rupture d'historique (D-0048), rapports d'un prédécesseur pour une période close après sa
+    succession (D-0055)."""
     rcs = breaks(cfg)
-    return {r["accessionNumber"] for r in rows if pre_combination(r, rcs.get(r["group_id"]))}
+    succ = successions(cfg)
+    return {r["accessionNumber"] for r in rows
+            if pre_combination(r, rcs.get(r["group_id"])) or post_succession(r, succ)}
 
 
 def build_calendars(groups, meta, rows, cfg, as_of):
@@ -169,10 +186,14 @@ def inventory(rows, cal, cfg=None):
     """Dépôts de la période de lecture, par société, formulaire et item."""
     inv = []
     rcs = breaks(cfg or {})
+    succ = successions(cfg)
     for r in rows:
         tk = r["group_id"]
         win = cal[tk]["window"]
         if not win:
+            continue
+        if post_succession(r, succ):
+            inv.append({**r, "inv_class": "post_succession"})
             continue
         if pre_combination(r, rcs.get(tk)):
             rs = win["reading_start"]

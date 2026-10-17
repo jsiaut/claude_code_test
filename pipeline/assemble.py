@@ -610,6 +610,10 @@ def exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0):
            f"{len(sub)} dépôts de la période de lecture, dont {n_per} rapports périodiques, présentent le déclarant "
            f"légal ({rc.get('legal_registrant')}) avant la fusion inversée du {rc.get('consummation')} : autre "
            "entité que le groupe, hors des séries et du texte (D-0043)", g)
+    for g, sub in inv[inv["inv_class"] == "post_succession"].groupby("group_id"):
+        ex("group", f"{g}:post_succession", "out_of_scope",
+           f"{len(sub)} rapports périodiques d'un prédécesseur portent sur des périodes closes après sa succession : "
+           "rapports d'une filiale du groupe, hors de ses séries et de son texte (D-0055)", g)
     ex("aggregate", "datacenter_securitizations", "not_public",
        "couche titrisée des datacenters : selon une réponse du personnel de la SEC du 29 juillet 2026, ces titres ne sont pas des asset-backed securities ; non documentable à la ligne (§5.2)")
     if not text_open:

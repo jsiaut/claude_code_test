@@ -61,9 +61,8 @@ def seed_entities(p0, cfg):
                      "combination_method": None, "common_control_start": None, "legal_date": None,
                      "resolution_rule": "formerly_known_as", "evidence": evidence})
 
-    succession = {"0001649338": ("2018-04-04", "8-K12B 0001193125-18-107559"),
-                  "0001441634": ("2016-02-01", "8-K12B 0001193125-16-446865"),
-                  "0001058057": ("2021-04-20", "8-K12B 0001193125-21-122938")}
+    # date de succession de chaque prédécesseur et sa pièce (§10.1) : config.yaml depuis D-0055
+    succession = {str(c): (str(s["date"]), s.get("evidence")) for c, s in (cfg.get("successions") or {}).items()}
     for cik, m in p0["meta"].items():
         eid = f"cik:{cik}"
         ent(eid, m["name"], cik, True, "config_group", rule="same_cik", evidence=f"submissions {cik}")

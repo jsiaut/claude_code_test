@@ -168,6 +168,16 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 36, indeterminate: 20, result: discrimination_possible}
       fragility_events: 277
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-17
+    decision: "Ajoute Blue Owl, Apollo et Blackstone"
+    groups_added: [OWL, APO, BX]   # gestionnaires d'actifs ; date d'entrée : group_entry (D-0055)
+    page: "rapport d'intégration d'Akamai, Backblaze, Riot, Nscale et Lambda dans la conversation (D-0055)"
+    yield_presented:             # état publié au commit 892da92, avant l'ajout
+      relationship_conclusions: {pairs: 129, documented_dependency: 8, commercial_with_financing: 13, reciprocal_commercial_only: 16, causality_not_established: 92}
+      documented_paths: {cycles: 52}
+      annex_e_e7: {outcomes: 56, indeterminate: 32, result: discrimination_possible}
+      fragility_events: 344
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
@@ -200,6 +210,9 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   AKAM: "0001086222"         # ajouts du 2026-10-16 (D-0054) : nuage et diffusion de contenu, stockage, mineur devenu hébergeur
   BLZE: "0001462056"
   RIOT: "0001167419"
+  OWL: "0001823945"          # ajouts du 2026-10-17 (D-0055) : gestionnaires d'actifs, financeurs privés des centres de données
+  APO: "0001858681"
+  BX: "0001393818"
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -210,6 +223,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-16, groups: [DELL, SMCI], basis: "D-0052, ajout de groupes de §14"}
   - {date: 2026-10-16, groups: [HUT, GLXY], basis: "D-0053, ajout de groupes de §14"}
   - {date: 2026-10-16, groups: [AKAM, BLZE, RIOT], basis: "D-0054, ajout de groupes de §14"}
+  - {date: 2026-10-17, groups: [OWL, APO, BX], basis: "D-0055, ajout de groupes de §14"}
 
 history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
                              # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
@@ -309,6 +323,13 @@ reporting_start:             # début de l'obligation de publier, par fréquence
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
   MRVL: {"Marvell Technology Group Ltd.": "0001058057"}
+  APO: {"Apollo Asset Management, Inc.": "0001411494"}   # D-0055, point 4 : à vérifier en phase 0 (8-K12B)
+successions:                 # date de succession de chaque prédécesseur et sa pièce (§10.1) ; avant D-0055, écrites
+                             # dans graph.py. Le prédécesseur est tête de son groupe jusqu'à cette date ; ses rapports
+                             # de périodes closes à partir d'elle sont des rapports de filiale (D-0055, point 4)
+  "0001649338": {date: "2018-04-04", evidence: "8-K12B 0001193125-18-107559"}
+  "0001441634": {date: "2016-02-01", evidence: "8-K12B 0001193125-16-446865"}
+  "0001058057": {date: "2021-04-20", evidence: "8-K12B 0001193125-21-122938"}
 
 known_entities:              # appartenances et dates lues en phase 0 (§10.3)
   SPCX: ["X.AI Holdings Corp.", "X.AI Corp.", "X Holdings Corp.", "X Corp.",
@@ -950,6 +971,8 @@ lender_portfolio:
   consecutive_gap_days_max: 120   # deux dates de bilan successives d'un véhicule, au plus
   platforms:                   # regroupement de présentation par la marque du gestionnaire ; aucun groupe économique affirmé
     Blue Owl: {name_terms: ["Blue Owl", "Owl Rock"]}
+    Apollo: {name_terms: ["Apollo"]}            # D-0055, point 7 : choix de l'exécutant, soumis à l'utilisateur
+    Blackstone: {name_terms: ["Blackstone"]}
   peers:                       # repères nommés d'avance, pour la lecture
     - {name: "Ares Capital Corp", cik: "0001287750"}
     - {name: "Blackstone Secured Lending Fund", cik: "0001736035"}
