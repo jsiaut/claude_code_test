@@ -165,8 +165,12 @@ INSTRUMENT_WORDS = {"investment", "investments", "first", "1st", "second", "2nd"
 def issuer_unambiguous(t, k):
     """La dénomination trouvée est l'émetteur si aucune autre dénomination légale (mot de forme
     juridique) ne la suit avant la description de l'instrument : « Oracle Corp Yucca Growth
-    Infrastructure, LLC Investment Type ... » désigne Yucca, pas Oracle."""
+    Infrastructure, LLC Investment Type ... » désigne Yucca, pas Oracle. Une forme juridique dans
+    les quatre mots qui suivent l'emporte sur un mot d'instrument : « Blue Owl Capital Corporation
+    Senior Loan Fund LLC » est la coentreprise, pas la BDC (D-0055)."""
     rest = t.split(" " + k + " ", 1)[1].split()
+    if any(w in ISSUER_SUFFIX for w in rest[:4]):
+        return False
     for w in rest:
         if w in INSTRUMENT_WORDS:
             return True

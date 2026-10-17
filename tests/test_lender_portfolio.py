@@ -97,5 +97,36 @@ class Events(unittest.TestCase):
         self.assertEqual(e[-1][1:], ("not_determinable", None, "prior_period_missing"))
 
 
+class IssuerRule(unittest.TestCase):
+    """Émetteur d'une position (bloc lender) : la dénomination trouvée ne l'est que si aucune autre
+    dénomination légale ne la suit avant l'instrument (D-0055 : coentreprise d'une BDC)."""
+
+    def test_issuer(self):
+        from pipeline.lender import issuer_unambiguous as iu
+        self.assertTrue(iu(" x ai corp first lien term loan ", "x ai corp"))
+        self.assertFalse(iu(" oracle corp yucca growth infrastructure llc investment type ", "oracle corp"))
+        self.assertFalse(iu(" blue owl capital corp senior loan fund llc llc interest ", "blue owl capital corp"))
+        self.assertTrue(iu(" jane street group llc 1st lien term loan ", "jane street group llc"))
+
+
+class Platforms(unittest.TestCase):
+    """Plateformes de présentation (D-0045, point 3 ; D-0055, point 7) : la marque se lit dans la dénomination
+    EDGAR actuelle ou ancienne ; l'ancienne ne sert qu'au rattachement, pas à l'affichage."""
+
+    def test_former_name_counts(self):
+        from unittest import mock
+        from pipeline import render
+        names = {"cik:0001278752": {"2026-06-30": "MIDCAP FINANCIAL INVESTMENT CORP"},
+                 "cik:0001837532": {"2026-06-30": "APOLLO DEBT SOLUTIONS BDC"},
+                 "cik:0001287750": {"2026-06-30": "ARES CAPITAL CORP"}}
+        lp = {"platforms": {"Blue Owl": {"name_terms": ["Blue Owl", "Owl Rock"]}, "Apollo": {"name_terms": ["Apollo"]}}}
+        with mock.patch.object(render, "lp_former_names", return_value={"cik:0001278752": {"APOLLO INVESTMENT CORP"}}):
+            got = dict(render.lp_platforms(names, lp))
+        self.assertEqual(got["Apollo"], ["cik:0001278752", "cik:0001837532"])
+        self.assertEqual(got["Blue Owl"], [])
+        self.assertNotIn("former:APOLLO INVESTMENT CORP", names["cik:0001278752"])
+        self.assertIn("Les plateformes Blue Owl", render.lp_platform_text(lp))
+
+
 if __name__ == "__main__":
     unittest.main()

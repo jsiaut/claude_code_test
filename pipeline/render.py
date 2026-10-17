@@ -694,11 +694,28 @@ def lp_platform(names, terms):
     return sorted(s for s, d in names.items() if any(x in v.lower() for v in d.values() for x in t))
 
 
+def lp_former_names():
+    """Anciennes dénominations EDGAR des véhicules (champ `former` de sub.tsv), par sujet : la marque d'une
+    plateforme se lit dans la dénomination actuelle ou ancienne (D-0045, point 3 ; D-0055, point 7)."""
+    from . import lender_portfolio as LPM
+    out = defaultdict(set)
+    if LPM.OUT.exists():
+        import pandas as pd
+        df = pd.read_parquet(LPM.OUT, columns=["cik", "former"]).drop_duplicates()
+        for c, f in zip(df["cik"], df["former"]):
+            if f:
+                out[f"cik:{str(c).zfill(10)}"].add(str(f))
+    return out
+
+
 def lp_platforms(names, lp):
     """Plateformes de présentation, dans l'ordre de config.yaml : [(marque, véhicules)] (D-0045, point 3 ;
-    Apollo et Blackstone depuis D-0055, point 7)."""
+    Apollo et Blackstone depuis D-0055, point 7). Les anciennes dénominations comptent pour la marque,
+    sans servir à l'affichage."""
     pl = lp.get("platforms") or {"Blue Owl": {"name_terms": ["Blue Owl", "Owl Rock"]}}
-    return [(b, lp_platform(names, p.get("name_terms") or [b])) for b, p in pl.items()]
+    former = lp_former_names()
+    allnames = {s: {**d, **{f"former:{f}": f for f in former.get(s, ())}} for s, d in names.items()}
+    return [(b, lp_platform(allnames, p.get("name_terms") or [b])) for b, p in pl.items()]
 
 
 def lp_platform_text(lp):
