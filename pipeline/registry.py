@@ -151,6 +151,8 @@ ENUMS = {
                    "item_8k_201", "item_8k_203", "lever_note", "revenue_note",
                    # bloc `discovery` de §14 : notes et pièces EX-10 des déposants qui nomment un groupe
                    "discovery_note", "discovery_exhibit_header", "discovery_exhibit_body",
+                   # document d'enregistrement de la tête d'un non-déposant (D-0054, point 13)
+                   "discovery_item_404", "discovery_entity_list",
                    # bloc montages : paragraphes autour des termes d'un montage (D-0046)
                    "montage_text",
                    # paragraphes des 6-K des groupes émetteurs privés étrangers (D-0048)
