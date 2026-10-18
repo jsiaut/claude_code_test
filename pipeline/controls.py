@@ -17,10 +17,15 @@ HALF = Decimal("0.5")
 BS_TOTALS = ["us-gaap:AssetsCurrent", "us-gaap:Assets", "us-gaap:LiabilitiesCurrent", "us-gaap:Liabilities",
              "us-gaap:StockholdersEquity",
              "us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
-             "us-gaap:LiabilitiesAndStockholdersEquity"]
+             "us-gaap:LiabilitiesAndStockholdersEquity",
+             # totaux ifrs-full d'un groupe en IFRS (D-0056, point 5)
+             "ifrs-full:CurrentAssets", "ifrs-full:Assets", "ifrs-full:CurrentLiabilities", "ifrs-full:Liabilities",
+             "ifrs-full:EquityAttributableToOwnersOfParent", "ifrs-full:Equity", "ifrs-full:EquityAndLiabilities"]
 CF_TOTALS = ["us-gaap:NetCashProvidedByUsedInOperatingActivities",
              "us-gaap:NetCashProvidedByUsedInInvestingActivities",
-             "us-gaap:NetCashProvidedByUsedInFinancingActivities"]
+             "us-gaap:NetCashProvidedByUsedInFinancingActivities",
+             "ifrs-full:CashFlowsFromUsedInOperatingActivities", "ifrs-full:CashFlowsFromUsedInInvestingActivities",
+             "ifrs-full:CashFlowsFromUsedInFinancingActivities"]
 NOTE_TOTALS = ["us-gaap:LesseeOperatingLeaseLiabilityPaymentsDue", "us-gaap:FinanceLeaseLiabilityPaymentsDue",
                "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount",
                "us-gaap:PurchaseObligation", "us-gaap:RevenueRemainingPerformanceObligation"]

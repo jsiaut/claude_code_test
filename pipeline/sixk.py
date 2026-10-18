@@ -41,6 +41,8 @@ def lexicon_rx(group, cfg=None):
     s = settings(cfg)
     parts = [r"\b" + r"\s+".join(re.escape(w) for w in t.split()) + r"\b" for t in s.get("lexicon") or []]
     names = list(((cfg.get("discovery") or {}).get("lexicon") or {}).get("seed") or []) + list(s.get("group_names") or [])
+    # noms propres à un groupe (D-0056, point 5) : ceux des groupes ajoutés depuis, pour TSMC seul
+    names += list((s.get("group_names_by_group") or {}).get(group) or [])
     named = []
     for n in names:
         if n.get("ref") == group:

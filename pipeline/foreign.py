@@ -158,9 +158,20 @@ def prepare(rate=4.0):
           f"émetteurs étrangers dans la file : {len(inv)}, retenus : {int(inv['selected'].sum())}")
 
 
+_GROUP_FRAMEWORKS = None
+
+
+def group_frameworks():
+    """Cadre comptable des groupes qui ne publient pas en US GAAP (`group_frameworks`, D-0056)."""
+    global _GROUP_FRAMEWORKS
+    if _GROUP_FRAMEWORKS is None:
+        _GROUP_FRAMEWORKS = dict(config.load().get("group_frameworks") or {})
+    return _GROUP_FRAMEWORKS
+
+
 def block_framework(b):
-    """Cadre comptable d'un bloc : celui qu'il porte (notes de la découverte), US GAAP pour les notes
-    des groupes de config.yaml (tous déposent en US GAAP), aucun pour un contrat ou un narratif."""
+    """Cadre comptable d'un bloc : celui qu'il porte (notes de la découverte), celui de son groupe pour les
+    notes des groupes de config.yaml (US GAAP, sauf `group_frameworks`), aucun pour un contrat ou un narratif."""
     if b.get("framework"):
         return b["framework"]
     if b.get("block_kind") in ("discovery_note",):
@@ -168,7 +179,7 @@ def block_framework(b):
     if b.get("block_kind") in ("related_party_note", "investment_note", "debt_note", "lease_note", "commitments_note",
                                "revenue_note", "lever_note", "concentration_text", "spacex_annual_note", "going_concern",
                                "item_9a", "item_4_10q"):
-        return "us_gaap"
+        return group_frameworks().get(b.get("group_id"), "us_gaap")
     return None
 
 

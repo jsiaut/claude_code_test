@@ -140,6 +140,11 @@ def quantity_definitions(cfg=None):
                    "anchored": True, "to_verify": True}
     for name, (cands, st) in UNANCHORED.items():
         q.setdefault(name, {"candidates": cands, "statements": st, "anchored": False})
+    # groupe en IFRS (D-0056, point 5) : candidats ifrs-full fixés d'avance, après les candidats us-gaap ; la
+    # règle de présence dans la linkbase du déposant les écarte pour un déposant en US GAAP
+    for name, cands in (cfg.get("concept_anchors_ifrs") or {}).items():
+        d = q[name]
+        d["candidates"] = d["candidates"] + [f"ifrs-full:{c}" for c in cands if f"ifrs-full:{c}" not in d["candidates"]]
     for name, d in q.items():
         d["instant"] = name in DURATION_HINT
     return q

@@ -213,6 +213,9 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   OWL: "0001823945"          # ajouts du 2026-10-17 (D-0055) : gestionnaires d'actifs, financeurs privés des centres de données
   APO: "0001858681"
   BX: "0001393818"
+  INTC: "0000050863"         # ajouts du 2026-10-18 (D-0056) : fabricants, après les hébergeurs (§14)
+  MU: "0000723125"
+  TSM: "0001046179"          # émetteur privé étranger, 20-F et 6-K en IFRS (D-0056, point 5)
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -224,6 +227,11 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-16, groups: [HUT, GLXY], basis: "D-0053, ajout de groupes de §14"}
   - {date: 2026-10-16, groups: [AKAM, BLZE, RIOT], basis: "D-0054, ajout de groupes de §14"}
   - {date: 2026-10-17, groups: [OWL, APO, BX], basis: "D-0055, ajout de groupes de §14"}
+  - {date: 2026-10-18, groups: [INTC, MU, TSM], basis: "D-0056, ajout de groupes de §14"}
+
+group_frameworks:            # cadre comptable des états d'un groupe, s'il n'est pas US GAAP (invariant f, D-0056,
+                             # point 5) : ses notes portent ce cadre, ses grandeurs se résolvent par concept_anchors_ifrs
+  TSM: ifrs                  # 20-F en IFRS publiées par l'IASB sur toute la période
 
 history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
                              # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
@@ -329,6 +337,8 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["2021-07-01", "EFFECT 9999999995-21-004291 du 2021-11-10, 424B4 0001193125-21-327209 du 2021-11-12 ; premier 10-Q 0001628280-21-025028 (trimestre clos le 2021-09-30) (D-0054)"]
   OWL:
     quarter: ["2021-04-01", "regroupement du 2021-05-19 avec la SPAC Altimar (D-0055) ; premier 10-Q de l'acquéreur comptable 0001823945-21-000007 (T2 2021)"]
+  TSM:
+    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0056)"]
 
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
@@ -446,7 +456,7 @@ foreign:                     # bloc de §14 ouvert le 2026-10-10 (décision D-00
   selection: [named_issuers, graph_counterparties]
 
 foreign_6k:                  # unités 6-K des groupes émetteurs privés étrangers (D-0048, point 6)
-  groups: [NBIS, IREN]       # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K
+  groups: [NBIS, IREN, TSM]  # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K ; TSMC (D-0056)
   forms: ["6-K", "6-K/A"]
   documents: [primary, EX-99] # document principal et annexes 99 (type lu dans l'en-tête SGML, §2.3)
   # lexique de D-0048 ; mots entiers, casse indifférente, singulier et pluriel écrits (D-0048, point 9)
@@ -462,6 +472,26 @@ foreign_6k:                  # unités 6-K des groupes émetteurs privés étran
     - {term: Nebius, ref: NBIS}
     - {term: IREN, ref: IREN, case_sensitive: true}
     - {term: "Iris Energy", ref: IREN}
+  group_names_by_group:      # noms qualifiants propres à un groupe, en plus des précédents (D-0056, point 5) : groupes
+                             # ajoutés depuis D-0048 et non-déposants ; les unités de Nebius et d'IREN ne changent pas
+    TSM:
+      - {term: "Applied Digital", ref: APLD}
+      - {term: Dell, ref: DELL, case_sensitive: true}
+      - {term: Supermicro, ref: SMCI}
+      - {term: "Super Micro", ref: SMCI}
+      - {term: "Hut 8", ref: HUT}
+      - {term: "Galaxy Digital", ref: GLXY}
+      - {term: Akamai, ref: AKAM}
+      - {term: Backblaze, ref: BLZE}
+      - {term: "Riot Platforms", ref: RIOT}
+      - {term: "Blue Owl", ref: OWL}
+      - {term: Apollo, ref: APO, case_sensitive: true}
+      - {term: Athene, ref: APO, case_sensitive: true}
+      - {term: Blackstone, ref: BX}
+      - {term: Intel, ref: INTC, case_sensitive: true}
+      - {term: Micron, ref: MU, case_sensitive: true}
+      - {term: SoftBank, ref: "NF:SOFTBANK"}
+      - {term: Nscale, ref: "NF:NSCALE"}
   window: 2                  # paragraphes de part et d'autre, fenêtres fondues quand elles se chevauchent
   cap_per_group: 80          # du plus récent au plus ancien ; au-delà, not_processed
 
@@ -1244,6 +1274,65 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
    debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
    interest_expense, interest_paid, operating_lease_payments_12m, finance_lease_payments_12m]
+
+concept_anchors_ifrs:        # D-0056, point 5 : candidats ifrs-full des grandeurs qui ont un équivalent IFRS, fixés avant
+                             # de voir les faits ; noms locaux vérifiés en phase 0 dans full_ifrs-cor_2025-03-27.xsd (annexe D).
+                             # Retenus après les candidats us-gaap, seulement s'ils figurent dans la linkbase de présentation
+                             # du déposant (§8.3) : jamais pour un déposant en US GAAP
+  revenue_total: [Revenue, RevenueFromContractsWithCustomers]
+  net_income: [ProfitLossAttributableToOwnersOfParent]
+  profit_including_nci: [ProfitLoss]
+  operating_income: [ProfitLossFromOperatingActivities]
+  pretax_income_continuing: [ProfitLossBeforeTax]
+  gross_profit: [GrossProfit]
+  cost_of_revenue: [CostOfSales]
+  total_assets: [Assets]
+  current_assets: [CurrentAssets]
+  total_liabilities: [Liabilities]
+  current_liabilities: [CurrentLiabilities]
+  equity_including_nci: [Equity]
+  stockholders_equity: [EquityAttributableToOwnersOfParent]
+  cash_and_equivalents: [CashAndCashEquivalents]
+  cash_and_restricted_cash_total: [CashAndCashEquivalents]   # IAS 7.45 : le tableau rapproche la trésorerie et ses équivalents
+  cfo: [CashFlowsFromUsedInOperatingActivities]
+  cfi: [CashFlowsFromUsedInInvestingActivities]
+  cff: [CashFlowsFromUsedInFinancingActivities]
+  capex_cash: [PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities,
+    PurchaseOfPropertyPlantAndEquipmentIntangibleAssetsOtherThanGoodwillInvestmentPropertyAndOtherNoncurrentAssets]
+  eps_diluted: [DilutedEarningsLossPerShare]
+  diluted_shares_weighted: [AdjustedWeightedAverageShares]
+  net_income_to_common_diluted: [ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffect]
+  rpo_total: [TransactionPriceAllocatedToRemainingPerformanceObligations]
+  contract_liabilities: [ContractLiabilities]
+  contract_liabilities_current: [CurrentContractLiabilities]
+  contract_assets: [ContractAssets]
+  capitalized_interest: [BorrowingCostsCapitalised]
+  undrawn_committed_facilities: [UndrawnBorrowingFacilities]
+  dividends_paid: [DividendsPaidClassifiedAsFinancingActivities, DividendsPaid]
+  dividends_declared: [DividendsRecognisedAsDistributionsToOwnersOfParent]
+  debt_proceeds: [ProceedsFromBorrowingsClassifiedAsFinancingActivities, ProceedsFromIssueOfBondsNotesAndDebentures]
+  debt_repayments: [RepaymentsOfBorrowingsClassifiedAsFinancingActivities, RepaymentsOfBondsNotesAndDebentures]
+  equity_method_income: [ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod]
+  receivables: [TradeAndOtherCurrentReceivables, CurrentTradeReceivables]
+  accounts_receivable_net: [CurrentTradeReceivables]
+  inventories: [Inventories]
+  accounts_payable: [TradeAndOtherCurrentPayablesToTradeSuppliers, TradeAndOtherCurrentPayables]
+  income_tax_expense: [IncomeTaxExpenseContinuingOperations]
+  effective_tax_rate: [AverageEffectiveTaxRate]
+  retained_earnings: [RetainedEarnings]
+  accumulated_deficit: [RetainedEarnings]
+  fx_effect_on_cash: [EffectOfExchangeRateChangesOnCashAndCashEquivalents]
+  depreciation_expense: [DepreciationAndAmortisationExpense, AdjustmentsForDepreciationAndAmortisationExpense]
+  land: [Land]
+  construction_in_progress: [ConstructionInProgress]
+  debt_carrying_amount: [Borrowings]
+  debt_current: [CurrentBorrowingsAndCurrentPortionOfNoncurrentBorrowings, CurrentPortionOfLongtermBorrowings]
+  debt_noncurrent: [NoncurrentPortionOfNoncurrentBorrowings, LongtermBorrowings]
+  short_term_borrowings: [ShorttermBorrowings]
+  sbc_expense: [ExpenseFromSharebasedPaymentTransactionsWithEmployees, AdjustmentsForSharebasedPayments]
+  interest_expense: [InterestExpense]
+  interest_paid: [InterestPaidClassifiedAsOperatingActivities, InterestPaidClassifiedAsFinancingActivities]
+  short_term_investments: [CurrentInvestments]
 
 # Bloc montages (D-0046, D-0049) : un montage = une recherche plein texte d'EDGAR fixée d'avance, les
 # rapports périodiques de déposants nommés, des termes qualifiants et un plafond d'unités. Un terme ne
