@@ -6,6 +6,7 @@ répète les titres : la section retenue est la plus longue entre un titre et le
 de fin suivant, ce qui écarte les entrées de sommaire.
 """
 import re
+from collections import Counter
 
 from . import textnorm
 
@@ -168,6 +169,103 @@ def item_10c_20f(raw):
     sec = _item_lines(_lines(raw), ITEM_10, ITEM_10_END)
     sub = _subsection(sec, SUB_10C, SUB_10C_END) if sec else None
     return textnorm.lines_to_text(sub) if sub else None
+
+
+# 20-F à table de correspondance (D-0057, point 15) : ASML ne numérote ses items que dans sa table finale
+# (« Reference table 20-F »), qui donne pour chaque item la section du rapport qui en tient lieu. L'item est
+# cette section : une annexe (« Appendix - Controls and procedures ») va de son titre au titre d'annexe
+# suivant ; une note des états est déjà au catalogue par son rôle XBRL ; « None » ne donne rien. Les lignes
+# de mise en page (bandeau et pied de chaque page, répétés à chiffres près) sont retirées
+XREF_ROWS = {"15": re.compile(r"^\W{0,3}15\s*\|\s*controls\s+and\s+procedures\b(.*)$", re.I),
+             "7.B": re.compile(r"^\W{0,3}b\.\s*related\s+party\s+transactions\b(.*)$", re.I),
+             "10.C": re.compile(r"^\W{0,3}c\.\s*material\s+contracts\b(.*)$", re.I)}
+XREF_PARENT = {"7.B": re.compile(r"^\W{0,3}7\s*\|\s*major\s+shareholders", re.I),
+               "10.C": re.compile(r"^\W{0,3}10\s*\|\s*additional\s+information", re.I)}
+XREF_NEXT = re.compile(r"^\W{0,3}(\d{1,2}[a-k]?\s*\||[a-k]\.\s+\S)", re.I)
+APPENDIX = re.compile(r"^\W{0,3}appendix\s*[-–—]\s*(\S.*?)\s*$", re.I)
+CONTINUED_HEAD = re.compile(r"\(continued\)\s*$", re.I)
+
+
+def _xref_targets(lines, start, rest):
+    """Renvois d'une ligne de la table : sur la ligne même (« | Section | page ») ou sur les lignes
+    suivantes, jusqu'à la ligne d'item suivante."""
+    cells = [c.strip() for c in rest.split("|") if c.strip()] if rest.strip() else []
+    if not cells:
+        for t, _ in lines[start + 1:start + 8]:
+            if XREF_NEXT.match(t.strip()):
+                break
+            cells += [c.strip() for c in t.split("|") if c.strip()]
+    return [c for c in cells if not re.fullmatch(r"\d{1,3}(\s*[-–]\s*\d{1,3})?", c)]
+
+
+XREF_CHECK = {"15": re.compile(r"disclosure\s+controls", re.I), "10.C": re.compile(r"\b(agreement|contract)s?\b", re.I)}
+
+
+def _appendix_section(lines, title, table_start, furniture, check):
+    """Annexe d'un titre donné, de ce titre au titre d'annexe suivant. Si ce texte ne porte pas le contenu
+    attendu (`check`), le titre est celui de la page qu'il clôt (titre linéarisé après le pied de page, 20-F
+    d'ASML de l'exercice 2023) : l'annexe est le texte qui le précède, depuis le titre d'annexe précédent."""
+    tl = title.lower()
+
+    def heading(u):
+        mm = APPENDIX.match(u)
+        return mm if mm and "|" not in u and not CONTINUED_HEAD.search(u) else None
+
+    def body(rng):
+        return [lines[j] for j in rng if not (CONTINUED_HEAD.search(lines[j][0].strip()) and APPENDIX.match(lines[j][0].strip()))
+                and re.sub(r"\d", "#", lines[j][0].strip()) not in furniture]
+
+    for s in range(table_start):
+        m = heading(lines[s][0].strip())
+        if not m or m.group(1).lower() != tl:
+            continue
+        e = next((j for j in range(s + 1, table_start) if heading(lines[j][0].strip())), table_start)
+        text = textnorm.lines_to_text([lines[s]] + body(range(s + 1, e)))
+        if check is None or check.search(text.split("\n", 1)[-1]):
+            return text
+        b = next((j for j in range(s - 1, -1, -1) if heading(lines[j][0].strip())), None)
+        if b is not None:
+            back = textnorm.lines_to_text([lines[s]] + body(range(b + 1, s)))
+            if check.search(back.split("\n", 1)[-1]):
+                return back
+        return None
+    return None
+
+
+def xref_20f(raw):
+    """{item: (« section », texte) | (« note », renvois) | (« none », renvois)} pour les items 15, 7.B et
+    10.C d'un 20-F à table de correspondance ; None sans table."""
+    lines = _lines(raw)
+    rows15 = [i for i, (t, _) in enumerate(lines) if XREF_ROWS["15"].match(t.strip())]
+    if not rows15:
+        return None
+    table_end = rows15[-1]
+    parents = {k: max((i for i, (t, _) in enumerate(lines[:table_end]) if rx.match(t.strip())), default=None)
+               for k, rx in XREF_PARENT.items()}
+    starts = [p for p in parents.values() if p is not None]
+    table_start = min(starts) if starts else table_end
+    counts = Counter(re.sub(r"\d", "#", t.strip()) for t, _ in lines)
+    furniture = {k for k, n in counts.items() if len(k) < 200 and (n >= 20 or (n >= 5 and "|" in k))}
+    out = {}
+    for item, rx in XREF_ROWS.items():
+        lo = table_end if item == "15" else parents.get(item)
+        if lo is None:
+            continue
+        hi = table_end + 1 if item == "15" else table_end
+        row = next((i for i in range(lo, hi) if rx.match(lines[i][0].strip())), None)
+        if row is None:
+            continue
+        targets = _xref_targets(lines, row, rx.match(lines[row][0].strip()).group(1))
+        apps = [APPENDIX.search(re.sub(r"^.*?(?=appendix\s*[-–—])", "", t, flags=re.I)) for t in targets]
+        texts = [_appendix_section(lines, a.group(1), table_start, furniture, XREF_CHECK.get(item)) for a in apps if a]
+        texts = [t for t in texts if t]
+        if texts:
+            out[item] = ("section", "\n".join(texts))
+        elif any(re.search(r"\bnote\s+\d{1,2}\b", t, re.I) for t in targets):
+            out[item] = ("note", targets)
+        else:
+            out[item] = ("none", targets)
+    return out
 
 
 EIGHT_K_ITEM = re.compile(_ITEM + r"(\d{1,2}\.\d{2})\b", re.I)

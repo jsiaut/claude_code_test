@@ -16,7 +16,7 @@ from collections import Counter, defaultdict
 
 import pandas as pd
 
-from . import blocks, cache, config, sections, textnorm, xbrl
+from . import blocks, cache, config, regdoc, sections, textnorm, xbrl
 from .catalog import _cache_member, _filing, is_annual
 from .edgar import cik10
 
@@ -267,6 +267,8 @@ def build(as_of, limit=None):
             b["assurance_level"] = "audited" if is_annual(f["form"]) else "reviewed"
             b["tier"] = "A" if is_annual(f["form"]) else "B"
             out.append(b)
+    # document d'enregistrement qui tient lieu de rapports périodiques, sans instance XBRL financière (D-0057)
+    out += regdoc.build(stats)
     return out, stats
 
 

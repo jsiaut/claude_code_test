@@ -124,10 +124,22 @@ def build(as_of):
             stats["primary_missing"] += 1
             continue
         if r["form"].startswith("20-F"):
-            # 20-F (D-0048, point 6) : Item 15 en item_9a, Item 7.B en item_404, Item 10.C en item_8k_101
+            # 20-F (D-0048, point 6) : Item 15 en item_9a, Item 7.B en item_404, Item 10.C en item_8k_101 ;
+            # items numérotés dans la seule table de correspondance : la section qu'elle désigne (D-0057)
+            xref = None
             for kind, fn, item in (("item_9a", sections.item_15_20f, "15"), ("item_404", sections.item_7b_20f, "7.B"),
                                    ("item_8k_101", sections.item_10c_20f, "10.C")):
                 text = fn(raw)
+                if not text:
+                    xref = sections.xref_20f(raw) if xref is None else xref
+                    how, val = (xref or {}).get(item, (None, None))
+                    if how == "section":
+                        text = val
+                        stats[f"20f_item_{item}_xref"] += 1
+                    elif how:
+                        # renvoi à une note des états (déjà au catalogue par son rôle) ou « None »
+                        stats[f"20f_item_{item}_xref_{how}"] += 1
+                        continue
                 if not text:
                     stats[f"20f_item_{item}_not_found"] += 1
                     continue

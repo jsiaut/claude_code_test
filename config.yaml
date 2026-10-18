@@ -235,6 +235,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
 group_frameworks:            # cadre comptable des états d'un groupe, s'il n'est pas US GAAP (invariant f, D-0056,
                              # point 5) : ses notes portent ce cadre, ses grandeurs se résolvent par concept_anchors_ifrs
   TSM: ifrs                  # 20-F en IFRS publiées par l'IASB sur toute la période
+  SKHY: ifrs                 # 424B4 en IFRS publiées par l'IASB, sans instance XBRL financière (D-0057, point 14)
 
 history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
                              # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
@@ -346,6 +347,14 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0057)"]
   SKHY:
     quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0057)"]
+    fiscal_year: ["2023-01-01", "424B4 0001193125-26-299963 du 2026-07-10 : exercices 2023 à 2025 présentés, états consolidés audités en IFRS publiées par l'IASB (Form 20-F, Item 8.A, par la Form F-1) ; aucun 20-F déposé avant l'as_of (D-0057, point 14)"]
+
+registration_text:           # document d'enregistrement qui tient lieu de rapports périodiques, sans instance XBRL
+                             # financière : jeux de notes découpés en HTML, notes lues par familles de titres
+                             # (pipeline/regdoc.py, D-0057, point 14) ; jeux et assurance fixés avant toute lecture
+  - {group: SKHY, accession: "0001193125-26-299963", primary: d32785d424b4.htm, decision: D-0057,
+     note_sets: [{period_start: "2023-01-01", period_end: "2025-12-31", label: "états consolidés audités, exercices 2025, 2024 et 2023", assurance: audited},
+                 {period_start: "2026-01-01", period_end: "2026-03-31", label: "états consolidés intermédiaires résumés au 31 mars 2026, non audités", assurance: unaudited}]}
 
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
