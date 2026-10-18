@@ -12,13 +12,13 @@
   - annexe F, ajout de F15 (D-0047) : « offre de rachat d'une BDC dont les parts acceptées sont inférieures aux parts apportées (réduction au prorata) » ; règle {"measure": "bdc_tender_acceptance_ratio", "condition": "acceptées < apportées, ou réduction au prorata annoncée", "dated_at": "expiration de l'offre"} ; sujets : bdc_vehicles
   - annexe F, ajout de F16 (D-0047) : « interruption d'un programme régulier d'offres de rachat d'une BDC » ; règle {"condition": "au moins quatre offres déposées à 120 jours au plus d'intervalle, puis aucune offre dans les 120 jours ; ni 8-A12B ni N-54C ou formulaire 15 dans l'intervalle", "dated_at": "dépôt de la dernière offre + 120 jours"} ; sujets : bdc_vehicles
   - annexe F, inchangés : F1, F2, F3, F4, F5, F6, F7, F8, F9, F10 (mêmes observables, mêmes règles)
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des vingt-sept groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
-- **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
-- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 58 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 112 issues ; motifs : intervalle à cheval sur le seuil : 30, précondition non remplie : 25, recherche incomplète : 7, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 2, historique tronqué : 1. Issues déterminées : E.1 non étayé 47. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 1 688, `not_testable` 1 183, `ok` 26 838, `tautological` 1 247 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
-- **Contrôles comptables, vue `revised`** : `mismatch` 2 809, `not_testable` 1 469, `ok` 26 488, `tautological` 1 247.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 190/840, C11 99/728, C12 366/1 836, C13 0/341, C14 85/1 054, C15 129/741, C16 2/438, C1 386/13 693, C2 151/8 039, C3 197/590, C5 0/160, C6 0/1 247, C7 9/478, C8 68/176, C9 6/595.
-- **Exclusions principales** : `not_processed` 20 654, `conflicting` 1 304, `pending_entity` 504, `financial_parties_only` 302, `out_of_scope` 272, `invalid_aggregate` 37, `parse_failed` 32, `submitted_draft` 15, `history_left_censored` 9, `not_public` 2.
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10, chaque fois après le rendement présenté). Premier passage : faits balisés des trente groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
+- **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17; Intel, Micron, TSMC depuis le 2026-10-18. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
+- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 57 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 136 issues ; motifs : intervalle à cheval sur le seuil : 35, précondition non remplie : 27, recherche incomplète : 9, terme manquant : 5, historique tronqué : 1, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1. Issues déterminées : E.1 non étayé 58. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
+- **Contrôles comptables, vue `as_known`** : `mismatch` 1 826, `not_testable` 1 265, `ok` 29 579, `tautological` 1 383 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Contrôles comptables, vue `revised`** : `mismatch` 2 998, `not_testable` 1 584, `ok` 29 181, `tautological` 1 383.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 192/869, C11 99/835, C12 425/2 026, C13 0/349, C14 85/1 172, C15 129/824, C16 2/482, C1 419/15 099, C2 169/8 882, C3 215/628, C5 0/186, C6 0/1 383, C7 9/523, C8 76/200, C9 6/595.
+- **Exclusions principales** : `not_processed` 23 979, `conflicting` 1 377, `pending_entity` 558, `out_of_scope` 542, `financial_parties_only` 356, `invalid_aggregate` 51, `parse_failed` 32, `submitted_draft` 15, `history_left_censored` 9, `not_public` 2.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -462,18 +462,63 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F8 (croissance annuelle passée sous zéro) — rendu public le 2025-05-02, rattaché au trimestre clos le 2025-03-31 ; pièce : faits balisés.
 - F8 (croissance annuelle passée sous zéro) — rendu public le 2025-11-07, rattaché au trimestre clos le 2025-09-30 ; pièce : faits balisés.
 
+**Intel**
+
+- F2 (flux après financement des contreparties négatif) — rendu public le 2022-01-27, rattaché au trimestre clos le 2021-12-25 ; pièce : faits balisés.
+- F8 (croissance annuelle passée sous zéro) — rendu public le 2022-04-29, rattaché au trimestre clos le 2022-04-02 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2022-07-29, rattaché au trimestre clos le 2022-07-02 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2022-10-28, rattaché au trimestre clos le 2022-10-01 ; pièce : 10-Q 0000050863-22-000030, 10-Q 0000050863-22-000038.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2022-10-28, rattaché au trimestre clos le 2022-10-01 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-04-28, rattaché au trimestre clos le 2023-04-01 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-07-28, rattaché au trimestre clos le 2023-07-01 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2024-01-26, rattaché au trimestre clos le 2023-12-30 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2024-04-26, rattaché au trimestre clos le 2024-03-30 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2024-08-02, rattaché au trimestre clos le 2024-06-29 ; pièce : faits balisés.
+- F8 (croissance annuelle passée sous zéro) — rendu public le 2024-08-02, rattaché au trimestre clos le 2024-06-29 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2024-11-01, rattaché au trimestre clos le 2024-09-28 ; pièce : 10-Q 0000050863-24-000124, 10-Q 0000050863-24-000149.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2024-11-01, rattaché au trimestre clos le 2024-09-28 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-01-31, rattaché au trimestre clos le 2024-12-28 ; pièce : 10-Q 0000050863-24-000149, 10-K 0000050863-25-000009.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2025-01-31, rattaché au trimestre clos le 2024-12-28 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-04-25, rattaché au trimestre clos le 2025-03-29 ; pièce : 10-Q 0000050863-25-000074.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2025-04-25, rattaché au trimestre clos le 2025-03-29 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2025-07-24, rattaché au trimestre clos le 2025-06-28 ; pièce : 10-Q 0000050863-25-000074, 10-Q 0000050863-25-000109.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2025-07-24, rattaché au trimestre clos le 2025-06-28 ; pièce : faits balisés.
+- F4 (amendement ou dérogation de clause financière) — rendu public le 2025-08-29, rattaché au trimestre clos le 2025-09-27 ; pièce : 8-K 0000050863-25-000135.
+- F8 (croissance annuelle passée sous zéro) — rendu public le 2026-01-23, rattaché au trimestre clos le 2025-12-27 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2026-04-24, rattaché au trimestre clos le 2026-03-28 ; pièce : faits balisés.
+
+**Micron**
+
+- F2 (flux après financement des contreparties négatif) — rendu public le 2021-01-08, rattaché au trimestre clos le 2020-12-03 ; pièce : faits balisés.
+- F8 (croissance annuelle passée sous zéro) — rendu public le 2022-10-07, rattaché au trimestre clos le 2022-09-01 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2022-12-22, rattaché au trimestre clos le 2022-12-01 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2023-03-29, rattaché au trimestre clos le 2023-03-02 ; pièce : 10-Q 0000723125-22-000072, 10-Q 0000723125-23-000022.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-03-29, rattaché au trimestre clos le 2023-03-02 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2023-06-29, rattaché au trimestre clos le 2023-06-01 ; pièce : 10-Q 0000723125-23-000022, 10-Q 0000723125-23-000041.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-06-29, rattaché au trimestre clos le 2023-06-01 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2023-10-06, rattaché au trimestre clos le 2023-08-31 ; pièce : 10-Q 0000723125-23-000041, 10-K 0000723125-23-000054.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-10-06, rattaché au trimestre clos le 2023-08-31 ; pièce : faits balisés.
+- F6 (dépréciation d'investissement) — rendu public le 2023-10-06, rattaché au trimestre clos le 2023-08-31 ; pièce : 10-K 0000723125-23-000054.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2023-12-21, rattaché au trimestre clos le 2023-11-30 ; pièce : 10-Q 0000723125-23-000077.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-12-21, rattaché au trimestre clos le 2023-11-30 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2024-03-21, rattaché au trimestre clos le 2024-02-29 ; pièce : 10-Q 0000723125-23-000077, 10-Q 0000723125-24-000007.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2024-03-21, rattaché au trimestre clos le 2024-02-29 ; pièce : faits balisés.
+- F6 (dépréciation d'investissement) — rendu public le 2024-10-04, rattaché au trimestre clos le 2024-08-29 ; pièce : 10-K 0000723125-24-000027.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2025-03-21, rattaché au trimestre clos le 2025-02-27 ; pièce : faits balisés.
+- F6 (dépréciation d'investissement) — rendu public le 2025-10-03, rattaché au trimestre clos le 2025-08-28 ; pièce : 10-K 0000723125-25-000028.
+
 États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F14 : véhicule BDC × date de bilan, D-0045 et D-0047 ; F15 : véhicule × offre de rachat ; F16 : véhicule × offre qui clôt une série), pour lire ce qui n'a pas été observé :
 
-- F1 : calculée / événement 33 ; calculée / sans événement 278 ; indéterminée 308
-- F2 : calculée / événement 156 ; calculée / sans événement 301 ; indéterminée 162
-- F3 : calculée / sans événement 498 ; partielle / sans événement 121
-- F4 : calculée / événement 26 ; calculée / sans événement 436 ; partielle / sans événement 157
-- F5 : calculée / événement 97 ; calculée / sans événement 401 ; indéterminée 121
-- F6 : calculée / événement 5 ; indéterminée 614
-- F7 : calculée / événement 5 ; calculée / sans événement 94 ; indéterminée 520
-- F8 : calculée / événement 27 ; calculée / sans événement 372 ; indéterminée 220
-- F9 : calculée / sans événement 609 ; indéterminée 10
-- F10 : calculée / événement 10 ; calculée / sans événement 488 ; indéterminée 121
+- F1 : calculée / événement 43 ; calculée / sans événement 307 ; indéterminée 334
+- F2 : calculée / événement 177 ; calculée / sans événement 325 ; indéterminée 182
+- F3 : calculée / sans événement 548 ; partielle / sans événement 136
+- F4 : calculée / événement 27 ; calculée / sans événement 485 ; partielle / sans événement 172
+- F5 : calculée / événement 97 ; calculée / sans événement 451 ; indéterminée 136
+- F6 : calculée / événement 8 ; indéterminée 676
+- F7 : calculée / événement 5 ; calculée / sans événement 104 ; indéterminée 575
+- F8 : calculée / événement 31 ; calculée / sans événement 411 ; indéterminée 242
+- F9 : calculée / sans événement 654 ; indéterminée 30
+- F10 : calculée / événement 10 ; calculée / sans événement 538 ; indéterminée 136
 - F11 : calculée / événement 500 ; calculée / sans événement 1 009 ; indéterminée 579
 - F12 : calculée / événement 222 ; calculée / sans événement 562 ; indéterminée 1 304
 - F13 : indéterminée 2 088
@@ -1773,6 +1818,148 @@ Durées d'amortissement publiées (exercice clos le 2025-12-31) : Furniture Fitt
 
 Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 22 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22 ; actifs nantis — sans événement 22.
 
+### Intel (INTC)
+
+Dernière information balisée utilisée : 2026-07-24.
+
+| Mesure (trimestre clos le) | 2025-09-27 | 2025-12-27 | 2026-03-28 | 2026-06-27 |
+| --- | ---: | ---: | ---: | ---: |
+| Croissance du revenu (glissement annuel) | 2,8 % | -4,1 % | 7,2 % | 25,4 % |
+| Croissance du revenu (douze mois glissants) | -1,5 % | -0,5 % | 1,4 % | 7,5 % |
+| Capex décaissé ÷ CFO | 0,95 x | 0,81 x | 3,32 x | 0,36 x |
+| Capex ÷ CFO, additions non monétaires comprises | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux disponible (CFO − capex) | 121 M$ | 800 M$ | -2 540 M$ | 4 450 M$ |
+| Flux disponible après locations-financement | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux après financement des contreparties | 121 M$ | 800 M$ | -2 540 M$ | 4 450 M$ |
+| Délai de recouvrement (créances) | 21 j | 26 j | 27 j | 23 j |
+| Obligations de prestation restantes (RPO) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Dette ÷ (résultat opérationnel + dotations) | 5,90 x | 5,45 x | 7,28 x | 4,45 x |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 38,2 % | 36,1 % | 39,4 % | 40,4 % |
+| Marge opérationnelle | 5,0 % | 4,2 % | -23,1 % | 11,1 % |
+| Capex décaissé ÷ revenu | 0,18 x | 0,26 x | 0,27 x | 0,16 x |
+| Flux disponible après rémunération en actions | -427 M$ | n.d. (frontière de retraitement) | -3 161 M$ | 3 764 M$ |
+| Rémunération en actions ÷ CFO | 0,22 x | n.d. (frontière de retraitement) | 0,57 x | 0,10 x |
+| Écart CFO − résultat net | -1 517 M$ | 4 879 M$ | 4 824 M$ | 18 039 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | -2,29 x | -2,03 x | -4,78 x | -0,07 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 4 423 M$ (partiel) | 5 575 M$ (partiel) | 9 333 M$ (partiel) | 7 769 M$ (partiel) |
+| Capitaux propres | 106 376 M$ | 114 281 M$ | 111 394 M$ | 87 542 M$ |
+| Résultats non distribués (déficit si négatif) | 49 602 M$ | 48 983 M$ | 45 179 M$ | 33 842 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | 5,6 % | 638,5 % | 17,0 % | 16,8 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+| Mesure (exercice clos le) | 2024-12-28 | 2025-12-27 |
+| --- | ---: | ---: |
+| Principal dû à 12 mois ÷ trésorerie | n.d. (terme manquant) | 0,18 x |
+| Principal dû à 24 mois ÷ trésorerie | n.d. (terme manquant) | 0,44 x |
+| Gains et pertes sur participations | n.d. (non publié) | n.d. (non publié) |
+| Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions en location-financement | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+Obligations d'achat publiées au 2025-12-27 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié 6 700 M$.
+Baux non commencés au 2025-12-27 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
+
+Durées d'amortissement publiées (exercice clos le 2025-12-27) : Building (borne basse) 10,0 ans ; Building (borne haute) 25,0 ans ; Machinery And Equipment (borne basse) 3,0 ans.
+
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — événement 1, sans événement 21 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 22 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — sans événement 22 ; actifs nantis — sans événement 22.
+
+### Micron (MU)
+
+Dernière information balisée utilisée : 2026-06-25.
+
+| Mesure (trimestre clos le) | 2025-08-28 | 2025-11-27 | 2026-02-26 | 2026-05-28 |
+| --- | ---: | ---: | ---: | ---: |
+| Croissance du revenu (glissement annuel) | 46,0 % | 56,7 % | 196,3 % | 345,7 % |
+| Croissance du revenu (douze mois glissants) | 48,9 % | 45,4 % | 85,5 % | 167,0 % |
+| Capex décaissé ÷ CFO | 0,99 x | 0,64 x | 0,54 x | 0,31 x |
+| Capex ÷ CFO, additions non monétaires comprises | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux disponible (CFO − capex) | 72 M$ | 3 022 M$ | 5 516 M$ | 17 562 M$ |
+| Flux disponible après locations-financement | -33 M$ | 2 899 M$ | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux après financement des contreparties | 72 M$ | 3 022 M$ | 5 516 M$ | 17 562 M$ |
+| Délai de recouvrement (créances) | 75 j | 68 j | 66 j | 68 j |
+| Obligations de prestation restantes (RPO) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 5 000 M$ |
+| Dette ÷ (résultat opérationnel + dotations) | 0,64 x | 0,40 x | n.d. (terme manquant) | n.d. (terme manquant) |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,21 x | 0,16 x | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | 44,7 % | 56,0 % | 74,4 % | 84,6 % |
+| Marge opérationnelle | 32,3 % | 45,0 % | 67,6 % | 80,4 % |
+| Capex décaissé ÷ revenu | 0,50 x | 0,40 x | 0,27 x | 0,19 x |
+| Flux disponible après rémunération en actions | -178 M$ | 2 732 M$ | 5 207 M$ | 17 207 M$ |
+| Rémunération en actions ÷ CFO | 0,04 x | 0,03 x | 0,03 x | 0,01 x |
+| Écart CFO − résultat net | 2 529 M$ | 3 171 M$ | -1 882 M$ | -2 855 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | 20,48 x | 31,71 x | 79,59 x | 257,58 x |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 17 594 M$ (partiel) | 18 389 M$ (partiel) | 25 581 M$ (partiel) | 39 592 M$ (partiel) |
+| Capitaux propres | 54 165 M$ | 58 806 M$ | 72 459 M$ | 100 724 M$ |
+| Résultats non distribués (déficit si négatif) | 48 583 M$ | 53 344 M$ | 66 824 M$ | 94 682 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | -85,7 % | 1,4 % | 1,7 % | 1,8 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+| Mesure (exercice clos le) | 2025-08-28 | 2026-08-27 |
+| --- | ---: | ---: |
+| Principal dû à 12 mois ÷ trésorerie | 0,00 x | n.d. (terme manquant) |
+| Principal dû à 24 mois ÷ trésorerie | 0,00 x | n.d. (terme manquant) |
+| Gains et pertes sur participations | n.d. (non publié) | n.d. (non publié) |
+| Dépréciations d'investissements | 10 M$ | n.d. (non publié) |
+| Additions en location-financement | 1 298 M$ | n.d. (non publié) |
+| Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+Obligations d'achat publiées au 2026-08-27 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (non publié).
+Baux non commencés au 2026-08-27 (pont ouverture + nouveaux − commencés = clôture) : ouverture 1 160 M$ ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
+
+Durées d'amortissement publiées (exercice clos le 2025-08-28) : Building And Building Improvements (borne basse) 10,0 ans ; Building And Building Improvements (borne haute) 30,0 ans ; Equipment (valeur unique) 7,0 ans ; Other Machinery and Equipment (borne haute) 7,0 ans ; Software And Software Development Costs (borne basse) 3,0 ans ; Software And Software Development Costs (borne haute) 5,0 ans.
+
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 23 ; clauses financières — sans événement 23 ; items de détresse (8-K) — sans événement 23 ; continuité d'exploitation — sans événement 23 ; dépôt tardif — sans événement 23 ; faiblesse du contrôle interne — sans événement 23 ; actifs nantis — sans événement 23.
+
+### TSMC (TSM)
+
+Dernière information balisée utilisée : n.d..
+
+| Mesure (trimestre clos le) | 2025-03-31 | 2025-06-30 | 2025-09-30 | 2025-12-31 |
+| --- | ---: | ---: | ---: | ---: |
+| Croissance du revenu (glissement annuel) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Croissance du revenu (douze mois glissants) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) |
+| Capex décaissé ÷ CFO | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Capex ÷ CFO, additions non monétaires comprises | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux disponible (CFO − capex) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux disponible après locations-financement | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux après financement des contreparties | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Délai de recouvrement (créances) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Obligations de prestation restantes (RPO) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Marge opérationnelle | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Capex décaissé ÷ revenu | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux disponible après rémunération en actions | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Rémunération en actions ÷ CFO | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Écart CFO − résultat net | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 514 575 M$ |
+| Capitaux propres | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 170 706 M$ |
+| Résultats non distribués (déficit si négatif) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 160 629 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+| Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
+| --- | ---: | ---: |
+| Principal dû à 12 mois ÷ trésorerie | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Principal dû à 24 mois ÷ trésorerie | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Gains et pertes sur participations | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions en location-financement | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (concept non résolu).
+Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
+
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — indéterminée 20 ; clauses financières — sans événement 5, sans événement 15 ; items de détresse (8-K) — indéterminée 20 ; continuité d'exploitation — sans événement 5, indéterminée 15 ; dépôt tardif — sans événement 20 ; faiblesse du contrôle interne — sans événement 5, indéterminée 15 ; actifs nantis — sans événement 5, indéterminée 15.
+
 ## Circularité, par paire
 
 Une paire réunit un groupe du périmètre et une contrepartie que ses pièces nomment, avec au moins une arête entre eux : client, financé, financeur ou prêteur (une paire seulement financière, comme un prêt bancaire, n'a pas de revenu à rapprocher). Aucune de ces mesures ne prouve une circularité ; la conclusion s'en tient aux valeurs de `relationship_conclusion`, et un numérateur vide se publie indéterminé, à côté des sorties de couverture (E.9).
@@ -2604,6 +2791,124 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
+### Intel → Altera Corporation
+
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 9 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 4 trimestres, jamais documenté 23 trimestres ; sensibilité `ever_financed` : actif 4 trimestres, jamais documenté 23 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : entre 0 % et 44 %.
+- Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 50 % (1 sur 2).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### Intel → AP Grange Holdings, LLC
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 12 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (5 sur 5).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Intel → ASML Holding N.V.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 27 trimestres ; sensibilité `ever_financed` : actif 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : entre 0 % et 44 % ; 2022-12-31 : entre 0 % et 42 % ; 2023-12-30 : entre 0 % et 40 % ; 2024-12-28 : entre 0 % et 46 % ; 2025-12-27 : entre 0 % et 44 %.
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### Intel → Beijing Unisoc Technology Ltd.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 21 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 22 trimestres, jamais documenté 5 trimestres ; sensibilité `ever_financed` : actif 22 trimestres, jamais documenté 5 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : entre 0 % et 44 % ; 2022-12-31 : entre 0 % et 42 % ; 2023-12-30 : entre 0 % et 40 % ; 2024-12-28 : entre 0 % et 46 % ; 2025-12-27 : entre 0 % et 44 %.
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### Intel → Beijing UniSpreadtrum Technology Ltd
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 11 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 27 trimestres ; sensibilité `ever_financed` : actif 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : entre 0 % et 44 % ; 2022-12-31 : entre 0 % et 42 % ; 2023-12-30 : entre 0 % et 40 % ; 2024-12-28 : entre 0 % et 46 % ; 2025-12-27 : entre 0 % et 44 %.
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### Intel → Cloudera, Inc.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client dépose hors du périmètre et ses dépôts ne sont pas tous lus (découverte, §14)) ; 6 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 23 trimestres, inconnu 4 trimestres ; sensibilité `ever_financed` : actif 23 trimestres, inconnu 4 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : entre 0 % et 44 % ; 2022-12-31 : entre 0 % et 42 % ; 2023-12-30 : entre 0 % et 40 % ; 2024-12-28 : entre 0 % et 46 % ; 2025-12-27 : entre 0 % et 44 %.
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### Intel → Foundry JV Holdco LLC
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (3 sur 3).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Intel → Grange Newco LLC
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 100 % (2 sur 2).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Intel → HP, Inc.
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (le client dépose hors du périmètre et ses dépôts ne sont pas tous lus (découverte, §14)) ; 7 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (recherche incomplète) ; 2022-12-31 : n.d. (recherche incomplète) ; 2023-12-30 : n.d. (recherche incomplète) ; 2024-12-28 : n.d. (recherche incomplète) ; 2025-12-27 : n.d. (recherche incomplète).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Intel → Lenovo Group Ltd.
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Intel → McAfee Corp.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (le client dépose hors du périmètre et ses dépôts ne sont pas tous lus (découverte, §14)) ; 20 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 23 trimestres, inconnu 4 trimestres ; sensibilité `ever_financed` : actif 23 trimestres, inconnu 4 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : entre 0 % et 44 % ; 2022-12-31 : entre 0 % et 42 % ; 2023-12-30 : entre 0 % et 40 % ; 2024-12-28 : entre 0 % et 46 % ; 2025-12-27 : entre 0 % et 44 %.
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : indéterminé — recherche incomplète ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : indéterminé — intervalle à cheval sur le seuil ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### Intel → SK hynix Inc.
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 6 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Intel → Dell
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Intel → Micron
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 109 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 3 trimestres, échu 24 trimestres ; sensibilité `ever_financed` : actif 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-25 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-30 : n.d. (précondition non remplie) ; 2024-12-28 : n.d. (précondition non remplie) ; 2025-12-27 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 10).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E5 : indéterminé — non publié.
+
 ### IREN → Microsoft
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche incomplète (une clause de la paire est caviardée) ; 4 arêtes.
@@ -2666,6 +2971,48 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
+### Micron → Huawei Technologies Co. Ltd.
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-09-02 : n.d. (précondition non remplie) ; 2022-09-01 : n.d. (précondition non remplie) ; 2023-08-31 : n.d. (précondition non remplie) ; 2024-08-29 : n.d. (précondition non remplie) ; 2025-08-28 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Micron → Kingston Technology Company, Inc.
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 7 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-09-02 : n.d. (précondition non remplie) ; 2022-09-01 : n.d. (précondition non remplie) ; 2023-08-31 : n.d. (précondition non remplie) ; 2024-08-29 : n.d. (précondition non remplie) ; 2025-08-28 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Micron → Nanya Technology Corporation
+
+- Conclusion : **achats réciproques seulement** ; structure commerciale réciproque ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-09-02 : n.d. (précondition non remplie) ; 2022-09-01 : n.d. (précondition non remplie) ; 2023-08-31 : n.d. (précondition non remplie) ; 2024-08-29 : n.d. (précondition non remplie) ; 2025-08-28 : n.d. (précondition non remplie).
+- Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Micron → WPG Holdings Limited
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-09-02 : n.d. (précondition non remplie) ; 2022-09-01 : n.d. (précondition non remplie) ; 2023-08-31 : n.d. (précondition non remplie) ; 2024-08-29 : n.d. (précondition non remplie) ; 2025-08-28 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Micron → Intel
+
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 109 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-09-02 : n.d. (précondition non remplie) ; 2022-09-01 : n.d. (précondition non remplie) ; 2023-08-31 : n.d. (précondition non remplie) ; 2024-08-29 : n.d. (précondition non remplie) ; 2025-08-28 : n.d. (précondition non remplie).
+- Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 10).
+- Annexe E : E4 (engagement) : indéterminé — date manquante ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non publié.
+
 ### Nebius → ClickHouse Inc
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
@@ -2698,15 +3045,6 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
-### NVIDIA → INTEL CORP
-
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche incomplète (texte non lu) ; 2 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 3 trimestres, inconnu 28 trimestres ; sensibilité `ever_financed` : actif 3 trimestres, inconnu 28 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2022-01-30 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2023-01-29 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2024-01-28 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2025-01-26 : n.d. (non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)) ; 2026-01-25 : entre 0 % et 22 %.
-- Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E1 : indéterminé — non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
-
 ### NVIDIA → SB Energy, Inc.
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
@@ -2722,6 +3060,15 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (précondition non remplie) ; 2022-01-30 : n.d. (précondition non remplie) ; 2023-01-29 : n.d. (précondition non remplie) ; 2024-01-28 : n.d. (précondition non remplie) ; 2025-01-26 : n.d. (précondition non remplie) ; 2026-01-25 : entre 0 % et 22 %.
 - Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 5).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### NVIDIA → Intel
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 3 trimestres, jamais documenté 28 trimestres ; sensibilité `ever_financed` : actif 3 trimestres, jamais documenté 28 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-01-31 : n.d. (précondition non remplie) ; 2022-01-30 : n.d. (précondition non remplie) ; 2023-01-29 : n.d. (précondition non remplie) ; 2024-01-28 : n.d. (précondition non remplie) ; 2025-01-26 : n.d. (précondition non remplie) ; 2026-01-25 : entre 0 % et 22 %.
+- Dépendance du carnet (RPO) : 2 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — précondition non remplie ; E2 à 10 % : indéterminé — précondition non remplie ; E2 à 20 % : indéterminé — précondition non remplie ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
 
 ### NVIDIA → IREN
@@ -3089,6 +3436,67 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
+### TSMC → Broadcom
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 25 trimestres ; sensibilité `ever_financed` : jamais documenté 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
+- Annexe E : E5 : indéterminé — non publié.
+
+### TSMC → Advanced Vision Semiconductor Manufacturing Corporation
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 25 trimestres ; sensibilité `ever_financed` : jamais documenté 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### TSMC → Global Unichip Corporation
+
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 24 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 25 trimestres ; sensibilité `ever_financed` : actif 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (terme manquant) ; 2022-12-31 : n.d. (terme manquant) ; 2023-12-31 : n.d. (terme manquant) ; 2024-12-31 : n.d. (terme manquant) ; 2025-12-31 : n.d. (terme manquant).
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — terme manquant ; E2 à 10 % : indéterminé — terme manquant ; E2 à 20 % : indéterminé — terme manquant ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### TSMC → Mutual-Pak Technology Co., Ltd.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 8 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 25 trimestres ; sensibilité `ever_financed` : actif 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (terme manquant) ; 2022-12-31 : n.d. (terme manquant) ; 2023-12-31 : n.d. (terme manquant) ; 2024-12-31 : n.d. (terme manquant) ; 2025-12-31 : n.d. (terme manquant).
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — terme manquant ; E2 à 10 % : indéterminé — terme manquant ; E2 à 20 % : indéterminé — terme manquant ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### TSMC → Systems on Silicon Manufacturing Company Pte Ltd.
+
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 41 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 25 trimestres ; sensibilité `ever_financed` : actif 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (terme manquant) ; 2022-12-31 : n.d. (terme manquant) ; 2023-12-31 : n.d. (terme manquant) ; 2024-12-31 : n.d. (terme manquant) ; 2025-12-31 : n.d. (terme manquant).
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 5).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — terme manquant ; E2 à 10 % : indéterminé — terme manquant ; E2 à 20 % : indéterminé — terme manquant ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### TSMC → Vanguard International Semiconductor Corporation
+
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 32 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 25 trimestres ; sensibilité `ever_financed` : actif 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (terme manquant) ; 2022-12-31 : n.d. (terme manquant) ; 2023-12-31 : n.d. (terme manquant) ; 2024-12-31 : n.d. (terme manquant) ; 2025-12-31 : n.d. (terme manquant).
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 5).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — terme manquant ; E2 à 10 % : indéterminé — terme manquant ; E2 à 20 % : indéterminé — terme manquant ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
+### TSMC → Xintec Inc.
+
+- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 30 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 25 trimestres ; sensibilité `ever_financed` : actif 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (terme manquant) ; 2022-12-31 : n.d. (terme manquant) ; 2023-12-31 : n.d. (terme manquant) ; 2024-12-31 : n.d. (terme manquant) ; 2025-12-31 : n.d. (terme manquant).
+- Dépendance du carnet (RPO) : 10 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 4).
+- Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — terme manquant ; E2 à 10 % : indéterminé — terme manquant ; E2 à 20 % : indéterminé — terme manquant ; E3 à 5 % : indéterminé — client anonyme ; E3 à 10 % : indéterminé — client anonyme ; E3 à 20 % : indéterminé — client anonyme ; E5 : indéterminé — non publié.
+
 ### TeraWulf → Fluidstack USA I Inc.
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
@@ -3152,6 +3560,9 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 | Blue Owl | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
 | Apollo | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
 | Blackstone | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
+| Intel | 2025-12-27 | 43,0 % | 43,0 % [42,5 % ; 43,5 %] | 14,0 % | 0 |
+| Micron | 2025-08-28 | 17,0 % | 0,0 % [0,0 % ; 0,0 %] | 83,0 % | 0 |
+| TSMC | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 1 |
 
 Le texte qui entoure les faits de concentration est lu (bloc text de §14) : un client qui reste anonyme l'est dans les pièces elles-mêmes. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).
 
@@ -3193,11 +3604,23 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | CoreWeave → NVIDIA → CoreWeave | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
 | CoreWeave → NVIDIA → OpenAI → CoreWeave | 3 | oui (2) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
 | Dell → VMware, Inc. → Dell | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Dell → Intel → Dell | 2 | oui (0) | commerciale seulement | non trouvé, recherche complète au sens de E.0 | **causalité non établie** |
 | Alphabet → ADT INC. → Alphabet | 2 | oui (0) | commerciale et financière | documenté (L2, L5) | **dépendance documentée** |
 | Alphabet → PLANET LABS PBC → Alphabet | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Alphabet → Marvell → Alphabet | 2 | oui (0) | commerciale et financière | documenté (L2) | **dépendance documentée** |
+| Intel → Altera Corporation → Intel | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Intel → AP Grange Holdings, LLC → Intel | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Intel → Foundry JV Holdco LLC → Intel | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Intel → HP, Inc. → Intel | 2 | oui (0) | commerciale seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Intel → Lenovo Group Ltd. → Intel | 2 | oui (0) | commerciale seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Intel → SK hynix Inc. → Intel | 2 | oui (0) | commerciale seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Intel → SLP VII Gryphon Aggregator, L.P. → Intel | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Intel → United States Department of Commerce → Intel | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
+| Intel → Micron → Intel | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
+| Intel → Micron → United States Department of Commerce → Intel | 3 | non (19) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | IREN → NVIDIA → IREN | 2 | oui (0) | commerciale et financière | documenté (L1, L3) | **dépendance documentée** |
 | Microsoft → GENERAL MOTORS CO → Microsoft | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Micron → Nanya Technology Corporation → Micron | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Nebius → NVIDIA → Nebius | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
 | NVIDIA → OpenAI → NVIDIA | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
 | NVIDIA → Nscale → NVIDIA | 2 | oui (0) | commerciale seulement | non trouvé, recherche complète au sens de E.0 | **causalité non établie** |
@@ -3213,9 +3636,13 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | Supermicro → Lambda → Supermicro | 2 | oui (2) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
 | SpaceX → ECHOSTAR CORP → SpaceX | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | SpaceX → Tesla, Inc. → SpaceX | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| TSMC → Global Unichip Corporation → TSMC | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| TSMC → Systems on Silicon Manufacturing Company Pte Ltd. → TSMC | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| TSMC → Vanguard International Semiconductor Corporation → TSMC | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| TSMC → Xintec Inc. → TSMC | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | TeraWulf → Heorot Power Holdings LLC → TeraWulf | 2 | non (16) | commerciale réciproque | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **achats réciproques seulement** |
 
-Décompte de E.6 (descriptif, hors de E.7) : 53 cycles ; concomitance non : relation commerciale doublée d'un financement 2, achats réciproques seulement 1 ; concomitance oui : causalité non établie 14, relation commerciale doublée d'un financement 22, dépendance documentée 10, achats réciproques seulement 4.
+Décompte de E.6 (descriptif, hors de E.7) : 69 cycles ; concomitance non : relation commerciale doublée d'un financement 3, achats réciproques seulement 1 ; concomitance oui : causalité non établie 22, relation commerciale doublée d'un financement 29, dépendance documentée 10, achats réciproques seulement 4.
 
 ## Form D (bloc form_d, §14)
 
@@ -3282,6 +3709,9 @@ La file de la découverte compte 263 émetteurs étrangers (20-F, 40-F, 6-K, F-1
 | Nebius | 20-F | US GAAP | 35 | 18 |
 | Nebius | 6-K | — | 112 | 44 |
 | Nebius | 6-K/A | — | 10 | 4 |
+| TSMC | 20-F | — | 40 | 33 |
+| TSMC | 20-F | IFRS | 349 | 286 |
+| TSMC | 6-K | — | 83 | 9 |
 
 6-K incorporés par référence (donc admissibles) : 14 ; agrégats écartés pour cadres comptables mêlés (invariant f) : 0.
 
@@ -3341,6 +3771,36 @@ Positions que les sociétés de développement d'affaires (BDC) publient dans le
 | Barings BDC, Inc. | 2024-06-30 | non classé | 1 | 333 352 $ | 389 200 $ | 1,17 x | n.d. (non balisé) | n.d. (non balisé) |
 | Blue Owl Capital Corporation | 2024-09-30 | non classé | 3 | — | — | n.d. (non balisé) | n.d. (non balisé) | n.d. (non balisé) |
 | Blue Owl Technology Finance Corp. | 2024-09-30 | non classé | 2 | — | — | n.d. (non balisé) | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2022-09-30 | non classé | 2 | 74 M$ | 61 M$ | 0,82 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2022-12-31 | non classé | 4 | 134 M$ | 121 M$ | 0,91 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-03-31 | prêts et obligations | 3 | 13 M$ | 13 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-03-31 | non classé | 5 | 117 M$ | 108 M$ | 0,93 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-06-30 | prêts et obligations | 3 | 13 M$ | 13 M$ | 1,03 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-06-30 | non classé | 3 | 105 M$ | 99 M$ | 0,94 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-09-30 | prêts et obligations | 3 | 13 M$ | 14 M$ | 1,08 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-09-30 | non classé | 3 | 105 M$ | 102 M$ | 0,97 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-12-31 | prêts et obligations | 4 | 17 M$ | 18 M$ | 1,07 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2023-12-31 | non classé | 3 | 105 M$ | 103 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-03-31 | prêts et obligations | 5 | 27 M$ | 28 M$ | 1,06 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-03-31 | non classé | 3 | 105 M$ | 105 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-06-30 | prêts et obligations | 6 | 32 M$ | 33 M$ | 1,06 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-06-30 | non classé | 3 | 104 M$ | 104 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-09-30 | prêts et obligations | 6 | 39 M$ | 40 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-09-30 | non classé | 3 | 104 M$ | 100 M$ | 0,96 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-12-31 | prêts et obligations | 6 | 39 M$ | 41 M$ | 1,04 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2024-12-31 | non classé | 3 | 107 M$ | 106 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-03-31 | prêts et obligations | 6 | 39 M$ | 40 M$ | 1,02 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-03-31 | non classé | 3 | 108 M$ | 106 M$ | 0,97 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-06-30 | prêts et obligations | 6 | 39 M$ | 39 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-06-30 | non classé | 3 | 108 M$ | 101 M$ | 0,94 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-09-30 | prêts et obligations | 7 | 49 M$ | 49 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-09-30 | non classé | 3 | 107 M$ | 101 M$ | 0,95 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-12-31 | prêts et obligations | 7 | 49 M$ | 47 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2025-12-31 | non classé | 3 | 107 M$ | 97 M$ | 0,91 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2026-03-31 | prêts et obligations | 7 | 46 M$ | 41 M$ | 0,89 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2026-03-31 | non classé | 3 | 94 M$ | 76 M$ | 0,82 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2026-06-30 | prêts et obligations | 6 | 44 M$ | 34 M$ | 0,77 x | n.d. (non balisé) | n.d. (non balisé) |
+| Cloudera, Inc. | 2026-06-30 | non classé | 3 | 94 M$ | 67 M$ | 0,72 x | n.d. (non balisé) | n.d. (non balisé) |
 | ECHOSTAR CORP | 2024-12-31 | non classé | 1 | 73 M$ | 78 M$ | 1,07 x | n.d. (non balisé) | n.d. (non balisé) |
 | ECHOSTAR CORP | 2025-06-30 | prêts et obligations | 3 | 67 M$ | 67 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
 | ECHOSTAR CORP | 2025-09-30 | prêts et obligations | 3 | 117 M$ | 124 M$ | 1,05 x | n.d. (non balisé) | n.d. (non balisé) |
@@ -3396,6 +3856,40 @@ Positions que les sociétés de développement d'affaires (BDC) publient dans le
 | Jane Street Group, LLC | 2026-03-31 | non classé | 2 | 9 M$ | 9 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
 | Jane Street Group, LLC | 2026-06-30 | prêts et obligations | 1 | 24 M$ | 24 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
 | Jane Street Group, LLC | 2026-06-30 | non classé | 2 | 9 M$ | 9 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Lenovo Group Ltd. | 2022-09-30 | non classé | 6 | 22 M$ | 22 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| Lenovo Group Ltd. | 2022-12-31 | non classé | 6 | 22 M$ | 23 M$ | 1,04 x | n.d. (non balisé) | n.d. (non balisé) |
+| Lenovo Group Ltd. | 2023-03-31 | non classé | 6 | 22 M$ | 23 M$ | 1,04 x | n.d. (non balisé) | n.d. (non balisé) |
+| Lenovo Group Ltd. | 2023-06-30 | non classé | 6 | 22 M$ | 23 M$ | 1,05 x | n.d. (non balisé) | n.d. (non balisé) |
+| Lenovo Group Ltd. | 2023-09-30 | non classé | 6 | 22 M$ | 23 M$ | 1,03 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2022-12-31 | prêts et obligations | 1 | 2 M$ | 2 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-03-31 | prêts et obligations | 3 | 16 M$ | 16 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-03-31 | non classé | 1 | 8 M$ | 7 M$ | 0,95 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-06-30 | prêts et obligations | 3 | 21 M$ | 21 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-06-30 | non classé | 1 | 8 M$ | 8 M$ | 0,96 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-09-30 | prêts et obligations | 3 | 29 M$ | 30 M$ | 1,03 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-09-30 | non classé | 2 | 11 M$ | 11 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-12-31 | prêts et obligations | 3 | 31 M$ | 32 M$ | 1,04 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2023-12-31 | non classé | 2 | 14 M$ | 14 M$ | 1,02 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-03-31 | prêts et obligations | 3 | 26 M$ | 27 M$ | 1,04 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-03-31 | non classé | 2 | 14 M$ | 14 M$ | 1,02 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-06-30 | prêts et obligations | 6 | 30 M$ | 30 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-06-30 | non classé | 2 | 38 M$ | 38 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-09-30 | prêts et obligations | 6 | 36 M$ | 36 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-09-30 | non classé | 2 | 37 M$ | 37 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-12-31 | prêts et obligations | 6 | 50 M$ | 50 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2024-12-31 | non classé | 2 | 38 M$ | 38 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-03-31 | prêts et obligations | 8 | 76 M$ | 74 M$ | 0,97 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-03-31 | non classé | 2 | 37 M$ | 35 M$ | 0,96 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-06-30 | prêts et obligations | 9 | 79 M$ | 78 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-06-30 | non classé | 3 | 41 M$ | 40 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-09-30 | prêts et obligations | 9 | 86 M$ | 84 M$ | 0,98 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-09-30 | non classé | 3 | 40 M$ | 39 M$ | 0,96 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-12-31 | prêts et obligations | 8 | 89 M$ | 85 M$ | 0,95 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2025-12-31 | non classé | 3 | 40 M$ | 38 M$ | 0,93 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2026-03-31 | prêts et obligations | 7 | 82 M$ | 75 M$ | 0,92 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2026-03-31 | non classé | 2 | 9 M$ | 8 M$ | 0,91 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2026-06-30 | prêts et obligations | 8 | 60 M$ | 55 M$ | 0,91 x | n.d. (non balisé) | n.d. (non balisé) |
+| McAfee Corp. | 2026-06-30 | non classé | 2 | 6 M$ | 6 M$ | 0,90 x | n.d. (non balisé) | n.d. (non balisé) |
 | MSD INVESTMENT CORP. | 2024-12-31 | prêts et obligations | 1 | 25 M$ | 25 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
 | MSD INVESTMENT CORP. | 2025-03-31 | prêts et obligations | 1 | 25 M$ | 25 M$ | 0,99 x | n.d. (non balisé) | n.d. (non balisé) |
 | MSD INVESTMENT CORP. | 2025-06-30 | prêts et obligations | 1 | 25 M$ | 25 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
@@ -3482,6 +3976,7 @@ Positions que les sociétés de développement d'affaires (BDC) publient dans le
 | Galaxy | 2025-12-31 | prêts et obligations | 2 | 9 M$ | 9 M$ | 1,02 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
 | Galaxy | 2026-03-31 | prêts et obligations | 2 | 11 M$ | 11 M$ | 1,01 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
 | Galaxy | 2026-06-30 | prêts et obligations | 2 | 13 M$ | 13 M$ | 1,00 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
+| Intel | 2025-06-30 | prêts et obligations | 1 | 2 M$ | 2 M$ | 1,01 x | n.d. (non balisé) | n.d. (non balisé) |
 | Nscale | 2025-09-30 | titres de capital | 10 | 50 M$ | 50 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
 | Nscale | 2025-12-31 | titres de capital | 10 | 50 M$ | 50 M$ | 1,00 x | n.d. (non balisé) | n.d. (non balisé) |
 | Nscale | 2026-03-31 | prêts et obligations | 5 | 11 M$ | 11 M$ | 1,00 x (partiel) | n.d. (non balisé) | n.d. (non balisé) |
@@ -3508,7 +4003,7 @@ Positions que les sociétés de développement d'affaires (BDC) publient dans le
 
 Appartenances datées : Hut 8 Holdings Inc. appartient au groupe Hut 8 : avant cette date, la vue `as_known` le garde comme groupe propre. VMware, Inc. appartient au groupe Broadcom : avant cette date, la vue `as_known` le garde comme groupe propre. VMware, Inc. appartient au groupe Dell : avant cette date, la vue `as_known` le garde comme groupe propre. X.AI Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre. X.AI LLC appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre. X Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre. X Holdings Corp. appartient au groupe SpaceX en vue `revised` depuis le 2023-01-01 (contrôle commun), en vue `as_known` depuis le 2026-02-02 : avant cette date, la vue `as_known` le garde comme groupe propre.
 
-Identifiants de position écartés parce qu'ils nomment deux émetteurs : 24.
+Identifiants de position écartés parce qu'ils nomment deux émetteurs : 37.
 
 ## Fragilité du financement : portefeuilles entiers des BDC (bloc `lender_portfolio`, D-0045)
 
@@ -3766,5 +4261,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 14 941, concept non résolu 5 655, terme manquant 5 215, non publié 4 583, période antérieure absente 1 719, historique tronqué 1 622, annuel seulement 950, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 853, précondition non remplie 601, dénominateur négatif ou nul 553, client anonyme 462, recherche incomplète 423, frontière de retraitement 185, période non écoulée à la date de coupure 113, faits en conflit 86, intervalle à cheval sur le seuil 62, non collecté 29, date manquante 14, lecture impossible 8, dénominateur sous le seuil 7, entité non confirmée 3.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 15 494, concept non résolu 6 137, terme manquant 5 831, non publié 5 158, période antérieure absente 1 733, historique tronqué 1 622, annuel seulement 1 050, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 791, précondition non remplie 686, client anonyme 607, dénominateur négatif ou nul 565, recherche incomplète 500, frontière de retraitement 195, période non écoulée à la date de coupure 113, non collecté 89, faits en conflit 86, intervalle à cheval sur le seuil 77, date manquante 16, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 3.
 
