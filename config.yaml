@@ -216,6 +216,8 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   INTC: "0000050863"         # ajouts du 2026-10-18 (D-0056) : fabricants, après les hébergeurs (§14)
   MU: "0000723125"
   TSM: "0001046179"          # émetteur privé étranger, 20-F et 6-K en IFRS (D-0056, point 5)
+  ASML: "0000937966"         # ajouts du 2026-10-18 (D-0057) : équipements et mémoire, émetteurs privés étrangers
+  SKHY: "0002120882"         # déclarant de 2026 (D-0057, point 2)
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -228,6 +230,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-16, groups: [AKAM, BLZE, RIOT], basis: "D-0054, ajout de groupes de §14"}
   - {date: 2026-10-17, groups: [OWL, APO, BX], basis: "D-0055, ajout de groupes de §14"}
   - {date: 2026-10-18, groups: [INTC, MU, TSM], basis: "D-0056, ajout de groupes de §14"}
+  - {date: 2026-10-18, groups: [ASML, SKHY], basis: "D-0057, ajout de groupes de §14"}
 
 group_frameworks:            # cadre comptable des états d'un groupe, s'il n'est pas US GAAP (invariant f, D-0056,
                              # point 5) : ses notes portent ce cadre, ses grandeurs se résolvent par concept_anchors_ifrs
@@ -339,6 +342,10 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     quarter: ["2021-04-01", "regroupement du 2021-05-19 avec la SPAC Altimar (D-0055) ; premier 10-Q de l'acquéreur comptable 0001823945-21-000007 (T2 2021)"]
   TSM:
     quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0056)"]
+  ASML:
+    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0057)"]
+  SKHY:
+    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0057)"]
 
 predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
   AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
@@ -361,6 +368,7 @@ non_filers:                  # autres groupes économiques non déposants (§10.
   - {name: SoftBank, ref: "NF:SOFTBANK"}
   - {name: Lambda, ref: "NF:LAMBDA"}     # D-0054 : sans titre coté à l'as_of
   - {name: Nscale, ref: "NF:NSCALE"}
+  - {name: Samsung, ref: "NF:SAMSUNG"}  # D-0057 : sans titre coté à l'as_of ; Samsung Electronics Co., Ltd. et ses filiales consolidées
 
 lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
@@ -410,6 +418,7 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
       - {term: "Lambda, Inc.", ref: "NF:LAMBDA", case_sensitive: true}   # jamais « Lambda » seul (AWS Lambda)
       - {term: "Lambda Inc.", ref: "NF:LAMBDA", case_sensitive: true}
       - {term: "Lambda Labs", ref: "NF:LAMBDA", case_sensitive: true}
+      - {term: Samsung, ref: "NF:SAMSUNG"}                         # D-0057, point 7
     search_forms: ex10       # recherche plein texte des EX-10 seulement ; pas de Form D
     reading:                 # règle fixée avant de voir les candidats
       r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
@@ -456,7 +465,7 @@ foreign:                     # bloc de §14 ouvert le 2026-10-10 (décision D-00
   selection: [named_issuers, graph_counterparties]
 
 foreign_6k:                  # unités 6-K des groupes émetteurs privés étrangers (D-0048, point 6)
-  groups: [NBIS, IREN, TSM]  # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K ; TSMC (D-0056)
+  groups: [NBIS, IREN, TSM, ASML, SKHY]  # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K ; TSMC (D-0056) ; ASML et SK hynix (D-0057)
   forms: ["6-K", "6-K/A"]
   documents: [primary, EX-99] # document principal et annexes 99 (type lu dans l'en-tête SGML, §2.3)
   # lexique de D-0048 ; mots entiers, casse indifférente, singulier et pluriel écrits (D-0048, point 9)
@@ -492,6 +501,50 @@ foreign_6k:                  # unités 6-K des groupes émetteurs privés étran
       - {term: Micron, ref: MU, case_sensitive: true}
       - {term: SoftBank, ref: "NF:SOFTBANK"}
       - {term: Nscale, ref: "NF:NSCALE"}
+    ASML:                    # D-0057, point 3 : jamais ASML lui-même
+      - {term: "Applied Digital", ref: APLD}
+      - {term: Dell, ref: DELL, case_sensitive: true}
+      - {term: Supermicro, ref: SMCI}
+      - {term: "Super Micro", ref: SMCI}
+      - {term: "Hut 8", ref: HUT}
+      - {term: "Galaxy Digital", ref: GLXY}
+      - {term: Akamai, ref: AKAM}
+      - {term: Backblaze, ref: BLZE}
+      - {term: "Riot Platforms", ref: RIOT}
+      - {term: "Blue Owl", ref: OWL}
+      - {term: Apollo, ref: APO, case_sensitive: true}
+      - {term: Athene, ref: APO, case_sensitive: true}
+      - {term: Blackstone, ref: BX}
+      - {term: Intel, ref: INTC, case_sensitive: true}
+      - {term: Micron, ref: MU, case_sensitive: true}
+      - {term: TSMC, ref: TSM, case_sensitive: true}
+      - {term: "Taiwan Semiconductor", ref: TSM}
+      - {term: "SK hynix", ref: SKHY}
+      - {term: SoftBank, ref: "NF:SOFTBANK"}
+      - {term: Nscale, ref: "NF:NSCALE"}
+      - {term: Samsung, ref: "NF:SAMSUNG"}
+    SKHY:                    # D-0057, point 3 : jamais SK hynix lui-même
+      - {term: "Applied Digital", ref: APLD}
+      - {term: Dell, ref: DELL, case_sensitive: true}
+      - {term: Supermicro, ref: SMCI}
+      - {term: "Super Micro", ref: SMCI}
+      - {term: "Hut 8", ref: HUT}
+      - {term: "Galaxy Digital", ref: GLXY}
+      - {term: Akamai, ref: AKAM}
+      - {term: Backblaze, ref: BLZE}
+      - {term: "Riot Platforms", ref: RIOT}
+      - {term: "Blue Owl", ref: OWL}
+      - {term: Apollo, ref: APO, case_sensitive: true}
+      - {term: Athene, ref: APO, case_sensitive: true}
+      - {term: Blackstone, ref: BX}
+      - {term: Intel, ref: INTC, case_sensitive: true}
+      - {term: Micron, ref: MU, case_sensitive: true}
+      - {term: TSMC, ref: TSM, case_sensitive: true}
+      - {term: "Taiwan Semiconductor", ref: TSM}
+      - {term: ASML, ref: ASML, case_sensitive: true}
+      - {term: SoftBank, ref: "NF:SOFTBANK"}
+      - {term: Nscale, ref: "NF:NSCALE"}
+      - {term: Samsung, ref: "NF:SAMSUNG"}
   window: 2                  # paragraphes de part et d'autre, fenêtres fondues quand elles se chevauchent
   cap_per_group: 80          # du plus récent au plus ancien ; au-delà, not_processed
 
