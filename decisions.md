@@ -1239,3 +1239,17 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - ASML : 183 blocs, 3,17 M de caractères. Ce sont 103 blocs des 20-F (0,53 M : notes par rôles, Items 15 et 10.C, notes des parties liées) et les 80 unités 6-K (2,63 M) ;
     - SK hynix : 100 blocs, 0,16 M de caractères. Ce sont les 21 blocs de notes du 424B4 (0,09 M), sa section des parties liées (8 219 caractères) et les 78 unités 6-K (0,06 M) ;
     - listes `grp_asml` et `grp_skhy`.
+
+  (16) Piste des non-déposants (point 7), avant toute lecture (2026-10-18) :
+  - Notes Data Sets : les 47 archives de la piste, retirées de nouveau (47 requêtes, toutes en 200, 18,56 Go) et scannées avec le lexique d'ensemble enrichi (`lx-32cb5adcf3c6`), chacune effacée après son scan ;
+  - recherche plein texte des EX-10 : 125 requêtes pour « Samsung » (124 en 200, une erreur 500 du serveur reprise par le client). La requête dépasse 10 000 résultats et se coupe en deux périodes : 5 006 résultats du 2017-01-01 au 2021-11-19, 7 141 du 2021-11-20 à l'as_of. Sur ces résultats, 276 sont des pièces EX-10, dans 201 dépôts. SoftBank, Nscale et Lambda sont inchangés (en cache, aucune requête) ;
+  - vérification : 576 pièces (199 requêtes, toutes en 200). 552 nomment un non-déposant (Samsung 261, SoftBank 292, Nscale 2), 24 aucun. Trois pièces de SoftBank nomment aussi Samsung. Une pièce de SoftBank sort : l'EX-10.1 d'Intel du 22 août 2025, qu'Intel dépose et qui se lit comme texte d'Intel depuis D-0056 (règle de D-0043, point 6) ;
+  - candidats et file, règle de D-0044 (point 5) sans changement : 4 114 mentions (Samsung 2 698, SoftBank 1 403, Lambda 8, Nscale 5), 363 candidats (dont 279 nomment Samsung) et 3 717 unités :
+    - 300 retenues : R1, 81 en-têtes de pièces et 219 notes ;
+    - 116 au-delà du plafond (R1 19, R2 97), qui restent `not_processed` ;
+    - 3 301 hors de la règle ;
+  - unités déjà lues : des 78 unités de SoftBank retenues en D-0054, toutes lues, 38 restent dans les 300 premières. 38 passent au-delà du plafond, les unités R1 de Samsung les précédant dans l'ordre de la file. Deux sortent de la file : les notes du résultat par action d'Intel (10-Q du troisième trimestre 2025, 10-K 2025), Intel étant un groupe depuis D-0056. Leur état se garde sous leur clé : rien ne se relit, et l'assemblage ne compte pas en exclusion une unité dont le bloc est lu ;
+  - Samsung : 266 unités retenues le nomment (262 nouvelles et 4 déjà lues pour SoftBank). Leurs 262 blocs ont été préparés en 181 requêtes, toutes en 200. Ils donnent 244 clés de contenu nouvelles, dont 4 déjà lues ailleurs ;
+  - à lire : 240 blocs, 6,00 M de caractères, soit 181 notes (5,82 M) et 59 en-têtes de pièces EX-10 (0,18 M). Un corps de pièce n'entre qu'après lecture de son en-tête, s'il montre pour partie un groupe de la liste, un laboratoire, Stargate ou un autre non-déposant (D-0044, point 5). Liste `nf_samsung`, dans l'ordre de la file ;
+  - déposants : 67, dont Netlist (22 blocs), QVC (19), Network-1 Technologies (23 sous deux dénominations), CuriosityStream (17), InterDigital (14), Kartoon Studios (13), Shinhan Financial Group (12), Qualcomm (12), Rambus (9) et VoIP-Pal (9). Ce sont surtout des licences et des litiges de brevets, des contrats de distribution et de fourniture. Co-mentions des blocs : Amazon 115, Alphabet 101, Microsoft 45, Meta 37, NVIDIA 32, Broadcom 23, Oracle 11, SpaceX 11, AMD 6, Marvell 6, CoreWeave 2 ;
+  - la lecture s'arrête à la 300e unité de la file ; le rendement est présenté avant d'aller plus loin (point 7).
