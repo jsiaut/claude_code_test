@@ -1301,7 +1301,7 @@ concept_anchors_ifrs:        # D-0056, point 5 : candidats ifrs-full des grandeu
     PurchaseOfPropertyPlantAndEquipmentIntangibleAssetsOtherThanGoodwillInvestmentPropertyAndOtherNoncurrentAssets]
   eps_diluted: [DilutedEarningsLossPerShare]
   diluted_shares_weighted: [AdjustedWeightedAverageShares]
-  net_income_to_common_diluted: [ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffect]
+  net_income_to_common_diluted: [ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffects]   # nom du paquet (phase 0)
   rpo_total: [TransactionPriceAllocatedToRemainingPerformanceObligations]
   contract_liabilities: [ContractLiabilities]
   contract_liabilities_current: [CurrentContractLiabilities]
@@ -1327,7 +1327,7 @@ concept_anchors_ifrs:        # D-0056, point 5 : candidats ifrs-full des grandeu
   construction_in_progress: [ConstructionInProgress]
   debt_carrying_amount: [Borrowings]
   debt_current: [CurrentBorrowingsAndCurrentPortionOfNoncurrentBorrowings, CurrentPortionOfLongtermBorrowings]
-  debt_noncurrent: [NoncurrentPortionOfNoncurrentBorrowings, LongtermBorrowings]
+  debt_noncurrent: [LongtermBorrowings]   # NoncurrentPortionOfNoncurrentBorrowings absent du paquet (phase 0)
   short_term_borrowings: [ShorttermBorrowings]
   sbc_expense: [ExpenseFromSharebasedPaymentTransactionsWithEmployees, AdjustmentsForSharebasedPayments]
   interest_expense: [InterestExpense]

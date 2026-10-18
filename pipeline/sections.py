@@ -84,6 +84,38 @@ def item_4_10q(raw):
     return textnorm.lines_to_text(sec) if sec else None
 
 
+# Rapport à index de correspondance (D-0056) : Intel ne numérote ses items que dans l'index final
+# (« Form 10-K Cross-Reference Index ») ; l'Item 9A ou l'Item 4 est la section titrée « Controls and
+# Procedures », qui court jusqu'au premier titre qui n'est pas une de ses sous-sections. Les pieds de
+# page (« Other Key Information | 43 ») et les renvois au sommaire coupent une section sans la fermer
+XREF_INDEX = re.compile(r"^\W{0,3}form\s+10-[kq]\s+cross[- ]reference\s+index\b", re.I)
+CTL_HEAD = re.compile(r"^\W{0,3}controls\s+and\s+procedures\W{0,3}$", re.I)
+CTL_SUB = re.compile(r"^\W{0,3}(inherent\s+limitations|evaluation\s+of\s+disclosure\s+controls|changes\s+in\s+internal\s+control|"
+                     r"management'?s?\s+report\s+on\s+internal\s+control|limitations\s+on\s+(the\s+)?effectiveness)", re.I)
+PAGE_FOOT = re.compile(r"^[A-Z][A-Za-z ,&'’-]{2,60}\s\|\s\d{1,3}$|^table\s+of\s+contents$", re.I)
+
+
+def controls_xref(raw, min_chars=200):
+    lines = _lines(raw)
+    if not any(XREF_INDEX.search(t) for t, _ in lines):
+        return None
+    for s, (t, _) in enumerate(lines):
+        if not CTL_HEAD.search(t):
+            continue
+        keep = [lines[s]]
+        for line in lines[s + 1:]:
+            u = line[0].strip()
+            if PAGE_FOOT.search(u):
+                continue
+            if len(u) < 100 and not u.endswith((".", ":", ";")) and not CTL_SUB.search(u):
+                break
+            keep.append(line)
+        text = textnorm.lines_to_text(keep)
+        if len(text) >= min_chars:
+            return text
+    return None
+
+
 # 20-F d'un émetteur privé étranger (D-0048, point 6) : Item 15 (Controls and Procedures) au
 # lieu de l'Item 9A, Item 7.B (Related Party Transactions) au lieu de l'Item 404, Item 10.C
 # (Material Contracts) au lieu des items 1.01 de 8-K. Les sous-sections B et C se cherchent

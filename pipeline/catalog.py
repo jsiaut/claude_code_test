@@ -146,6 +146,11 @@ def build(as_of):
         kind = "item_9a" if r["form"].startswith("10-K") else "item_4_10q"
         text = sections.item_9a(raw) if kind == "item_9a" else sections.item_4_10q(raw)
         if not text:
+            # items numérotés dans le seul index de correspondance (D-0056) : section « Controls and Procedures »
+            text = sections.controls_xref(raw)
+            if text:
+                stats[f"{kind}_xref"] += 1
+        if not text:
             stats[f"{kind}_not_found"] += 1
             continue
         b = blocks._block(kind, f, text, [], prim, None, item="9A" if kind == "item_9a" else "4")

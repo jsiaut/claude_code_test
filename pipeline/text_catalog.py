@@ -24,24 +24,63 @@ from .edgar import cik10
 NOTE_SPECS = [
     ("investment_note", re.compile(r"\binvestments?\b|equity[\s-]+method|marketable|equity securities|"
                                    r"variable interest|\bvie\b|other income", re.I)),
+    # titres des notes de dette d'un 20-F en IFRS : « Bonds Payable », « Long-term Bank Loans »,
+    # « Short-term Loans » (TSMC, D-0056)
     ("debt_note", re.compile(r"\bdebt\b|borrowing|credit (facilit|agreement)|notes payable|senior notes|"
                              r"convertible (senior )?notes|financing (arrangement|obligation)|commercial paper|"
-                             r"\bloans? payable", re.I)),
+                             r"\bloans? payable|bonds? payable|bank loans?\b|short-term loans?\b|long-term loans?\b", re.I)),
     ("lease_note", re.compile(r"\bleases?\b|leasing", re.I)),
     ("commitments_note", re.compile(r"commitments?|contingenc|guarantee|purchase obligation", re.I)),
 ]
 CONC_CONCEPT = "us-gaap:ConcentrationRiskPercentage1"
+# équivalent ifrs-full (IFRS 8.34, part des clients importants ; TSMC, D-0056) : son rôle de détail porte un
+# sous-titre (« Operating Segments Information - Major Customers [...] (Detail) ») ; la note parente est le
+# titre avant le tiret
+CONC_CONCEPT_IFRS = "ifrs-full:PercentageOfEntitysRevenue"
 # leviers qui ne se lisent que dans le texte (§6.1) : durées d'amortissement et effets des
 # changements d'estimation, publiés dans la note des immobilisations et le paragraphe des
 # estimations ; repérés par leur concept standard, pas par un rôle (le rôle des principes
 # comptables couvre tout)
 LEVER_CONCEPTS = {"us-gaap:PropertyPlantAndEquipmentDisclosureTextBlock", "us-gaap:UseOfEstimates",
                   "us-gaap:PropertyPlantAndEquipmentPolicyTextBlock", "us-gaap:ChangeInAccountingEstimatePolicyTextBlock",
-                  "us-gaap:ChangeInAccountingEstimateTextBlock"}
+                  "us-gaap:ChangeInAccountingEstimateTextBlock",
+                  # équivalents ifrs-full d'un groupe en IFRS (D-0056), noms vérifiés dans le paquet de l'annexe D
+                  "ifrs-full:DisclosureOfPropertyPlantAndEquipmentExplanatory",
+                  "ifrs-full:DisclosureOfAccountingJudgementsAndEstimatesExplanatory",
+                  "ifrs-full:DescriptionOfAccountingPolicyForPropertyPlantAndEquipmentExplanatory",
+                  "ifrs-full:DisclosureOfChangesInAccountingEstimatesExplanatory"}
 # note de revenu : contrepartie payable au client, revenu contre titres, brut ou net, exemptions
 # du RPO (leviers 6, 7 et 9 de §6.1)
-REVENUE_CONCEPTS = {"us-gaap:RevenueFromContractWithCustomerTextBlock"}
+REVENUE_CONCEPTS = {"us-gaap:RevenueFromContractWithCustomerTextBlock",
+                    "ifrs-full:DisclosureOfRevenueFromContractsWithCustomersExplanatory", "ifrs-full:DisclosureOfRevenueExplanatory"}
+# faits candidats des notes de leviers et de revenu ; leurs équivalents ifrs-full (D-0056)
+LEVER_FACTS = ("us-gaap:PropertyPlantAndEquipmentUsefulLife", "us-gaap:Depreciation", "us-gaap:DepreciationDepletionAndAmortization",
+               "us-gaap:RevenueRemainingPerformanceObligation", "us-gaap:ContractWithCustomerLiability",
+               "ifrs-full:UsefulLifeMeasuredAsPeriodOfTimePropertyPlantAndEquipment", "ifrs-full:DepreciationPropertyPlantAndEquipment",
+               "ifrs-full:DepreciationAndAmortisationExpense", "ifrs-full:TransactionPriceAllocatedToRemainingPerformanceObligations",
+               "ifrs-full:ContractLiabilities")
 CONC_RX = re.compile(r"customer|client|concentration|\d+\s?%|percent", re.I)
+
+
+def conc_parent_title(rdef, ifrs=False):
+    """Titre de la note parente d'un rôle de détail qui porte des faits de concentration : le titre avant
+    « (Details) » ; pour le concept ifrs-full, avant le sous-titre et « (Detail) » (TSMC, D-0056)."""
+    title = re.split(r"\s*\((details|tables|narrative)", rdef.split(" - ", 2)[-1], flags=re.I)[0].strip()
+    if ifrs:
+        title = re.split(r"\s*\(detail", title, flags=re.I)[0].split(" - ")[0].strip()
+    return title
+
+
+def text_blocks_by_concept(tblocks):
+    """Blocs de texte sans dimension, par concept ; et, pour un concept qui n'a de bloc que dimensionné, ses
+    blocs dimensionnés, chacun une note (TSMC, 20-F 2018 à 2024 : un membre par note de dette sur l'axe
+    BorrowingsByNameAxis, D-0056)."""
+    by_concept = {tb["concept"]: tb for tb in tblocks if not tb["dims"]}
+    dimmed = defaultdict(list)
+    for tb in tblocks:
+        if tb["dims"] and tb["concept"] not in by_concept:
+            dimmed[tb["concept"]].append(tb)
+    return by_concept, dimmed
 
 
 def note_blocks(filing, files, inst_name, tb_concepts, facts_rows, labels):
@@ -53,7 +92,7 @@ def note_blocks(filing, files, inst_name, tb_concepts, facts_rows, labels):
     raw = files[inst_name]
     out = []
     seen = set()
-    by_concept = {tb["concept"]: tb for tb in tblocks if not tb["dims"]}
+    by_concept, dimmed = text_blocks_by_concept(tblocks)
     for kind, rx in NOTE_SPECS:
         notes, details = blocks.note_roles(lb, rx)
         if not notes:
@@ -62,6 +101,17 @@ def note_blocks(filing, files, inst_name, tb_concepts, facts_rows, labels):
         detail_concepts = blocks.concepts_in_roles(lb, details)
         cands = [f for f in facts_rows if f["concept"] in detail_concepts and f.get("value") is not None]
         for c in sorted(note_concepts):
+            if c in dimmed and c not in seen:
+                seen.add(c)
+                for tb in sorted(dimmed[c], key=lambda t: json.dumps(t["dims"], sort_keys=True, default=str)):
+                    text = textnorm.lines_to_text(textnorm.html_fragment_lines(tb["text"]))
+                    if not text.strip():
+                        continue
+                    members = ", ".join(str(m) for m in (dict(tb["dims"]) if not isinstance(tb["dims"], dict) else tb["dims"]).values())
+                    out.append(blocks._block(kind, filing, text, [blocks._cand(f, labels) for f in cands], inst_name,
+                                             blocks._fact_byte_range(raw, tb.get("fact_id")),
+                                             note_label=f"{c} [{members}] | " + "; ".join(blocks._role_def(lb, r) for r in notes)))
+                continue
             tb = by_concept.get(c)
             if tb is None or c in seen:
                 continue
@@ -84,23 +134,20 @@ def note_blocks(filing, files, inst_name, tb_concepts, facts_rows, labels):
         loc = blocks._fact_byte_range(raw, tb.get("fact_id"))
         kind = "revenue_note" if c in REVENUE_CONCEPTS else "lever_note"
         out.append(blocks._block(kind, filing, text, [blocks._cand(f, labels) for f in facts_rows
-                                                              if f["concept"] in ("us-gaap:PropertyPlantAndEquipmentUsefulLife",
-                                                                                  "us-gaap:Depreciation",
-                                                                                  "us-gaap:DepreciationDepletionAndAmortization",
-                                                                                  "us-gaap:RevenueRemainingPerformanceObligation",
-                                                                                  "us-gaap:ContractWithCustomerLiability")
-                                                              and f.get("value") is not None],
+                                                              if f["concept"] in LEVER_FACTS and f.get("value") is not None],
                                  inst_name, loc, note_label=c))
     # texte autour des faits de concentration : les paragraphes de la note qui les porte
-    conc_roles = [r for r, arcs in lb["pres"].items() if any(CONC_CONCEPT in (a[0], a[1]) for a in arcs)]
-    if conc_roles:
-        conc_facts = [f for f in facts_rows if f["concept"] == CONC_CONCEPT and f.get("value") is not None]
+    for conc in (CONC_CONCEPT, CONC_CONCEPT_IFRS):
+        conc_roles = [r for r, arcs in lb["pres"].items() if any(conc in (a[0], a[1]) for a in arcs)]
+        if not conc_roles:
+            continue
+        conc_facts = [f for f in facts_rows if f["concept"] == conc and f.get("value") is not None]
         for r in conc_roles:
-            rdef = blocks._role_def(lb, r)
-            # la note parente : bloc de texte d'un rôle de note de même titre (avant « (Details) »)
-            title = re.split(r"\s*\((details|tables|narrative)", rdef.split(" - ", 2)[-1], flags=re.I)[0].strip()
+            title = conc_parent_title(blocks._role_def(lb, r), ifrs=conc == CONC_CONCEPT_IFRS)
             for nr, nd in lb["roles"].items():
                 if xbrl.statement_kind(nd) != "note" or title.lower() not in (nd or "").lower():
+                    continue
+                if conc == CONC_CONCEPT_IFRS and re.search(r"\(detail", nd or "", re.I):
                     continue
                 for c in blocks.concepts_in_roles(lb, [nr]):
                     tb = by_concept.get(c)
