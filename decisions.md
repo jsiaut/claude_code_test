@@ -1683,3 +1683,54 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - hors mesure, et comptés : 5 positions d'un CDS sur SoftBank Group (GuideStone, du 31 mars 2025 au 31 mars 2026), 4 dérivés sur actions, 168 prêts en nominal (LON), 129 titres de dette déclarés en nombre (DBT/NS), 17 610 positions en actions ;
   - limite déclarée : un amendement qui ne porte plus aucune position de SoftBank n'est pas vu, puisque les extraits ne gardent que les dépôts qui en portent une. Le dépôt antérieur reste alors retenu ;
   - code : `pipeline/nport.py` (`lei_evidence`, `accepted`, `softbank_leis`, `security_keys`, `fund_key`, `selection`, `latest_by_fund`, `stamp`, `volume`), `pipeline/net.py` (option `method`) ; neuf tests (`test_nport`).
+
+  (29) Intégration et résultats (2026-10-19) :
+  - entités par extrait, après le premier réassemblage. 71 des 883 lignes d'observation des listes de D-0058 nommaient 22 noms en attente. 16 sont rattachés par un extrait vérifié mot pour mot :
+    - 5 alias : « Arm China » (Arm Technology (China) Co. Limited, 26 lignes d'Arm) ; « Cadence » (Cadence Design Systems, Inc., extrait de la note de cession de l'activité Artisan, non de la biographie d'un administrateur) ; « OAI » (OpenAI Infra Holdings, LLC) ; « Sprint » (Sprint Corporation, hors du groupe, point 23) ; « NVIDIA COR » (nom tronqué de la table d'informations d'un 13F, qui porte aussi « NVIDIA CORPORATION » sous le même CUSIP 67066G104). Les 14 lignes de détention de SoftBank rejoignent ainsi NVIDIA ;
+    - 2 entités membres, au traitement indéterminé (règle A, sans les mots de D-0050, point 4) : OpenAI Infra Holdings, LLC au laboratoire OpenAI (« an affiliate of OpenAI, Inc. ») ; Treasure Data au groupe SoftBank, composante de l'activité IoT d'Arm distribuée en juin 2021 aux actionnaires d'Arm, « subsidiaries of SoftBank Group ». Le prêt de 50 M$ d'un membre du groupe à Treasure Data devient interne ;
+    - 10 entités propres : cinq établissements financiers des crédits de SB Energy (Deutsche Bank Trust Company Americas, Deutsche Bank AG New York Branch, Banco Santander S.A. New York Branch, Truist Bank, CoBank ACB) ; VTEX (dénomination EDGAR lue dans l'en-tête SGML) ; SVF Investment Corp. 2 et 3, LDH Growth Corp I (émetteurs des 13G, sans lien de contrôle affirmé) ; Vantage Data Centers (société du portefeuille de DigitalBridge) ;
+    - 6 noms restent en attente, faute d'un extrait qui les identifie (7 lignes) : « ARM Holdings » (10-K d'AMD de 2020, circulaire d'Intel de 2024 ; la dénomination légale change avec la date, Arm Limited puis Arm Holdings plc, et aucun extrait ne la donne), « Ares », « JPMorgan », « Primary Digital Infrastructure », « Vantage » et « xAI » ;
+  - code :
+    - `schema.sql` régénéré pour `nport_price_to_par`. Le premier réassemblage échouait à l'insertion des cellules : la mesure était au registre, pas dans les contraintes du schéma. Un test vérifie désormais que le schéma est le rendu du registre (`test_schema_sync`) ;
+    - rendu de la série N-PORT : une section dans `synthesis.md` (titres détenus à la dernière date, plus bas, première date) et une table par titre dans `series.md` ;
+    - trois tests (`test_schema_sync`, `test_sb_own`, `test_nport`) ;
+  - premier réassemblage : observations 27 671 → 28 950, toutes valides ; entités 3 047 → 3 554 ; liens 10 623 → 10 869 ; faits 1 580 920 → 1 580 956 ;
+  - BDC Data Sets : extraction refaite après les rattachements (D-0043, point 14), soit 3 465 167 lignes de positions (3 057 432) dans 2 100 dépôts. Faits de BDC rattachés : 3 536 (3 405), dans 456 dépôts de 62 fonds (435, 60). Nouveaux émetteurs :
+    - SoftBank. Apollo Debt Solutions BDC détient 25 M$ de nominal d'un prêt de premier rang, « Softbank ARM Loan », accordé à Kronos I (UK) Limited, filiale à 100 % de SoftBank Group Capital. Il s'agit d'un tirage différé et d'un prêt à terme à SOFR + 225 ou 250 points de base, d'échéances août et septembre 2027. Juste valeur ÷ coût : de 1,001 à 1,003, du 31 décembre 2025 au 30 juin 2026 ;
+    - DigitalBridge Group, Inc. : actions de préférence des séries H, I et J, avant l'acquisition ;
+    - DoorDash, Inc. et Pear Therapeutics, Inc., nommées par des lignes de D-0058 ;
+    - DISH DBS Corp, DISH Network Corp et Match Group, Inc., déjà au registre comme déposants découverts, dont les positions entrent avec cette extraction.
+
+    Second réassemblage : faits 1 581 051, entités 3 569, mesures 171 024 ;
+  - SoftBank :
+    - 162 entités au groupe (13 avant D-0058) : 99 filiales consolidées, 53 au traitement indéterminé, 8 entités à intérêt variable consolidées, 2 têtes ;
+    - 238 arêtes (48 avant D-0058), dont 136 à montant et 15 internes au groupe ;
+    - arêtes vers les groupes et les laboratoires : NVIDIA 16, TSMC 10, Intel 9, OpenAI 8, Cipher 6, Oracle 3, Marvell 1 ;
+    - principales contreparties propres : WeWork 36, Arm China 26, Better Home & Finance 10, General Motors 9, Sprint 7, Ampere 7 (avant son entrée au groupe le 30 novembre 2025), Kigen 6 (hors du groupe, point 23), Balanced Rock Power 6, Arevia Power 5 ;
+    - lignes de D-0058 par liste : `sb_own_b` 399 observations et 60 abstentions (262 blocs) ; `sb_own_c` 395 et 164 (211) ; `sb_corpus` 48 et 110 (142) ; `stargate` 24 et 58 (58) ; `nf_d58` 17 et 12 (12) ; `sb_fix` 0 et 1 ;
+  - N-PORT : 1 092 cellules sur 50 titres (45 de SoftBank Group, 5 de SoftBank Corp.), du 30 septembre 2019 au 31 juillet 2026. 37 titres sont détenus dans les trois mois qui précèdent la dernière date, 13 ne le sont plus. C'est une valorisation déclarée, rapportée sans interprétation de crédit :
+    - les plus bas tombent en mars 2020 (6,875 % 2027 en dollars : 76,0 %) et de juin à octobre 2022 (3,875 % 2032 en euros : 68,0 % ; 3,375 % 2029 : 68,6 % ; 4 % 2029 : 70,8 %) ;
+    - au 31 juillet 2026, les titres longs restent sous le pair : 3,875 % 2032 en euros 88,5 %, hybride 2062 en euros 88,9 %, 5,25 % 2031 en dollars 92,5 % ;
+    - les émissions de juillet 2025 cotent de 95,0 à 98,9 %, après un plus bas en mars 2026 (hybrides 2061 et 2065 à 89,8 % et 89,7 %) ;
+    - les émissions d'avril 2026 sont au pair (100,4 à 100,9 %) ;
+  - rendus : documents 25 104 (23 526), faits 1 581 051 (1 580 920), observations 28 950 (27 671), entités 3 569 (3 047), liens 10 869 (10 623), mesures 171 024 (169 094), contrôles 69 946 (69 943), exclusions 31 402 (30 126). 14 035 nombres publiés (11 527), dont 2 372 pour la série N-PORT. Exclusions :
+    - `not_processed` 27 899 (27 154) : 405 fenêtres 6-K d'Arm au-delà du plafond de 80 unités (point 5) et 340 unités de la piste élargie, hors de la règle de lecture ou au-delà du plafond ;
+    - `out_of_scope` 1 069 (569) : unités tirées des dépôts propres du groupe (état `own_group`), formulaires 4 de SB Investment Advisers (UK) sur Vir Biotechnology, fenêtres dans les facteurs de risque ;
+    - `pending_entity` 587 (556) ;
+    - bloc `nport` : aucune exclusion. Les 28 archives sont scannées, publiées au plus tard le jour de l'as_of, et aucun LEI n'est accepté en retard ;
+  - annexe F : événements des groupes inchangés. SoftBank n'a pas de comptes au modèle ;
+  - paires : 236 (233).
+    - Nouvelles : NVIDIA → SoftBank, Marvell → SoftBank et TSMC → SoftBank. NVIDIA → SB Energy et NVIDIA → Energy Global, deux paires de D-0057, se fondent dans NVIDIA → SoftBank, ces entités étant au groupe depuis le point 23 ;
+    - nouvelles aussi, par des lignes du volet A : Oracle → TikTok USDS Joint Venture LLC (participation de 15 % mise en équivalence) et TSMC → Intel ;
+    - conclusions : causalité non établie 158 (155), achats réciproques seulement 44, relation commerciale doublée d'un financement 26, dépendance documentée 8 ;
+    - paires à financement documenté : 84 (83). La nouvelle est Oracle → TikTok USDS Joint Venture LLC ;
+  - cycles (E.6) : 103 (102). Le nouveau est NVIDIA → SoftBank → OpenAI → NVIDIA (longueur 3, relation commerciale doublée d'un financement) ;
+  - E.7 : 166 issues (164), dont 57 % indéterminées au point de tête ; discrimination possible ;
+  - contrôles, vue `as_known` : `mismatch` 1 833, `not_testable` 1 336 (1 333), `ok` 29 886, `tautological` 1 393 ;
+  - lacunes déclarées :
+    - Kigen (UK) Limited reste hors du groupe : ses relations avec Arm ne sont pas internes ;
+    - les véhicules du SoftBank Vision Fund L.P. restent hors du groupe, faute d'un bloc lu qui relie leur gérant à SoftBank ;
+    - Sprint (de 2013 à 2020) et Fortress (de 2017 à 2024) restent des contreparties propres ;
+    - six noms en attente (ci-dessus) ;
+    - N-PORT : un amendement sans position de SoftBank n'est pas vu ; prêts, CDS et dérivés restent hors de la mesure ;
+  - tests unitaires : 198, tous passés.
