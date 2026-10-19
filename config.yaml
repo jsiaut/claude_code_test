@@ -1534,4 +1534,25 @@ montages:
          reason: "prospectus ou déclaration d'enregistrement qui reprend les rapports périodiques ou décrit une offre"}
       - {filer: "galaxy digital", forms: ["8-K"], file_types: ["EX-99.2"], reason: "présentation trimestrielle des résultats"}
       - {filer: "galaxy digital", forms: ["8-K"], file_rx: "xpressrelease", reason: "communiqué trimestriel des résultats"}
+  softbank_corpus:                    # D-0058, point 3 : documents des groupes déjà en cache, sans recherche ni tirage
+    decision: D-0058
+    source: corpus
+    groups: all
+    period: ["2017-01-29", "2026-10-07"]   # début du texte (discovery.period_start) à l'as_of
+    terms:
+      - {rx: '\bSoft[Bb]ank\b|\bSOFTBANK\b'}
+      - {rx: '\bStar Beacon\b|\bStellar Beacon\b|\bSB Northstar\b|\bSVF Yellow\b|\bSVF II Energy\b|\bSB Energy\b|\bSB ENERGY\b|\bBrightstar US\b'}
+      - {rx: '\bSVF II\b|\bSVF Holdco\b|\bSVF Endurance\b|\bHAPSMobile\b'}
+      - {rx: '\bAmpere Computing\b|\bAMPERE COMPUTING\b|\bGraphcore\b'}
+      - {rx: '\bArm (?:Holdings|Limited|Ltd)\b|\bARM (?:Holdings|Limited|Ltd|HOLDINGS|LIMITED|LTD)\b'}
+      - {rx: '\bStargate\b'}
+    # comptés sans qualifier : « Arm » seul (architecture), « Ampere » seul (architecture de NVIDIA), « SVF » seul,
+    # « SBG », « Vision Fund »
+    noted_terms: ['\bSoft[Bb]ank\b', '\bSOFTBANK\b', '\bSB Energy\b', '\bSVF II\b', '\bAmpere Computing\b', '\bGraphcore\b',
+                  '\bArm (?:Holdings|Limited|Ltd)\b', '\bStargate\b', '\bArm\b', '\bAmpere\b', '\bSVF\b', '\bSBG\b', '\bVision Fund\b']
+    cap: 300
+    dedupe: true
+    skip_read: true
+    skip_risk_factors: true
+    order: recent_first
 

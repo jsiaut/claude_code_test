@@ -1462,3 +1462,10 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - le volet A ne voit que le corpus déjà tiré : un document de groupe absent du cache n'est pas scanné ;
   - un paragraphe qui ne nomme Arm que par « Arm », ou Ampere que par « Ampere », n'est pas servi (point 3) ;
   - les volets B et C dépendent des constats de la phase 0, consignés ici avant toute lecture.
+
+  (14) Volet A, volume avant lecture :
+  - 4 218 documents des groupes dans la période, tous en cache. Le pré-filtre en retient 130 qui nomment un terme ;
+  - 221 fenêtres : 34 dans la section des facteurs de risque (`out_of_scope`), 37 déjà dans un bloc lu du même dépôt, 150 à lire. Ces 150 fenêtres donnent 143 textes distincts, soit 377 713 caractères, sous le plafond de 300 ;
+  - par groupe : NVIDIA 40, Oracle 35, AMD 14, TSMC 14, Intel 12, Marvell 10, Cipher 7, ASML 7, Core Scientific 2, IREN 2. Par formulaire : 10-K 43, 10-Q 38, DEF 14A 33, 6-K 22, 8-K 6, 20-F 1. Dépôts du 2017-05-03 au 2026-08-26 ;
+  - les blocs des trois autres montages sont inchangés (mêmes clés de contenu) ;
+  - code : `montages.corpus`, `risk_factor_span`, `read_texts` et `covered`, options du point 3, exclusions du montage de corpus. Cinq tests (`test_montages`). Liste de lecture `sb_corpus`, du dépôt le plus récent au plus ancien.

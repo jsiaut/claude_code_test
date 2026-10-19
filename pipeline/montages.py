@@ -10,7 +10,14 @@ Chaque pièce se tire une fois, en cache, par le client SEC journalisé.
 
     python -m pipeline.montages search <montage>    # recherche plein texte -> work/tmp
     python -m pipeline.montages fetch <montage>     # pièces en cache, relevés de portefeuille comptés
+    python -m pipeline.montages corpus <montage>    # montage de corpus : documents des groupes déjà en cache
     python -m pipeline.montages prepare             # fenêtres de tous les montages -> db/montages_blocks.jsonl
+
+Un montage de corpus (`source: corpus`, D-0058, point 3) ne cherche ni ne tire rien : ses pièces sont
+les documents des groupes déjà en cache. Trois options : `skip_read` (une fenêtre dont chaque paragraphe
+qualifiant est déjà dans un bloc lu du même dépôt n'est pas servie), `skip_risk_factors` (ni une fenêtre
+dont chaque paragraphe qualifiant est dans la section des facteurs de risque, §14) et l'ordre
+`recent_first` (du dépôt le plus récent au plus ancien).
 """
 import json
 import re
@@ -171,6 +178,89 @@ def fetch(mid, rate=4.0):
     print(len(rows), "pièces ;", sum(r["state"] == "fetched" for r in rows), "tirées ; relevés écartés", holdings)
 
 
+def corpus(mid):
+    """Pièces d'un montage de corpus (D-0058, point 3) : documents principaux et pièces des groupes de
+    config.yaml déjà en cache, en HTML ou en texte, déposés dans la période ; aucune requête. Un
+    pré-filtre sur les octets, insensible à la casse, écarte les documents qui ne nomment aucun terme."""
+    spec = specs()[mid]
+    _, docs_path, info_path = _paths(mid)
+    start, end = spec["period"]
+    meta = json.loads((config.DB_DIR / "phase0.json").read_text())["meta"]
+    groups = set(config.load()["groups"]) if spec.get("groups", "all") == "all" else set(spec["groups"])
+    d = pd.read_parquet(config.ROOT / "tables" / "documents.parquet",
+                        columns=["cik", "group_id", "accession", "document", "form", "sgml_type", "filing_date", "resource_kind"])
+    d = d[d["group_id"].isin(groups) & d["resource_kind"].isin(["primary_document", "exhibit"])
+          & d["document"].str.lower().str.endswith((".htm", ".html", ".txt"))]
+    d = d.assign(file_date=d["filing_date"].astype(str))
+    d = d[(d["file_date"] >= start) & (d["file_date"] <= end)].drop_duplicates(["accession", "document"])
+    pre = re.compile("|".join(t["rx"] for t in spec["terms"]).encode(), re.I)
+    rows, scanned = [], 0
+    for x in d.sort_values(["file_date", "accession", "document"]).itertuples(index=False):
+        path = cache.archive_path(x.cik, x.accession, x.document)
+        if not path.exists():
+            continue
+        scanned += 1
+        if not pre.search(cache.read(path)):
+            continue
+        rows.append({"adsh": x.accession, "file": x.document, "form": x.form, "file_type": x.sgml_type or x.form,
+                     "file_date": x.file_date, "cik": x.cik, "filer": (meta.get(x.cik) or {}).get("name") or x.group_id,
+                     "source": "corpus", "queries": "", "state": "cached"})
+    pd.DataFrame(rows).to_parquet(docs_path, index=False)
+    info_path.write_text(json.dumps({"source": "corpus", "documents_in_period": int(len(d)), "documents_scanned": scanned,
+                                     "documents_named": len(rows)}))
+    print(mid, ":", len(d), "documents dans la période ;", scanned, "en cache ;", len(rows), "nomment un terme")
+
+
+# section des facteurs de risque (§14 : une mention n'y fait jamais une unité ; D-0058, point 3)
+RF_HEAD = re.compile(r"^\W{0,3}(?:(?:item\s*)?1a\b\.?|(?:item\s*)?3\.?\s*d\b\.?|d\.)?\s*[:.\-–—]?\s*risk\s+factors\.?\s*$", re.I)
+RF_END = re.compile(r"^\W{0,3}(?:item\s*(?:1b|1c|2|3|4|5|6|7|7a|8|9|9a|10)\b|part\s+ii\b|unresolved staff comments\b|"
+                    r"cautionary (?:note|statement)s?\b|special note|forward[\s-]+looking statements\b|use of proceeds\b|"
+                    r"dividend policy\b|capitalization\b|dilution\b|market,?\s+(?:and\s+)?industry\b|"
+                    r"management['’]?s discussion)", re.I)
+HEAD_MAX = 120
+
+
+def risk_factor_span(paras):
+    """Paragraphes de la section des facteurs de risque, [début, fin[, ou None : du titre « Risk Factors »
+    (Item 1A, Item 3.D, titre d'un prospectus) au titre majeur suivant ; la plus longue des sections
+    candidates, ce qui écarte les entrées de la table des matières (D-0058, point 3)."""
+    best = None
+    for s, p in enumerate(paras):
+        if len(p) > HEAD_MAX or not RF_HEAD.search(p):
+            continue
+        e = len(paras)
+        for j in range(s + 1, len(paras)):
+            if len(paras[j]) <= HEAD_MAX and RF_END.search(paras[j]):
+                e = j
+                break
+        size = sum(len(x) for x in paras[s:e])
+        if best is None or size > best[2]:
+            best = (s, e, size)
+    return (best[0], best[1]) if best else None
+
+
+def _norm(s):
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def read_texts(mid):
+    """Textes des blocs déjà lus, par accession, hors des blocs de ce montage (D-0058, point 3)."""
+    from . import reader
+    out = {}
+    for b in reader.load_catalog():
+        if b.get("montage") == mid or not (config.OBS_DIR / f"{b['content_key']}.jsonl").exists():
+            continue
+        t = b["text"] if isinstance(b["text"], str) else "\n".join(b["text"])
+        out.setdefault(b.get("accession"), []).append(_norm(t))
+    return out
+
+
+def covered(para, texts):
+    """Un paragraphe figure mot pour mot, aux blancs près, dans l'un des textes lus du même dépôt."""
+    p = _norm(para)
+    return bool(p) and any(p in t for t in texts)
+
+
 def paragraphs(text):
     return [p for p in (x.strip() for x in text.split("\n")) if p]
 
@@ -209,12 +299,14 @@ def _order_key(d, k, spec):
     """Ordre de lecture : dates de dépôt croissantes (D-0046) ; pour un montage à `focus`, autres
     déposants, puis pièces de 8-K du déposant central, puis ses rapports périodiques, puis le reste,
     chaque classe du plus récent au plus ancien (D-0049, point 11)."""
+    neg = "".join(chr(0x10FFFF - ord(c)) for c in d["file_date"])   # plus récent d'abord
+    if spec.get("order") == "recent_first":                         # D-0058, point 3
+        return (neg, d["adsh"], d["file"], k)
     focus = spec.get("focus")
     if not focus:
         return (d["file_date"], d["adsh"], d["file"], k)
     own = (d["filer"] or "").lower()
     cls = 0 if focus not in own else 1 if d["form"] in ("8-K", "8-K/A") else 2 if d["form"] in ("10-Q", "10-K") else 3
-    neg = "".join(chr(0x10FFFF - ord(c)) for c in d["file_date"])   # plus récent d'abord
     return (cls, neg, d["adsh"], d["file"], k)
 
 
@@ -225,7 +317,8 @@ def _prepare_one(mid, spec, groups_by_cik):
     if not docs_path.exists():
         return []
     docs = pd.read_parquet(docs_path)
-    units, no_window, excluded = [], [], []
+    units, no_window, excluded, risk, already = [], [], [], [], []
+    read_by_acc = read_texts(mid) if spec.get("skip_read") else {}
     for d in docs.to_dict("records"):
         if not d["state"].startswith(("cached", "fetched")):
             continue
@@ -237,11 +330,22 @@ def _prepare_one(mid, spec, groups_by_cik):
         raw = cache.read(cache.archive_path(d["cik"], d["adsh"], d["file"]))
         text, how = D.plain_text(raw)
         paras = paragraphs(text)
-        sp = windows(paras, qualify_rx(d["filer"], spec))
+        rx = qualify_rx(d["filer"], spec)
+        sp = windows(paras, rx)
         if not sp:
             no_window.append({"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"]})
             continue
+        rf = risk_factor_span(paras) if spec.get("skip_risk_factors") else None
+        texts = read_by_acc.get(d["adsh"]) or []
         for k, (a, b) in enumerate(sp):
+            hits = [i for i in range(a, b) if rx.search(paras[i])]
+            ref = {"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"], "window": k}
+            if rf and all(rf[0] <= i < rf[1] for i in hits):        # facteur de risque (§14 ; D-0058, point 3)
+                risk.append(ref)
+                continue
+            if texts and all(covered(paras[i], texts) for i in hits):   # déjà dans un bloc lu du même dépôt
+                already.append(ref)
+                continue
             units.append((d, k, "\n".join(paras[a:b]), how))
     units.sort(key=lambda u: _order_key(u[0], u[1], spec))
     if spec.get("dedupe"):           # un texte distinct se lit une fois (D-0049, point 11)
@@ -278,10 +382,11 @@ def _prepare_one(mid, spec, groups_by_cik):
                     "terms": sorted(set(noted.findall(text))), "queries": d["queries"], "montage": mid})
     info = json.loads(info_path.read_text())
     info.update({"no_window": no_window, "over_cap": over, "units": len(units) + len(dup), "excluded": excluded,
-                 "duplicates": dup})
+                 "duplicates": dup, "risk_factors": risk, "already_read": already})
     info_path.write_text(json.dumps(info, ensure_ascii=False))
     print(mid, ":", len(units) + len(dup), "fenêtres ;", len(units), "textes distincts ;", len(out), "blocs ;",
-          len(no_window), "pièces sans fenêtre ;", len(excluded), "pièces écartées ;", len(over), "au-delà du plafond")
+          len(no_window), "pièces sans fenêtre ;", len(excluded), "pièces écartées ;", len(over), "au-delà du plafond",
+          *([f"; {len(risk)} dans un facteur de risque ; {len(already)} déjà lues"] if spec.get("source") == "corpus" else []))
     return out
 
 
@@ -315,6 +420,17 @@ def exclusions(as_of):
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
         terms = " », « ".join(re.sub(r"\\b", "", t["rx"]) for t in spec["terms"])
+        if spec.get("source") == "corpus":
+            # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
+            # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
+            # plafond, une fenêtre reste à lire
+            for d in info.get("risk_factors") or []:
+                ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
+                   f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point 3)", d["adsh"])
+            for d in info.get("over_cap") or []:
+                ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
+                   f"fenêtre au-delà du plafond de {spec['cap']} unités ({dec}, point 3)", d["adsh"])
+            continue
         for form, n in sorted((info.get("holdings_not_read") or {}).items()):
             ex(f"holdings:{form}", "out_of_scope",
                f"{n} résultat(s) de la recherche plein texte en {form} : relevés de portefeuille, non lus (D-0046, point 8)")
@@ -351,6 +467,8 @@ if __name__ == "__main__":
         search(sys.argv[2])
     elif cmd == "fetch":
         fetch(sys.argv[2])
+    elif cmd == "corpus":
+        corpus(sys.argv[2])
     elif cmd == "prepare":
         prepare()
     else:

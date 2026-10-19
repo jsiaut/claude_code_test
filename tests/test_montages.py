@@ -130,3 +130,38 @@ class FilerBecomesGroup(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CorpusSoftBank(unittest.TestCase):
+    """D-0058, point 3 : montage de corpus, termes, facteurs de risque, blocs déjà lus, plus récent d'abord."""
+
+    def test_terms(self):
+        rx = M.qualify_rx("NVIDIA CORP", S["softbank_corpus"])
+        for s in ("SoftBank Group Corp.", "Softbank", "Arm Holdings plc", "ARM Limited", "SVF II Finco Cayman L.P.",
+                  "Ampere Computing Holdings LLC", "affiliates of SB Energy", "the Stargate project"):
+            self.assertTrue(rx.search(s), s)
+        for s in ("the NVIDIA Ampere architecture", "Arm-based CPUs", "SVF", "SVF III", "a Vision Fund", "SBG", "stargate"):
+            self.assertIsNone(rx.search(s), s)
+
+    def test_risk_factors_10k(self):
+        paras = ["Table of Contents", "Item 1A. | Risk Factors | 12", "Item 1. Business", "SoftBank is a customer.",
+                 "Item 1A. Risk Factors", "Risks Related to Our Business", "We depend on SoftBank.", "Item 1B. Unresolved Staff Comments",
+                 "None.", "Item 7. Management's Discussion", "SoftBank paid $10 million."]
+        self.assertEqual(M.risk_factor_span(paras), (4, 7))
+
+    def test_risk_factors_prospectus_and_toc(self):
+        paras = ["RISK FACTORS", "CAUTIONARY NOTE REGARDING FORWARD-LOOKING STATEMENTS", "PROSPECTUS SUMMARY",
+                 "RISK FACTORS", "Investing in our stock involves risk.", "SoftBank controls us.",
+                 "SPECIAL NOTE REGARDING FORWARD-LOOKING STATEMENTS", "USE OF PROCEEDS"]
+        self.assertEqual(M.risk_factor_span(paras), (3, 6))       # la plus longue : la table des matières est écartée
+        self.assertIsNone(M.risk_factor_span(["Summary of Risk Factors", "SoftBank"]))
+
+    def test_covered(self):
+        texts = [M._norm("Note 1\nOn November 25, 2025,   SoftBank Group Corp. acquired\nall of the equity interests of Ampere.")]
+        self.assertTrue(M.covered("On November 25, 2025, SoftBank Group Corp. acquired all of the equity interests of Ampere.", texts))
+        self.assertFalse(M.covered("SoftBank Group Corp. acquired Graphcore.", texts))
+
+    def test_recent_first(self):
+        sp = S["softbank_corpus"]
+        a = {"filer": "X", "form": "10-Q", "file": "a", "file_date": "2025-01-01", "adsh": "1"}
+        self.assertLess(M._order_key(dict(a, file_date="2026-03-11"), 0, sp), M._order_key(a, 0, sp))
