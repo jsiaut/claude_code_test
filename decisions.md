@@ -1740,9 +1740,10 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   (2) Constat, compté sans lecture, après l'intégration de D-0058 :
   - OpenAI : 4 entités, 82 arêtes, dont 46 à montant. Contreparties : CoreWeave 19, Cerebras 19, Microsoft 18, Amazon 10, SoftBank 8, AMD 5, NVIDIA 3. Aucune arête avec Oracle, qui ne nomme OpenAI que dans un document ;
   - Anthropic : 2 entités, 8 arêtes, dont 2 à montant : TeraWulf 3, Akamai 3, Broadcom 1, Nscale 1. Aucune avec Amazon ni Alphabet ;
-  - documents des groupes en cache (4 227 documents principaux et pièces, en HTML ou en texte), comptage insensible à la casse :
-    - « OpenAI » : 76 documents et 855 occurrences (CoreWeave 429, Microsoft 252, Amazon 56, AMD 54, NVIDIA 30…) ;
-    - « Anthropic » : 156 documents et 450 occurrences (Amazon 126, Akamai 68, Alphabet 46, TeraWulf 38, Meta 23, Apollo 23, Blackstone 21, Microsoft 14, Dell 14…), dont 63 circulaires de procuration ;
+  - documents des groupes en cache (4 223 documents principaux et pièces de la période, en HTML ou en texte), comptage en mots entiers et en casse exacte sur le texte :
+    - « OpenAI » : 70 documents et 756 occurrences (CoreWeave 405, Microsoft 202, AMD 51, Amazon 49, NVIDIA 28…), dont 11 circulaires de procuration ;
+    - « Anthropic » : 37 documents et 233 occurrences (Amazon 101 dans 13 documents, Akamai 59, TeraWulf 33, SpaceX 8, Meta 6, Broadcom 6, Hut 8 6, NVIDIA 4…), dont 5 circulaires. Alphabet ne le nomme que deux fois, Microsoft une fois ;
+    - correction avant toute lecture : le comptage du remue-méninges, insensible à la casse et sans mots entiers, donnait 156 documents et 450 occurrences pour Anthropic. Il comptait « philanthropic », présent dans 122 documents (183 occurrences, surtout des circulaires) ;
   - blocs lus qui nomment un laboratoire : 88 pour OpenAI, 19 pour Anthropic, aucun d'Amazon ni d'Alphabet pour Anthropic ;
   - les véhicules des Form D sont déjà couverts (D-0041) : 531 cellules pour Anthropic et 218 pour OpenAI.
 
@@ -1787,3 +1788,13 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - le volet 1 ne voit que le corpus déjà tiré des groupes : un document d'un autre déposant n'est pas scanné ;
   - un paragraphe qui ne nomme un laboratoire que par un produit (« ChatGPT », « Claude ») ou par un pronom n'est pas servi ;
   - les engagements d'un fournisseur envers un client qu'il ne nomme pas (Oracle, les clients anonymes de Broadcom) restent hors des laboratoires.
+
+  (8) Volet 1, volume consigné avant toute lecture (2026-10-19) :
+  - corpus : 4 223 documents des groupes dans la période, tous en cache ; 99 nomment un terme au pré-filtre (insensible à la casse, sur les octets). 3 n'ont aucune fenêtre, le terme n'y étant pas en casse exacte ;
+  - fenêtres : 275. Sont écartées 29 fenêtres dans un facteur de risque, 62 déjà lues dans un bloc du même dépôt et 39 doublons de texte. Restent 236 unités, sous le plafond de 300 ; aucune pièce écartée ;
+  - lecture : 236 blocs, 636 824 caractères, du 2026-09-24 au 2022-10-27 ;
+  - par groupe du déposant : Microsoft 77, CoreWeave 62, Amazon 53, AMD 13, SpaceX 5, Nebius 5, TeraWulf 4, NVIDIA 4, Hut 8 4, Meta 3, Akamai 2, Alphabet 2, Apollo 1, Intel 1 ;
+  - par formulaire : 10-Q 105, 10-K 31, DEF 14A 30, 424B4 28, S-1/A 19, 8-K 18, 6-K 4, 20-F 1 ;
+  - par laboratoire nommé : OpenAI seul 163, Anthropic seul 58, les deux 15. Termes seulement comptés : « ChatGPT » dans 3 blocs, « Claude » dans 1 ;
+  - les blocs des autres montages ne changent pas (mêmes clés de contenu), et aucune clé n'est déjà lue ailleurs ;
+  - liste de lecture `labs_corpus`, du dépôt le plus récent au plus ancien.
