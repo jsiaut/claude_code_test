@@ -1864,7 +1864,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Anthropic : 2 entités et 73 arêtes (8), dont 56 à montant (2). Contreparties : Amazon 64, TeraWulf 3, Akamai 3, Broadcom 1, Nscale 1, SpaceX 1 ;
   - expositions au 30 juin 2026, du point de vue du fournisseur (jamais un fait comptable du laboratoire) :
     - Amazon sur Anthropic : 18,0 Md$ versés au coût, 92,5 Md$ d'actions de préférence au bilan, 97,9 Md$ de juste valeur des obligations et 16,4 Md$ d'engagements (facilité restante de 15,0 Md$, plus l'engagement de 1,4 Md$ de 2025, déjà versé) ;
-    - Amazon sur OpenAI : 28,7 Md$ versés et au bilan, et 50,0 Md$ d'engagements, versés en juillet 2026 ;
+    - Amazon sur OpenAI : 28,7 Md$ versés et au bilan, et 50,0 Md$ d'engagements au plafond (15,0 et 35,0 Md$ de série C). Au 30 juin, 28,7 Md$ en sont déjà versés ; le solde de 21,3 Md$ l'est en juillet 2026 ;
     - Microsoft sur OpenAI : 11,9 Md$ versés et 13 Md$ d'engagements ;
   - dépendance de revenu documentée de Microsoft envers OpenAI : 7,3 % du revenu de l'exercice 2026 (24,1 Md$) ;
   - paires : 240 (236).
@@ -1876,7 +1876,8 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Amazon → Anthropic → Amazon (longueur 2, dépendance documentée) ;
     - Microsoft → OpenAI → Microsoft (longueur 2, relation commerciale doublée d'un financement) ;
     - CoreWeave → OpenAI → Microsoft → CoreWeave (longueur 3, relation commerciale doublée d'un financement) ;
-  - E.7 : 170 issues (166), dont 56 % indéterminées au point de tête. Discrimination possible ;
+  - annexe E : premières issues « étayé » de E.1, pour Amazon → Anthropic, Amazon → OpenAI et CoreWeave → OpenAI. Sur chacune de ces paires, F est actif au moins un trimestre et une pièce de lien (L2 ou L5) est trouvée. Issues de E.1 : étayé 3 (0), non étayé 71 (72), indéterminé 11 (11). E.2 à 20 % est réfuté pour Amazon → Anthropic (31 issues réfutées à ce point, 30 avant) : le revenu tiré d'Anthropic reste sous 10 % du revenu d'Amazon de 2023 à 2025 ;
+  - E.7 : 170 issues (166), dont 56 % indéterminées au point de tête (57 %). Discrimination possible ;
   - annexe F : un événement nouveau, F2 d'Amazon au 30 juin 2025. Le flux après financement des contreparties devient négatif avec la souscription de 1,3 Md$ d'obligations d'Anthropic ;
   - rendus :
     - tables : documents 25 104 (25 104), faits 1 581 051 (1 581 051), observations 29 264 (28 950), entités 3 576 (3 569), liens 10 984 (10 869), mesures 171 569 (171 024), contrôles 69 950 (69 946), exclusions 31 430 (31 402) ;
