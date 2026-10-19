@@ -1523,3 +1523,34 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Arm, 119 blocs (1 050 610) : 34 notes, 4 sections des parties liées (Item 7.B des trois 20-F, 424B4), la pièce 8.1 et 80 fenêtres 6-K (691 531). Les 6-K donnent 539 fenêtres : 54 doublons, 405 au-delà du plafond (`not_processed`). Les 33 autres notes des 20-F antérieurs sont `out_of_scope` ;
     - DigitalBridge, 8 blocs (26 692) ;
   - en tout 477 blocs et 2 473 326 caractères. Lecture dans l'ordre du point 12 : volet B, puis volet C, un commit par volet. Code : `pipeline/sb_own.py` (`prepare`, `exclusions`), dix tests (`test_sb_own`).
+
+  (18) Volet B, lecture, sans sous-agent (2026-10-19) :
+  - deux corrections du catalogue, faites avant la lecture des blocs touchés :
+    - une pièce EX-99 hors texte (PDF, image) ne forme plus de bloc. Les six pièces en cause sont les annexes des dirigeants de 13D/A de 2025 (point 10). Elles sont comptées `out_of_scope` (`exhibits_not_text`). Le volet B passe à 262 blocs ;
+    - la coupe d'un 13D ne joue plus qu'après le dernier intitulé d'Item du périmètre. Une phrase de l'Item 2 qui renvoie à l'annexe (« Schedule A attached hereto sets forth… ») coupait le 13D d'EQRx du 2021-12-27 avant ses Items 3 à 7. C'est le seul bloc touché, et il n'était pas encore lu (2 265 puis 9 267 caractères). Un test de plus (`test_sb_own`, onze tests) ;
+    - les volets B et C font désormais 471 blocs et 2 407 647 caractères, dont 895 601 pour le volet B ;
+  - règles de codage, appliquées à tout le volet :
+    - 13F : une ligne par ligne d'émetteur du modèle. La valeur est en milliers de dollars avant le 2023-01-03, en dollars ensuite ; elle est omise quand le nombre de titres déclaré est nul. Une arête de financement seulement si le nombre de titres est celui d'une opération primaire attestée ailleurs : Intel (86 956 522 actions, placement privé du 26 septembre 2025) et Cipher (10 438 413 actions, placement privé du 30 janvier 2025). Les autres positions (NVIDIA, TSMC, Oracle, Amazon, Alphabet, Microsoft, Meta, Sprint) n'ont pas d'origine écrite : lignes descriptives, sans arête (SPEC §3.1 et §3.2 (a)) ;
+    - détentions, achats et ventes secondaires, échanges de titres lors d'un rapprochement, ventes à terme et options face à des contreparties non nommées : lignes descriptives, sans arête ;
+    - opérations primaires (souscriptions, placements privés), obligations, convertibles et prêts : arêtes de financement. Indemnités et soutiens de crédit : `credit_support`. Bons de souscription remis à un client : `customer_consideration`. Aucun montant ne se calcule à partir d'un nombre d'actions et d'un prix (guide, §5) ;
+    - extraits d'appartenance : rôle `filer_group`. Le traitement `consolidated_subsidiary` suit les mots de D-0050, point 4, et seulement si la chaîne remonte à SoftBank ou à une entité du groupe de D-0044. « Sole member », « sole owner », « sole shareholder », « general partner », « wholly owned by », « 100% equity interest », un gérant ou un AIFM donnent `undetermined`. Une entité n'est relevée qu'une fois ; un extrait plus fort, lu plus tard, s'ajoute (12 entités ont les deux) ;
+    - accords de dépôt conjoint : abstention `boilerplate_no_event` ;
+    - corps des pièces EX-99 : aucun n'est lu. Aucun des 62 en-têtes ne nomme un groupe du modèle, un laboratoire ou Stargate (D-0044, point 5) ; le contrôle est refait à la fin de la lecture ;
+    - aucune personne physique n'est citée : administrateurs, dirigeants, comité d'investissement, fiducies de fondateurs, listes d'actionnaires bloqués ;
+  - rendement : 262 blocs lus (148 13D et 13G, 62 en-têtes d'EX-99, 51 13F, un formulaire 4), 459 lignes (399 observations, 60 abstentions), aucune rejetée :
+    - 46 arêtes : 37 de financement (16 en actions, 14 prêts et obligations, 7 convertibles), 7 de soutien de crédit, un engagement d'achat, une contrepartie remise à un client. 28 portent un montant ;
+    - 112 extraits d'appartenance pour 96 entités : 40 `consolidated_subsidiary`, 72 `undetermined` ;
+    - 241 lignes descriptives ;
+  - faits principaux :
+    - Sprint : contrôle de SoftBank entre 83,80 % et 84,85 % ; Starburst I et Galaxy Investment Holdings sont des filiales à 100 %. Bon de souscription exercé le 2018-07-10. Indemnité consentie à T-Mobile en 2020 ;
+    - Fortress : filiale à 100 % de SB Foundation Holdings LP à partir du 2017-12-27 ;
+    - WeWork :
+      - soutien de crédit de SoftBank à une ligne de lettres de crédit de 1,75 Md$, pris en octobre 2019 et repris par SVF II (accord du 2019-12-27). Appel en garantie et lettre de règlement le 2023-10-30, fin le 2024-06-11 ;
+      - échange de mai 2023 : obligations non garanties de 250 M$, 359,5 M$ et 1,04 Md$ ; nouvelles obligations de 187,5 M$ et 269,625 M$ ; tranche de premier rang à tirage différé jusqu'à 300 M$. Défaut des obligations PIK le 2023-10-02 ;
+      - Junior TLC de 441,6 M$ le 2024-06-11 ; Secured NPA de 500 M$ en 2021 ;
+    - Better : obligations relais de 650 M$ (2021-12-02), converties le 2023-08-22. Obligations convertibles de 528,6 M$. Échange du 2025-04-28 : 110 M$ en numéraire et 155 M$ d'obligations garanties de premier rang ;
+    - Symbotic et GreenBox, le 2023-07-23 : contrat-cadre d'au moins 7,5 Md$ ; bon de 11 434 360 actions remis à Sunlight Investment Corp. ; souscription de 100 M$ ; engagements en capital de 3,2 Md$ et de 1,7 Md$ ;
+    - Berkshire Grey : obligations de 60 M$ (2023-03-24) et de 12 M$ (2023-06-26) ; filiale à 100 % à partir du 2023-07-20 ;
+    - SB Northstar : placement privé d'EQRx (41 250 000 actions à 10,00 $, le 2021-12-17) ; unités de Learn CW (100 M$, le 2021-10-13) et d'Aurora Acquisition Corp. (le 2021-03-08). SVF II : souscription de série D1 et placement privé d'Exscientia (2021) ;
+    - T-Mobile : ventes à terme prépayées et prêt sur titres de Project 6 LLC (2022) ; options de Deutsche Telekom, réglées en actions DT en 2021 puis en numéraire en 2022 ; cessions de blocs en 2025. Toutes ces lignes sont descriptives ;
+    - entités nouvelles : Skywalk Finance GK (filiale, 6,3 % d'Alibaba au 2021-12-31), Tsubasa Corporation (filiale à 100 %), SB WW Holdings (Cayman) Limited, et des véhicules du SoftBank Vision Fund (AIV S1, AIV M1, SVF GP (Jersey), XKI Subco, Oyster, Buzzard…).

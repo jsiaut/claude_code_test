@@ -304,8 +304,12 @@ def schedule_text(raw, doc, form):
     start = next((i for i in sorted(heads) if lo <= heads[i] <= hi), None)
     if start is None:
         return "", how
+    # une phrase de l'Item 2 qui renvoie à l'annexe (« Schedule A attached hereto sets forth… ») ne coupe pas : la coupe
+    # ne joue qu'après le dernier intitulé d'Item du périmètre (D-0058, point 18)
+    last_in = max(i for i in heads if lo <= heads[i] <= hi)
     end = next((j for j in range(start + 1, len(lines))
-                if heads.get(j, 0) > hi or (len(lines[j].strip()) < 200 and CUT.search(lines[j].strip()))), len(lines))
+                if heads.get(j, 0) > hi or (j > last_in and len(lines[j].strip()) < 200 and CUT.search(lines[j].strip()))),
+               len(lines))
     body = [l for l in lines[start:end] if l.strip()]
     if hi == 4:
         foot = [l.strip() for l in lines[:start] if FOOTNOTE.match(l) and not BOILER.search(l) and len(l.strip()) > 3]
@@ -361,7 +365,7 @@ def blocks_b(cfg=None):
     f = pd.read_parquet(FILINGS)
     names = _filer_names()
     info, lists = Counter(), {"over_cap": [], "ownership_out_of_scope": [], "holdings_without_model_row": [],
-                              "other_forms": []}
+                              "other_forms": [], "exhibits_not_text": []}
     units, seen = [], set()
     # 13D et 13G
     sched = f[f["form"].isin(SCHEDULES)]
@@ -386,6 +390,11 @@ def blocks_b(cfg=None):
                       main["FILENAME"], extra, None)]
         for d in docs:
             if not str(d["TYPE"]).upper().startswith("EX-99"):
+                continue
+            if not d["FILENAME"].lower().endswith((".htm", ".html", ".txt")):
+                # pièce hors texte (PDF, image) : les annexes des dirigeants des 13D/A de 2025 en sont (D-0058, point 10)
+                lists["exhibits_not_text"].append({"acc": x.accession, "form": x.form, "date": x.filingDate, "file": d["FILENAME"],
+                                                   "type": d["TYPE"], "label": f"{x.form} de {x.filer} sur {x.issuer}"})
                 continue
             pth = cache.archive_path(x.filer_cik, x.accession, d["FILENAME"])
             if not pth.exists():
@@ -807,6 +816,9 @@ def exclusions(as_of):
     for d in lists.get("other_forms") or []:
         ex(d["acc"], "out_of_scope", f"{d['form']} de {d['filer']} ({d['date']}) : formulaire compté, non lu (D-0058, point 4)",
            "NF:SOFTBANK", d["acc"])
+    for d in lists.get("exhibits_not_text") or []:
+        ex(f"{d['acc']}/{d['file']}", "out_of_scope", f"{d['type']} {d['file']} du {d['label']} ({d['date']}) : pièce hors texte (PDF ou "
+           "image), non lue (D-0058, points 4 et 18)", "NF:SOFTBANK", d["acc"])
     for d in lists.get("notes_not_selected") or []:
         ex(f"{d['acc']}#{d['note']}", "out_of_scope", f"20-F d'Arm du {d['date']}, note {d['note']} : hors des familles lues "
            "dans les rapports antérieurs au dernier (D-0058, point 5)", _cp(ARM_NAME), d["acc"])

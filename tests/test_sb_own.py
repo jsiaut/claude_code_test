@@ -98,6 +98,17 @@ class Schedules(unittest.TestCase):
                        "Based on 100 shares"):
             self.assertNotIn(absent, t)
 
+    def test_annex_reference_inside_item_2_does_not_cut(self):
+        raw = SCHED_D.replace(b"<p>Item 4. Purpose", b"<p>Schedule A attached hereto sets forth the information regarding the "
+                                                     b"executive officers and directors of each of the Reporting Persons.</p>"
+                                                     b"<p>Item 4. Purpose")
+        t, _ = S.schedule_text(raw, "x.htm", "SC 13D")
+        self.assertIn("Schedule A attached hereto", t)
+        self.assertIn("The shares were acquired for investment.", t)
+        self.assertIn("margin loan", t)
+        self.assertNotIn("I certify", t)                          # la coupe joue toujours après l'Item 7
+        self.assertNotIn("Citizenship", t)
+
     def test_13g_items_1_to_4_and_cover_notes(self):
         t, _ = S.schedule_text(SCHED_G, "x.htm", "SC 13G")
         self.assertTrue(t.startswith("Item 1(a)"))
