@@ -1846,3 +1846,23 @@ montages:
     skip_risk_factors: true
     order: recent_first
 
+nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
+  decision: D-0058
+  period: ["2019-10-01", "2026-10-07"]     # première archive publiée (données d'octobre 2019) à l'as_of ; archive publiée après l'as_of écartée
+  readme: "https://www.sec.gov/files/nport_readme.pdf"   # description publiée (Last-Modified du 26 juillet 2024), lue le 2026-10-19
+  exchange_rate_convention: currency_per_usd   # vérifiée sur les positions avant tout calcul (point 27)
+  columns:                   # noms de la description, sections 5.1 à 5.3 et 5.10 à 5.12
+    tables: {holding: FUND_REPORTED_HOLDING, identifiers: IDENTIFIERS, debt: DEBT_SECURITY, submission: SUBMISSION,
+             registrant: REGISTRANT, fund: FUND_REPORTED_INFO}
+    holding: {accession: ACCESSION_NUMBER, holding_id: HOLDING_ID, issuer_name: ISSUER_NAME, issuer_lei: ISSUER_LEI,
+              title: ISSUER_TITLE, cusip: ISSUER_CUSIP, balance: BALANCE, unit: UNIT, currency: CURRENCY_CODE,
+              value_usd: CURRENCY_VALUE, exchange_rate: EXCHANGE_RATE, pct_net_assets: PERCENTAGE, payoff: PAYOFF_PROFILE,
+              asset_cat: ASSET_CAT, issuer_type: ISSUER_TYPE, country: INVESTMENT_COUNTRY, fair_value_level: FAIR_VALUE_LEVEL}
+    identifiers: {holding_id: HOLDING_ID, isin: IDENTIFIER_ISIN, ticker: IDENTIFIER_TICKER, other_id: OTHER_IDENTIFIER,
+                  other_id_desc: OTHER_IDENTIFIER_DESC}
+    debt: {holding_id: HOLDING_ID, maturity: MATURITY_DATE, coupon_type: COUPON_TYPE, coupon: ANNUALIZED_RATE,
+           is_default: IS_DEFAULT, arrears: ARE_ANY_INTEREST_PAYMENT, pik: IS_ANY_PORTION_INTEREST_PAID}
+    submission: {accession: ACCESSION_NUMBER, filing_date: FILING_DATE, sub_type: SUB_TYPE, fiscal_end: REPORT_ENDING_PERIOD,
+                 report_date: REPORT_DATE}
+    registrant: {accession: ACCESSION_NUMBER, cik: CIK, registrant_name: REGISTRANT_NAME, registrant_lei: LEI}
+    fund: {accession: ACCESSION_NUMBER, series_name: SERIES_NAME, series_id: SERIES_ID, series_lei: SERIES_LEI}

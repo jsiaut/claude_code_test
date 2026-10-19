@@ -172,7 +172,8 @@ def fetch(only=None):
     from concurrent.futures import ProcessPoolExecutor
     cfg = config.load()
     n = cfg_nport(cfg)
-    client = net.SecClient(cfg.get("as_of"), cfg)
+    from .discovery import AS_OF
+    client = net.SecClient(AS_OF, cfg)
     todo = in_period(archive_list(), n["period"][0], n["period"][1])
     done = manifest()
     leis = set()
@@ -191,18 +192,46 @@ def fetch(only=None):
             except net.NotCollected as exc:
                 rec = dict(a, status="not_collected", reason=str(exc))
             else:
-                zpath.write_bytes(raw)
-                del raw
-                meta = dict(a, retrieved=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"))
-                rec = pp.submit(_scan_job, a["name"], zpath, sorted(leis), meta).result()
-                zpath.unlink()
-                leis |= set(rec["leis_found"])
+                lm = (resp or {}).get("Last-Modified") if isinstance(resp, dict) else None
+                published = _http_date(lm)
+                meta = dict(a, retrieved=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), last_modified=lm)
+                if published and published > n["period"][1]:
+                    del raw            # publiée après l'as_of : connaissance postérieure, ni gardée ni scannée
+                    rec = dict(meta, status="after_as_of")
+                else:
+                    zpath.write_bytes(raw)
+                    del raw
+                    rec = pp.submit(_scan_job, a["name"], zpath, sorted(leis), meta).result()
+                    zpath.unlink()
+                    leis |= set(rec["leis_found"])
             with open(MANIFEST, "a", encoding="utf-8") as fh:
                 fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
             print(a["name"], rec.get("status"), json.dumps(rec.get("stats") or {}), flush=True)
     m = manifest()
     late = [k for k, r in m.items() if r.get("status") == "scanned" and set(r.get("leis_applied") or []) < leis]
     print("LEI relevés :", sorted(leis), "; archives à rescanner :", late)
+
+
+def _http_date(v):
+    """Date AAAA-MM-JJ d'un en-tête HTTP Last-Modified, ou None."""
+    from email.utils import parsedate_to_datetime
+    try:
+        return parsedate_to_datetime(v).date().isoformat() if v else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _iso(v):
+    """Date des tables (« 30-SEP-25 », « 2025-09-30 »…) en AAAA-MM-JJ, ou None."""
+    if v is None or v != v or str(v).strip() == "":
+        return None
+    s = str(v).strip()
+    for fmt in ("%Y-%m-%d", "%d-%b-%y", "%d-%b-%Y", "%m/%d/%Y", "%Y%m%d"):
+        try:
+            return dt.datetime.strptime(s[:11] if fmt != "%Y-%m-%d" else s[:10], fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
 
 
 # -- positions et mesure ---------------------------------------------------------------------------
@@ -239,8 +268,28 @@ def positions(c=None, archives=None):
         debt = t["debt"].rename(columns={v: k for k, v in b.items()})
         x = x.merge(debt, on="holding_id", how="left", suffixes=("", "_debt"))
         x["archive"] = name
+        for col in ("filing_date", "report_date", "maturity"):
+            if col in x:
+                x[col] = [_iso(v) for v in x[col]]
+        conv = cfg_nport().get("exchange_rate_convention", "currency_per_usd")
+        x["value_local"] = [_local_value(v, r, cur, conv) for v, r, cur in zip(x["value_usd"], x["exchange_rate"], x["currency"])]
         rows.append(x)
     return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
+
+
+def _local_value(value_usd, rate, currency, conv="currency_per_usd"):
+    """Valeur dans la monnaie du titre : la valeur déclarée est en dollars (rubrique C.2.c du formulaire),
+    le taux de change est celui qui a servi à la calculer, en unités de la monnaie du titre pour un dollar
+    (`nport.exchange_rate_convention`, vérifiée sur les positions avant tout calcul)."""
+    v = _dec(value_usd)
+    if v is None:
+        return None
+    if not currency or str(currency).upper() == "USD":
+        return v
+    r = _dec(rate)
+    if r is None or r == 0:
+        return None
+    return v * r if conv == "currency_per_usd" else v / r
 
 
 def latest_by_series(p):
