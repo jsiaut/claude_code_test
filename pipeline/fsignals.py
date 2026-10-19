@@ -33,7 +33,8 @@ def _d(x):
 def reports_by_quarter(filings, g, q):
     f = filings[(filings["group_id"] == g) & (filings["form"].isin(PERIODIC))]
     rd = f["reportDate"].map(_d)
-    m = f[rd.map(lambda x: x is not None and abs((x - q["end"]).days) <= 3)]
+    # masque booléen même vide : un groupe sans aucun rapport périodique (SK hynix, D-0057) n'a pas de lignes, pas de colonnes perdues
+    m = f[rd.map(lambda x: x is not None and abs((x - q["end"]).days) <= 3).astype(bool)]
     return m.sort_values("filingDate")
 
 
