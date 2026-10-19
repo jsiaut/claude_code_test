@@ -191,3 +191,40 @@ class Notes(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Entities(unittest.TestCase):
+    """Premières entités par extrait (D-0058, point 23) : chaque entrée cite son extrait, une entité acquise
+    n'entre qu'à sa date, l'alias « SoftBank Group » rattache au groupe, un fonds sans lien écrit reste hors."""
+
+    def setUp(self):
+        from pipeline import config
+        self.cfg = config.load()
+        self.d58 = [c for c in self.cfg["confirmed_entities"] if c.get("decision") == "D-0058"]
+
+    def test_each_entry_cites_its_extract(self):
+        from pipeline.graph import normalize_name
+        self.assertTrue(self.d58)
+        for c in self.d58:
+            self.assertEqual(c["group"], "NF:SOFTBANK")
+            self.assertRegex(c["block"], r"^[0-9a-f]{64}$")
+            self.assertRegex(c["accession"], r"^\d{10}-\d{2}-\d{6}$")
+            self.assertTrue(c["quote"].strip() and c["membership_note"].strip())
+            self.assertIn(c["treatment"], ("consolidated_subsidiary", "undetermined", "vie_consolidated"))
+            self.assertRegex(str(c["valid_from"]), r"^(none|\d{4}-\d{2}-\d{2})$")
+        mine = [normalize_name(c["name"]) for c in self.d58]
+        other = {normalize_name(c["name"]) for c in self.cfg["confirmed_entities"] if c.get("decision") != "D-0058"}
+        self.assertEqual(len(mine), len(set(mine)))          # une appartenance par entité
+        self.assertFalse(set(mine) & other)
+
+    def test_dates_alias_and_exclusions(self):
+        from pipeline import entities as E
+        names = ["SoftBank Group", "DigitalBridge Group, Inc.", "Ampere", "SoftBank Vision Fund L.P."]
+        _, reg = E.build({"meta": {}}, self.cfg, {n: False for n in names})
+        g = lambda n, d: E.resolve(reg, n, d)[1]
+        self.assertEqual(g("SoftBank Group", "2025-09-26"), "NF:SOFTBANK")
+        self.assertEqual(g("DigitalBridge Group, Inc.", "2026-09-29"), "CP:digitalbridge group inc")
+        self.assertEqual(g("DigitalBridge Group, Inc.", "2026-09-30"), "NF:SOFTBANK")
+        self.assertNotEqual(g("Ampere", "2025-11-29"), "NF:SOFTBANK")      # mois seul : dernier jour du mois
+        self.assertEqual(g("Ampere", "2025-11-30"), "NF:SOFTBANK")
+        self.assertNotEqual(g("SoftBank Vision Fund L.P.", "2024-01-01"), "NF:SOFTBANK")
