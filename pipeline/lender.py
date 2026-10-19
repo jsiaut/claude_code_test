@@ -359,6 +359,11 @@ def _dec(x):
         return None
 
 
+def _ok(s):
+    """Valeurs lisibles en décimal : une valeur vide ou illisible compte comme non balisée (D-0057)."""
+    return s.map(lambda x: _dec(x) is not None)
+
+
 def _num_or_none(v):
     try:
         float(v)
@@ -413,7 +418,7 @@ def measures_cells(hold, as_of):
                        "bdc": sorted(g["bdc_name"].unique())[:20], "archives": sorted(g["archive"].unique()),
                        "accessions": sorted(g["adsh"].unique())[:20]}
             # juste valeur ÷ coût
-            both = g[g["cost"].notna() & g["fair_value"].notna()] if "cost" in g and "fair_value" in g else g.iloc[0:0]
+            both = g[_ok(g["cost"]) & _ok(g["fair_value"])] if "cost" in g and "fair_value" in g else g.iloc[0:0]
             terms = []
             for r in both.itertuples():
                 for t in ("InvestmentOwnedAtCost", "InvestmentOwnedAtFairValue"):
@@ -437,7 +442,7 @@ def measures_cells(hold, as_of):
                                 flags={**fl_base, "note": "coût ou juste valeur non balisés en us-gaap pour ces positions"}))
             # part des intérêts capitalisés : taux PIK ÷ taux total, pondérés par le principal
             if "rate_pik" in g:
-                pk = g[g["rate_pik"].notna() & g["rate"].notna() & g["principal"].notna()]
+                pk = g[_ok(g["rate_pik"]) & _ok(g["rate"]) & _ok(g["principal"])]
             else:
                 pk = g.iloc[0:0]
             if len(pk):
@@ -455,7 +460,7 @@ def measures_cells(hold, as_of):
             # part des prêts sans accumulation d'intérêts : statut de performance balisé
             pf = g[g["has_perf"]]
             if len(pf) and "cost" in g:
-                pf = pf[pf["cost"].notna()]
+                pf = pf[_ok(pf["cost"])]
             if len(pf):
                 den_ = sum(_dec(x) for x in pf["cost"])
                 num_ = sum(_dec(x) for x, n in zip(pf["cost"], pf["nonperforming"]) if n)
