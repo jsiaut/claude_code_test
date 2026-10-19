@@ -1798,3 +1798,54 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - par laboratoire nommé : OpenAI seul 163, Anthropic seul 58, les deux 15. Termes seulement comptés : « ChatGPT » dans 3 blocs, « Claude » dans 1 ;
   - les blocs des autres montages ne changent pas (mêmes clés de contenu), et aucune clé n'est déjà lue ailleurs ;
   - liste de lecture `labs_corpus`, du dépôt le plus récent au plus ancien.
+
+  (9) Volet 1, lecture faite le 2026-10-19, sans sous-agent, en 29 lots :
+  - 236 blocs lus et 335 lignes. 157 observations dans 58 blocs : 92 avec famille, 87 avec montant (79 en dollars, 6 en actions, 2 en parts) et 65 lignes descriptives ;
+  - 178 abstentions :
+    - 112 doublons d'un autre bloc : reprises du rapport de gestion, index de pièces, versions préliminaires du prospectus de CoreWeave ;
+    - 34 sans contenu utile : concurrence, produits, propositions d'actionnaires ;
+    - 27 hors champ, dont 19 facteurs de risque que le découpage n'a pas repérés et 7 passages de rémunération de circulaires ;
+    - 4 clauses types et 1 contrepartie non nommée ;
+  - par groupe :
+    - Amazon : 95 observations, dont 58 à montant, pour 53 blocs ;
+    - Microsoft : 23 observations, dont 12 à montant, pour 77 blocs ;
+    - CoreWeave : 17 observations, dont 8 à montant, pour 62 blocs ;
+    - AMD 11 (7 à montant), Hut 8 5 (2), Nebius 4, NVIDIA et SpaceX 1 chacun ;
+    - aucune observation pour TeraWulf, Meta, Akamai, Alphabet, Apollo ni Intel ;
+  - 145 observations nomment un laboratoire en contrepartie (Anthropic 88, OpenAI 57), dont 76 avec famille et montant. 32 clés d'instrument, dont 17 nouvelles ;
+  - principaux faits nouveaux, Amazon et Anthropic (aucune arête avant) :
+    - obligations convertibles : 8,0 Md$ du T3 2023 au T4 2025 ; les tranches sont des lignes descriptives, le cumul porte le montant ;
+    - conversions et gains reclassés, réévaluations sur prix observables ;
+    - actions de préférence au bilan : 14,8 Md$ au 31 décembre 2025, 92,5 Md$ au 30 juin 2026 ;
+    - séries G et H de 5,0 Md$ chacune, facilité d'au plus 20,0 Md$ ;
+    - engagement d'Anthropic envers AWS de plus de 100,0 Md$ sur 10 ans (T2 2026), intérêts variables non consolidés ;
+  - Amazon et OpenAI :
+    - série C de 15,0 Md$ et engagement de 35,0 Md$, dont 13,7 Md$ versés au T2 2026 et 21,3 Md$ en juillet 2026 ;
+    - engagements envers AWS : 38,0 Md$, plus une extension de 100,0 Md$ sur 8 ans ;
+  - Microsoft et OpenAI :
+    - achat supplémentaire de 250 Md$ de services Azure par l'accord du 28 octobre 2025, absent jusque-là ;
+    - engagements de 13 Md$, dont 11,6 à 11,9 Md$ versés selon le trimestre ;
+    - revenu de 24,1 Md$ tiré d'OpenAI sur l'exercice 2026, créance de 6,0 Md$ ;
+    - participation d'environ 27 %, puis 25 % ;
+  - CoreWeave et OpenAI :
+    - accord de mai 2025 jusqu'à 4,0 Md$, absent jusque-là ;
+    - engagement de 11,9 Md$ du prospectus, sous condition d'un véhicule dédié ;
+    - panier de dette « contrat OpenAI » de 7,0 Md$ dans quatre actes de fiducie ;
+    - accord d'émission d'actions du 7 mars 2025 ;
+    - revenus tirés de Microsoft : 81 M$ et 1,2 Md$, soit 35 % et 62 % du revenu de 2023 et de 2024 ;
+  - autres groupes :
+    - Hut 8 : valeur de 7,0 Md$ du bail de River Bend avec Fluidstack, montant absent jusque-là ; partenariat avec Anthropic et Fluidstack jusqu'à 2 295 MW ;
+    - SpaceX : accord de services en nuage avec Anthropic PBC (mai 2026) ;
+    - AMD : bons de souscription et contrats d'approvisionnement d'OpenAI et de Meta, à chaque clôture ;
+    - NVIDIA : accord d'investissement et de partenariat avec OpenAI en cours de finalisation (10-K de l'exercice 2026) ;
+  - corrections faites pendant la lecture :
+    - le lot 13, refusé en partie, a été resoumis en entier : les lignes déjà écrites de 13 blocs l'ont été deux fois (24 lignes identiques). Ces doublons exacts sont retirés. Désormais, un lot refusé en partie n'est resoumis qu'après effacement des fichiers de ses blocs ;
+    - le même contrôle sur tous les fichiers de lignes trouve 21 lignes identiques en double dans 15 fichiers de passes antérieures (D-0054, D-0056, D-0058). Elles sont traitées à l'intégration ;
+    - le revenu futur de 11,55 Md$ du prospectus de CoreWeave passe en nature `other`. Le montant revient à l'engagement de paiement de 11,9 Md$ du même prospectus ;
+  - limites constatées : les désignations « an affiliate of OpenAI » et voisines (bail et garanties de NVIDIA et de SB Energy) restent en attente, hors des agrégats (D-0032, point 5).
+
+  (10) Volet 2, entités des laboratoires par extrait :
+  - noms de laboratoire déjà confirmés dans les lignes du volet 1 : « OpenAI » et « Anthropic » (alias), OpenAI OpCo, LLC (graphie sans virgule comprise), OpenAI Group PBC, Anthropic PBC (« Anthropic, PBC » a la même forme normalisée) ;
+  - une entité nouvelle, OpenAI Global, LLC, désignée « OpenAI » par le 10-Q de Microsoft du 29 octobre 2025 (règle B). Traitement indéterminé, sans borne ;
+  - OpenAI, Inc. n'est nommée que dans une clause type du contrat de placement de CoreWeave, sans ligne : pas d'entrée ;
+  - aucune entité ni aucun alias nouveaux pour Anthropic. Le test `test_lab_entities` vérifie ces rattachements.

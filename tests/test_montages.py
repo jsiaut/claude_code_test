@@ -206,3 +206,25 @@ class CorpusLabs(unittest.TestCase):
         noted = M.noted_rx(sp)
         self.assertEqual(sorted(set(noted.findall("ChatGPT, Claude, Open AI and the Stargate project"))),
                          ["ChatGPT", "Claude", "Open AI", "Stargate"])
+
+    def test_lab_entities(self):
+        """D-0059, point 5 : une entité de laboratoire n'entre que par un extrait cité (règle A ou B), au traitement
+        indéterminé sans les mots de D-0050 ; une désignation (« an affiliate of OpenAI ») reste en attente (D-0032, point 5)."""
+        from pipeline import config
+        from pipeline import entities as E
+        cfg = config.load()
+        d59 = [c for c in cfg["confirmed_entities"] if c.get("decision") == "D-0059"]
+        self.assertTrue(d59)
+        for c in d59:
+            self.assertIn(c["group"], ("LAB:OPENAI", "LAB:ANTHROPIC"))
+            self.assertRegex(c["block"], r"^[0-9a-f]{64}$")
+            self.assertRegex(c["accession"], r"^\d{10}-\d{2}-\d{6}$")
+            self.assertTrue(c["quote"].strip() and c["membership_note"].strip())
+            self.assertEqual(c["treatment"], "undetermined")
+        names = ["OpenAI Global, LLC", "OpenAI OpCo LLC", "Anthropic, PBC", "an affiliate of OpenAI"]
+        _, reg = E.build({"meta": {}}, cfg, {n: False for n in names})
+        g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
+        self.assertEqual(g("OpenAI Global, LLC"), "LAB:OPENAI")
+        self.assertEqual(g("OpenAI OpCo LLC"), "LAB:OPENAI")
+        self.assertEqual(g("Anthropic, PBC"), "LAB:ANTHROPIC")
+        self.assertIsNone(g("an affiliate of OpenAI"))
