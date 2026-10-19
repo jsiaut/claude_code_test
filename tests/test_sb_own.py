@@ -169,6 +169,18 @@ class Notes(unittest.TestCase):
         self.assertNotIn("Significant Changes", notes[1]["text"])
         self.assertNotIn("Nasdaq", notes[1]["text"])
 
+    def test_exhibit_body_follows_its_header(self):
+        head = {"content_key": "h" * 64, "block_kind": "discovery_exhibit_header", "sort_key": "sbc:sbe:2026-09-01:x.htm",
+                "document": "x.htm", "exhibit_type": "EX-10.28", "text": "SHARE PURCHASE AGREEMENT", "chars": 24}
+        b = S.exhibit_body(head, "SHARE PURCHASE AGREEMENT\nSection 1. Purchase and Sale.")
+        self.assertEqual(b["block_kind"], "discovery_exhibit_body")
+        self.assertEqual(b["sort_key"], head["sort_key"] + "b")
+        self.assertEqual(b["requires"], {"header_content_key": head["content_key"], "exhibit_type": "EX-10.28"})
+        self.assertEqual(b["chars"], len(b["text"]))
+        self.assertNotEqual(b["content_key"], head["content_key"])
+        self.assertEqual(head["block_kind"], "discovery_exhibit_header")      # l'en-tête n'est pas modifié
+        self.assertEqual(sorted(S.SBE_BODIES), ["exhibit1028-sharepurchasea.htm", "sbenergy-ex1031xformofport.htm"])
+
     def test_heading_section_skips_table_of_contents(self):
         t = S.heading_section(PROSPECTUS, S.RP_HEAD)
         self.assertIn("credit facility of $500 million", t)

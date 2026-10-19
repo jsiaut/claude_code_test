@@ -579,6 +579,8 @@ def heading_section(raw, rx):
 
 ARM_NAME, SBE_NAME, DBRG_NAME = "Arm Holdings plc", "SB Energy, Inc.", "DigitalBridge Group, Inc."
 DBRG_CLOSING = "0001104659-26-112148"
+# corps des EX-10 de SB Energy dont l'en-tête, lu, montre un groupe du modèle partie (D-0044, point 5 ; D-0058, point 19)
+SBE_BODIES = ("exhibit1028-sharepurchasea.htm", "sbenergy-ex1031xformofport.htm")
 CAP_6K = 80
 LATEST_20F = "0001973239-26-000097"
 RP_TITLES = ("Certain Relationships and Related Party Transactions", "Related Party Transactions")
@@ -616,6 +618,16 @@ def arm_6k_rx(cfg=None):
 def _docs(cik, acc):
     from . import cache
     return parse_sgml_header(cache.read(cache.archive_path(cik, acc, f"{acc}-index-headers.html")))["documents"]
+
+
+def exhibit_body(head, full):
+    """Bloc du corps d'une pièce dont l'en-tête est au catalogue : même dépôt, servi juste après l'en-tête."""
+    from . import blocks
+    b = dict(head)
+    b.update({"content_key": blocks.content_key(full, []), "block_kind": "discovery_exhibit_body", "text": full,
+              "chars": len(full), "sort_key": head["sort_key"] + "b",
+              "requires": {"header_content_key": head["content_key"], "exhibit_type": head.get("exhibit_type")}})
+    return b
 
 
 def _related_section(raw):
@@ -665,6 +677,9 @@ def blocks_c(cfg=None):
                 add(text, kind, SBE_NAME, x.cik, x.accessionNumber, x.form, x.filingDate, d["FILENAME"],
                     {"exhibit_type": ty, "mention_class": "contract" if kind.endswith("header") else "entity_list"},
                     f"sbc:sbe:{x.filingDate}:{d['FILENAME']}")
+                if d["FILENAME"] in SBE_BODIES and out and out[-1]["document"] == d["FILENAME"]:
+                    out.append(exhibit_body(out[-1], sections.full_text(r)))
+                    info[f"{SBE_NAME}:discovery_exhibit_body"] += 1
     raw = raw_of(last.cik, last.accessionNumber, last.primaryDocument)
     add(heading_section(raw, RP_HEAD), "discovery_item_404", SBE_NAME, last.cik, last.accessionNumber, last.form,
         last.filingDate, last.primaryDocument, {"note_label": RP_TITLES[0], "mention_class": "related_party"}, "sbc:sbe:404")
