@@ -1469,3 +1469,22 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - par groupe : NVIDIA 40, Oracle 35, AMD 14, TSMC 14, Intel 12, Marvell 10, Cipher 7, ASML 7, Core Scientific 2, IREN 2. Par formulaire : 10-K 43, 10-Q 38, DEF 14A 33, 6-K 22, 8-K 6, 20-F 1. Dépôts du 2017-05-03 au 2026-08-26 ;
   - les blocs des trois autres montages sont inchangés (mêmes clés de contenu) ;
   - code : `montages.corpus`, `risk_factor_span`, `read_texts` et `covered`, options du point 3, exclusions du montage de corpus. Cinq tests (`test_montages`). Liste de lecture `sb_corpus`, du dépôt le plus récent au plus ancien.
+
+  (15) Volet A, lecture : 143 blocs lus, 159 lignes (48 observations, 111 abstentions), aucune rejetée. Faits nouveaux :
+  - Ampere : SoftBank Group Corp. a acquis toutes les parts d'Ampere le 25 novembre 2025 (10-Q d'Oracle de décembre 2025 et de mars 2026, 10-K de 2026). Oracle a reçu 4,3 Md$ pour ses participations, sa dette et ses options d'achat. S'y ajoutent les valeurs comptables trimestrielles de 2024 et 2025, 90 M$ de dette convertible au premier trimestre de l'exercice 2026 et l'avenant du 5 mars 2024 ;
+  - « SoftBank Group » : le glossaire du 10-Q d'Intel du troisième trimestre 2025 le définit comme SoftBank Group Corp. ;
+  - SB Energy Corp. : contractant nommé des garanties de NVIDIA (105 Md$, PORTS Technology Campus, Ohio) ;
+  - Arm :
+    - TSMC : 1 961 milliers d'actions achetées 100 M$ en 2023, après une résolution du conseil (au plus 100 M$ au prix de l'introduction en bourse) ; 850 milliers revendues 101,5 M$ au premier trimestre 2024 ; juste valeur trimestrielle ;
+    - Intel : investissement dans l'introduction en bourse, sans montant ;
+    - NVIDIA : paiements d'avance de licences et de redevances d'Arm, 0,17 et 0,47 Md$ sur 20 ans, à la signature de l'accord de 2020 ; charge de résiliation de 1,35 Md$ ;
+    - Marvell : bon de souscription de 9 millions d'actions au profit d'Arm Limited, règlement plafonné à 210 M$, accords de collaboration de 2018 et 2019 ;
+    - AMD : licencié d'ARM Holdings ;
+  - Cipher : exclusivité de SoftBank sur le site de Barber Lake jusqu'au 28 février 2025 ;
+  - hors SoftBank, dans les mêmes fenêtres : achat par TSMC de 10 % d'IMS Nanofabrication à Intel (au plus 432,8 M$, résolution du conseil du 12 septembre 2023) ; participation de 15 % d'Oracle dans TikTok USDS Joint Venture LLC.
+
+  Extraits pour l'intégration : la réalisation du rachat d'Ampere (10-K et 10-Q d'Oracle) ; l'alias « SoftBank Group » (glossaire d'Intel) ; « ARM Holdings plc, a publicly-traded semiconductor IP and software design company, now a wholly-owned subsidiary of the Softbank Group » (circulaires de Marvell de 2017 à 2023). Cette dernière phrase parle de la société ; le nom de la personne décrite n'est pas repris.
+
+  Deux corrections pendant la lecture :
+  - la charge de résiliation de NVIDIA, d'abord reprise à 1,4 Md$ (arrondi du 10-K de l'exercice 2025), ne l'est plus qu'une fois, à 1,35 Md$ (10-K de l'exercice 2023). La ligne arrondie devient une abstention ;
+  - les montants cumulés depuis le début de l'exercice, déjà compris dans un total annuel lu (dette convertible d'Oracle dans Ampere, cession d'actions Arm par TSMC), ne sont pas repris, pour ne pas compter deux fois.
