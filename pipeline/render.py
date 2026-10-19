@@ -105,6 +105,8 @@ class Tokens:
             text = fr_num(v, 1) + " ans"
         elif fmt == "count":
             text = fr_num(v, 0)
+        elif fmt == "mn":
+            text = fr_num(v / Decimal(10**6), 1) + " M"
         else:
             text = fr_num(v, dec)
         st = c.get("status") if isinstance(c, dict) else getattr(c, "status", None)
@@ -503,6 +505,7 @@ def synthesis(con, as_of, stats):
     L += lender_portfolio_section(con, T)
     L += lender_liabilities_section(con, T)
     L += montages_section(con, T)
+    L += nport_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
     L.append("")
@@ -1103,6 +1106,69 @@ def montages_section(con, T):
                  "par la règle d'un montage ou sans paragraphe qualifiant, textes au-delà du plafond ; D-0046, D-0049).")
         L.append("")
     return L
+
+def nport_cells(con):
+    """Cellules nport_price_to_par (D-0058, volet F), par titre, dans l'ordre des dates de portefeuille."""
+    by = defaultdict(list)
+    for r in q(con, """SELECT * FROM measures WHERE measure = 'nport_price_to_par' AND view = 'as_known'
+                       ORDER BY breakdown_key, period_end"""):
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+        by[r["breakdown_key"]].append(r)
+    return by
+
+
+def nport_title(sec, fl):
+    """Émetteur, coupon, échéance et monnaie d'un titre, tels que les fonds les déclarent le plus souvent."""
+    iss = (fl.get("issuer") or "").upper()
+    name = "SoftBank Group" if "GROUP" in iss else ("SoftBank Corp." if "SOFTBANK CORP" in iss else (fl.get("issuer") or "?"))
+    cp = fl.get("coupon")
+    cp = fr_num(Decimal(str(cp)), 3).rstrip("0").rstrip(",") + " %" if cp not in (None, "") else "coupon n.d."
+    return f"{name} {cp}, échéance {fl.get('maturity') or 'n.d.'} ({fl.get('currency')}, {sec})"
+
+
+def nport_section(con, T):
+    """Volet F de D-0058 : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)."""
+    by = nport_cells(con)
+    if not by:
+        return []
+    last_date = max(r["period_end"] for rs in by.values() for r in rs)
+    recent = (dt.date.fromisoformat(last_date) - dt.timedelta(days=92)).isoformat()
+    L = ["## Obligations de SoftBank valorisées par les fonds (Form N-PORT)", ""]
+    L.append("Valeur que les fonds déclarent pour les obligations de SoftBank Group et de SoftBank Corp. qu'ils détiennent, "
+             "rapportée au nominal, dans la monnaie du titre (Form N-PORT Data Sets ; D-0058, points 8, 27 et 28). Une cellule "
+             "par titre (ISIN) et par date de portefeuille, au dernier dépôt de chaque série ; chaque fonds déclare à la fin de "
+             "son propre trimestre. C'est une valorisation déclarée par des tiers, jamais une probabilité de défaut ni un fait "
+             "comptable de SoftBank : elle n'entre dans aucune mesure de financement ni dans l'annexe F. Les positions d'autres "
+             "émetteurs déclarées sous le nom ou le LEI de SoftBank Group (Sprint, Fortress) en sont écartées. La série complète "
+             "est dans `series.md`.")
+    L.append("")
+    n = sum(len(v) for v in by.values())
+    L.append(f"Cellules : {T.n('measures', {'measure': 'nport_price_to_par'}, n)}, sur "
+             f"{T.n('measures', {'measure': 'nport_price_to_par', 'securities': True}, len(by))} titres, du "
+             f"{min(r['period_end'] for rs in by.values() for r in rs)} au {last_date}.")
+    L.append("")
+    L.append(f"Titres détenus par au moins un fonds dans les trois mois qui précèdent la dernière date de portefeuille ({last_date}) :")
+    L.append("")
+    L.append("| Titre | Dernière date | Valeur ÷ nominal | Séries | Nominal détenu | Plus bas (date) | Première date (valeur ÷ nominal) |")
+    L.append("| --- | --- | ---: | ---: | ---: | --- | --- |")
+    gone = []
+    for sec, rs in sorted(by.items(), key=lambda kv: (kv[1][-1]["fl"].get("maturity") or "", kv[0])):
+        last = rs[-1]
+        if last["period_end"] < recent:
+            gone.append(sec)
+            continue
+        lo = min(rs, key=lambda r: (Decimal(str(r["value"])), r["period_end"]))
+        fl = last["fl"]
+        L.append(f"| {nport_title(sec, fl)} | {last['period_end']} | {T.m(last, fmt='pct')} | "
+                 f"{T.n('measures', {'nport_series': [sec, last['period_end']]}, fl.get('n_series'))} | "
+                 f"{T.m(last, 'denominator', fmt='mn')} {fl.get('currency')} | {T.m(lo, fmt='pct')} ({lo['period_end']}) | "
+                 f"{rs[0]['period_end']} ({T.m(rs[0], fmt='pct')}) |")
+    L.append("")
+    L.append(f"Titres sans position déclarée dans ces trois mois (remboursés, rachetés ou cédés par les fonds) : "
+             f"{T.n('measures', {'measure': 'nport_price_to_par', 'securities_without_recent_position': True}, len(gone))}.")
+    L.append("")
+    return L
+
 
 def LINK_FR(fl):
     """Preuve de lien d'une paire (§3.4) : documenté, recherche complète sans pièce, ou recherche incomplète et pourquoi."""
@@ -1722,6 +1788,24 @@ def series(con, as_of, stats):
                            AND value_text = 'event' ORDER BY breakdown_key""", g, pe)
             L.append(f"| {pe} | " + " | ".join(row) + " | " + (", ".join(e["breakdown_key"] for e in ev) or "") + " |")
         L.append("")
+    by = nport_cells(con) if "nport" in (config.load().get("scope") or []) else {}
+    if by:
+        # volet F de D-0058 : série complète, une table par titre
+        L.append("## SoftBank (NF:SOFTBANK) : obligations valorisées par les fonds (Form N-PORT)")
+        L.append("")
+        L.append("Valeur déclarée ÷ nominal, dans la monnaie du titre, au dernier dépôt de chaque série pour la date de "
+                 "portefeuille ; nombre de séries (un fonds fermé sans série compte pour une). Perspective `counterparty` : "
+                 "jamais une probabilité de défaut ni un fait comptable de SoftBank (D-0058, points 8 et 28).")
+        L.append("")
+        for sec, rs in sorted(by.items(), key=lambda kv: (kv[1][-1]["fl"].get("maturity") or "", kv[0])):
+            L.append(f"**{nport_title(sec, rs[-1]['fl'])}**")
+            L.append("")
+            L.append("| Date de portefeuille | Valeur ÷ nominal | Séries |")
+            L.append("| --- | ---: | ---: |")
+            for r in rs:
+                L.append(f"| {r['period_end']} | {T.m(r, fmt='pct')} | "
+                         f"{T.n('measures', {'nport_series': [sec, r['period_end']]}, r['fl'].get('n_series'))} |")
+            L.append("")
     if "lender_portfolio" in (config.load().get("scope") or []):
         # véhicules BDC des plateformes de présentation (D-0045 ; D-0055, point 7) : série complète, vue as_known
         lp = config.load().get("lender_portfolio") or {}

@@ -129,5 +129,14 @@ class Leis(unittest.TestCase):
         self.assertEqual(P.accepted(ev), {"LEI-SBG"})      # Sprint 1 sur 3, Goldman 1 sur 2 : refusés
 
 
+class Render(unittest.TestCase):
+    def test_security_title_names_issuer_coupon_maturity_and_currency(self):
+        from pipeline.render import nport_title
+        fl = {"issuer": "SOFTBANK GROUP CORP", "coupon": "5.125", "maturity": "2027-09-19", "currency": "USD"}
+        self.assertEqual(nport_title("XS1684384867", fl), "SoftBank Group 5,125 %, échéance 2027-09-19 (USD, XS1684384867)")
+        fl = {"issuer": "SOFTBANK CORP", "coupon": "6", "maturity": "2035-07-09", "currency": "EUR"}
+        self.assertEqual(nport_title("XS3317460700", fl), "SoftBank Corp. 6 %, échéance 2035-07-09 (EUR, XS3317460700)")
+
+
 if __name__ == "__main__":
     unittest.main()

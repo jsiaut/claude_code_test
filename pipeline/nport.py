@@ -450,6 +450,10 @@ def price_to_par(p):
     des nominaux (unité PA), séries distinctes ; positions retenues par `selection`."""
     p, _ = selection(p)
     p = latest_by_fund(p)
+    ident = {sec: {"issuer": _mode(re.sub(r"[\s.,]+$", "", str(n).upper().strip()) for n in g["issuer_name"].dropna()),
+                   "coupon": _mode(g["coupon"].dropna()) if "coupon" in g else None,
+                   "maturity": _mode(g["maturity"].dropna()) if "maturity" in g else None}
+             for sec, g in p.groupby("security")}
     out = []
     for (sec, d), g in p.groupby(["security", "report_date"]):
         vals = [(_dec(r.value_local), _dec(r.balance)) for r in g.itertuples(index=False)]
@@ -462,10 +466,15 @@ def price_to_par(p):
         out.append({"security": sec, "report_date": d, "value_local": num, "principal": den,
                     "ratio": num / den, "n_series": g["fund"].nunique(), "n_positions": len(vals),
                     "currency": ";".join(cur), "issuer_names": ";".join(sorted(set(g["issuer_name"].dropna()))),
-                    "title": next(iter(sorted(set(g["title"].dropna()))), None),
-                    "maturity": next(iter(sorted(set(g["maturity"].dropna()))), None) if "maturity" in g else None,
+                    "title": next(iter(sorted(set(g["title"].dropna()))), None), **ident[sec],
                     "accessions": sorted(set(g["accession"]))})
     return pd.DataFrame(out)
+
+
+def _mode(values):
+    """Valeur la plus fréquente ; à égalité, la première dans l'ordre (déterministe)."""
+    c = pd.Series(list(values), dtype=object).value_counts()
+    return min(c.index[c == c.max()]) if len(c) else None
 
 
 BASIS = ("valorisation déclarée par des fonds (Form N-PORT Data Sets), perspective counterparty : somme des valeurs "
@@ -492,6 +501,7 @@ def cells(as_of, subject="NF:SOFTBANK"):
                         flags={"perspective": "counterparty", "n_series": int(x.n_series),
                                "n_positions": int(x.n_positions), "principal": str(x.principal),
                                "currency": x.currency, "title": x.title, "maturity": x.maturity,
+                               "issuer": x.issuer, "coupon": x.coupon,
                                "issuer_names": x.issuer_names, "accessions": list(x.accessions), "basis": BASIS}))
     return out
 
