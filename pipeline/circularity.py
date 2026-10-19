@@ -641,7 +641,9 @@ def coverage_cells(groups, cals, groups_window, revenue, conc_cells, named_conc,
     return out
 
 
-FLOW_ONLY = ("repayment", "conversion", "measurement_change", "recognition", "impairment", "disposal", "termination")
+# une réévaluation sur prix observables est, comme un gain de mise en équivalence, un flux du résultat (D-0059, point 11)
+FLOW_ONLY = ("repayment", "conversion", "measurement_change", "recognition", "impairment", "disposal", "termination",
+             "observable_price_adjustment")
 
 
 def _precision(x):
@@ -653,7 +655,8 @@ def _precision(x):
 def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
     """Une ligne par bloc et par base, sans total (§4.6), avec wrong_way. Au coût, les apports en
     numéraire s'additionnent ; un plafond d'engagement, une valeur au bilan ou une garantie est un
-    état : la dernière valeur connue à t par instrument, jamais une somme dans le temps. Un gain ou
+    état : la dernière valeur connue à t par instrument, jamais une somme dans le temps. Un cumul
+    versé publié au coût (base `cost`, nature autre que `financing_cash`) est aussi un état. Un gain ou
     une perte de mise en équivalence est un flux du résultat, pas une exposition."""
     as_of_d = dt.date.fromisoformat(as_of)
     out = []
@@ -678,6 +681,9 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
                        "equity_investment" if equity else "loan_receivable")
             elif l["family"] == "financing" and (nat == "commitment_unexecuted" or mb == "commitment_cap"):
                 key = ("contractual_outflows", "commitment_cap", o.get("category_id") or "uncalled_commitment")
+            elif l["family"] == "financing" and mb == "cost" and nat != "financing_cash" and et not in FLOW_ONLY:
+                # cumul versé à une date (« funded as of ») : la dernière valeur, jamais une somme (D-0059, point 11)
+                key = ("exposed_assets", "cost", "equity_investment" if equity else "loan_receivable")
             elif l["family"] == "financing" and l["edge_evidence"] == "amount" and et not in FLOW_ONLY \
                     and mb != "equity_method":
                 flows.setdefault(("exposed_assets", "cost" if equity else "principal",
