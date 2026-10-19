@@ -179,3 +179,33 @@ class OwnFiling(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Efts(unittest.TestCase):
+    """Une réponse d'erreur du service de recherche (« errorType ») n'est jamais gardée en cache."""
+
+    def test_error_body_is_retried_and_never_cached(self):
+        import json as _json
+        import tempfile
+        from pathlib import Path
+        from pipeline import discovery as D
+        bodies = [_json.dumps({"errorType": "ConnectionError"}).encode(),
+                  _json.dumps({"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}}).encode()]
+
+        class Client:
+            def get(self, url):
+                return bodies.pop(0), None
+        old = D.SEARCH_DIR
+        with tempfile.TemporaryDirectory() as d:
+            D.SEARCH_DIR = Path(d)
+            try:
+                data, _, cached = D._efts(Client(), {"q": '"X"'}, retries=2, pause=0)
+                self.assertIn("hits", data)
+                self.assertFalse(cached)
+                kept = list(Path(d).glob("*/*.json.zst"))
+                self.assertEqual(len(kept), 1)
+                data2, _, cached2 = D._efts(Client(), {"q": '"X"'}, retries=0, pause=0)   # relue du cache
+                self.assertTrue(cached2)
+            finally:
+                D.SEARCH_DIR = old
+

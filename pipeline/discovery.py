@@ -374,19 +374,30 @@ QUERY_LOG = config.WORK / "discovery" / "efts_queries.jsonl"
 START = "2017-01-01"
 
 
-def _efts(client, params):
+def _efts(client, params, retries=3, pause=30.0):
     """Une page de résultats : réponse gardée sous cache/search/{sha256 de la requête}/{date}
-    (§9.6), et la requête consignée pour être reproductible."""
+    (§9.6), et la requête consignée pour être reproductible. Une réponse sans résultats (erreur du
+    service de recherche, « errorType ») n'est jamais gardée : elle se redemande après une pause, au
+    plus `retries` fois, puis l'erreur remonte."""
+    import time
     import urllib.parse
     url = EFTS + "?" + urllib.parse.urlencode(params)
     key = hashlib.sha256(url.encode("utf-8")).hexdigest()
     d = SEARCH_DIR / key
-    hit = sorted(d.glob("*.json.zst")) if d.exists() else []
-    if hit:
-        return json.loads(cache.read(hit[-1])), url, True
-    body, _ = client.get(url)
-    cache.write(d / f"{dt.date.today().isoformat()}.json.zst", body)
-    return json.loads(body), url, False
+    for p in reversed(sorted(d.glob("*.json.zst")) if d.exists() else []):
+        data = json.loads(cache.read(p))
+        if "hits" in data:
+            return data, url, True
+    for attempt in range(retries + 1):
+        body, _ = client.get(url)
+        data = json.loads(body)
+        if "hits" in data:
+            cache.write(d / f"{dt.date.today().isoformat()}.json.zst", body)
+            return data, url, False
+        if attempt < retries:
+            time.sleep(pause)
+    raise RuntimeError(f"réponse du service de recherche sans résultats après {retries + 1} essais : "
+                       f"{str(data.get('errorType') or data)[:200]} ({url})")
 
 
 def _log_query(rec, log=None):
