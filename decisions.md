@@ -1842,7 +1842,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - le lot 13, refusé en partie, a été resoumis en entier : les lignes déjà écrites de 13 blocs l'ont été deux fois (24 lignes identiques). Ces doublons exacts sont retirés. Désormais, un lot refusé en partie n'est resoumis qu'après effacement des fichiers de ses blocs ;
     - le même contrôle sur tous les fichiers de lignes trouve 21 lignes identiques en double dans 15 fichiers de passes antérieures (D-0054, D-0056, D-0058). Elles sont traitées à l'intégration ;
     - le revenu futur de 11,55 Md$ du prospectus de CoreWeave passe en nature `other`. Le montant revient à l'engagement de paiement de 11,9 Md$ du même prospectus ;
-  - limites constatées : les désignations « an affiliate of OpenAI » et voisines (bail et garanties de NVIDIA et de SB Energy) restent en attente, hors des agrégats (D-0032, point 5).
+  - limites constatées : les désignations « an affiliate of OpenAI » et voisines restent en attente, hors des agrégats (D-0032, point 5 ; détail au point 11).
 
   (10) Volet 2, entités des laboratoires par extrait :
   - noms de laboratoire déjà confirmés dans les lignes du volet 1 : « OpenAI » et « Anthropic » (alias), OpenAI OpCo, LLC (graphie sans virgule comprise), OpenAI Group PBC, Anthropic PBC (« Anthropic, PBC » a la même forme normalisée) ;
@@ -1885,7 +1885,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - exclusions : `not_processed` 27 899 (27 899), `out_of_scope` 1 098 (1 069), `pending_entity` 586 (587) ;
   - contrôles, vue `as_known` : `mismatch` 1 833, `not_testable` 1 340 (1 336), `ok` 29 886, `tautological` 1 393 ;
   - lacunes déclarées :
-    - les désignations « an affiliate of OpenAI » et voisines restent en attente (D-0032, point 5). Les baux et les garanties de NVIDIA et de SB Energy restent donc hors des agrégats d'OpenAI ;
+    - les désignations « an affiliate of OpenAI » et voisines restent en attente (D-0032, point 5). Les baux de SB Energy avec des affiliés d'OpenAI (campus PORTS du comté de Pike, garantie du preneur de Milam) restent donc hors des agrégats d'OpenAI. La garantie de NVIDIA, plafonnée à 105 Md$, y entre par le 8-K de NVIDIA du 17 août 2026, qui nomme OpenAI ; ses reprises du 10-Q de NVIDIA et du S-1/A de SB Energy, qui ne désignent qu'un affilié, restent en attente ;
     - « Uber » reste en attente ;
     - un plafond d'engagement reste un état tant qu'aucune ligne plus récente de l'instrument ne le remplace. Les engagements déjà versés d'Amazon restent donc comptés dans les sorties contractuelles ;
     - Microsoft ne publie que des cumuls : le versement de chaque trimestre n'est pas connu, et F2 ne retire rien pour OpenAI ;
