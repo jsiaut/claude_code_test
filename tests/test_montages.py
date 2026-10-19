@@ -228,3 +228,17 @@ class CorpusLabs(unittest.TestCase):
         self.assertEqual(g("OpenAI OpCo LLC"), "LAB:OPENAI")
         self.assertEqual(g("Anthropic, PBC"), "LAB:ANTHROPIC")
         self.assertIsNone(g("an affiliate of OpenAI"))
+
+    def test_names_resolved_at_integration(self):
+        """D-0059, intégration : noms encore en attente après le premier réassemblage, rattachés par extrait ; sans extrait
+        qui le définit, « Uber » reste en attente."""
+        from pipeline import config
+        from pipeline import entities as E
+        cfg = config.load()
+        names = ["Fluidstack", "Fluidstack Ltd.", "Sanmina", "Sanmina Corporation", "Uber"]
+        _, reg = E.build({"meta": {}}, cfg, {n: False for n in names})
+        g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
+        self.assertEqual(g("Fluidstack"), g("Fluidstack Ltd."))
+        self.assertEqual(g("Fluidstack"), "CP:fluidstack ltd")
+        self.assertEqual(g("Sanmina"), "CP:sanmina corp")
+        self.assertIsNone(g("Uber"))
