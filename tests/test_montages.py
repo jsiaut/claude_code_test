@@ -186,3 +186,23 @@ class Stargate(unittest.TestCase):
                {"content_key": "c", "montage": "softbank_corpus"}]
         new = [{"content_key": "d", "montage": "stargate"}]
         self.assertEqual([b["content_key"] for b in M.merge_catalog(old, new, "stargate")], ["a", "c", "d"])
+
+
+class CorpusLabs(unittest.TestCase):
+    """D-0059, point 3 : « OpenAI » et « Anthropic » en mots entiers et en casse exacte ; « Anthropic Capital »,
+    gérant homonyme, ne qualifie pas ; « Open AI », « ChatGPT », « Claude » et « Stargate » sont seulement comptés."""
+
+    def test_terms(self):
+        sp = S["labs_corpus"]
+        rx = M.qualify_rx("AMAZON COM INC", sp)
+        for s in ("our investment in Anthropic, PBC", "OpenAI OpCo, LLC", "OpenAI's compute commitments", "ANTHROPIC PBC",
+                  "OPENAI GROUP PBC", "Anthropic and OpenAI"):
+            self.assertTrue(rx.search(s), s)
+        for s in ("Anthropic Capital Partners, LLC", "ANTHROPIC CAPITAL MANAGEMENT", "an anthropic approach", "openai",
+                  "an Open AI ecosystem", "ChatGPT Enterprise", "Claude models", "the Stargate project"):
+            self.assertIsNone(rx.search(s), s)
+        self.assertEqual((sp["source"], sp["cap"], sp["order"]), ("corpus", 300, "recent_first"))
+        self.assertTrue(sp["skip_read"] and sp["skip_risk_factors"] and sp["dedupe"])
+        noted = M.noted_rx(sp)
+        self.assertEqual(sorted(set(noted.findall("ChatGPT, Claude, Open AI and the Stargate project"))),
+                         ["ChatGPT", "Claude", "Open AI", "Stargate"])

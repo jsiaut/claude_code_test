@@ -1864,6 +1864,23 @@ montages:
     skip_read: true
     skip_risk_factors: true
     order: recent_first
+  labs_corpus:                        # D-0059, volet 1 : documents des groupes déjà en cache qui nomment un laboratoire
+    decision: D-0059
+    source: corpus
+    groups: all
+    period: ["2017-01-29", "2026-10-07"]   # début du texte (discovery.period_start) à l'as_of
+    terms:
+      - {rx: '\bOpenAI\b|\bOPENAI\b'}
+      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)'}   # « Anthropic Capital » : gérant homonyme (D-0041)
+    # comptés sans qualifier : « Open AI » (expression générique), « ChatGPT », « Claude » (prénom possible),
+    # « Stargate » (servi aux volets A et E de D-0058)
+    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
+                  '\bStargate\b']
+    cap: 300
+    dedupe: true
+    skip_read: true
+    skip_risk_factors: true
+    order: recent_first
 
 nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
   decision: D-0058

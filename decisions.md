@@ -1734,3 +1734,56 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - six noms en attente (ci-dessus) ;
     - N-PORT : un amendement sans position de SoftBank n'est pas vu ; prêts, CDS et dérivés restent hors de la mesure ;
   - tests unitaires : 198, tous passés.
+
+- **D-0059 — OpenAI et Anthropic : montage de corpus et entités par extrait (volets 1 et 2). Règles fixées avant tout traitement.** (1) Décision de l'utilisateur, le 2026-10-19 : « On commence par les volets 1 et 2 ». Elle répond au remue-méninges demandé le même jour (« Dans le même genre, tu penses qu'il y a moyen de récupérer beaucoup plus d'informations intéressantes sur Anthropic et OpenAI en étant astucieux et malin étant donné que ça a l'air d'être parmi les acteurs principaux de notre modèle ? Reste en mode brainstorming »). Ce remue-méninges proposait neuf volets. Seuls le volet 1 (montage de corpus « laboratoires ») et le volet 2 (entités des laboratoires par extrait) sont ouverts ; les autres restent des propositions. L'as_of reste le 2026-10-07. Aucune requête réseau.
+
+  (2) Constat, compté sans lecture, après l'intégration de D-0058 :
+  - OpenAI : 4 entités, 82 arêtes, dont 46 à montant. Contreparties : CoreWeave 19, Cerebras 19, Microsoft 18, Amazon 10, SoftBank 8, AMD 5, NVIDIA 3. Aucune arête avec Oracle, qui ne nomme OpenAI que dans un document ;
+  - Anthropic : 2 entités, 8 arêtes, dont 2 à montant : TeraWulf 3, Akamai 3, Broadcom 1, Nscale 1. Aucune avec Amazon ni Alphabet ;
+  - documents des groupes en cache (4 227 documents principaux et pièces, en HTML ou en texte), comptage insensible à la casse :
+    - « OpenAI » : 76 documents et 855 occurrences (CoreWeave 429, Microsoft 252, Amazon 56, AMD 54, NVIDIA 30…) ;
+    - « Anthropic » : 156 documents et 450 occurrences (Amazon 126, Akamai 68, Alphabet 46, TeraWulf 38, Meta 23, Apollo 23, Blackstone 21, Microsoft 14, Dell 14…), dont 63 circulaires de procuration ;
+  - blocs lus qui nomment un laboratoire : 88 pour OpenAI, 19 pour Anthropic, aucun d'Amazon ni d'Alphabet pour Anthropic ;
+  - les véhicules des Form D sont déjà couverts (D-0041) : 531 cellules pour Anthropic et 218 pour OpenAI.
+
+  (3) Volet 1, montage de corpus `labs_corpus`, sur les règles du volet A de D-0058 (point 3) :
+  - documents : documents principaux et pièces, en HTML ou en texte, déposés par un groupe de `config.yaml` du 2017-01-29 (début du texte) à l'as_of, déjà en cache ;
+  - termes qualifiants, en mots entiers et en casse exacte :
+    - « OpenAI » et « OPENAI ». Ils couvrent ses entités : OpenAI OpCo, OpenAI Global, OpenAI Group PBC, OpenAI Infra Holdings, OpenAI Foundation ;
+    - « Anthropic » et « ANTHROPIC », sauf suivis de « Capital », qui désigne un gérant homonyme (D-0041).
+
+    Sont seulement comptés, sans qualifier : « Open AI » (aussi une expression générique), « ChatGPT », « Claude » (aussi un prénom ; jamais une personne), « Stargate » (déjà servi aux volets A et E de D-0058) ;
+  - unités : les fenêtres du bloc `montages`, soit le paragraphe qualifiant, les deux qui le précèdent et les deux qui le suivent, fondues quand elles se chevauchent ;
+  - ne sont pas lues, et sont comptées :
+    - une fenêtre dont chaque paragraphe qualifiant figure déjà, mot pour mot aux blancs près, dans un bloc lu du même dépôt ;
+    - une fenêtre dont chaque paragraphe qualifiant se trouve dans la section des facteurs de risque (`out_of_scope`) ;
+    - un texte identique à une unité déjà retenue ;
+  - ordre : du dépôt le plus récent au plus ancien. Plafond de 300 unités ; au-delà, `not_processed`, et le rendement est présenté avant d'aller plus loin ;
+  - une unité appartient au groupe du déposant (perspective `reporting_entity`).
+
+  (4) Lecture, sans sous-agent, par l'exécutant :
+  - lignes codées sur les conventions de D-0058. Une relation entre tiers rapportée par un déposant qui n'y est pas partie est une ligne descriptive. Le coût d'un soutien de crédit payé par son bénéficiaire est une ligne sans famille. Un total entre parties liées qui ne nomme pas la contrepartie n'est pas une arête ;
+  - un client, un fournisseur ou un investisseur anonyme reste anonyme : aucun « laboratoire » n'est déduit d'une description, d'une presse ou d'un montant ;
+  - une valorisation, un gain ou une perte de réévaluation qu'un actionnaire publie sur ses titres d'un laboratoire est une ligne du point de vue de l'actionnaire. Ce n'est jamais un fait comptable du laboratoire ;
+  - données personnelles (D-0051 ; D-0058, point 10) : aucune personne physique n'est contrepartie. Une fenêtre de circulaire qui n'est qu'une biographie d'administrateur ou de dirigeant est une abstention ; aucun nom de personne n'est cité, même dans une transaction entre parties liées.
+
+  (5) Volet 2, entités des laboratoires, à l'intégration et après la lecture :
+  - appartenance à `LAB:OPENAI` ou à `LAB:ANTHROPIC` par les règles A (lien affirmé par un extrait : filiale, affilié, contrôlé par) et B (désignation par un alias confirmé du laboratoire, « OpenAI » ou « Anthropic ») de D-0044, point 7 ;
+  - traitement `consolidated_subsidiary` seulement sur les mots de D-0050, point 4 (filiale, filiale à 100 %, consolidée), sinon `undetermined`. Les têtes déjà confirmées (OpenAI OpCo, LLC, OpenAI Group PBC, Anthropic PBC) restent `parent` ;
+  - une entité entre à la date de réalisation citée par un extrait ; une réorganisation, comme la recapitalisation d'OpenAI, ne change une tête qu'à la date citée. Sans date, l'appartenance vaut sans borne (`none`) ;
+  - une participation n'est pas une appartenance. Une coentreprise ou un véhicule où un laboratoire détient un intérêt (Stargate LLC par exemple) reste une entité propre, sauf extrait qui affirme le contrôle du laboratoire ;
+  - un alias ne naît que d'un extrait qui le définit (D-0021) ;
+  - les noms des lignes encore en attente après le premier réassemblage se rattachent par extrait, comme au point 29 de D-0058.
+
+  (6) Ordre et commits :
+  - la décision et la configuration (montage `labs_corpus`), avec un test des termes ;
+  - volet 1 : pièces du corpus, unités préparées, liste de lecture, volume consigné ici avant toute lecture, commit ;
+  - lecture séquentielle, commits par lot, rendement consigné ;
+  - volet 2 : entités par extrait, un commit ;
+  - intégration : noms en attente par extrait, noms au rendu, premier réassemblage, extraction refaite des BDC Data Sets (D-0043, point 14), second réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (7) Limites connues avant calcul :
+  - les laboratoires n'ont pas de comptes au modèle ; tout ce qui s'en lit vient de leurs contreparties ;
+  - le volet 1 ne voit que le corpus déjà tiré des groupes : un document d'un autre déposant n'est pas scanné ;
+  - un paragraphe qui ne nomme un laboratoire que par un produit (« ChatGPT », « Claude ») ou par un pronom n'est pas servi ;
+  - les engagements d'un fournisseur envers un client qu'il ne nomme pas (Oracle, les clients anonymes de Broadcom) restent hors des laboratoires.
