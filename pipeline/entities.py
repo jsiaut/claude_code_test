@@ -17,9 +17,10 @@ from .graph import normalize_name
 
 # formes ponctuées (« L.P. », « p.l.c. », « S.à r.l. ») : la normalisation retire les points avant de ramener
 # les suffixes, il faut donc aussi leurs formes espacées ; formes nordiques, japonaises, ibériques et malaises (D-0054),
-# brésilienne (« Ltda ») et forme développée de « N.A. » des banques nationales américaines (D-0055)
+# brésilienne (« Ltda ») et forme développée de « N.A. » des banques nationales américaines (D-0055), formes allemandes
+# « KG » et « KGaA » (D-0057)
 LEGAL_SUFFIX = re.compile(r"\b(inc|corp|llc|lp|ltd|plc|pbc|co|n a|national association|ag|gmbh|s a|sa|b v|bv|n v|nv|pte|llp|lllp|"
-                          r"sarl|s a r l|kk|spa|s p a|se|limited|l l c|"
+                          r"sarl|s a r l|kk|kg|kgaa|spa|s p a|se|limited|l l c|"
                           r"l p|p l c|s à r l|as|asa|a/s|ab|abp|oy|oyj|ehf|da|gk|lda|ltda|sdn bhd|nuf|sl|s l|srl|s r l)$")
 FILER_WORDS = {"we", "us", "the company", "our company"}
 # mêmes mots sous leur forme normalisée (« the Company » devient « co ») : c'est elle qu'on compare (D-0038)

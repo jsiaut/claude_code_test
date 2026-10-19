@@ -1,5 +1,6 @@
 """Suffixes de forme juridique (D-0022, D-0054) : une dénomination légale complète est une entité propre,
-y compris sous une forme ponctuée (« L.P. », « p.l.c. », « S.à r.l. ») ou étrangère (AS, ASA, AB, Oy, ehf, DA, Ltda).
+y compris sous une forme ponctuée (« L.P. », « p.l.c. », « S.à r.l. ») ou étrangère (AS, ASA, AB, Oy, ehf, DA, Ltda ; KG et KGaA,
+D-0057).
 
 Lancement : python3 -m unittest discover -s tests -v
 """
@@ -24,7 +25,7 @@ class LegalSuffix(unittest.TestCase):
     def test_formes_etrangeres(self):
         for name in ("Aker ASA", "Nscale Drift II AS", "Skandinaviska Enskilda Banken AB", "Nebius Compute II Oy",
                      "Nscale Services Iceland III ehf", "Nscale Norway DC DA", "Nscale Services Japan GK",
-                     "Pátria Investimentos Ltda"):
+                     "Pátria Investimentos Ltda", "Carl Zeiss SMT Holding GmbH & Co. KG", "Merck KGaA"):
             self.assertTrue(legal(name), name)
 
     def test_descriptions_et_noms_courts(self):
