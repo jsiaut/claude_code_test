@@ -486,8 +486,8 @@ def cells(as_of, subject="NF:SOFTBANK"):
     kd = p.groupby("accession")["filing_date"].max().to_dict()
     out = []
     for x in r.itertuples(index=False):
-        out.append(cell("nport_price_to_par", subject, x.report_date, x.report_date, "as_known", as_of,
-                        breakdown=x.security, value=x.ratio, numerator=x.value_local, denominator=x.principal,
+        out.append(cell("nport_price_to_par", subject, None, x.report_date, "as_known", as_of,
+                        breakdown=x.security, value=x.ratio, numerator=x.value_local, denominator=x.principal, unit="pure",
                         knowledge_date=max(str(kd.get(a) or "") for a in x.accessions)[:10] or None,
                         flags={"perspective": "counterparty", "n_series": int(x.n_series),
                                "n_positions": int(x.n_positions), "principal": str(x.principal),

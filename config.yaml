@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -182,6 +182,7 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
     decision: "Je veux tout creuser"
     question: "SoftBank approfondi : corpus en cache, dépôts EDGAR propres, déposants contrôlés (SB Energy, Arm), piste élargie, montage Stargate, signal N-PORT (D-0058)"
     answers: {edinet_tdnet: "Rester sur EDGAR", arm: "Filiale de SoftBank"}   # deux questions posées avant toute requête
+    blocks: [nport]          # volet F (D-0058, points 8, 27 et 28) ; les autres volets passent par les blocs déjà ouverts
     page: "remue-méninges sur SoftBank dans la conversation du 2026-10-19 (D-0058)"
     yield_presented:             # état publié au commit 9b5625e, avant le volet
       relationship_conclusions: {pairs: 233, documented_dependency: 8, commercial_with_financing: 26, reciprocal_commercial_only: 44, causality_not_established: 155}
