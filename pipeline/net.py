@@ -93,10 +93,11 @@ class SecClient:
             self._paused_until = max(self._paused_until, time.monotonic() + seconds)
 
     # -- requête ---------------------------------------------------------------
-    def get(self, url, timeout=120, dest=None):
+    def get(self, url, timeout=120, dest=None, method="GET"):
         """Corps de la ressource, ou, avec `dest`, écrit en flux dans ce fichier (archives de
         plusieurs centaines de Mo) : le corps renvoyé est alors None et ses octets comptent au
-        journal comme les autres."""
+        journal comme les autres. `method="HEAD"` ne demande que les en-têtes (date de
+        publication d'une archive) : même limiteur, même journal, corps vide."""
         host = urllib.parse.urlparse(url).hostname or ""
         is_sec = host in self.sec_hosts
         headers = {"User-Agent": self.ua} if is_sec else {}
@@ -109,7 +110,7 @@ class SecClient:
             t0 = time.monotonic()
             ts_start = _utcnow().isoformat(timespec="milliseconds")
             try:
-                resp = self.session.get(url, headers=headers, timeout=timeout, stream=dest is not None)
+                resp = self.session.request(method, url, headers=headers, timeout=timeout, stream=dest is not None)
                 if dest is not None and resp.status_code == 200:
                     n = 0
                     tmp = str(dest) + ".part"
@@ -142,7 +143,8 @@ class SecClient:
                 m = re.search(rb"<title>(.*?)</title>", body[:4000], re.I | re.S)
                 note = m.group(1).decode("utf-8", "replace").strip() if m else "403"
             self.journal(url=url, host=host, status=status, bytes=nbytes, ts_start=ts_start,
-                         elapsed_ms=int(elapsed * 1000), attempt=attempt, note=note)
+                         elapsed_ms=int(elapsed * 1000), attempt=attempt, note=note,
+                         **({"method": method} if method != "GET" else {}))
             if is_sec:
                 touch_lock()
                 self.stats["requests"] += 1

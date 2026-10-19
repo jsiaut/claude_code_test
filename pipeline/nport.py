@@ -17,6 +17,8 @@ SoftBank : elle n'entre dans aucune mesure de financement ni dans l'annexe F.
 
     python -m pipeline.nport page       # page des jeux de données et description, tirées une fois
     python -m pipeline.nport fetch      # archives tirées, scannées, effacées (de la plus récente à la plus ancienne)
+    python -m pipeline.nport stamp      # date de publication (HEAD) des archives scannées sans elle
+    python -m pipeline.nport volume     # décompte des extraits et de la sélection, sans valeur de la mesure
     python -m pipeline.nport status
 """
 import csv
@@ -138,7 +140,7 @@ def scan_archive(zpath, leis=(), c=None):
             lei = df[h["issuer_lei"]].fillna("")
             return name.str.contains(NAME_RX) | lei.isin(leis)
         hold = _read(z, c["tables"]["holding"], keep=keep)
-        found = set(hold.loc[hold[h["issuer_name"]].fillna("").str.contains(NAME_RX), h["issuer_lei"]].dropna()) - {"N/A", ""}
+        found = set(hold.loc[hold[h["issuer_name"]].fillna("").str.contains(NAME_RX), h["issuer_lei"]].dropna()) - NOT_LEI
         if found - leis:                 # LEI relevé dans cette archive même : second passage, une fois
             leis |= found
             hold = _read(z, c["tables"]["holding"], keep=keep)
@@ -165,51 +167,135 @@ def _scan_job(name, zpath, leis, meta):
                 leis_applied=sorted(leis))
 
 
+NOT_LEI = {"", "N/A"}
+
+
+def lei_evidence(hold, c=None):
+    """Par LEI relevé (porté par une position dont le nom d'émetteur contient « SOFTBANK ») : positions
+    gardées qui le portent et, parmi elles, celles dont le nom contient « SOFTBANK »."""
+    h = (c or cols())["holding"]
+    lei = hold[h["issuer_lei"]].fillna("").astype(str).str.strip()
+    named = hold[h["issuer_name"]].fillna("").str.contains(NAME_RX)
+    return {l: {"positions": int((lei == l).sum()), "named": int(((lei == l) & named).sum())}
+            for l in sorted(set(lei[named]) - NOT_LEI)}
+
+
+def accepted(evidence):
+    """Un LEI relevé est un LEI de SoftBank si la majorité des positions gardées qui le portent, toutes
+    archives scannées confondues, ont un nom qui contient « SOFTBANK » (D-0058, point 28)."""
+    return {l for l, e in evidence.items() if 2 * e["named"] > e["positions"]}
+
+
+def _holdings(m, c=None):
+    h = (c or cols())["holding"]
+    use = [h["issuer_name"], h["issuer_lei"]]
+    out = [pd.read_parquet(BASE / k / SUBDIR / "holding.parquet", columns=use) for k, r in sorted(m.items())
+           if r.get("status") == "scanned" and (BASE / k / SUBDIR / "holding.parquet").exists()]
+    return pd.concat(out, ignore_index=True) if out else pd.DataFrame(columns=use)
+
+
+def softbank_leis(m=None):
+    """LEI de SoftBank, tirés des extraits des archives scannées (une archive publiée après l'as_of n'en
+    apporte aucun)."""
+    m = manifest() if m is None else m
+    return accepted(lei_evidence(_holdings(m)))
+
+
+def applied(r):
+    """LEI appliqués au scan d'une archive : ceux qu'il a reçus et ceux qu'il a relevés (second passage)."""
+    return set(r.get("leis_applied") or []) | set(r.get("leis_found") or [])
+
+
+def _published(headers):
+    lm = headers.get("Last-Modified") if headers is not None else None
+    return lm, _http_date(lm)
+
+
+def _drop_extracts(name):
+    """Extraits d'une archive publiée après l'as_of : ni gardés ni lus (point 27)."""
+    d = BASE / name / SUBDIR
+    for f in (sorted(d.glob("*.parquet")) if d.exists() else []):
+        f.unlink()
+
+
+def _append(rec):
+    with open(MANIFEST, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+
 def fetch(only=None):
     """De la plus récente archive à la plus ancienne : tirée par le client unique, scannée dans un
-    processus à part, puis effacée. Les LEI relevés s'appliquent aux archives scannées ensuite ; une
-    archive scannée avant qu'un LEI ne soit relevé est signalée (`leis_missing`)."""
+    processus à part, puis effacée. Une archive publiée après l'as_of (en-tête Last-Modified) n'est ni
+    gardée ni scannée. Les LEI relevés et acceptés (point 28) s'appliquent aux archives scannées ensuite ;
+    une archive scannée avant qu'un LEI ne soit accepté est signalée, et un nouvel appel la rescanne."""
     from concurrent.futures import ProcessPoolExecutor
+    from .discovery import AS_OF
     cfg = config.load()
     n = cfg_nport(cfg)
-    from .discovery import AS_OF
     client = net.SecClient(AS_OF, cfg)
     todo = in_period(archive_list(), n["period"][0], n["period"][1])
     done = manifest()
-    leis = set()
-    for r in done.values():
-        leis |= set(r.get("leis_found") or [])
+    leis = softbank_leis(done)
     BASE.mkdir(parents=True, exist_ok=True)
     with ProcessPoolExecutor(max_workers=1) as pp:
         for a in todo:
             if only and a["name"] not in only:
                 continue
-            if done.get(a["name"], {}).get("status") == "scanned" and set(done[a["name"]].get("leis_applied") or []) >= leis:
+            prev = done.get(a["name"], {})
+            if prev.get("status") == "after_as_of":
+                continue
+            if prev.get("status") == "scanned" and applied(prev) >= leis:
                 continue
             zpath = BASE / f"{a['name']}.zip"
+            t0 = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
             try:
-                raw, resp = client.get(a["url"])
+                _, headers = client.get(a["url"], timeout=900, dest=zpath)
             except net.NotCollected as exc:
                 rec = dict(a, status="not_collected", reason=str(exc))
             else:
-                lm = (resp or {}).get("Last-Modified") if isinstance(resp, dict) else None
-                published = _http_date(lm)
-                meta = dict(a, retrieved=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), last_modified=lm)
-                if published and published > n["period"][1]:
-                    del raw            # publiée après l'as_of : connaissance postérieure, ni gardée ni scannée
+                lm, published = _published(headers)
+                meta = dict(a, retrieved=t0, last_modified=lm)
+                if published and published > AS_OF:
+                    zpath.unlink()     # publiée après l'as_of : connaissance postérieure, ni gardée ni scannée
+                    _drop_extracts(a["name"])
                     rec = dict(meta, status="after_as_of")
                 else:
-                    zpath.write_bytes(raw)
-                    del raw
                     rec = pp.submit(_scan_job, a["name"], zpath, sorted(leis), meta).result()
                     zpath.unlink()
-                    leis |= set(rec["leis_found"])
-            with open(MANIFEST, "a", encoding="utf-8") as fh:
-                fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            _append(rec)
+            if rec.get("status") == "scanned":
+                leis = softbank_leis()      # un LEI relevé ne vaut pour les archives suivantes que s'il est accepté
             print(a["name"], rec.get("status"), json.dumps(rec.get("stats") or {}), flush=True)
     m = manifest()
-    late = [k for k, r in m.items() if r.get("status") == "scanned" and set(r.get("leis_applied") or []) < leis]
-    print("LEI relevés :", sorted(leis), "; archives à rescanner :", late)
+    late = [k for k, r in sorted(m.items(), reverse=True) if r.get("status") == "scanned" and applied(r) < leis]
+    print("LEI de SoftBank :", sorted(leis), "; archives à rescanner :", late)
+
+
+def stamp():
+    """Date de publication (en-tête Last-Modified, requête HEAD) des archives scannées sans elle ; une
+    archive publiée après l'as_of perd ses extraits et passe à l'état `after_as_of` (point 27)."""
+    from .discovery import AS_OF
+    cfg = config.load()
+    client = net.SecClient(AS_OF, cfg)
+    for name, r in sorted(manifest().items(), reverse=True):
+        if r.get("status") != "scanned" or r.get("last_modified"):
+            continue
+        try:
+            _, headers = client.get(r["url"], method="HEAD")
+        except net.NotCollected as exc:
+            print(name, "en-tête non obtenu :", exc, flush=True)
+            continue
+        lm, published = _published(headers)
+        t = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+        if published and published > AS_OF:
+            _drop_extracts(name)
+            rec = {k: r.get(k) for k in ("name", "url", "filed_from", "filed_to", "retrieved", "bytes")}
+            rec.update(last_modified=lm, stamped=t, status="after_as_of",
+                       note="scannée avant que l'en-tête ne soit lu ; extraits effacés, non lus")
+        else:
+            rec = dict(r, last_modified=lm, stamped=t)
+        _append(rec)
+        print(name, rec["status"], lm, flush=True)
 
 
 def _http_date(v):
@@ -245,17 +331,22 @@ def _dec(x):
 
 
 def positions(c=None, archives=None):
-    """Positions gardées de toutes les archives scannées, jointes à leur dépôt, leur série et leurs
-    identifiants ; une ligne par position déclarée."""
+    """Positions de SoftBank de toutes les archives scannées (nom qui contient « SOFTBANK », ou LEI de
+    SoftBank accepté), jointes à leur dépôt, leur série et leurs identifiants ; une ligne par position
+    déclarée."""
     c = c or cols()
+    m = manifest()
+    leis = softbank_leis(m)
     rows = []
-    for name, r in sorted(manifest().items()):
+    for name, r in sorted(m.items()):
         if r.get("status") != "scanned" or (archives and name not in archives):
             continue
         d = BASE / name / SUBDIR
         t = {k: pd.read_parquet(d / f"{k}.parquet") for k in ("holding", "identifiers", "debt", "submission", "registrant", "fund")}
         h, s, f, g, i, b = c["holding"], c["submission"], c["fund"], c["registrant"], c["identifiers"], c["debt"]
         x = t["holding"].rename(columns={v: k for k, v in h.items()})
+        lei = x["issuer_lei"].fillna("").astype(str).str.strip()
+        x = x[x["issuer_name"].fillna("").str.contains(NAME_RX) | lei.isin(leis)]
         x = x.merge(t["submission"].rename(columns={v: k for k, v in s.items()}), on="accession", how="left")
         x = x.merge(t["fund"].rename(columns={v: k for k, v in f.items()}), on="accession", how="left", suffixes=("", "_fund"))
         x = x.merge(t["registrant"].rename(columns={v: k for k, v in g.items()}), on="accession", how="left", suffixes=("", "_reg"))
@@ -292,21 +383,73 @@ def _local_value(value_usd, rate, currency, conv="currency_per_usd"):
     return v * r if conv == "currency_per_usd" else v / r
 
 
-def latest_by_series(p):
-    """Au dernier dépôt de chaque série pour une date de portefeuille : un amendement remplace le
-    dépôt (le plus récent par date de dépôt, puis par accession)."""
-    key = ["series_id", "report_date"]
+ISIN_RX = re.compile(r"^[A-Z]{2}[A-Z0-9]{9}[0-9]$")
+CUSIP_RX = re.compile(r"^[A-Z0-9*@#]{8}[0-9]$")
+
+
+def _ident(v, rx):
+    s = v.strip().upper() if isinstance(v, str) else ""
+    return s if rx.match(s) and set(s) != {"0"} else None
+
+
+def security_keys(p):
+    """Titre de chaque position : son ISIN ; à défaut l'ISIN que d'autres positions donnent au même CUSIP,
+    s'il est unique ; à défaut « CUSIP:… ». « N/A », « 000000000 » et tout code mal formé ne sont pas des
+    identifiants (D-0058, point 28)."""
+    isin = [_ident(v, ISIN_RX) for v in p["isin"]]
+    cusip = [_ident(v, CUSIP_RX) for v in p["cusip"]]
+    by_cusip = {}
+    for i, c in zip(isin, cusip):
+        if i and c:
+            by_cusip.setdefault(c, set()).add(i)
+    return [i or (next(iter(by_cusip[c])) if len(by_cusip.get(c) or ()) == 1 else ("CUSIP:" + c if c else None))
+            for i, c in zip(isin, cusip)]
+
+
+def fund_key(p):
+    """Série du fonds ; un fonds sans série (fonds fermé) est son déclarant (CIK)."""
+    cik = p["cik"] if "cik" in p else pd.Series([None] * len(p), index=p.index)
+    return [s if isinstance(s, str) and s else (f"CIK:{k}" if isinstance(k, str) and k else None)
+            for s, k in zip(p["series_id"], cik)]
+
+
+def selection(p):
+    """Positions de la mesure et nombre de positions écartées à chaque étape (D-0058, points 8 et 28) :
+    titres de dette en nominal (catégorie DBT, unité PA), positions longues, titre identifié, émetteur de
+    SoftBank (la majorité des positions du titre sous un nom qui contient « SOFTBANK », et l'une au moins
+    sous un intitulé de titre qui le contient)."""
+    steps = {}
+
+    def keep(q, step, mask):
+        steps[step] = int((~mask).sum())
+        return q[mask].copy()
+    p = keep(p, "not_debt_in_principal", (p["unit"] == "PA") & (p["asset_cat"] == "DBT"))
+    p = keep(p, "not_long", p["payoff"] == "Long")
+    p["security"] = security_keys(p)
+    p = keep(p, "no_identifier", p["security"].notna())
+    g = pd.DataFrame({"security": p["security"], "named": p["issuer_name"].fillna("").str.contains(NAME_RX),
+                      "titled": p["title"].fillna("").str.contains(NAME_RX)}).groupby("security").agg(
+        n=("named", "size"), named=("named", "sum"), titled=("titled", "sum"))
+    ok = set(g.index[(2 * g["named"] > g["n"]) & (g["titled"] > 0)])
+    p = keep(p, "not_softbank_issuer", p["security"].isin(ok))
+    steps["securities_kept"], steps["securities_out"] = sorted(ok), sorted(set(g.index) - ok)
+    return p, steps
+
+
+def latest_by_fund(p):
+    """Au dernier dépôt de chaque série (ou fonds sans série) pour une date de portefeuille : un
+    amendement remplace le dépôt (le plus récent par date de dépôt, puis par accession)."""
+    p = p.assign(fund=fund_key(p))
+    key = ["fund", "report_date"]
     last = (p.sort_values(["filing_date", "accession"]).groupby(key, dropna=False)["accession"].last().reset_index())
     return p.merge(last, on=key + ["accession"], how="inner")
 
 
 def price_to_par(p):
     """Une ligne par (titre, date de portefeuille) : somme des valeurs dans la monnaie du titre, somme
-    des nominaux (unité PA), séries distinctes ; positions en titres de dette seulement."""
-    p = p[(p["unit"] == "PA") & p["asset_cat"].isin(["DBT"])].copy()
-    p["security"] = p["isin"].where(p["isin"].notna() & (p["isin"] != ""), "CUSIP:" + p["cusip"].fillna(""))
-    p = p[p["security"] != "CUSIP:"]
-    p = latest_by_series(p)
+    des nominaux (unité PA), séries distinctes ; positions retenues par `selection`."""
+    p, _ = selection(p)
+    p = latest_by_fund(p)
     out = []
     for (sec, d), g in p.groupby(["security", "report_date"]):
         vals = [(_dec(r.value_local), _dec(r.balance)) for r in g.itertuples(index=False)]
@@ -317,7 +460,7 @@ def price_to_par(p):
         den = sum(n for _, n in vals)
         cur = sorted(set(g["currency"].dropna()))
         out.append({"security": sec, "report_date": d, "value_local": num, "principal": den,
-                    "ratio": num / den, "n_series": g["series_id"].nunique(), "n_positions": len(vals),
+                    "ratio": num / den, "n_series": g["fund"].nunique(), "n_positions": len(vals),
                     "currency": ";".join(cur), "issuer_names": ";".join(sorted(set(g["issuer_name"].dropna()))),
                     "title": next(iter(sorted(set(g["title"].dropna()))), None),
                     "maturity": next(iter(sorted(set(g["maturity"].dropna()))), None) if "maturity" in g else None,
@@ -326,9 +469,9 @@ def price_to_par(p):
 
 
 BASIS = ("valorisation déclarée par des fonds (Form N-PORT Data Sets), perspective counterparty : somme des valeurs "
-         "dans la monnaie du titre sur la somme des nominaux, au dernier dépôt de chaque série pour la date de "
-         "portefeuille ; jamais une probabilité de défaut ni un fait comptable de SoftBank, hors des mesures de "
-         "financement et de l'annexe F (D-0058, point 8)")
+         "dans la monnaie du titre sur la somme des nominaux, au dernier dépôt de chaque série (un fonds fermé sans "
+         "série compte pour une) pour la date de portefeuille ; jamais une probabilité de défaut ni un fait comptable "
+         "de SoftBank, hors des mesures de financement et de l'annexe F (D-0058, points 8 et 28)")
 
 
 def cells(as_of, subject="NF:SOFTBANK"):
@@ -353,6 +496,31 @@ def cells(as_of, subject="NF:SOFTBANK"):
     return out
 
 
+def volume():
+    """Décompte des extraits et de la sélection, sans aucune valeur de la mesure (consigné avant calcul)."""
+    c = cols()
+    m = manifest()
+    raw = _holdings(m, c)
+    ev = lei_evidence(raw, c)
+    ok = accepted(ev)
+    p = positions(c)
+    named = p["issuer_name"].fillna("").str.contains(NAME_RX)
+    kept, steps = selection(p)
+    last = latest_by_fund(kept)
+    return {"archives_scanned": sum(1 for r in m.values() if r.get("status") == "scanned"),
+            "archives_after_as_of": sum(1 for r in m.values() if r.get("status") == "after_as_of"),
+            "bytes": sum(int(r.get("bytes") or 0) for r in m.values() if r.get("status") == "scanned"),
+            "extract_rows": len(raw), "lei_evidence": ev, "leis_accepted": sorted(ok),
+            "positions": len(p), "by_name": int(named.sum()), "by_lei_only": int((~named).sum()),
+            "asset_unit": {f"{a}/{u}": int(n) for (a, u), n in p.groupby(["asset_cat", "unit"]).size().items()},
+            "steps": {k: v for k, v in steps.items() if not k.startswith("securities")},
+            "securities_kept": len(steps["securities_kept"]), "securities_out": steps["securities_out"],
+            "selected": len(kept), "after_latest_filing": len(last), "funds": last["fund"].nunique(),
+            "report_dates": last["report_date"].nunique(),
+            "first_last_date": [last["report_date"].min(), last["report_date"].max()] if len(last) else None,
+            "security_dates": int(last.groupby(["security", "report_date"]).ngroups)}
+
+
 def exclusions(as_of):
     """Archives de la période non tirées ou non scannées, et archives scannées avant qu'un LEI ne soit
     relevé (positions possiblement manquées) : visibles dans les exclusions (§11)."""
@@ -361,9 +529,7 @@ def exclusions(as_of):
     if not n or not cache.other_path(*PAGE).exists():
         return []
     m = manifest()
-    leis = set()
-    for r in m.values():
-        leis |= set(r.get("leis_found") or [])
+    leis = softbank_leis(m)
     out = []
 
     def ex(key, reason, detail):
@@ -376,8 +542,11 @@ def exclusions(as_of):
             ex(a["name"], "not_processed", f"archive des Form N-PORT Data Sets non tirée ({a['filed_from']} au {a['filed_to']})")
         elif r.get("status") == "not_collected":
             ex(a["name"], "not_collected", f"archive des Form N-PORT Data Sets non tirée : {r.get('reason')}")
-        elif set(r.get("leis_applied") or []) | set(r.get("leis_found") or []) < leis:
-            ex(a["name"], "not_processed", "archive scannée avant que tous les LEI de SoftBank ne soient relevés : "
+        elif r.get("status") == "after_as_of":
+            ex(a["name"], "not_public", f"archive des Form N-PORT Data Sets publiée après l'as_of (Last-Modified "
+               f"{r.get('last_modified')}) : connaissance postérieure, ni gardée ni lue (D-0058, point 27)")
+        elif applied(r) < leis:
+            ex(a["name"], "not_processed", "archive scannée avant que tous les LEI de SoftBank ne soient acceptés : "
                "positions sous un autre nom possiblement manquées")
     return out
 
@@ -391,6 +560,14 @@ if __name__ == "__main__":
         print("description :", readme_links(html))
     elif cmd == "fetch":
         fetch(only=set(sys.argv[2:]) or None)
+    elif cmd == "stamp":
+        stamp()
+    elif cmd == "volume":
+        print(json.dumps(volume(), ensure_ascii=False, indent=1, default=str))
     else:
         m = manifest()
-        print(len(m), "archives au manifeste ;", sum(1 for r in m.values() if r.get("status") == "scanned"), "scannées")
+        leis = softbank_leis(m)
+        print("LEI de SoftBank :", sorted(leis))
+        print(len(m), "archives au manifeste ;", sum(1 for r in m.values() if r.get("status") == "scanned"), "scannées ;",
+              sum(1 for r in m.values() if r.get("status") == "after_as_of"), "publiées après l'as_of ; à rescanner :",
+              [k for k, r in sorted(m.items(), reverse=True) if r.get("status") == "scanned" and applied(r) < leis])
