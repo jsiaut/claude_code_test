@@ -1339,3 +1339,126 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - E.7 : 164 issues (136), dont 57 % indéterminées au point de tête ;
   - contrôles, vue `as_known` : `mismatch` 1 833 (1 826), `not_testable` 1 333 (1 265), `ok` 29 886 (29 579), `tautological` 1 393 (1 383) ;
   - tests unitaires : 162, tous passés.
+
+- **D-0058 — SoftBank approfondi : six volets, tous sur EDGAR. Règles fixées avant tout tirage.** (1) Décision de l'utilisateur, le 2026-10-19 : « Je veux tout creuser ». Elle répond au remue-méninges demandé le même jour (« Tu penses qu'il y a moyen de récupérer beaucoup plus d'informations intéressantes sur Softbank en étant astucieux et malin étant donné que ça a l'air d'être un acteur majeur de notre modèle ? Reste en mode brainstorming »). Ce remue-méninges proposait sept volets. Avant toute requête, l'utilisateur a tranché deux questions :
+  - EDINET et TDnet, où SoftBank Group Corp. dépose ses comptes au Japon : « Rester sur EDGAR ». Ce volet est écarté. §2.6 (« Seul EDGAR fait foi ») et §9.5 (User-Agent envoyé aux seuls hôtes de la SEC) ne changent pas ;
+  - Arm Holdings plc : « Filiale de SoftBank ». Arm entre au groupe `NF:SOFTBANK` par un extrait de ses propres dépôts. Ses notes et sa section des parties liées se lisent comme texte de ce groupe. Ses comptes n'entrent pas au modèle : ni faits, ni séries, ni signaux.
+
+  Lecture séquentielle par l'exécutant, sans sous-agent. L'as_of reste le 2026-10-07 (D-0048, point 2).
+
+  (2) État de départ, relevé sans aucune requête dans les tables du commit 9b5625e et dans le cache :
+  - `NF:SOFTBANK` compte 13 entités et 48 arêtes, dont 21 à montant. Quatre seulement vont à un groupe ou à un laboratoire : Cipher 2, Intel 1, OpenAI 1. Les autres vont à des contreparties propres : WeWork 14, GM 9, Sprint 6, Guardant Health 3, AeroVironment 3, Moatable, Uber… ;
+  - 160 lignes lues nomment SoftBank, l'un de ses véhicules ou l'une de ses sociétés, dont 130 observations. Restent hors du groupe, faute d'extrait :
+    - « SoftBank Group » chez Intel (2,0 Md$ d'actions, accord du 18 août 2025) ;
+    - Ampere Computing LLC et Ampere Computing Holdings LLC chez Oracle (24 observations, circulaires de 2018 à 2025) ;
+    - « SoftBank Vision Fund II » et SVF II Finco Cayman L.P. chez Apollo (titres adossés d'investment grade : 2 116 M$ au 31 mars 2026) ;
+    - SB Energy, Inc., SoftBank Vision Fund (AIV M1) L.P., « SVF II », « Softbank Vision fund », Softbank Robotics Singapore Pte Ltd ;
+  - piste des non-déposants (D-0044, D-0054, D-0057) : 3 717 unités, dont 76 de SoftBank, toutes déjà lues ; 1 126 unités qui nomment SoftBank sont hors de la règle de lecture ;
+  - liste des noms d'EDGAR du 2026-10-09, déjà en cache. Elle donne les CIK suivants :
+    - SoftBank Group Corp. (1065521), SoftBank Corp. (1794354), SoftBank Group Capital Ltd (1755163) ;
+    - cinq fonds : SoftBank Vision Fund L.P. (1699940), (AIV M1) L.P. (1755143), (AIV M2) L.P. (1805808), (AIV S1) L.P. (1776222), SoftBank Vision Fund II-2 L.P. (1787613) ;
+    - leurs gérants, SB Investment Advisers (UK, US et Japon) et SB Global Advisers ; SB Management Ltd et SB Northstar GP ;
+    - SB Energy, Inc. (2133037), Arm Holdings plc (1973239) et DigitalBridge Group, Inc. (1679688). L'ancienne Arm Holdings plc (1057997) a cessé de déposer avant le début de lecture.
+
+    Aucune de leurs submissions n'est en cache ;
+  - vérification faite avant d'écrire cette décision, dans les dépôts d'Oracle déjà en cache : le 10-Q du 11 mars 2026 écrit « On November 25, 2025, SoftBank Group Corp. acquired all of the equity interests of Ampere ». Ce paragraphe n'appartient à aucun bloc lu, et le catalogue du groupe n'a retenu de ce 10-Q que quatre notes. Il ne vaut pas extrait tant qu'il n'est pas lu (volet A) ;
+  - volume compté sans lecture : 600 documents en cache nomment un terme de la famille SoftBank. « SoftBank » seul apparaît dans 3 409 paragraphes, dont 98 dans un bloc lu. Dans les documents des groupes de `config.yaml`, environ 330 paragraphes, chez Cipher, NVIDIA, Oracle, Marvell, AMD, Intel, Apollo, TSMC, ASML et quelques autres. Le reste vient des pièces de tiers tirées par la piste (WeWork, GM, T-Mobile, Sprint, SB Energy…), dont les corps suivent la règle de D-0044, point 5.
+
+  (3) Volet A, le corpus des groupes déjà en cache. Aucune requête.
+  - Documents : documents principaux et pièces, en HTML ou en texte, déposés par un groupe de `config.yaml` du 2017-01-29 (début du texte, `discovery.period_start`) à l'as_of.
+  - Termes qualifiants, en mots entiers :
+    - « SoftBank », en toutes casses ;
+    - les noms des entités confirmées du groupe : « Star Beacon », « Stellar Beacon », « SB Northstar », « SVF Yellow », « SVF II Energy », « SB Energy », « Brightstar US » ;
+    - les noms de sociétés et de véhicules que des lignes lues nomment sans rattachement : « SVF II », « SVF Holdco », « SVF Endurance », « HAPSMobile », « Ampere Computing », « Graphcore », « Arm Holdings », « Arm Limited », « Arm Ltd ». Casse exacte, ou capitales pour Arm (« ARM Holdings ») ;
+    - « Stargate », en casse exacte.
+
+    Sont seulement comptés, sans qualifier : « Arm » seul (l'architecture), « Ampere » seul (l'architecture de processeurs graphiques de NVIDIA), « SVF » seul (Apollo SVF Management, sans lien), « SBG » et « Vision Fund ». Un terme ne qualifie jamais un document dont il est le nom du déposant (D-0046, point 9).
+  - Unités : les fenêtres du bloc `montages` (D-0046, points 4, 8 et 9) : le paragraphe qualifiant, les deux qui le précèdent et les deux qui le suivent, fondues quand elles se chevauchent. Une unité par fenêtre.
+  - Ne sont pas lues, et sont comptées :
+    - une fenêtre dont chaque paragraphe qualifiant figure déjà, mot pour mot aux blancs près, dans un bloc lu du même dépôt ;
+    - une fenêtre dont chaque paragraphe qualifiant se trouve dans la section des facteurs de risque (`out_of_scope` ; §14 : jamais dans un facteur de risque). La section va du titre « Risk Factors » (Item 1A, ou titre du prospectus) au titre majeur suivant ; la plus longue est retenue, ce qui écarte la table des matières ;
+    - un texte identique à une unité déjà retenue.
+  - Ordre : du dépôt le plus récent au plus ancien. Plafond de 300 unités ; au-delà, `not_processed`, et le rendement est présenté avant d'aller plus loin.
+  - Une unité appartient au groupe du déposant (perspective `reporting_entity`), comme tout bloc de ce groupe.
+  - Code : le bloc `montages` reçoit un montage de corpus, `softbank_corpus`, sans recherche ni tirage. Les documents viennent de la table `documents`, et trois options s'ajoutent : `skip_read`, `skip_risk_factors` et l'ordre `recent_first`. Les montages existants ne changent pas.
+
+  (4) Volet B, les dépôts EDGAR des entités de SoftBank.
+  - CIK : ceux dont la dénomination EDGAR contient « SoftBank » (hors eSoftBank.com, sans lien), ceux des véhicules et des gérants du point 2, et les déclarants conjoints que les dépôts lus nomment comme personnes déclarantes d'une 13D ou d'une 13G.
+  - Phase 0 : submissions complètes, toutes les pages de `filings.files` lues sans filtre de date (§9.4). Les formulaires se comptent ici avant toute lecture.
+  - Unités, dans la période du volet A :
+    - Schedules 13D et leurs amendements : le document principal, Items 2 à 7, coupé avant les annexes qui listent les administrateurs et les dirigeants, et avant les signatures. Les pièces EX-99 se lisent par leur en-tête, et le corps selon la règle de D-0044, point 5 ;
+    - Schedules 13G et leurs amendements : Items 1 à 4 et notes, mêmes coupes ;
+    - formulaires 3, 4 et 5 : seulement si l'émetteur est un groupe de `config.yaml`, un laboratoire ou une entité de SoftBank (Arm, SB Energy). On lit la table des transactions et les notes ; les autres sont comptés `out_of_scope` ;
+    - 13F-HR : par dépôt, la page de garde et les lignes de la table d'information dont l'émetteur est un groupe de `config.yaml` ou une entité de SoftBank ; les autres lignes sont comptées ;
+    - Form D : par le bloc `form_d`, en émetteur du périmètre (`issuer_is_subject` vrai), si l'émetteur est une entité du groupe au registre. Aucun nom de personne liée n'est lu ;
+    - autres formulaires (425, SC TO, 144, F-6, CORRESP…) : comptés, non lus.
+  - Ordre : émetteurs du modèle d'abord (groupes, laboratoires, entités de SoftBank), puis les autres ; du plus récent au plus ancien dans chaque classe. Un texte identique se lit une fois. Plafond de 200 unités.
+
+  (5) Volet C, les déposants contrôlés par SoftBank, lus comme texte du groupe.
+  - SB Energy, Inc. (2133037). Son dernier document d'enregistrement avant l'as_of (le 424B4 s'il existe, sinon le dernier S-1/A) entre dans `discovery.non_filer.own_filings`, avec les unités du S-1 de Nscale (D-0054, point 13) :
+    - en-têtes des EX-10, corps selon la règle ;
+    - Item 404 ;
+    - notes des états annuels audités et des états intermédiaires ;
+    - liste des filiales.
+
+    Ses rapports périodiques déposés avant l'as_of, s'il y en a, se lisent par leurs notes. Les corps déjà lus en D-0044 ne se relisent pas. Le document est celui d'une filiale, non de la tête : SB Energy, Inc. n'entre au groupe que par un extrait (point 8).
+  - Arm Holdings plc (1973239). Rapports périodiques déposés depuis son introduction en bourse jusqu'à l'as_of : 10-K et 10-Q, ou 20-F et 6-K, selon la phase 0. Unités :
+    - toutes les notes du dernier rapport annuel et des rapports trimestriels qui le suivent ;
+    - dans les rapports antérieurs, les notes des parties liées, des participations, des engagements, de la dette, des baux, du revenu et des secteurs ;
+    - la section des parties liées (Item 13 ou Item 7.B) et la liste des filiales (EX-21) du dernier rapport annuel ;
+    - 8-K items 1.01, 2.01, 2.03 et 8.01. Si Arm dépose des 6-K, ce sont les unités de D-0048 (lexique d'ensemble, plafond de 80).
+
+    Les comptes d'Arm restent hors du modèle (point 1).
+  - DigitalBridge Group, Inc. (1679688). Si la phase 0 montre l'acquisition par SoftBank réalisée avant l'as_of (8-K item 2.01, 3.01 ou 5.01, Form 25), on lit les items du 8-K de réalisation et l'en-tête de la convention de fusion. DigitalBridge entre alors au groupe à la date citée (D-0050, point 5). Sinon rien ne se lit : un accord non réalisé est une annonce.
+  - Si un autre déposant de SoftBank a des rapports périodiques, il se lit comme Arm ; la règle est revue ici avant toute lecture.
+
+  (6) Volet D, la piste des non-déposants élargie. Il vient après l'intégration des entités des volets A à C et E.
+  - Termes : les noms distinctifs des entités rattachées à `NF:SOFTBANK` à cette date, en mots entiers et en casse exacte, avec leurs dates d'entrée et de sortie, comme dans `discovery.lexicon.confirmed`. Jamais un mot générique : « Arm », « Ampere », « SVF », « Vision Fund », « SBG ». Le lexique ne s'enrichit que d'entités confirmées (§14).
+  - Sources : les 47 archives des Notes Data Sets, retirées et scannées avec le lexique d'ensemble enrichi ; recherche plein texte de chaque nouveau terme sur les formulaires racines des EX-10 (D-0044, point 4).
+  - Candidats, classement et règle de lecture (R1, R2) : ceux de D-0044, point 5. Les unités nouvelles, que nul terme antérieur ne faisait naître, forment une file propre, plafonnée à 300 unités. L'état des unités existantes se garde sous leur clé, et rien ne se relit.
+
+  (7) Volet E, le montage Stargate (bloc `montages`, `stargate`).
+  - Période : du 2025-01-01 à l'as_of.
+  - Requêtes de la recherche plein texte, tous formulaires : « "Stargate" "OpenAI" », « "Stargate" "SoftBank" », « "Stargate" "Oracle" », « "Stargate" "data center" ».
+  - Terme qualifiant : « Stargate », en casse exacte. Les relevés de portefeuille sont comptés, non lus (D-0046, point 8). Les Form D sont écartés : ils relèvent du bloc `form_d`.
+  - Plafond de 60 fenêtres ; un texte distinct se lit une fois ; du plus récent au plus ancien.
+  - Les dix-sept Form D vérifiés de véhicules au nom de Stargate (Blue Owl GP Stakes Stargate, Stargate Crypto Capital Fund, séries de Wefunds) ne changent pas. Stargate n'est ni un laboratoire ni un groupe non déposant : aucun de ces Form D ne mesure une exposition (D-0041).
+
+  (8) Volet F, un signal de crédit sur les obligations de SoftBank (Form N-PORT Data Sets).
+  - Statut : la source est EDGAR, publiée par la SEC. La mesure est d'une sorte nouvelle : une valorisation de marché déclarée par des fonds, hors du cadre comptable et hors des blocs que §14 énumère. C'est une décision de l'exécutant, prise dans le mandat de l'utilisateur ; le remue-méninges la présentait comme une mesure à décider. Le retrait revient à supprimer la mesure et ses extraits.
+  - Archives : archives trimestrielles des Form N-PORT Data Sets, de la première de la période à la dernière avant l'as_of, listées par la page des jeux de données, tirée une fois et gardée en cache (comme en D-0036). Chacune est tirée par le client unique, scannée dans un processus à part, puis effacée.
+  - Lignes gardées : positions dont l'émetteur est une entité de SoftBank, c'est-à-dire un nom d'émetteur qui contient « SOFTBANK », ou un LEI relevé avec un tel nom dans les archives (jamais supposé). On garde aussi leurs identifiants, leurs caractéristiques de titre de dette, et le dépôt et la série de chaque fonds. Le tout va sous `cache/datasets/nport/{archive}/softbank/`. Les colonnes se lisent dans la description publiée avec les archives, vérifiée avant tout calcul.
+  - Mesure `nport_price_to_par`, par titre (ISIN, à défaut CUSIP) et par fin de trimestre déclarée : somme des valeurs déclarées, dans la monnaie du titre, divisée par la somme des nominaux (unité « PA »). Elle porte sur les positions en titres de dette des séries de fonds distinctes, au dernier dépôt de chaque série pour cette date ; un amendement remplace le dépôt. On publie aussi le nombre de séries et le nominal détenu.
+  - C'est une valorisation déclarée par des tiers (perspective `counterparty`), jamais une probabilité de défaut ni un fait comptable de SoftBank. Elle n'entre dans aucune mesure de financement ni dans l'annexe F ; c'est une série descriptive du nœud `NF:SOFTBANK`.
+
+  (9) Entités, à l'intégration et après la lecture :
+  - appartenance au groupe par les règles A (lien affirmé) et B (désignation par un alias confirmé du groupe) de D-0044, point 7 ;
+  - traitement `consolidated_subsidiary` seulement sur les mots de D-0050, point 4 (filiale, filiale à 100 %, consolidée). Sinon `undetermined` ;
+  - une entité acquise entre à la date de réalisation citée par un extrait (D-0050, point 5) : Ampere, Graphcore, DigitalBridge. Une entité cédée sort à la date citée ;
+  - Sprint (de 2013 à 2020) et Fortress (de 2017 à 2024) entrent au groupe avec leurs dates si un bloc lu affirme le contrôle de SoftBank. Sinon elles restent des contreparties propres (D-0044, point 7) ;
+  - un alias (« SoftBank Group ») ne naît que d'un extrait qui le définit (D-0021).
+
+  (10) Données personnelles (D-0051 ; D-0057, point 11) : aucune personne physique n'est contrepartie. Ne sont jamais repris :
+  - les annexes des 13D et 13G qui listent administrateurs et dirigeants, et les signatures ;
+  - les personnes liées des Form D ;
+  - les noms des contrats de travail et des circulaires.
+
+  Une personne physique déclarante d'une 13D ou d'une 13G n'est jamais ni contrepartie ni citée. C'est le cas du fondateur de SoftBank.
+
+  (11) Réseau (§9.5) : un seul client et un seul User-Agent, envoyé aux seuls hôtes de la SEC ; 5 requêtes par seconde au plus ; jamais deux processus réseau à la fois ; pause d'au moins dix minutes après un 403 ; chaque requête au journal.
+
+  (12) Ordre et commits :
+  - la décision ;
+  - la configuration et le code (montage de corpus et montage Stargate, unités des 13D, 13G, formulaires 3 à 5 et 13F, dépôts propres de SB Energy et d'Arm, bloc N-PORT), avec leurs tests ;
+  - volet A : unités préparées, volume consigné ici avant toute lecture, lecture, commit ;
+  - volets B et C : phase 0 (submissions), constats consignés ici et règles revues s'il le faut, pièces, unités, volume consigné, lecture, un commit par volet ;
+  - volet E : recherche, pièces, unités, volume consigné, lecture, commit ;
+  - premières entités par extrait (un commit), puis volet D : archives, recherche plein texte, unités, volume consigné, lecture, commit ;
+  - volet F : archives, extraits, mesure et tests, commit ;
+  - intégration : entités par extrait, noms au rendu, premier réassemblage, extraction refaite des BDC Data Sets (D-0043, point 14), second réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (13) Limites connues avant calcul :
+  - SoftBank n'a pas de comptes au modèle. Le volet F est un signal de marché déclaré par des tiers ;
+  - le volet A ne voit que le corpus déjà tiré : un document de groupe absent du cache n'est pas scanné ;
+  - un paragraphe qui ne nomme Arm que par « Arm », ou Ampere que par « Ampere », n'est pas servi (point 3) ;
+  - les volets B et C dépendent des constats de la phase 0, consignés ici avant toute lecture.

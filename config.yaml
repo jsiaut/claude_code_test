@@ -178,6 +178,17 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 56, indeterminate: 32, result: discrimination_possible}
       fragility_events: 344
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-19
+    decision: "Je veux tout creuser"
+    question: "SoftBank approfondi : corpus en cache, dépôts EDGAR propres, déposants contrôlés (SB Energy, Arm), piste élargie, montage Stargate, signal N-PORT (D-0058)"
+    answers: {edinet_tdnet: "Rester sur EDGAR", arm: "Filiale de SoftBank"}   # deux questions posées avant toute requête
+    page: "remue-méninges sur SoftBank dans la conversation du 2026-10-19 (D-0058)"
+    yield_presented:             # état publié au commit 9b5625e, avant le volet
+      relationship_conclusions: {pairs: 233, documented_dependency: 8, commercial_with_financing: 26, reciprocal_commercial_only: 44, causality_not_established: 155}
+      documented_paths: {cycles: 102}
+      annex_e_e7: {outcomes: 164, indeterminate: 93, result: discrimination_possible}
+      fragility_events: 398
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
