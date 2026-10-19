@@ -78,6 +78,35 @@ class Selection(unittest.TestCase):
         s = N.select_units(u, c, cap=2).set_index("order")
         self.assertEqual([s.loc[o, "status"] for o in (1, 4, 2)], ["queued", "queued", "over_cap"])
 
+    def test_new_units_form_their_own_capped_file(self):
+        """D-0058, point 24 : l'état d'une unité connue se garde sous sa clé ; les unités nouvelles
+        forment une file propre, R1 puis R2, avec leur plafond."""
+        u, c = self.units()
+        u["value_sha"] = None
+        prior = N.select_units(u[u["order"].isin([1, 2, 3])], c, cap=1)          # 2 au-delà du plafond
+        more = pd.DataFrame([{"order": o, "pass": "B", "rank": 1, "cik": "1", "kind": "note", "latest": False,
+                              "co_refs": "NVDA", "groups": "NF:SOFTBANK", "adsh": f"a{o}", "doc": f"d{o}",
+                              "value_sha": None} for o in (6, 7)])
+        s = N.select_with_prior(pd.concat([u, more], ignore_index=True), c, prior, cap=2, file="D-0058")
+        s = s.set_index("order")
+        self.assertEqual([s.loc[o, "status"] for o in (1, 2, 3)], ["queued", "over_cap", "out_of_rule"])
+        self.assertEqual([s.loc[o, "file"] for o in (1, 4)], ["D-0044", "D-0058"])
+        self.assertEqual([int(s.loc[o, "queue"]) for o in (4, 6, 7)], [1, 2, 3])      # file nouvelle
+        self.assertEqual([s.loc[o, "status"] for o in (4, 6, 7, 5)], ["queued", "queued", "over_cap", "out_of_rule"])
+
+    def test_own_filings_of_the_group_stay_out_of_the_new_file(self):
+        u, c = self.units()
+        u["value_sha"], u["date"] = None, "20260601"
+        prior = N.select_units(u[u["order"] == 3], c, cap=10)
+        s = N.select_with_prior(u, c, prior, cap=10, file="D-0058", own={"1": "2026-09-30", "2": "none"})
+        s = s.set_index("order")
+        self.assertEqual(s.loc[1, "status"], "queued")            # dépôt antérieur à l'entrée du déposant
+        self.assertEqual(s.loc[3, "status"], "out_of_rule")       # unité connue : état gardé
+        u.loc[u["order"] == 1, "date"] = "20261001"
+        s = N.select_with_prior(u, c, prior, cap=10, file="D-0058", own={"1": "2026-09-30"}).set_index("order")
+        self.assertEqual(s.loc[1, "status"], "own_group")
+        self.assertTrue(pd.isna(s.loc[1, "queue"]))
+
 
 class NonFiler(unittest.TestCase):
     def test_prefixes(self):

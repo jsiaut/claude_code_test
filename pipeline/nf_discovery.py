@@ -7,7 +7,8 @@ Data Sets sont retirées et scannées avec le lexique d'ensemble, pour savoir qu
 cibles une ligne nomme ; ne sont gardées que les lignes qui nomment un non-déposant.
 
     python -m pipeline.nf_discovery fetch         # archives retirées et scannées
-    python -m pipeline.nf_discovery search        # recherche plein texte des EX-10
+    python -m pipeline.nf_discovery snapshot      # état des unités avant un lexique enrichi (D-0058, point 24)
+    python -m pipeline.nf_discovery search [new]  # recherche plein texte des EX-10 ; « new » : termes non encore cherchés
     python -m pipeline.nf_discovery verify        # EX-10 tirés, règles du lexique appliquées
     python -m pipeline.nf_discovery candidates    # candidats, classement, unités, règle de lecture
     python -m pipeline.nf_discovery prepare N     # blocs des N unités retenues suivantes
@@ -178,19 +179,26 @@ def status():
 QUERY_LOG = config.WORK / "discovery" / "efts_queries_nf.jsonl"
 
 
-def search(rate=None):
+def search(rate=None, new_only=False):
     """La phrase de chaque terme de la piste, du 2017-01-01 à as_of, sur les formulaires racines
-    des EX-10 (D-0036, point 5) ; pas de Form D."""
+    des EX-10 (D-0036, point 5) ; pas de Form D. `new_only` : seuls les termes absents des résultats
+    déjà gardés sont cherchés, et leurs résultats s'ajoutent aux anciens (D-0058, point 24)."""
     cfg = config.load()
     client = net.SecClient(D.AS_OF, cfg)
     if rate:
         client.min_interval = 1.0 / rate
+    old = pd.read_parquet(EFTS_HITS) if new_only and EFTS_HITS.exists() else None
+    done = set(old["term"]) if old is not None else set()
     rows = []
     for e in nf_lexicon(cfg):
+        if e["term"] in done:
+            continue
         rows += D.harvest(client, e["term"], D.EX10_FORMS,
                           keep=lambda s: str(s.get("file_type") or "").upper().startswith("EX-10"), log=QUERY_LOG)
         print(e["term"], len(rows), client.stats["requests"], flush=True)
     df = pd.DataFrame(rows)
+    if old is not None:
+        df = pd.concat([old, df], ignore_index=True)
     df.to_parquet(EFTS_HITS, index=False)
     print("hits", len(df), "requêtes", client.stats["requests"])
 
@@ -425,12 +433,82 @@ def select_units(u, c, cap):
     return u
 
 
+UNIT_KEY = ["kind", "adsh", "doc", "value_sha"]
+
+
+def own_group_ciks(cfg=None, ref="NF:SOFTBANK"):
+    """CIK (sans zéros) -> date d'entrée des déposants du groupe non déposant lui-même : déposants
+    rattachés par extrait avec leur CIK (D-0055, point 8) et CIK propres de SoftBank (D-0058, point 4)."""
+    cfg = cfg or config.load()
+    out = {str(int(c["cik"])): c.get("valid_from") or "none" for c in cfg.get("confirmed_entities") or []
+           if c.get("group") == ref and str(c.get("cik") or "").strip().isdigit()}
+    for c in ((cfg.get("softbank_deep") or {}).get("own_ciks") or []) if ref == "NF:SOFTBANK" else []:
+        out.setdefault(str(int(c["cik"])), "none")
+    return out
+
+
+def select_with_prior(u, c, prior, cap, file, own=None):
+    """File propre des unités nouvelles (D-0058, point 24) : une unité déjà connue de `prior` (état
+    gardé sous sa clé) garde sa règle, son rang et son état ; les unités que nul terme antérieur ne
+    faisait naître forment une file à part, R1 puis R2, avec son propre plafond. Une unité nouvelle
+    tirée d'un dépôt propre du groupe (`own` : CIK -> date d'entrée), déjà lu comme texte du groupe,
+    n'entre pas dans la file (état own_group)."""
+    def key(df):
+        return ["|".join("" if v is None or v != v else str(v) for v in r)
+                for r in df[UNIT_KEY].itertuples(index=False, name=None)]
+    u = u.copy()
+    pk = dict(zip(key(prior), prior.to_dict("records")))
+    u["_k"] = key(u)
+    old = u[u["_k"].isin(pk)].copy()
+    for col in ("rule", "queue", "status"):
+        old[col] = [pk[k].get(col) for k in old["_k"]]
+    old["file"] = [pk[k].get("file") or "D-0044" for k in old["_k"]]
+    fresh = u[~u["_k"].isin(pk)].drop(columns=["_k"])
+    own = own or {}
+    mine = [str(int(r.cik)) in own and (own[str(int(r.cik))] == "none" or
+            str(r.date or "").replace("-", "") >= own[str(int(r.cik))].replace("-", ""))
+            for r in fresh.itertuples(index=False)]
+    mine = pd.Series(mine, index=fresh.index, dtype=bool)
+    new = select_units(fresh[~mine], c, cap)
+    grp = fresh[mine].copy()
+    grp["rule"], grp["queue"], grp["status"] = None, None, "own_group"
+    new = pd.concat([new, grp])
+    new["file"] = file
+    out = pd.concat([old.drop(columns=["_k"]), new], ignore_index=True)
+    return out.sort_values("order", kind="mergesort").reset_index(drop=True)
+
+
+def prior_path(cfg=None):
+    nf = ((cfg or config.load())["discovery"].get("non_filer") or {}).get("reading") or {}
+    f = nf.get("new_file") or {}
+    return (config.DB_DIR / f["prior"]) if f.get("prior") else None
+
+
+def snapshot():
+    """État des unités avant l'enrichissement du lexique, gardé une fois (D-0058, point 24)."""
+    p = prior_path()
+    if p is None:
+        raise SystemExit("aucune file nouvelle configurée (discovery.non_filer.reading.new_file)")
+    if p.exists():
+        print("état déjà gardé :", p.name)
+        return
+    pd.read_parquet(UNITS).to_parquet(p, index=False)
+    print("état gardé :", p.name, len(pd.read_parquet(p)), "unités")
+
+
 def build_candidates():
     cfg = config.load()
-    cap = int(((cfg["discovery"].get("non_filer") or {}).get("reading") or {}).get("cap_units", 300))
+    reading = (cfg["discovery"].get("non_filer") or {}).get("reading") or {}
+    cap = int(reading.get("cap_units", 300))
     m = all_mentions(cfg)
     c = rank_candidates(m)
-    u = select_units(reading_units(m, c), c, cap)
+    nf = reading.get("new_file") or {}
+    pp = prior_path(cfg)
+    if nf and pp is not None and pp.exists():
+        u = select_with_prior(reading_units(m, c), c, pd.read_parquet(pp), int(nf.get("cap_units", cap)),
+                              nf["decision"], own=own_group_ciks(cfg))
+    else:
+        u = select_units(reading_units(m, c), c, cap)
     m.to_parquet(MENTIONS, index=False)
     c.to_parquet(CANDIDATES, index=False)
     u.to_parquet(UNITS, index=False)
@@ -533,7 +611,11 @@ def prepare(n=50, rate=4.0):
     client = net.SecClient(D.AS_OF, cfg)
     client.min_interval = 1.0 / rate
     units = pd.read_parquet(UNITS)
-    units = units[units["status"] == "queued"].sort_values("queue")
+    units = units[units["status"] == "queued"]
+    if "file" in units:
+        units = units.assign(_f=(units["file"] != "D-0044").astype(int)).sort_values(["_f", "queue"])
+    else:
+        units = units.sort_values("queue")
     done = built_units()
     todo = [u for u in units.to_dict("records") if (u["adsh"], u["doc"]) not in done][:n]
     nb = 0
@@ -784,8 +866,11 @@ if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "fetch":
         fetch(only=set(sys.argv[2:]) or None)
+    elif cmd == "snapshot":
+        snapshot()
     elif cmd == "search":
-        search(rate=float(sys.argv[2]) if len(sys.argv) > 2 else None)
+        search(new_only="new" in sys.argv[2:],
+               rate=next((float(a) for a in sys.argv[2:] if a.replace(".", "", 1).isdigit()), None))
     elif cmd == "verify":
         verify()
     elif cmd == "candidates":

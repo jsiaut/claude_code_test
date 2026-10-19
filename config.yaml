@@ -439,11 +439,77 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
       - {term: "Lambda Inc.", ref: "NF:LAMBDA", case_sensitive: true}
       - {term: "Lambda Labs", ref: "NF:LAMBDA", case_sensitive: true}
       - {term: Samsung, ref: "NF:SAMSUNG"}                         # D-0057, point 7
+      # D-0058, point 24 : noms distinctifs des entités rattachées à NF:SOFTBANK (point 23), casse exacte,
+      # mots entiers, avec leur date d'entrée ; jamais « Arm », « Ampere », « SVF », « Vision Fund », « SBG »
+      - {term: "SVF II", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SVF Endurance", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SVF Excalibur", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SVF Fast", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SVF Swift", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SVF Yellow", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SVF Sponsor III", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SVF Sponsor LLC", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SB Northstar", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SB Global Advisers", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SB Investment Advisers (US)", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Silver Brick Management", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Star Beacon", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Stellar Beacon", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Brightstar US", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Starburst I", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Galaxy Investment Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Kronos I (UK)", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Kronos II", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Kronos Holdco", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SB Foundation Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "LDH Sponsor", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Latin America Digital Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SBLA Latin America Fund", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SBLA Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SBLA Investments", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SLA Investments IV", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Phoenix SPAC Holdco", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Skywalk Finance", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Tsubasa Corporation", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Backgammon Investment", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SB Management Limited", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Sunlight Investment Corp", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SB WW Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "StarBright WW", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SB Group US", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "LY Corporation", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "PayPay", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Berkshire Grey", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2023-07-20"}
+      - {term: "SB Energy", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "SBE Global", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Milam County DC", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Pelicans Jaw", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Aratina", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "IP Backlog Land Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Holville Solar", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2026-09-01"}
+      - {term: "Paris Farm Solar", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2026-09-01"}
+      - {term: "Angiola East", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2026-09-01"}
+      - {term: "Ben Milam Solar", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2026-09-01"}
+      - {term: "Arm Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "ARM Holdings", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Arm Limited", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "ARM Limited", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Arm Technology Israel", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Arm France", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Acetone Limited", ref: "NF:SOFTBANK", case_sensitive: true}
+      - {term: "Ampere Computing", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2025-11-30"}
+      - {term: "DreamBig", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2026-07-01"}
+      - {term: "DigitalBridge", ref: "NF:SOFTBANK", case_sensitive: true, valid_from: "2026-09-30"}
+      - {term: "Duncan Holdco", ref: "NF:SOFTBANK", case_sensitive: true}
     search_forms: ex10       # recherche plein texte des EX-10 seulement ; pas de Form D
     reading:                 # règle fixée avant de voir les candidats
       r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
       r2_documented_amount: latest   # montant documenté : notes du dépôt le plus récent
       cap_units: 300         # au-delà, arrêt et rendement présenté
+      new_file:              # D-0058, point 24 : unités que nul terme antérieur ne faisait naître, file propre
+        decision: D-0058
+        prior: nf_discovery_units_before_d0058.parquet     # état des unités avant l'enrichissement (db/)
+        cap_units: 300
     own_filings:             # document d'enregistrement public de la tête d'un groupe non déposant (D-0054, point 13)
       - {ref: "NF:NSCALE", cik: "2110365", filer: "NSCALE Ltd", accession: "0001193125-26-395475", form: S-1,
          filed: "2026-09-18", primary: ck0002110365-20260918.htm, entity_list: ck0002110365-ex21_1.htm,

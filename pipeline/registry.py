@@ -276,6 +276,8 @@ MEASURES = {
     "documented_path": (2, [NONE], "window", "14"),
     # §14 Form D (bloc form_d) : montant vendu par offre, sur le dernier dépôt connu
     "form_d_offering_amount": (2, [NONE], "instant", "14"),
+    # D-0058, volet F : valorisation des obligations de SoftBank déclarée par des fonds (Form N-PORT Data Sets)
+    "nport_price_to_par": (2, [NONE], "instant", "14"),
     # annexes
     "annex_e_outcome": (1, [NONE], "fiscal_year", "E"),
     "fragility_event": (1, [NONE], "quarter", "F"),
