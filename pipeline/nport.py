@@ -304,6 +304,35 @@ def cells(as_of, subject="NF:SOFTBANK"):
     return out
 
 
+def exclusions(as_of):
+    """Archives de la période non tirées ou non scannées, et archives scannées avant qu'un LEI ne soit
+    relevé (positions possiblement manquées) : visibles dans les exclusions (§11)."""
+    cfg = config.load()
+    n = cfg_nport(cfg)
+    if not n or not cache.other_path(*PAGE).exists():
+        return []
+    m = manifest()
+    leis = set()
+    for r in m.values():
+        leis |= set(r.get("leis_found") or [])
+    out = []
+
+    def ex(key, reason, detail):
+        out.append({"exclusion_key": f"{reason}:nport:{key}", "item_kind": "period", "item_key": f"nport:{key}",
+                    "reason": reason, "detail": detail, "group_id": "NF:SOFTBANK", "accession": None,
+                    "content_key": None, "as_of": as_of})
+    for a in in_period(archive_list(), n["period"][0], n["period"][1]):
+        r = m.get(a["name"])
+        if r is None:
+            ex(a["name"], "not_processed", f"archive des Form N-PORT Data Sets non tirée ({a['filed_from']} au {a['filed_to']})")
+        elif r.get("status") == "not_collected":
+            ex(a["name"], "not_collected", f"archive des Form N-PORT Data Sets non tirée : {r.get('reason')}")
+        elif set(r.get("leis_applied") or []) | set(r.get("leis_found") or []) < leis:
+            ex(a["name"], "not_processed", "archive scannée avant que tous les LEI de SoftBank ne soient relevés : "
+               "positions sous un autre nom possiblement manquées")
+    return out
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "page":

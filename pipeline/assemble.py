@@ -289,6 +289,15 @@ def run(as_of):
         fcells, formd_rels, formd_excl, fst = formd.build(reg, as_of, cfg, p0)
         cells += fcells
         stats["form_d"] = fst
+    # volet F de D-0058 : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
+    nport_excl = []
+    if "nport" in scope:
+        from . import nport
+        ncells = nport.cells(as_of)
+        cells += ncells
+        nport_excl = nport.exclusions(as_of)
+        stats["nport"] = {"cells": len(ncells), "securities": len({c["breakdown_key"] if isinstance(c, dict) else c.breakdown_key
+                                                                   for c in ncells})}
     stats["pairs"] = {f"{s}->{c}": {"structure": e["structure"], "linkage": e["linkage"], "conclusion": e["conclusion"],
                                     "edges": len(e["pair"].edges),
                                     "active_quarters": sum(1 for v in e["F"]["as_known"]["exposure_outstanding"].values()
@@ -367,7 +376,7 @@ def run(as_of):
     mt_excl += sixk.exclusions(as_of)
     # dépôts propres de SoftBank et déposants contrôlés (D-0058, volets B et C) : plafonds et formulaires non lus
     mt_excl += sb_own.exclusions(as_of)
-    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + \
+    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + nport_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
 
