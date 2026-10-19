@@ -74,18 +74,18 @@
 | 2022-12-31 | 8,6 % | 9,4 % | 0,57 x | n.d. (terme manquant) | 12 581 M$ | 10 941 M$ | 12 581 M$ | 26 j | n.d. (non publié) | 1,30 x | 1,57 x |  |
 | 2023-03-31 | 9,4 % | 9,9 % | 2,97 x | n.d. (terme manquant) | -9 419 M$ | -10 799 M$ | -9 419 M$ | 27 j | n.d. (non publié) | 1,22 x | 1,49 x | F2 |
 | 2023-06-30 | 10,8 % | 10,7 % | 0,70 x | n.d. (terme manquant) | 5 021 M$ | 3 801 M$ | 5 021 M$ | 27 j | n.d. (non publié) | 1,07 x | 1,36 x |  |
-| 2023-09-30 | 12,6 % | 10,3 % | 0,59 x | n.d. (terme manquant) | 8 738 M$ | 7 733 M$ | 8 738 M$ | 28 j | n.d. (non publié) | ↯ | ↯ |  |
+| 2023-09-30 | 12,6 % | 10,3 % | 0,59 x | n.d. (terme manquant) | 8 738 M$ | 7 733 M$ | 7 488 M$ | 28 j | n.d. (non publié) | ↯ | ↯ |  |
 | 2023-12-31 | 13,9 % | 11,8 % | 0,34 x | n.d. (terme manquant) | 27 877 M$ | 27 098 M$ | 27 877 M$ | 28 j | n.d. (non publié) | 0,78 x | 1,03 x |  |
-| 2024-03-31 | 12,5 % | 12,5 % | 0,79 x | n.d. (terme manquant) | 4 064 M$ | 3 294 M$ | 4 064 M$ | 30 j | n.d. (non publié) | 0,69 x | 0,90 x |  |
+| 2024-03-31 | 12,5 % | 12,5 % | 0,79 x | n.d. (terme manquant) | 4 064 M$ | 3 294 M$ | 1 314 M$ | 30 j | n.d. (non publié) | 0,69 x | 0,90 x |  |
 | 2024-06-30 | 10,1 % | 12,3 % | 0,70 x | n.d. (terme manquant) | 7 661 M$ | 7 123 M$ | 7 661 M$ | 31 j | n.d. (non publié) | 0,60 x | 0,85 x |  |
 | 2024-09-30 | 11,0 % | 11,9 % | 0,87 x | n.d. (terme manquant) | 3 351 M$ | 2 949 M$ | 3 351 M$ | 30 j | n.d. (non publié) | 0,54 x | 0,81 x |  |
-| 2024-12-31 | 10,5 % | 11,0 % | 0,61 x | n.d. (terme manquant) | 17 802 M$ | 17 469 M$ | 17 802 M$ | 27 j | n.d. (non publié) | 0,48 x | 0,74 x |  |
+| 2024-12-31 | 10,5 % | 11,0 % | 0,61 x | n.d. (terme manquant) | 17 802 M$ | 17 469 M$ | 16 502 M$ | 27 j | n.d. (non publié) | 0,48 x | 0,74 x |  |
 | 2025-03-31 | 8,6 % | 10,1 % | 1,47 x | n.d. (terme manquant) | -8 004 M$ | -8 414 M$ | -8 004 M$ | 31 j | n.d. (non publié) | 0,46 x | 0,72 x | F2 |
-| 2025-06-30 | 13,3 % | 10,9 % | 0,99 x | n.d. (terme manquant) | 332 M$ | -79 M$ | 332 M$ | 31 j | n.d. (non publié) | 0,41 x | 0,71 x |  |
+| 2025-06-30 | 13,3 % | 10,9 % | 0,99 x | n.d. (terme manquant) | 332 M$ | -79 M$ | -968 M$ | 31 j | n.d. (non publié) | 0,41 x | 0,71 x | F2 |
 | 2025-09-30 | 13,4 % | 11,5 % | 0,99 x | n.d. (terme manquant) | 430 M$ | 79 M$ | 430 M$ | 31 j | n.d. (non publié) | 0,40 x | 0,71 x |  |
-| 2025-12-31 | 13,6 % | 12,4 % | 0,73 x | n.d. (terme manquant) | 14 937 M$ | 14 552 M$ | 14 937 M$ | 29 j | n.d. (non publié) | 0,47 x | 0,70 x |  |
-| 2026-03-31 | 16,6 % | 14,2 % | 1,70 x | n.d. (terme manquant) | -18 171 M$ | -18 639 M$ | -18 171 M$ | 37 j | n.d. (non publié) | 0,78 x | 0,67 x | F2 |
-| 2026-06-30 | 19,6 % | 15,8 % | 1,19 x | n.d. (terme manquant) | -8 821 M$ | -9 216 M$ | -8 821 M$ | 40 j | n.d. (non publié) | 0,78 x | 0,65 x | F1, F2 |
+| 2025-12-31 | 13,6 % | 12,4 % | 0,73 x | n.d. (terme manquant) | 14 937 M$ | 14 552 M$ | 13 537 M$ | 29 j | n.d. (non publié) | 0,47 x | 0,70 x |  |
+| 2026-03-31 | 16,6 % | 14,2 % | 1,70 x | n.d. (terme manquant) | -18 171 M$ | -18 639 M$ | -33 171 M$ | 37 j | n.d. (non publié) | 0,78 x | 0,67 x | F2 |
+| 2026-06-30 | 19,6 % | 15,8 % | 1,19 x | n.d. (terme manquant) | -8 821 M$ | -9 216 M$ | -32 521 M$ | 40 j | n.d. (non publié) | 0,78 x | 0,65 x | F1, F2 |
 
 ## Meta (META)
 

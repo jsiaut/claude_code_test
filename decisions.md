@@ -1814,7 +1814,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - aucune observation pour TeraWulf, Meta, Akamai, Alphabet, Apollo ni Intel ;
   - 145 observations nomment un laboratoire en contrepartie (Anthropic 88, OpenAI 57), dont 76 avec famille et montant. 32 clés d'instrument, dont 17 nouvelles ;
   - principaux faits nouveaux, Amazon et Anthropic (aucune arête avant) :
-    - obligations convertibles : 8,0 Md$ du T3 2023 au T4 2025 ; les tranches sont des lignes descriptives, le cumul porte le montant ;
+    - obligations convertibles : 8,0 Md$ du T3 2023 au T4 2025, en cinq souscriptions trimestrielles qui portent le montant (point 11) ;
     - conversions et gains reclassés, réévaluations sur prix observables ;
     - actions de préférence au bilan : 14,8 Md$ au 31 décembre 2025, 92,5 Md$ au 30 juin 2026 ;
     - séries G et H de 5,0 Md$ chacune, facilité d'au plus 20,0 Md$ ;
@@ -1849,3 +1849,43 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - une entité nouvelle, OpenAI Global, LLC, désignée « OpenAI » par le 10-Q de Microsoft du 29 octobre 2025 (règle B). Traitement indéterminé, sans borne ;
   - OpenAI, Inc. n'est nommée que dans une clause type du contrat de placement de CoreWeave, sans ligne : pas d'entrée ;
   - aucune entité ni aucun alias nouveaux pour Anthropic. Le test `test_lab_entities` vérifie ces rattachements.
+
+  (11) Intégration et résultats (2026-10-19) :
+  - corrections faites à l'intégration :
+    - 21 doublons exacts retirés de 15 fichiers de passes antérieures (D-0054, D-0056, D-0058). La citation de chacun ne figure qu'une fois dans son bloc ;
+    - catégories de lien posées sur deux lignes déjà lues (D-0020). L2 pour la facilité d'Amazon : ses montants deviennent disponibles à mesure qu'AWS livre la capacité de calcul (10-Q du T1 2026). L5 pour les 350,0 M$ d'actions que CoreWeave remet à OpenAI au titre du contrat-cadre (prospectus du 31 mars 2025) ;
+    - versements cumulés de Microsoft à OpenAI (11,6 à 11,9 Md$, selon le trimestre) : ils passent en état au coût (base `cost`, nature `other`). La mesure les additionnait comme quatre apports, soit 47,0 Md$ d'exposition au lieu de 11,9 Md$. F2 les retirait aussi à chaque trimestre, d'où un faux événement F2 de Microsoft au 31 décembre 2025 ;
+    - chez Amazon, les cinq souscriptions trimestrielles d'obligations d'Anthropic (1,25, 2,75, 1,3, 1,3 et 1,4 Md$) deviennent des flux : 19 lignes, aux mêmes montants et mêmes dates d'un dépôt à l'autre. Deviennent descriptives les deux lignes du cumul de 8,0 Md$, ainsi que la série G annoncée après la clôture du T1 2026, sinon comptée deux fois ;
+    - réévaluations d'Amazon sur prix observables (5 lignes) : elles passent en nature `other`, sans base de juste valeur. La plus récente tenait lieu de juste valeur des actions de préférence, ce qui ajoutait 50,5 Md$ à l'exposition. Les gains de conversion (10 lignes) perdent aussi leur base de juste valeur ;
+    - code (`counterparty_exposure`) : une réévaluation sur prix observables devient un flux du résultat, comme un gain de mise en équivalence (`FLOW_ONLY`) ; un cumul versé publié au coût est un état, la dernière valeur connue. Les réévaluations de ClickHouse chez Nebius (nature `other`), additionnées jusque-là comme des apports, sortent aussi de l'exposition. Test `test_exposure_labs` ;
+  - noms rattachés par extrait après le premier réassemblage : « Fluidstack », alias de Fluidstack Ltd. (10-K de Hut 8), et « Sanmina », alias de Sanmina Corporation (10-K d'AMD). « Uber » reste en attente, faute d'extrait qui le définit ;
+  - extraction refaite des BDC Data Sets (D-0043, point 14) : 2 100 dépôts, aucun changement (3 536 faits, 1 031 positions, 61 BDC). Troisième réassemblage après les corrections ;
+  - OpenAI : 5 entités et 115 arêtes (82 avant D-0059), dont 69 à montant (46). Contreparties : Microsoft 29, CoreWeave 24, Amazon 21, Cerebras 19, AMD 11, SoftBank 8, NVIDIA 3 ;
+  - Anthropic : 2 entités et 73 arêtes (8), dont 56 à montant (2). Contreparties : Amazon 64, TeraWulf 3, Akamai 3, Broadcom 1, Nscale 1, SpaceX 1 ;
+  - expositions au 30 juin 2026, du point de vue du fournisseur (jamais un fait comptable du laboratoire) :
+    - Amazon sur Anthropic : 18,0 Md$ versés au coût, 92,5 Md$ d'actions de préférence au bilan, 97,9 Md$ de juste valeur des obligations et 16,4 Md$ d'engagements (facilité restante de 15,0 Md$, plus l'engagement de 1,4 Md$ de 2025, déjà versé) ;
+    - Amazon sur OpenAI : 28,7 Md$ versés et au bilan, et 50,0 Md$ d'engagements, versés en juillet 2026 ;
+    - Microsoft sur OpenAI : 11,9 Md$ versés et 13 Md$ d'engagements ;
+  - dépendance de revenu documentée de Microsoft envers OpenAI : 7,3 % du revenu de l'exercice 2026 (24,1 Md$) ;
+  - paires : 240 (236).
+    - Nouvelles : Amazon → Anthropic, SpaceX → Anthropic, ainsi que Hut 8 → Fluidstack Ltd. et Cipher → Fluidstack Ltd. par l'alias ;
+    - conclusions : causalité non établie 160 (158), achats réciproques seulement 44, relation commerciale doublée d'un financement 26, dépendance documentée 10 (8) ;
+    - Amazon → Anthropic (L2) et CoreWeave → OpenAI (L5) passent en dépendance documentée. Microsoft → OpenAI reste une relation commerciale doublée d'un financement, sans pièce de lien ;
+  - paires à financement documenté : 86 (84). S'y ajoutent Amazon → Anthropic et Amazon → OpenAI ;
+  - cycles (E.6) : 106 (103). Trois nouveaux :
+    - Amazon → Anthropic → Amazon (longueur 2, dépendance documentée) ;
+    - Microsoft → OpenAI → Microsoft (longueur 2, relation commerciale doublée d'un financement) ;
+    - CoreWeave → OpenAI → Microsoft → CoreWeave (longueur 3, relation commerciale doublée d'un financement) ;
+  - E.7 : 170 issues (166), dont 56 % indéterminées au point de tête. Discrimination possible ;
+  - annexe F : un événement nouveau, F2 d'Amazon au 30 juin 2025. Le flux après financement des contreparties devient négatif avec la souscription de 1,3 Md$ d'obligations d'Anthropic ;
+  - rendus :
+    - tables : documents 25 104 (25 104), faits 1 581 051 (1 581 051), observations 29 264 (28 950), entités 3 576 (3 569), liens 10 984 (10 869), mesures 171 569 (171 024), contrôles 69 950 (69 946), exclusions 31 430 (31 402) ;
+    - 14 077 nombres publiés (14 035) ;
+    - exclusions : `not_processed` 27 899 (27 899), `out_of_scope` 1 098 (1 069), `pending_entity` 586 (587) ;
+  - contrôles, vue `as_known` : `mismatch` 1 833, `not_testable` 1 340 (1 336), `ok` 29 886, `tautological` 1 393 ;
+  - lacunes déclarées :
+    - les désignations « an affiliate of OpenAI » et voisines restent en attente (D-0032, point 5). Les baux et les garanties de NVIDIA et de SB Energy restent donc hors des agrégats d'OpenAI ;
+    - « Uber » reste en attente ;
+    - un plafond d'engagement reste un état tant qu'aucune ligne plus récente de l'instrument ne le remplace. Les engagements déjà versés d'Amazon restent donc comptés dans les sorties contractuelles ;
+    - Microsoft ne publie que des cumuls : le versement de chaque trimestre n'est pas connu, et F2 ne retire rien pour OpenAI ;
+  - tests unitaires : 204, tous passés.

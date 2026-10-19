@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..55ab93a 100644
+index 1378604..3549bab 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,180 @@ user_agent:
@@ -463,7 +463,7 @@ index 1378604..55ab93a 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +397,766 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +397,771 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -903,6 +903,8 @@ index 1378604..55ab93a 100644
 +  # D-0058, intégration (point 29) : noms des lignes encore en attente après le premier réassemblage, rattachés par extrait
 +  - {name: "OpenAI Infra Holdings, LLC", group: LAB:OPENAI, treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0058, block: d7b37b7201be49c270643aae60fe597a1daeca43498a0828966cc0284e1dca16, accession: 0001628280-26-062846, quote: "OpenAI Infra Holdings, LLC (\"OAI\"), an affiliate of OpenAI, Inc.", membership_note: "« an affiliate of OpenAI, Inc. » (règle A de D-0044, point 7) ; traitement indéterminé, faute des mots de D-0050, point 4 ; porteur des bons de souscription de SB Energy"}
 +  - {name: "Treasure Data", group: "NF:SOFTBANK", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0058, block: 4f29ef9bee4f94a7953e7925116690fdb053cca72a6bedadc98e49da150fbf46, accession: 0001973239-24-000012, quote: "we decided to distribute or sell certain components of our IoT business to subsidiaries of SoftBank Group. In June 2021, we distributed all of the equity interests in Treasure Data to our shareholders", membership_note: "composante de l'activité IoT d'Arm, distribuée en juin 2021 aux actionnaires d'Arm, filiales de SoftBank Group (règle A) ; traitement indéterminé, faute des mots de D-0050, point 4 ; le prêt de 50 M$ d'un membre du groupe devient interne"}
++  # D-0059, volet 2 : entités des laboratoires nommées par les lignes du corpus des laboratoires, rattachées par extrait
++  - {name: "OpenAI Global, LLC", group: LAB:OPENAI, treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0059, block: 95c4a1c6a31eb2c3c0b5c18a84c91d303cdb72b69fa797f874cca812e520ad59, accession: 0001193125-25-256321, quote: "OpenAI Global, LLC (\"OpenAI\")", membership_note: "désignée par l'alias confirmé « OpenAI » du laboratoire (règle B de D-0044, point 7), ici et dans le rapport de gestion du même 10-Q (bloc de57d6f6c69c) ; traitement indéterminé, faute des mots de D-0050, point 4 ; entité qui porte la participation mise en équivalence de Microsoft et ses engagements de 13 Md$ avant la recapitalisation d'octobre 2025"}
 +  - {name: "Galaxy Digital Holdings LP", group: GLXY, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: "D-0049, D-0053", block: 86499fdf9bed7ed930064847f42630a1fd49588078c992c466c742d69174e85f, accession: 0001859392-25-000088, quote: "Galaxy is organized as an Up-C structure, with a publicly traded holding company (Pubco) above an operating partnership, Galaxy Digital Holdings LP (GDH LP)", membership_note: "même bloc : « Galaxy Digital Inc. (Pubco) serves as the general partner and consolidates GDH LP for financial reporting » ; filiale du groupe GLXY depuis l'ajout de Galaxy (D-0053, point 7), contrepartie Galaxy Digital Inc. auparavant (D-0049, points 4 et 13)"}
 +  - {name: "Galaxy Helios I LLC", group: GLXY, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: "D-0049, D-0053", block: 4b2bab56709ec26e02cb2429f78713a8399db6ddfd48d6ee9052b341806237bf, accession: 0001859392-26-000091, quote: "Galaxy Helios I LLC (\"Galaxy Helios I\"), a wholly owned subsidiary of GDH LP", membership_note: "GDH LP : Galaxy Digital Holdings LP, consolidée par Galaxy Digital Inc. (bloc 86499fdf9bed)"}
 +  - {name: "Galaxy Helios Data Centers II LLC", group: GLXY, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: "D-0049, D-0053", block: a62a90628028bbc6a59d7a44c9c22a6ef3b760b91554e43e3cb1441b7a89f4bd, accession: 0001859392-26-000079, quote: "Galaxy Helios Data Centers II LLC (\"Issuer\"), an indirect wholly owned subsidiary of Galaxy Digital Inc.", membership_note: "filiale du groupe GLXY depuis l'ajout de Galaxy (D-0053, point 7), rattachée à la contrepartie Galaxy Digital Inc. auparavant (D-0049, point 13)"}
@@ -1111,6 +1113,9 @@ index 1378604..55ab93a 100644
 +  - {alias: "OAI", of: "OpenAI Infra Holdings, LLC", decision: D-0058, block: d7b37b7201be49c270643aae60fe597a1daeca43498a0828966cc0284e1dca16, accession: 0001628280-26-062846, quote: "OpenAI Infra Holdings, LLC (\"OAI\"), an affiliate of OpenAI, Inc."}
 +  - {alias: "Sprint", of: "Sprint Corporation", decision: D-0058, block: 08950660f7e3850ebe954c2d0abc2f421948ed571d7b2dc7f3eb536fb12c5c3d, accession: 0001193125-18-140794, quote: "Sprint Corporation, a Delaware corporation (\"Sprint\")"}
 +  - {alias: "NVIDIA COR", of: "NVIDIA Corporation", decision: D-0058, block: fef66543a793600e2dc52a2c9a5ae90c53208194a24eab694e7715aa201ee97b, accession: 0001062993-25-016862, quote: "NVIDIA CORPORATION | COM | 67066G104", note: "la même table d'informations du 13F porte « NVIDIA COR | COM | 67066G104 » : même CUSIP, nom tronqué"}
++  # D-0059, intégration : noms des lignes encore en attente après le premier réassemblage, rattachés par extrait
++  - {alias: "Fluidstack", of: "Fluidstack Ltd.", decision: D-0059, block: 94d9562574842201a1211289c5fc130ca7bec4113245ad4bcb7e15e87f5e1084, accession: 0001104659-26-019392, quote: "Fluidstack Ltd. (\"Fluidstack\")", note: "10-K de Hut 8 (exercice 2025), partenariat avec Anthropic et bail de River Bend ; les filiales américaines de Fluidstack (Fluidstack USA I à IV Inc.) restent des entités propres, faute d'extrait qui les rattache"}
++  - {alias: "Sanmina", of: "Sanmina Corporation", decision: D-0059, block: aafff1fc55f655dd829b763f953daed81422623d280539fda9c9aaf992c89df8, accession: 0000002488-26-000018, quote: "Sanmina Corporation (Sanmina)", note: "10-K d'AMD (exercice 2025), cession de la fabrication de ZT Systems"}
 +  - {alias: "CoreWeave", of: "CoreWeave, Inc.", decision: D-0049, block: 34ebaac05d366d2aa5be55845d9c635769615eff5f3492f442531efa372aae66, accession: 0001859392-26-000091, quote: "CoreWeave, Inc. (\"CoreWeave\")"}
 +  - {alias: "Ekso", of: "Ekso Bionics Holdings, Inc.", decision: D-0049, block: 95dedecfa1667a8512a704ccd0bd9826c7003b987639ff709739e8f29a10298c, accession: 0001144879-26-000048, quote: "Ekso Bionics Holdings, Inc. (\"Ekso\")"}
 +  - {alias: "Sai Computing", of: "Sai Computing, LLC", decision: D-0049, block: e7b28ca388d99d6cfc3443fbd2bcb24600ea056640e015fdea0397c977f7776e, accession: 0001144879-23-000163, quote: "Sai Computing, LLC (\"Sai Computing\")"}
@@ -1230,7 +1235,7 @@ index 1378604..55ab93a 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1218,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1223,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -1238,7 +1243,7 @@ index 1378604..55ab93a 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1234,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1239,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1247,7 +1252,7 @@ index 1378604..55ab93a 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1423,73 @@ annex_e:
+@@ -318,6 +1428,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1321,7 +1326,7 @@ index 1378604..55ab93a 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1542,42 @@ annex_f:
+@@ -370,6 +1547,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1364,7 +1369,7 @@ index 1378604..55ab93a 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1597,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1602,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1375,7 +1380,7 @@ index 1378604..55ab93a 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1650,238 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1655,255 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1590,6 +1595,23 @@ index 1378604..55ab93a 100644
 +    exclude:                          # amendement du point 21, avant toute lecture
 +      - {forms: ["DRS", "DRS/A"], reason: "projet confidentiel soumis, non déposé (SPEC §2.1, submitted_draft) : il n'entre dans aucune mesure ; la version publique déposée se lit"}
 +    cap: 60
++    dedupe: true
++    skip_read: true
++    skip_risk_factors: true
++    order: recent_first
++  labs_corpus:                        # D-0059, volet 1 : documents des groupes déjà en cache qui nomment un laboratoire
++    decision: D-0059
++    source: corpus
++    groups: all
++    period: ["2017-01-29", "2026-10-07"]   # début du texte (discovery.period_start) à l'as_of
++    terms:
++      - {rx: '\bOpenAI\b|\bOPENAI\b'}
++      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)'}   # « Anthropic Capital » : gérant homonyme (D-0041)
++    # comptés sans qualifier : « Open AI » (expression générique), « ChatGPT », « Claude » (prénom possible),
++    # « Stargate » (servi aux volets A et E de D-0058)
++    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
++                  '\bStargate\b']
++    cap: 300
 +    dedupe: true
 +    skip_read: true
 +    skip_risk_factors: true
