@@ -12,6 +12,9 @@ Chaque pièce se tire une fois, en cache, par le client SEC journalisé.
     python -m pipeline.montages fetch <montage>     # pièces en cache, relevés de portefeuille comptés
     python -m pipeline.montages corpus <montage>    # montage de corpus : documents des groupes déjà en cache
     python -m pipeline.montages prepare             # fenêtres de tous les montages -> db/montages_blocks.jsonl
+    python -m pipeline.montages prepare <montage>   # ce montage seul ; les blocs des autres restent tels quels
+
+Les formulaires de `count_only_forms` (Form D du montage Stargate, D-0058, point 7) sont comptés, non tirés.
 
 Un montage de corpus (`source: corpus`, D-0058, point 3) ne cherche ni ne tire rien : ses pièces sont
 les documents des groupes déjà en cache. Trois options : `skip_read` (une fenêtre dont chaque paragraphe
@@ -136,10 +139,14 @@ def fetch(mid, rate=4.0):
     start, end = spec["period"]
     client = _client(rate)
     hits = json.loads(hits_path.read_text())
-    docs, holdings = {}, {}
+    docs, holdings, counted = {}, {}, {}
+    count_only = set(spec.get("count_only_forms") or [])
     for h in hits:
         if h["form"] in HOLDINGS_FORMS:
             holdings[h["form"]] = holdings.get(h["form"], 0) + 1
+            continue
+        if h["form"] in count_only:          # formulaires d'un autre bloc (Form D : bloc `form_d`), comptés, non tirés
+            counted[h["form"]] = counted.get(h["form"], 0) + 1
             continue
         if not h.get("file"):
             continue
@@ -170,12 +177,15 @@ def fetch(mid, rate=4.0):
         rows.append({**d, "queries": ";".join(sorted(d["queries"])), "state": state})
     pd.DataFrame(rows).to_parquet(docs_path, index=False)
     info = {"holdings_not_read": holdings, "requests": client.stats}
+    if count_only:
+        info["forms_not_read"] = counted
     if mid == FIRST:
         info["owl_name"] = names.get(str(spec["periodic"][0]).zfill(10))
     else:
         info["periodic_names"] = names
     info_path.write_text(json.dumps(info))
-    print(len(rows), "pièces ;", sum(r["state"] == "fetched" for r in rows), "tirées ; relevés écartés", holdings)
+    print(len(rows), "pièces ;", sum(r["state"] == "fetched" for r in rows), "tirées ; relevés écartés", holdings,
+          *(["; formulaires comptés", counted] if count_only else []))
 
 
 def corpus(mid):
@@ -390,13 +400,24 @@ def _prepare_one(mid, spec, groups_by_cik):
     return out
 
 
-def prepare():
-    """Blocs des fenêtres de chaque montage, dans l'ordre des dates de dépôt ; plafond par montage."""
+def merge_catalog(existing, new, only):
+    """Catalogue après la préparation d'un seul montage : les blocs des autres montages restent tels quels,
+    dans leur ordre ; ceux du montage préparé sont remplacés."""
+    return [b for b in existing if b.get("montage") != only] + list(new)
+
+
+def prepare(only=None):
+    """Blocs des fenêtres de chaque montage, dans l'ordre des dates de dépôt ; plafond par montage. Avec
+    `only`, seul ce montage est préparé : les blocs déjà au catalogue pour les autres ne bougent pas."""
     p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
     groups_by_cik = {str(cik).zfill(10): m["group"] for cik, m in p0["meta"].items()}
     out = []
-    for mid, spec in specs().items():
-        out += _prepare_one(mid, spec, groups_by_cik)
+    if only:
+        existing = [json.loads(x) for x in open(CATALOG, encoding="utf-8")] if CATALOG.exists() else []
+        out = merge_catalog(existing, _prepare_one(only, specs()[only], groups_by_cik), only)
+    else:
+        for mid, spec in specs().items():
+            out += _prepare_one(mid, spec, groups_by_cik)
     tmp = CATALOG.with_suffix(".tmp")
     with open(tmp, "w", encoding="utf-8") as fh:
         for b in out:
@@ -434,6 +455,9 @@ def exclusions(as_of):
         for form, n in sorted((info.get("holdings_not_read") or {}).items()):
             ex(f"holdings:{form}", "out_of_scope",
                f"{n} résultat(s) de la recherche plein texte en {form} : relevés de portefeuille, non lus (D-0046, point 8)")
+        for form, n in sorted((info.get("forms_not_read") or {}).items()):
+            ex(f"forms:{form}", "out_of_scope",
+               f"{n} résultat(s) de la recherche plein texte en {form} : formulaire d'un autre bloc (`form_d`), compté, non tiré ({dec})")
         for d in info.get("no_window") or []:
             detail = ("aucun paragraphe ne nomme un terme qualifiant hors du nom du déposant "
                       "(« Beignet », « Richland Parish », « Meta », « Blue Owl » ; D-0046, points 8 et 9)") if mid == FIRST else \
@@ -470,6 +494,6 @@ if __name__ == "__main__":
     elif cmd == "corpus":
         corpus(sys.argv[2])
     elif cmd == "prepare":
-        prepare()
+        prepare(sys.argv[2] if len(sys.argv) > 2 else None)
     else:
         print(__doc__)

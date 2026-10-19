@@ -165,3 +165,24 @@ class CorpusSoftBank(unittest.TestCase):
         sp = S["softbank_corpus"]
         a = {"filer": "X", "form": "10-Q", "file": "a", "file_date": "2025-01-01", "adsh": "1"}
         self.assertLess(M._order_key(dict(a, file_date="2026-03-11"), 0, sp), M._order_key(a, 0, sp))
+
+
+class Stargate(unittest.TestCase):
+    """D-0058, points 7 et 20 : « Stargate » en casse exacte, hors des pièces d'un déposant à son nom ; Form D
+    comptés, non tirés ; préparation d'un seul montage."""
+
+    def test_terms(self):
+        sp = S["stargate"]
+        rx = M.qualify_rx("Oracle Corporation", sp)
+        self.assertTrue(rx.search("the Stargate project with OpenAI and SoftBank"))
+        self.assertIsNone(rx.search("a stargate-themed fund"))
+        self.assertIsNone(rx.search("STARGATE"))
+        self.assertIsNone(M.qualify_rx("Blue Owl GP Stakes Stargate LP", sp))
+        self.assertEqual(sp["count_only_forms"], ["D", "D/A"])
+        self.assertEqual((sp["cap"], sp["order"]), (60, "recent_first"))
+
+    def test_prepare_one_montage_keeps_the_others(self):
+        old = [{"content_key": "a", "montage": "meta_hyperion"}, {"content_key": "b", "montage": "stargate"},
+               {"content_key": "c", "montage": "softbank_corpus"}]
+        new = [{"content_key": "d", "montage": "stargate"}]
+        self.assertEqual([b["content_key"] for b in M.merge_catalog(old, new, "stargate")], ["a", "c", "d"])

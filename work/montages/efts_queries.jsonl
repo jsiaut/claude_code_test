@@ -8,3 +8,7 @@
 {"montage": "galaxy_helios", "query": "\"Helios\" \"CoreWeave\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 6202, "status": "complete"}
 {"montage": "galaxy_helios", "query": "\"Galaxy Digital\"", "cik": "0001769628", "start": "2025-01-01", "end": "2026-10-07", "total": 6, "status": "complete"}
 {"montage": "galaxy_helios", "query": "\"CoreWeave\"", "cik": "0001859392", "start": "2025-01-01", "end": "2026-10-07", "total": 46, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"OpenAI\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 52, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"SoftBank\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 26, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"Oracle\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 49, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"data center\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 105, "status": "complete"}

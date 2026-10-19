@@ -1603,4 +1603,23 @@ montages:
     skip_read: true
     skip_risk_factors: true
     order: recent_first
+  stargate:                           # D-0058, points 7 et 20 : montage Stargate, du plus récent au plus ancien
+    decision: D-0058
+    period: ["2025-01-01", "2026-10-07"]
+    queries:
+      - {q: '"Stargate" "OpenAI"'}
+      - {q: '"Stargate" "SoftBank"'}
+      - {q: '"Stargate" "Oracle"'}
+      - {q: '"Stargate" "data center"'}
+    terms:
+      - {rx: '\bStargate\b', owner: ["stargate"]}     # casse exacte ; jamais dans une pièce d'un déposant à son nom
+    noted_terms: ['\bStargate\b', '\bOpenAI\b', '\bSoftBank\b', '\bOracle\b', '\bMGX\b']
+    count_only_forms: ["D", "D/A"]    # bloc `form_d`
+    exclude:                          # amendement du point 21, avant toute lecture
+      - {forms: ["DRS", "DRS/A"], reason: "projet confidentiel soumis, non déposé (SPEC §2.1, submitted_draft) : il n'entre dans aucune mesure ; la version publique déposée se lit"}
+    cap: 60
+    dedupe: true
+    skip_read: true
+    skip_risk_factors: true
+    order: recent_first
 
