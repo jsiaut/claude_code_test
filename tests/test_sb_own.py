@@ -206,7 +206,8 @@ class Entities(unittest.TestCase):
         from pipeline.graph import normalize_name
         self.assertTrue(self.d58)
         for c in self.d58:
-            self.assertEqual(c["group"], "NF:SOFTBANK")
+            # une entité d'OpenAI nommée par une ligne de SB Energy (intégration, point 29)
+            self.assertIn(c["group"], ("NF:SOFTBANK", "LAB:OPENAI"))
             self.assertRegex(c["block"], r"^[0-9a-f]{64}$")
             self.assertRegex(c["accession"], r"^\d{10}-\d{2}-\d{6}$")
             self.assertTrue(c["quote"].strip() and c["membership_note"].strip())
@@ -228,3 +229,17 @@ class Entities(unittest.TestCase):
         self.assertNotEqual(g("Ampere", "2025-11-29"), "NF:SOFTBANK")      # mois seul : dernier jour du mois
         self.assertEqual(g("Ampere", "2025-11-30"), "NF:SOFTBANK")
         self.assertNotEqual(g("SoftBank Vision Fund L.P.", "2024-01-01"), "NF:SOFTBANK")
+
+    def test_names_resolved_at_integration(self):
+        """Point 29 : noms des lignes encore en attente après le premier réassemblage, rattachés par extrait."""
+        from pipeline import entities as E
+        names = ["OAI", "Treasure Data", "NVIDIA COR", "NVIDIA Corporation", "Sprint", "Arm China", "VTEX", "Ares"]
+        _, reg = E.build({"meta": {}}, self.cfg, {n: False for n in names})
+        g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
+        self.assertEqual(g("OAI"), "LAB:OPENAI")
+        self.assertEqual(g("Treasure Data"), "NF:SOFTBANK")
+        self.assertEqual(g("NVIDIA COR"), g("NVIDIA Corporation"))   # nom tronqué du 13F, même CUSIP
+        self.assertEqual(g("Sprint"), "CP:sprint corp")             # hors du groupe : aucun contrôle affirmé
+        self.assertEqual(g("Arm China"), "CP:arm technology china co ltd")
+        self.assertEqual(g("VTEX"), "CP:vtex")
+        self.assertIsNone(g("Ares"))                                 # aucun extrait : reste en attente
