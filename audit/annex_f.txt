@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..eaec074 100644
+index 1378604..59f41d8 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,168 @@ user_agent:
@@ -263,7 +263,7 @@ index 1378604..eaec074 100644
  window:
    start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
    include_interim: true
-@@ -38,16 +197,170 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+@@ -38,16 +197,187 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
    AMD: "0000002488"
    AVGO: "0001730168"
    MRVL: "0001835632"
@@ -286,6 +286,8 @@ index 1378604..eaec074 100644
 +  INTC: "0000050863"         # ajouts du 2026-10-18 (D-0056) : fabricants, après les hébergeurs (§14)
 +  MU: "0000723125"
 +  TSM: "0001046179"          # émetteur privé étranger, 20-F et 6-K en IFRS (D-0056, point 5)
++  ASML: "0000937966"         # ajouts du 2026-10-18 (D-0057) : équipements et mémoire, émetteurs privés étrangers
++  SKHY: "0002120882"         # déclarant de 2026 (D-0057, point 2)
 +
 +group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
 +                             # énonce sa composition et ces dates (§9.6)
@@ -298,10 +300,12 @@ index 1378604..eaec074 100644
 +  - {date: 2026-10-16, groups: [AKAM, BLZE, RIOT], basis: "D-0054, ajout de groupes de §14"}
 +  - {date: 2026-10-17, groups: [OWL, APO, BX], basis: "D-0055, ajout de groupes de §14"}
 +  - {date: 2026-10-18, groups: [INTC, MU, TSM], basis: "D-0056, ajout de groupes de §14"}
++  - {date: 2026-10-18, groups: [ASML, SKHY], basis: "D-0057, ajout de groupes de §14"}
 +
 +group_frameworks:            # cadre comptable des états d'un groupe, s'il n'est pas US GAAP (invariant f, D-0056,
 +                             # point 5) : ses notes portent ce cadre, ses grandeurs se résolvent par concept_anchors_ifrs
 +  TSM: ifrs                  # 20-F en IFRS publiées par l'IASB sur toute la période
++  SKHY: ifrs                 # 424B4 en IFRS publiées par l'IASB, sans instance XBRL financière (D-0057, point 14)
 +
 +history_breaks:              # rupture d'historique autre qu'une fusion inversée (D-0048) : mêmes règles que
 +                             # reverse_combinations (hors du groupe, les rapports d'une période close avant la date
@@ -409,6 +413,18 @@ index 1378604..eaec074 100644
 +    quarter: ["2021-04-01", "regroupement du 2021-05-19 avec la SPAC Altimar (D-0055) ; premier 10-Q de l'acquéreur comptable 0001823945-21-000007 (T2 2021)"]
 +  TSM:
 +    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0056)"]
++  ASML:
++    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0057)"]
++  SKHY:
++    quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0057)"]
++    fiscal_year: ["2023-01-01", "424B4 0001193125-26-299963 du 2026-07-10 : exercices 2023 à 2025 présentés, états consolidés audités en IFRS publiées par l'IASB (Form 20-F, Item 8.A, par la Form F-1) ; aucun 20-F déposé avant l'as_of (D-0057, point 14)"]
++
++registration_text:           # document d'enregistrement qui tient lieu de rapports périodiques, sans instance XBRL
++                             # financière : jeux de notes découpés en HTML, notes lues par familles de titres
++                             # (pipeline/regdoc.py, D-0057, point 14) ; jeux et assurance fixés avant toute lecture
++  - {group: SKHY, accession: "0001193125-26-299963", primary: d32785d424b4.htm, decision: D-0057,
++     note_sets: [{period_start: "2023-01-01", period_end: "2025-12-31", label: "états consolidés audités, exercices 2025, 2024 et 2023", assurance: audited},
++                 {period_start: "2026-01-01", period_end: "2026-03-31", label: "états consolidés intermédiaires résumés au 31 mars 2026, non audités", assurance: unaudited}]}
  
  predecessors:                # émetteurs prédécesseurs (§10.1) ; dates de succession lues en phase 0
    AVGO: {"Broadcom Limited": "0001649338", "Avago Technologies Limited": "0001441634"}
@@ -431,10 +447,11 @@ index 1378604..eaec074 100644
 +  - {name: SoftBank, ref: "NF:SOFTBANK"}
 +  - {name: Lambda, ref: "NF:LAMBDA"}     # D-0054 : sans titre coté à l'as_of
 +  - {name: Nscale, ref: "NF:NSCALE"}
++  - {name: Samsung, ref: "NF:SAMSUNG"}  # D-0057 : sans titre coté à l'as_of ; Samsung Electronics Co., Ltd. et ses filiales consolidées
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +368,452 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +385,525 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -480,6 +497,7 @@ index 1378604..eaec074 100644
 +      - {term: "Lambda, Inc.", ref: "NF:LAMBDA", case_sensitive: true}   # jamais « Lambda » seul (AWS Lambda)
 +      - {term: "Lambda Inc.", ref: "NF:LAMBDA", case_sensitive: true}
 +      - {term: "Lambda Labs", ref: "NF:LAMBDA", case_sensitive: true}
++      - {term: Samsung, ref: "NF:SAMSUNG"}                         # D-0057, point 7
 +    search_forms: ex10       # recherche plein texte des EX-10 seulement ; pas de Form D
 +    reading:                 # règle fixée avant de voir les candidats
 +      r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
@@ -526,7 +544,7 @@ index 1378604..eaec074 100644
 +  selection: [named_issuers, graph_counterparties]
 +
 +foreign_6k:                  # unités 6-K des groupes émetteurs privés étrangers (D-0048, point 6)
-+  groups: [NBIS, IREN, TSM]  # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K ; TSMC (D-0056)
++  groups: [NBIS, IREN, TSM, ASML, SKHY]  # Nebius après le 12 juillet 2024 ; IREN du 1er juillet 2024 à son dernier 6-K ; TSMC (D-0056) ; ASML et SK hynix (D-0057)
 +  forms: ["6-K", "6-K/A"]
 +  documents: [primary, EX-99] # document principal et annexes 99 (type lu dans l'en-tête SGML, §2.3)
 +  # lexique de D-0048 ; mots entiers, casse indifférente, singulier et pluriel écrits (D-0048, point 9)
@@ -562,6 +580,50 @@ index 1378604..eaec074 100644
 +      - {term: Micron, ref: MU, case_sensitive: true}
 +      - {term: SoftBank, ref: "NF:SOFTBANK"}
 +      - {term: Nscale, ref: "NF:NSCALE"}
++    ASML:                    # D-0057, point 3 : jamais ASML lui-même
++      - {term: "Applied Digital", ref: APLD}
++      - {term: Dell, ref: DELL, case_sensitive: true}
++      - {term: Supermicro, ref: SMCI}
++      - {term: "Super Micro", ref: SMCI}
++      - {term: "Hut 8", ref: HUT}
++      - {term: "Galaxy Digital", ref: GLXY}
++      - {term: Akamai, ref: AKAM}
++      - {term: Backblaze, ref: BLZE}
++      - {term: "Riot Platforms", ref: RIOT}
++      - {term: "Blue Owl", ref: OWL}
++      - {term: Apollo, ref: APO, case_sensitive: true}
++      - {term: Athene, ref: APO, case_sensitive: true}
++      - {term: Blackstone, ref: BX}
++      - {term: Intel, ref: INTC, case_sensitive: true}
++      - {term: Micron, ref: MU, case_sensitive: true}
++      - {term: TSMC, ref: TSM, case_sensitive: true}
++      - {term: "Taiwan Semiconductor", ref: TSM}
++      - {term: "SK hynix", ref: SKHY}
++      - {term: SoftBank, ref: "NF:SOFTBANK"}
++      - {term: Nscale, ref: "NF:NSCALE"}
++      - {term: Samsung, ref: "NF:SAMSUNG"}
++    SKHY:                    # D-0057, point 3 : jamais SK hynix lui-même
++      - {term: "Applied Digital", ref: APLD}
++      - {term: Dell, ref: DELL, case_sensitive: true}
++      - {term: Supermicro, ref: SMCI}
++      - {term: "Super Micro", ref: SMCI}
++      - {term: "Hut 8", ref: HUT}
++      - {term: "Galaxy Digital", ref: GLXY}
++      - {term: Akamai, ref: AKAM}
++      - {term: Backblaze, ref: BLZE}
++      - {term: "Riot Platforms", ref: RIOT}
++      - {term: "Blue Owl", ref: OWL}
++      - {term: Apollo, ref: APO, case_sensitive: true}
++      - {term: Athene, ref: APO, case_sensitive: true}
++      - {term: Blackstone, ref: BX}
++      - {term: Intel, ref: INTC, case_sensitive: true}
++      - {term: Micron, ref: MU, case_sensitive: true}
++      - {term: TSMC, ref: TSM, case_sensitive: true}
++      - {term: "Taiwan Semiconductor", ref: TSM}
++      - {term: ASML, ref: ASML, case_sensitive: true}
++      - {term: SoftBank, ref: "NF:SOFTBANK"}
++      - {term: Nscale, ref: "NF:NSCALE"}
++      - {term: Samsung, ref: "NF:SAMSUNG"}
 +  window: 2                  # paragraphes de part et d'autre, fenêtres fondues quand elles se chevauchent
 +  cap_per_group: 80          # du plus récent au plus ancien ; au-delà, not_processed
 +
@@ -772,6 +834,11 @@ index 1378604..eaec074 100644
 +  - {name: "Micron Virginia Semiconductor Manufacturing LLC", group: MU, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0056, block: dc77778d25335f8e94b19b7ed174cd700781b41829af5a8c839e34832ea26adf, accession: 0001104659-25-058741, quote: "Micron Virginia Semiconductor Manufacturing LLC, a Delaware limited liability company and a wholly-owned subsidiary of the Company"}
 +  - {name: "Micron Semiconductor Products, Inc.", group: MU, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0056, block: 7279e119e28f7186158f71d49b3558d6a7e6a513925430cd477f426a92507cf2, accession: 0000723125-18-000072, quote: "the only guarantor subsidiary is Micron Semiconductor Products, Inc."}
 +  - {name: "IM Flash Technologies, LLC", group: MU, treatment: vie_consolidated, valid_from: "none", rule: executor_decision, decision: D-0056, block: 9b39663bd79db068fdcaf4374458d717f3da2409090d9d5ffe13170027f74b65, accession: 0000723125-19-000094, quote: "We consolidate IMFT because we have the power to direct the activities of IMFT that most significantly impact its economic performance", membership_note: "« IMFT » : « IM Flash Technologies, LLC (\"IMFT\") » (8-K de Micron du 1er novembre 2019, bloc 8b6adb6473c5) ; entité à intérêts variables consolidée jusqu'au rachat de la participation d'Intel, filiale à 100 % ensuite (« at which time IMFT, now known as MTU, became a wholly-owned subsidiary », 10-K 2020, bloc fcf878cd1159) ; Intel en détenait la participation minoritaire jusque-là (« we sold our non-controlling interest in IMFT to Micron », 10-K 2020 d'Intel, bloc c823954b85d6)"}
++  - {name: "SK hynix America Inc.", group: SKHY, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0057, block: 62d83f0f1a9d3013c74421136fcf1d1fd6b596068a6c3acffaa040205943cf83, accession: 0001193125-26-354777, quote: "SK hynix America Inc. and other sales subsidiaries", membership_note: "libellé du tableau des lignes de crédit du rapport semestriel au 30 juin 2026 (6-K) : filiale de vente du groupe ; le 424B4 écrit « SK hynix America Inc. and other sales entities » (bloc ee6cd606fdb9)"}
++  - {name: "Samsung Electronics Co., Ltd.", group: "NF:SAMSUNG", treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0057, block: cc4e4fe046d34bfcf86f748a129a29c26341b50289320f58ec6a73f6dbdc536c, accession: 0001104659-26-094127, quote: "Samsung Electronics Co., Ltd. (\"Samsung\")", membership_note: "tête du groupe économique non déposant Samsung : Samsung Electronics Co., Ltd. et ses filiales consolidées (D-0057, point 2) ; aucun titre coté à l'as_of"}
++  - {name: "Samsung Electronics America, Inc.", group: "NF:SAMSUNG", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0057, block: 5d389ec3a001439bb7fc07e43bd202b8cff88b3cf631232aa03ca574e957b0d1, accession: 0000917273-25-000021, quote: "Samsung Electronics America, Inc., a Delaware corporation, Samsung Semiconductor, Inc., a California corporation and Samsung Austin Semiconductor, L.P., a Texas limited partnership (collectively, \"Samsung,\"", membership_note: "règle B de D-0044, point 7 (D-0057, point 6) : désignée, avec Samsung Electronics Co., Ltd., par le terme défini « Samsung », alias confirmé du groupe (accord transactionnel de Rambus du 19 janvier 2010, pièce du 10-K de 2024) ; même désignation chez Netlist : « Samsung Electronics America, Inc. (\"SEA\") (collectively, \"Samsung\") » (bloc cc4e4fe046d3)"}
++  - {name: "Samsung Semiconductor, Inc.", group: "NF:SAMSUNG", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0057, block: 5d389ec3a001439bb7fc07e43bd202b8cff88b3cf631232aa03ca574e957b0d1, accession: 0000917273-25-000021, quote: "Samsung Electronics America, Inc., a Delaware corporation, Samsung Semiconductor, Inc., a California corporation and Samsung Austin Semiconductor, L.P., a Texas limited partnership (collectively, \"Samsung,\"", membership_note: "règle B de D-0044, point 7 (D-0057, point 6) : désignée, avec Samsung Electronics Co., Ltd., par le terme défini « Samsung », alias confirmé du groupe (accord transactionnel de Rambus du 19 janvier 2010, pièce du 10-K de 2024) ; même désignation chez Netlist : « Samsung Semiconductor, Inc. (\"SSI\") (collectively, \"Samsung\") » (bloc e8af9e3c6e30)"}
++  - {name: "Samsung Austin Semiconductor, L.P.", group: "NF:SAMSUNG", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0057, block: 5d389ec3a001439bb7fc07e43bd202b8cff88b3cf631232aa03ca574e957b0d1, accession: 0000917273-25-000021, quote: "Samsung Electronics America, Inc., a Delaware corporation, Samsung Semiconductor, Inc., a California corporation and Samsung Austin Semiconductor, L.P., a Texas limited partnership (collectively, \"Samsung,\"", membership_note: "règle B de D-0044, point 7 (D-0057, point 6) : désignée, avec Samsung Electronics Co., Ltd., par le terme défini « Samsung », alias confirmé du groupe (accord transactionnel de Rambus du 19 janvier 2010, pièce du 10-K de 2024)"}
 +entity_aliases:
 +  - {alias: "NVIDIA", of: "NVIDIA Corporation", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "NVIDIA Corporation (\"NVIDIA\")"}
 +  - {alias: "Meta", of: "Meta Platforms, Inc.", decision: D-0021, block: 943d65c0fd815aa4a4da6c197bb4d1dcd7c2ee6576608488dc012e6dbb28423e, accession: 0001769628-25-000050, quote: "Meta Platforms, Inc. (\"Meta\")"}
@@ -851,7 +918,7 @@ index 1378604..eaec074 100644
 +  - {alias: "McAfee", of: "McAfee Corp.", decision: D-0056, block: 25a40aa8f1199ef35339405fb2c6eda8b005b39550eeb4d8452c0176baac91b9, accession: 0000050863-23-000006, quote: "McAfee Corp. (McAfee)"}
 +  - {alias: "VLSI", of: "VLSI Technology LLC", decision: D-0056, block: 8ac75ea9b28881735ac5d0e51574f7afc3cb3628a1fe1c2216bbfc03746f3fc8, accession: 0000050863-26-000157, quote: "VLSI Technology LLC (VLSI)"}
 +  - {alias: "Unisoc", of: "Beijing Unisoc Technology Ltd.", decision: D-0056, block: d04b14311c4842dba9a055b48a52c9dcaed709a7353dcf666e87b098f8a02edf, accession: 0000050863-24-000010, quote: "Beijing Unisoc Technology Ltd. (Unisoc)"}
-+  - {alias: "ASML", of: "ASML Holding N.V.", decision: D-0056, block: 8bf09819759cbf79d00a0556a761a06247f4421c5364be6687c462915a0a8605, accession: 0000050863-19-000029, quote: "ASML Holding N.V. (ASML)"}
++  - {alias: "ASML", of: "ASML HOLDING NV", decision: D-0056, block: 8bf09819759cbf79d00a0556a761a06247f4421c5364be6687c462915a0a8605, accession: 0000050863-19-000029, quote: "ASML Holding N.V. (ASML)", note: "cible ramenée à la tête du groupe ASML à son entrée (D-0057, point 8) : « ASML Holding N.V. » s'écrit « ASML HOLDING NV » sur EDGAR"}
 +  - {alias: "Cloudera", of: "Cloudera, Inc.", decision: D-0056, block: 72456842f17636a0b63940a00035b0dd57b9ebc235e973c136056432e8580060, accession: 0000050863-18-000029, quote: "Cloudera, Inc. (Cloudera)"}
 +  - {alias: "JD", of: "Beijing Jingdong Century Information Technology, Ltd.", decision: D-0056, block: d8c2bd753a0e674ed47efada8904e8acf191473275f5f2d883570d13999a6857, accession: 0000050863-22-000030, quote: "Beijing Jingdong Century Information Technology, Ltd. (JD)"}
 +  - {alias: "Cisco", of: "Cisco Systems, Inc.", decision: D-0056, block: 196fbd477e55fb888aeb8dc378f86892e1d46f7af123abb01a49f8465f068a49, accession: 0000050863-25-000179, quote: "Cisco Systems, Inc. (Cisco)"}
@@ -866,6 +933,11 @@ index 1378604..eaec074 100644
 +  - {alias: "Mutual-Pak", of: "Mutual-Pak Technology Co., Ltd.", decision: D-0056, block: 122b01a55d519927e24b1d301b67a71594bcfc11f91d3fea22f060f580f26b60, accession: 0001193125-24-099840, quote: "Mutual-Pak Technology Co., Ltd. (Mutual-Pak)"}
 +  - {alias: "TSMC", of: "Taiwan Semiconductor Manufacturing Company Limited", decision: D-0056, block: e0dc5bfaacc8f66e203904684c6ebcd5b4577d36765645919f5e83a59906632d, accession: 0001046179-26-000539, quote: "Taiwan Semiconductor Manufacturing Company Limited (\"TSMC\")"}
 +  - {alias: "Taiwan Semiconductor Manufacturing Company", of: "Taiwan Semiconductor Manufacturing Company Limited", decision: D-0056, block: a193e60d70d1ce4f92ad8189af44d65b6971b6405861968adee91e2a7571f0dc, accession: 0001193125-20-133159, quote: "Taiwan Semiconductor Manufacturing Company (\"TSMC\")", note: "graphie sans « Limited » du 8-K de Broadcom du 5 mai 2020 (fondeur de ses plaquettes) ; « TSMC » y désigne la même société que dans le 6-K de TSMC du 11 août 2026 (« Taiwan Semiconductor Manufacturing Company Limited (\"TSMC\") », bloc e0dc5bfaacc8)"}
++  - {alias: "Nikon", of: "Nikon Corporation", decision: D-0057, block: f54d8f93b122b5ca32491a6158025316bb84936b8b5139856888dc106db1b5af, accession: 0001628280-26-011377, quote: "Nikon Nikon Corporation", note: "glossaire du rapport annuel statutaire de 2025 (« Nikon » : Nikon Corporation) ; même société que dans l'Item 10.C du 20-F de 2020 : « ASML entered into a settlement and license agreement with Nikon Corporation and Carl Zeiss SMT » (bloc e8741f80c2f6)"}
++  - {alias: "U.S. Department of Commerce", of: "United States Department of Commerce", decision: D-0057, block: 16ea315ad732296adb940b36517ebf83c1614c915c154cce09a5a402383515b1, accession: 0000050863-24-000169, quote: "the U.S. Department of Commerce (the \"DOC\")", note: "graphie du 8-K d'Intel du 25 novembre 2024 ; « DOC » y désigne la même entité que dans le bloc f1af891ba152 (« United States Department of Commerce (the \"DOC\") », alias de D-0056) ; écrite ainsi dans le 6-K de SK hynix du 18 août 2026 (garanties de West Lafayette)"}
++  - {alias: "Samsung", of: "NF:SAMSUNG", decision: D-0057, block: cc4e4fe046d34bfcf86f748a129a29c26341b50289320f58ec6a73f6dbdc536c, accession: 0001104659-26-094127, quote: "Samsung Electronics Co., Ltd. (\"Samsung\")", note: "terme défini du 10-Q de Netlist au 30 juin 2026 ; même définition chez Straight Path (« Samsung Electronics Co., Ltd. (\"Samsung\") », bloc 67538b1ed6fb) et chez Network-1 (bloc 6abaa78ff65f)"}
++  - {alias: "Samsung Electronics Co.", of: "Samsung Electronics Co., Ltd.", decision: D-0057, block: 6580e623b04cf12b6aa6c5f78d3c2cd6b17ffc9dd3f161a94626cb8e458d04b4, accession: 0001213900-24-021235, quote: "Samsung Electronics Co. (\"Samsung\")", note: "graphie des rapports d'Immersion ; « Samsung » y désigne la même société que dans sa pièce de 2019 : « Samsung Electronics Co., Ltd., a South Korean corporation … (collectively \"Samsung\") » (bloc 3f64fd6b2893)"}
++  - {alias: "ASML Holding N.V.", of: "ASML HOLDING NV", decision: D-0057, block: 64332d4b1ef46903276346eb5fd89899194bbcb52d98b63f5e9dd5729dc5648e, accession: 0001628280-26-011377, quote: "The Consolidated financial statements include the Financial statements of ASML Holding N.V. and all of its subsidiaries", note: "graphie de la tête du groupe ASML (CIK 937966, « ASML HOLDING NV » sur EDGAR) dans ses propres dépôts ; aussi dans le 20-F de 2019 : « for which ASML Holding N.V. executed a parental guarantee agreement with the landlord » (bloc ddc026ce92b6) ; les lignes d'Intel et de TSMC qui la nomment vont au groupe (D-0057, point 8)"}
 +own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
 +  - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
 +  - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
@@ -883,11 +955,29 @@ index 1378604..eaec074 100644
 +  - {name: "United States Department of Commerce", decision: D-0056, block: 37d27bbc242d399193dd44931dc4981aa5fb51d38b6f295390345e0da117c2ce, accession: 0001104659-24-127174, quote: "with the United States Department of Commerce (the \"Department\")", note: "partie des accords de financement direct du CHIPS Act (Intel, Micron) et acquéreuse d'actions ordinaires d'Intel en août 2025"}
 +  - {name: "Industrial Development Authority of the City of Chandler, Arizona", decision: D-0056, block: 9fdb0a82ec3a8fcb1af9912467b5c01c199383d5c9cecc666c1fd80605345af4, accession: 0000050863-24-000010, quote: "loan agreements we entered into with each of the Industrial Development Authority of the City of Chandler, Arizona (CIDA) and the State of Oregon Business Development Commission", note: "émettrice des obligations municipales de l'Arizona, prêtées à Intel par contrat de prêt (obligations générales non garanties d'Intel)"}
 +  - {name: "State of Oregon Business Development Commission", decision: D-0056, block: 9fdb0a82ec3a8fcb1af9912467b5c01c199383d5c9cecc666c1fd80605345af4, accession: 0000050863-24-000010, quote: "loan agreements we entered into with each of the Industrial Development Authority of the City of Chandler, Arizona (CIDA) and the State of Oregon Business Development Commission", note: "émettrice des obligations municipales de l'Oregon, prêtées à Intel par contrat de prêt ; « Oregon Business Development Commission », écrite sans « State of » dans deux 10-K, reste en attente"}
++  - {name: "Mistral AI", decision: D-0057, block: 3f406f7936f0672b9de3b2893607f7ee8fd83d57a03d970fb1edbd3813a4d281, accession: 0001628280-26-011378, quote: "On September 9, 2025, ASML and Mistral AI announced an investment and partnership agreement for which ASML", note: "Mistral AI SAS selon le glossaire du rapport annuel statutaire de 2025 (« Mistral AI Mistral AI SAS », bloc f54d8f93b122) ; participation d'ASML à la juste valeur, sans influence notable"}
++  - {name: "Hana Bank", decision: D-0057, block: ee6cd606fdb9e612e87bbc68bc0b78ecd494f084f39f19ca09aebf9dfc109d53, accession: 0001193125-26-299963, quote: "The Parent Company | Hana Bank and others | Import finance and others including usance", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "Agricultural Bank of China", decision: D-0057, block: ee6cd606fdb9e612e87bbc68bc0b78ecd494f084f39f19ca09aebf9dfc109d53, accession: 0001193125-26-299963, quote: "SK hynix Semiconductor (China) Ltd. | Agricultural Bank of China and others", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "Citibank", decision: D-0057, block: 62d83f0f1a9d3013c74421136fcf1d1fd6b596068a6c3acffaa040205943cf83, accession: 0001193125-26-354777, quote: "SK hynix America Inc. and other sales subsidiaries | Citibank and others", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "Shinhan Bank", decision: D-0057, block: 5697f46c16b5c8238d371a47bfe114e281ef42af30f23b1473fe93efabb2e9f6, accession: 0001193125-26-299963, quote: "Commercial Paper | Shinhan Bank", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "Nonghyup Bank", decision: D-0057, block: 5697f46c16b5c8238d371a47bfe114e281ef42af30f23b1473fe93efabb2e9f6, accession: 0001193125-26-299963, quote: "General borrowings | Nonghyup Bank and others", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "MUFG", decision: D-0057, block: 5697f46c16b5c8238d371a47bfe114e281ef42af30f23b1473fe93efabb2e9f6, accession: 0001193125-26-299963, quote: "Funds for equipment | MUFG and others", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "The Export-Import Bank of Korea", decision: D-0057, block: 5697f46c16b5c8238d371a47bfe114e281ef42af30f23b1473fe93efabb2e9f6, accession: 0001193125-26-299963, quote: "General borrowings | The Export-Import Bank of Korea and others", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "Korea Development Bank", decision: D-0057, block: c226dc93bccd20c31af2e95b6f80abfe7045cb115c1237997f560c090f3ac667, accession: 0001193125-26-354777, quote: "Cross currency interest rate swap | Korea Development Bank", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "Woori Bank", decision: D-0057, block: c226dc93bccd20c31af2e95b6f80abfe7045cb115c1237997f560c090f3ac667, accession: 0001193125-26-354777, quote: "Interest rate swap | Woori Bank", note: "établissement financier nommé dans les tableaux des emprunts, des lignes de crédit ou des swaps de SK hynix"}
++  - {name: "Specialized Investment-type Private Equity Investment Trust For Growth Of Semiconductor", decision: D-0057, block: 49c8108019a4b164a2564ba4a8d8e50b238fe73486ace6fb6777e99ac6eb9f92, accession: 0001193125-26-299963, quote: "Specialized Investment-type Private Equity Investment Trust For Growth Of Semiconductor | 33.33", note: "fonds d'investissement mis en équivalence (33,33 %), note des participations du 424B4"}
++  - {name: "Specialized Investment-type Private Equity Investment Trust For Win-win System Semiconductor", decision: D-0057, block: 49c8108019a4b164a2564ba4a8d8e50b238fe73486ace6fb6777e99ac6eb9f92, accession: 0001193125-26-299963, quote: "Specialized Investment-type Private Equity Investment Trust For Win-win System Semiconductor | 37.50", note: "fonds d'investissement mis en équivalence (37,50 %), note des participations du 424B4"}
++  - {name: "TCL Fund", decision: D-0057, block: 16ac48c81c6437c436e2450df8d19495a65f45cb9177c0758e83b1ab629e215e, accession: 0001193125-26-299963, quote: "Associates | Stratio, Inc., SK China Company Limited, Gemini Partners Pte. Ltd., TCL Fund", note: "société associée de SK hynix (note des parties liées du 424B4)"}
++  - {name: "SystemIC Solution", decision: D-0057, block: 3c12fd2bed20b0c3bdc98099a9fe7b751a5537e2830f3ef8c3fa12817bace906, accession: 0001193125-26-299963, quote: "Other related parties | SystemIC Solution", note: "autre partie liée de SK hynix (note des parties liées du premier trimestre 2026)"}
++  - {name: "Wuxi Taiji Industry", decision: D-0057, block: b7a50a2654ed265fd5d26fdfdd7da0f2b80d938f8b40d0fa4ed3ace82f9c6cd7, accession: 0001193125-26-299963, quote: "was established in November 2009 as a joint venture between us and Wuxi Taiji Industry", note: "associé de SK hynix dans la coentreprise HITECH Semiconductor (Wuxi) Co., Ltd. (Item 404 du 424B4)"}
++  - {name: "Samsung Life Insurance", decision: D-0057, block: d6e2b6aad4831522a4e47a96f28b36889d4baaaac3e78e0d98607780ffe8ad24, accession: 0001193125-26-190113, quote: "Western Power Changgi Solar Co., Ltd. | Samsung Life Insurance and others", note: "prêteur d'une filiale de KEPCO (actifs nantis) ; société du nom non consolidée par Samsung Electronics (D-0057, point 2) : hors du groupe"}
++  - {name: "Samsung SRA Real Estate Professional Private 45", decision: D-0057, block: 66f4fa0ed48a41dc3d32681fbbd247b7905012241c82c2f35c3a0201ad008eab, accession: 0001193125-26-168235, quote: "Samsung SRA Real Estate Professional Private 45 | Korea | December 31 | 25.00 | 25.00", note: "fonds mis en équivalence par Shinhan Financial Group (25 %) ; aucun extrait ne le rattache à Samsung Electronics : hors du groupe"}
++  - {name: "Samsung-dunamu Innovative IT Technology Investment Trust No. 1", decision: D-0057, block: 66f4fa0ed48a41dc3d32681fbbd247b7905012241c82c2f35c3a0201ad008eab, accession: 0001193125-26-168235, quote: "Samsung-dunamu Innovative IT Technology Investment Trust No. 1 | Korea | December 31 | 22.99 | 22.99", note: "fonds mis en équivalence par Shinhan Financial Group (22,99 %) ; aucun extrait ne le rattache à Samsung Electronics : hors du groupe"}
 +
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +875,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +965,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -895,7 +985,7 @@ index 1378604..eaec074 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +891,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +981,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -904,7 +994,7 @@ index 1378604..eaec074 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1080,73 @@ annex_e:
+@@ -318,6 +1170,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -978,7 +1068,7 @@ index 1378604..eaec074 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1199,42 @@ annex_f:
+@@ -370,6 +1289,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1021,7 +1111,7 @@ index 1378604..eaec074 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1254,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1344,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1032,7 +1122,7 @@ index 1378604..eaec074 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1307,130 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1397,130 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,

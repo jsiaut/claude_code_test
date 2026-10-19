@@ -1281,3 +1281,61 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - SK hynix : 100 blocs, aucun écart ;
     - ASML : 183 blocs (10 en plusieurs morceaux), deux écarts, tous deux venus d'un extracteur modifié en cours de lecture, sur des blocs d'un seul morceau. L'un est l'Item 15 de 2025, relu. L'autre est le tableau de l'intérêt variable au 2018-12-31 de la note des participations du 20-F de 2018 : l'extracteur actuel le répéterait, alors qu'un autre bloc de la même pièce (0000937966-19-000007) l'a déjà écrit. Il est laissé sans doublon ;
   - données personnelles (point 11) : aucune personne physique n'est contrepartie ; aucune citation ni note ne reprend un nom de personne physique (contrôle par motif sur les 529 fichiers des trois listes). Les signataires et les avocats des accords de Rambus (blocs de signature, formulaires de désistement) sont écartés.
+
+  (18) Intégration (2026-10-19), trente-deux groupes et quatre non-déposants, vue `as_known` :
+  - inventaire de D-0050 (point 6), après la lecture de chaque groupe : noms à forme juridique des lignes valides, présents dans un bloc lu du groupe et non confirmés : ASML 11 (2 avec une phrase à terme de filiale), SK hynix 56 (11). Chaque phrase a été relue par l'exécutant. Restent des entités propres :
+    - les sociétés du groupe SK (SK Holdings, SK Square, SK Telecom…), parties liées de SK hynix sans en être des filiales ;
+    - ses coentreprises : HITECH Semiconductor (Wuxi), SK hynix system ic (Wuxi) et Hystars, filiale de cette dernière ;
+    - Carl Zeiss SMT Holding GmbH & Co. KG, mise en équivalence (« we are not the primary beneficiary of the VIE ») ;
+  - rattachements par extrait (`config.yaml`), chacun vérifié mot pour mot dans un bloc lu et sans nom de personne physique :
+    - SK hynix : SK hynix America Inc. (« SK hynix America Inc. and other sales subsidiaries », rapport semestriel au 30 juin 2026, 6-K). Restent des entités propres :
+      - Key Foundry Co., Ltd. : son acquisition à 100 % n'est datée qu'au mois (« August 2022 »), et une entité acquise n'entre qu'à une date de réalisation établie (D-0050, point 5) ;
+      - les autres entités de l'en-tête de l'accord avec Rambus (Hynix Semiconductor Manufacturing America Inc., SK hynix U.K. Ltd., SK hynix Deutschland, GmbH) et celles de Micron dans l'accord de 2013 : une liste de noms sans lien dit ne suffit pas (D-0050, point 4) ;
+    - Samsung (règles A et B de D-0044, point 7 ; point 6) :
+      - Samsung Electronics Co., Ltd., tête du groupe (`parent`) ;
+      - l'alias « Samsung » du groupe (« Samsung Electronics Co., Ltd. ("Samsung") » chez Netlist, Straight Path et Network-1) ;
+      - Samsung Electronics America, Inc., Samsung Semiconductor, Inc. et Samsung Austin Semiconductor, L.P., désignées avec la tête par le terme défini « Samsung » (accord de Rambus de 2010, Netlist), en `undetermined` ;
+      - la graphie « Samsung Electronics Co. » d'Immersion, en alias de la tête.
+
+      Restent hors du groupe : Samsung Life Insurance, société du nom non consolidée par Samsung Electronics (point 2), et les deux fonds au nom de Samsung de Shinhan Financial Group, qu'aucun extrait ne rattache ;
+    - alias (D-0021) :
+      - « Nikon » (glossaire du rapport statutaire d'ASML de 2025) ;
+      - « U.S. Department of Commerce » (8-K d'Intel du 25 novembre 2024 ; « DOC » est déjà l'alias de United States Department of Commerce) ;
+      - « ASML Holding N.V. », graphie de la tête « ASML HOLDING NV » d'EDGAR (rapport statutaire d'ASML, 6-K du 25 février 2026 ; le message du commit 0557be7 le date à tort du 11 février). L'alias « ASML » de D-0056 est ramené à cette tête ;
+    - entités propres sans forme juridique (18), chacune avec son extrait :
+      - neuf établissements financiers de SK hynix : Hana Bank, Agricultural Bank of China, Citibank, Shinhan Bank, Nonghyup Bank, MUFG, The Export-Import Bank of Korea, Korea Development Bank et Woori Bank ;
+      - deux fonds mis en équivalence par SK hynix, TCL Fund, SystemIC Solution et Wuxi Taiji Industry ;
+      - Mistral AI (Mistral AI SAS selon le glossaire d'ASML) ;
+      - Samsung Life Insurance et les deux fonds au nom de Samsung ;
+    - reste en attente « HITECH Semiconductor », nom court de l'Item 404, faute d'une définition qui le relie à HITECH Semiconductor (Wuxi) Co., Ltd. Une ligne est concernée ; elle porte la même clé d'instrument que la participation ;
+  - code, avec six tests (`test_entities_suffix`, `test_lender_measures`, `test_fsignals`) :
+    - formes juridiques allemandes « KG » et « KGaA » (`entities.LEGAL_SUFFIX`). Carl Zeiss SMT Holding GmbH & Co. KG (113 lignes d'ASML) n'était qu'un nom en attente ; c'est le seul nom du corpus de cette forme ;
+    - mesures des BDC : une valeur vide ou illisible du coût, de la juste valeur, du principal ou d'un taux compte comme non balisée. Le premier réassemblage s'arrêtait sur quatre positions de Carlyle Secured Lending sur Barnes & Noble, Inc., au taux capitalisé vide ;
+    - signaux d'un groupe sans aucun rapport périodique (SK hynix) : le masque des rapports du trimestre est forcé en booléen (`fsignals.reports_by_quarter`) ;
+  - premier réassemblage : observations 26 003 → 27 671 (les 1 668 lignes des trois listes sont valides), entités 2 755 → 3 048, liens 9 549 → 10 623, faits 1 549 934 → 1 580 920. Il a montré que « ASML Holding N.V. » (normalisé « asml holding n v ») ne rejoignait pas la tête « ASML HOLDING NV » : les lignes d'Intel et de TSMC qui nomment ASML restaient hors du groupe. L'alias ci-dessus l'a corrigé avant l'extraction des BDC et le second réassemblage ;
+  - arêtes au dernier réassemblage :
+    - ASML 250 (201 à montant ; aucune interne ni vers un nom en attente) ; SK hynix 630 (562 ; 2 vers un nom en attente) ; Samsung 21 (1) ;
+    - entre groupes suivis : Intel et ASML 5 (participation vendue en 2019), TSMC et ASML 1 (financement de la R&D d'ASML de 2013 à 2017), Intel et SK hynix 8 (cession de l'activité NAND) ;
+    - vers Samsung : Rambus, Netlist, Immersion, InterDigital, Network-1, TiVo, DISH et GCL Global ;
+    - autres liens de la piste : Rambus et SK hynix (redevances de 240 M$ de l'accord de 2013), Rambus et Micron (accord de 2013), NVIDIA et GCL Global (fournisseur nommé) ;
+  - BDC Data Sets : extraction refaite après le premier réassemblage (D-0043, point 14), 3 057 432 lignes de positions (3 054 099 avant) dans 2 100 dépôts. Faits de BDC rattachés : 3 405 (3 238), dans 435 dépôts de 60 fonds (419, 59). Les nouveaux émetteurs sont Barnes & Noble Inc, JPMorgan Chase & Co, Rackspace Technology, Inc., Snowflake Inc. et XPLR Infrastructure, LP, déposants de blocs lus de la piste de Samsung (entités de leur dénomination EDGAR, D-0036, point 10). Aucune position ne porte sur ASML, SK hynix ou Samsung ;
+  - rendus : documents 23 526 (22 550), faits 1 580 920 (1 549 934), observations 27 671 (26 003), entités 3 047 (2 755), liens 10 623 (9 549), mesures 169 094 (157 624), contrôles 69 943, exclusions 30 126 (26 921) ; 11 527 nombres publiés (10 931). Exclusions :
+    - `not_processed` 27 154 (23 979) : 949 fenêtres 6-K au-delà du plafond (ASML 915, SK hynix 34) et 2 243 unités de la piste de Samsung (2 165 hors de la règle de lecture, 78 au-delà du plafond) ; 17 unités de SoftBank en sortent ;
+    - `submitted_draft` 19 (15) : les quatre DRS de SK hynix ;
+    - `history_left_censored` 10 (9) : SK hynix ;
+  - annexe F : 398 événements des groupes, inchangés. ASML et SK hynix n'ont que des cellules annuelles (point 12) ;
+  - paires : 233 (186), dont 47 d'ASML et de SK hynix. Parmi elles, Intel → ASML et Intel → SK hynix remplacent les paires d'Intel vers « ASML Holding N.V. » et « SK hynix Inc. ». Deux autres viennent de la piste de Samsung :
+    - NVIDIA → GCL Global Holdings Ltd ;
+    - Apollo → Morgan Stanley : « Morgan Stanley », en attente jusque-là dans les lignes d'Apollo, se résout désormais en le déposant MORGAN STANLEY, dont le 11-K a été lu.
+
+    Conclusions : causalité non établie 155 (141), achats réciproques seulement 44 (17), relation commerciale doublée d'un financement 26 (20), dépendance documentée 8 (8). Paires à financement documenté : 83 (69). Les quatorze nouvelles sont ASML → Carl Zeiss SMT GmbH, → Carl Zeiss SMT Holding GmbH & Co. KG et → Mistral AI, dix paires de SK hynix (HITECH, SK hynix system ic (Wuxi), SK China Company, sociétés associées et fonds, véhicules BCPE Pangea) et Apollo → Morgan Stanley. Intel → ASML, déjà financée sous « ASML Holding N.V. » (27 trimestres), n'est que renommée ;
+  - cycles (E.6) : 102 (69), dont 97 de longueur 2. Les nouveaux :
+    - ASML avec Carl Zeiss SMT GmbH et avec Carl Zeiss SMT Holding GmbH & Co. KG (relation commerciale doublée d'un financement) ;
+    - SK hynix avec 26 sociétés du groupe SK et parties liées (achats réciproques seulement) ;
+    - quatre relations commerciales doublées d'un financement : HITECH, Hystars, SK China Company, SK hynix system ic (Wuxi) ;
+    - Intel → SK hynix → United States Department of Commerce → Intel (longueur 3, causalité non établie).
+
+    Intel ↔ SK hynix remplace Intel ↔ « SK hynix Inc. » ;
+  - E.7 : 164 issues (136), dont 57 % indéterminées au point de tête ;
+  - contrôles, vue `as_known` : `mismatch` 1 833 (1 826), `not_testable` 1 333 (1 265), `ok` 29 886 (29 579), `tautological` 1 393 (1 383) ;
+  - tests unitaires : 162, tous passés.
