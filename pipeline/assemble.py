@@ -13,7 +13,7 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, model, montages, rank2, sixk,
+               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, model, montages, rank2, sb_own, sixk,
                reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
@@ -365,6 +365,8 @@ def run(as_of):
     mt_excl = montages.exclusions(as_of) if "montages" in scope else []
     # 6-K des groupes émetteurs étrangers (D-0048) : sans fenêtre, hors texte, au-delà du plafond
     mt_excl += sixk.exclusions(as_of)
+    # dépôts propres de SoftBank et déposants contrôlés (D-0058, volets B et C) : plafonds et formulaires non lus
+    mt_excl += sb_own.exclusions(as_of)
     excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)

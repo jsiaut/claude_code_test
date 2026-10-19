@@ -156,7 +156,10 @@ ENUMS = {
                    # bloc montages : paragraphes autour des termes d'un montage (D-0046)
                    "montage_text",
                    # paragraphes des 6-K des groupes émetteurs privés étrangers (D-0048)
-                   "foreign_6k_text"],
+                   "foreign_6k_text",
+                   # dépôts propres des entités de SoftBank (D-0058, point 4) : 13D et 13G, leurs pièces EX-99,
+                   # formulaires 3 et 4, lignes des tables d'information 13F
+                   "ownership_schedule", "ownership_exhibit_header", "ownership_form", "holdings_13f"],
     "signal": ["material_weakness", "going_concern", "covenant_amendment", "covenant_waiver",
                "covenant_breach", "capacity_contract_termination", "auditor_change",
                "nonreliance", "pledged_assets", "contract_termination_other", NONE],

@@ -1473,6 +1473,54 @@ concept_anchors_ifrs:        # D-0056, point 5 : candidats ifrs-full des grandeu
 # rapports périodiques de déposants nommés, des termes qualifiants et un plafond d'unités. Un terme ne
 # qualifie jamais une pièce d'un déposant dont il est le nom (owner) ; only_in le réserve aux pièces de
 # déposants nommés. Les fenêtres : deux paragraphes avant et deux après, fondues (D-0046, point 4).
+softbank_deep:                # D-0058, volets B et C : dépôts EDGAR propres des entités de SoftBank, déposants contrôlés
+  decision: D-0058
+  period: ["2017-01-29", "2026-10-07"]
+  own_ciks:                   # dénomination EDGAR qui contient « SoftBank » (hors eSoftBank.com) et véhicules du point 2,
+                              # liste des noms d'EDGAR du 2026-10-09
+    - {cik: "0001009417", name: "SOFTBANK HOLDINGS INC ET AL"}
+    - {cik: "0001065521", name: "SOFTBANK GROUP CORP."}
+    - {cik: "0001065534", name: "SOFTBANK TECHNOLOGY VENTURES IV L P"}
+    - {cik: "0001076468", name: "SOFTBANK AMERICA INC"}
+    - {cik: "0001091819", name: "SOFTBANK CAPITAL PARTNERS LP"}
+    - {cik: "0001100601", name: "SOFTBANK TECHNOLOGY VENTURES V LP"}
+    - {cik: "0001103340", name: "SOFTBANK TECHNOLOGY VENTURES ADVISORS FUND V LP"}
+    - {cik: "0001106208", name: "SOFTBANK TECHNOLOGY VENTURES IV LP"}
+    - {cik: "0001135833", name: "SOFTBANK TECHNOLOGY VENTURES VI L P"}
+    - {cik: "0001135837", name: "SOFTBANK U S VENTURES VI L P"}
+    - {cik: "0001230125", name: "SOFTBANK CAPITAL PARTNERS LLC"}
+    - {cik: "0001253644", name: "SOFTBANK CAPITAL LP"}
+    - {cik: "0001294233", name: "SOFTBANK CAPITAL TECHNOLOGY FUND III LP"}
+    - {cik: "0001296340", name: "SOFTBANK TECHNOLOGY ENTREPRENEURS FUND V, L.P."}
+    - {cik: "0001333638", name: "SOFTBANK CAPITAL TECHNOLOGYNEW YORK FUND LP"}
+    - {cik: "0001445589", name: "SOFTBANK CAPITAL TECHNOLOGY FUND 2008 LP"}
+    - {cik: "0001577436", name: "SOFTBANK CAPITAL TECHNOLOGY NEW YORK FUND II L.P."}
+    - {cik: "0001582678", name: "SOFTBANK CAPITAL TECHNOLOGY NEW YORK PARALLEL FUND II, L.P."}
+    - {cik: "0001617883", name: "SOFTBANK CAPITAL FUND '14, L.P."}
+    - {cik: "0001625967", name: "SOFTBANK CORP./ADR"}
+    - {cik: "0001625976", name: "SOFTBANK PRINCEVILLE INVESTMENTS ANNEX FUND, L.P."}
+    - {cik: "0001626103", name: "SOFTBANK PRINCEVILLE INVESTMENTS, L.P."}
+    - {cik: "0001699940", name: "SOFTBANK VISION FUND L.P."}
+    - {cik: "0001730859", name: "SB INVESTMENT ADVISERS (US) INC."}
+    - {cik: "0001731509", name: "SB INVESTMENT ADVISERS (UK) LTD"}
+    - {cik: "0001731511", name: "SB INVESTMENT ADVISERS (JAPAN) CORP."}
+    - {cik: "0001755143", name: "SOFTBANK VISION FUND (AIV M1) L.P."}
+    - {cik: "0001755163", name: "SOFTBANK GROUP CAPITAL LTD"}
+    - {cik: "0001764097", name: "SOFTBANK MOBILE SERVICE CORP./ADR"}
+    - {cik: "0001776222", name: "SOFTBANK VISION FUND (AIV S1) L.P."}
+    - {cik: "0001787613", name: "SOFTBANK VISION FUND II-2 L.P."}
+    - {cik: "0001794354", name: "SOFTBANK CORP."}
+    - {cik: "0001805808", name: "SOFTBANK VISION FUND (AIV M2) L.P."}
+    - {cik: "0001818296", name: "SB MANAGEMENT LTD"}
+    - {cik: "0001883884", name: "SB GLOBAL ADVISERS LTD"}
+    - {cik: "0001972882", name: "SB NORTHSTAR GP"}
+    - {cik: "0002089441", name: "SOFTBANK ROBOTICS SINGAPORE PTE LTD"}
+  controlled:                 # déposants contrôlés par SoftBank ou dont le rachat est à vérifier (point 5)
+    - {cik: "0002133037", name: "SB ENERGY, INC.", role: controlled}
+    - {cik: "0001973239", name: "ARM HOLDINGS PLC /UK", role: controlled}
+    - {cik: "0001057997", name: "ARM HOLDINGS PLC", role: controlled}          # ancienne Arm, a cessé de déposer en 2016
+    - {cik: "0001679688", name: "DIGITALBRIDGE GROUP, INC.", role: acquisition_target}
+
 montages:
   meta_hyperion:
     decision: D-0046

@@ -1488,3 +1488,38 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   Deux corrections pendant la lecture :
   - la charge de résiliation de NVIDIA, d'abord reprise à 1,4 Md$ (arrondi du 10-K de l'exercice 2025), ne l'est plus qu'une fois, à 1,35 Md$ (10-K de l'exercice 2023). La ligne arrondie devient une abstention ;
   - les montants cumulés depuis le début de l'exercice, déjà compris dans un total annuel lu (dette convertible d'Oracle dans Ampere, cession d'actions Arm par TSMC), ne sont pas repris, pour ne pas compter deux fois.
+
+  (16) Volets B et C, constats de la phase 0 et règles précisées avant toute lecture :
+  - submissions de 41 CIK lues le 2026-10-19 (41 requêtes), toutes complètes. 37 CIK propres, dont seize anciens véhicules de SoftBank Capital, de SoftBank Technology Ventures, de SoftBank America et de SoftBank Holdings, sans dépôt dans la période. Deux CIK ont aujourd'hui une autre dénomination EDGAR : MOBIUS TECHNOLOGY VENTURES VI LP (ex-SoftBank Technology Ventures VI) et SOFTBANK U S VENTURES VI L P, avec dix formulaires 3 et 4 jusqu'en février 2019 ;
+  - 606 dépôts propres distincts dans la période, souvent conjoints à plusieurs entités :
+    - 191 Schedules 13D et 13G, du 2017-02-14 au 2026-05-29 ;
+    - 226 formulaires 3 et 4 ;
+    - 112 13F-HR (SoftBank Group Corp. 57, SB Investment Advisers (UK) 40, SB Management 8, SB Global Advisers 7) ;
+    - 43 13F-NT, 10 N-PX, 17 F-6, 2 CORRESP, un 424B3, un 144 ;
+    - trois Form D de SoftBank Vision Fund L.P. ;
+  - émetteurs visés, lus dans les en-têtes SGML (530 requêtes) : un seul 13G (Arm Holdings plc) et un seul formulaire 3 ou 4 (Arm) portent sur un émetteur du modèle. Les autres portent sur le portefeuille de SoftBank : T-Mobile 19, WeWork 12, Alibaba 11, Full Truck Alliance 8, Guardant Health 8, SoFi 7, Coupang, Compass, Roivant, Sprint, DoorDash, Uber… Les 225 autres formulaires 3 et 4 sont comptés `out_of_scope` (point 4). Les 191 13D et 13G tiennent sous le plafond de 200 ; Arm vient en tête, puis les autres du plus récent au plus ancien ;
+  - SB Energy, Inc. : DRS du 2026-05-22 et deux DRS/A (soumis, non déposés, §2.1), S-1 du 2026-09-01, S-1/A du 2026-09-04 (pièces seulement) et S-1/A du 2026-09-21. Aucun 424B4 avant l'as_of. Le document d'enregistrement est donc le S-1 et ses deux amendements. On lit le prospectus du dernier S-1/A (Item 404 et notes), et les EX-10 et EX-21 des trois dépôts (texte identique lu une fois) ;
+  - Arm Holdings plc : émetteur privé étranger. 20-F des exercices clos le 31 mars 2024, 2025 et 2026 (déposés le 2024-05-29, le 2025-05-28 et le 2026-05-26), 34 6-K du 2023-11-08 au 2026-09-18, 424B4 du 2023-09-14. Le point 5 s'applique dans sa branche 20-F et 6-K. Liste des filiales : pièce 8.1 du dernier 20-F. Amendement avant toute lecture : la section « Certain Relationships and Related Party Transactions » du 424B4 se lit aussi. Le premier 20-F ne couvre que l'exercice 2024, et le 424B4 est le seul document qui décrive les relations antérieures entre Arm et SoftBank (même règle que le S-1 de Nscale, D-0054, point 13) ;
+  - DigitalBridge Group, Inc. : rachat réalisé avant l'as_of (Form 25 du 2026-09-22 ; 8-K du 2026-09-30, items 2.01, 3.01, 3.03, 5.01, 5.02 et 5.03 ; 15-12G du 2026-10-13, après l'as_of). Le point 5 s'applique : items du 8-K du 2026-09-30 et en-tête de la convention de fusion (pièce 2.1 du 8-K du 2025-12-30, item 1.01) ;
+  - groupe des blocs des volets B et C :
+    - un bloc des dépôts propres de SoftBank (13D, 13G, formulaires 3 et 4, 13F) appartient à `NF:SOFTBANK` (perspective `reporting_entity`) ;
+    - un bloc de SB Energy, d'Arm ou de DigitalBridge appartient d'abord à son propre groupe de contrepartie (`CP:`). Ses lignes ne passent à `NF:SOFTBANK` qu'après le rattachement du déposant par extrait, avec son CIK et sa date d'entrée, par le mécanisme d'Athene Holding (D-0055, point 8). Ce n'est pas celui d'une tête de non-déposant (Nscale, D-0054, point 13).
+
+  (17) Volets B et C, unités et volume, consignés avant toute lecture :
+  - précisions de code, arrêtées avant toute lecture :
+    - 13D : Items 2 à 7, de la première rubrique de ces items à la première annexe des administrateurs et des dirigeants ou aux signatures. La page de garde n'est pas lue. 13G : Items 1 à 4, coupés à l'Item 5. Ses notes sont les notes de bas de page de la page de garde, hors mentions types. Au format XML de 2025 : les éléments des mêmes items ; pour un 13G, les commentaires des personnes déclarantes, qui tiennent lieu de notes ; jamais les personnes autorisées ni les signatures. Le texte des 13D et des 13G passe ainsi de 2,2 à 1,0 million de caractères ;
+    - le plafond de 200 compte toutes les unités du volet B, non les seuls 13D et 13G comme l'écrivait le point 16. Une unité est un dépôt : 13D ou 13G avec ses pièces EX-99, formulaire 3 ou 4, 13F. Un 13F réduit aux lignes d'émetteurs du modèle est de la première classe ;
+    - première classe de l'ordre : groupes, laboratoires, Arm, SB Energy, DigitalBridge, et les deux entités de SoftBank que le point 9 nomme, Sprint et Fortress. Elles n'entrent pas au groupe pour autant (point 9). Les formulaires 3 et 4 s'en tiennent aux émetteurs que le point 4 énumère : les 23 formulaires sur Sprint restent `out_of_scope` ;
+    - notes de SB Energy et d'Arm, découpées selon leurs propres titres (« Note N. » ; « N - Titre »). Un jeu se ferme aussi à l'item suivant d'un rapport annuel (Item 8.B, Item 9) et à la quatrième de couverture du prospectus. Les titres courants sont retirés. SB Energy : deux jeux de 21 notes, comptes annuels audités et comptes intermédiaires au 30 juin 2026. Arm : les 22 notes du 20-F de 2026, et six notes de chacun des deux 20-F antérieurs (revenu, baux, participations, engagements, parties liées, secteurs ; aucune note de dette) ;
+    - section des parties liées du prospectus de SB Energy : du titre en capitales au titre suivant, hors table des matières (63 043 caractères) ;
+    - DigitalBridge : la note introductive et les items du 8-K de réalisation, hors 9.01. Du 8-K de l'accord, seul l'en-tête de la convention de fusion (pièce 2.1) se lit ;
+  - volet B, `NF:SOFTBANK` : 200 unités, 268 blocs, 961 280 caractères :
+    - 148 13D et 13G (735 330 caractères), du 2017-02-17 au 2026-05-29, et 68 en-têtes de pièces EX-99 (198 798). Première classe : Arm 1, Sprint 5, Fortress 2 ;
+    - un formulaire 4 sur Arm (2 956) ;
+    - 51 13F (24 196), du 2018-02-15 au 2026-08-14 : 94 lignes d'émetteurs du modèle sur 1 453. NVIDIA 38, TSMC 10, Sprint 9, Amazon 5, Alphabet, Intel et Microsoft 4 chacun, Meta 3, Cipher et Oracle 2 chacun ;
+    - non lus : 43 13D et 13G au-delà du plafond (`not_processed`), du 2017-02-14 au 2021-09-16 (T-Mobile 9, Guardant Health 8, Alibaba 5…) ; 225 formulaires 3 et 4 (Vir Biotechnology 59, Sprint 23, Lemonade 12…) et 61 13F sans ligne du modèle (`out_of_scope`) ; 74 autres formulaires comptés (13F-NT 43, F-6EF 12, N-PX 10, F-6 POS 5, CORRESP 2, un 424B3, un 144) ;
+  - volet C, groupes de contrepartie des déposants : 209 blocs, 1 512 046 caractères :
+    - SB Energy, 82 blocs (434 744) : 36 en-têtes d'EX-10, 3 listes de filiales, la section des parties liées, 42 notes ;
+    - Arm, 119 blocs (1 050 610) : 34 notes, 4 sections des parties liées (Item 7.B des trois 20-F, 424B4), la pièce 8.1 et 80 fenêtres 6-K (691 531). Les 6-K donnent 539 fenêtres : 54 doublons, 405 au-delà du plafond (`not_processed`). Les 33 autres notes des 20-F antérieurs sont `out_of_scope` ;
+    - DigitalBridge, 8 blocs (26 692) ;
+  - en tout 477 blocs et 2 473 326 caractères. Lecture dans l'ordre du point 12 : volet B, puis volet C, un commit par volet. Code : `pipeline/sb_own.py` (`prepare`, `exclusions`), dix tests (`test_sb_own`).
