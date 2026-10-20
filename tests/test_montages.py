@@ -321,6 +321,19 @@ class AnthropicChain(unittest.TestCase):
         self.assertEqual(ev(d("8-K/A", "2.02", "8-K/A"), sp)[0], "E")
         self.assertEqual(ev(d("EX-99.1", "7.01"), S["stargate"]), ("C", "not_applicable", "filed"))
 
+    def test_fluidstack_entities_by_extract(self):
+        """D-0064, point 6 : Fluidstack CS I Inc. rejoint Fluidstack Ltd. par l'extrait qui la dit filiale indirecte à
+        100 % ; Fluidstack USA I à IV restent des contreparties propres ; deux alias nés d'un extrait qui les définit."""
+        from pipeline import config
+        from pipeline import entities as E
+        names = ["Fluidstack CS I Inc.", "Fluidstack USA I Inc.", "Abernathy Joint Venture", "Fluidstack USA III"]
+        _, reg = E.build({"meta": {}}, config.load(), {n: False for n in names})
+        g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
+        self.assertEqual(g("Fluidstack CS I Inc."), "CP:fluidstack ltd")
+        self.assertEqual(g("Fluidstack USA I Inc."), "CP:fluidstack usa i inc")
+        self.assertEqual(g("Abernathy Joint Venture"), "CP:fs cs i llc")
+        self.assertEqual(g("Fluidstack USA III"), "CP:fluidstack usa iii inc")
+
     def test_search_sends_forms(self):
         """Les formulaires racines d'une requête vont dans `forms`, et dans le journal des requêtes."""
         spec = {"period": ["2023-01-01", "2026-10-07"], "queries": [{"q": '"Fluidstack"', "forms": ["8-K", "8-K/A"]},
