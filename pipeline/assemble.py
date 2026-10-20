@@ -1,7 +1,12 @@
 """Phase 3 : assembler, mesurer (§11.1). Tout se recalcule depuis le cache et les fichiers
 d'observations (§9.6) ; les huit tables sont exportées en Parquet, triées par clé primaire.
 
-    python -m pipeline.assemble 2026-10-07
+    python -m pipeline.assemble 2026-10-07                 # reprend du mémo ce qui n'a pas changé (D-0062)
+    python -m pipeline.assemble 2026-10-07 --sans-cache    # recalcule tout, mêmes tables à l'octet près
+    python -m pipeline.assemble 2026-10-07 --apercu        # arêtes, paires et exposition comparées aux tables
+
+Le mémo (db/memo, voir memo.py) garde les étapes qui ne lisent pas les observations et les plages des
+citations : seules les observations peuvent changer pour qu'une étape soit reprise.
 """
 import datetime as dt
 import json
@@ -13,8 +18,8 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, model, montages, rank2, sb_own, sixk,
-               reader)
+               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, memo, model, montages, rank2,
+               sb_own, sixk, reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
 
@@ -98,22 +103,29 @@ def deadline_fn(p0, groups):
     return out
 
 
-def run(as_of):
+def run(as_of, use_cache=True, apercu=False):
+    """Les huit tables. use_cache=False recalcule tout (le mémo est réécrit). apercu=True s'arrête
+    après les paires et l'exposition, sans rien exporter, et renvoie ce qu'il faut pour les comparer
+    aux tables (voir apercu)."""
     t0 = time.time()
     cfg = config.load()
     p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
     groups = [g for g in cfg["groups"] if g in p0["calendars"]]
     as_of_d = dt.date.fromisoformat(as_of)
     stats = {"as_of": as_of, "groups": groups}
+    # étapes qui ne lisent pas les observations : reprises du mémo si rien d'autre n'a changé (D-0062)
+    M = memo.Memo(memo.inputs_fingerprint(), use=use_cache)
 
     # 1. base XBRL : faits, correspondance de concepts, occurrences
-    con, info = model.build_base(as_of)
+    # l'aperçu travaille sur sa propre base : celle du dernier réassemblage reste intacte
+    db_path = config.DB_DIR / "apercu.duckdb" if apercu else load.DB_PATH
+    con, info = M.database("base", db_path, lambda: model.build_base(as_of, db_path), key=as_of)
     stats["base"] = info
     print("base", info, round(time.time() - t0), flush=True)
 
     # 2. observations validées (passe la plus récente de chaque bloc)
     catalog = reader.load_catalog()
-    obs_rows, obs_excl = load.load_observations(con, catalog, as_of)
+    obs_rows, obs_excl = load.load_observations(con, catalog, as_of, use_memo=use_cache)
     valid = [o for o in obs_rows if o["validation_state"] == "valid"]
     stats["observations"] = {"lines": len(obs_rows), "valid": len(valid),
                              "kinds": dict(Counter(o["kind"] for o in obs_rows)),
@@ -155,16 +167,26 @@ def run(as_of):
 
     # 5. mesures de rang 1 tirées des faits (phase 1), puis mesures dimensionnelles ; mesures de
     # rang 2 tirées des faits, codées après la seconde page (§11.1)
-    cells = measures.group_measures(con, groups, as_of)
-    cells += rank2.group_rank2(con, groups, as_of)
-    cells += rank2.rpo_beyond(con, groups, as_of) + rank2.segments(con, groups, as_of) + \
-        rank2.segment_expenses(con, groups, as_of) + rank2.supplier_concentration(con, groups, as_of)
+    cells = [] if apercu else M.value("facts_measures", lambda: (
+        measures.group_measures(con, groups, as_of) + rank2.group_rank2(con, groups, as_of) +
+        rank2.rpo_beyond(con, groups, as_of) + rank2.segments(con, groups, as_of) +
+        rank2.segment_expenses(con, groups, as_of) + rank2.supplier_concentration(con, groups, as_of)), key=as_of)
     scope = cfg.get("scope") if isinstance(cfg.get("scope"), list) else []
     lender_excl = []
+    added = []          # faits ajoutés en cours d'exécution : leur empreinte entre dans la clé des étapes qui les lisent
     if "lender" in scope:
-        # bloc lender de §14 : positions des BDC rattachées aux entités du registre
-        hold, bnum = lender.matched_holdings(lender.legal_names(ent_rows), ent_rows)
-        insert(con, "facts", lender.bdc_facts(bnum))
+        # bloc lender de §14 : positions des BDC rattachées aux entités du registre ; le rattachement ne
+        # dépend que des lignes du registre (et des données des BDC), ses listes d'écarts comprises
+        def holdings():
+            hold, bnum = lender.matched_holdings(lender.legal_names(ent_rows), ent_rows)
+            return hold, bnum, dict(lender.AMBIGUOUS), list(lender.SUBTOTALS)
+        hold, bnum, ambiguous, subtotals = M.value("lender_holdings", holdings, key=memo.digest(ent_rows))
+        lender.AMBIGUOUS.clear()
+        lender.AMBIGUOUS.update(ambiguous)
+        lender.SUBTOTALS[:] = subtotals
+        bdc_rows = lender.bdc_facts(bnum)
+        insert(con, "facts", bdc_rows)
+        added.append(bdc_rows)
         cells += lender.measures_cells(hold, as_of)
         lender_excl = lender.exclusions(as_of)
         stats["lender"] = {"facts": len(bnum), "holdings": len(hold), "bdc": int(hold["bdc_cik"].nunique()) if len(hold) else 0,
@@ -176,19 +198,24 @@ def run(as_of):
     if "labs" in scope:
         from . import labs
         lab_facts, lab_st = labs.retained()
-        insert(con, "facts", labs.nds_fact_rows(lab_facts))
+        nds_rows = labs.nds_fact_rows(lab_facts)
+        insert(con, "facts", nds_rows)
+        added.append(nds_rows)
         groups_by_cik = {str(c).zfill(10): m["group"] for c, m in p0["meta"].items()}
-        lab_cells = labs.tagged_value_cells(lab_facts, reg, obs_rows, as_of, groups_by_cik)
+        lab_cells = [] if apercu else labs.tagged_value_cells(lab_facts, reg, obs_rows, as_of, groups_by_cik)
         cells += lab_cells
         stats["labs_tagged"] = {**lab_st, "cells": len(lab_cells),
                                 "conflicts": sum(1 for c in lab_cells if c["flags"] and '"conflict"' in c["flags"])}
-    cells += dimensional.useful_lives(con, groups, None, as_of)
-    lnc = dimensional.leases_not_commenced(con, groups, {g: [(a, b) for a, b, _ in years_by_group[g]] for g in groups}, as_of)
-    cells += lnc
-    lnc_keys = {(c["subject"], c["period_end"], c["term"]) for c in lnc if c["status"] == "computed"}
-    cells = [c for c in cells if not (c["measure"] == "lease_not_commenced_bridge" and c["view"] == "revised"
-                                      and c["status"] == "not_determinable"
-                                      and (c["subject"], c["period_end"], c["term"]) in lnc_keys)]
+    added_key = f"{as_of}|{memo.digest(added)}"
+    if not apercu:
+        cells += dimensional.useful_lives(con, groups, None, as_of)
+        lnc = dimensional.leases_not_commenced(con, groups, {g: [(a, b) for a, b, _ in years_by_group[g]] for g in groups},
+                                               as_of)
+        cells += lnc
+        lnc_keys = {(c["subject"], c["period_end"], c["term"]) for c in lnc if c["status"] == "computed"}
+        cells = [c for c in cells if not (c["measure"] == "lease_not_commenced_bridge" and c["view"] == "revised"
+                                          and c["status"] == "not_determinable"
+                                          and (c["subject"], c["period_end"], c["term"]) in lnc_keys)]
     conc_cells, named_conc = dimensional.concentration(con, groups, as_of)
     cells += conc_cells
     occ = model.occurrences_df(con)
@@ -205,7 +232,7 @@ def run(as_of):
                                       AND lower(coalesce(value_text, '')) = 'true' GROUP BY 1, 2""").fetchall():
         err.setdefault(g, []).append((acc, d))
     fl = filings.rename(columns={})
-    sig_cells = events.structural_signals(groups, quarters_by_group, fl, as_of, err, valid)
+    sig_cells = [] if apercu else events.structural_signals(groups, quarters_by_group, fl, as_of, err, valid)
     blocks = {b["content_key"]: b for b in catalog}
     # un même texte revient parfois à l'identique dans plusieurs dépôts (Item 4 d'Amazon d'un
     # trimestre à l'autre, doute sur la continuité de Core Scientific) : lu une fois, il reste
@@ -237,23 +264,25 @@ def run(as_of):
     for o in valid:
         obs_by_ck.setdefault(o["content_key"], []).append(o)
     parsed = set(pd.read_parquet(config.DB_DIR / "xbrl_documents.parquet")["accession"])
-    sig_cells += fsignals.observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_ck, read_cks,
-                                           parsed, as_of)
     report_end_of = {a: _d(r) for a, r in zip(filings["accessionNumber"], filings["reportDate"]) if r}
     debt_note_accs = frozenset(b["accession"] for b in catalog if b["block_kind"] == "debt_note")
-    sig_cells += fsignals.covenant_signals(groups, quarters_by_group, valid, as_of, report_end_of, text_done, filings,
-                                           debt_note_accs)
-    sig_cells += fsignals.pledged_signals(groups, quarters_by_group, valid, as_of, report_end_of, text_done, filings,
-                                          debt_note_accs)
-    cells += rank2.lease_not_commenced(cells, valid, report_end_of, as_of)
-    lever = rank2.depreciation_lever(cells, valid, as_of)
-    cells += lever + rank2.lever_restatement(con, lever, as_of)
+    if not apercu:
+        sig_cells += fsignals.observed_signals(groups, quarters_by_group, filings, blocks_by_acc, obs_by_ck, read_cks,
+                                               parsed, as_of)
+        sig_cells += fsignals.covenant_signals(groups, quarters_by_group, valid, as_of, report_end_of, text_done, filings,
+                                               debt_note_accs)
+        sig_cells += fsignals.pledged_signals(groups, quarters_by_group, valid, as_of, report_end_of, text_done, filings,
+                                              debt_note_accs)
+        cells += rank2.lease_not_commenced(cells, valid, report_end_of, as_of)
+        lever = rank2.depreciation_lever(cells, valid, as_of)
+        cells += lever + rank2.lever_restatement(con, lever, as_of)
     cells += sig_cells
 
     # 7. flux après financement des contreparties, matrice d'exposition tirée du texte
-    mdf = pd.DataFrame(cells)
-    cells = [c for c in cells if c["measure"] != "fcf_after_counterparty_financing"]
-    cells += fsignals.counterparty_financing(groups, quarters_by_group, edges, mdf, as_of, text_done)
+    if not apercu:
+        mdf = pd.DataFrame(cells)
+        cells = [c for c in cells if c["measure"] != "fcf_after_counterparty_financing"]
+        cells += fsignals.counterparty_financing(groups, quarters_by_group, edges, mdf, as_of, text_done)
     cells += fsignals.exposure_from_observations(valid, as_of)
 
     # 8. circularité : paires, statut financé, dépendances, couverture, exposition par contrepartie
@@ -273,7 +302,9 @@ def run(as_of):
     client_state = None
     if isinstance(cfg.get("scope"), list) and "discovery" in cfg["scope"]:
         from . import discovery
-        client_state = discovery.client_states(read_cks, min(w["extended_start"] for w in gw.values()))
+        # dénominations d'EDGAR : ne dépendent que du cache, reprises du mémo
+        client_state = discovery.client_states(read_cks, min(w["extended_start"] for w in gw.values()),
+                                               names=M.value("edgar_names", discovery.edgar_names))
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
                                        rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
@@ -299,6 +330,15 @@ def run(as_of):
         stats["paths"] = {"cycles": len(path_list), "by_length": dict(Counter(len(x["nodes"]) for x in path_list)),
                           "by_temporal_conclusion": dict(Counter(f"{x['temporal']}|{x['conclusion']}" for x in path_list))}
     cells += annex_e.evaluate(ev, cfg, gw, deadlines, as_of, paths=path_list)
+    if apercu:
+        # aperçu : les invariants d'agrégat et l'univers attendu, comme aux étapes 10 et 11, puis arrêt ;
+        # `computed` : les cellules que l'aperçu a calculées (l'univers attendu en ajoute pour toutes les mesures)
+        invariants(cells, edges, rels, reg)
+        computed = list(cells)
+        cells, _ = fill_expected(cells, as_of)
+        stats["memo"] = {"hits": M.hits, "misses": M.misses}
+        stats["seconds"] = round(time.time() - t0)
+        return {"cells": cells, "computed": computed, "edges": edges, "ev": ev, "paths": path_list, "stats": stats}
     # bloc form_d de §14 : montant vendu par offre, émetteurs du périmètre et véhicules tiers (D-0041)
     formd_rels, formd_excl = [], []
     if "form_d" in scope:
@@ -310,7 +350,7 @@ def run(as_of):
     nport_excl = []
     if "nport" in scope:
         from . import nport
-        ncells = nport.cells(as_of)
+        ncells = M.value("nport", lambda: nport.cells(as_of), key=as_of)
         cells += ncells
         nport_excl = nport.exclusions(as_of)
         stats["nport"] = {"cells": len(ncells), "securities": len({c["breakdown_key"] if isinstance(c, dict) else c.breakdown_key
@@ -331,7 +371,7 @@ def run(as_of):
     # bloc lender_portfolio (D-0045) : portefeuille entier de chaque BDC, puis F11 à F13 par véhicule
     lp_excl = []
     if "lender_portfolio" in scope:
-        lp = lender_portfolio.cells(as_of)
+        lp = M.value("lender_portfolio", lambda: lender_portfolio.cells(as_of), key=as_of)
         cells += lp
         lp_excl = lender_portfolio.exclusions(as_of)
         stats["lender_portfolio"] = {
@@ -342,7 +382,7 @@ def run(as_of):
     # bloc lender_liabilities (D-0047) : passif des mêmes véhicules, offres de rachat, F14 à F16
     ll_excl = []
     if "lender_liabilities" in scope:
-        ll = lender_liabilities.cells(as_of)
+        ll = M.value("lender_liabilities", lambda: lender_liabilities.cells(as_of), key=as_of)
         cells += ll
         ll_excl = lender_liabilities.exclusions(as_of)
         stats["lender_liabilities"] = {
@@ -359,11 +399,11 @@ def run(as_of):
     stats["expected_missing_filled"] = missing
     n_meas = insert(con, "measures", cells)
 
-    # 12. contrôles
-    ctrl = controls.run(con, as_of)
+    # 12. contrôles (ceux qui ne lisent que les faits : repris du mémo, faits ajoutés compris dans la clé)
+    ctrl = M.value("controls", lambda: controls.run(con, as_of), key=added_key)
     ctrl += c5_bilateral(ev, gw, as_of)
-    ctrl += controls_more.debt_rollforward(con, as_of)
-    ctrl += controls_more.segments_and_disaggregation(con, as_of)
+    ctrl += M.value("controls_more", lambda: controls_more.debt_rollforward(con, as_of) +
+                    controls_more.segments_and_disaggregation(con, as_of), key=added_key)
     ctrl = control_views(ctrl, filings)
     n_ctrl = insert(con, "controls", ctrl)
 
@@ -383,7 +423,8 @@ def run(as_of):
         if formd.FILINGS.exists():
             fd = pd.read_parquet(formd.FILINGS, columns=["adsh", "parse_state"])
             used |= set(fd.loc[fd["parse_state"] == "parsed", "adsh"])
-    docs = documents.build(as_of, used, failed)
+    docs = M.value("documents", lambda: documents.build(as_of, used, failed),
+                   key=memo.digest([as_of, sorted(map(str, used)), sorted(failed)]))
     n_docs = insert(con, "documents", docs)
 
     # 15. exclusions
@@ -403,9 +444,11 @@ def run(as_of):
     for t, pk in TABLES.items():
         con.execute(f"COPY (SELECT * FROM {t} ORDER BY {', '.join(pk)}) TO '{out / (t + '.parquet')}' (FORMAT PARQUET)")
     stats["rows"] = {t: con.execute(f"SELECT count(*) FROM {t}").fetchone()[0] for t in TABLES}
+    stats["memo"] = {"hits": M.hits, "misses": M.misses}
     stats["seconds"] = round(time.time() - t0)
     (config.ROOT / "work" / "tmp" / "assemble_stats.json").write_text(json.dumps(stats, indent=1, default=str))
-    print(json.dumps(stats["rows"]), stats["seconds"], "s", flush=True)
+    print(json.dumps(stats["rows"]), stats["seconds"], "s", "; mémo repris :", ", ".join(M.hits) or "rien",
+          flush=True)
     return con, stats
 
 
@@ -748,4 +791,10 @@ if __name__ == "__main__":
     if __import__("os").environ.get("PYTHONHASHSEED") != "0":
         __import__("os").environ["PYTHONHASHSEED"] = "0"
         __import__("os").execv(sys.executable, [sys.executable, "-m", "pipeline.assemble", *sys.argv[1:]])
-    run(sys.argv[1])
+    args = sys.argv[1:]
+    as_of_arg = next(a for a in args if not a.startswith("--"))
+    if "--apercu" in args:
+        from . import apercu
+        apercu.main(as_of_arg, use_cache="--sans-cache" not in args)
+    else:
+        run(as_of_arg, use_cache="--sans-cache" not in args)

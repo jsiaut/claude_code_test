@@ -8,6 +8,7 @@ import json
 from decimal import Decimal
 
 import duckdb
+import numpy as np
 import pandas as pd
 
 from . import config, load, quantities
@@ -15,9 +16,9 @@ from . import config, load, quantities
 AUX = ("pres", "calc", "tags", "labels", "text_blocks")
 
 
-def build_base(as_of):
+def build_base(as_of, path=None):
     cfg = config.load()
-    con = load.connect(fresh=True)
+    con = load.connect(fresh=True, path=path)
     n = load.load_facts(con)
     for name in AUX:
         p = config.DB_DIR / f"{name}.parquet"
@@ -27,7 +28,12 @@ def build_base(as_of):
     from . import xbrl
     defs = [r[0] for r in con.execute("SELECT DISTINCT role_definition FROM pres").fetchall()]
     con.execute("CREATE TEMP TABLE role_kind (role_definition VARCHAR, statement_kind VARCHAR)")
-    con.executemany("INSERT INTO role_kind VALUES (?, ?)", [(d, xbrl.statement_kind(d)) for d in defs])
+    # insertion d'un bloc, dans l'ordre de la liste (executemany insérait ligne à ligne)
+    rk = pd.DataFrame({"role_definition": defs, "statement_kind": [xbrl.statement_kind(d) for d in defs]}, dtype=object)
+    con.register("df_role_kind", rk)
+    con.execute("""INSERT INTO role_kind SELECT CAST(role_definition AS VARCHAR), CAST(statement_kind AS VARCHAR)
+                   FROM df_role_kind""")
+    con.unregister("df_role_kind")
     con.execute("""UPDATE pres SET statement_kind = rk.statement_kind FROM role_kind rk
                    WHERE pres.role_definition IS NOT DISTINCT FROM rk.role_definition""")
     nconf = load.mark_conflicts(con, cfg["thresholds"]["scale_jump_factor"])
@@ -119,6 +125,44 @@ def pick(occ, cutoff):
     return sub.loc[sub["order_key"].idxmax()]
 
 
+def occurrence_index(occ):
+    """Ce que term_value compare, relevé une fois par table d'occurrences : fins, débuts et dates de
+    connaissance en jours ordinaux (NaN quand la date manque), types de période, ordre total et
+    valeurs. None si une date n'est ni une date simple ni absente, ou si les valeurs ne sont pas des
+    flottants : term_value reprend alors le calcul ligne à ligne."""
+    def ords(col):
+        out = np.empty(len(col), dtype=float)
+        for i, x in enumerate(col):
+            if type(x) is dt.date:
+                out[i] = x.toordinal()
+            elif x is None or x != x:
+                out[i] = np.nan
+            else:
+                return None
+        return out
+    if occ["value"].dtype != np.float64:
+        return None
+    pe, ps, kd = ords(occ["period_end"]), ords(occ["period_start"]), ords(occ["knowledge_date"])
+    if pe is None or ps is None or kd is None:
+        return None
+    return {"pe": pe, "ps": ps, "kd": kd, "instant": (occ["period_type"] == "instant").to_numpy(dtype=bool),
+            "duration": (occ["period_type"] == "duration").to_numpy(dtype=bool),
+            "order_key": occ["order_key"].to_numpy(dtype=object), "value": occ["value"].to_numpy()}
+
+
+def _positions(ix, start, end, instant, tol=3):
+    """Positions des occurrences de la période, dans l'ordre de la table (mêmes lignes que _match) ;
+    None si une borne n'est pas une date simple."""
+    if end is None or (not instant and start is None):
+        return np.empty(0, dtype=int)                      # une date absente ne se compare à rien
+    if type(end) is not dt.date or (not instant and type(start) is not dt.date):
+        return None
+    near_end = np.abs(ix["pe"] - end.toordinal()) <= tol
+    if instant:
+        return np.flatnonzero(near_end & ix["instant"])
+    return np.flatnonzero(near_end & (np.abs(ix["ps"] - start.toordinal()) <= tol) & ix["duration"])
+
+
 def _match(occ, start, end, instant, tol=3):
     def close(a, b):
         # un instant n'a pas de début : NaT ne se compare à rien
@@ -133,8 +177,34 @@ def _match(occ, start, end, instant, tol=3):
     return m
 
 
-def term_value(occ_q, start, end, instant, cutoff):
-    """Une valeur de grandeur pour une période exacte, connue à la date de coupure."""
+def _term_dict(r, revised_before):
+    return {"value": Decimal(str(r["value"])), "fact_key": r["fact_key"], "accession": r["accession"],
+            "concept": r["concept"],
+            "knowledge_date": r["knowledge_date"], "tier": r["tier"], "decimals": r["decimals"],
+            "decimals_inf": r["decimals_inf"], "precision_known": r["precision_known"],
+            "is_tagged": bool(r["is_tagged"]), "revised": revised_before}
+
+
+def term_value(occ_q, start, end, instant, cutoff, ix=None):
+    """Une valeur de grandeur pour une période exacte, connue à la date de coupure. Avec `ix`
+    (occurrence_index de la même table), le calcul se fait sur les positions, sans extraire de
+    sous-table : mêmes lignes, même occurrence retenue, même dictionnaire."""
+    if ix is not None and type(cutoff) is dt.date:
+        pos = _positions(ix, start, end, instant)
+        if pos is not None:
+            if len(pos) == 0:
+                return None
+            known = pos[ix["kd"][pos] <= cutoff.toordinal()]
+            if len(known) == 0:
+                return None
+            ok, best = ix["order_key"], known[0]
+            for i in known[1:]:
+                if ok[i] > ok[best]:
+                    best = i                               # premier maximum, comme idxmax
+            r = occ_q.iloc[best]
+            vals = ix["value"][known]
+            revised_before = len(np.unique(vals[~np.isnan(vals)])) > 1
+            return _term_dict(r, revised_before)
     m = _match(occ_q, start, end, instant)
     if m.empty:
         return None
@@ -142,11 +212,7 @@ def term_value(occ_q, start, end, instant, cutoff):
     if r is None:
         return None
     revised_before = m[(m["knowledge_date"] <= cutoff)]["value"].nunique() > 1
-    return {"value": Decimal(str(r["value"])), "fact_key": r["fact_key"], "accession": r["accession"],
-            "concept": r["concept"],
-            "knowledge_date": r["knowledge_date"], "tier": r["tier"], "decimals": r["decimals"],
-            "decimals_inf": r["decimals_inf"], "precision_known": r["precision_known"],
-            "is_tagged": bool(r["is_tagged"]), "revised": revised_before}
+    return _term_dict(r, revised_before)
 
 
 def quarter_series(occ, group, quantity, cal, instant, view, as_of, report_dates):

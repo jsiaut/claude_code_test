@@ -227,9 +227,23 @@ def quote_pattern(quote, max_words=25):
     return re.compile(_GAP.join(_word_pattern(w) for w in words), re.S)
 
 
+def raw_encoding(raw: bytes) -> str:
+    """Encodage qui ramène les positions du texte décodé en octets bruts : utf-8, sinon cp1252."""
+    try:
+        raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return "cp1252"
+    return "utf-8"
+
+
 def locate_in_raw(raw: bytes, quote: str, start_char=0):
     """Plage d'octets bruts d'une citation dans le fichier en cache, ou None."""
-    text = decode(raw)
+    return locate_in_text(decode(raw), raw_encoding(raw), quote, start_char)
+
+
+def locate_in_text(text: str, enc: str, quote: str, start_char=0):
+    """locate_in_raw sur un document déjà décodé (`text`) dont `enc` est l'encodage : un document
+    qui porte plusieurs citations ne se décode qu'une fois."""
     pat = quote_pattern(quote)
     if pat is None:
         return None
@@ -238,11 +252,6 @@ def locate_in_raw(raw: bytes, quote: str, start_char=0):
         m = pat.search(text)
     if not m:
         return None
-    enc = "utf-8"
-    try:
-        raw.decode("utf-8")
-    except UnicodeDecodeError:
-        enc = "cp1252"
     b0 = len(text[:m.start()].encode(enc, "replace"))
     b1 = b0 + len(text[m.start():m.end()].encode(enc, "replace"))
     return b0, b1

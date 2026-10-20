@@ -12,6 +12,8 @@ import datetime as dt
 import json
 from decimal import Decimal
 
+import pandas as pd
+
 from . import config
 
 BS = {"balance_sheet"}
@@ -178,7 +180,11 @@ def map_concepts(con, cfg=None):
     con.execute("""CREATE TABLE concept_map (group_id VARCHAR, quantity VARCHAR, accession VARCHAR,
                    concept VARCHAR, rule VARCHAR, statement_kind VARCHAR)""")
     if rows:
-        con.executemany("INSERT INTO concept_map VALUES (?,?,?,?,?,?)", rows)
+        # insertion d'un bloc, dans l'ordre de la liste (executemany insérait ligne à ligne)
+        cols = ["group_id", "quantity", "accession", "concept", "rule", "statement_kind"]
+        con.register("df_concept_map", pd.DataFrame(rows, columns=cols, dtype=object))
+        con.execute(f"INSERT INTO concept_map SELECT {', '.join(f'CAST({c} AS VARCHAR)' for c in cols)} FROM df_concept_map")
+        con.unregister("df_concept_map")
     return len(rows)
 
 

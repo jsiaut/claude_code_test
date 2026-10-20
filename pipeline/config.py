@@ -1,4 +1,5 @@
 """Chargement de config.yaml et constantes de chemin (§0, §9.6)."""
+import copy
 import os
 import pathlib
 import yaml
@@ -19,9 +20,18 @@ NORMALIZER_VERSION = "n1"
 DELIMITER_VERSION = "d4"
 
 
+_PARSED = {}
+
+
 def load():
-    with open(CONFIG_PATH, encoding="utf-8") as fh:
-        return yaml.safe_load(fh)
+    """config.yaml analysé une fois par version du fichier (chemin, taille, date de modification) ;
+    chaque appel reçoit sa propre copie, qu'il peut modifier sans toucher aux suivants."""
+    st = CONFIG_PATH.stat()
+    key = (str(CONFIG_PATH), st.st_size, st.st_mtime_ns)
+    if _PARSED.get("key") != key:
+        with open(CONFIG_PATH, encoding="utf-8") as fh:
+            _PARSED.update(key=key, cfg=yaml.safe_load(fh))
+    return copy.deepcopy(_PARSED["cfg"])
 
 
 def user_agent(cfg=None):

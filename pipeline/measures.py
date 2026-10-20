@@ -79,29 +79,40 @@ class Series:
         self.fy = {}
         for q in cal["quarters"]:
             self.fy.setdefault(q["fy_end"], []).append(q)
+        self._terms, self._ix = {}, {}
+
+    def _term(self, qn, start, end, instant, cutoff):
+        """model.term_value sur la grandeur qn, calculé une fois par période et date de coupure pour la
+        vie de la série (les cumuls sur quatre trimestres redemandent les mêmes) ; chaque appel reçoit
+        sa copie du dictionnaire."""
+        k = (qn, start, end, instant, cutoff)
+        if k not in self._terms:
+            o = self.by_q[qn]
+            if qn not in self._ix:
+                self._ix[qn] = model.occurrence_index(o)
+            self._terms[k] = model.term_value(o, start, end, instant, cutoff, ix=self._ix[qn])
+        t = self._terms[k]
+        return dict(t) if t is not None else None
 
     def has(self, qn):
         return qn in self.by_q
 
     def instant(self, qn, end, cutoff):
-        o = self.by_q.get(qn)
-        if o is None:
+        if qn not in self.by_q:
             return None
-        return model.term_value(o, None, end, True, cutoff)
+        return self._term(qn, None, end, True, cutoff)
 
     def duration(self, qn, start, end, cutoff):
-        o = self.by_q.get(qn)
-        if o is None:
+        if qn not in self.by_q:
             return None
-        return model.term_value(o, start, end, False, cutoff)
+        return self._term(qn, start, end, False, cutoff)
 
     def quarter(self, qn, q, cutoff):
         """Valeur d'un trimestre : directe, sinon différence de cumuls ; renvoie
         (valeur, termes, motif)."""
-        o = self.by_q.get(qn)
-        if o is None:
+        if qn not in self.by_q:
             return None, [], "concept_unresolved"
-        t = model.term_value(o, q["start"], q["end"], False, cutoff)
+        t = self._term(qn, q["start"], q["end"], False, cutoff)
         if t:
             return t["value"], [t], None
         fqs = self.fy.get(q["fy_end"], [])
@@ -109,9 +120,9 @@ class Series:
         if not i:
             return None, [], "not_disclosed"
         fy_start = fqs[0]["start"]
-        cur = model.term_value(o, fy_start, q["end"], False, cutoff)
-        prev = model.term_value(o, fy_start, fqs[i - 1]["end"], False, cutoff) if i > 1 else \
-            model.term_value(o, fqs[0]["start"], fqs[0]["end"], False, cutoff)
+        cur = self._term(qn, fy_start, q["end"], False, cutoff)
+        prev = self._term(qn, fy_start, fqs[i - 1]["end"], False, cutoff) if i > 1 else \
+            self._term(qn, fqs[0]["start"], fqs[0]["end"], False, cutoff)
         if cur and prev:
             if cur["revised"] != prev["revised"]:
                 return None, [cur, prev], "recast_boundary"

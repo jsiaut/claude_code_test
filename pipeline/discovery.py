@@ -1208,14 +1208,14 @@ def coverage_ok():
     return todo <= set(scanned_archives())
 
 
-def client_states(read_cks, extended_start):
+def client_states(read_cks, extended_start, names=None):
     """État de la recherche côté client pour chaque contrepartie hors périmètre, par sa
     dénomination normalisée : (complète, motif, cik). Un client sans CIK sous sa dénomination
     ne dépose pas ; un CIK sans rapport périodique depuis le début de la fenêtre allongée n'a
     pas de notes à lire ; un déposant périodique n'est complet que si toutes ses unités qui
     nomment le fournisseur sont lues. Une archive non tirée laisse la recherche incomplète."""
     from .graph import normalize_name
-    names = edgar_names()
+    names = edgar_names() if names is None else names
     per = periodic_filings()
     units = pd.read_parquet(UNITS) if UNITS.exists() else pd.DataFrame()
     built = built_units()
@@ -1226,8 +1226,17 @@ def client_states(read_cks, extended_start):
     # fournisseurs que le lexique nomme : un groupe ajouté après le scan (D-0043) n'y figure pas, et
     # les notes des déposants qui le nomment n'ont jamais été cherchées
     searched = {e["ref"] for e in lexicon()}
+    # l'état ne dépend que de la contrepartie et du fournisseur : calculé une fois par couple, alors
+    # que les paires le demandent à chaque trimestre ; la liste des groupes de chaque unité, une fois
+    unit_groups = units["groups"].str.split(";") if not units.empty else None
+    memo = {}
 
     def state(norm, s):
+        if (norm, s) not in memo:
+            memo[(norm, s)] = _state(norm, s)
+        return memo[(norm, s)]
+
+    def _state(norm, s):
         if not complete_cov:
             return False, "search_incomplete", None
         ciks = {filer_cik[norm]} if norm in filer_cik else names.get(norm, set())
@@ -1241,7 +1250,7 @@ def client_states(read_cks, extended_start):
             return False, "search_incomplete", cik
         if units.empty:
             return False, "not_processed", cik
-        mine = units[(units["cik"].isin(ciks)) & (units["groups"].str.split(";").map(lambda g: s in g))]
+        mine = units[(units["cik"].isin(ciks)) & (unit_groups.map(lambda g: s in g))]
         for u in mine.itertuples(index=False):
             b = built.get(u.order)
             if not b or not b.get("content_key") or b["content_key"] not in read_cks:

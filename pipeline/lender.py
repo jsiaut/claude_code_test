@@ -285,6 +285,20 @@ SUBTOTALS = []      # lignes « Total » des portefeuilles, écartées
 NONPERF = re.compile(r"nonperform|non-perform|nonaccrual|non-accrual", re.I)
 
 
+def name_finder(keys):
+    """Premier nom de `keys`, dans leur ordre, contenu mot pour mot dans un texte entouré d'espaces.
+    Un nom entier ne peut s'y trouver que si son premier mot y figure : seuls ces noms-là se testent,
+    au lieu de tous (même résultat que le balayage de la liste entière)."""
+    by_first = {}
+    for i, k in enumerate(keys):
+        by_first.setdefault(k.split(" ")[0], []).append(i)
+
+    def find(t):
+        cand = sorted({i for w in set(t.split(" ")) for i in by_first.get(w, ())})
+        return next((keys[i] for i in cand if " " + keys[i] + " " in t), None)
+    return find
+
+
 def matched_holdings(names, ent_rows):
     """Faits de num rattachés à une entité du registre par sa dénomination légale entière,
     vue as_known : seuls les faits à la date du bilan du dépôt (période de sub), le premier
@@ -294,11 +308,11 @@ def matched_holdings(names, ent_rows):
     sub = pd.read_parquet(config.DB_DIR / "bdc_sub.parquet")
     sub = sub.drop_duplicates("adsh")
     num = num.drop_duplicates(["adsh", "tag", "ddate", "qtrs", "identifier", "other_axes", "value"])
-    keys = sorted(names, key=len, reverse=True)
+    find = name_finder(sorted(names, key=len, reverse=True))
     ent_of, ambiguous = {}, {}
     for ident in num["identifier_norm"].unique():
         t = " " + ident + " "
-        hit = next((k for k in keys if " " + k + " " in t), None)
+        hit = find(t)
         if hit:
             if issuer_unambiguous(t, hit):
                 ent_of[ident] = names[hit]

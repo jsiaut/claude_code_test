@@ -69,15 +69,24 @@ def _facts(con, quantity):
     return df
 
 
-def axis_tables(pres_acc, axis):
-    """Ventilations publiées sur un axe : (rôle, membres de premier niveau) par tableau."""
+def role_children(pres_acc):
+    """Enfants de chaque parent, rôle par rôle, dans l'ordre de présentation d'un dépôt."""
     out = []
-    if pres_acc is None:
-        return out
     for role, pr in pres_acc.groupby("role"):
         kids = defaultdict(list)
         for r in pr.sort_values("ord", kind="stable").itertuples():
             kids[r.parent].append(r.child)
+        out.append((role, kids))
+    return out
+
+
+def axis_tables(pres_acc, axis, children=None):
+    """Ventilations publiées sur un axe : (rôle, membres de premier niveau) par tableau. `children`
+    (role_children du même dépôt) évite de retrier la présentation pour chaque axe."""
+    out = []
+    if pres_acc is None:
+        return out
+    for role, kids in (children if children is not None else role_children(pres_acc)):
         if axis not in kids:
             continue
         top = []
@@ -120,7 +129,8 @@ def segments_and_disaggregation(con, as_of):
                 a = next(iter(d))
                 by_axis[a][key][d[a]] = r
         pa = pres_by.get(acc)
-        seg_tables = axis_tables(pa, SEG_AXIS)
+        children = role_children(pa) if pa is not None else None
+        seg_tables = axis_tables(pa, SEG_AXIS, children)
         for key, members in seg.items():
             t = totals.get(key)
             if t is None:
@@ -141,7 +151,7 @@ def segments_and_disaggregation(con, as_of):
                             evidence={"segments": [x.fact_key for x in rs], "reconciling": [x.fact_key for x in rec.get(key, [])],
                                       "total": t.fact_key, "role": role, "members_missing": missing}))
         for axis in DISAGG_AXES:
-            tables = axis_tables(pa, axis)
+            tables = axis_tables(pa, axis, children)
             for key, members in by_axis.get(axis, {}).items():
                 t = totals.get(key)
                 if t is None:

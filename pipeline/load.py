@@ -20,11 +20,12 @@ FACT_COLS = ["fact_key", "source", "cik", "entity_id", "group_id", "accession", 
              "filing_status", "assurance_level", "knowledge_date", "fy", "fp", "model_quantity", "conflict"]
 
 
-def connect(fresh=False):
+def connect(fresh=False, path=None):
+    path = path or DB_PATH
     config.DB_DIR.mkdir(exist_ok=True)
-    if fresh and DB_PATH.exists():
-        DB_PATH.unlink()
-    con = duckdb.connect(str(DB_PATH))
+    if fresh and path.exists():
+        path.unlink()
+    con = duckdb.connect(str(path))
     if fresh:
         con.execute((config.ROOT / "schema.sql").read_text(encoding="utf-8"))
     return con
@@ -155,9 +156,10 @@ def line_group(b, as_group, canon, attached=None):
     return None
 
 
-def load_observations(con, catalog, as_of):
+def load_observations(con, catalog, as_of, use_memo=True):
     """Charge la passe la plus récente de chaque bloc dont la clé existe encore, après
-    validation sémantique ; une ligne rejetée devient une exclusion validation_failed."""
+    validation sémantique ; une ligne rejetée devient une exclusion validation_failed.
+    use_memo=False ignore les plages de citations déjà trouvées et les cherche toutes."""
     cat = {b["content_key"]: b for b in catalog}
     canon = canonical_filers(catalog)
     # un déposant découvert devenu groupe de config.yaml (D-0043) : ses lignes vont à son groupe ; la
@@ -167,6 +169,11 @@ def load_observations(con, catalog, as_of):
     as_group.update(own_filer_ciks())
     attached = attached_filer_ciks()
     rows, excl = [], []
+    # deux temps : les lignes se valident fichier par fichier (texte du bloc normalisé une fois), les
+    # citations à localiser s'accumulent ; elles se cherchent ensuite document par document (mémo des
+    # plages déjà trouvées, voir QuoteRanges), puis les lignes s'écrivent dans l'ordre d'avant
+    ranges = QuoteRanges(use_memo=use_memo)
+    staged = []
     for p in sorted(config.OBS_DIR.glob("*.jsonl")):
         if p.name.endswith(".rejected.jsonl"):
             continue
@@ -183,19 +190,31 @@ def load_observations(con, catalog, as_of):
         if rej.exists():
             for r in (json.loads(x) for x in rej.read_text(encoding="utf-8").splitlines() if x.strip()):
                 if (r.get("as_of"), r.get("pass_id")) == last:
-                    excl.append(_excl("observation_line", f"{ck}/{r['pass_id']}/schema", "validation_failed",
-                                      "; ".join(r.get("errors", [])), b, as_of, raw=r.get("raw")))
+                    staged.append(("excl", _excl("observation_line", f"{ck}/{r['pass_id']}/schema", "validation_failed",
+                                                 "; ".join(r.get("errors", [])), b, as_of, raw=r.get("raw"))))
+        text_norm = textnorm.norm_for_match(b["text"]).lower()
         for n, l in enumerate(lines):
-            errs, locator = semantic_errors(l, b)
-            state = "valid" if not errs else "rejected_semantic"
-            row = _obs_row(l, b, n, state, errs, locator)
-            g = line_group(b, as_group, canon, attached)
-            if g:
-                row["group_id"] = g
-            rows.append(row)
-            if errs:
-                excl.append(_excl("observation_line", row["obs_key"], "validation_failed", "; ".join(errs), b,
-                                  as_of, raw=json.dumps(l, ensure_ascii=False)))
+            asked = []
+            errs, _ = semantic_errors(l, b, text_norm=text_norm, locate=lambda blk, q: asked.append(q))
+            q = asked[0] if asked else None
+            staged.append(("line", b, n, l, errs, q, ranges.request(b, q) if q is not None else None))
+    ranges.resolve()
+    for item in staged:
+        if item[0] == "excl":
+            excl.append(item[1])
+            continue
+        _, b, n, l, errs, q, key = item
+        locator = ranges.locator(b, q, key) if q is not None else None
+        state = "valid" if not errs else "rejected_semantic"
+        row = _obs_row(l, b, n, state, errs, locator)
+        g = line_group(b, as_group, canon, attached)
+        if g:
+            row["group_id"] = g
+        rows.append(row)
+        if errs:
+            excl.append(_excl("observation_line", row["obs_key"], "validation_failed", "; ".join(errs), b,
+                              as_of, raw=json.dumps(l, ensure_ascii=False)))
+    ranges.save()
     if rows:
         df = pd.DataFrame(rows)
         con.register("df_obs", df)
@@ -205,18 +224,21 @@ def load_observations(con, catalog, as_of):
     return rows, excl
 
 
-def semantic_errors(line, block):
+def semantic_errors(line, block, text_norm=None, locate=None):
     """Citation retrouvée mot pour mot, contrepartie présente dans le bloc, montant égal
-    au fait candidat quand l'origine est tagged_reference (§7.4)."""
+    au fait candidat quand l'origine est tagged_reference (§7.4). `text_norm` : texte du bloc
+    déjà normalisé ; `locate` remplace la localisation directe de la citation (load_observations
+    la diffère pour chercher les citations document par document)."""
     errs = []
-    text_norm = textnorm.norm_for_match(block["text"]).lower()
+    if text_norm is None:
+        text_norm = textnorm.norm_for_match(block["text"]).lower()
     locator = None
     q = line.get("quote")
     if q:
         if textnorm.norm_for_match(q).lower() not in text_norm:
             errs.append("citation introuvable mot pour mot dans le bloc")
         else:
-            locator = _locate(block, q)
+            locator = (locate or _locate)(block, q)
     if line.get("exhibit_title") and textnorm.norm_for_match(line["exhibit_title"]).lower() not in text_norm:
         errs.append("titre de pièce introuvable dans le bloc")
     cp = line.get("counterparty_name")
@@ -275,6 +297,105 @@ def _locate(block, quote):
     except Exception:
         loc["quote_byte_range"] = None
     return json.dumps(loc, ensure_ascii=False)
+
+
+QUOTE_RANGES = config.DB_DIR / "memo" / "quote_ranges.json"
+_PENDING, _FAILED = object(), object()
+
+
+class QuoteRanges:
+    """Plages d'octets des citations dans leur document en cache (§9.2), gardées d'un réassemblage
+    à l'autre dans db/memo : une plage ne dépend que du document, du début du bloc, de la citation et
+    du code qui la cherche. La clé porte la taille et la date de modification du document, et le mémo
+    l'empreinte de ce code (textnorm.py, cache.py, cette classe) : un document ou un code modifié se
+    recherche. Les citations à chercher le sont document par document, chacun décompressé et décodé
+    une fois. Le mémo ne garde que les clés de la dernière exécution ; le supprimer ne change rien
+    aux tables, seulement à la durée (même calcul que _locate)."""
+
+    def __init__(self, path=QUOTE_RANGES, use_memo=True):
+        self.path = path
+        self.version = self.code_version()
+        self.known = {}
+        if use_memo and path.exists():
+            try:
+                d = json.loads(path.read_text(encoding="utf-8"))
+                if d.get("version") == self.version:
+                    self.known = d["ranges"]
+            except (OSError, ValueError, KeyError, TypeError):
+                self.known = {}
+        self.used, self.todo, self.searched = {}, {}, 0
+
+    @classmethod
+    def code_version(cls):
+        import hashlib
+        import inspect
+        h = hashlib.sha256()
+        for name in ("textnorm.py", "cache.py"):
+            h.update((config.ROOT / "pipeline" / name).read_bytes())
+        h.update(inspect.getsource(cls).encode("utf-8"))
+        return h.hexdigest()
+
+    def request(self, block, quote):
+        """Clé de la plage d'une citation, mise en attente si elle n'est pas connue ; None si le
+        document n'est pas lisible en cache (la plage vaut alors None, comme dans _locate)."""
+        import hashlib
+        from . import cache as cachemod
+        loc = block.get("locator") or {}
+        try:
+            p = cachemod.archive_path(loc["cik"], loc["accession"], loc["file"])
+            st = p.stat()
+        except Exception:
+            return None
+        start = (loc.get("byte_range") or [0])[0]
+        k = "\t".join([str(p.relative_to(config.ROOT)) if p.is_relative_to(config.ROOT) else str(p),
+                       str(st.st_size), str(st.st_mtime_ns), json.dumps(start),
+                       hashlib.sha256(quote.encode("utf-8")).hexdigest()])
+        if k not in self.used:
+            if k in self.known:
+                self.used[k] = self.known[k]
+            else:
+                self.used[k] = _PENDING
+                self.todo.setdefault(p, []).append((k, start, quote))
+        return k
+
+    def resolve(self):
+        """Cherche les citations en attente, un document à la fois."""
+        from . import cache as cachemod
+        for p in sorted(self.todo, key=str):
+            items = self.todo[p]
+            try:
+                raw = cachemod.read(p)
+                text, enc = textnorm.decode(raw), textnorm.raw_encoding(raw)
+            except Exception:
+                for k, _, _ in items:
+                    self.used[k] = _FAILED
+                continue
+            for k, start, quote in items:
+                try:
+                    start_char = len(textnorm.decode(raw[:start])) if start else 0
+                    r = textnorm.locate_in_text(text, enc, quote, start_char)
+                    self.used[k] = list(r) if r else None
+                    self.searched += 1
+                except Exception:
+                    self.used[k] = _FAILED
+        self.todo = {}
+
+    def locator(self, block, quote, key):
+        """Même texte que _locate : localisation du bloc, citation, plage (None si introuvable)."""
+        loc = dict(block.get("locator") or {})
+        loc["quote"] = quote
+        r = self.used.get(key) if key is not None else None
+        loc["quote_byte_range"] = r if isinstance(r, list) else None
+        return json.dumps(loc, ensure_ascii=False)
+
+    def save(self):
+        ranges = {k: v for k, v in self.used.items() if v is None or isinstance(v, list)}
+        if ranges == self.known:
+            return
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = self.path.with_name(self.path.name + ".tmp")
+        tmp.write_text(json.dumps({"version": self.version, "ranges": ranges}, sort_keys=True), encoding="utf-8")
+        tmp.replace(self.path)
 
 
 def _obs_row(l, b, n, state, errs, locator):

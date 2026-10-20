@@ -243,14 +243,15 @@ def status_cell(s, c, q, view, as_of, policy, st, keys, censored, reason="not_pr
 
 def names_of_group(reg, g):
     out = set()
+    members = set()          # entités rattachées au groupe, relevées une fois (et non pour chaque alias)
     for r in reg.rows:
         if r["record_kind"] == "membership" and r["ref"] == g:
+            members.add(r["entity_id"])
             e = reg.entities.get(r["entity_id"])
             if e and e.get("name"):
                 out.add(e["name"])
     for r in reg.rows:
-        if r["record_kind"] == "alias" and r["entity_id"] in {x["entity_id"] for x in reg.rows
-                                                               if x["record_kind"] == "membership" and x["ref"] == g}:
+        if r["record_kind"] == "alias" and r["entity_id"] in members:
             out.add(r["name"])
     return {n for n in out if n}
 
