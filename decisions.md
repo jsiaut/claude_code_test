@@ -2045,3 +2045,56 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - le type `equity_primary` par défaut ne dit pas la forme réelle d'un engagement d'investir ;
     - un engagement sans valeur récente garde sa dernière valeur publiée (PK AirFinance ; D-0059, point 11) ;
   - tests unitaires : 218, tous passés.
+- **D-0062 — Réassemblage plus rapide, mêmes tables à l'octet près : travail répété supprimé, mémo des citations, mémo des étapes qui ne lisent pas les observations, mode aperçu.** (1) Décision de l'utilisateur, le 2026-10-20 : « Fais les pistes 1, 2, 3 et 4 ». Elle répond au remue-méninges demandé le même jour (« il y a pas moyen de faire le réassemblage de manière plus intelligentes et astucieuse pour éviter les 40 min à chaque fois ? Reste en mode brainstorming »), fondé sur un profil par échantillonnage d'un réassemblage complet : 33 min 52 s, et des tables identiques à l'octet près à celles du dépôt, ce qui établit que le calcul est déterministe. Aucune règle de mesure ne change, aucune requête réseau ; l'as_of reste le 2026-10-07.
+
+  (2) Constat du profil (2 031 s) : huit endroits où le code refaisait le même travail font les trois quarts du temps :
+  - relocaliser les citations à la validation, 603 s : chaque ligne décompressait son document et y cherchait sa citation dans le HTML brut (25 438 lignes, 3 893 documents) ;
+  - valeurs trimestrielles, 248 s : chaque valeur demandée filtrait toute la série en Python, et les mêmes valeurs revenaient ;
+  - tableaux par axe des contrôles C11 et C12, 241 s : la présentation d'un dépôt était triée de nouveau pour chaque axe ;
+  - état de la recherche des paires, 175 s : la file de la découverte était filtrée à chaque trimestre, alors que la réponse ne dépend que du couple fournisseur et contrepartie ;
+  - positions des BDC, 86 s : chaque identifiant comparé à tous les noms du registre ;
+  - texte des blocs, 64 s : normalisé une fois par ligne ;
+  - insertions dans DuckDB ligne à ligne, 58 s ; config.yaml relu à chaque appel, 29 s.
+
+  (3) Exception à P1, décidée par l'utilisateur. P1 veut que seuls le réseau et la lecture soient incrémentaux, le reste recalculé à chaque exécution. Les pistes 2 et 3 gardent d'une exécution à l'autre des résultats de calcul. La garantie reste celle de §9.6 : le mémo est un cache de calculs déterministes, sa clé porte toutes leurs entrées, et `--sans-cache` recalcule tout et donne les mêmes tables.
+
+  (4) Piste 1, même calcul sans le travail répété. Chaque correction a été comparée à l'ancien calcul sur les données réelles :
+  - citations cherchées document par document, chacune dans un document décompressé et décodé une fois : 29 269 lignes identiques, plages comprises ;
+  - texte du bloc normalisé une fois par bloc, et non une fois par ligne ;
+  - valeurs trimestrielles mémorisées pour la vie de la série et cherchées par positions, sans extraire de sous-table : 80 906 cellules identiques, 282 s → 48 s ;
+  - présentation d'un dépôt triée une fois pour tous les axes : 4 418 contrôles identiques, 299 s → 55 s ;
+  - état de la recherche calculé une fois par couple ;
+  - positions des BDC : seuls les noms dont le premier mot figure dans l'identifiant se testent : 301 260 identifiants, mêmes rattachements, 88 s → 2 s ;
+  - insertions d'un bloc dans DuckDB ; config.yaml lu une fois par version du fichier, chaque appel recevant sa copie ;
+  - noms d'un groupe pour les paires sans recherche quadratique.
+  Constat lié : l'ordre physique de `concept_map` variait déjà d'une exécution à l'autre (UNION de DuckDB sans ordre) ; le contenu est le même, et les tables n'en dépendent pas.
+
+  (5) Piste 2, mémo des plages de citations (`db/memo/quote_ranges.json`, hors suivi). Une plage ne dépend que du document en cache, du début du bloc, de la citation et du code qui la cherche. La clé porte la taille et la date de modification du document ; le mémo porte l'empreinte de `textnorm.py`, de `cache.py` et de la classe `QuoteRanges`. Un document ou un code modifié se recherche. Le mémo ne garde que les clés de la dernière exécution. Validation des observations : 563 s sans mémo, 20 s avec.
+
+  (6) Piste 3, mémo des étapes qui ne lisent pas les observations (`pipeline/memo.py`, `db/memo`) :
+  - étapes : base XBRL (copie du fichier DuckDB), mesures tirées des faits, rattachement des positions des BDC (clé : lignes du registre), contrôles (clé : faits ajoutés en cours d'exécution, positions des BDC et Notes Data Sets des laboratoires), blocs `lender_portfolio`, `lender_liabilities` et `nport`, documents (clé : accessions utilisées), dénominations d'EDGAR ;
+  - empreinte des entrées : code de `pipeline/` hors rendu et aperçu, `schema.sql`, versions de Python et des bibliothèques, `config.yaml`, fichiers de `db/` hors bases et mémo, de `work/` hors observations et fichiers temporaires, arbre du cache. Seules les observations peuvent donc changer pour qu'une étape soit reprise ; tout autre changement la recalcule ;
+  - deux entrées gardées par étape ; `python -m pipeline.assemble 2026-10-07 --sans-cache` recalcule tout et réécrit le mémo.
+
+  (7) Piste 4, aperçu : `python -m pipeline.assemble 2026-10-07 --apercu`. Le même code que l'assemblage jusqu'aux paires, à l'exposition, au grand livre des laboratoires, aux cycles et à l'annexe E, puis les invariants d'agrégat et l'univers attendu. Il reprend du mémo les mesures tirées des faits sans les comparer, une mesure comparée pouvant en avoir (`exposure_matrix`), et saute les signaux, l'annexe F, les contrôles et l'export. Il travaille sur sa propre base (`db/apercu.duckdb`, effacée ensuite) et n'écrit rien dans `tables/`. Il compare les arêtes et les mesures qu'il calcule aux tables, à l'octet près des types, et écrit le détail dans `work/tmp/apercu.json`. Il ne remplace pas le réassemblage complet, seul à écrire les tables.
+
+  (8) Vérifications, toutes à l'octet près sur les huit tables :
+  - trois réassemblages complets à mémo des étapes vide : tables identiques à celles du dépôt ;
+  - réassemblage repris du mémo, les dix étapes reprises : identiques ;
+  - observations remises à leur état d'avant D-0061 (065e155), mémo calculé sur les observations courantes : tables identiques à celles du dépôt à 065e155, calculées par l'ancien code sur les mêmes observations ; observations rétablies ensuite ;
+  - réassemblage `--sans-cache`, rien repris, toutes les citations recherchées : identiques ;
+  - aperçu : aucun écart sur l'état courant (8 326 arêtes, 21 mesures) ; sur les observations d'avant D-0061, il retrouve les changements de D-0061 : 93 arêtes en moins, 6 états de `counterparty_exposure` en moins, 7 paires dont seules les preuves changent ;
+  - l'ordre de deux listes intermédiaires variait déjà d'une exécution à l'autre (`concept_map`, issue d'une UNION de DuckDB ; dépôts annuels de C8, issus d'un SELECT DISTINCT) : le contenu est le même, et l'export trie chaque table par sa clé.
+
+  (9) Durées (réassemblage complet, 2026-10-20) :
+  - avant : 33 min 52 s (2 031 s) ;
+  - mémo des étapes vide, plages des citations en mémo : 9 min 15 s à 10 min 49 s, contre 33 min 52 s ;
+  - mémo plein, seules les observations ayant pu changer : 2 min 10 s, et 2 min 20 s avec les observations d'avant D-0061 ;
+  - `--sans-cache` : 18 min 9 s, dont 9 min 23 s pour rechercher toutes les citations ;
+  - aperçu : 61 à 63 s.
+
+  (10) Limites :
+  - un changement de `config.yaml` ou du code de `pipeline/` (hors rendu et aperçu) recalcule toutes les étapes du mémo : environ 10 min ;
+  - la première exécution sans mémo des citations les recherche toutes : environ 9 min de plus ;
+  - le rendu (11 min) n'est pas touché ;
+  - tests unitaires : 231, tous passés.
