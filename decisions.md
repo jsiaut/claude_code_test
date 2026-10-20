@@ -2012,3 +2012,8 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - chaque ligne modifiée garde ses autres champs ; sa note reçoit la mention du type et de la règle (« D-0061 »).
 
   (4) Ordre : la décision ; les lignes modifiées ; un réassemblage ; les rendus ; les résultats ici ; tests, commit, push, rapport.
+
+  (5) Correction liée, constatée au premier réassemblage. Les engagements trimestriels d'un même engagement (Athene envers un véhicule, AAM envers Athora) n'avaient pas de clé d'instrument : `counterparty_exposure` additionnait donc chaque trimestre comme un engagement distinct (Atlas : 16,2 Md$, somme de huit trimestres, au lieu de 1,3 Md$ au 31 mars 2026). Un engagement est un état : seule compte sa dernière valeur connue. Chaque série reçoit donc une clé commune, par porteur et par contrepartie :
+  - `apo:athene_commitment_<véhicule>` pour les engagements d'Athene (ADIP, Athora, Atlas, PK AirFinance, Skylign, Venerable, Wheels) ;
+  - `apo:aam_equity_commitment_athora` pour les engagements de souscription d'AAM envers Athora, expiration du 1er avril 2025 comprise ;
+  - les engagements conditionnels du 3 juillet 2025 gardent leur clé.
