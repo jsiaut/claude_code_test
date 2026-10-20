@@ -2406,9 +2406,9 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - OpenAI : 4 345 M$ détenus par 58 séries. C'était 276 M$ au 2024-12-31 (4 séries) et 1 577 M$ au 2025-12-31 (32). Valeur par action médiane : 693,90 $ au 2026-02-28, puis 687,69 $ du 2026-03-31 au 2026-07-31 ;
     - SpaceX avant son introduction : 23 667 M$ au 2026-03-31, détenus par 51 séries. C'était 737 M$ au 2019-12-31 (14 séries), 3 327 M$ au 2022-12-31 (29) et 13 719 M$ au 2025-12-31 (38). Au 2026-06-30, seuls entrent les rapports d'avril et de mai, avant le 424B4 : 11 727 M$ (24 séries). La valeur médiane passe de 526,59 $ à 105,32 $ au 2026-05-31, soit un rapport de 5. Quelques fonds déclarent encore 5 265,90 $ : les valeurs par action ne se comparent pas d'un fonds à l'autre à une division d'actions près. Le nœud réunit aussi les actions de X.AI Holdings Corp. datées après son entrée au groupe ;
     - xAI avant son entrée au groupe SpaceX (X.AI Holdings Corp.) : 2 456 M$ au 2025-12-31, détenus par 42 séries. Valeur par action : 36,56 $ en septembre et octobre 2025, 65,19 $ en novembre, puis 75,46 $ ;
-    - Waymo LLC : 2 366 M$ détenus par 54 séries, contre 490 M$ au 2020-06-30. Valeur par action de 164,32 à 197,80 $ en 2026 ;
+    - Waymo LLC : 2 366 M$ détenus par 54 séries, contre 490 M$ au 2020-06-30. Valeur par action de 164,32 à 214,12 $ en 2026 ;
     - Cerebras avant son introduction : 1 282 M$ au 2026-03-31, détenus par 27 séries, contre 7 M$ en 2022 (une série). Valeur par action : 36,23 $ fin 2025, 89,02 $ au premier trimestre 2026, puis 100,26 $ au 2026-04-30 ;
-    - CoreWeave avant son introduction : 808 M$ au 2024-12-31, détenus par 26 séries. Valeur médiane d'environ 940 à 1 004 $ par action avant sa division ; quelques fonds déclarent 1,2 à 1,8 $ ;
+    - CoreWeave avant son introduction : 808 M$ au 2024-12-31, détenus par 26 séries. Valeur médiane de 847 à 1 005 $ par action environ, de septembre 2024 à février 2025, avant sa division ; quelques fonds déclarent 1,2 à 1,8 $ ;
     - Fluidstack : 109 M$ détenus par 3 séries, 144,11 à 162,22 $ par action, contre 74,09 $ au 2026-03-31 ;
     - Nscale : 47 M$ détenus par 9 séries. La valeur par action passe de 1 223,53 $ en avril 2026 à 20,39 $ en mai, autre changement d'unité ;
     - Lambda : 12 M$, une seule série. Sa valeur par action va de 20,94 à 38,00 $ (2025-07-31 et 2026-07-31) ;
