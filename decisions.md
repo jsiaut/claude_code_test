@@ -2218,3 +2218,25 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - niveaux : 40 E (communiqués et présentations furnished), 35 D (les actes d'émission), 5 C (documents principaux de 8-K) ;
   - au-delà du plafond, 145 fenêtres : 40 nomment Fluidstack (du 2025-01-08 au 2025-11-10 ; TeraWulf 27, Cipher 11, IREN et Soluna 1 chacun), 61 l'infrastructure, 44 aucune des deux. 78 viennent de dépôts de groupes suivis (TeraWulf 29, Amazon 22, Cipher 12, AMD 5, Akamai, CoreWeave, Microsoft et NVIDIA 2 chacun, IREN et Dell 1 chacun) et sortent comme lues par le catalogue du groupe (D-0053, point 7) ; 67 sortent en `not_processed`. Le rendement des 80 blocs est présenté avant d'aller plus loin (point 3) ;
   - liste de lecture `anthropic_chain`, dans l'ordre du montage.
+
+  (11) Volet 7, lecture, sans sous-agent (2026-10-20) :
+  - règles de codage, en plus du point 5 :
+    - un communiqué ou une présentation qui reprend un fait déjà codé depuis un dépôt du même déclarant reçoit `duplicate_of_other_block`, même quand son texte diffère. Seul un fait ou un montant absent des lignes déjà lues fait une ligne ;
+    - un acte d'émission ne donne une ligne que pour une définition ou une clause qui porte un fait nouveau (date, partie, mécanisme). Ses tables, renvois et clauses types sont des abstentions ;
+    - un alias défini dans un acte ne vaut que dans ce document : « Fluidstack » désigne Fluidstack Ltd. dans l'acte de Flash Compute (TeraWulf) et Fluidstack USA II Inc. dans celui de Cipher Compute ;
+    - le client aval en colocation de Fluidstack, que les actes d'émission nomment « Downstream Customer », reste anonyme ;
+    - aucune personne physique n'est citée : déclarations de dirigeants, coordonnées et transcriptions sont écartées. Le contrôle des noms, refait à la fin de la lecture, n'en trouve aucun dans les lignes ;
+  - rendement : 80 blocs, 90 lignes (38 observations, 52 abstentions), aucune rejetée :
+    - 16 lignes à famille : 7 baux de capacité, 4 garanties de Google sur des obligations de Fluidstack, 2 garanties d'Amazon.com, Inc. pour Cipher, un apport de TeraWulf à la coentreprise d'Abernathy, les bons de Fluidstack remis à Google et un contrat de services d'exploitation prévu à River Bend. 12 portent un montant. Leurs pièces sont pour la plupart furnished (niveau E) : les montants restent dans les lignes, et leurs arêtes ne sont que des relations ;
+    - 22 lignes descriptives, dont un extrait d'appartenance ;
+    - abstentions : 28 `duplicate_of_other_block`, 17 `boilerplate_no_event`, 5 `no_relevant_content`, 1 `out_of_scope_content`, 1 `no_named_counterparty` ;
+  - faits principaux :
+    - Anthropic : bail de 20 ans de TeraWulf à Justified (Hawesville, Kentucky), environ 401 MW et environ 19 Md$ sur la durée initiale (communiqués du 2026-07-06 et du 2026-08-05). Les lignes du 8-K et du 10-Q déjà lus n'avaient pas de montant ;
+    - Fluidstack, baux des hébergeurs : Lake Mariner environ 6,7 Md$ (trois baux de dix ans, août 2025) ; Barber Lake environ 3,8 Md$, dont environ 830 M$ pour l'extension de novembre 2025 ;
+    - Fluidstack, autres relations : Fluidstack Ltd. a émis le 26 septembre 2025, au profit de Google, des bons sur jusqu'à 7 786 250 de ses actions, liés au projet d'Abernathy (acte de Flash Compute, contrat déposé). Fluidstack achète pour 127 M$ de calcul sur deux ans à Boost Run (décembre 2025) et est client d'IREN (juillet 2026) ;
+    - Google : garanties chiffrées de 3,2 Md$ à Lake Mariner (600 M$ devenus effectifs à la livraison de CB-3, en juillet 2026) et de 1,73 Md$ à Barber Lake. Google doit reprendre le bail d'Abernathy si Fluidstack devient insolvable ou fait défaut de paiement, sauf après six ans. À River Bend, Hut 8 n'émet ni actions ni bons en contrepartie de la garantie ;
+    - montage commun à Abernathy et à Barber Lake : un client aval en colocation de Fluidstack, non nommé, verse les loyers sur un compte séquestre nanti au profit des porteurs des obligations ;
+    - Amazon : chez Cipher, bail de Black Pearl d'environ 5,5 Md$ et bail de Stingray d'environ 2,0 Md$, loyers garantis par Amazon.com, Inc. ;
+    - entités : Fluidstack CS I Inc. est une filiale indirecte à 100 % de Fluidstack Ltd. (8-K de TeraWulf du 2025-12-18), extrait retenu pour le point 6 ;
+  - écart relevé : le communiqué et la présentation de Hut 8 du 2025-12-17 sont expressément incorporés par référence dans un item 8.01, et le niveau par le triplet (point 3) les classe pourtant furnished. Laissé en l'état, comme l'écart du point 7 ;
+  - au-delà du plafond restent 145 fenêtres : 40 nomment Fluidstack, 61 l'infrastructure (dont 22 d'Amazon), 44 aucune des deux. Le rendement est présenté à l'utilisateur avant d'aller plus loin.
