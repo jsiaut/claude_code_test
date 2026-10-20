@@ -170,6 +170,18 @@ def run(as_of):
         stats["lender"] = {"facts": len(bnum), "holdings": len(hold), "bdc": int(hold["bdc_cik"].nunique()) if len(hold) else 0,
                            "groups": sorted(hold["group"].dropna().unique()) if len(hold) else [],
                            "ambiguous_identifiers": len(lender.AMBIGUOUS)}
+    # bloc labs (D-0060, volet 3) : faits balisés qui nomment un laboratoire ; ceux des Notes Data Sets entrent
+    # dans facts (source nds_num), avec leur accession et leur emplacement, comme les faits des BDC
+    lab_facts = []
+    if "labs" in scope:
+        from . import labs
+        lab_facts, lab_st = labs.retained()
+        insert(con, "facts", labs.nds_fact_rows(lab_facts))
+        groups_by_cik = {str(c).zfill(10): m["group"] for c, m in p0["meta"].items()}
+        lab_cells = labs.tagged_value_cells(lab_facts, reg, obs_rows, as_of, groups_by_cik)
+        cells += lab_cells
+        stats["labs_tagged"] = {**lab_st, "cells": len(lab_cells),
+                                "conflicts": sum(1 for c in lab_cells if c["flags"] and '"conflict"' in c["flags"])}
     cells += dimensional.useful_lives(con, groups, None, as_of)
     lnc = dimensional.leases_not_commenced(con, groups, {g: [(a, b) for a, b, _ in years_by_group[g]] for g in groups}, as_of)
     cells += lnc
@@ -270,6 +282,11 @@ def run(as_of):
     cells += circularity.coverage_cells(groups, cals, gw, revenue, conc_cells, named_conc, pairs, edges, as_of, ev,
                                         text_done)
     cells += circularity.counterparty_exposure(pairs, ev, cals, as_of, text_done)
+    # bloc labs (D-0060, volet 4) : grand livre par laboratoire, au dernier montant connu de chaque instrument
+    if "labs" in scope:
+        ledger = labs.ledger_cells(edges, as_of)
+        cells += ledger
+        stats["labs_ledger"] = {"cells": len(ledger), "partners": len({(c["subject"], c["counterparty"]) for c in ledger})}
     # bloc paths de §14 : cycles orientés de longueur 2 ou 3 entre groupes (documented_path, E.6, D-0041)
     path_list = None
     if "paths" in scope:

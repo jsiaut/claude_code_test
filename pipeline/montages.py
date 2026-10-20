@@ -321,6 +321,9 @@ def _order_key(d, k, spec):
 
 
 def _prepare_one(mid, spec, groups_by_cik):
+    if spec.get("source") == "tagged":          # paragraphes qui portent un fait balisé (D-0060, point 4)
+        from . import labs
+        return labs.prepare_units(mid, spec, groups_by_cik)
     from . import blocks
     from .graph import normalize_name
     _, docs_path, info_path = _paths(mid)
@@ -440,17 +443,18 @@ def exclusions(as_of):
             out.append({"exclusion_key": f"{reason}:{pre}:{key}", "item_kind": "document", "item_key": f"{pre}:{key}",
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
-        terms = " », « ".join(re.sub(r"\\b", "", t["rx"]) for t in spec["terms"])
-        if spec.get("source") == "corpus":
+        terms = " », « ".join(re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
+        if spec.get("source") in ("corpus", "tagged"):
             # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
             # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
             # plafond, une fenêtre reste à lire
+            pt = 4 if spec.get("source") == "tagged" else 3       # D-0060, point 4 ; D-0058, point 3
             for d in info.get("risk_factors") or []:
                 ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
-                   f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point 3)", d["adsh"])
+                   f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point {pt})", d["adsh"])
             for d in info.get("over_cap") or []:
                 ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
-                   f"fenêtre au-delà du plafond de {spec['cap']} unités ({dec}, point 3)", d["adsh"])
+                   f"fenêtre au-delà du plafond de {spec['cap']} unités ({dec}, point {pt})", d["adsh"])
             continue
         for form, n in sorted((info.get("holdings_not_read") or {}).items()):
             ex(f"holdings:{form}", "out_of_scope",

@@ -16,7 +16,7 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
+scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
   date: 2026-10-07
   decision: "prêteurs et texte"
@@ -189,6 +189,17 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       documented_paths: {cycles: 102}
       annex_e_e7: {outcomes: 164, indeterminate: 93, result: discrimination_possible}
       fragility_events: 398
+    execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-20
+    decision: "continue avec les volets 3 et 4"
+    question: "OpenAI et Anthropic : faits balisés qui nomment un laboratoire (volet 3), grand livre par laboratoire (volet 4) (D-0060)"
+    blocks: [labs]           # mesures lab_tagged_value et lab_ledger ; les unités du volet 3 passent par le bloc montages
+    page: "remue-méninges sur OpenAI et Anthropic dans la conversation du 2026-10-19 (D-0059, D-0060)"
+    yield_presented:             # état publié au commit 68248e4, avant les volets
+      relationship_conclusions: {pairs: 240, documented_dependency: 10, commercial_with_financing: 26, reciprocal_commercial_only: 44, causality_not_established: 160}
+      documented_paths: {cycles: 106}
+      annex_e_e7: {outcomes: 170, indeterminate: 96, result: discrimination_possible}
+      fragility_events: 399
     execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
@@ -1882,6 +1893,18 @@ montages:
     noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
                   '\bStargate\b']
     cap: 300
+    dedupe: true
+    skip_read: true
+    skip_risk_factors: true
+    order: recent_first
+  labs_tagged:                        # D-0060, volet 3 : paragraphes qui portent un fait balisé nommant un laboratoire
+    decision: D-0060
+    source: tagged                    # faits retenus par pipeline.labs (instances des groupes en cache) ; aucune requête
+    groups: all
+    period: ["2017-01-29", "2026-10-07"]
+    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
+                  '\bStargate\b', '\bfrontier AI lab\b']
+    cap: 100
     dedupe: true
     skip_read: true
     skip_risk_factors: true

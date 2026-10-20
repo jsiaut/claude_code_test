@@ -1890,3 +1890,65 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - un plafond d'engagement reste un état tant qu'aucune ligne plus récente de l'instrument ne le remplace. Les engagements déjà versés d'Amazon restent donc comptés dans les sorties contractuelles ;
     - Microsoft ne publie que des cumuls : le versement de chaque trimestre n'est pas connu, et F2 ne retire rien pour OpenAI ;
   - tests unitaires : 204, tous passés.
+- **D-0060 — OpenAI et Anthropic : faits balisés qui nomment un laboratoire (volet 3) et grand livre par laboratoire (volet 4). Règles fixées avant tout traitement.** (1) Décision de l'utilisateur, le 2026-10-20 : « continue avec les volets 3 et 4 ». Ce sont les volets 3 et 4 du remue-méninges de D-0059 (point 1) : « le laboratoire vu par ses actionnaires », sur les données XBRL déjà en cache, et « un grand livre par laboratoire », du code et un rendu. Lecture séquentielle par l'exécutant, sans sous-agent. Aucune requête réseau ; l'as_of reste le 2026-10-07.
+
+  (2) Constat, fait sur le cache avant ces règles. C'est un inventaire (faits, déposants, concepts, membres) ; aucune mesure n'est calculée :
+  - instances des groupes en cache : 72 faits dont un membre de dimension nomme un laboratoire, dans 17 dépôts de 7 groupes. Microsoft 33, Amazon 13, CoreWeave 12, Riot 7, TeraWulf 5, NVIDIA 1, Apollo 1 ; 9 membres distincts. Aucun concept, d'instance ou de `companyfacts`, ne nomme un laboratoire, et aucun libellé ne nomme un laboratoire sous un membre dont le nom ne le nomme pas ;
+  - extraits des Notes Data Sets en cache (D-0036, D-0044, D-0058) : 75 faits dans 11 dépôts :
+    - 7 faits de 3 dépôts déjà en instance (Apollo, Riot, TeraWulf) ;
+    - Cerebras, déposant de la découverte : 47 faits dans 2 dépôts ;
+    - quatre déposants hors du graphe : Eightco Holdings (13 faits), Salesforce (4), Zoom Communications (3), Destiny Tech100 (1). Un fait de Zoom porte un membre de complément (« ...OtherThanAnthropic ») ;
+  - Riot, 10-Q du 10 août 2026 : le texte ne nomme pas le locataire du bail de Rockdale (« a leading frontier AI lab, (the "Tenant") »). Ses faits balisés le nomment : membre « Lease Agreement With Anthropic Pbc », dont la documentation dit « Represents the information pertaining to Anthropic PBC ». Aucun bloc lu ne porte ce bail ;
+  - NVIDIA, 10-Q du 19 novembre 2025 : la ligne de l'engagement d'investir jusqu'à 10 Md$ dans Anthropic a une famille mais pas de type d'arête. Elle n'ouvre donc aucune arête, l'assemblage ignorant une telle ligne. Les lignes valides dans ce cas sont 281 :
+    - 157 anonymes, qui n'ouvriraient aucune arête de toute façon ;
+    - 124 qui nomment leur contrepartie : Apollo 87 (engagements d'Athene envers Athora et d'autres véhicules surtout), Intel 15 et Micron 11 (Department of Commerce), ASML 5, NVIDIA 4, SK hynix 2. Trois de ces lignes nomment un laboratoire, toutes de NVIDIA ;
+  - Apollo, 10-Q du T2 2026 : le fait balisé de 35 Md$ (accord de « capital solution ») porte le membre « Anthropic » sur l'axe des contreparties. Le texte lu nomme Broadcom comme partie à l'accord (« with Broadcom Inc., which facilitates Anthropic, PBC's compute infrastructure expansion »).
+
+  (3) Volet 3, faits balisés qui nomment un laboratoire :
+  - faits retenus : ceux des instances des groupes et des extraits des Notes Data Sets en cache dont un membre de dimension nomme un laboratoire. Le nom local du membre, ou la valeur du segment dans les Notes Data Sets, contient « OpenAI », « OPENAI », « Anthropic » ou « ANTHROPIC » comme mot de la casse en chameau : suivi d'une majuscule, d'un chiffre, de « Member » ou de la fin du nom. Même règle pour un concept d'extension (aucun aujourd'hui) ;
+  - un membre de complément (« OtherThan », « Excluding », « Except » avant le nom du laboratoire) ne nomme pas le laboratoire : son fait est compté, non retenu ;
+  - un fait présent dans l'instance et dans les Notes Data Sets (même dépôt) ne compte qu'une fois, et l'instance l'emporte. Un dépôt des Notes Data Sets sans instance en cache garde ses faits ;
+  - laboratoire, par son alias confirmé (règle B de D-0044, point 7) : « OpenAI » désigne `LAB:OPENAI`, « Anthropic » `LAB:ANTHROPIC` ;
+  - déposant : son groupe, de `config.yaml` ou de la découverte. Un déposant hors du graphe garde son CIK (`cik:` suivi du CIK) : il n'entre dans aucune paire, arête ni agrégat, et s'affiche à part, comme tiers hors du graphe ;
+  - mesure `lab_tagged_value` (rang 2) : une cellule par fait retenu. Valeur et unité telles que balisées, signe compris ; période du fait ; vue `as_known`, date de connaissance égale à la date de dépôt. Ventilation : le concept et les membres de tous les axes ;
+  - point de vue du déposant (actionnaire, fournisseur, bailleur, prêteur) : jamais un fait comptable du laboratoire, jamais une valorisation. Aucun ratio, aucune division par un taux de détention, aucun trimestre déduit d'un cumul ;
+  - conflit : une ligne valide du même dépôt porte le même montant, sa citation nomme le laboratoire, mais sa contrepartie n'est pas un laboratoire (Apollo et Broadcom). Le fait est alors publié avec la mention du conflit et n'ouvre rien. Deux événements distincts de même montant, chacun avec son laboratoire (les deux extensions de 100 Md$ chez Amazon), ne sont pas un conflit.
+
+  (4) Volet 3, contreparties dérivables par le libellé d'un membre (§2.4) :
+  - unités : les paragraphes du document principal qui portent un fait retenu (l'élément balisé de son identifiant), avec deux paragraphes avant et deux après, fondus quand ils se chevauchent (fenêtres de D-0046). Faits candidats : les faits de l'instance balisés dans la fenêtre, avec leurs membres et leurs libellés ;
+  - ne sont pas servies, et sont comptées :
+    - une fenêtre dont chaque paragraphe porteur figure déjà, mot pour mot aux blancs près, dans un bloc lu du même dépôt ;
+    - une fenêtre dont chaque paragraphe porteur est dans la section des facteurs de risque ;
+    - un texte identique à une unité déjà retenue ;
+    - un fait masqué (`ix:hidden`), sans paragraphe ;
+  - montage `labs_tagged`, au catalogue des montages ; ordre du dépôt le plus récent au plus ancien ; plafond de 100 unités. Le volume est consigné ici avant toute lecture ;
+  - lecture séquentielle par l'exécutant, sur les conventions de D-0058 et de D-0059. Une contrepartie que le texte ne nomme pas, mais qu'un libellé de membre des faits candidats nomme, est `derivable` (`dimension_member_label`), sous le nom que le libellé écrit (« Anthropic PBC ») ;
+  - un bail de capacité porte sa valeur sur la durée initiale en `commitment_unexecuted`, `undiscounted`, au stade `signed`, comme les baux de Hut 8 et de Galaxy. La puissance (MW) va dans la note.
+
+  (5) Lignes de financement sans type d'arête :
+  - règle : une ligne de financement qui dit « invest in » (investir dans) une société, sans écrire la forme de l'instrument, prend `equity_primary`. La forme non écrite reste dans la note. Un engagement reste au stade `signed` : aucun versement n'est déduit, et l'arête ne rend pas F active (§3.1) ;
+  - elle s'applique aux trois lignes de laboratoire du point 2 : l'engagement de NVIDIA envers Anthropic (stade `signed`) et les deux lettres d'intention de NVIDIA envers OpenAI (stade `intent_non_binding`, arêtes de relation seulement) ;
+  - les 278 autres lignes sans type d'arête ne changent pas ici. Elles ouvriraient de nouvelles arêtes chez Apollo, Intel, Micron, ASML et SK hynix : leur traitement relève d'une décision propre de l'utilisateur.
+
+  (6) Volet 4, grand livre par laboratoire :
+  - pour chaque laboratoire et chaque groupe qui a une arête avec lui : toutes leurs arêtes non éliminées, regroupées par instrument (`instrument_key`, à défaut l'arête seule), en deux sens, celui des ressources (§3.1) :
+    - du partenaire vers le laboratoire : financements, contreparties remises au client, soutiens de crédit, achats du partenaire au laboratoire ;
+    - du laboratoire vers le partenaire : achats et engagements d'achat, baux de capacité, financements du partenaire par le laboratoire ;
+  - mesure `lab_ledger` (rang 2) : une cellule par instrument, sens, nature de montant et unité. Elle porte le dernier montant admissible connu : date de l'arête (événement, puis fin de période, puis date de connaissance), puis dépôt le plus récent. Avec lui, sa période, sa pièce (accession et formulaire) et le nombre de montants de l'instrument ;
+  - un flux reste le « dernier flux publié », jamais une somme. Les états de la paire (au coût, au bilan, à la juste valeur, plafonds d'engagement) viennent de `counterparty_exposure`, quand elle en a ;
+  - capacités (MW, GW) : seulement celles des faits balisés retenus au volet 3, en colonne à part. Elles ne s'additionnent ni aux dollars, ni entre elles ;
+  - aucun total, ni par partenaire, ni par laboratoire, ni par sens ;
+  - une arête sans montant (de relation) s'affiche avec son stade et sa pièce, sans nombre ;
+  - point de vue : celui du déposant de chaque pièce. Le grand livre ne dit rien des comptes des laboratoires.
+
+  (7) Ordre et commits :
+  - la décision, la configuration (montage `labs_tagged`, mesures), le code et ses tests, un commit ;
+  - volet 3 : unités, volume consigné, lecture, lignes de NVIDIA, commit ;
+  - volet 4 : grand livre et rendu, commit ;
+  - intégration : réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (8) Limites connues avant calcul :
+  - seuls les instances et les extraits déjà en cache sont lus. Un dépôt hors de la période des instances, ou des Notes Data Sets sans note qui nomme une cible du lexique d'ensemble, échappe au volet 3 ;
+  - un déposant ne balise un laboratoire que sur certains trimestres : une série balisée n'est pas complète, et un trimestre absent n'est pas un zéro ;
+  - les capacités écrites seulement dans le texte (les 6 GW d'AMD, par exemple) ne sont pas chiffrées ;
+  - le grand livre ne nette pas les engagements déjà versés (D-0059, point 11).
