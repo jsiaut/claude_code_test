@@ -445,11 +445,12 @@ def prepare_units(mid, spec, groups_by_cik):
                     "terms": sorted(set(noted.findall(text))), "queries": "", "montage": mid,
                     "lab_fact_ids": lab_fids})
     info = {"source": "tagged", "facts": st, "accessions": len(lab_ids), "documents": len(rows_docs),
-            "no_document": no_doc, "hidden_facts": hidden, "windows": len(units) + len(dup), "units": len(units) + len(dup),
+            "no_document": no_doc, "hidden_facts": hidden, "windows": len(units) + len(already) + len(risk),
+            "units": len(units),
             "duplicates": dup, "risk_factors": risk, "already_read": already, "over_cap": over, "no_window": [],
             "excluded": []}
     info_path.write_text(json.dumps(info, ensure_ascii=False, default=str))
-    print(mid, ":", len(lab_ids), "dépôts ;", len(units) + len(dup), "fenêtres ;", len(kept), "textes distincts ;",
+    print(mid, ":", len(lab_ids), "dépôts ;", len(units) + len(already) + len(risk), "fenêtres ;", len(kept), "textes distincts ;",
           len(out), "blocs ;", len(already), "déjà lues ;", len(risk), "dans un facteur de risque ;", len(hidden),
           "faits masqués ;", len(over), "au-delà du plafond")
     return out

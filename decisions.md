@@ -1952,3 +1952,9 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - un déposant ne balise un laboratoire que sur certains trimestres : une série balisée n'est pas complète, et un trimestre absent n'est pas un zéro ;
   - les capacités écrites seulement dans le texte (les 6 GW d'AMD, par exemple) ne sont pas chiffrées ;
   - le grand livre ne nette pas les engagements déjà versés (D-0059, point 11).
+
+  (9) Volet 3, volume consigné avant toute lecture (2026-10-20) :
+  - faits retenus : 139, dont 72 des instances (17 dépôts de 7 groupes) et 67 des Notes Data Sets (8 dépôts sans instance en cache : Cerebras 47, Eightco Holdings 13, Salesforce 4, Zoom Communications 2, Destiny Tech100 1). Le fait de complément de Zoom est compté, non retenu ; les 7 faits des Notes Data Sets déjà en instance s'effacent devant elle ;
+  - unités du montage `labs_tagged`, dans les 17 dépôts à instance : 25 fenêtres. 20 sont déjà lues dans un bloc du même dépôt (Microsoft 10, Amazon 4, CoreWeave 3, NVIDIA, TeraWulf et Apollo 1 chacun), et 2 sont des doublons de texte (paragraphe des engagements de Microsoft, identique d'un 10-Q à l'autre). Aucune n'est dans un facteur de risque, et aucun fait n'est masqué ;
+  - restent 3 blocs à lire : deux du 10-Q de Riot du 10 août 2026 (bail de Rockdale) et un du 10-Q de Microsoft du 30 avril 2025 (note des placements) ;
+  - liste de lecture `labs_tagged`, du dépôt le plus récent au plus ancien.
