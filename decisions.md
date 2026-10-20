@@ -2017,3 +2017,31 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - `apo:athene_commitment_<véhicule>` pour les engagements d'Athene (ADIP, Athora, Atlas, PK AirFinance, Skylign, Venerable, Wheels) ;
   - `apo:aam_equity_commitment_athora` pour les engagements de souscription d'AAM envers Athora, expiration du 1er avril 2025 comprise ;
   - les engagements conditionnels du 3 juillet 2025 gardent leur clé.
+
+  (6) Résultats (2026-10-20) :
+  - 245 lignes typées :
+    - `equity_primary` 234 : Apollo 139, Blackstone 68, Blue Owl 21, ASML 5, NVIDIA 1 ;
+    - `guarantee` 8 (ASML), `loan_or_facility` 2 (Broadcom), `convertible_or_safe` 1 (Riot) ;
+  - 33 lignes restent sans type, aucun type de §3.1 ne les décrivant : Intel 15, Micron 11, SK hynix 5, Applied Digital 2 ;
+  - 83 lignes d'Apollo reçoivent une clé d'instrument (point 5) ;
+  - arêtes : 11 085 (10 992), soit 93 de plus. Les 152 lignes anonymes typées n'en ouvrent aucune :
+    - 39 vont vers des contreparties résolues : d'Apollo vers Atlas Securitized Products Holdings (8), PK AirFinance (9), Skylign Aviation Holdings (4), Venerable Holdings (1) et Wheels (11) ; d'ASML vers Carl Zeiss SMT Holding (5) ; de NVIDIA vers Intel (1) ;
+    - 54 vont vers des noms en attente : Athora 46, ADIP 7, Wheels Donlen 1. Aucun bloc lu ne définit « Athora » par extrait ; « ADIP » désigne une série de fonds, « Wheels Donlen » deux sociétés réunies. Ces noms restent en attente (D-0021) ;
+  - paires : 242 (242), aucune nouvelle. Les 7 paires touchées gagnent des arêtes, mais gardent leur structure et leur conclusion :
+    - Apollo et ses cinq véhicules : financement seul, causalité non établie ;
+    - ASML → Carl Zeiss SMT Holding : relation commerciale doublée d'un financement ;
+    - NVIDIA → Intel : financement seul, causalité non établie ;
+  - `counterparty_exposure` : 6 états nouveaux d'engagements non appelés, chacun à sa dernière valeur :
+    - Apollo envers Atlas, 1,3 Md$ (31 mars 2026) ; Skylign, 159 M$ (30 septembre 2025) ; Venerable, 169 M$ (30 juin 2025) ; Wheels, 56 M$ (30 juin 2026) ; PK AirFinance, 40 M$ (30 septembre 2024, dernière valeur publiée) ;
+    - NVIDIA envers Intel, 5,0 Md$ ;
+    - avant la correction du point 5, les mêmes cellules additionnaient les trimestres : Atlas 16,2 Md$, PK AirFinance 9,4 Md$, Wheels 687 M$, Skylign 280 M$ ;
+  - statut F, annexe F (399 événements), cycles (106), contrôles et exclusions : inchangés, un engagement signé ne rendant pas F active. E.7 : 170 issues, 56 % indéterminées, discrimination possible ; E.1 inchangé (étayé 3, non étayé 71, indéterminé 11) ;
+  - rendus :
+    - tables : liens 11 085 (10 992), mesures 172 000 (171 994) ; les autres tables sont inchangées ;
+    - 14 531 nombres publiés (14 519) ;
+  - lacunes déclarées :
+    - les 33 lignes sans type (point 3) n'ouvrent toujours aucune arête ;
+    - Athora, ADIP et Wheels Donlen restent en attente : les 54 arêtes qui les visent n'entrent dans aucune paire ;
+    - le type `equity_primary` par défaut ne dit pas la forme réelle d'un engagement d'investir ;
+    - un engagement sans valeur récente garde sa dernière valeur publiée (PK AirFinance ; D-0059, point 11) ;
+  - tests unitaires : 218, tous passés.
