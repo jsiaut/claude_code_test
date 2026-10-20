@@ -1,8 +1,8 @@
 """Mémo des étapes du réassemblage qui ne lisent pas les observations (D-0062).
 
 Une étape mémorisée se reprend telle quelle quand rien de ce qu'elle peut lire n'a changé depuis
-qu'elle a été calculée. L'empreinte des entrées couvre le code (pipeline/, sauf le rendu, et
-schema.sql), les versions de Python et des bibliothèques, config.yaml, les fichiers de db/ (hors
+qu'elle a été calculée. L'empreinte des entrées couvre le code (pipeline/, sauf le rendu et
+l'aperçu, et schema.sql), les versions de Python et des bibliothèques, config.yaml, les fichiers de db/ (hors
 la base de l'exécution et ce mémo), ceux de work/ hors observations et fichiers temporaires, et
 l'arbre du cache. Seules les observations peuvent donc changer entre deux exécutions qui reprennent
 une étape ; tout autre changement la recalcule. Une étape qui lit des faits ajoutés en cours
@@ -54,7 +54,7 @@ def inputs_fingerprint():
         except (ImportError, AttributeError):
             h.update(f"{mod}=absent\n".encode("utf-8"))
     for p in sorted((config.ROOT / "pipeline").glob("*.py")):
-        if p.name != "render.py":
+        if p.name not in ("render.py", "apercu.py"):          # ni le rendu ni l'aperçu ne sont des étapes
             h.update(p.name.encode("utf-8") + b"\0" + p.read_bytes())
     h.update((config.ROOT / "schema.sql").read_bytes())
     h.update(config.CONFIG_PATH.read_bytes())

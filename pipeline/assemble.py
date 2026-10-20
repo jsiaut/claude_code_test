@@ -167,10 +167,12 @@ def run(as_of, use_cache=True, apercu=False):
 
     # 5. mesures de rang 1 tirées des faits (phase 1), puis mesures dimensionnelles ; mesures de
     # rang 2 tirées des faits, codées après la seconde page (§11.1)
-    cells = [] if apercu else M.value("facts_measures", lambda: (
+    cells = M.value("facts_measures", lambda: (
         measures.group_measures(con, groups, as_of) + rank2.group_rank2(con, groups, as_of) +
         rank2.rpo_beyond(con, groups, as_of) + rank2.segments(con, groups, as_of) +
         rank2.segment_expenses(con, groups, as_of) + rank2.supplier_concentration(con, groups, as_of)), key=as_of)
+    # l'aperçu ne compare pas ces cellules, mais une mesure qu'il compare peut en avoir (exposure_matrix)
+    facts_ids = {id(c) for c in cells}
     scope = cfg.get("scope") if isinstance(cfg.get("scope"), list) else []
     lender_excl = []
     added = []          # faits ajoutés en cours d'exécution : leur empreinte entre dans la clé des étapes qui les lisent
@@ -209,13 +211,12 @@ def run(as_of, use_cache=True, apercu=False):
     added_key = f"{as_of}|{memo.digest(added)}"
     if not apercu:
         cells += dimensional.useful_lives(con, groups, None, as_of)
-        lnc = dimensional.leases_not_commenced(con, groups, {g: [(a, b) for a, b, _ in years_by_group[g]] for g in groups},
-                                               as_of)
-        cells += lnc
-        lnc_keys = {(c["subject"], c["period_end"], c["term"]) for c in lnc if c["status"] == "computed"}
-        cells = [c for c in cells if not (c["measure"] == "lease_not_commenced_bridge" and c["view"] == "revised"
-                                          and c["status"] == "not_determinable"
-                                          and (c["subject"], c["period_end"], c["term"]) in lnc_keys)]
+    lnc = dimensional.leases_not_commenced(con, groups, {g: [(a, b) for a, b, _ in years_by_group[g]] for g in groups}, as_of)
+    cells += lnc
+    lnc_keys = {(c["subject"], c["period_end"], c["term"]) for c in lnc if c["status"] == "computed"}
+    cells = [c for c in cells if not (c["measure"] == "lease_not_commenced_bridge" and c["view"] == "revised"
+                                      and c["status"] == "not_determinable"
+                                      and (c["subject"], c["period_end"], c["term"]) in lnc_keys)]
     conc_cells, named_conc = dimensional.concentration(con, groups, as_of)
     cells += conc_cells
     occ = model.occurrences_df(con)
@@ -273,7 +274,8 @@ def run(as_of, use_cache=True, apercu=False):
                                                debt_note_accs)
         sig_cells += fsignals.pledged_signals(groups, quarters_by_group, valid, as_of, report_end_of, text_done, filings,
                                               debt_note_accs)
-        cells += rank2.lease_not_commenced(cells, valid, report_end_of, as_of)
+    cells += rank2.lease_not_commenced(cells, valid, report_end_of, as_of)
+    if not apercu:
         lever = rank2.depreciation_lever(cells, valid, as_of)
         cells += lever + rank2.lever_restatement(con, lever, as_of)
     cells += sig_cells
@@ -334,7 +336,7 @@ def run(as_of, use_cache=True, apercu=False):
         # aperçu : les invariants d'agrégat et l'univers attendu, comme aux étapes 10 et 11, puis arrêt ;
         # `computed` : les cellules que l'aperçu a calculées (l'univers attendu en ajoute pour toutes les mesures)
         invariants(cells, edges, rels, reg)
-        computed = list(cells)
+        computed = [c for c in cells if id(c) not in facts_ids]
         cells, _ = fill_expected(cells, as_of)
         stats["memo"] = {"hits": M.hits, "misses": M.misses}
         stats["seconds"] = round(time.time() - t0)
