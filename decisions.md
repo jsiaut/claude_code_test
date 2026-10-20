@@ -1989,3 +1989,26 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les extraits des Notes Data Sets ne gardent que les dépôts dont une note nomme une cible du lexique : les séries des tiers sont partielles ;
     - l'engagement de 50 Md$ d'Amazon envers OpenAI compte encore les montants déjà versés (D-0059, point 11) ;
   - tests unitaires : 218, tous passés.
+- **D-0061 — Lignes de financement sans type d'arête : la règle de D-0060 (point 5) appliquée aux 278 autres lignes. Règles fixées avant tout traitement.** (1) Décision de l'utilisateur, le 2026-10-20 : « Oui applique la même règle ». Elle répond à la question posée avec le rapport de D-0060 : appliquer la règle du point 5 aux 278 lignes valides qui ont une famille mais pas de type d'arête, ou les laisser telles quelles. Aucune requête réseau ; l'as_of reste le 2026-10-07.
+
+  (2) Constat, sur les 278 lignes (D-0060, point 2) :
+  - 121 nomment leur contrepartie : Apollo 87, Intel 15, Micron 11, ASML 5, SK hynix 2, NVIDIA 1 ;
+  - 157 sont anonymes : Blackstone 68, Apollo 52, Blue Owl 21, ASML 8, SK hynix 3, Applied Digital 2, Broadcom 2, Riot 1 ;
+  - par catégorie de la matrice d'exposition : 224 engagements non appelés, 8 indemnisations, 5 intérêts dans une entité à intérêts variables, 3 programmes de financement fournisseur, 1 autre, 37 sans catégorie.
+
+  (3) Règles :
+  - une ligne prend le type que son texte écrit : actions, bons, apports en capital, participation : `equity_primary` ; dette, billets, prêt : `loan_or_facility` ; billets convertibles : `convertible_or_safe` ; indemnisation (ASC 460) : `guarantee` ;
+  - une ligne qui dit « invest in », « investments in », « capital commitments », « capital funding commitments » ou « capital contributions », sans écrire la forme de l'instrument, prend `equity_primary` (D-0060, point 5). La forme non écrite reste dans la note ; pour PK AirFinance, Athene détient par ailleurs des obligations senior, ce que la note rappelle ;
+  - une ligne d'entité à intérêts variables qui décrit une participation détenue (Carl Zeiss SMT Holding chez ASML, 24,9 %) prend `equity_primary`, avec le déposant pour payeur et l'entité pour receveur (D-0015) ;
+  - une ligne qu'aucun type de §3.1 ne décrit, la liste étant limitative, n'ouvre pas d'arête et reste telle quelle :
+    - subventions et aides du CHIPS Act et leurs clauses (Intel, Micron, SK hynix) ;
+    - partage des flux d'une subvention ;
+    - accords de développement conjoint et contrat d'exploitation (Intel et Tsinghua Unigroup, Micron et Intel) ;
+    - licence croisée de brevets (SK hynix et Rambus) ;
+    - programmes de financement fournisseur, hors du graphe par §3.1 (SK hynix) ;
+    - dérivés sur actions achetés à des banques (options plafonnées et rachat à terme prépayé d'Applied Digital) ;
+  - une ligne anonyme prend aussi son type, par cohérence ; elle n'ouvre aucune arête (§2.4) ;
+  - le stade ne change pas : un engagement reste `signed`, aucun versement n'est déduit, et il ne rend pas F active (§3.1) ;
+  - chaque ligne modifiée garde ses autres champs ; sa note reçoit la mention du type et de la règle (« D-0061 »).
+
+  (4) Ordre : la décision ; les lignes modifiées ; un réassemblage ; les rendus ; les résultats ici ; tests, commit, push, rapport.
