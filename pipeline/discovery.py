@@ -606,9 +606,16 @@ ANNUAL = {"10-K", "10-K/A", "10-KT", "10-KT/A", "20-F", "20-F/A", "40-F", "40-F/
 INTERIM = {"10-Q", "10-Q/A", "10-QT", "10-QT/A"}
 
 
+CORRESPONDENCE = ("CORRESP", "UPLOAD", "DRSLTR")
+
+
 def form_evidence(form, fp):
     """Niveau de preuve d'une note selon son formulaire (§2.2, annexe A) : états annuels
-    audités (A), intermédiaires revus (B), autres notes déposées (C), 6-K furnished (E)."""
+    audités (A), intermédiaires revus (B), autres notes déposées (C), 6-K furnished (E). Une lettre
+    du personnel de la SEC ou d'une société (CORRESP, UPLOAD, DRSLTR) n'est ni filed ni furnished :
+    niveau E, `correspondence`, un pointeur, jamais la source d'un montant (§2.1 ; D-0064)."""
+    if form.split("/")[0] in CORRESPONDENCE:
+        return "E", "not_applicable", "correspondence"
     if form in ANNUAL:
         return "A", "audited", "filed"
     if form in INTERIM:

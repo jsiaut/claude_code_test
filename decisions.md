@@ -2128,3 +2128,82 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - rendu : 11 min 11 s → 36 s à mémo du catalogue vide, 24 à 30 s ensuite ;
   - cycle après une lecture : réassemblage 2 min 15 s et rendu 30 s, contre 33 min 52 s et 11 min 11 s ;
   - après un redémarrage de la machine, le premier réassemblage prend 4 min, le cache disque étant vide.
+- **D-0064 — OpenAI et Anthropic : la chaîne de calcul d'Anthropic dans les 8-K (volet 7) et les lettres de commentaires de la SEC (volet 6). Règles fixées avant tout tirage.** (1) Décision de l'utilisateur, le 2026-10-20 : « Ok, on repart sur Anthropic et OpenAI. Fais les volets 7 et 6 ». Ce sont deux volets du remue-méninges de D-0059 (point 1) :
+  - volet 7, montage « chaîne d'Anthropic », « l'équivalent de Stargate ». Fluidstack au centre (sites de TeraWulf et de Cipher garantis par Google, piste Hut 8, autres hébergeurs), puis les TPU de Google, l'infrastructure d'Amazon et Azure, par une recherche plein texte « Fluidstack » et « Anthropic » dans les 8-K et leurs pièces ;
+  - volet 6, lettres de commentaires de la SEC (CORRESP et UPLOAD) : le personnel y demande à un déposant comment il comptabilise son lien avec un laboratoire.
+
+  Le volet 7 passe d'abord, puis le 6. Lecture séquentielle par l'exécutant, sans sous-agent. Réseau : le client SEC unique et journalisé, au plus 4 requêtes par seconde, jamais deux processus réseau en parallèle, une pause d'au moins 10 minutes après un 403. L'as_of reste le 2026-10-07 : la recherche s'arrête à cette date, et aucun document déposé après n'est lu.
+
+  (2) Constat, compté sans lecture sur les tables de D-0063 :
+  - Anthropic : 76 arêtes, dont 57 à montant. Amazon 64, Akamai 3, TeraWulf 3, Riot 2, puis NVIDIA, SpaceX, Broadcom et Nscale, 1 chacun. Aucune avec Alphabet ni Microsoft. La première est du 2023-09-30 ;
+  - Fluidstack : 36 lignes valides (TeraWulf 16, Cipher 15, Hut 8 5) et 30 arêtes, dont 4 à montant. Elles se répartissent sur six dénominations tenues pour des contreparties distinctes, qu'aucun extrait ne relie encore : Fluidstack Ltd et cinq sociétés américaines (Fluidstack USA I à IV, Fluidstack CS I). 13 sont des garanties d'Alphabet (`credit_support`, `backstop`), les autres des baux de capacité des hébergeurs. La première est du 2025-08-13 ;
+  - aucune arête ne relie Fluidstack à Anthropic. Deux lignes descriptives de Hut 8 nomment ensemble les deux sociétés (partenariat de décembre 2025).
+
+  (3) Volet 7, montage `anthropic_chain`, tiré de la recherche plein texte sur les règles du montage Stargate (D-0058, points 7 et 20) :
+  - période : du 2023-01-01, neuf mois avant la première arête d'Anthropic, à l'as_of ;
+  - requêtes, sur les formulaires racines 8-K et 8-K/A, pièces comprises (paramètre `forms`) : « "Fluidstack" », puis « "Anthropic" » croisé avec « "data center" », « "compute" », « "megawatts" », « "gigawatt" », « "TPU" », « "Trainium" », « "Azure" », « "Google Cloud" » et « "Amazon Web Services" » ;
+  - termes qualifiants, en mots entiers. « Fluidstack », dans les casses « Fluidstack », « FluidStack », « fluidstack » et « FLUIDSTACK », jamais dans une pièce d'un déposant à son nom. « Anthropic » et « ANTHROPIC », sauf suivis de « Capital » (D-0041). Sont seulement comptés : Google, Alphabet, Amazon, AWS, Microsoft, Azure, NVIDIA, TPU, Trainium, Project Rainier et OpenAI ;
+  - unités : les fenêtres du bloc `montages`, soit le paragraphe qualifiant, les deux qui le précèdent et les deux qui le suivent, fondues quand elles se chevauchent ;
+  - ne sont pas servies, et sont comptées :
+    - une fenêtre dont chaque paragraphe qualifiant figure déjà, mot pour mot, dans un bloc lu du même dépôt ;
+    - une fenêtre dont chaque paragraphe qualifiant est dans la section des facteurs de risque (`out_of_scope`) ;
+    - un texte identique à une unité retenue ;
+  - ordre, par classes, chacune du plus récent au plus ancien :
+    - d'abord les fenêtres qui nomment Fluidstack ;
+    - puis celles qui nomment l'infrastructure : centre de données, MW, GW, TPU, Trainium, calcul, capacité, colocation, hébergement, nuage, bail ;
+    - puis les autres ;
+  - plafond de 80 fenêtres distinctes. Au-delà, une fenêtre d'un dépôt d'un groupe suivi se lit par le catalogue du groupe (D-0053, point 7). Les autres sortent en `not_processed`, et le rendement est présenté avant d'aller plus loin ;
+  - niveau de preuve, par le triplet (§2.1, §2.3), comme dans le registre des documents. Le type de pièce et les items viennent de la recherche :
+    - un contrat (EX-10, EX-4, EX-2) est de niveau D ;
+    - une pièce EX-99 est furnished, de niveau E ;
+    - un document principal dont les items sont tous 2.02, 7.01 ou 9.01 est furnished, de niveau E ;
+    - le reste est filed, de niveau C.
+
+    Un communiqué n'est donc pas la preuve d'un montant : sa ligne garde le montant, et son arête n'est qu'une relation.
+
+  (4) Volet 6, montage `sec_letters` :
+  - période : du 2019-01-01 à l'as_of ;
+  - requêtes « "OpenAI" » et « "Anthropic" », sur les formulaires CORRESP et UPLOAD ;
+  - termes qualifiants : « OpenAI » et « OPENAI », puis « Anthropic » et « ANTHROPIC », sauf suivis de « Capital » ;
+  - une lettre en PDF (UPLOAD) se lit par son texte extrait (pypdf, mode « layout »), en paragraphes. Une ligne vide, une fin de page ou un commentaire numéroté (« 1. ») ouvre un paragraphe. Un PDF illisible ou sans texte (image numérisée) sort en `out_of_scope`, avec son motif ;
+  - niveau E, `correspondence` : une lettre n'est ni filed ni furnished. Elle oriente la lecture et n'est jamais la source d'un montant (§2.1) ;
+  - plafond de 60 fenêtres distinctes, du plus récent au plus ancien. Fenêtres et exclusions comme au point 3 ;
+  - si la recherche ne rend aucune lettre, ce point le dit et le volet s'arrête.
+
+  (5) Lecture, sans sous-agent, sur les conventions de D-0058 (point 22) et de D-0059 (point 4) :
+  - pas d'inférence : un client, un locataire ou un garant anonyme reste anonyme, même si la presse le nomme. Un projet ou un site n'est pas une personne morale ;
+  - une relation entre tiers rapportée par un déposant qui n'y est pas partie est une ligne descriptive. Une annonce, une lettre d'intention ou un protocole d'accord non contraignant porte `intent_non_binding` ;
+  - les relations des entités du modèle trouvées dans un bloc servi sont relevées, même hors d'Anthropic. Celles de tiers hors du modèle reçoivent `out_of_scope_content` ;
+  - une lettre (volet 6) ne donne que des lignes descriptives, sans famille ni montant, donc aucune arête :
+    - la note dit qui écrit (le personnel ou la société), la date, le dépôt visé et la question comptable : mise en équivalence, entité à intérêts variables, consolidation, juste valeur, concentration, comptabilisation du revenu ;
+    - une lettre qui renvoie à un dépôt (« see Note 5 », « we will revise our disclosure in future filings ») le dit dans la note. Ce dépôt n'est pas tiré dans ce volet ;
+  - données personnelles (D-0051 ; D-0058, point 10) : aucune personne physique n'est contrepartie ni citée. Les lettres portent les noms du personnel de la SEC, des dirigeants et des conseils, qui ne sont jamais cités. Une fenêtre qui n'est qu'adresse, signature ou contact reçoit une abstention.
+
+  (6) Entités, à l'intégration et après la lecture : par extrait seulement (D-0044, point 7, règles A et B ; D-0050, points 4 et 5) :
+  - une société de Fluidstack (Fluidstack USA I à IV, Fluidstack CS I) ne rejoint Fluidstack Ltd que par un extrait qui affirme le lien. Sans extrait, elle reste une contrepartie propre ;
+  - un alias ne naît que d'un extrait qui le définit (D-0021) ;
+  - une participation n'est pas une appartenance.
+
+  (7) Code, avant tout tirage :
+  - `montages` :
+    - formulaires racines par requête (`forms`), consignés au journal des requêtes ;
+    - classes de lecture (`priority`) ;
+    - niveau par le triplet (`evidence: triplet`), avec les items et le type de pièce gardés depuis la recherche ;
+    - texte des PDF (`pdf_text`), pour le seul montage `sec_letters` ;
+    - libellé d'un terme dans les exclusions (`label`) ;
+  - `discovery.form_evidence` : CORRESP, UPLOAD et DRSLTR au niveau E, `correspondence` ;
+  - correction de l'export. D-0058 (point 20) veut qu'une fenêtre d'un montage tiré de la recherche, écartée comme facteur de risque, sorte en `out_of_scope`. L'export ne le faisait que pour les montages de corpus : les 3 fenêtres de Stargate y entrent au prochain réassemblage ;
+  - écart connu, laissé en l'état. Les blocs des montages d'avant ne sont pas préparés de nouveau et gardent le niveau de leur formulaire. Ainsi 39 pièces EX-99 de 8-K (Stargate 28, Galaxy Helios 11) restent de niveau C, quand le registre les classe furnished, de niveau E. Quatre arêtes à montant de Galaxy Helios en viennent : trois baux de CoreWeave (4,5 Md$, 10,4 Md$, 100 M$) et un financement de 434 M$. L'écart est présenté à l'utilisateur ;
+  - tests : 8 de plus (`test_montages`).
+
+  (8) Ordre et commits :
+  - la décision, la configuration et le code, avec les tests ;
+  - volet 7 : recherche, tirage, unités, liste de lecture, volume consigné ici avant toute lecture, commit. Puis lecture, commits par lot, rendement consigné ;
+  - volet 6, de même ;
+  - intégration : entités par extrait, réassemblage (sans mémo des étapes, le code ayant changé), rendus, résultats ici, tests, commit, push, rapport.
+
+  (9) Limites connues avant calcul :
+  - Anthropic ne dépose rien : tout ce qui s'en lit vient de ses contreparties ;
+  - le volet 7 ne lit que les 8-K et leurs pièces. Un 10-Q ou un 10-K d'un déposant hors des groupes n'est pas cherché ;
+  - la recherche plein texte ne trouve que le texte qu'EDGAR indexe : une lettre numérisée sans texte n'est pas trouvée ;
+  - une lettre décrit une question et une réponse, pas un fait comptable. Elle ne change aucune mesure.

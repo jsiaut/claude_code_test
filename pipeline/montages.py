@@ -21,6 +21,10 @@ les documents des groupes déjà en cache. Trois options : `skip_read` (une fen�
 qualifiant est déjà dans un bloc lu du même dépôt n'est pas servie), `skip_risk_factors` (ni une fenêtre
 dont chaque paragraphe qualifiant est dans la section des facteurs de risque, §14) et l'ordre
 `recent_first` (du dépôt le plus récent au plus ancien).
+
+Options de D-0064 : `forms` par requête (formulaires racines de la recherche, pièces comprises), `priority`
+(classes de lecture, chacune du plus récent au plus ancien), `evidence: triplet` (pièce de 8-K classée par son
+triplet, comme le registre des documents) et `pdf_text` (lettres en PDF lues par leur texte extrait).
 """
 import json
 import re
@@ -88,6 +92,8 @@ def search(mid, rate=4.0):
         params = {"q": qd["q"], "dateRange": "custom", "startdt": start, "enddt": end}
         if qd.get("cik"):
             params["ciks"] = qd["cik"]
+        if qd.get("forms"):                         # formulaires racines, pièces comprises (D-0064)
+            params["forms"] = ",".join(qd["forms"])
         data, url, _ = D._efts(client, dict(params, **{"from": 0}))
         tot = data["hits"]["total"]
         n = tot["value"]
@@ -99,11 +105,12 @@ def search(mid, rate=4.0):
                             "adsh": s.get("adsh") or h["_id"].split(":")[0],
                             "file": h["_id"].split(":", 1)[1] if ":" in h["_id"] else None,
                             "file_type": s.get("file_type"), "form": s.get("form"), "file_date": s.get("file_date"),
-                            "names": s.get("display_names"), "ciks": s.get("ciks")})
+                            "names": s.get("display_names"), "ciks": s.get("ciks"), "items": s.get("items"),
+                            "file_description": s.get("file_description")})
         totals.append({"query": qd["q"], "cik_filter": qd.get("cik"), "total": n, "relation": tot.get("relation"),
                        "url": url})
-        D._log_query({"montage": mid, "query": qd["q"], "cik": qd.get("cik"), "start": start, "end": end,
-                      "total": n, "status": "complete"}, config.WORK / "montages" / "efts_queries.jsonl")
+        D._log_query({"montage": mid, "query": qd["q"], "cik": qd.get("cik"), "forms": qd.get("forms"), "start": start,
+                      "end": end, "total": n, "status": "complete"}, config.WORK / "montages" / "efts_queries.jsonl")
     hits_path.parent.mkdir(parents=True, exist_ok=True)
     hits_path.write_text(json.dumps(out, ensure_ascii=False))
     for t in totals:
@@ -154,7 +161,8 @@ def fetch(mid, rate=4.0):
         name = re.sub(r"\s+\(.*$", "", (h.get("names") or [""])[0]).strip()
         docs.setdefault((h["adsh"], h["file"]), {"adsh": h["adsh"], "file": h["file"], "form": h["form"],
                                                  "file_type": h["file_type"], "file_date": h["file_date"],
-                                                 "cik": cik, "filer": name, "source": "efts", "queries": set()})
+                                                 "cik": cik, "filer": name, "source": "efts", "queries": set(),
+                                                 "items": ",".join(h.get("items") or []) or None})
         docs[(h["adsh"], h["file"])]["queries"].add(h["query"] + (f" [CIK {h['cik_filter']}]" if h.get("cik_filter") else ""))
     names = {}
     for c in spec.get("periodic") or []:
@@ -271,6 +279,52 @@ def covered(para, texts):
     return bool(p) and any(p in t for t in texts)
 
 
+NUMBERED = re.compile(r"^\d{1,3}\.\s")
+
+
+def pdf_paragraphs(pages):
+    """Paragraphes du texte d'un PDF extrait page par page en mode « layout » de pypdf, qui rend un saut
+    vertical par une ligne vide : les lignes d'un paragraphe se joignent, les blancs répétés se réduisent
+    à un ; un paragraphe finit sur une ligne vide, en fin de page, ou avant une ligne qui ouvre un
+    commentaire numéroté (« 1. ») (D-0064)."""
+    out = []
+    for page in pages:
+        cur = []
+        for line in (page or "").split("\n"):
+            line = re.sub(r"\s+", " ", line).strip()
+            if not line or NUMBERED.match(line):
+                if cur:
+                    out.append(" ".join(cur))
+                cur = [line] if line else []
+                continue
+            cur.append(line)
+        if cur:
+            out.append(" ".join(cur))
+    return "\n".join(out)
+
+
+def document_text(raw, spec):
+    """Texte d'une pièce de montage. Un montage à `pdf_text` (lettres UPLOAD du personnel de la SEC, D-0064) lit
+    un PDF par son texte extrait (pypdf, mode « layout », page par page ; mode simple pour une page que le
+    premier ne lit pas), en paragraphes ; un PDF illisible ou sans texte (image numérisée) n'a aucun paragraphe.
+    Tout le reste passe par le normaliseur, comme avant."""
+    if spec.get("pdf_text") and raw[:5] == b"%PDF-":
+        import io
+        from pypdf import PdfReader
+        try:
+            texts = []
+            for page in PdfReader(io.BytesIO(raw)).pages:
+                try:
+                    texts.append(page.extract_text(extraction_mode="layout"))
+                except Exception:
+                    texts.append(page.extract_text())
+        except Exception:
+            return "", "pdf_unreadable"
+        text = pdf_paragraphs(texts)
+        return text, "pdf_text" if text else "pdf_no_text"
+    return D.plain_text(raw)
+
+
 def paragraphs(text):
     return [p for p in (x.strip() for x in text.split("\n")) if p]
 
@@ -305,11 +359,37 @@ def _excluded(d, spec):
     return None
 
 
-def _order_key(d, k, spec):
+def evidence(d, spec):
+    """Niveau de preuve d'une pièce de montage : par son formulaire (D.form_evidence), comme avant. Un montage à
+    `evidence: triplet` (D-0064) classe une pièce de 8-K par son triplet, comme le registre des documents (§2.1,
+    §2.3) : le type de pièce et les items viennent de la recherche plein texte ; contrat (EX-10, EX-4, EX-2) D,
+    EX-99 furnished E, document principal dont les items sont tous 2.02, 7.01 ou 9.01 furnished E, le reste C."""
+    if spec.get("evidence") == "triplet" and d["form"] in ("8-K", "8-K/A"):
+        from . import documents
+        ft = (d.get("file_type") or "").upper()
+        status, _, assurance, tier = documents._classify("exhibit" if ft.startswith("EX-") else "primary_document",
+                                                        d["form"], ft, d.get("items"))
+        return tier, assurance, status
+    return D.form_evidence(d["form"], None)
+
+
+def priority_class(text, spec):
+    """Classe d'une fenêtre pour un montage à `priority` (D-0064) : rang de la première expression qui la
+    nomme ; les fenêtres qui n'en nomment aucune viennent après."""
+    for i, rx in enumerate(spec.get("priority") or []):
+        if re.search(rx, text):
+            return i
+    return len(spec.get("priority") or [])
+
+
+def _order_key(d, k, spec, text=None):
     """Ordre de lecture : dates de dépôt croissantes (D-0046) ; pour un montage à `focus`, autres
     déposants, puis pièces de 8-K du déposant central, puis ses rapports périodiques, puis le reste,
-    chaque classe du plus récent au plus ancien (D-0049, point 11)."""
+    chaque classe du plus récent au plus ancien (D-0049, point 11). Un montage à `priority` range ses
+    fenêtres par classe (priority_class), puis du plus récent au plus ancien (D-0064)."""
     neg = "".join(chr(0x10FFFF - ord(c)) for c in d["file_date"])   # plus récent d'abord
+    if spec.get("priority"):
+        return (priority_class(text or "", spec), neg, d["adsh"], d["file"], k)
     if spec.get("order") == "recent_first":                         # D-0058, point 3
         return (neg, d["adsh"], d["file"], k)
     focus = spec.get("focus")
@@ -341,12 +421,13 @@ def _prepare_one(mid, spec, groups_by_cik):
                              "reason": rule["reason"]})
             continue
         raw = cache.read(cache.archive_path(d["cik"], d["adsh"], d["file"]))
-        text, how = D.plain_text(raw)
+        text, how = document_text(raw, spec)
         paras = paragraphs(text)
         rx = qualify_rx(d["filer"], spec)
         sp = windows(paras, rx)
         if not sp:
-            no_window.append({"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"]})
+            no_window.append({"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"],
+                              **({"text_extraction": how} if how in ("pdf_unreadable", "pdf_no_text") else {})})
             continue
         rf = risk_factor_span(paras) if spec.get("skip_risk_factors") else None
         texts = read_by_acc.get(d["adsh"]) or []
@@ -360,7 +441,7 @@ def _prepare_one(mid, spec, groups_by_cik):
                 already.append(ref)
                 continue
             units.append((d, k, "\n".join(paras[a:b]), how))
-    units.sort(key=lambda u: _order_key(u[0], u[1], spec))
+    units.sort(key=lambda u: _order_key(u[0], u[1], spec, u[2]))
     if spec.get("dedupe"):           # un texte distinct se lit une fois (D-0049, point 11)
         seen, kept, dup = set(), [], []
         for u in units:
@@ -380,7 +461,7 @@ def _prepare_one(mid, spec, groups_by_cik):
             over.append({"adsh": d["adsh"], "file": d["file"], "window": k})
             continue
         grp = groups_by_cik.get(d["cik"]) or ("CP:" + normalize_name(d["filer"]))
-        tier, assurance, status = D.form_evidence(d["form"], None)
+        tier, assurance, status = evidence(d, spec)
         fd = d["file_date"]
         out.append({"content_key": blocks.content_key(text, []), "block_kind": "montage_text", "signal_class": 5,
                     "sort_key": f"mt{n:05d}" if mid == FIRST else f"mt:{mid}:{n:05d}",
@@ -399,7 +480,8 @@ def _prepare_one(mid, spec, groups_by_cik):
     info_path.write_text(json.dumps(info, ensure_ascii=False))
     print(mid, ":", len(units) + len(dup), "fenêtres ;", len(units), "textes distincts ;", len(out), "blocs ;",
           len(no_window), "pièces sans fenêtre ;", len(excluded), "pièces écartées ;", len(over), "au-delà du plafond",
-          *([f"; {len(risk)} dans un facteur de risque ; {len(already)} déjà lues"] if spec.get("source") == "corpus" else []))
+          *([f"; {len(risk)} dans un facteur de risque ; {len(already)} déjà lues"]
+            if spec.get("source") == "corpus" or spec.get("skip_risk_factors") or spec.get("skip_read") else []))
     return out
 
 
@@ -443,7 +525,7 @@ def exclusions(as_of):
             out.append({"exclusion_key": f"{reason}:{pre}:{key}", "item_kind": "document", "item_key": f"{pre}:{key}",
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
-        terms = " », « ".join(re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
+        terms = " », « ".join(t.get("label") or re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
         if spec.get("source") in ("corpus", "tagged"):
             # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
             # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
@@ -463,12 +545,20 @@ def exclusions(as_of):
             ex(f"forms:{form}", "out_of_scope",
                f"{n} résultat(s) de la recherche plein texte en {form} : formulaire d'un autre bloc (`form_d`), compté, non tiré ({dec})")
         for d in info.get("no_window") or []:
+            if d.get("text_extraction"):          # PDF illisible ou sans texte : rien à chercher (D-0064)
+                ex(f"{d['adsh']}/{d['file']}", "out_of_scope",
+                   f"{d['filer']} ({d['form']}) : PDF sans texte extractible ({d['text_extraction']}), aucun paragraphe ({dec})",
+                   d["adsh"])
+                continue
             detail = ("aucun paragraphe ne nomme un terme qualifiant hors du nom du déposant "
                       "(« Beignet », « Richland Parish », « Meta », « Blue Owl » ; D-0046, points 8 et 9)") if mid == FIRST else \
                      f"aucun paragraphe ne nomme un terme qualifiant hors du nom du déposant (« {terms} » ; {dec})"
             ex(f"{d['adsh']}/{d['file']}", "out_of_scope", f"{d['filer']} ({d['form']}) : {detail}", d["adsh"])
         for d in info.get("excluded") or []:
             ex(f"{d['adsh']}/{d['file']}", "out_of_scope", f"{d['filer']} ({d['form']}) : {d['reason']} ({dec})", d["adsh"])
+        for d in info.get("risk_factors") or []:      # §14 ; D-0058, point 20, que l'export omettait (D-0064)
+            ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
+               f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec})", d["adsh"])
         # déposant devenu groupe suivi (D-0053, point 7) : ses dépôts se lisent par le catalogue du groupe
         docs_path = _paths(mid)[1]
         filer_cik = {}

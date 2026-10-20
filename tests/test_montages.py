@@ -2,11 +2,44 @@
 
 Lancement : python3 -m unittest discover -s tests -t .
 """
+import contextlib
+import io
+import json
+import pathlib
+import tempfile
 import unittest
 
+from pipeline import discovery as D
 from pipeline import montages as M
 
 S = M.specs()
+
+
+def _pdf(pages):
+    """PDF minimal en Helvetica : une ligne de texte par élément de chaque page, une chaîne vide saute une ligne."""
+    objs, kids = ["<< /Type /Catalog /Pages 2 0 R >>", None], []
+    for lines in pages:
+        body = "BT /F1 11 Tf 72 720 Td 14 TL " + " ".join(
+            "T* " if not x else "(" + x.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)") + ") ' "
+            for x in lines) + "ET"
+        objs.append(f"<< /Length {len(body)} >>\nstream\n{body}\nendstream")
+        objs.append(f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents {len(objs)} 0 R "
+                    "/Resources << /Font << /F1 FONT 0 R >> >> >>")
+        kids.append(len(objs))
+    objs.append("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>")
+    objs = [o.replace("FONT", str(len(objs))) if o else o for o in objs]
+    objs[1] = f"<< /Type /Pages /Kids [{' '.join(f'{k} 0 R' for k in kids)}] /Count {len(kids)} >>"
+    out, offs = io.BytesIO(), []
+    out.write(b"%PDF-1.4\n")
+    for i, o in enumerate(objs, 1):
+        offs.append(out.tell())
+        out.write(f"{i} 0 obj\n{o}\nendobj\n".encode("latin-1"))
+    x = out.tell()
+    out.write(f"xref\n0 {len(objs) + 1}\n0000000000 65535 f \n".encode())
+    for o in offs:
+        out.write(f"{o:010d} 00000 n \n".encode())
+    out.write(f"trailer\n<< /Size {len(objs) + 1} /Root 1 0 R >>\nstartxref\n{x}\n%%EOF\n".encode())
+    return out.getvalue()
 
 
 class Qualify(unittest.TestCase):
@@ -242,3 +275,143 @@ class CorpusLabs(unittest.TestCase):
         self.assertEqual(g("Fluidstack"), "CP:fluidstack ltd")
         self.assertEqual(g("Sanmina"), "CP:sanmina corp")
         self.assertIsNone(g("Uber"))
+
+
+class AnthropicChain(unittest.TestCase):
+    """D-0064, point 3 : « Fluidstack » hors des pièces d'un déposant à son nom, « Anthropic » sans le gérant
+    homonyme ; 8-K et 8-K/A, pièces comprises ; classes de lecture, puis du plus récent au plus ancien."""
+
+    def test_terms(self):
+        sp = S["anthropic_chain"]
+        rx = M.qualify_rx("TeraWulf Inc.", sp)
+        for s in ("a lease with Fluidstack", "FluidStack Ltd.", "FLUIDSTACK USA I INC.", "Anthropic, PBC", "ANTHROPIC PBC"):
+            self.assertTrue(rx.search(s), s)
+        for s in ("Anthropic Capital Partners", "ANTHROPIC CAPITAL", "fluid stacking", "an anthropic view"):
+            self.assertIsNone(rx.search(s), s)
+        own = M.qualify_rx("Fluidstack Ltd", sp)
+        self.assertIsNone(own.search("Fluidstack signed a lease"))
+        self.assertTrue(own.search("for Anthropic"))
+        self.assertTrue(all(q["forms"] == ["8-K", "8-K/A"] for q in sp["queries"]))
+        self.assertEqual((sp["cap"], sp["order"]), (80, "recent_first"))
+
+    def test_priority_then_recent_first(self):
+        sp = S["anthropic_chain"]
+        self.assertEqual(M.priority_class("a lease with Fluidstack for Anthropic", sp), 0)
+        self.assertEqual(M.priority_class("Anthropic will use up to one million TPUs", sp), 1)
+        self.assertEqual(M.priority_class("200 MW of critical IT load for Anthropic", sp), 1)
+        self.assertEqual(M.priority_class("Anthropic is one of our customers", sp), 2)
+        d = lambda f, date: {"filer": "X", "form": "8-K", "file": f, "file_date": date, "adsh": f}
+        units = [(d("old_fs", "2024-01-02"), 0, "Fluidstack"), (d("new_gen", "2026-09-01"), 0, "Anthropic is a customer"),
+                 (d("new_dc", "2026-08-01"), 0, "an Anthropic data center"), (d("new_fs", "2026-07-01"), 0, "FluidStack")]
+        units.sort(key=lambda u: M._order_key(u[0], u[1], sp, u[2]))
+        self.assertEqual([u[0]["file"] for u in units], ["new_fs", "old_fs", "new_dc", "new_gen"])
+        a = {"filer": "X", "form": "8-K", "file": "a", "file_date": "2025-01-01", "adsh": "1"}
+        self.assertLess(M._order_key(dict(a, file_date="2026-01-01"), 0, S["stargate"]), M._order_key(a, 0, S["stargate"]))
+
+    def test_triplet_evidence(self):
+        """Une pièce de 8-K se classe par son triplet, comme le registre des documents (§2.1, §2.3) ; les autres
+        montages gardent le niveau du formulaire."""
+        sp, ev = S["anthropic_chain"], M.evidence
+        self.assertEqual(sp["evidence"], "triplet")
+        d = lambda ft, items, form="8-K": {"form": form, "file_type": ft, "items": items}
+        self.assertEqual(ev(d("EX-99.1", "1.01,7.01,9.01"), sp), ("E", "unaudited", "furnished"))
+        self.assertEqual(ev(d("EX-10.1", "1.01,9.01"), sp), ("D", "not_applicable", "filed"))
+        self.assertEqual(ev(d("8-K", "7.01,9.01"), sp), ("E", "unaudited", "furnished"))
+        self.assertEqual(ev(d("8-K", "1.01,2.03,9.01"), sp), ("C", "unaudited", "filed"))
+        self.assertEqual(ev(d("8-K/A", "2.02", "8-K/A"), sp)[0], "E")
+        self.assertEqual(ev(d("EX-99.1", "7.01"), S["stargate"]), ("C", "not_applicable", "filed"))
+
+    def test_search_sends_forms(self):
+        """Les formulaires racines d'une requête vont dans `forms`, et dans le journal des requêtes."""
+        spec = {"period": ["2023-01-01", "2026-10-07"], "queries": [{"q": '"Fluidstack"', "forms": ["8-K", "8-K/A"]},
+                                                                    {"q": '"Anthropic"'}]}
+        sent, logged = [], []
+
+        def efts(client, params):
+            sent.append(params)
+            return {"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}}, "url", False
+        saved = (M.specs, M._client, M._paths, D._efts, D._log_query)
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            M.specs = lambda cfg=None: {"t": spec}
+            M._client = lambda rate=4.0: None
+            M._paths = lambda mid: (pathlib.Path(tmp) / "hits.json", None, None)
+            D._efts = efts
+            D._log_query = lambda rec, log=None: logged.append(rec)
+            try:
+                M.search("t")
+            finally:
+                M.specs, M._client, M._paths, D._efts, D._log_query = saved
+        self.assertEqual(sent[0]["forms"], "8-K,8-K/A")
+        self.assertNotIn("forms", sent[1])
+        self.assertEqual([r["forms"] for r in logged], [["8-K", "8-K/A"], None])
+
+
+class SecLetters(unittest.TestCase):
+    """D-0064, point 4 : lettres du personnel de la SEC (UPLOAD) et réponses des sociétés (CORRESP), niveau E,
+    `correspondence` ; texte des PDF en paragraphes, pour ce montage seul."""
+
+    def test_correspondence_tier(self):
+        for f in ("CORRESP", "UPLOAD", "DRSLTR"):
+            self.assertEqual(D.form_evidence(f, None), ("E", "not_applicable", "correspondence"))
+        self.assertEqual(D.form_evidence("8-K", None), ("C", "not_applicable", "filed"))
+        self.assertEqual(D.form_evidence("6-K", None), ("E", "not_applicable", "furnished"))
+        sp = S["sec_letters"]
+        self.assertTrue(all(q["forms"] == ["CORRESP", "UPLOAD"] for q in sp["queries"]))
+        rx = M.qualify_rx("MICROSOFT CORP", sp)
+        self.assertTrue(rx.search("your investment in OpenAI"))
+        self.assertTrue(rx.search("revenue from Anthropic"))
+        self.assertIsNone(rx.search("Anthropic Capital Management"))
+        self.assertTrue(sp["pdf_text"])
+        self.assertFalse(any(v.get("pdf_text") for k, v in S.items() if k != "sec_letters"))
+
+    def test_pdf_paragraphs(self):
+        pages = ["Division of Corporation Finance\n\n   Re:   Example Corp\n         Form 10-K\n\n"
+                 "1.   Please tell us how you account   for your\n      investment in OpenAI.\n"
+                 "2.   We note your disclosure.\n\nResponse: We account for it\nunder the equity method.",
+                 "of the Company.\n3. Please revise.", None]
+        self.assertEqual(M.pdf_paragraphs(pages).split("\n"),
+                         ["Division of Corporation Finance", "Re: Example Corp Form 10-K",
+                          "1. Please tell us how you account for your investment in OpenAI.",
+                          "2. We note your disclosure.", "Response: We account for it under the equity method.",
+                          "of the Company.", "3. Please revise."])
+
+    def test_pdf_text_only_where_asked(self):
+        raw = _pdf([["Division of Corporation Finance", "", "1. Please tell us how you account for your",
+                     "investment in OpenAI.", "", "Response: We account for it."], ["2. Please revise."]])
+        text, how = M.document_text(raw, {"pdf_text": True})
+        self.assertEqual(how, "pdf_text")
+        self.assertEqual(text.split("\n"), ["Division of Corporation Finance",
+                                            "1. Please tell us how you account for your investment in OpenAI.",
+                                            "Response: We account for it.", "2. Please revise."])
+        self.assertNotEqual(M.document_text(raw, {})[1], "pdf_text")      # sans l'option : le normaliseur, comme avant
+        self.assertEqual(M.document_text(_pdf([[]]), {"pdf_text": True}), ("", "pdf_no_text"))
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(M.document_text(b"%PDF-1.4 broken", {"pdf_text": True}), ("", "pdf_unreadable"))
+        html = b"<html><body><p>Your investment in OpenAI.</p></body></html>"
+        self.assertEqual(M.document_text(html, {"pdf_text": True}), D.plain_text(html))
+
+
+class ExportedExclusions(unittest.TestCase):
+    """Une fenêtre d'un montage tiré d'EDGAR dans un facteur de risque sort en `out_of_scope` (D-0058, point 20,
+    que l'export omettait ; D-0064) ; un PDF sans texte aussi, avec son motif ; un terme se cite par son libellé."""
+
+    def test_exclusions(self):
+        spec = {"decision": "D-0064", "terms": [{"rx": r"\bAnthropic\b(?! Capital)", "label": "Anthropic"}], "cap": 80}
+        info = {"risk_factors": [{"adsh": "0001-26-000001", "file": "a.htm", "form": "8-K", "filer": "X Corp", "window": 2}],
+                "no_window": [{"adsh": "0000000000-26-000002", "file": "l.pdf", "form": "UPLOAD", "filer": "Y Corp",
+                               "text_extraction": "pdf_no_text"},
+                              {"adsh": "0001-26-000003", "file": "b.htm", "form": "8-K", "filer": "Z Corp"}]}
+        saved = (M.specs, M._paths)
+        with tempfile.TemporaryDirectory() as tmp:
+            p = pathlib.Path(tmp) / "info.json"
+            p.write_text(json.dumps(info))
+            M.specs = lambda cfg=None: {"t": spec}
+            M._paths = lambda mid: (None, pathlib.Path(tmp) / "docs.parquet", p)
+            try:
+                rows = {r["exclusion_key"]: r for r in M.exclusions("2026-10-07")}
+            finally:
+                M.specs, M._paths = saved
+        self.assertEqual(len(rows), 3)
+        self.assertIn("facteurs de risque", rows["out_of_scope:montages:t:0001-26-000001/a.htm#2"]["detail"])
+        self.assertIn("pdf_no_text", rows["out_of_scope:montages:t:0000000000-26-000002/l.pdf"]["detail"])
+        self.assertIn("« Anthropic »", rows["out_of_scope:montages:t:0001-26-000003/b.htm"]["detail"])

@@ -1909,6 +1909,52 @@ montages:
     skip_read: true
     skip_risk_factors: true
     order: recent_first
+  anthropic_chain:                    # D-0064, volet 7 : chaîne de calcul d'Anthropic, 8-K et leurs pièces
+    decision: D-0064
+    period: ["2023-01-01", "2026-10-07"]
+    queries:                          # 8-K et 8-K/A, pièces comprises ; « Anthropic » croisé avec l'infrastructure (point 3)
+      - {q: '"Fluidstack"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "data center"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "compute"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "megawatts"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "gigawatt"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "TPU"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "Trainium"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "Azure"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "Google Cloud"', forms: ["8-K", "8-K/A"]}
+      - {q: '"Anthropic" "Amazon Web Services"', forms: ["8-K", "8-K/A"]}
+    terms:
+      - {rx: '\b[Ff]luid[Ss]tack\b|\bFLUIDSTACK\b', owner: ["fluidstack"], label: "Fluidstack"}
+      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)', label: "Anthropic"}   # « Anthropic Capital » : gérant homonyme (D-0041)
+    priority:                         # classes de lecture, puis du plus récent au plus ancien (point 3)
+      - '\b[Ff]luid[Ss]tack\b|\bFLUIDSTACK\b'
+      - '(?i)\b(?:data ?cent(?:er|re)s?|megawatts?|gigawatts?|mw|gw|tpus?|trainium|compute|capacity|colocation|hosting|cloud|leases?|leased)\b'
+    noted_terms: ['\bAnthropic\b', '\bANTHROPIC\b', '\b[Ff]luid[Ss]tack\b', '\bGoogle\b', '\bAlphabet\b', '\bAmazon\b',
+                  '\bAWS\b', '\bMicrosoft\b', '\bAzure\b', '\bNVIDIA\b', '\bTPUs?\b', '\bTrainium\b', '\bProject Rainier\b',
+                  '\bOpenAI\b']
+    evidence: triplet                 # pièce de 8-K classée par son triplet : EX-99 et items 2.02, 7.01 furnished (point 3)
+    cap: 80
+    dedupe: true
+    skip_read: true
+    skip_risk_factors: true
+    order: recent_first
+  sec_letters:                        # D-0064, volet 6 : lettres du personnel de la SEC (UPLOAD) et réponses des sociétés (CORRESP)
+    decision: D-0064
+    period: ["2019-01-01", "2026-10-07"]
+    queries:
+      - {q: '"OpenAI"', forms: ["CORRESP", "UPLOAD"]}
+      - {q: '"Anthropic"', forms: ["CORRESP", "UPLOAD"]}
+    terms:
+      - {rx: '\bOpenAI\b|\bOPENAI\b', label: "OpenAI"}
+      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)', label: "Anthropic"}
+    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bequity method\b', '\bconsolidat\w*',
+                  '\bvariable interest\b', '\bfair value\b', '\bconcentration\b', '\bmajor customer\w*']
+    cap: 60
+    dedupe: true
+    skip_read: true
+    skip_risk_factors: false          # une lettre n'a pas de section de facteurs de risque ; elle en cite les pages
+    pdf_text: true                    # lettres UPLOAD en PDF : texte extrait, en paragraphes
+    order: recent_first
 
 nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
   decision: D-0058
