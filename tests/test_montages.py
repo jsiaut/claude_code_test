@@ -291,7 +291,7 @@ class AnthropicChain(unittest.TestCase):
         own = M.qualify_rx("Fluidstack Ltd", sp)
         self.assertIsNone(own.search("Fluidstack signed a lease"))
         self.assertTrue(own.search("for Anthropic"))
-        self.assertTrue(all(q["forms"] == ["8-K", "8-K/A"] for q in sp["queries"]))
+        self.assertTrue(all(q["forms"] == ["8-K"] for q in sp["queries"]))   # forme racine : 8-K/A compris (point 10)
         self.assertEqual((sp["cap"], sp["order"]), (80, "recent_first"))
 
     def test_priority_then_recent_first(self):

@@ -1912,17 +1912,17 @@ montages:
   anthropic_chain:                    # D-0064, volet 7 : chaîne de calcul d'Anthropic, 8-K et leurs pièces
     decision: D-0064
     period: ["2023-01-01", "2026-10-07"]
-    queries:                          # 8-K et 8-K/A, pièces comprises ; « Anthropic » croisé avec l'infrastructure (point 3)
-      - {q: '"Fluidstack"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "data center"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "compute"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "megawatts"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "gigawatt"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "TPU"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "Trainium"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "Azure"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "Google Cloud"', forms: ["8-K", "8-K/A"]}
-      - {q: '"Anthropic" "Amazon Web Services"', forms: ["8-K", "8-K/A"]}
+    queries:                          # forme racine 8-K : 8-K et 8-K/A, pièces comprises (point 10) ; « Anthropic » croisé avec l'infrastructure (point 3)
+      - {q: '"Fluidstack"', forms: ["8-K"]}
+      - {q: '"Anthropic" "data center"', forms: ["8-K"]}
+      - {q: '"Anthropic" "compute"', forms: ["8-K"]}
+      - {q: '"Anthropic" "megawatts"', forms: ["8-K"]}
+      - {q: '"Anthropic" "gigawatt"', forms: ["8-K"]}
+      - {q: '"Anthropic" "TPU"', forms: ["8-K"]}
+      - {q: '"Anthropic" "Trainium"', forms: ["8-K"]}
+      - {q: '"Anthropic" "Azure"', forms: ["8-K"]}
+      - {q: '"Anthropic" "Google Cloud"', forms: ["8-K"]}
+      - {q: '"Anthropic" "Amazon Web Services"', forms: ["8-K"]}
     terms:
       - {rx: '\b[Ff]luid[Ss]tack\b|\bFLUIDSTACK\b', owner: ["fluidstack"], label: "Fluidstack"}
       - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)', label: "Anthropic"}   # « Anthropic Capital » : gérant homonyme (D-0041)

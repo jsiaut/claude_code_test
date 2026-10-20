@@ -2207,3 +2207,14 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - le volet 7 ne lit que les 8-K et leurs pièces. Un 10-Q ou un 10-K d'un déposant hors des groupes n'est pas cherché ;
   - la recherche plein texte ne trouve que le texte qu'EDGAR indexe : une lettre numérisée sans texte n'est pas trouvée ;
   - une lettre décrit une question et une réponse, pas un fait comptable. Elle ne change aucune mesure.
+
+  (10) Volet 7, amendement et volume, après le premier décompte et avant toute lecture (2026-10-20) :
+  - amendement de la requête. Le service de recherche applique « 8-K/A » au formulaire du dépôt et « 8-K » à sa forme racine, puis combine les deux filtres par un ET. La première recherche, avec « 8-K,8-K/A », ne visait donc que les 8-K/A : 0 résultat pour les dix requêtes, consignées au journal. La forme racine « 8-K » couvre les 8-K et leurs amendements : les dix requêtes portent `forms=8-K`. Le périmètre du point 3 ne change pas ;
+  - recherche : 71, 43, 62, 2, 5, 1, 12, 12, 19 et 15 résultats pour les dix requêtes, soit 242 résultats, 164 pièces distinctes dans 133 dépôts, du 2023-03-10 au 2026-10-05, aucun 8-K/A. 135 pièces sont tirées et 29 étaient déjà en cache. Les 135 requêtes ont toutes le statut 200, avec au plus 5 départs par seconde glissante ;
+  - volume, avant lecture : 277 fenêtres. 49 sont déjà dans un bloc lu du même dépôt, aucune n'est dans un facteur de risque. Restent 228 fenêtres et 225 textes distincts (3 doublons). Une pièce n'a aucune fenêtre (rapport annuel intégré de Leonardo DRS). Par classe : 120 textes nomment Fluidstack, 61 l'infrastructure, 44 aucune des deux ;
+  - les 80 blocs servis, au plafond, nomment tous Fluidstack. Ils font 253 598 caractères et vont du 2026-09-25 au 2025-11-10 :
+    - déposants : TeraWulf 34, Cipher 28 (sous ses deux dénominations, Cipher Mining et Cipher Digital), Hut 8 13, Willow Lane Acquisition 2, AIB Data Centers, IREN et Blue Acquisition 1 chacun ;
+    - trois actes d'émission (EX-4.1) en donnent 35 : TeraWulf du 2025-12-29 (19), Cipher Mining du 2025-11-13 (13), Hut 8 du 2026-05-01 (3) ;
+    - niveaux : 40 E (communiqués et présentations furnished), 35 D (les actes d'émission), 5 C (documents principaux de 8-K) ;
+  - au-delà du plafond, 145 fenêtres : 40 nomment Fluidstack (du 2025-01-08 au 2025-11-10 ; TeraWulf 27, Cipher 11, IREN et Soluna 1 chacun), 61 l'infrastructure, 44 aucune des deux. 78 viennent de dépôts de groupes suivis (TeraWulf 29, Amazon 22, Cipher 12, AMD 5, Akamai, CoreWeave, Microsoft et NVIDIA 2 chacun, IREN et Dell 1 chacun) et sortent comme lues par le catalogue du groupe (D-0053, point 7) ; 67 sortent en `not_processed`. Le rendement des 80 blocs est présenté avant d'aller plus loin (point 3) ;
+  - liste de lecture `anthropic_chain`, dans l'ordre du montage.

@@ -12,3 +12,23 @@
 {"montage": "stargate", "query": "\"Stargate\" \"SoftBank\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 26, "status": "complete"}
 {"montage": "stargate", "query": "\"Stargate\" \"Oracle\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 49, "status": "complete"}
 {"montage": "stargate", "query": "\"Stargate\" \"data center\"", "cik": null, "start": "2025-01-01", "end": "2026-10-07", "total": 105, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Fluidstack\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"data center\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"compute\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"megawatts\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"gigawatt\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"TPU\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Trainium\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Azure\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Google Cloud\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Amazon Web Services\"", "cik": null, "forms": ["8-K", "8-K/A"], "start": "2023-01-01", "end": "2026-10-07", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Fluidstack\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 71, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"data center\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 43, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"compute\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 62, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"megawatts\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 2, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"gigawatt\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 5, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"TPU\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 1, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Trainium\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 12, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Azure\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 12, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Google Cloud\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 19, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Amazon Web Services\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 15, "status": "complete"}
