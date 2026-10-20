@@ -149,5 +149,20 @@ class Markers(unittest.TestCase):
         self.assertEqual(L.MARK_RX.sub("", text).count("191"), 1)
 
 
+class RenderHelpers(unittest.TestCase):
+    def test_durations_in_clear(self):
+        from pipeline import render as R
+        self.assertEqual(R.duration_fr("P20Y"), "20 ans")
+        self.assertEqual(R.duration_fr("P2Y6M"), "2 ans 6 mois")
+        self.assertEqual(R.duration_fr("30 months"), "30 months")
+
+    def test_member_short_label(self):
+        from pipeline import render as R
+        fl = {"member": "riot:LeaseAgreementWithAnthropicPbcMember",
+              "member_label": "Represents the information pertaining to Anthropic PBC | Lease Agreement With Anthropic Pbc [Member] | Anthropic Lease"}
+        self.assertEqual(R.lab_member(fl), "Anthropic Lease")
+        self.assertEqual(R.lab_member({"member": "AnthropicPBC"}), "AnthropicPBC")
+
+
 if __name__ == "__main__":
     unittest.main()

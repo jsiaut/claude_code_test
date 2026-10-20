@@ -506,6 +506,8 @@ def synthesis(con, as_of, stats):
     L += lender_liabilities_section(con, T)
     L += montages_section(con, T)
     L += nport_section(con, T)
+    L += labs_tagged_section(con, T)
+    L += labs_ledger_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
     L.append("")
@@ -1408,6 +1410,238 @@ def paths_formd_yield_section(con, T):
     return L
 
 
+# --- D-0060 : OpenAI et Anthropic vus par les déposants ---------------------------------------------------------
+
+LAB_LABEL = {"LAB:OPENAI": "OpenAI", "LAB:ANTHROPIC": "Anthropic"}
+LAB_DIR_FR = {"to_lab": "partenaire → laboratoire", "from_lab": "laboratoire → partenaire"}
+LAB_EDGE_FR = {"equity_primary": "fonds propres", "convertible_or_safe": "obligations convertibles", "loan_or_facility": "prêt ou facilité",
+               "vendor_credit": "crédit fournisseur", "noncash_investment": "apport en nature", "lease_financing": "location-financement",
+               "guarantee": "garantie", "backstop": "garantie de bonne fin", "residual_value_guarantee": "garantie de valeur résiduelle",
+               "credit_enhancement": "rehaussement de crédit", "revenue_recognized": "revenu comptabilisé", "purchase": "achat",
+               "purchase_commitment": "engagement d'achat", "capacity_lease": "bail de capacité", "prepayment": "paiement d'avance",
+               "equity_or_warrants_to_customer": "titres ou bons remis au client", "credits_to_customer": "crédits au client",
+               "cash_incentive_to_customer": "incitation en numéraire"}
+LAB_NAT_FR = {"financing_cash": "versement", "investment_carrying_amount": "valeur au bilan", "fair_value": "juste valeur",
+              "commitment_unexecuted": "engagement non exécuté", "capacity_commitment": "engagement de capacité",
+              "consideration_payable_to_customer": "contrepartie payable au client", "revenue_recognized_gross": "revenu (brut)",
+              "revenue_recognized_net": "revenu (net)", "guarantee_amount": "montant garanti", "lease_payment": "loyers",
+              "prepayment": "avance", "other": "autre", "none": "sans nature"}
+
+
+def duration_fr(v):
+    m = re.fullmatch(r"P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?", (v or "").strip())
+    if not m or not any(m.groups()):
+        return v
+    y, mo, d = m.groups()
+    return " ".join(x for x in ((f"{y} ans" if y else ""), (f"{mo} mois" if mo else ""), (f"{d} jours" if d else "")) if x)
+
+
+def lab_value(T, c):
+    """Valeur d'une cellule du bloc labs dans son unité ; une durée balisée s'affiche en clair, jamais convertie."""
+    if c["value"] is None and c.get("value_text"):
+        key = {k: c[k] for k in ("measure", "subject", "counterparty", "period_start", "period_end", "view", "as_of", "term",
+                                 "breakdown_key", "financing_policy", "constant_perimeter", "variant")}
+        return T._reg("measure", key, "value_text", c["value_text"], duration_fr(c["value_text"]))
+    u = c.get("unit") or ""
+    if u == "USD":
+        return T.m(c)
+    if u == "pure":
+        return T.m(c, fmt="pct", dec=1)
+    v = Decimal(str(c["value"])) if c["value"] is not None else None
+    dec = 0 if v is None or v == v.to_integral_value() else 2
+    txt = T.m(c, fmt="n", dec=dec)
+    if u == "shares":
+        return txt + " actions"
+    if u in ("MWh", "megawatt"):
+        return txt + f" MW (unité balisée : {u})"
+    return txt + (f" {u}" if u else "")
+
+
+def lab_period(c):
+    ps, pe = c["period_start"], c["period_end"]
+    return f"{ps} → {pe}" if ps not in (None, NONE) else f"au {pe}"
+
+
+def lab_member(fl):
+    lb = [x.strip() for x in (fl.get("member_label") or "").split("|") if x.strip() and not x.strip().endswith("[Member]")]
+    lb = [x for x in lb if not x.startswith(("Represents", "It Represent"))] or lb
+    return min(lb, key=len) if lb else str(fl.get("member") or "").split(":")[-1]
+
+
+def lab_subject_label(s, fl):
+    if s.startswith("cik:"):
+        return f"{fl.get('filer_name') or s} ({s}, hors du graphe)"
+    return group_label(s)
+
+
+def labs_tagged_cells(con):
+    out = []
+    for r in q(con, """SELECT * FROM measures WHERE measure = 'lab_tagged_value' AND view = 'as_known'
+                       ORDER BY counterparty, subject, breakdown_key, period_end, period_start"""):
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+        out.append(r)
+    return out
+
+
+def labs_tagged_section(con, T):
+    """Volet 3 de D-0060 : faits balisés dont un membre nomme un laboratoire, au dernier fait de chaque série."""
+    rows = labs_tagged_cells(con)
+    if not rows:
+        return []
+    L = ["## OpenAI et Anthropic vus par les déposants : faits balisés (D-0060, volet 3)", ""]
+    L.append("Faits des instances XBRL des groupes et des extraits des Notes Data Sets déjà en cache dont un membre de dimension "
+             "nomme un laboratoire (`lab_tagged_value`). Valeur et unité telles que balisées, du point de vue du déposant "
+             "(actionnaire, fournisseur, bailleur, prêteur) : jamais un fait comptable du laboratoire, jamais une valorisation, "
+             "aucun ratio. Un trimestre sans fait balisé n'est pas un zéro. Un déposant hors du graphe n'entre dans aucune paire "
+             "ni aucun agrégat. Une ligne par série (fait et membres), au dernier fait connu ; la série complète est dans "
+             "`series.md`.")
+    L.append("")
+    cnt = Counter(r["counterparty"] for r in rows)
+    subj = Counter((r["counterparty"], r["subject"]) for r in rows)
+    L.append("Cellules : " + ", ".join(
+        f"{LAB_LABEL.get(l, l)} {T.n('measures', {'measure': 'lab_tagged_value', 'counterparty': l}, n)} "
+        f"({T.n('measures', {'measure': 'lab_tagged_value', 'counterparty': l, 'filers': True}, len([1 for (a, _) in subj if a == l]))} déposants)"
+        for l, n in sorted(cnt.items())) + ".")
+    L.append("")
+    for lab in sorted(cnt):
+        L.append(f"### {LAB_LABEL.get(lab, lab)}")
+        L.append("")
+        by = defaultdict(lambda: defaultdict(list))
+        for r in rows:
+            if r["counterparty"] == lab:
+                by[r["subject"]][r["breakdown_key"]].append(r)
+        for s in sorted(by, key=lambda x: (x.startswith("cik:"), lab_subject_label(x, {}))):
+            series = by[s]
+            allr = [r for rs in series.values() for r in rs]
+            L.append(f"**{lab_subject_label(s, allr[0]['fl'])}** : {T.n('measures', {'lab_tagged_value': [s, lab]}, len(allr))} "
+                     f"{plural(len(allr), 'fait')} balisé{'s' if len(allr) > 1 else ''}, du "
+                     f"{min(r['period_end'] for r in allr)} au {max(r['period_end'] for r in allr)}.")
+            L.append("")
+            L.append("| Fait balisé | Membre | Dernière période | Valeur | Pièce | Faits de la série |")
+            L.append("| --- | --- | --- | ---: | --- | ---: |")
+            for bk, rs in sorted(series.items(), key=lambda kv: kv[0]):
+                last = max(rs, key=lambda r: (r["period_end"], r["period_start"] or "", r["knowledge_date"] or ""))
+                fl = last["fl"]
+                concept = bk.split("|")[0].split(":")[-1]
+                extra = ""
+                if fl.get("conflict"):
+                    extra = f" (conflit : le texte lu nomme {', '.join(fl['conflict'])} pour ce montant)"
+                L.append(f"| `{concept}` | {lab_member(fl)} | {lab_period(last)} | {lab_value(T, last)}{extra} | "
+                         f"{fl.get('form')} {fl.get('accession')} | {T.n('measures', {'lab_tagged_series': [s, lab, bk]}, len(rs))} |")
+            L.append("")
+    return L
+
+
+def labs_tagged_series(con, T):
+    rows = labs_tagged_cells(con)
+    if not rows:
+        return []
+    L = ["## OpenAI et Anthropic : faits balisés par les déposants (D-0060, volet 3)", ""]
+    L.append("Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par déposant. Point de vue du déposant, "
+             "jamais une valorisation du laboratoire ; un trimestre absent n'est pas un zéro.")
+    L.append("")
+    for lab in sorted({r["counterparty"] for r in rows}):
+        for s in sorted({r["subject"] for r in rows if r["counterparty"] == lab}, key=lambda x: (x.startswith("cik:"), x)):
+            rs = [r for r in rows if r["counterparty"] == lab and r["subject"] == s]
+            L.append(f"**{LAB_LABEL.get(lab, lab)} — {lab_subject_label(s, rs[0]['fl'])}**")
+            L.append("")
+            L.append("| Fait balisé | Membre | Période | Valeur | Pièce |")
+            L.append("| --- | --- | --- | ---: | --- |")
+            for r in sorted(rs, key=lambda r: (r["breakdown_key"], r["period_end"], r["period_start"] or "")):
+                L.append(f"| `{r['breakdown_key'].split('|')[0].split(':')[-1]}` | {lab_member(r['fl'])} | {lab_period(r)} | "
+                         f"{lab_value(T, r)} | {r['fl'].get('form')} {r['fl'].get('accession')} |")
+            L.append("")
+    return L
+
+
+def labs_ledger_section(con, T):
+    """Volet 4 de D-0060 : grand livre par laboratoire, au dernier montant connu de chaque instrument, sans total."""
+    cells = q(con, "SELECT * FROM measures WHERE measure = 'lab_ledger' AND view = 'as_known' ORDER BY counterparty, subject, breakdown_key")
+    if not cells:
+        return []
+    edges = q(con, """SELECT l.*, o.accession, o.form FROM links l LEFT JOIN observations o
+                      ON o.obs_key = json_extract_string(l.evidence_keys, '$[0]')
+                      WHERE l.link_kind = 'edge' AND coalesce(l.elimination_status, '') <> 'eliminated'
+                        AND ((l.from_group LIKE 'LAB:%' AND l.to_group NOT LIKE 'LAB:%') OR (l.to_group LIKE 'LAB:%' AND l.from_group NOT LIKE 'LAB:%'))""")
+    tagged = labs_tagged_cells(con)
+    L = ["## Grand livre des laboratoires (D-0060, volet 4)", ""]
+    L.append("Pour chaque laboratoire et chaque groupe qui a une arête avec lui : les instruments qui les lient, dans le sens des "
+             "ressources (§3.1), au dernier montant admissible connu (`lab_ledger`), avec sa pièce. Un flux est le dernier flux "
+             "publié, jamais une somme ; aucun total, ni par partenaire, ni par sens. Les états de la paire (au coût, au bilan, à "
+             "la juste valeur, plafonds d'engagement) viennent de `counterparty_exposure` et ne nettent pas les engagements déjà "
+             "versés. Les capacités balisées (MW, GW) restent à part, jamais additionnées aux dollars. Chaque montant est vu par "
+             "le déposant de sa pièce : le grand livre ne dit rien des comptes des laboratoires.")
+    L.append("")
+    by_pair = defaultdict(list)
+    for c in cells:
+        c["fl"] = json.loads(c["flags"]) if c["flags"] else {}
+        by_pair[(c["counterparty"], c["subject"])].append(c)
+    e_pair = defaultdict(list)
+    for e in edges:
+        lab, partner = (e["to_group"], e["from_group"]) if str(e["to_group"]).startswith("LAB:") else (e["from_group"], e["to_group"])
+        if partner is None or lab is None:
+            continue
+        e_pair[(lab, partner)].append(e)
+    for lab in sorted({k[0] for k in e_pair}):
+        partners = sorted({p for (l, p) in e_pair if l == lab}, key=lambda p: (-len(e_pair[(lab, p)]), group_label(p)))
+        L.append(f"### {LAB_LABEL.get(lab, lab)}")
+        L.append("")
+        L.append(f"Partenaires : {T.n('links', {'lab_partners': lab}, len(partners))} ; arêtes : "
+                 f"{T.n('links', {'lab_edges': lab}, sum(len(e_pair[(lab, p)]) for p in partners))}.")
+        L.append("")
+        for p in partners:
+            es = e_pair[(lab, p)]
+            n_amt = sum(1 for e in es if e["amount"] is not None)
+            L.append(f"#### {group_label(p)}")
+            L.append("")
+            L.append(f"{T.n('links', {'lab_pair_edges': [lab, p]}, len(es))} {plural(len(es), 'arête')}, dont "
+                     f"{T.n('links', {'lab_pair_edges_amount': [lab, p]}, n_amt)} à montant.")
+            ex = q(con, """SELECT * FROM measures WHERE measure = 'counterparty_exposure' AND view = 'as_known' AND subject = ?
+                           AND counterparty = ? AND value IS NOT NULL ORDER BY period_end DESC, breakdown_key""", p, lab)
+            if ex:
+                pe = ex[0]["period_end"]
+                parts = [f"{LAB_EXPO_FR.get(x['breakdown_key'], x['breakdown_key'])} {T.m(x)}" for x in ex if x["period_end"] == pe]
+                L.append(f"- Exposition du partenaire au {pe} (`counterparty_exposure`) : " + " ; ".join(parts) + ".")
+            caps = [t for t in tagged if t["subject"] == p and t["counterparty"] == lab and (t["unit"] or "") in ("MW", "GW", "MWh", "megawatt", "gigawatt")]
+            if caps:
+                L.append("- Capacités balisées (jamais additionnées) : " + " ; ".join(
+                    f"{lab_value(T, t)}, `{t['breakdown_key'].split('|')[0].split(':')[-1]}` ({lab_period(t)})" for t in caps) + ".")
+            pc = by_pair.get((lab, p)) or []
+            if pc:
+                L.append("")
+                L.append("| Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Montants publiés |")
+                L.append("| --- | --- | --- | --- | ---: | --- | --- | ---: |")
+                for c in sorted(pc, key=lambda c: (c["fl"].get("direction"), c["fl"].get("family"), c["breakdown_key"])):
+                    fl = c["fl"]
+                    nat = LAB_NAT_FR.get(fl.get("amount_nature"), fl.get("amount_nature"))
+                    if fl.get("measurement_basis") not in (None, NONE):
+                        nat += f" ({fr(fl['measurement_basis'])})"
+                    val = lab_value(T, c)
+                    L.append(f"| {LAB_DIR_FR.get(fl.get('direction'), fl.get('direction'))} | {fl.get('instrument_key') or '(arête seule)'} | "
+                             f"{LAB_EDGE_FR.get(fl.get('edge_type'), fl.get('edge_type'))} | {nat} | {val} | {c['period_end']} | "
+                             f"{fl.get('form')} {fl.get('accession')} | {T.n('links', {'lab_ledger_amounts': c['breakdown_key'], 'pair': [lab, p]}, fl.get('n_amounts'))} |")
+            with_cell = {c["fl"].get("instrument_key") for c in pc}
+            rel = defaultdict(list)
+            for e in es:
+                if e["amount"] is None and (e["instrument_key"] or None) not in with_cell:
+                    rel[e["instrument_key"] or "(arête seule)"].append(e)
+            if rel:
+                L.append("")
+                L.append("Sans montant admissible : " + " ; ".join(
+                    f"{ik} ({LAB_EDGE_FR.get(v[-1]['edge_type'], v[-1]['edge_type'])}, {fr(v[-1]['stage'])}, "
+                    f"{v[-1]['form'] or '?'} {v[-1]['accession'] or '?'})" for ik, v in sorted(rel.items(), key=lambda kv: str(kv[0]))) + ".")
+            L.append("")
+    return L
+
+
+LAB_EXPO_FR = {"exposed_assets/cost/equity_investment": "au coût (participation)", "exposed_assets/cost/loan_receivable": "au coût (prêt)",
+               "exposed_assets/carrying_amount/equity_investment": "au bilan (participation)",
+               "exposed_assets/carrying_amount/loan_receivable": "au bilan (prêt)",
+               "exposed_assets/fair_value/equity_investment": "à la juste valeur (participation)",
+               "exposed_assets/fair_value/loan_receivable": "à la juste valeur (prêt)",
+               "contractual_outflows/commitment_cap/uncalled_commitment": "engagements non appelés (plafond)"}
+
+
 def circularity_section(con, T, groups):
     L = ["## Circularité, par paire", ""]
     L.append("Une paire réunit un groupe du périmètre et une contrepartie que ses pièces nomment, avec au moins une arête "
@@ -1806,6 +2040,8 @@ def series(con, as_of, stats):
                 L.append(f"| {r['period_end']} | {T.m(r, fmt='pct')} | "
                          f"{T.n('measures', {'nport_series': [sec, r['period_end']]}, r['fl'].get('n_series'))} |")
             L.append("")
+    if "labs" in (config.load().get("scope") or []):
+        L += labs_tagged_series(con, T)
     if "lender_portfolio" in (config.load().get("scope") or []):
         # véhicules BDC des plateformes de présentation (D-0045 ; D-0055, point 7) : série complète, vue as_known
         lp = config.load().get("lender_portfolio") or {}
