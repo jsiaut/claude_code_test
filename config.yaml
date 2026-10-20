@@ -1949,6 +1949,8 @@ montages:
       - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)', label: "Anthropic"}
     noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bequity method\b', '\bconsolidat\w*',
                   '\bvariable interest\b', '\bfair value\b', '\bconcentration\b', '\bmajor customer\w*']
+    exclude:                          # point 12 : chaque UPLOAD porte la lettre en PDF et son texte extrait par EDGAR
+      - {forms: ["UPLOAD"], file_types: ["TEXT-EXTRACT"], reason: "texte extrait par EDGAR de la lettre en PDF du même dépôt (type LETTER), qui se lit ; le normaliseur en fait un seul paragraphe (D-0064, point 12)"}
     cap: 60
     dedupe: true
     skip_read: true

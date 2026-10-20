@@ -32,3 +32,5 @@
 {"montage": "anthropic_chain", "query": "\"Anthropic\" \"Azure\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 12, "status": "complete"}
 {"montage": "anthropic_chain", "query": "\"Anthropic\" \"Google Cloud\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 19, "status": "complete"}
 {"montage": "anthropic_chain", "query": "\"Anthropic\" \"Amazon Web Services\"", "cik": null, "forms": ["8-K"], "start": "2023-01-01", "end": "2026-10-07", "total": 15, "status": "complete"}
+{"montage": "sec_letters", "query": "\"OpenAI\"", "cik": null, "forms": ["CORRESP", "UPLOAD"], "start": "2019-01-01", "end": "2026-10-07", "total": 15, "status": "complete"}
+{"montage": "sec_letters", "query": "\"Anthropic\"", "cik": null, "forms": ["CORRESP", "UPLOAD"], "start": "2019-01-01", "end": "2026-10-07", "total": 7, "status": "complete"}
