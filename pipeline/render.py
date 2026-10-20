@@ -1226,12 +1226,20 @@ def unlisted_section(con, T):
              "l'exposition, des paires et de l'annexe F. Deux fonds peuvent détenir deux catégories d'actions différentes : "
              "leurs valeurs par action ne se comparent qu'à titre égal. Le détail par fonds et par titre est dans `series.md`.")
     L.append("")
+    L.append("Le dernier trimestre est le dernier trimestre civil complet : un N-PORT se dépose dans les 60 jours qui suivent la "
+             "fin du trimestre du fonds, si bien que le trimestre en cours à la dernière archive n'est couvert qu'en partie, comme "
+             "le premier de la période ; ces trimestres sont marqués « partiel ».")
+    L.append("")
     L.append("| Nœud | Dernier trimestre | Valeur détenue déclarée | Séries | Valeur par action à la dernière date (plus basse – plus haute) | Premier trimestre (valeur détenue) |")
     L.append("| --- | --- | ---: | ---: | --- | --- |")
-    order = sorted(held, key=lambda s: (-(Decimal(str(held[s][-1]["value"])) if held[s][-1]["value"] is not None else 0), s))
+    def last_full(hs):
+        full = [h for h in hs if h["status"] == "computed"]
+        return full[-1] if full else hs[-1]
+    order = sorted(held, key=lambda s: (-(Decimal(str(last_full(held[s])["value"])) if last_full(held[s])["value"] is not None
+                                          else 0), s))
     for s in order:
         hs, ms = held[s], [m for m in marks.get(s, []) if m["value"] is not None]
-        h = hs[-1]
+        h = last_full(hs)
         last = max((m["period_end"] for m in ms), default=None)
         at = [m for m in ms if m["period_end"] == last]
         lo = min(at, key=lambda m: (Decimal(str(m["value"])), m["counterparty"], m["breakdown_key"])) if at else None

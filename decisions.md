@@ -2388,3 +2388,33 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - CoreWeave : 302 positions, presque toutes des prêts de ses sociétés de financement (« COREWEAVE COMPUTE AC », « CoreWeave CAC IV, LLC ») ; Nscale : 19 prêts, sous le seul nom « Nscale » ;
   - une extension du rattachement, au nom d'un laboratoire suivi des seuls mots de la catégorie du titre (« ANTHROPIC SERIES G », « OPENAI SERIES C »), est laissée à la décision de l'utilisateur. Les positions sont gardées : elle ne demanderait aucun nouveau tirage ;
   - code : `quoted_archives`, étape `quoted_in_archive` de la sélection, mots de véhicule du rattachement, `fetch_listing_submissions` ; deux tests de plus (`test_nport`).
+
+  (16) Intégration et résultats (2026-10-20) :
+  - deux corrections de l'export, fixées avant le rendu :
+    - un nom voisin sans forme juridique sortait en `conflicting`, une valeur manquante de pandas étant prise pour une forme trouvée. Il sort désormais en `pending_entity` ;
+    - les entités cotées sans date d'introduction connue sortaient en `not_processed` même sans position de la mesure (Adobe, Boeing…). Seules comptent les entités qui en portent (point 7), et toutes ont désormais leur date ;
+  - trimestres partiels. Un N-PORT se dépose dans les 60 jours qui suivent la fin du trimestre du fonds. Le trimestre civil en cours à la dernière archive (T3 2026, rapports de juillet seulement) et le premier de la période (T3 2019) ne sont donc couverts qu'en partie. Leur valeur détenue porte le statut `partial` (10 cellules), et le rendu prend le dernier trimestre complet ;
+  - réassemblages complets, le code ayant changé : 10 min 36 s, puis 9 min 58 s ; rendu en 26 s ;
+  - tables, contre le dépôt d'avant D-0065 :
+    - mesures 172 366 → 177 892 : 5 275 cellules `nport_equity_mark` et 251 `nport_equity_held`, dont 10 partielles. Aucune cellule d'avant ne change ;
+    - exclusions 31 587 → 32 948 : 1 356 noms voisins en `pending_entity` et 5 en `conflicting`. Aucune exclusion d'avant ne change ;
+    - documents 25 282 → 25 296 : les 14 pages de submissions tirées (point 7) ;
+    - faits, observations, entités, liens et contrôles identiques à l'octet près ;
+  - nombres publiés : 14 552 → 18 833 ;
+  - résultats, au dernier trimestre complet (2026-06-30, sauf mention). Ce sont des valeurs déclarées par des fonds, jamais des valorisations :
+    - Anthropic : 15 233 M$ détenus par 106 séries. C'était 2 M$ au 2024-03-31 (une série), 184 M$ au 2025-06-30 (17), 2 129 M$ au 2025-12-31 (54) et 5 273 M$ au 2026-03-31 (65). Valeur par action médiane : 259,14 $ au 2026-03-31, puis 589,01 $ du 2026-05-31 au 2026-07-31, la plus haute à 622,94 $ ;
+    - OpenAI : 4 345 M$ détenus par 58 séries. C'était 276 M$ au 2024-12-31 (4 séries) et 1 577 M$ au 2025-12-31 (32). Valeur par action médiane : 693,90 $ au 2026-02-28, puis 687,69 $ du 2026-03-31 au 2026-07-31 ;
+    - SpaceX avant son introduction : 23 667 M$ au 2026-03-31, détenus par 51 séries. C'était 737 M$ au 2019-12-31 (14 séries), 3 327 M$ au 2022-12-31 (29) et 13 719 M$ au 2025-12-31 (38). Au 2026-06-30, seuls entrent les rapports d'avril et de mai, avant le 424B4 : 11 727 M$ (24 séries). La valeur médiane passe de 526,59 $ à 105,32 $ au 2026-05-31, soit un rapport de 5. Quelques fonds déclarent encore 5 265,90 $ : les valeurs par action ne se comparent pas d'un fonds à l'autre à une division d'actions près. Le nœud réunit aussi les actions de X.AI Holdings Corp. datées après son entrée au groupe ;
+    - xAI avant son entrée au groupe SpaceX (X.AI Holdings Corp.) : 2 456 M$ au 2025-12-31, détenus par 42 séries. Valeur par action : 36,56 $ en septembre et octobre 2025, 65,19 $ en novembre, puis 75,46 $ ;
+    - Waymo LLC : 2 366 M$ détenus par 54 séries, contre 490 M$ au 2020-06-30. Valeur par action de 164,32 à 197,80 $ en 2026 ;
+    - Cerebras avant son introduction : 1 282 M$ au 2026-03-31, détenus par 27 séries, contre 7 M$ en 2022 (une série). Valeur par action : 36,23 $ fin 2025, 89,02 $ au premier trimestre 2026, puis 100,26 $ au 2026-04-30 ;
+    - CoreWeave avant son introduction : 808 M$ au 2024-12-31, détenus par 26 séries. Valeur médiane d'environ 940 à 1 004 $ par action avant sa division ; quelques fonds déclarent 1,2 à 1,8 $ ;
+    - Fluidstack : 109 M$ détenus par 3 séries, 144,11 à 162,22 $ par action, contre 74,09 $ au 2026-03-31 ;
+    - Nscale : 47 M$ détenus par 9 séries. La valeur par action passe de 1 223,53 $ en avril 2026 à 20,39 $ en mai, autre changement d'unité ;
+    - Lambda : 12 M$, une seule série. Sa valeur par action va de 20,94 à 38,00 $ (2025-07-31 et 2026-07-31) ;
+  - limites :
+    - les noms voisins (point 15) ne sont pas rattachés. Ce sont, sur toute la période, 136 positions d'OpenAI, 45 d'Anthropic et 562 de SpaceX. Les valeurs détenues en sont sous-estimées d'autant ;
+    - une division d'actions ou une autre unité rend les valeurs par action de deux fonds incomparables. La mesure les publie telles que déclarées, avec le nombre d'actions ;
+    - les positions des niveaux 1 et 2 ne sont pas gardées. La règle de majorité se compte donc par archive (point 15) ;
+    - les prêts et la dette des non-cotés évalués au niveau 3 sont gardés (292 793 positions de prêts, dont CoreWeave et Nscale), mais ne sont pas mesurés ;
+  - tests unitaires : 258, tous passés.

@@ -18,7 +18,7 @@
 - **Contrôles comptables, vue `as_known`** : `mismatch` 1 833, `not_testable` 1 345, `ok` 29 886, `tautological` 1 393 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 3 011, `not_testable` 1 611, `ok` 29 483, `tautological` 1 393.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 192/869, C11 99/835, C12 425/2 026, C13 0/357, C14 85/1 182, C15 133/834, C16 2/496, C1 422/15 283, C2 169/8 969, C3 215/636, C5 0/245, C6 0/1 393, C7 9/529, C8 76/208, C9 6/595.
-- **Exclusions principales** : `not_processed` 27 966, `conflicting` 1 377, `out_of_scope` 1 186, `pending_entity` 587, `financial_parties_only` 356, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 19, `history_left_censored` 10, `not_public` 2.
+- **Exclusions principales** : `not_processed` 27 966, `pending_entity` 1 943, `conflicting` 1 382, `out_of_scope` 1 186, `financial_parties_only` 356, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 19, `history_left_censored` 10, `not_public` 2.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -5018,6 +5018,54 @@ Titres détenus par au moins un fonds dans les trois mois qui précèdent la der
 | SoftBank Group 8,25 %, échéance 2065-10-29 (USD, XS3203997427) | 2026-07-31 | 96,8 % | 4 | 6,4 M USD | 89,7 % (2026-03-31) | 2025-12-31 (93,7 %) |
 
 Titres sans position déclarée dans ces trois mois (remboursés, rachetés ou cédés par les fonds) : 13.
+
+## Non-cotés du modèle valorisés par les fonds (Form N-PORT)
+
+Valeur par action que des fonds enregistrés déclarent pour les actions d'un nœud du modèle qu'ils évaluent eux-mêmes (niveau 3 de la hiérarchie de juste valeur), au dernier dépôt de chaque série pour la date de portefeuille, et somme de ces valeurs par trimestre civil (Form N-PORT Data Sets ; D-0065). Une position n'est rattachée que si le nom d'émetteur déclaré commence par une dénomination légale du registre, et une entité cotée n'y entre qu'avant son introduction en bourse. Ce sont des marques déclarées par des tiers (perspective `counterparty`) : jamais une valorisation du nœud ni un fait comptable, hors des mesures de financement, de l'exposition, des paires et de l'annexe F. Deux fonds peuvent détenir deux catégories d'actions différentes : leurs valeurs par action ne se comparent qu'à titre égal. Le détail par fonds et par titre est dans `series.md`.
+
+Le dernier trimestre est le dernier trimestre civil complet : un N-PORT se dépose dans les 60 jours qui suivent la fin du trimestre du fonds, si bien que le trimestre en cours à la dernière archive n'est couvert qu'en partie, comme le premier de la période ; ces trimestres sont marqués « partiel ».
+
+| Nœud | Dernier trimestre | Valeur détenue déclarée | Séries | Valeur par action à la dernière date (plus basse – plus haute) | Premier trimestre (valeur détenue) |
+| --- | --- | ---: | ---: | --- | --- |
+| Anthropic | 2026-06-30 | 15 233 M$ | 106 | 589,00 USD – 622,94 USD (2026-07-31) | 2024-03-31 (2 M$) |
+| SpaceX | 2026-06-30 | 11 727 M$ | 24 | 105,32 USD – 5 265,90 USD (2026-05-31) | 2019-09-30 (320 M$ (partiel)) |
+| OpenAI | 2026-06-30 | 4 345 M$ | 58 | 678,11 USD – 687,69 USD (2026-07-31) | 2024-06-30 (2 M$) |
+| Waymo LLC | 2026-06-30 | 2 366 M$ | 54 | 164,32 USD – 197,80 USD (2026-07-31) | 2020-06-30 (490 M$) |
+| X.AI Holdings Corp. | 2026-03-31 | 751 M$ | 7 | 75,46 USD – 75,46 USD (2026-01-31) | 2025-03-31 (29 M$) |
+| CoreWeave | 2025-03-31 | 508 M$ | 13 | 939,94 USD – 1 062,92 USD (2025-02-28) | 2023-12-31 (162 M$) |
+| X Holdings Corp. | 2025-03-31 | 209 M$ | 19 | 101,50 USD – 101,50 USD (2025-03-31) | 2023-03-31 (32 M$) |
+| CEREBRAS SYSTEMS INC. | 2026-06-30 | 168 M$ | 5 | 100,26 USD – 100,26 USD (2026-04-30) | 2022-06-30 (7 M$) |
+| SiFive, Inc. | 2026-06-30 | 132 M$ | 8 | 9,51 USD – 11,22 USD (2026-06-30) | 2022-03-31 (25 M$) |
+| Fluidstack Ltd. | 2026-06-30 | 109 M$ | 3 | 144,11 USD – 162,22 USD (2026-06-30) | 2026-03-31 (54 M$) |
+| Coinbase, Inc. | 2021-03-31 | 90 M$ | 15 | 373,00 USD – 373,00 USD (2021-03-31) | 2021-03-31 (90 M$) |
+| Compass, Inc. | 2021-03-31 | 85 M$ | 7 | 178,61 USD – 182,90 USD (2021-01-31) | 2019-12-31 (74 M$) |
+| DoorDash, Inc. | 2020-09-30 | 67 M$ | 14 | 229,53 USD – 229,53 USD (2020-09-30) | 2020-06-30 (67 M$) |
+| Nscale | 2026-06-30 | 47 M$ | 9 | 20,94 USD – 20,94 USD (2026-07-31) | 2025-09-30 (151 952 $) |
+| WEWORK INC. | 2025-03-31 | 46 M$ | 10 | 15,68 USD – 16,00 USD (2025-03-31) | 2019-09-30 (3 M$ (partiel)) |
+| Aurora Innovation, Inc. | 2021-06-30 | 45 M$ | 4 | 19,66 USD – 19,66 USD (2021-06-30) | 2019-09-30 (21 M$ (partiel)) |
+| Innovium, Inc. | 2021-09-30 | 38 M$ | 3 | 8,48 USD – 10,08 USD (2021-09-30) | 2020-06-30 (10 M$) |
+| EQRx, Inc. | 2021-06-30 | 37 M$ | 4 | 3,32 USD – 3,32 USD (2021-05-31) | 2020-12-31 (31 M$) |
+| Barings Capital Investment Corporation | 2021-06-30 | 25 M$ | 1 | 21,63 USD (2021-06-30) | 2021-03-31 (15 M$) |
+| Seer, Inc. | 2020-09-30 | 22 M$ | 5 | 0,15 USD – 3,75 USD (2020-08-31) | 2019-12-31 (463 720 $) |
+| SQUARESPACE, INC. | 2021-06-30 | 22 M$ | 3 | 68,42 USD – 68,42 USD (2021-04-30) | 2021-03-31 (1 M$) |
+| Santander Bank, N.A. | 2026-06-30 | 18 M$ | 1 | 0,95 USD (2026-06-30) | 2025-12-31 (25 M$) |
+| Zymergen Inc. | 2020-12-31 | 14 M$ | 3 | 8,21 USD – 8,21 USD (2020-12-31) | 2020-09-30 (11 M$) |
+| Lambda | 2026-06-30 | 12 M$ | 1 | 38,00 USD (2026-07-31) | 2025-03-31 (5 M$) |
+| Snowflake Inc. | 2020-09-30 | 12 M$ | 2 | 38,77 USD – 38,77 USD (2020-08-31) | 2020-03-31 (9 M$) |
+| CURIOSITYSTREAM INC. | 2019-09-30 | 9 M$ (partiel) | 1 | 10,00 USD (2019-09-30) | 2019-09-30 (9 M$ (partiel)) |
+| X.AI Corp. | 2026-03-31 | 7 M$ | 1 | 75,46 USD (2026-01-31) | 2024-06-30 (129 M$) |
+| 1Life Healthcare Inc | 2019-12-31 | 6 M$ | 1 | 13,26 USD – 13,26 USD (2019-10-31) | 2019-09-30 (8 M$ (partiel)) |
+| MELLANOX TECHNOLOGIES, LTD. | 2020-06-30 | 5 M$ | 1 | 125,00 USD (2020-05-29) | 2020-06-30 (5 M$) |
+| MCDERMOTT INTERNATIONAL INC | 2024-12-31 | 3 M$ | 5 | 0,14 USD – 250,00 USD (2024-11-30) | 2022-12-31 (8 M$) |
+| PENDRELL CORP | 2022-06-30 | 2 M$ | 1 | 215 088,56 USD (2022-06-30) | 2021-12-31 (2 M$) |
+| MGM Holdings Inc. | 2022-03-31 | 2 M$ | 6 | 3,80 USD – 142,69 USD (2022-03-31) | 2021-09-30 (21 M$) |
+| Silver Lake Partners V, L.P. | 2026-06-30 | 626 394 $ | 1 | 1,35 USD (2026-06-30) | 2024-12-31 (602 637 $) |
+| PROSPER MARKETPLACE, INC | 2026-03-31 | 92 769 $ | 1 | 0,38 USD (2026-03-31) | 2022-06-30 (320 877 $) |
+| Broadcom | 2026-06-30 | 78 $ | 1 | 0,01 USD (2026-04-30) | 2026-03-31 (78 $) |
+| META MATERIALS INC. | 2026-06-30 | 28 $ | 4 | 0,00 USD – 0,00 USD (2026-06-30) | 2024-09-30 (28 $) |
+| Goldman Sachs & Co. LLC | 2020-06-30 | 11 $ | 4 | 0,00 AUD – 0,00 AUD (2020-04-30) | 2020-06-30 (11 $) |
+
+Exclusions du scan : `conflicting` 5, `pending_entity` 1 356. Un nom d'émetteur gardé par le lexique sans commencer par une dénomination légale (véhicule nommé d'après un nœud, autre forme juridique, nom commercial) est compté en `pending_entity`, jamais rattaché sans extrait (D-0065, point 6).
 
 ## OpenAI et Anthropic vus par les déposants : faits balisés (D-0060, volet 3)
 

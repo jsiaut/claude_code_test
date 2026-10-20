@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..85a07dc 100644
+index 1378604..ff82a83 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,191 @@ user_agent:
@@ -1394,7 +1394,7 @@ index 1378604..85a07dc 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1669,315 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1669,322 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1702,7 +1702,8 @@ index 1378604..85a07dc 100644
 +    holding: {accession: ACCESSION_NUMBER, holding_id: HOLDING_ID, issuer_name: ISSUER_NAME, issuer_lei: ISSUER_LEI,
 +              title: ISSUER_TITLE, cusip: ISSUER_CUSIP, balance: BALANCE, unit: UNIT, currency: CURRENCY_CODE,
 +              value_usd: CURRENCY_VALUE, exchange_rate: EXCHANGE_RATE, pct_net_assets: PERCENTAGE, payoff: PAYOFF_PROFILE,
-+              asset_cat: ASSET_CAT, issuer_type: ISSUER_TYPE, country: INVESTMENT_COUNTRY, fair_value_level: FAIR_VALUE_LEVEL}
++              asset_cat: ASSET_CAT, issuer_type: ISSUER_TYPE, country: INVESTMENT_COUNTRY, fair_value_level: FAIR_VALUE_LEVEL,
++              restricted: IS_RESTRICTED_SECURITY, other_unit: OTHER_UNIT_DESC, other_asset: OTHER_ASSET}
 +    identifiers: {holding_id: HOLDING_ID, isin: IDENTIFIER_ISIN, ticker: IDENTIFIER_TICKER, other_id: OTHER_IDENTIFIER,
 +                  other_id_desc: OTHER_IDENTIFIER_DESC}
 +    debt: {holding_id: HOLDING_ID, maturity: MATURITY_DATE, coupon_type: COUPON_TYPE, coupon: ANNUALIZED_RATE,
@@ -1711,3 +1712,9 @@ index 1378604..85a07dc 100644
 +                 report_date: REPORT_DATE}
 +    registrant: {accession: ACCESSION_NUMBER, cik: CIK, registrant_name: REGISTRANT_NAME, registrant_lei: LEI}
 +    fund: {accession: ACCESSION_NUMBER, series_name: SERIES_NAME, series_id: SERIES_ID, series_lei: SERIES_LEI}
++  unlisted:                  # D-0065 : marques de tiers des non-cotés du modèle (volet 5 de D-0059), en un seul passage
++    decision: D-0065
++    tickers: "2026-10-07"    # liste des symboles d'EDGAR (company_tickers.json) en cache : cotation (point 7)
++    quoted_levels: ["1", "2"]          # niveaux de la hiérarchie de juste valeur comptés, non gardés (point 5)
++    mark: {asset_cats: [EC, EP], unit: NS, payoff: Long, level: "3"}   # positions de nport_equity_mark (point 8)
++    listing_forms: [424B4, 424B1]      # premier prospectus d'introduction : date de cotation (point 7)

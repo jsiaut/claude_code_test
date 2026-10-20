@@ -2235,6 +2235,1744 @@ Valeur déclarée ÷ nominal, dans la monnaie du titre, au dernier dépôt de ch
 | 2026-06-30 | 96,0 % | 1 |
 | 2026-07-31 | 96,8 % | 4 |
 
+## 1Life Healthcare Inc (CP:1life healthcare inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-09-30 | 8 M$ (partiel) | 2 | 2 |
+| 2019-12-31 | 6 M$ | 1 | 2 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Advisor Health Care Fund | 1LIFE HEALTHCARE INC PP (EC) | 2019-10-31 (13,26 USD) | 2019-10-31 (13,26 USD) | 1 |
+| Fidelity Advisor Health Care Fund | 1LIFE HEALTHCARE INC PC G PP (EP) | 2019-10-31 (13,26 USD) | 2019-10-31 (13,26 USD) | 1 |
+| Fidelity Health Care Central Fund | 1LIFE HEALTHCARE INC PC G PP (EP) | 2019-09-30 (13,63 USD) | 2019-09-30 (13,63 USD) | 1 |
+| VIP Health Care Portfolio | 1LIFE HEALTHCARE INC PC G PP (EP) | 2019-09-30 (13,63 USD) | 2019-09-30 (13,63 USD) | 1 |
+
+## Anthropic (LAB:ANTHROPIC) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2024-03-31 | 2 M$ | 1 | 1 |
+| 2024-06-30 | 25 M$ | 4 | 5 |
+| 2024-09-30 | 76 M$ | 12 | 15 |
+| 2024-12-31 | 93 M$ | 12 | 15 |
+| 2025-03-31 | 169 M$ | 17 | 26 |
+| 2025-06-30 | 184 M$ | 17 | 29 |
+| 2025-09-30 | 1 120 M$ | 43 | 68 |
+| 2025-12-31 | 2 129 M$ | 54 | 83 |
+| 2026-03-31 | 5 273 M$ | 65 | 119 |
+| 2026-06-30 | 15 233 M$ | 106 | 196 |
+| 2026-09-30 | 1 456 M$ (partiel) | 28 | 49 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| ALGER 35 FUND | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| ALGER CAPITAL APPRECIATION FUND | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| ALGER CAPITAL APPRECIATION INSTITUTIONAL FUND | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| ALGER FOCUS EQUITY FUND | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| ALGER SPECTRA FUND | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| AMCAP Fund | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Alger 35 ETF | Anthropic PBC (EC) | 2026-06-30 (589,00 USD) | 2026-06-30 (589,00 USD) | 1 |
+| Alger AI Enablers & Adopters ETF | Anthropic PBC (EC) | 2026-06-30 (589,00 USD) | 2026-06-30 (589,00 USD) | 1 |
+| Alger AI Enablers & Adopters Fund | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| Alger Concentrated Equity ETF | Anthropic PBC (EC) | 2026-06-30 (589,00 USD) | 2026-06-30 (589,00 USD) | 1 |
+| Alger Concentrated Equity Fund | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| Alger Dynamic Opportunities Fund | Anthropic PBC (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,00 USD) | 2 |
+| American Balanced Fund | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| American Funds Fundamental Investors | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Asset Allocation Fund | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| BlackRock Advantage Global Fund, Inc. | Anthropic PBC, Series H (EC) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| BlackRock Advantage Large Cap Core Fund | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
+| BlackRock Advantage Large Cap Growth Fund | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
+| BlackRock Capital Appreciation Fund, Inc. | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
+| BlackRock ESG Capital Allocation Term Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Global Allocation Fund, Inc. | Anthropic PBC (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (318,57 USD) | 2 |
+| BlackRock Global Allocation Fund, Inc. | Anthropic PBC, Series F (EP) | 2026-01-31 (243,40 USD) | 2026-07-31 (589,01 USD) | 2 |
+| BlackRock Global Allocation Portfolio | Anthropic PBC (EP) | 2025-09-30 (140,97 USD) | 2026-03-31 (259,14 USD) | 2 |
+| BlackRock Global Allocation Portfolio | Anthropic PBC, Series F (EP) | 2025-12-31 (203,36 USD) | 2026-06-30 (589,01 USD) | 2 |
+| BlackRock Large Cap Focus Growth Fund, Inc. | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
+| BlackRock Science & Technology Term Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Science & Technology Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Strategic Global Bond Fund, Inc. | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Strategic Income Opportunities Portfolio | Anthropic PBC (EP) | 2025-09-30 (140,97 USD) | 2026-03-31 (259,14 USD) | 2 |
+| BlackRock Strategic Income Opportunities Portfolio | Anthropic PBC, Series F (EP) | 2025-12-31 (203,36 USD) | 2026-06-30 (589,01 USD) | 2 |
+| BlackRock Technology & Private Equity Term Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Technology Opportunities Fund | ANTHROPIC PBC (EP) | 2025-11-28 (203,36 USD) | 2026-05-29 (589,00 USD) | 3 |
+| BlackRock Total Return Fund | ANTHROPIC PBC (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Capital World Growth & Income Fund | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Capital World Growth & Income Fund | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Advisor Capital Development Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity Advisor Diversified Stock Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity Advisor Diversified Stock Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Advisor Equity Growth Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Advisor Equity Growth Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Advisor Equity Growth Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Advisor Growth Opportunities Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-08-31 (30,00 USD) | 2026-05-31 (622,94 USD) | 8 |
+| Fidelity Advisor Growth Opportunities Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-02-28 (56,09 USD) | 2026-05-31 (589,01 USD) | 6 |
+| Fidelity Advisor Growth Opportunities Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Advisor Growth Opportunities Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Advisor Growth Opportunities Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Advisor New Insights Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-03-31 (56,09 USD) | 2026-06-30 (589,01 USD) | 6 |
+| Fidelity Advisor New Insights Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Fidelity Advisor New Insights Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Advisor Series Equity Growth Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Advisor Series Equity Growth Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Advisor Series Equity Growth Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Advisor Series Growth Opportunities Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-08-31 (30,00 USD) | 2026-05-31 (622,94 USD) | 8 |
+| Fidelity Advisor Series Growth Opportunities Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-02-28 (56,09 USD) | 2026-05-31 (589,01 USD) | 6 |
+| Fidelity Advisor Series Growth Opportunities Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Advisor Technology Fund | ANTHROPIC PBC SER B PC PP (EP) | 2024-04-30 (30,00 USD) | 2025-10-31 (140,97 USD) | 7 |
+| Fidelity Advisor Technology Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-07-31 (30,00 USD) | 2025-10-31 (148,29 USD) | 6 |
+| Fidelity Advisor Technology Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-10-31 (140,97 USD) | 2025-10-31 (140,97 USD) | 1 |
+| Fidelity Balanced Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Balanced Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Balanced Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Balanced K6 Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Balanced K6 Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Balanced K6 Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-07-31 (30,00 USD) | 2026-04-30 (352,83 USD) | 8 |
+| Fidelity Blue Chip Growth Fund | ANTHROPIC PBC SERIES D-1 PC PP (EP) | 2026-07-31 (622,94 USD) | 2026-07-31 (622,94 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-04-30 (50,53 USD) | 2026-04-30 (333,60 USD) | 5 |
+| Fidelity Blue Chip Growth Fund | ANTHROPIC PBC SERIES E-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (333,60 USD) | 3 |
+| Fidelity Blue Chip Growth Fund | ANTHROPIC PBC SERIES F-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-07-31 (30,00 USD) | 2026-04-30 (352,83 USD) | 8 |
+| Fidelity Blue Chip Growth K6 Fund | ANTHROPIC PBC SERIES D-1 PC PP (EP) | 2026-07-31 (622,94 USD) | 2026-07-31 (622,94 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-04-30 (50,53 USD) | 2026-04-30 (333,60 USD) | 5 |
+| Fidelity Blue Chip Growth K6 Fund | ANTHROPIC PBC SERIES E-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (333,60 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | ANTHROPIC PBC SERIES F-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Capital Appreciation Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (333,60 USD) | 3 |
+| Fidelity Capital Appreciation Fund | ANTHROPIC PBC SERIES F-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Capital Appreciation Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-01-31 (259,14 USD) | 2026-04-30 (333,60 USD) | 2 |
+| Fidelity Capital Appreciation Fund | ANTHROPIC PBC SERIES G-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Capital Appreciation Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Contrafund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-03-31 (56,09 USD) | 2026-06-30 (589,01 USD) | 6 |
+| Fidelity Contrafund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Fidelity Contrafund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Contrafund K6 | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-03-31 (56,09 USD) | 2026-06-30 (589,01 USD) | 6 |
+| Fidelity Contrafund K6 | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Fidelity Contrafund K6 | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity Contrafund K6 | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Equity Growth K6 Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Equity Growth K6 Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Equity Growth K6 Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Focused Stock Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Founders Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Growth Company Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-08-31 (30,00 USD) | 2026-05-31 (622,94 USD) | 8 |
+| Fidelity Growth Company Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-02-28 (56,09 USD) | 2026-05-31 (589,01 USD) | 6 |
+| Fidelity Growth Company Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Growth Company Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Growth Company K6 Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-08-31 (30,00 USD) | 2026-05-31 (622,94 USD) | 8 |
+| Fidelity Growth Company K6 Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-02-28 (56,09 USD) | 2026-05-31 (589,01 USD) | 6 |
+| Fidelity Growth Company K6 Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Growth Company K6 Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Growth Discovery Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Fidelity Growth Discovery Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity Growth Discovery Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Growth Strategies Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Growth Strategies K6 Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity International Growth Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Large Cap Stock Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-01-31 (259,14 USD) | 2026-04-30 (333,60 USD) | 2 |
+| Fidelity Large Cap Stock Fund | ANTHROPIC PBC SERIES G-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Large Cap Stock K6 Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-01-31 (259,14 USD) | 2026-04-30 (333,60 USD) | 2 |
+| Fidelity Large Cap Stock K6 Fund | ANTHROPIC PBC SERIES G-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Mega Cap Stock Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity OTC K6 Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-01-31 (259,14 USD) | 2026-04-30 (333,60 USD) | 2 |
+| Fidelity OTC K6 Portfolio | ANTHROPIC PBC SERIES G-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity OTC K6 Portfolio | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity OTC Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (333,60 USD) | 3 |
+| Fidelity OTC Portfolio | ANTHROPIC PBC SERIES F-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Puritan Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Puritan Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Puritan K6 Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Fidelity Puritan K6 Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-07-31 (30,00 USD) | 2026-04-30 (352,83 USD) | 8 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES D-1 PC PP (EP) | 2026-07-31 (622,94 USD) | 2026-07-31 (622,94 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-04-30 (50,53 USD) | 2026-04-30 (333,60 USD) | 5 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES E-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (333,60 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES F-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-01-31 (259,14 USD) | 2026-04-30 (333,60 USD) | 2 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES G-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Series Growth Company Fund | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-08-31 (30,00 USD) | 2026-05-31 (622,94 USD) | 8 |
+| Fidelity Series Growth Company Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-02-28 (56,09 USD) | 2026-05-31 (589,01 USD) | 6 |
+| Fidelity Series Growth Company Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| Fidelity Series Growth Company Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Fidelity Series International Growth Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Series Large Cap Stock Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity Series Opportunistic Insights Fund | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-03-31 (56,09 USD) | 2026-06-30 (589,01 USD) | 6 |
+| Fidelity Series Opportunistic Insights Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Fidelity Series Opportunistic Insights Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity Series Opportunistic Insights Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Total International Equity Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Trend Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Fidelity Trend Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity Trend Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity U.S. Equity Central Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Fidelity U.S. Equity Central Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Fidelity U.S. Equity Central Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Fidelity Worldwide Fund | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (333,60 USD) | 3 |
+| Fidelity Worldwide Fund | ANTHROPIC PBC SERIES F-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Worldwide Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-01-31 (259,14 USD) | 2026-04-30 (333,60 USD) | 2 |
+| Fidelity Worldwide Fund | ANTHROPIC PBC SERIES G-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Fidelity Worldwide Fund | ANTHROPIC PBC SERIES H-1 PC PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Franklin Growth Fund | Anthropic PBC, Series H-1 (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| Franklin Growth Opportunities Fund | Anthropic PBC, Series F-1 (EC) | 2025-10-31 (140,97 USD) | 2026-07-31 (589,01 USD) | 3 |
+| Franklin Growth Opportunities Fund | Anthropic PBC, Series F1 (EC) | 2026-01-31 (259,14 USD) | 2026-01-31 (259,14 USD) | 1 |
+| Franklin Growth Opportunities Fund | Anthropic PBC, Series G (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,01 USD) | 2 |
+| Franklin Growth Opportunities Fund | Anthropic PBC, Series H-1 (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| Growth Fund | ANTHROPIC PBC PP (PHYSICAL) (NOT LISTED OR TRADING) (EC) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Growth Fund | ANTHROPIC PBC CL F-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| Growth Fund | ANTHROPIC PBC CL G-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| Growth Fund of America | ANTHROPIC PBC PP (PHYSICAL) (NOT LISTED OR TRADING) (EC) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Growth Fund of America | ANTHROPIC PBC CL F-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2025-11-30 (140,97 USD) | 2026-05-31 (589,01 USD) | 3 |
+| Growth Fund of America | ANTHROPIC PBC CL G-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| JNL/BlackRock Large Cap Select Growth Fund | Anthropic, PBC (EC) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| JPMorgan Growth Advantage Fund | Anthropic PBC (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| NYLI VP Winslow Large Cap Growth Portfolio | Anthropic PBC (EC) | 2025-09-30 (140,97 USD) | 2025-12-31 (140,97 USD) | 2 |
+| NYLI Winslow Large Cap Growth Fund | Anthropic PBC (EC) | 2025-10-31 (140,97 USD) | 2026-01-31 (259,14 USD) | 2 |
+| NYLIM VP Winslow Large Cap Growth Portfolio | Anthropic PBC, Series F-1 (EC) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| NYLIM VP Winslow Large Cap Growth Portfolio | Anthropic PBC, Series G-1 (EC) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| NYLIM Winslow Large Cap Growth Fund | Anthropic PBC, Series F-1 (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,01 USD) | 2 |
+| NYLIM Winslow Large Cap Growth Fund | Anthropic PBC, Series G-1 (EC) | 2026-01-31 (259,14 USD) | 2026-07-31 (589,01 USD) | 3 |
+| New Economy Fund | ANTHROPIC PBC PP (PHYSICAL) (NOT LISTED OR TRADING) (EC) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| New Economy Fund | ANTHROPIC PBC CL F-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2025-11-30 (140,97 USD) | 2026-05-31 (589,01 USD) | 3 |
+| New Economy Fund | ANTHROPIC PBC CL G-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Nuveen Winslow Large-Cap Growth ESG Fund | Anthropic PBC (EC) | 2026-04-30 (361,35 USD) | 2026-07-31 (589,01 USD) | 2 |
+| Nuveen Winslow Large-Cap Growth ESG Fund | Anthropic PBC (EP) | 2025-10-31 (140,97 USD) | 2026-07-31 (589,01 USD) | 4 |
+| Select Communication Services Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Select Communication Services Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Select Software and IT Services Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-02-28 (259,14 USD) | 2026-05-31 (589,01 USD) | 2 |
+| Select Software and IT Services Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| Select Technology Portfolio | ANTHROPIC PBC SER B PC PP (EP) | 2024-05-31 (30,00 USD) | 2026-05-31 (589,01 USD) | 9 |
+| Select Technology Portfolio | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-08-31 (30,00 USD) | 2026-05-31 (622,94 USD) | 8 |
+| Select Technology Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-08-31 (140,97 USD) | 2026-05-31 (589,01 USD) | 4 |
+| T. Rowe Price All-Cap Opportunities Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price All-Cap Opportunities Portfolio | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Balanced Fund, Inc. | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Blue Chip Growth Fund, Inc. | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Blue Chip Growth Portfolio | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Capital Appreciation Fund | ANTHROPIC PBC SER F-1 CVT PFD PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| T. Rowe Price Capital Appreciation Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Capital Appreciation and Income Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Communications & Technology Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Global Allocation Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| T. Rowe Price Global Stock Fund | ANTHROPIC PBC SER F-1 CVT PFD PP (EP) | 2025-10-31 (140,97 USD) | 2026-07-31 (589,01 USD) | 4 |
+| T. Rowe Price Global Stock Fund | ANTHROPIC PBC SER G-1 CVT PFD PP (EP) | 2026-04-30 (388,19 USD) | 2026-07-31 (589,01 USD) | 2 |
+| T. Rowe Price Global Stock Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-07-31 (589,01 USD) | 2026-07-31 (589,01 USD) | 1 |
+| T. Rowe Price Global Technology Fund, Inc. | ANTHROPIC PBC SER F-1 CVT PFD PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| T. Rowe Price Growth Stock Fund, Inc. | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Institutional Large-Cap Core Growth Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Large-Cap Growth Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Moderate Allocation Portfolio | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Science & Technology Fund, Inc. | Anthropic PBC Common Stock PP (EC) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Science & Technology Fund, Inc. | ANTHROPIC PBC SER F-1 CVT PFD PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| T. Rowe Price Science & Technology Fund, Inc. | ANTHROPIC PBC SER G-1 CVT PFD PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| T. Rowe Price Science & Technology Fund, Inc. | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| T. Rowe Price Spectrum Conservative Allocation Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| T. Rowe Price Spectrum Moderate Allocation Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| T. Rowe Price Spectrum Moderate Growth Allocation Fund | ANTHROPIC PBC SER H-1 CVT PFD PP (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
+| T.Rowe Price Large Cap Growth Portfolio | ANTHROPIC PBC. SERIES H 1 (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Balanced Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| VIP Balanced Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| VIP Balanced Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Communication Services Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| VIP Communication Services Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Contrafund Portfolio | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-03-31 (56,09 USD) | 2026-06-30 (589,01 USD) | 6 |
+| VIP Contrafund Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| VIP Contrafund Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| VIP Contrafund Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Dynamic Capital Appreciation Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| VIP Dynamic Capital Appreciation Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| VIP Dynamic Capital Appreciation Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Growth Opportunities Portfolio | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-06-30 (30,00 USD) | 2026-06-30 (622,94 USD) | 9 |
+| VIP Growth Opportunities Portfolio | ANTHROPIC PBC SERIES E PC PP (EP) | 2025-03-31 (56,09 USD) | 2026-06-30 (589,01 USD) | 6 |
+| VIP Growth Opportunities Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| VIP Growth Opportunities Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| VIP Growth Opportunities Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Growth Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| VIP Growth Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| VIP Growth Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Stock Selector Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| VIP Stock Selector Portfolio | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
+| VIP Stock Selector Portfolio | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| VIP Technology Portfolio | ANTHROPIC PBC SER B PC PP (EP) | 2024-03-31 (30,00 USD) | 2026-06-30 (589,01 USD) | 10 |
+| VIP Technology Portfolio | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-06-30 (30,00 USD) | 2026-06-30 (622,94 USD) | 9 |
+| VIP Technology Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+
+## Aurora Innovation, Inc. (CP:aurora innovation inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-09-30 | 21 M$ (partiel) | 4 | 4 |
+| 2019-12-31 | 21 M$ | 4 | 4 |
+| 2020-03-31 | 17 M$ | 4 | 4 |
+| 2020-06-30 | 21 M$ | 4 | 4 |
+| 2020-09-30 | 21 M$ | 4 | 4 |
+| 2020-12-31 | 22 M$ | 4 | 4 |
+| 2021-03-31 | 45 M$ | 4 | 4 |
+| 2021-06-30 | 45 M$ | 4 | 4 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Contrafund | AURORA INNOVATION INC SER B PC PP (EP) | 2019-09-30 (9,24 USD) | 2021-06-30 (19,66 USD) | 8 |
+| Fidelity Contrafund K6 | AURORA INNOVATION INC SER B PC PP (EP) | 2019-09-30 (9,24 USD) | 2021-06-30 (19,66 USD) | 8 |
+| MassMutual Select T. Rowe Price Large Cap Blend Fund | INC SERIES B CVT PFD STOCK (EP) | 2019-09-30 (9,24 USD) | 2021-06-30 (19,66 USD) | 8 |
+| MassMutual Select T. Rowe Price Small and Mid Cap Blend Fund | INC SERIES B CVT PFD STOCK (EP) | 2019-09-30 (9,24 USD) | 2021-06-30 (19,66 USD) | 8 |
+
+## Barings Capital Investment Corporation (CP:barings capital investment corp) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2021-03-31 | 15 M$ | 1 | 1 |
+| 2021-06-30 | 25 M$ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Cliffwater Corporate Lending Fund | Barings Capital Investment Corporation (EC) | 2021-03-31 (21,85 USD) | 2021-06-30 (21,63 USD) | 2 |
+
+## Broadcom (AVGO) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2026-03-31 | 78 $ | 1 | 1 |
+| 2026-06-30 | 78 $ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Victory Extended Market Index Fund | VMWARE INC (EC) | 2026-01-31 (0,01 USD) | 2026-04-30 (0,01 USD) | 2 |
+
+## CEREBRAS SYSTEMS INC. (CP:cerebras systems inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2022-06-30 | 7 M$ | 1 | 1 |
+| 2022-09-30 | 7 M$ | 1 | 1 |
+| 2022-12-31 | 7 M$ | 1 | 1 |
+| 2023-03-31 | 7 M$ | 1 | 1 |
+| 2023-06-30 | 7 M$ | 1 | 1 |
+| 2023-09-30 | 7 M$ | 1 | 1 |
+| 2023-12-31 | 7 M$ | 1 | 1 |
+| 2024-03-31 | 8 M$ | 1 | 1 |
+| 2024-06-30 | 8 M$ | 1 | 1 |
+| 2024-09-30 | 8 M$ | 1 | 1 |
+| 2024-12-31 | 9 M$ | 1 | 1 |
+| 2025-03-31 | 9 M$ | 1 | 1 |
+| 2025-06-30 | 11 M$ | 1 | 1 |
+| 2025-09-30 | 205 M$ | 8 | 8 |
+| 2025-12-31 | 491 M$ | 20 | 20 |
+| 2026-03-31 | 1 282 M$ | 27 | 35 |
+| 2026-06-30 | 168 M$ | 5 | 6 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Advisor Growth Opportunities Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-11-30 (36,23 USD) | 2026-02-28 (89,02 USD) | 2 |
+| Fidelity Advisor Growth Opportunities Fund | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-02-28 (89,02 USD) | 2026-02-28 (89,02 USD) | 1 |
+| Fidelity Advisor New Insights Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
+| Fidelity Advisor Semiconductors Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-10-31 (36,23 USD) | 2026-04-30 (100,26 USD) | 3 |
+| Fidelity Advisor Semiconductors Fund | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-04-30 (100,26 USD) | 2026-04-30 (100,26 USD) | 1 |
+| Fidelity Advisor Series Growth Opportunities Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-11-30 (36,23 USD) | 2026-02-28 (89,02 USD) | 2 |
+| Fidelity Advisor Technology Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-10-31 (36,23 USD) | 2025-10-31 (36,23 USD) | 1 |
+| Fidelity Balanced Fund | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-02-28 (89,02 USD) | 2026-02-28 (89,02 USD) | 1 |
+| Fidelity Balanced K6 Fund | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-02-28 (89,02 USD) | 2026-02-28 (89,02 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-10-31 (36,23 USD) | 2026-04-30 (100,26 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-10-31 (36,23 USD) | 2026-04-30 (100,26 USD) | 3 |
+| Fidelity Contrafund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
+| Fidelity Contrafund K6 | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
+| Fidelity Contrafund K6 | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| Fidelity Growth Company Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-11-30 (36,23 USD) | 2026-02-28 (89,02 USD) | 2 |
+| Fidelity Growth Company K6 Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-11-30 (36,23 USD) | 2026-02-28 (89,02 USD) | 2 |
+| Fidelity Series Blue Chip Growth Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-10-31 (36,23 USD) | 2026-04-30 (100,26 USD) | 3 |
+| Fidelity Series Growth Company Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-11-30 (36,23 USD) | 2026-02-28 (89,02 USD) | 2 |
+| Fidelity Series Opportunistic Insights Fund | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
+| Fidelity Series Opportunistic Insights Fund | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| Fidelity U.S. Equity Central Fund | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| Fidelity Worldwide Fund | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-04-30 (100,26 USD) | 2026-04-30 (100,26 USD) | 1 |
+| Select Communication Services Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-02-28 (89,02 USD) | 2026-02-28 (89,02 USD) | 1 |
+| Select Semiconductors Portfolio | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-11-30 (36,23 USD) | 2026-02-28 (89,02 USD) | 2 |
+| Select Semiconductors Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-02-28 (89,02 USD) | 2026-02-28 (89,02 USD) | 1 |
+| Select Technology Portfolio | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-11-30 (36,23 USD) | 2026-02-28 (89,02 USD) | 2 |
+| Select Technology Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-02-28 (89,02 USD) | 2026-02-28 (89,02 USD) | 1 |
+| StepStone Private Venture and Growth Fund | Cerebras Systems Inc. (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| The Private Shares Fund | CEREBRAS SYSTEMS INC. COMMON SHARES   / (EC) | 2022-06-30 (22,20 USD) | 2026-03-31 (98,99 USD) | 16 |
+| VIP Balanced Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| VIP Communication Services Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| VIP Contrafund Portfolio | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
+| VIP Contrafund Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| VIP Growth Opportunities Portfolio | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
+| VIP Growth Opportunities Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| VIP Stock Selector Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+| VIP Technology Portfolio | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
+| VIP Technology Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
+
+## CURIOSITYSTREAM INC. (CP:curiositystream inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-09-30 | 9 M$ (partiel) | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| AMG TimesSquare Small Cap Growth Fund | CURIOSITYSTREAM INC PVD CNV A 144A (EP) | 2019-09-30 (10,00 USD) | 2019-09-30 (10,00 USD) | 1 |
+
+## Coinbase, Inc. (CP:coinbase inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2021-03-31 | 90 M$ | 15 | 15 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Advisor Diversified Stock Fund | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+| Fidelity Advisor Growth Opportunities Fund | COINBASE INC (EC) | 2021-02-28 (373,00 USD) | 2021-02-28 (373,00 USD) | 1 |
+| Fidelity Advisor New Insights Fund | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+| Fidelity Advisor Series Growth Opportunities Fund | COINBASE INC (EC) | 2021-02-28 (373,00 USD) | 2021-02-28 (373,00 USD) | 1 |
+| Fidelity Contrafund | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+| Fidelity Contrafund K6 | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+| Fidelity Growth Company Fund | COINBASE INC (EC) | 2021-02-28 (373,00 USD) | 2021-02-28 (373,00 USD) | 1 |
+| Fidelity Growth Company K6 Fund | COINBASE INC (EC) | 2021-02-28 (373,00 USD) | 2021-02-28 (373,00 USD) | 1 |
+| Fidelity Puritan Fund | COINBASE INC (EC) | 2021-02-28 (373,00 USD) | 2021-02-28 (373,00 USD) | 1 |
+| Fidelity Puritan K6 Fund | COINBASE INC (EC) | 2021-02-28 (373,00 USD) | 2021-02-28 (373,00 USD) | 1 |
+| Fidelity Series Growth Company Fund | COINBASE INC (EC) | 2021-02-28 (373,00 USD) | 2021-02-28 (373,00 USD) | 1 |
+| Fidelity Series Opportunistic Insights Fund | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+| VIP Contrafund Portfolio | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+| VIP Growth Opportunities Portfolio | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+| VIP Technology Portfolio | COINBASE INC (EC) | 2021-03-31 (373,00 USD) | 2021-03-31 (373,00 USD) | 1 |
+
+## Compass, Inc. (CP:compass inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-12-31 | 74 M$ | 7 | 9 |
+| 2020-03-31 | 74 M$ | 7 | 9 |
+| 2020-06-30 | 47 M$ | 7 | 9 |
+| 2020-09-30 | 59 M$ | 7 | 9 |
+| 2020-12-31 | 66 M$ | 7 | 9 |
+| 2021-03-31 | 85 M$ | 7 | 9 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Blue Chip Growth Fund | COMPASS INC SER E PC PERP PP (EP) | 2019-10-31 (158,01 USD) | 2021-01-31 (182,90 USD) | 6 |
+| Fidelity Blue Chip Growth K6 Fund | COMPASS INC SER E PC PERP PP (EP) | 2019-10-31 (158,01 USD) | 2021-01-31 (182,90 USD) | 6 |
+| Fidelity Flex Large Cap Growth Fund | COMPASS INC SER E PC PERP PP (EP) | 2019-10-31 (158,01 USD) | 2021-01-31 (182,90 USD) | 6 |
+| Fidelity Flex Small Cap Fund | COMPASS INC SER E PC PERP PP (EP) | 2019-10-31 (158,01 USD) | 2021-01-31 (182,90 USD) | 6 |
+| Fidelity Flex Small Cap Fund | COMPASS INC SER F PC PERP PP (EP) | 2019-10-31 (154,27 USD) | 2021-01-31 (178,61 USD) | 6 |
+| Fidelity Series Blue Chip Growth Fund | COMPASS INC SER E PC PERP PP (EP) | 2019-10-31 (158,01 USD) | 2021-01-31 (182,90 USD) | 6 |
+| Fidelity Small Cap Growth Fund | COMPASS INC SER E PC PERP PP (EP) | 2019-10-31 (158,01 USD) | 2021-01-31 (182,90 USD) | 6 |
+| Fidelity Small Cap Growth K6 Fund | COMPASS INC SER E PC PERP PP (EP) | 2019-10-31 (158,01 USD) | 2021-01-31 (182,90 USD) | 6 |
+| Fidelity Small Cap Growth K6 Fund | COMPASS INC SER F PC PERP PP (EP) | 2019-10-31 (154,27 USD) | 2021-01-31 (178,61 USD) | 6 |
+
+## CoreWeave (CRWV) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2023-12-31 | 162 M$ | 17 | 17 |
+| 2024-03-31 | 262 M$ | 22 | 22 |
+| 2024-06-30 | 536 M$ | 25 | 35 |
+| 2024-09-30 | 652 M$ | 26 | 41 |
+| 2024-12-31 | 808 M$ | 26 | 44 |
+| 2025-03-31 | 508 M$ | 13 | 26 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| BlackRock Global Allocation Portfolio | Coreweave, Inc. (EC) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,80 USD) | 3 |
+| BlackRock Global Allocation V.I. Fund | Coreweave, Inc. (EC) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,80 USD) | 3 |
+| BlackRock Global Long/Short Credit Fund | Coreweave, Inc. (EC) | 2024-07-31 (1,02 USD) | 2025-01-31 (1,80 USD) | 3 |
+| BlackRock Strategic Income Opportunities Portfolio | Coreweave, Inc. (EC) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,80 USD) | 3 |
+| Fidelity Advisor Diversified Stock Fund | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| Fidelity Advisor Diversified Stock Fund | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| Fidelity Advisor Diversified Stock Fund | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| Fidelity Advisor Diversified Stock Fund | COREWEAVE INC SER C PC PP (EP) | 2024-06-30 (785,93 USD) | 2024-12-31 (1 053,49 USD) | 3 |
+| Fidelity Advisor Growth Opportunities Fund | COREWEAVE INC CL A (EC) | 2024-08-31 (760,28 USD) | 2024-08-31 (760,28 USD) | 1 |
+| Fidelity Advisor Growth Opportunities Fund | COREWEAVE INC CL A P/P (EC) | 2024-11-30 (939,85 USD) | 2025-02-28 (939,94 USD) | 2 |
+| Fidelity Advisor Growth Opportunities Fund | COREWEAVE INC P/P (EC) | 2023-11-30 (309,86 USD) | 2024-05-31 (779,05 USD) | 3 |
+| Fidelity Advisor Growth Opportunities Fund | COREWEAVE INC SER C PC PP (EP) | 2024-05-31 (779,05 USD) | 2025-02-28 (1 062,92 USD) | 4 |
+| Fidelity Advisor New Insights Fund | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| Fidelity Advisor New Insights Fund | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| Fidelity Advisor New Insights Fund | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| Fidelity Advisor Series Growth Opportunities Fund | COREWEAVE INC CL A (EC) | 2024-08-31 (760,28 USD) | 2024-08-31 (760,28 USD) | 1 |
+| Fidelity Advisor Series Growth Opportunities Fund | COREWEAVE INC CL A P/P (EC) | 2024-11-30 (939,85 USD) | 2025-02-28 (939,94 USD) | 2 |
+| Fidelity Advisor Series Growth Opportunities Fund | COREWEAVE INC P/P (EC) | 2023-11-30 (309,86 USD) | 2024-05-31 (779,05 USD) | 3 |
+| Fidelity Advisor Series Growth Opportunities Fund | COREWEAVE INC SER C PC PP (EP) | 2024-05-31 (779,05 USD) | 2025-02-28 (1 062,92 USD) | 4 |
+| Fidelity Advisor Technology Fund | COREWEAVE INC CL A (EC) | 2024-07-31 (778,02 USD) | 2024-10-31 (847,11 USD) | 2 |
+| Fidelity Advisor Technology Fund | COREWEAVE INC CL A P/P (EC) | 2025-01-31 (939,85 USD) | 2025-01-31 (939,85 USD) | 1 |
+| Fidelity Advisor Technology Fund | COREWEAVE INC P/P (EC) | 2024-01-31 (309,86 USD) | 2024-04-30 (390,21 USD) | 2 |
+| Fidelity Advisor Technology Fund | COREWEAVE INC SER C PC PP (EP) | 2024-07-31 (803,77 USD) | 2025-01-31 (1 058,16 USD) | 3 |
+| Fidelity Blue Chip Growth Fund | COREWEAVE INC CL A (EC) | 2024-07-31 (778,02 USD) | 2024-10-31 (847,11 USD) | 2 |
+| Fidelity Blue Chip Growth Fund | COREWEAVE INC CL A P/P (EC) | 2025-01-31 (939,85 USD) | 2025-01-31 (939,85 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | COREWEAVE INC P/P (EC) | 2024-01-31 (309,86 USD) | 2024-04-30 (390,21 USD) | 2 |
+| Fidelity Blue Chip Growth Fund | COREWEAVE INC SER C PC PP (EP) | 2024-07-31 (803,77 USD) | 2025-01-31 (1 058,16 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | COREWEAVE INC CL A (EC) | 2024-07-31 (778,02 USD) | 2024-10-31 (847,11 USD) | 2 |
+| Fidelity Blue Chip Growth K6 Fund | COREWEAVE INC CL A P/P (EC) | 2025-01-31 (939,85 USD) | 2025-01-31 (939,85 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | COREWEAVE INC P/P (EC) | 2024-01-31 (309,86 USD) | 2024-04-30 (390,21 USD) | 2 |
+| Fidelity Blue Chip Growth K6 Fund | COREWEAVE INC SER C PC PP (EP) | 2024-07-31 (803,77 USD) | 2025-01-31 (1 058,16 USD) | 3 |
+| Fidelity Contrafund | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| Fidelity Contrafund | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| Fidelity Contrafund | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| Fidelity Contrafund K6 | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| Fidelity Contrafund K6 | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| Fidelity Contrafund K6 | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| Fidelity Founders Fund | COREWEAVE INC CL A (EC) | 2024-07-31 (778,02 USD) | 2024-10-31 (847,11 USD) | 2 |
+| Fidelity Founders Fund | COREWEAVE INC CL A P/P (EC) | 2025-01-31 (939,85 USD) | 2025-01-31 (939,85 USD) | 1 |
+| Fidelity Founders Fund | COREWEAVE INC P/P (EC) | 2024-01-31 (309,86 USD) | 2024-04-30 (390,21 USD) | 2 |
+| Fidelity Founders Fund | COREWEAVE INC SER C PC PP (EP) | 2024-07-31 (803,77 USD) | 2025-01-31 (1 058,16 USD) | 3 |
+| Fidelity Growth Company Fund | COREWEAVE INC CL A (EC) | 2024-08-31 (760,28 USD) | 2024-08-31 (760,28 USD) | 1 |
+| Fidelity Growth Company Fund | COREWEAVE INC CL A P/P (EC) | 2024-11-30 (939,85 USD) | 2025-02-28 (939,94 USD) | 2 |
+| Fidelity Growth Company Fund | COREWEAVE INC P/P (EC) | 2023-11-30 (309,86 USD) | 2024-05-31 (779,05 USD) | 3 |
+| Fidelity Growth Company Fund | COREWEAVE INC SER C PC PP (EP) | 2024-05-31 (779,05 USD) | 2025-02-28 (1 062,92 USD) | 4 |
+| Fidelity Growth Company K6 Fund | COREWEAVE INC CL A (EC) | 2024-08-31 (760,28 USD) | 2024-08-31 (760,28 USD) | 1 |
+| Fidelity Growth Company K6 Fund | COREWEAVE INC CL A P/P (EC) | 2024-11-30 (939,85 USD) | 2025-02-28 (939,94 USD) | 2 |
+| Fidelity Growth Company K6 Fund | COREWEAVE INC P/P (EC) | 2023-11-30 (309,86 USD) | 2024-05-31 (779,05 USD) | 3 |
+| Fidelity Growth Company K6 Fund | COREWEAVE INC SER C PC PP (EP) | 2024-05-31 (779,05 USD) | 2025-02-28 (1 062,92 USD) | 4 |
+| Fidelity New Millennium Fund | COREWEAVE INC CL A (EC) | 2024-08-31 (760,28 USD) | 2024-08-31 (760,28 USD) | 1 |
+| Fidelity New Millennium Fund | COREWEAVE INC CL A P/P (EC) | 2024-11-30 (939,85 USD) | 2025-02-28 (939,94 USD) | 2 |
+| Fidelity New Millennium Fund | COREWEAVE INC P/P (EC) | 2023-11-30 (309,86 USD) | 2024-05-31 (779,05 USD) | 3 |
+| Fidelity New Millennium Fund | COREWEAVE INC SER C PC PP (EP) | 2024-05-31 (779,05 USD) | 2025-02-28 (1 062,92 USD) | 4 |
+| Fidelity Series Blue Chip Growth Fund | COREWEAVE INC CL A (EC) | 2024-07-31 (778,02 USD) | 2024-10-31 (847,11 USD) | 2 |
+| Fidelity Series Blue Chip Growth Fund | COREWEAVE INC CL A P/P (EC) | 2025-01-31 (939,85 USD) | 2025-01-31 (939,85 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | COREWEAVE INC P/P (EC) | 2024-01-31 (309,86 USD) | 2024-04-30 (390,21 USD) | 2 |
+| Fidelity Series Blue Chip Growth Fund | COREWEAVE INC SER C PC PP (EP) | 2024-07-31 (803,77 USD) | 2025-01-31 (1 058,16 USD) | 3 |
+| Fidelity Series Growth Company Fund | COREWEAVE INC CL A (EC) | 2024-08-31 (760,28 USD) | 2024-08-31 (760,28 USD) | 1 |
+| Fidelity Series Growth Company Fund | COREWEAVE INC CL A P/P (EC) | 2024-11-30 (939,85 USD) | 2025-02-28 (939,94 USD) | 2 |
+| Fidelity Series Growth Company Fund | COREWEAVE INC P/P (EC) | 2023-11-30 (309,86 USD) | 2024-05-31 (779,05 USD) | 3 |
+| Fidelity Series Growth Company Fund | COREWEAVE INC SER C PC PP (EP) | 2024-05-31 (779,05 USD) | 2025-02-28 (1 062,92 USD) | 4 |
+| Fidelity Series Opportunistic Insights Fund | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| Fidelity Series Opportunistic Insights Fund | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| Fidelity Series Opportunistic Insights Fund | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| JPMorgan Growth Advantage Fund | Coreweave, Inc. (EC) | 2023-12-31 (309,86 USD) | 2024-12-31 (964,48 USD) | 5 |
+| JPMorgan Mid Cap Growth Fund | Coreweave, Inc. (EC) | 2023-12-31 (309,86 USD) | 2024-12-31 (964,48 USD) | 5 |
+| Select Technology Portfolio | COREWEAVE INC CL A (EC) | 2024-08-31 (760,28 USD) | 2024-08-31 (760,28 USD) | 1 |
+| Select Technology Portfolio | COREWEAVE INC CL A P/P (EC) | 2024-11-30 (939,85 USD) | 2025-02-28 (939,94 USD) | 2 |
+| Select Technology Portfolio | COREWEAVE INC P/P (EC) | 2023-11-30 (309,86 USD) | 2024-05-31 (779,05 USD) | 3 |
+| Select Technology Portfolio | COREWEAVE INC SER C PC PP (EP) | 2024-05-31 (779,05 USD) | 2025-02-28 (1 062,92 USD) | 4 |
+| VIP Contrafund Portfolio | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| VIP Contrafund Portfolio | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| VIP Contrafund Portfolio | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| VIP Growth Opportunities Portfolio | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| VIP Growth Opportunities Portfolio | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| VIP Growth Opportunities Portfolio | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| VIP Growth Opportunities Portfolio | COREWEAVE INC SER C PC PP (EP) | 2024-06-30 (785,93 USD) | 2024-12-31 (1 053,49 USD) | 3 |
+| VIP Technology Portfolio | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
+| VIP Technology Portfolio | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
+| VIP Technology Portfolio | COREWEAVE INC P/P (EC) | 2023-12-31 (309,86 USD) | 2024-03-31 (390,21 USD) | 2 |
+| VIP Technology Portfolio | COREWEAVE INC SER C PC PP (EP) | 2024-06-30 (785,93 USD) | 2024-12-31 (1 053,49 USD) | 3 |
+
+## DoorDash, Inc. (CP:doordash inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-06-30 | 67 M$ | 14 | 14 |
+| 2020-09-30 | 67 M$ | 14 | 14 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Advisor New Insights Fund | DOORDASH INC SER H PC PP (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| Fidelity Contrafund | DOORDASH INC SER H PC PP (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| Fidelity Contrafund K6 | DOORDASH INC SER H PC PP (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| Fidelity Flex Opportunistic Insights Fund | DOORDASH INC SER H PC PP (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| Fidelity Series Opportunistic Insights Fund | DOORDASH INC SER H PC PP (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| LVIP T. Rowe Price Growth Stock Fund | DOORDASH INC, PP SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| MML Mid Cap Growth Fund | SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| MassMutual Select Mid Cap Growth Fund | SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| MassMutual Select T. Rowe Price Large Cap Blend Fund | SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| MassMutual Select T. Rowe Price Small and Mid Cap Blend Fund | SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| SA T. Rowe Price Growth Stock Portfolio | DOORDASH INC, PP SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| T. Rowe Price Mid Cap Growth Portfolio | DOORDASH INC, PP SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| T.Rowe Price Large Cap Growth Portfolio | DOORDASH INC, PP SERIES H (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+| VIP Contrafund Portfolio | DOORDASH INC SER H PC PP (EP) | 2020-06-30 (229,53 USD) | 2020-09-30 (229,53 USD) | 2 |
+
+## EQRx, Inc. (CP:eqrx inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-12-31 | 31 M$ | 4 | 4 |
+| 2021-03-31 | 37 M$ | 4 | 4 |
+| 2021-06-30 | 37 M$ | 4 | 4 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Growth Company Fund | EQRX INC SER B PC PP (EP) | 2020-11-30 (2,74 USD) | 2021-05-31 (3,32 USD) | 3 |
+| Fidelity Growth Company K6 Fund | EQRX INC SER B PC PP (EP) | 2020-11-30 (2,74 USD) | 2021-05-31 (3,32 USD) | 3 |
+| Fidelity Series Growth Company Fund | EQRX INC SER B PC PP (EP) | 2020-11-30 (2,74 USD) | 2021-05-31 (3,32 USD) | 3 |
+| Select Biotechnology Portfolio | EQRX INC SER B PC PP (EP) | 2020-11-30 (2,74 USD) | 2021-05-31 (3,32 USD) | 3 |
+
+## Fluidstack Ltd. (CP:fluidstack ltd) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2026-03-31 | 54 M$ | 3 | 3 |
+| 2026-06-30 | 109 M$ | 3 | 3 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| BlackRock Strategic Income Opportunities Portfolio | Fluidstack CS I, Inc., Series A (EC) | 2026-03-31 (74,09 USD) | 2026-03-31 (74,09 USD) | 1 |
+| BlackRock Strategic Income Opportunities Portfolio | Fluidstack CS I, Inc., Series A, Class E (EC) | 2026-06-30 (162,22 USD) | 2026-06-30 (162,22 USD) | 1 |
+| BlackRock Total Return V.I. Fund | Fluidstack CS I, Inc., Series A, Class E (EC) | 2026-03-31 (74,09 USD) | 2026-06-30 (162,22 USD) | 2 |
+| SMALLCAP World Fund Inc | FLUIDSTACK LTD CL A CV PFD PP (DRS) (NOT LISTED OR TRADING) (EP) | 2026-03-31 (74,09 USD) | 2026-06-30 (144,11 USD) | 2 |
+
+## Goldman Sachs & Co. LLC (CP:goldman sachs & co llc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-06-30 | 11 $ | 4 | 4 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| VANGUARD FTSE ALL-WORLD EX-US SMALL-CAP INDEX FUND | DSHE HOLDINGS LT (EC) | 2020-04-30 (0,00 AUD) | 2020-04-30 (0,00 AUD) | 1 |
+| VANGUARD PACIFIC STOCK INDEX FUND | DSHE HOLDINGS LT (EC) | 2020-04-30 (0,00 AUD) | 2020-04-30 (0,00 AUD) | 1 |
+| VANGUARD TOTAL INTERNATIONAL STOCK INDEX FUND | DSHE HOLDINGS LT (EC) | 2020-04-30 (0,00 AUD) | 2020-04-30 (0,00 AUD) | 1 |
+| VANGUARD TOTAL WORLD STOCK INDEX FUND | DSHE HOLDINGS LT (EC) | 2020-04-30 (0,00 AUD) | 2020-04-30 (0,00 AUD) | 1 |
+
+## Innovium, Inc. (CP:innovium inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-06-30 | 10 M$ | 2 | 2 |
+| 2020-09-30 | 10 M$ | 2 | 2 |
+| 2020-12-31 | 44 M$ | 3 | 5 |
+| 2021-03-31 | 44 M$ | 3 | 5 |
+| 2021-06-30 | 41 M$ | 3 | 5 |
+| 2021-09-30 | 38 M$ | 3 | 5 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| BlackRock Science and Technology Trust | INNOVIUM INC SERIES E (EC) | 2020-12-31 (9,34 USD) | 2021-09-30 (8,48 USD) | 4 |
+| BlackRock Science and Technology Trust | Innovium, Inc SERIES F (EP) | 2020-06-30 (10,43 USD) | 2021-09-30 (10,08 USD) | 6 |
+| BlackRock Science and Technology Trust II | INNOVIUM INC SERIES E (EC) | 2020-12-31 (9,34 USD) | 2021-09-30 (8,48 USD) | 4 |
+| BlackRock Science and Technology Trust II | Innovium, Inc SERIES F (EP) | 2020-06-30 (10,43 USD) | 2021-09-30 (10,08 USD) | 6 |
+| New Economy Fund | INNOVIUM INC PFD SER F PP 8.00% NON-CUM (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2020-11-30 (10,13 USD) | 2021-08-31 (8,09 USD) | 4 |
+
+## Lambda (NF:LAMBDA) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2025-03-31 | 5 M$ | 1 | 1 |
+| 2025-06-30 | 5 M$ | 1 | 1 |
+| 2025-09-30 | 6 M$ | 1 | 1 |
+| 2025-12-31 | 15 M$ | 1 | 2 |
+| 2026-03-31 | 15 M$ | 1 | 2 |
+| 2026-06-30 | 12 M$ | 1 | 2 |
+| 2026-09-30 | 17 M$ (partiel) | 1 | 2 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| ARK Venture Fund | Lambda, Inc. (EC) | 2025-01-31 (21,97 USD) | 2026-07-31 (38,00 USD) | 7 |
+
+## MCDERMOTT INTERNATIONAL INC (CP:mcdermott international inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2022-12-31 | 8 M$ | 7 | 15 |
+| 2023-03-31 | 8 M$ | 7 | 15 |
+| 2023-06-30 | 7 M$ | 6 | 12 |
+| 2023-09-30 | 6 M$ | 6 | 12 |
+| 2023-12-31 | 3 M$ | 5 | 10 |
+| 2024-03-31 | 3 M$ | 5 | 10 |
+| 2024-06-30 | 3 M$ | 5 | 10 |
+| 2024-09-30 | 4 M$ | 5 | 10 |
+| 2024-12-31 | 3 M$ | 5 | 10 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Invesco Dynamic Credit Opportunity Fund | McDermott International Inc. (EC) | 2022-11-30 (0,43 USD) | 2024-11-30 (0,14 USD) | 9 |
+| Invesco Dynamic Credit Opportunity Fund | McDermott International Inc., Pfd. (EC) | 2022-11-30 (0,65 USD) | 2024-02-29 (200,00 USD) | 6 |
+| Invesco Dynamic Credit Opportunity Fund | McDermott International Inc., Pfd. (EP) | 2024-05-31 (200,00 USD) | 2024-11-30 (250,00 USD) | 3 |
+| Invesco Floating Rate ESG Fund | McDermott International Inc. (EC) | 2022-11-30 (0,43 USD) | 2024-11-30 (0,14 USD) | 9 |
+| Invesco Floating Rate ESG Fund | McDermott International Inc., Pfd. (EC) | 2022-11-30 (0,65 USD) | 2024-02-29 (200,00 USD) | 6 |
+| Invesco Floating Rate ESG Fund | McDermott International Inc., Pfd. (EP) | 2024-05-31 (200,00 USD) | 2024-11-30 (250,00 USD) | 3 |
+| Invesco Master Loan Fund | McDermott International Inc. (EC) | 2022-11-30 (0,43 USD) | 2023-08-31 (0,15 USD) | 4 |
+| Invesco Master Loan Fund | McDermott International Inc., Pfd. (EC) | 2022-11-30 (0,65 USD) | 2023-08-31 (650,00 USD) | 4 |
+| Invesco Senior Floating Rate Fund | McDermott International Inc. (EC) | 2022-11-30 (0,43 USD) | 2024-11-30 (0,14 USD) | 9 |
+| Invesco Senior Floating Rate Fund | McDermott International Inc., Pfd. (EC) | 2022-11-30 (0,65 USD) | 2024-02-29 (200,00 USD) | 6 |
+| Invesco Senior Floating Rate Fund | McDermott International Inc., Pfd. (EP) | 2024-05-31 (200,00 USD) | 2024-11-30 (250,00 USD) | 3 |
+| Invesco Senior Income Trust | McDermott International Inc. (EC) | 2022-11-30 (0,43 USD) | 2024-11-30 (0,14 USD) | 9 |
+| Invesco Senior Income Trust | McDermott International Inc., Pfd. (EC) | 2022-11-30 (0,65 USD) | 2024-02-29 (200,00 USD) | 6 |
+| Invesco Senior Income Trust | McDermott International Inc., Pfd. (EP) | 2024-05-31 (200,00 USD) | 2024-11-30 (250,00 USD) | 3 |
+| Invesco Senior Loan Fund | McDermott International Inc. (EC) | 2022-11-30 (0,43 USD) | 2024-11-30 (0,14 USD) | 9 |
+| Invesco Senior Loan Fund | McDermott International Inc., Pfd. (EC) | 2022-11-30 (0,65 USD) | 2024-02-29 (200,00 USD) | 6 |
+| Invesco Senior Loan Fund | McDermott International Inc., Pfd. (EP) | 2024-05-31 (200,00 USD) | 2024-11-30 (250,00 USD) | 3 |
+| JNL Multi-Manager Alternative Fund | McDermott International, Inc. (EC) | 2022-12-31 (0,32 USD) | 2023-03-31 (0,34 USD) | 2 |
+| JNL Multi-Manager Alternative Fund | McDermott International, Inc. (EC) | 2022-12-31 (0,32 USD) | 2023-03-31 (0,34 USD) | 2 |
+| JNL Multi-Manager Alternative Fund | McDermott International, Inc. (EP) | 2022-12-31 (600,00 USD) | 2023-03-31 (600,00 USD) | 2 |
+
+## MELLANOX TECHNOLOGIES, LTD. (CP:mellanox technologies ltd) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-06-30 | 5 M$ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Franklin K2 Alternative Strategies Fund | Mellanox Technologies Ltd (EC) | 2020-05-29 (125,00 USD) | 2020-05-29 (125,00 USD) | 1 |
+
+## META MATERIALS INC. (CP:meta materials inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2024-09-30 | 28 $ | 4 | 4 |
+| 2024-12-31 | 28 $ | 4 | 4 |
+| 2025-03-31 | 28 $ | 4 | 4 |
+| 2025-06-30 | 28 $ | 4 | 4 |
+| 2025-09-30 | 28 $ | 4 | 4 |
+| 2025-12-31 | 28 $ | 4 | 4 |
+| 2026-03-31 | 28 $ | 4 | 5 |
+| 2026-06-30 | 28 $ | 4 | 5 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| VANGUARD BALANCED INDEX FUND | NEXT BRIDGE HYDROCARBONS (EC) | 2026-03-31 (0,00 USD) | 2026-06-30 (0,00 USD) | 2 |
+| VANGUARD BALANCED INDEX FUND | Next Bridge Hydrocarbons Inc (EC) | 2024-09-30 (0,00 USD) | 2025-12-31 (0,00 USD) | 6 |
+| VANGUARD EXTENDED MARKET INDEX FUND | NEXT BRIDGE HYDROCARBONS (EC) | 2026-03-31 (0,00 USD) | 2026-06-30 (0,00 USD) | 2 |
+| VANGUARD EXTENDED MARKET INDEX FUND | Next Bridge Hydrocarbons Inc (EC) | 2024-09-30 (0,00 USD) | 2025-12-31 (0,00 USD) | 6 |
+| VANGUARD INSTITUTIONAL TOTAL STOCK MARKET INDEX FUND | Next Bridge Hydrocarbons Inc - Private Equity (UK) (EC) | 2024-09-30 (0,00 USD) | 2026-06-30 (0,00 USD) | 8 |
+| VANGUARD TOTAL STOCK MARKET INDEX FUND | NEXT BRIDGE HYDROCARBONS (EC) | 2026-03-31 (0,00 USD) | 2026-06-30 (0,00 USD) | 2 |
+| VANGUARD TOTAL STOCK MARKET INDEX FUND | Next Bridge Hydrocarbons Inc (EC) | 2024-09-30 (0,00 USD) | 2026-06-30 (0,00 USD) | 8 |
+
+## MGM Holdings Inc. (CP:mgm holdings inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2021-09-30 | 21 M$ | 5 | 5 |
+| 2022-03-31 | 2 M$ | 6 | 6 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Guggenheim High Yield Fund | Metro-Goldwyn-Mayer, Inc. (EC) | 2022-03-31 (142,69 USD) | 2022-03-31 (142,69 USD) | 1 |
+| JNL Multi-Manager Alternative Fund | MGM Holdings, Inc. (EC) | 2021-09-30 (133,00 USD) | 2022-03-31 (3,80 USD) | 2 |
+| JNL/Westchester Capital Event Driven Fund | MGM Holdings, Inc. (EC) | 2021-09-30 (133,00 USD) | 2022-03-31 (3,80 USD) | 2 |
+| The Merger Fund | MGM Holdings Inc (EC) | 2021-09-30 (134,00 USD) | 2022-03-31 (4,00 USD) | 2 |
+| The Merger Fund VL | MGM Holdings Inc (EC) | 2021-09-30 (134,00 USD) | 2022-03-31 (4,00 USD) | 2 |
+| Virtus Westchester Event-Driven Fund | MGM Holdings Inc (EC) | 2021-09-30 (134,00 USD) | 2022-03-31 (4,00 USD) | 2 |
+
+## Nscale (NF:NSCALE) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2025-09-30 | 151 952 $ | 1 | 1 |
+| 2025-12-31 | 15 M$ | 9 | 9 |
+| 2026-03-31 | 43 M$ | 9 | 9 |
+| 2026-06-30 | 47 M$ | 9 | 9 |
+| 2026-09-30 | 10 M$ (partiel) | 3 | 3 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Advisor Growth Opportunities Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-11-30 (379,88 USD) | 2026-02-28 (1 290,35 USD) | 2 |
+| Fidelity Advisor Growth Opportunities Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-05-31 (20,39 USD) | 2026-05-31 (20,39 USD) | 1 |
+| Fidelity Advisor Series Growth Opportunities Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-11-30 (379,88 USD) | 2026-02-28 (1 290,35 USD) | 2 |
+| Fidelity Advisor Series Growth Opportunities Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-05-31 (20,39 USD) | 2026-05-31 (20,39 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-10-31 (379,88 USD) | 2026-04-30 (1 223,53 USD) | 3 |
+| Fidelity Blue Chip Growth Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-07-31 (20,94 USD) | 2026-07-31 (20,94 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-10-31 (379,88 USD) | 2026-04-30 (1 223,53 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-07-31 (20,94 USD) | 2026-07-31 (20,94 USD) | 1 |
+| Fidelity Growth Company Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-11-30 (379,88 USD) | 2026-02-28 (1 290,35 USD) | 2 |
+| Fidelity Growth Company Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-05-31 (20,39 USD) | 2026-05-31 (20,39 USD) | 1 |
+| Fidelity Growth Company K6 Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-11-30 (379,88 USD) | 2026-02-28 (1 290,35 USD) | 2 |
+| Fidelity Growth Company K6 Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-05-31 (20,39 USD) | 2026-05-31 (20,39 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-10-31 (379,88 USD) | 2026-04-30 (1 223,53 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-07-31 (20,94 USD) | 2026-07-31 (20,94 USD) | 1 |
+| Fidelity Series Growth Company Fund | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-11-30 (379,88 USD) | 2026-02-28 (1 290,35 USD) | 2 |
+| Fidelity Series Growth Company Fund | NSCALE LIMITED SER B PC PP (EP) | 2026-05-31 (20,39 USD) | 2026-05-31 (20,39 USD) | 1 |
+| VIP Growth Opportunities Portfolio | NSCALE GLOBAL HOLDINGS LTD SER B PC PP (EP) | 2025-09-30 (379,88 USD) | 2026-03-31 (1 223,53 USD) | 3 |
+| VIP Growth Opportunities Portfolio | NSCALE LIMITED SER B PC PP (EP) | 2026-06-30 (21,38 USD) | 2026-06-30 (21,38 USD) | 1 |
+
+## OpenAI (LAB:OPENAI) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2024-06-30 | 2 M$ | 1 | 1 |
+| 2024-09-30 | 1 M$ | 1 | 1 |
+| 2024-12-31 | 276 M$ | 4 | 5 |
+| 2025-03-31 | 282 M$ | 4 | 5 |
+| 2025-06-30 | 461 M$ | 4 | 6 |
+| 2025-09-30 | 693 M$ | 4 | 6 |
+| 2025-12-31 | 1 577 M$ | 32 | 64 |
+| 2026-03-31 | 2 703 M$ | 48 | 91 |
+| 2026-06-30 | 4 345 M$ | 58 | 118 |
+| 2026-09-30 | 600 M$ (partiel) | 11 | 21 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| ARK Blockchain & Fintech Innovation ETF | OPENAI GROUP PBC SERIES C (EP) | 2026-04-30 (687,69 USD) | 2026-07-31 (678,11 USD) | 2 |
+| ARK Innovation ETF | OPENAI GROUP PBC SERIES C (EP) | 2026-04-30 (687,69 USD) | 2026-07-31 (678,11 USD) | 2 |
+| ARK Next Generation Internet ETF | OPENAI GROUP PBC SERIES C (EP) | 2026-04-30 (687,69 USD) | 2026-07-31 (678,11 USD) | 2 |
+| ARK Venture Fund | OpenAI Global, LLC (EC) | 2024-04-30 (150,00 USD) | 2026-01-30 (483,12 USD) | 8 |
+| ARK Venture Fund | OpenAI Group PBC (EC) | 2026-01-30 (483,12 USD) | 2026-07-31 (678,11 USD) | 3 |
+| ARK Venture Fund | OpenAI Group PBC, Series C (EC) | 2026-04-30 (687,69 USD) | 2026-07-31 (678,11 USD) | 2 |
+| Fidelity Advisor Equity Growth Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Advisor Growth Opportunities Fund | OPENAI GROUP PBC A PP (EC) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Advisor Growth Opportunities Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Advisor Growth Opportunities Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Advisor New Insights Fund | OPENAI GROUP PBC A PP (EC) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Advisor New Insights Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Advisor New Insights Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Advisor Series Equity Growth Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Advisor Series Growth Opportunities Fund | OPENAI GROUP PBC A PP (EC) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Advisor Series Growth Opportunities Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Advisor Series Growth Opportunities Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Balanced Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Balanced Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Balanced Fund | OPENAI GROUP PBC C PC PP (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| Fidelity Balanced K6 Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Balanced K6 Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Balanced K6 Fund | OPENAI GROUP PBC C PC PP (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | OPENAI GROUP PBC A PP (EC) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Blue Chip Growth Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Blue Chip Growth Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | OPENAI GROUP PBC A PP (EC) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Capital Appreciation Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Contrafund | OPENAI GROUP PBC A PP (EC) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Contrafund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Contrafund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Contrafund K6 | OPENAI GROUP PBC A PP (EC) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Contrafund K6 | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Contrafund K6 | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Equity Growth K6 Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Growth Company Fund | OPENAI GROUP PBC A PP (EC) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Growth Company Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Growth Company K6 Fund | OPENAI GROUP PBC A PP (EC) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Growth Company K6 Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Growth Discovery Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | OPENAI GROUP PBC A PP (EC) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Fidelity Series Growth Company Fund | OPENAI GROUP PBC A PP (EC) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Series Growth Company Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Fidelity Series Opportunistic Insights Fund | OPENAI GROUP PBC A PP (EC) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Series Opportunistic Insights Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Series Opportunistic Insights Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity Trend Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity U.S. Equity Central Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity U.S. Equity Central Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| Fidelity U.S. Equity Central Fund | OPENAI GROUP PBC C PC PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| Fidelity Worldwide Fund | OPENAI GROUP PBC A-3 PC PP (EP) | 2026-01-31 (477,48 USD) | 2026-07-31 (687,69 USD) | 3 |
+| Growth Fund | OPENAI GLOBAL LLC RTS 1:1 @ USD PP (DRS) (NOT LISTED OR TRADING) (EC) | 2024-12-31 (1,00 USD) | 2025-09-30 (2,50 USD) | 4 |
+| Growth Fund | OPENAI GROUP PBC CL A PP (DRS) (NOT LISTED OR TRADING) (EC) | 2025-12-31 (484,38 USD) | 2026-06-30 (736,50 USD) | 3 |
+| Growth Fund | OPENAI GROUP PBC CL A-2 CV PFD PP (DRS) (NOT LISTED OR TRADING) (EP) | 2025-12-31 (484,38 USD) | 2026-06-30 (736,50 USD) | 3 |
+| Growth Fund | OPENAI GROUP PBC CL C CV PFD PP (NOT LISTED OR TRADING) (EP) | 2026-06-30 (736,50 USD) | 2026-06-30 (736,50 USD) | 1 |
+| Growth Fund of America | OPENAI GLOBAL LLC RTS 1:1 @ USD PP (DRS) (NOT LISTED OR TRADING) (EC) | 2024-11-30 (1,00 USD) | 2025-08-31 (2,50 USD) | 4 |
+| Growth Fund of America | OPENAI GROUP PBC CL A (DRS) (NOT LISTED OR TRADING) (EC) | 2025-11-30 (483,56 USD) | 2025-11-30 (483,56 USD) | 1 |
+| Growth Fund of America | OPENAI GROUP PBC CL A PP (DRS) (NOT LISTED OR TRADING) (EC) | 2026-02-28 (653,30 USD) | 2026-05-31 (687,69 USD) | 2 |
+| Growth Fund of America | OPENAI GROUP PBC CL A-2 CV PFD (DRS) (NOT LISTED OR TRADING) (EP) | 2025-11-30 (483,56 USD) | 2025-11-30 (483,56 USD) | 1 |
+| Growth Fund of America | OPENAI GROUP PBC CL A-2 CV PFD PP (DRS) (NOT LISTED OR TRADING) (EP) | 2026-02-28 (653,30 USD) | 2026-05-31 (687,69 USD) | 2 |
+| Growth Fund of America | OPENAI GROUP PBC CL C CV PFD PP (NOT LISTED OR TRADING) (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| New Economy Fund | OPENAI GLOBAL LLC RTS 1:1 @ USD PP (DRS) (NOT LISTED OR TRADING) (EC) | 2024-11-30 (1,00 USD) | 2025-08-31 (2,50 USD) | 4 |
+| New Economy Fund | OPENAI GROUP PBC CL A (DRS) (NOT LISTED OR TRADING) (EC) | 2025-11-30 (483,56 USD) | 2025-11-30 (483,56 USD) | 1 |
+| New Economy Fund | OPENAI GROUP PBC CL A PP (DRS) (NOT LISTED OR TRADING) (EC) | 2026-02-28 (653,30 USD) | 2026-05-31 (687,69 USD) | 2 |
+| New Economy Fund | OPENAI GROUP PBC CL A-2 CV PFD (DRS) (NOT LISTED OR TRADING) (EP) | 2025-11-30 (483,56 USD) | 2025-11-30 (483,56 USD) | 1 |
+| New Economy Fund | OPENAI GROUP PBC CL A-2 CV PFD PP (DRS) (NOT LISTED OR TRADING) (EP) | 2026-02-28 (653,30 USD) | 2026-05-31 (687,69 USD) | 2 |
+| New Economy Fund | OPENAI GROUP PBC CL C CV PFD PP (NOT LISTED OR TRADING) (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| Robinhood Ventures Fund I | OpenAI Group PBC (Class A Common Stock) (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| Select Communication Services Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Select Communication Services Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Select Communication Services Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| Select Technology Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Select Technology Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
+| Select Technology Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| T. Rowe Price All-Cap Opportunities Fund | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price All-Cap Opportunities Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price All-Cap Opportunities Portfolio | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price All-Cap Opportunities Portfolio | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Balanced Fund, Inc. | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Balanced Fund, Inc. | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Blue Chip Growth Fund, Inc. | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Blue Chip Growth Fund, Inc. | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Blue Chip Growth Portfolio | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Blue Chip Growth Portfolio | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Capital Appreciation Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Communications & Technology Fund | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Communications & Technology Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Global Allocation Fund | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-07-31 (687,69 USD) | 2026-07-31 (687,69 USD) | 1 |
+| T. Rowe Price Global Allocation Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-04-30 (687,69 USD) | 2026-07-31 (687,69 USD) | 2 |
+| T. Rowe Price Global Stock Fund | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-07-31 (687,69 USD) | 2026-07-31 (687,69 USD) | 1 |
+| T. Rowe Price Global Stock Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-04-30 (687,69 USD) | 2026-07-31 (687,69 USD) | 2 |
+| T. Rowe Price Global Technology Fund, Inc. | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Growth Stock Fund, Inc. | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Growth Stock Fund, Inc. | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Institutional Large-Cap Core Growth Fund | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Institutional Large-Cap Core Growth Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Moderate Allocation Portfolio | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Moderate Allocation Portfolio | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Science & Technology Fund, Inc. | AESTAS LLC dba OPENAI LLC EV UNITS Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| T. Rowe Price Science & Technology Fund, Inc. | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| T. Rowe Price Spectrum Conservative Allocation Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| T. Rowe Price Spectrum Moderate Allocation Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| T. Rowe Price Spectrum Moderate Growth Allocation Fund | OpenAI Group PBC SER C CVT PFD PP (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| VIP Balanced Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Balanced Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Balanced Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| VIP Communication Services Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Communication Services Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| VIP Contrafund Portfolio | OPENAI GROUP PBC A PP (EC) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Contrafund Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Contrafund Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Dynamic Capital Appreciation Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Growth Opportunities Portfolio | OPENAI GROUP PBC A PP (EC) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Growth Opportunities Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Growth Opportunities Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Growth Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Stock Selector Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Stock Selector Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Stock Selector Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| VIP Technology Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Technology Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
+| VIP Technology Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+
+## PENDRELL CORP (CP:pendrell corp) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2021-12-31 | 2 M$ | 1 | 1 |
+| 2022-03-31 | 2 M$ | 1 | 1 |
+| 2022-06-30 | 2 M$ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| NexPoint Diversified Real Estate Trust | PENDRELL CORP COMMON STOCK (EC) | 2021-12-31 (270 500,00 USD) | 2022-06-30 (215 088,56 USD) | 3 |
+
+## PROSPER MARKETPLACE, INC (CP:prosper marketplace inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2022-06-30 | 320 877 $ | 1 | 3 |
+| 2022-09-30 | 180 656 $ | 1 | 1 |
+| 2022-12-31 | 178 215 $ | 1 | 1 |
+| 2023-03-31 | 112 300 $ | 1 | 1 |
+| 2023-06-30 | 126 948 $ | 1 | 1 |
+| 2023-09-30 | 100 093 $ | 1 | 1 |
+| 2023-12-31 | 112 300 $ | 1 | 1 |
+| 2024-03-31 | 68 356 $ | 1 | 1 |
+| 2024-06-30 | 78 122 $ | 1 | 1 |
+| 2024-09-30 | 58 591 $ | 1 | 1 |
+| 2024-12-31 | 107 417 $ | 1 | 1 |
+| 2025-03-31 | 87 887 $ | 1 | 1 |
+| 2025-06-30 | 97 652 $ | 1 | 1 |
+| 2025-09-30 | 102 535 $ | 1 | 1 |
+| 2025-12-31 | 80 563 $ | 1 | 1 |
+| 2026-03-31 | 92 769 $ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| The Private Shares Fund | PROSPER MARKETPLACE, INC. PROSPER MARKETPLACE   / (EC) | 2022-06-30 (0,78 USD) | 2026-03-31 (0,38 USD) | 16 |
+| The Private Shares Fund | PROSPER MARKETPLACE, INC.  PREF A PROSPER MKT PREF A   / (EP) | 2022-06-30 (1,15 USD) | 2022-06-30 (1,15 USD) | 1 |
+
+## SQUARESPACE, INC. (CP:squarespace inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2021-03-31 | 1 M$ | 2 | 2 |
+| 2021-06-30 | 22 M$ | 3 | 3 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Blue Chip Growth Fund | SQUARESPACE INC CLASS C PP (EC) | 2021-04-30 (68,42 USD) | 2021-04-30 (68,42 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | SQUARESPACE INC CLASS C PP (EC) | 2021-04-30 (68,42 USD) | 2021-04-30 (68,42 USD) | 1 |
+| Fidelity Flex Large Cap Growth Fund | SQUARESPACE INC CLASS C PP (EC) | 2021-04-30 (68,42 USD) | 2021-04-30 (68,42 USD) | 1 |
+| Great-West T. Rowe Price Mid Cap Growth Fund | COMMON STOCK CL.C (EC) | 2021-03-31 (68,42 USD) | 2021-03-31 (68,42 USD) | 1 |
+| VIP Balanced Portfolio | SQUARESPACE INC CLASS C PP (EC) | 2021-03-31 (68,42 USD) | 2021-03-31 (68,42 USD) | 1 |
+
+## Santander Bank, N.A. (CP:santander bank n a) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2025-12-31 | 25 M$ | 1 | 1 |
+| 2026-03-31 | 22 M$ | 1 | 1 |
+| 2026-06-30 | 18 M$ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Oaktree Asset-Backed Income Fund Inc. | SANTANDER BANK, N.A. (EC) | 2025-12-31 (1,01 USD) | 2026-06-30 (0,95 USD) | 3 |
+
+## Seer, Inc. (CP:seer inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-12-31 | 463 720 $ | 1 | 1 |
+| 2020-03-31 | 463 720 $ | 1 | 1 |
+| 2020-06-30 | 21 M$ | 5 | 6 |
+| 2020-09-30 | 22 M$ | 5 | 10 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Fidelity Growth Company Fund | PROGNOMIQ SER D-1 0% PC PP (EP) | 2020-08-31 (0,15 USD) | 2020-08-31 (0,15 USD) | 1 |
+| Fidelity Growth Company Fund | SEER INC SER D-1 0% PC PP (EP) | 2020-05-31 (3,75 USD) | 2020-08-31 (3,75 USD) | 2 |
+| Fidelity Growth Company K6 Fund | PROGNOMIQ SER D-1 0% PC PP (EP) | 2020-08-31 (0,15 USD) | 2020-08-31 (0,15 USD) | 1 |
+| Fidelity Growth Company K6 Fund | SEER INC SER D-1 0% PC PP (EP) | 2020-05-31 (3,75 USD) | 2020-08-31 (3,75 USD) | 2 |
+| Fidelity Series Growth Company Fund | PROGNOMIQ SER D-1 0% PC PP (EP) | 2020-08-31 (0,15 USD) | 2020-08-31 (0,15 USD) | 1 |
+| Fidelity Series Growth Company Fund | SEER INC SER D-1 0% PC PP (EP) | 2020-05-31 (3,75 USD) | 2020-08-31 (3,75 USD) | 2 |
+| Health Sciences Fund | SEER INC SERIES D 1 SERIES D 1 PP (EP) | 2020-05-31 (3,75 USD) | 2020-08-31 (3,75 USD) | 2 |
+| Health Sciences Fund | SEER INC. SERIES D PP (EP) | 2019-11-30 (3,25 USD) | 2020-08-31 (3,75 USD) | 4 |
+| Select Medical Technology and Devices Portfolio | PROGNOMIQ SER D-1 0% PC PP (EP) | 2020-08-31 (0,15 USD) | 2020-08-31 (0,15 USD) | 1 |
+| Select Medical Technology and Devices Portfolio | SEER INC SER D-1 0% PC PP (EP) | 2020-05-31 (3,75 USD) | 2020-08-31 (3,75 USD) | 2 |
+
+## SiFive, Inc. (CP:sifive inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2022-03-31 | 25 M$ | 1 | 1 |
+| 2022-06-30 | 25 M$ | 1 | 1 |
+| 2022-09-30 | 25 M$ | 1 | 1 |
+| 2022-12-31 | 27 M$ | 1 | 1 |
+| 2023-03-31 | 27 M$ | 1 | 1 |
+| 2023-06-30 | 26 M$ | 1 | 1 |
+| 2023-09-30 | 26 M$ | 1 | 1 |
+| 2023-12-31 | 26 M$ | 1 | 1 |
+| 2024-03-31 | 26 M$ | 1 | 1 |
+| 2024-06-30 | 28 M$ | 1 | 1 |
+| 2024-09-30 | 26 M$ | 1 | 1 |
+| 2024-12-31 | 27 M$ | 1 | 1 |
+| 2025-03-31 | 27 M$ | 1 | 1 |
+| 2025-06-30 | 23 M$ | 1 | 1 |
+| 2025-09-30 | 22 M$ | 1 | 1 |
+| 2025-12-31 | 29 M$ | 1 | 1 |
+| 2026-03-31 | 114 M$ | 5 | 6 |
+| 2026-06-30 | 132 M$ | 8 | 9 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| American Funds Fundamental Investors | SIFIVE INC CL G PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-03-31 (8,72 USD) | 2026-06-30 (9,51 USD) | 2 |
+| SMALLCAP World Fund Inc | SIFIVE INC CL G PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-03-31 (8,72 USD) | 2026-06-30 (9,51 USD) | 2 |
+| SMALLCAP World Fund Inc | SIFIVE INC PFD SER F PP (DRS)(NOT LISTED OR TRADING) (EP) | 2022-03-31 (7,24 USD) | 2026-06-30 (9,51 USD) | 18 |
+| T. Rowe Price Institutional Small-Cap Stock Fund | SIFIVE INC SER G CVT PFD PP (EP) | 2026-03-31 (8,72 USD) | 2026-06-30 (11,22 USD) | 2 |
+| T. Rowe Price Moderate Allocation Portfolio | SIFIVE INC SER G CVT PFD PP (EP) | 2026-03-31 (8,72 USD) | 2026-06-30 (11,22 USD) | 2 |
+| T. Rowe Price Small-Cap Stock Fund, Inc. | SIFIVE INC SER G CVT PFD PP (EP) | 2026-03-31 (8,72 USD) | 2026-06-30 (11,22 USD) | 2 |
+| T. Rowe Price Spectrum Conservative Allocation Fund | SIFIVE INC SER G CVT PFD PP (EP) | 2026-05-31 (8,72 USD) | 2026-05-31 (8,72 USD) | 1 |
+| T. Rowe Price Spectrum Moderate Allocation Fund | SIFIVE INC SER G CVT PFD PP (EP) | 2026-05-31 (8,72 USD) | 2026-05-31 (8,72 USD) | 1 |
+| T. Rowe Price Spectrum Moderate Growth Allocation Fund | SIFIVE INC SER G CVT PFD PP (EP) | 2026-05-31 (8,72 USD) | 2026-05-31 (8,72 USD) | 1 |
+
+## Silver Lake Partners V, L.P. (CP:silver lake partners v l p) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2024-12-31 | 602 637 $ | 1 | 1 |
+| 2025-03-31 | 576 174 $ | 1 | 1 |
+| 2025-06-30 | 612 231 $ | 1 | 1 |
+| 2025-09-30 | 621 034 $ | 1 | 1 |
+| 2025-12-31 | 537 436 $ | 1 | 1 |
+| 2026-03-31 | 563 827 $ | 1 | 1 |
+| 2026-06-30 | 626 394 $ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Partners Group Private Equity Fund, LLC | SILVER LAKE PARTNERS V, L.P. (EC) | 2024-12-31 (1,12 USD) | 2026-06-30 (1,35 USD) | 7 |
+
+## Snowflake Inc. (CP:snowflake inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-03-31 | 9 M$ | 10 | 10 |
+| 2020-06-30 | 20 M$ | 12 | 12 |
+| 2020-09-30 | 12 M$ | 2 | 2 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Destinations Large Cap Equity Fund | SNOWFLAKE INC PP 0.00000000 (EC) | 2020-05-31 (38,77 USD) | 2020-08-31 (38,77 USD) | 2 |
+| LVIP T. Rowe Price Growth Stock Fund | SNOWFLAKE INC. CLASS B TC8Q0SS64 (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| MassMutual Select T. Rowe Price Large Cap Blend Fund | CLASS B TC8Q0SS64 (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| New Economy Fund | SNOWFLAKE INC CL B PP (PHYSICAL) (EC) | 2020-05-31 (38,77 USD) | 2020-08-31 (38,77 USD) | 2 |
+| Penn Series Large Growth Stock Fund | SNOWFLAKE INC PP (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| SA T. Rowe Price Growth Stock Portfolio | SNOWFLAKE INC. CLASS B TC8Q0SS64 (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| T. Rowe Price Communications & Technology Fund, Inc. | SNOWFLAKE INC PP (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| T. Rowe Price Global Technology Fund, Inc. | SNOWFLAKE INC PP (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| T. Rowe Price Growth Stock Fund, Inc. | SNOWFLAKE INC PP (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| T. Rowe Price Large-Cap Growth Fund | SNOWFLAKE INC PP (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| T.Rowe Price Large Cap Growth Portfolio | SNOWFLAKE INC CLASS B COMMON STOCK, PRIVATE (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+| VY(R) T. ROWE PRICE GROWTH EQUITY PORTFOLIO | SNOWFLAKE INC PP (EC) | 2020-03-31 (38,77 USD) | 2020-06-30 (38,77 USD) | 2 |
+
+## SpaceX (SPCX) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-09-30 | 320 M$ (partiel) | 4 | 13 |
+| 2019-12-31 | 737 M$ | 14 | 40 |
+| 2020-03-31 | 717 M$ | 14 | 40 |
+| 2020-06-30 | 758 M$ | 14 | 40 |
+| 2020-09-30 | 1 116 M$ | 18 | 50 |
+| 2020-12-31 | 1 143 M$ | 20 | 54 |
+| 2021-03-31 | 1 669 M$ | 24 | 65 |
+| 2021-06-30 | 1 836 M$ | 29 | 72 |
+| 2021-09-30 | 1 836 M$ | 29 | 72 |
+| 2021-12-31 | 2 143 M$ | 29 | 72 |
+| 2022-03-31 | 2 448 M$ | 29 | 72 |
+| 2022-06-30 | 2 979 M$ | 29 | 71 |
+| 2022-09-30 | 3 169 M$ | 29 | 70 |
+| 2022-12-31 | 3 327 M$ | 29 | 70 |
+| 2023-03-31 | 3 507 M$ | 30 | 72 |
+| 2023-06-30 | 3 596 M$ | 30 | 72 |
+| 2023-09-30 | 3 824 M$ | 34 | 84 |
+| 2023-12-31 | 4 227 M$ | 35 | 93 |
+| 2024-03-31 | 4 607 M$ | 36 | 94 |
+| 2024-06-30 | 5 069 M$ | 37 | 98 |
+| 2024-09-30 | 5 439 M$ | 37 | 101 |
+| 2024-12-31 | 7 208 M$ | 36 | 97 |
+| 2025-03-31 | 8 744 M$ | 36 | 100 |
+| 2025-06-30 | 8 644 M$ | 36 | 99 |
+| 2025-09-30 | 10 061 M$ | 39 | 106 |
+| 2025-12-31 | 13 719 M$ | 38 | 92 |
+| 2026-03-31 | 23 667 M$ | 51 | 108 |
+| 2026-06-30 | 11 727 M$ | 24 | 42 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| ARK Venture Fund | Space Exploration Technologies Corp. (EC) | 2024-01-31 (97,00 USD) | 2026-04-30 (631,15 USD) | 10 |
+| BlackRock Global Allocation Fund, Inc. | Space Exploration Technologies Corp., Class A (EC) | 2025-07-31 (204,64 USD) | 2026-04-30 (526,59 USD) | 4 |
+| BlackRock Global Allocation Fund, Inc. | Space Exploration Technologies Corp., Class C (EC) | 2025-07-31 (204,64 USD) | 2026-04-30 (526,59 USD) | 4 |
+| BlackRock Global Allocation Portfolio | Space Exploration Technologies Corp. (EC) | 2023-09-30 (81,00 USD) | 2024-12-31 (170,31 USD) | 6 |
+| BlackRock Global Allocation Portfolio | Space Exploration Technologies Corp., Class A (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
+| BlackRock Global Allocation Portfolio | Space Exploration Technologies Corp., Class C (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
+| BlackRock Global Allocation V.I. Fund | Space Exploration Technologies Corp. (EC) | 2023-09-30 (81,00 USD) | 2024-12-31 (170,31 USD) | 6 |
+| BlackRock Global Allocation V.I. Fund | Space Exploration Technologies Corp., Class A (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
+| BlackRock Global Allocation V.I. Fund | Space Exploration Technologies Corp., Class C (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
+| BlackRock Strategic Income Opportunities Portfolio | Space Exploration Technologies Corp. (EC) | 2023-09-30 (81,00 USD) | 2024-12-31 (170,31 USD) | 6 |
+| BlackRock Strategic Income Opportunities Portfolio | Space Exploration Technologies Corp., Class A (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
+| BlackRock Strategic Income Opportunities Portfolio | Space Exploration Technologies Corp., Class C (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
+| BlackRock Total Return Fund | SPACE EXPLORATION TECHNOLOGIES CORP (EC) | 2024-09-30 (112,00 USD) | 2026-03-31 (526,59 USD) | 7 |
+| BlackRock Total Return Fund | X.AI HOLDINGS CORP SERIES C PREF E (EP) | 2026-03-31 (75,46 USD) | 2026-03-31 (75,46 USD) | 1 |
+| Destiny Tech100 Inc. | Space Exploration Technologies Corp. (EC) | 2023-12-31 (97,00 USD) | 2024-09-30 (113,34 USD) | 4 |
+| Destiny Tech100 Inc. | Space Exploration Technologies Corp., Class A and Class C (EC) | 2023-12-31 (93,66 USD) | 2024-09-30 (108,37 USD) | 4 |
+| Destiny Tech100 Inc. | Space Exploration Technologies Corp., Series B (EC) | 2023-12-31 (97,00 USD) | 2024-09-30 (113,34 USD) | 4 |
+| Fidelity Advisor Balanced Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-02-28 (419,99 USD) | 2023-02-28 (77,00 USD) | 9 |
+| Fidelity Advisor Balanced Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2024-08-31 (112,00 USD) | 6 |
+| Fidelity Advisor Diversified Stock Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| Fidelity Advisor Emerging Asia Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-04-30 (419,99 USD) | 2023-01-31 (77,00 USD) | 8 |
+| Fidelity Advisor Emerging Asia Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Advisor Equity Growth Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-02-28 (526,59 USD) | 2026-05-31 (105,32 USD) | 2 |
+| Fidelity Advisor Equity Growth Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2026-02-28 (526,59 USD) | 2026-02-28 (526,59 USD) | 1 |
+| Fidelity Advisor Growth Opportunities Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-02-28 (419,99 USD) | 2023-02-28 (77,00 USD) | 9 |
+| Fidelity Advisor Growth Opportunities Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-05-31 (105,32 USD) | 13 |
+| Fidelity Advisor Growth Opportunities Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2024-05-31 (97,00 USD) | 2026-02-28 (526,59 USD) | 8 |
+| Fidelity Advisor Growth Opportunities Fund | SPACE EXPLORATION TECH CORP SER I 0% PC PP (EP) | 2019-11-30 (214,00 USD) | 2026-05-31 (5 265,90 USD) | 27 |
+| Fidelity Advisor Growth Opportunities Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-08-31 (270,00 USD) | 2026-05-31 (5 265,90 USD) | 24 |
+| Fidelity Advisor New Insights Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-09-30 (214,00 USD) | 2022-12-31 (77,00 USD) | 14 |
+| Fidelity Advisor New Insights Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| Fidelity Advisor New Insights Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-09-30 (214,00 USD) | 2022-12-31 (77,00 USD) | 14 |
+| Fidelity Advisor New Insights Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-03-31 (77,00 USD) | 2025-09-30 (212,00 USD) | 11 |
+| Fidelity Advisor New Insights Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-09-30 (214,00 USD) | 2026-03-31 (5 265,90 USD) | 27 |
+| Fidelity Advisor New Insights Fund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-09-30 (214,00 USD) | 2026-03-31 (5 265,90 USD) | 27 |
+| Fidelity Advisor New Insights Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-09-30 (270,00 USD) | 2026-03-31 (5 265,90 USD) | 23 |
+| Fidelity Advisor Series Equity Growth Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-02-28 (526,59 USD) | 2026-05-31 (105,32 USD) | 2 |
+| Fidelity Advisor Series Equity Growth Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2026-02-28 (526,59 USD) | 2026-02-28 (526,59 USD) | 1 |
+| Fidelity Advisor Series Growth Opportunities Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-02-28 (419,99 USD) | 2023-02-28 (77,00 USD) | 9 |
+| Fidelity Advisor Series Growth Opportunities Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-05-31 (105,32 USD) | 13 |
+| Fidelity Advisor Series Growth Opportunities Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2024-08-31 (112,00 USD) | 2026-02-28 (526,59 USD) | 7 |
+| Fidelity Advisor Series Growth Opportunities Fund | SPACE EXPLORATION TECH CORP SER I 0% PC PP (EP) | 2019-11-30 (214,00 USD) | 2025-08-31 (2 120,00 USD) | 24 |
+| Fidelity Advisor Series Growth Opportunities Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-08-31 (270,00 USD) | 2025-08-31 (2 120,00 USD) | 21 |
+| Fidelity Balanced Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-02-28 (419,99 USD) | 2023-02-28 (77,00 USD) | 9 |
+| Fidelity Balanced Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-02-28 (526,59 USD) | 12 |
+| Fidelity Balanced Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2025-02-28 (185,00 USD) | 2026-02-28 (526,59 USD) | 5 |
+| Fidelity Balanced K6 Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-02-28 (419,99 USD) | 2023-02-28 (77,00 USD) | 9 |
+| Fidelity Balanced K6 Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-02-28 (526,59 USD) | 12 |
+| Fidelity Balanced K6 Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2025-02-28 (185,00 USD) | 2026-02-28 (526,59 USD) | 5 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-10-31 (214,00 USD) | 2026-04-30 (5 265,90 USD) | 27 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-10-31 (214,00 USD) | 2026-04-30 (5 265,90 USD) | 27 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER J PC PP (EP) | 2023-10-31 (810,00 USD) | 2026-04-30 (5 265,90 USD) | 11 |
+| Fidelity Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-10-31 (270,00 USD) | 2026-04-30 (5 265,90 USD) | 23 |
+| Fidelity Blue Chip Growth K6 Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-04-30 (419,99 USD) | 2023-01-31 (77,00 USD) | 8 |
+| Fidelity Blue Chip Growth K6 Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Blue Chip Growth K6 Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2023-01-31 (77,00 USD) | 2023-01-31 (77,00 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Blue Chip Growth K6 Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2023-10-31 (810,00 USD) | 2025-10-31 (2 120,00 USD) | 9 |
+| Fidelity Blue Chip Growth K6 Fund | SPACE EXPLORATION TECH CORP SER J PC PP (EP) | 2023-10-31 (810,00 USD) | 2025-10-31 (2 120,00 USD) | 9 |
+| Fidelity Blue Chip Growth K6 Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-10-31 (270,00 USD) | 2025-10-31 (2 120,00 USD) | 21 |
+| Fidelity Capital Appreciation Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-04-30 (526,59 USD) | 2026-04-30 (526,59 USD) | 1 |
+| Fidelity China Region Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-04-30 (419,99 USD) | 2023-01-31 (77,00 USD) | 8 |
+| Fidelity China Region Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Contrafund | SPACE EXPLORATION TECH CORP (EC) | 2019-09-30 (214,00 USD) | 2022-12-31 (77,00 USD) | 14 |
+| Fidelity Contrafund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| Fidelity Contrafund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-09-30 (214,00 USD) | 2022-12-31 (77,00 USD) | 14 |
+| Fidelity Contrafund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| Fidelity Contrafund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-09-30 (214,00 USD) | 2026-03-31 (5 265,90 USD) | 27 |
+| Fidelity Contrafund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-09-30 (214,00 USD) | 2026-03-31 (5 265,90 USD) | 27 |
+| Fidelity Contrafund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-09-30 (270,00 USD) | 2026-03-31 (5 265,90 USD) | 23 |
+| Fidelity Contrafund K6 | SPACE EXPLORATION TECH CORP (EC) | 2021-03-31 (419,99 USD) | 2022-12-31 (77,00 USD) | 8 |
+| Fidelity Contrafund K6 | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| Fidelity Contrafund K6 | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2024-06-30 (112,00 USD) | 2026-03-31 (526,59 USD) | 8 |
+| Fidelity Contrafund K6 | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2023-09-30 (810,00 USD) | 2025-09-30 (2 120,00 USD) | 9 |
+| Fidelity Contrafund K6 | SPACE EXPLORATION TECH CORP SER J PC PP (EP) | 2023-09-30 (810,00 USD) | 2025-09-30 (2 120,00 USD) | 9 |
+| Fidelity Contrafund K6 | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-09-30 (270,00 USD) | 2025-09-30 (2 120,00 USD) | 21 |
+| Fidelity Emerging Asia Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-04-30 (419,99 USD) | 2023-01-31 (77,00 USD) | 8 |
+| Fidelity Emerging Asia Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Equity Growth K6 Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-02-28 (526,59 USD) | 2026-05-31 (105,32 USD) | 2 |
+| Fidelity Equity Growth K6 Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2026-02-28 (526,59 USD) | 2026-02-28 (526,59 USD) | 1 |
+| Fidelity Flex Large Cap Growth Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-04-30 (419,99 USD) | 2022-04-30 (56,00 USD) | 5 |
+| Fidelity Flex Large Cap Growth Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-10-31 (270,00 USD) | 2022-04-30 (560,00 USD) | 7 |
+| Fidelity Flex Opportunistic Insights Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-03-31 (419,99 USD) | 2022-03-31 (56,00 USD) | 5 |
+| Fidelity Flex Opportunistic Insights Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-09-30 (270,00 USD) | 2022-03-31 (560,00 USD) | 7 |
+| Fidelity Growth Company Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-11-30 (214,00 USD) | 2023-02-28 (77,00 USD) | 14 |
+| Fidelity Growth Company Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-05-31 (105,32 USD) | 13 |
+| Fidelity Growth Company Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-11-30 (214,00 USD) | 2026-05-31 (5 265,90 USD) | 27 |
+| Fidelity Growth Company K6 Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-02-28 (419,99 USD) | 2023-02-28 (77,00 USD) | 9 |
+| Fidelity Growth Company K6 Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-05-31 (105,32 USD) | 13 |
+| Fidelity Growth Company K6 Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2024-05-31 (97,00 USD) | 2026-02-28 (526,59 USD) | 8 |
+| Fidelity Growth Company K6 Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2023-11-30 (810,00 USD) | 2026-05-31 (5 265,90 USD) | 11 |
+| Fidelity Growth Company K6 Fund | SPACE EXPLORATION TECH CORP SER J PC PP (EP) | 2023-11-30 (810,00 USD) | 2026-05-31 (5 265,90 USD) | 11 |
+| Fidelity Growth Company K6 Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-08-31 (270,00 USD) | 2026-05-31 (5 265,90 USD) | 24 |
+| Fidelity Growth Discovery Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| Fidelity Growth Discovery Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| Fidelity Japan Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-04-30 (419,99 USD) | 2023-01-31 (77,00 USD) | 8 |
+| Fidelity Japan Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Mid-Cap Stock Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity Mid-Cap Stock Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Mid-Cap Stock Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity Mid-Cap Stock Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-04-30 (77,00 USD) | 2024-07-31 (112,00 USD) | 6 |
+| Fidelity Mid-Cap Stock Fund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-10-31 (214,00 USD) | 2024-07-31 (1 120,00 USD) | 20 |
+| Fidelity New Millennium Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-11-30 (214,00 USD) | 2023-02-28 (77,00 USD) | 14 |
+| Fidelity New Millennium Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-05-31 (105,32 USD) | 13 |
+| Fidelity New Millennium Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-11-30 (214,00 USD) | 2023-02-28 (77,00 USD) | 14 |
+| Fidelity New Millennium Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-05-31 (77,00 USD) | 2025-02-28 (185,00 USD) | 8 |
+| Fidelity New Millennium Fund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-11-30 (214,00 USD) | 2025-02-28 (1 850,00 USD) | 22 |
+| Fidelity OTC K6 Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2024-10-31 (116,92 USD) | 2026-04-30 (526,59 USD) | 7 |
+| Fidelity OTC K6 Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2024-10-31 (116,92 USD) | 2026-04-30 (526,59 USD) | 7 |
+| Fidelity OTC Portfolio | SPACE EXPLORATION TECH CORP (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity OTC Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity OTC Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity OTC Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity OTC Portfolio | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-10-31 (214,00 USD) | 2025-10-31 (2 120,00 USD) | 25 |
+| Fidelity OTC Portfolio | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-10-31 (214,00 USD) | 2025-10-31 (2 120,00 USD) | 25 |
+| Fidelity Pacific Basin Fund | SPACE EXPLORATION TECH CORP (EC) | 2021-04-30 (419,99 USD) | 2023-01-31 (77,00 USD) | 8 |
+| Fidelity Pacific Basin Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Puritan Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-11-30 (214,00 USD) | 2023-02-28 (77,00 USD) | 14 |
+| Fidelity Puritan Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-02-28 (526,59 USD) | 12 |
+| Fidelity Puritan Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-11-30 (214,00 USD) | 2023-02-28 (77,00 USD) | 14 |
+| Fidelity Puritan Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-05-31 (77,00 USD) | 2026-02-28 (526,59 USD) | 12 |
+| Fidelity Puritan Fund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-11-30 (214,00 USD) | 2025-08-31 (2 120,00 USD) | 24 |
+| Fidelity Puritan K6 Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-02-28 (526,59 USD) | 2026-02-28 (526,59 USD) | 1 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-10-31 (214,00 USD) | 2023-01-31 (77,00 USD) | 14 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-04-30 (77,00 USD) | 2026-04-30 (526,59 USD) | 13 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-10-31 (214,00 USD) | 2025-07-31 (2 120,00 USD) | 24 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-10-31 (214,00 USD) | 2025-07-31 (2 120,00 USD) | 24 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER J PC PP (EP) | 2023-10-31 (810,00 USD) | 2025-07-31 (2 120,00 USD) | 8 |
+| Fidelity Series Blue Chip Growth Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-10-31 (270,00 USD) | 2025-07-31 (2 120,00 USD) | 20 |
+| Fidelity Series Growth Company Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-11-30 (214,00 USD) | 2023-02-28 (77,00 USD) | 14 |
+| Fidelity Series Growth Company Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-05-31 (77,00 USD) | 2026-05-31 (105,32 USD) | 13 |
+| Fidelity Series Growth Company Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-11-30 (214,00 USD) | 2026-05-31 (5 265,90 USD) | 27 |
+| Fidelity Series Opportunistic Insights Fund | SPACE EXPLORATION TECH CORP (EC) | 2019-09-30 (214,00 USD) | 2022-12-31 (77,00 USD) | 14 |
+| Fidelity Series Opportunistic Insights Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| Fidelity Series Opportunistic Insights Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C (EC) | 2019-09-30 (214,00 USD) | 2022-12-31 (77,00 USD) | 14 |
+| Fidelity Series Opportunistic Insights Fund | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| Fidelity Series Opportunistic Insights Fund | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2019-09-30 (214,00 USD) | 2026-03-31 (5 265,90 USD) | 27 |
+| Fidelity Series Opportunistic Insights Fund | SPACE EXPLORATION TECH CORP SER H PC PP (EP) | 2019-09-30 (214,00 USD) | 2026-03-31 (5 265,90 USD) | 27 |
+| Fidelity Series Opportunistic Insights Fund | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-09-30 (270,00 USD) | 2026-03-31 (5 265,90 USD) | 23 |
+| Fidelity Trend Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| Fidelity U.S. Equity Central Fund | SPACE EXPLORATION TECH CORP PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| Franklin Growth Opportunities Fund | Space Exploration Technologies Corp., Class A (EC) | 2022-07-31 (70,00 USD) | 2026-04-30 (526,59 USD) | 16 |
+| Master Total Return Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP (EC) | 2023-09-29 (81,00 USD) | 2024-06-28 (97,00 USD) | 4 |
+| Select Communication Services Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2025-08-31 (212,00 USD) | 2026-02-28 (526,59 USD) | 3 |
+| Select Communication Services Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2025-08-31 (212,00 USD) | 2026-02-28 (526,59 USD) | 3 |
+| Select Technology Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2026-02-28 (526,59 USD) | 2026-02-28 (526,59 USD) | 1 |
+| StepStone Private Venture and Growth Fund | Space Exploration Technologies Corp. (EC) | 2024-06-30 (112,00 USD) | 2026-03-31 (526,59 USD) | 8 |
+| StepStone Private Venture and Growth Fund | Space Exploration Technologies Corp. - 4 (EP) | 2025-09-30 (2 120,00 USD) | 2026-03-31 (1 280,34 USD) | 3 |
+| T. Rowe Price Global Growth Stock Fund | SPACEX SERIES K CVT PFD STOCK PP (EP) | 2023-01-31 (770,00 USD) | 2025-07-31 (1 850,00 USD) | 11 |
+| T. Rowe Price Science & Technology Fund, Inc. | X.AI CORP SER C CVT PFD PP (EP) | 2026-03-31 (75,46 USD) | 2026-03-31 (75,46 USD) | 1 |
+| T. Rowe Price Science & Technology Fund, Inc. | X.AI CORP SER E CVT PFD PP (EP) | 2026-03-31 (75,46 USD) | 2026-03-31 (75,46 USD) | 1 |
+| The Private Shares Fund | SPACE EXPLORATION TECHNOLOGIES CORP. COMMON SHARES   / (EC) | 2022-06-30 (70,00 USD) | 2026-03-31 (526,59 USD) | 16 |
+| VIP Balanced Portfolio | SPACE EXPLORATION TECH CORP (EC) | 2021-03-31 (419,99 USD) | 2022-12-31 (77,00 USD) | 8 |
+| VIP Balanced Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| VIP Balanced Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
+| VIP Communication Services Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2025-09-30 (212,00 USD) | 2026-03-31 (526,59 USD) | 3 |
+| VIP Communication Services Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2025-09-30 (212,00 USD) | 2026-03-31 (526,59 USD) | 3 |
+| VIP Contrafund Portfolio | SPACE EXPLORATION TECH CORP (EC) | 2021-03-31 (419,99 USD) | 2022-12-31 (77,00 USD) | 8 |
+| VIP Contrafund Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| VIP Contrafund Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2024-09-30 (112,00 USD) | 2026-03-31 (526,59 USD) | 7 |
+| VIP Contrafund Portfolio | SPACE EXPLORATION TECH CORP SER G PC PP (EP) | 2023-09-30 (810,00 USD) | 2026-03-31 (5 265,90 USD) | 11 |
+| VIP Contrafund Portfolio | SPACE EXPLORATION TECH CORP SER J PC PP (EP) | 2023-09-30 (810,00 USD) | 2026-03-31 (5 265,90 USD) | 11 |
+| VIP Contrafund Portfolio | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-09-30 (270,00 USD) | 2026-03-31 (5 265,90 USD) | 23 |
+| VIP Dynamic Capital Appreciation Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| VIP Growth Opportunities Portfolio | SPACE EXPLORATION TECH CORP (EC) | 2021-03-31 (419,99 USD) | 2022-12-31 (77,00 USD) | 8 |
+| VIP Growth Opportunities Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
+| VIP Growth Opportunities Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2024-09-30 (112,00 USD) | 2026-03-31 (526,59 USD) | 7 |
+| VIP Growth Opportunities Portfolio | SPACE EXPLORATION TECH CORP SER I 0% PC PP (EP) | 2019-09-30 (214,00 USD) | 2025-09-30 (2 120,00 USD) | 25 |
+| VIP Growth Opportunities Portfolio | SPACE EXPLORATION TECH CORP SER N PC PP (EP) | 2020-09-30 (270,00 USD) | 2025-09-30 (2 120,00 USD) | 21 |
+| VIP Growth Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| VIP Growth Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+| VIP Technology Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2026-03-31 (526,59 USD) | 2026-03-31 (526,59 USD) | 1 |
+
+## WEWORK INC. (CP:wework inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-09-30 | 3 M$ (partiel) | 2 | 4 |
+| 2024-06-30 | 21 M$ | 8 | 8 |
+| 2024-09-30 | 34 M$ | 9 | 9 |
+| 2024-12-31 | 37 M$ | 10 | 10 |
+| 2025-03-31 | 46 M$ | 10 | 10 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| American Funds Multi-Sector Income Fund | WEWORK INC (DRS) (NOT LISTED OR TRADING) (EC) | 2024-06-30 (10,02 USD) | 2025-03-31 (15,68 USD) | 4 |
+| American Funds Strategic Bond Fund | WEWORK INC (DRS) (NOT LISTED OR TRADING) (EC) | 2024-06-30 (10,02 USD) | 2025-03-31 (15,68 USD) | 4 |
+| American High Income Trust | WEWORK INC (DRS) (NOT LISTED OR TRADING) (EC) | 2024-06-30 (10,02 USD) | 2025-03-31 (15,68 USD) | 4 |
+| American High Income Trust | WEWORK INC (DRS) (NOT LISTED OR TRADING) (EC) | 2024-06-30 (10,02 USD) | 2025-03-31 (15,68 USD) | 4 |
+| BlackRock Credit Strategies Fund | WEWORK INC (EC) | 2024-06-30 (10,00 USD) | 2024-06-30 (10,00 USD) | 1 |
+| Capital Group U.S. Multi-Sector Income ETF | WEWORK INC (EC) | 2024-09-30 (12,83 USD) | 2025-03-31 (15,68 USD) | 3 |
+| Capital Group U.S. Multi-Sector Income ETF | WEWORK INC (EC) | 2024-06-30 (10,02 USD) | 2024-06-30 (10,02 USD) | 1 |
+| Capital World Bond Fund | WEWORK INC (DRS) (NOT LISTED OR TRADING) (EC) | 2024-06-30 (10,02 USD) | 2025-03-31 (15,68 USD) | 4 |
+| Capital World Bond Fund | WEWORK INC (DRS) (NOT LISTED OR TRADING) (EC) | 2024-06-30 (10,02 USD) | 2025-03-31 (15,68 USD) | 4 |
+| Goldman Sachs Multi-Manager Non-Core Fixed Income Fund | WeWork Inc (EC) | 2024-07-31 (11,79 USD) | 2025-01-31 (14,73 USD) | 3 |
+| Income Fund of America | WEWORK INC (DRS) (NOT LISTED OR TRADING) (EC) | 2024-07-31 (10,02 USD) | 2025-01-31 (16,42 USD) | 3 |
+| MML Mid Cap Growth Fund | CONVERTIBLE PRFD STK (EP) | 2019-09-30 (17,03 USD) | 2019-09-30 (17,03 USD) | 1 |
+| MML Mid Cap Growth Fund | CONVERTIBLE PRFD STK (PRIV PLC (EP) | 2019-09-30 (17,03 USD) | 2019-09-30 (17,03 USD) | 1 |
+| MassMutual Select Mid Cap Growth Fund | CONVERTIBLE PRFD STK (EP) | 2019-09-30 (17,03 USD) | 2019-09-30 (17,03 USD) | 1 |
+| MassMutual Select Mid Cap Growth Fund | CONVERTIBLE PRFD STK (PRIV PLC (EP) | 2019-09-30 (17,03 USD) | 2019-09-30 (17,03 USD) | 1 |
+| Simplify Opportunistic Income ETF | WeWork Inc (EC) | 2024-12-31 (17,50 USD) | 2025-03-31 (16,00 USD) | 2 |
+
+## Waymo LLC (CP:waymo llc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-06-30 | 490 M$ | 25 | 25 |
+| 2020-09-30 | 519 M$ | 34 | 34 |
+| 2020-12-31 | 519 M$ | 34 | 34 |
+| 2021-03-31 | 523 M$ | 36 | 36 |
+| 2021-06-30 | 577 M$ | 36 | 39 |
+| 2021-09-30 | 620 M$ | 36 | 44 |
+| 2021-12-31 | 620 M$ | 36 | 44 |
+| 2022-03-31 | 620 M$ | 36 | 44 |
+| 2022-06-30 | 620 M$ | 36 | 44 |
+| 2022-09-30 | 605 M$ | 35 | 43 |
+| 2022-12-31 | 189 M$ | 24 | 28 |
+| 2023-03-31 | 187 M$ | 24 | 28 |
+| 2023-06-30 | 179 M$ | 24 | 28 |
+| 2023-09-30 | 183 M$ | 24 | 28 |
+| 2023-12-31 | 191 M$ | 24 | 28 |
+| 2024-03-31 | 183 M$ | 24 | 28 |
+| 2024-06-30 | 187 M$ | 24 | 28 |
+| 2024-09-30 | 202 M$ | 24 | 28 |
+| 2024-12-31 | 295 M$ | 32 | 47 |
+| 2025-03-31 | 330 M$ | 31 | 46 |
+| 2025-06-30 | 329 M$ | 31 | 46 |
+| 2025-09-30 | 1 124 M$ | 38 | 57 |
+| 2025-12-31 | 1 560 M$ | 41 | 61 |
+| 2026-03-31 | 2 086 M$ | 52 | 81 |
+| 2026-06-30 | 2 366 M$ | 54 | 103 |
+| 2026-09-30 | 231 M$ (partiel) | 12 | 24 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| Destinations Large Cap Equity Fund | WAYMO LLC SER A-2 CVT PFD     /PREFERRED/ 0.00000000 (EP) | 2020-05-31 (85,87 USD) | 2025-05-31 (95,20 USD) | 21 |
+| Fidelity Advisor Diversified Stock Fund | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| Fidelity Advisor Diversified Stock Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| Fidelity Advisor Equity Growth Fund | WAYMO LLC CLASS B PP (EC) | 2026-05-31 (164,32 USD) | 2026-05-31 (164,32 USD) | 1 |
+| Fidelity Advisor Equity Growth Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Fidelity Advisor Growth Opportunities Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-08-31 (64,05 USD) | 2026-05-31 (168,73 USD) | 8 |
+| Fidelity Advisor Growth Opportunities Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-05-31 (85,87 USD) | 2024-05-31 (60,15 USD) | 17 |
+| Fidelity Advisor Growth Opportunities Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| Fidelity Advisor Series Equity Growth Fund | WAYMO LLC CLASS B PP (EC) | 2026-05-31 (164,32 USD) | 2026-05-31 (164,32 USD) | 1 |
+| Fidelity Advisor Series Equity Growth Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Fidelity Advisor Series Growth Opportunities Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-08-31 (64,05 USD) | 2026-05-31 (168,73 USD) | 8 |
+| Fidelity Advisor Series Growth Opportunities Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-05-31 (85,87 USD) | 2024-05-31 (60,15 USD) | 17 |
+| Fidelity Advisor Series Growth Opportunities Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| Fidelity Balanced Fund | WAYMO LLC CLASS B PP (EC) | 2026-05-31 (164,32 USD) | 2026-05-31 (164,32 USD) | 1 |
+| Fidelity Balanced Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| Fidelity Balanced Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Fidelity Balanced K6 Fund | WAYMO LLC CLASS B PP (EC) | 2026-05-31 (164,32 USD) | 2026-05-31 (164,32 USD) | 1 |
+| Fidelity Balanced K6 Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| Fidelity Balanced K6 Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Fidelity Blue Chip Growth Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-07-31 (61,99 USD) | 2026-07-31 (168,73 USD) | 9 |
+| Fidelity Blue Chip Growth Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-07-31 (85,87 USD) | 2024-04-30 (60,97 USD) | 16 |
+| Fidelity Blue Chip Growth Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-10-31 (78,01 USD) | 2026-07-31 (164,32 USD) | 8 |
+| Fidelity Blue Chip Growth K6 Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-07-31 (61,99 USD) | 2026-07-31 (168,73 USD) | 9 |
+| Fidelity Blue Chip Growth K6 Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-07-31 (85,87 USD) | 2024-04-30 (60,97 USD) | 16 |
+| Fidelity Blue Chip Growth K6 Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-10-31 (78,01 USD) | 2026-07-31 (164,32 USD) | 8 |
+| Fidelity Contrafund K6 | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| Fidelity Contrafund K6 | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| Fidelity Equity Growth K6 Fund | WAYMO LLC CLASS B PP (EC) | 2026-05-31 (164,32 USD) | 2026-05-31 (164,32 USD) | 1 |
+| Fidelity Equity Growth K6 Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Fidelity Flex Large Cap Growth Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-07-31 (85,87 USD) | 2022-04-30 (91,72 USD) | 8 |
+| Fidelity Founders Fund | WAYMO LLC CLASS B PP (EC) | 2026-04-30 (164,32 USD) | 2026-07-31 (164,32 USD) | 2 |
+| Fidelity Founders Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-04-30 (164,32 USD) | 2026-07-31 (164,32 USD) | 2 |
+| Fidelity Growth Company Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-08-31 (64,05 USD) | 2026-05-31 (168,73 USD) | 8 |
+| Fidelity Growth Company Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-05-31 (85,87 USD) | 2024-05-31 (60,15 USD) | 17 |
+| Fidelity Growth Company Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| Fidelity Growth Company K6 Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-08-31 (64,05 USD) | 2026-05-31 (168,73 USD) | 8 |
+| Fidelity Growth Company K6 Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-05-31 (85,87 USD) | 2024-05-31 (60,15 USD) | 17 |
+| Fidelity Growth Company K6 Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| Fidelity Growth Discovery Fund | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| Fidelity Growth Discovery Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| Fidelity OTC K6 Portfolio | WAYMO LLC CLASS B PP (EC) | 2026-04-30 (164,32 USD) | 2026-07-31 (164,32 USD) | 2 |
+| Fidelity OTC K6 Portfolio | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-07-31 (61,99 USD) | 2026-07-31 (168,73 USD) | 9 |
+| Fidelity OTC K6 Portfolio | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-07-31 (85,87 USD) | 2024-04-30 (60,97 USD) | 16 |
+| Fidelity OTC K6 Portfolio | WAYMO LLC SER B-2 PC PERP PP (EP) | 2024-07-31 (64,41 USD) | 2026-07-31 (170,22 USD) | 9 |
+| Fidelity OTC K6 Portfolio | WAYMO LLC SER B-2 PFD PP (EP) | 2021-07-31 (91,72 USD) | 2024-04-30 (63,14 USD) | 12 |
+| Fidelity OTC K6 Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-10-31 (78,01 USD) | 2026-07-31 (164,32 USD) | 8 |
+| Fidelity OTC K6 Portfolio | WAYMO LLC SER D-2 PC PP (EP) | 2026-04-30 (164,32 USD) | 2026-07-31 (164,32 USD) | 2 |
+| Fidelity OTC Portfolio | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-07-31 (61,99 USD) | 2026-07-31 (168,73 USD) | 9 |
+| Fidelity OTC Portfolio | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-07-31 (85,87 USD) | 2024-04-30 (60,97 USD) | 16 |
+| Fidelity OTC Portfolio | WAYMO LLC SER B-2 PC PERP PP (EP) | 2024-07-31 (64,41 USD) | 2026-07-31 (170,22 USD) | 9 |
+| Fidelity OTC Portfolio | WAYMO LLC SER B-2 PFD PP (EP) | 2021-07-31 (91,72 USD) | 2024-04-30 (63,14 USD) | 12 |
+| Fidelity OTC Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-10-31 (78,01 USD) | 2026-07-31 (164,32 USD) | 8 |
+| Fidelity Puritan Fund | WAYMO LLC CLASS B PP (EC) | 2026-05-31 (164,32 USD) | 2026-05-31 (164,32 USD) | 1 |
+| Fidelity Puritan Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Fidelity Puritan K6 Fund | WAYMO LLC CLASS B PP (EC) | 2026-05-31 (164,32 USD) | 2026-05-31 (164,32 USD) | 1 |
+| Fidelity Puritan K6 Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Fidelity Series Blue Chip Growth Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-07-31 (61,99 USD) | 2026-07-31 (168,73 USD) | 9 |
+| Fidelity Series Blue Chip Growth Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-07-31 (85,87 USD) | 2024-04-30 (60,97 USD) | 16 |
+| Fidelity Series Blue Chip Growth Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-10-31 (78,01 USD) | 2026-07-31 (164,32 USD) | 8 |
+| Fidelity Series Growth Company Fund | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-08-31 (64,05 USD) | 2026-05-31 (168,73 USD) | 8 |
+| Fidelity Series Growth Company Fund | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-05-31 (85,87 USD) | 2024-05-31 (60,15 USD) | 17 |
+| Fidelity Series Growth Company Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| Fidelity Series Opportunistic Insights Fund | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| Fidelity Series Opportunistic Insights Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| Fidelity U.S. Equity Central Fund | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| Fidelity U.S. Equity Central Fund | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-12-31 (77,63 USD) | 2026-06-30 (164,32 USD) | 7 |
+| Fidelity U.S. Equity Central Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| Fidelity Worldwide Fund | WAYMO LLC CLASS B PP (EC) | 2026-04-30 (164,32 USD) | 2026-07-31 (164,32 USD) | 2 |
+| Fidelity Worldwide Fund | WAYMO LLC SER D-2 PC PP (EP) | 2026-04-30 (164,32 USD) | 2026-07-31 (164,32 USD) | 2 |
+| Growth Fund of America | WAYMO LLC CL D-2 PFD PP (DRS) (NOT LISTED OR TRADING) (EP) | 2026-02-28 (164,32 USD) | 2026-05-31 (164,32 USD) | 2 |
+| Growth Fund of America | WAYMO LLC PFD SER A-2 8.00% NON-CUM PP (DRS) (NOT LISTED OR TRADING) (EP) | 2023-08-31 (86,98 USD) | 2026-05-31 (168,73 USD) | 12 |
+| Growth Fund of America | WAYMO LLC PFD SER A-2 PP 8.00% NON-CUM (DRS) (NOT LISTED OR TRADING) (EP) | 2020-11-30 (85,87 USD) | 2023-05-31 (91,72 USD) | 11 |
+| Growth Fund of America | WAYMO LLC PFD SER A-2 PP 8.00% NON-CUM (NOT LISTED OR TRADING) (EP) | 2020-05-31 (85,87 USD) | 2020-08-31 (85,87 USD) | 2 |
+| Growth Fund of America | WAYMO LLC PFD SER B-2 NON-CUM PP (DRS) (NOT LISTED OR TRADING) (EP) | 2023-08-31 (86,98 USD) | 2026-05-31 (170,22 USD) | 12 |
+| Growth Fund of America | WAYMO LLC PFD SER B-2 PP (DRS)(NOT LISTED OR TRADING) (EP) | 2021-08-31 (91,72 USD) | 2023-05-31 (91,72 USD) | 8 |
+| LVIP AllianceBernstein Large Cap Growth Fund | WAYMO LLC (EP) | 2021-09-30 (91,72 USD) | 2026-06-30 (196,07 USD) | 20 |
+| LVIP T. Rowe Price Growth Stock Fund | WAYMO LLC SERIES A 2 CVT PFD UNITS (EP) | 2020-06-30 (85,87 USD) | 2021-06-30 (91,72 USD) | 5 |
+| LargeCap Growth Account I | Waymo LLC Series A-2 (EP) | 2021-03-31 (85,87 USD) | 2026-06-30 (196,07 USD) | 22 |
+| LargeCap Growth Fund I | Waymo LLC Series A-2 (EP) | 2021-01-31 (85,87 USD) | 2026-07-31 (196,07 USD) | 23 |
+| MassMutual Select T. Rowe Price Large Cap Blend Fund | SERIES A 2 CVT PFD UNITS (EP) | 2020-06-30 (85,87 USD) | 2024-12-31 (80,30 USD) | 19 |
+| Penn Series Flexibly Managed Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 25 |
+| Penn Series Large Growth Stock Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 25 |
+| SA MFS Large Cap Growth Portfolio | WAYMO LLC (EP) | 2025-04-30 (69,34 USD) | 2026-07-31 (166,48 USD) | 6 |
+| SA T. Rowe Price Growth Stock Portfolio | WAYMO LLC (EP) | 2021-09-30 (91,72 USD) | 2025-03-31 (85,48 USD) | 15 |
+| SA T. Rowe Price Growth Stock Portfolio | WAYMO LLC SERIES A 2 CVT PFD UNITS (EP) | 2020-06-30 (85,87 USD) | 2021-06-30 (91,72 USD) | 5 |
+| Science & Technology Fund | WAYMO LLC (EP) | 2021-08-31 (91,72 USD) | 2026-05-31 (168,73 USD) | 20 |
+| Science & Technology Fund | WAYMO LLC SER B 2 CVT (EP) | 2021-08-31 (91,72 USD) | 2026-05-31 (170,22 USD) | 20 |
+| Science & Technology Fund | WAYMO LLC SERIES A 2 CVT PFD UNITS (EP) | 2020-05-31 (85,87 USD) | 2021-05-31 (91,72 USD) | 5 |
+| Select Communication Services Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-11-30 (77,75 USD) | 2026-05-31 (164,32 USD) | 7 |
+| T. Rowe Price All-Cap Opportunities Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price All-Cap Opportunities Portfolio | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price Capital Appreciation Fund | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2025-09-30 (106,89 USD) | 2026-06-30 (197,80 USD) | 4 |
+| T. Rowe Price Capital Appreciation Fund | WAYMO LLC SER C-2 CVT PFD UNITS PP (EP) | 2025-09-30 (103,19 USD) | 2026-06-30 (190,94 USD) | 4 |
+| T. Rowe Price Capital Appreciation Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price Capital Appreciation Fund | WAYMO LLC SER D-2 CVT PFD UNITS PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (190,94 USD) | 2 |
+| T. Rowe Price Capital Appreciation Fund, Inc. | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2021-06-30 (91,72 USD) | 2022-09-30 (91,72 USD) | 6 |
+| T. Rowe Price Capital Appreciation and Income Fund | WAYMO LLC SER D-2 CVT PFD UNITS PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (190,94 USD) | 2 |
+| T. Rowe Price Communications & Technology Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price Communications & Technology Fund | WAYMO LLC SER D-2 CVT PFD UNITS PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (190,94 USD) | 2 |
+| T. Rowe Price Global Allocation Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-07-31 (85,87 USD) | 2026-07-31 (196,07 USD) | 13 |
+| T. Rowe Price Global Growth Stock Fund | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2025-10-31 (156,53 USD) | 2026-07-31 (197,80 USD) | 4 |
+| T. Rowe Price Global Growth Stock Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-07-31 (85,87 USD) | 2026-07-31 (196,07 USD) | 13 |
+| T. Rowe Price Global Growth Stock Fund | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2021-07-30 (91,72 USD) | 2022-07-29 (91,72 USD) | 5 |
+| T. Rowe Price Global Stock Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-07-31 (85,87 USD) | 2026-07-31 (196,07 USD) | 13 |
+| T. Rowe Price Global Technology Fund, Inc. | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price Growth Stock Fund, Inc. | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price Large-Cap Growth Fund | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2025-09-30 (106,89 USD) | 2026-06-30 (197,80 USD) | 4 |
+| T. Rowe Price Large-Cap Growth Fund | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price Large-Cap Growth Fund | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2021-06-30 (91,72 USD) | 2022-09-30 (91,72 USD) | 6 |
+| T. Rowe Price Science & Technology Fund, Inc. | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2025-09-30 (106,89 USD) | 2026-06-30 (197,80 USD) | 4 |
+| T. Rowe Price Science & Technology Fund, Inc. | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 14 |
+| T. Rowe Price Science & Technology Fund, Inc. | WAYMO LLC SER B-2 CVT PFD UNITS PP (EP) | 2021-06-30 (91,72 USD) | 2022-09-30 (91,72 USD) | 6 |
+| T.Rowe Price Large Cap Growth Portfolio | WAYMO LLC (EP) | 2021-09-30 (91,72 USD) | 2026-06-30 (196,07 USD) | 20 |
+| T.Rowe Price Large Cap Growth Portfolio | WAYMO LLC SERIES A 2 CVT PFD UNITS (EP) | 2020-06-30 (85,87 USD) | 2021-06-30 (91,72 USD) | 5 |
+| VIP Balanced Portfolio | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| VIP Balanced Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-12-31 (77,63 USD) | 2026-06-30 (164,32 USD) | 7 |
+| VIP Balanced Portfolio | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| VIP Communication Services Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-12-31 (77,63 USD) | 2026-06-30 (164,32 USD) | 7 |
+| VIP Contrafund Portfolio | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| VIP Contrafund Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-12-31 (77,63 USD) | 2026-06-30 (164,32 USD) | 7 |
+| VIP Contrafund Portfolio | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| VIP Growth Opportunities Portfolio | WAYMO LLC SER A2 0% PC PERP P/P (EP) | 2024-06-30 (57,94 USD) | 2026-06-30 (168,73 USD) | 9 |
+| VIP Growth Opportunities Portfolio | WAYMO LLC SER A2 0% PFD PERP P/P (EP) | 2020-06-30 (85,87 USD) | 2024-03-31 (59,70 USD) | 16 |
+| VIP Growth Opportunities Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-12-31 (77,63 USD) | 2026-06-30 (164,32 USD) | 7 |
+| VIP Growth Portfolio | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| VIP Growth Portfolio | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| VIP Stock Selector Portfolio | WAYMO LLC CLASS B PP (EC) | 2026-06-30 (164,32 USD) | 2026-06-30 (164,32 USD) | 1 |
+| VIP Stock Selector Portfolio | WAYMO LLC SER C-2 PC PERP PP (EP) | 2024-12-31 (77,63 USD) | 2026-06-30 (164,32 USD) | 7 |
+| VIP Stock Selector Portfolio | WAYMO LLC SER D-2 PC PP (EP) | 2026-03-31 (164,32 USD) | 2026-06-30 (164,32 USD) | 2 |
+| VY(R) T. ROWE PRICE CAPITAL APPRECIATION PORTFOLIO | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2026-06-30 (196,07 USD) | 25 |
+| VY(R) T. ROWE PRICE GROWTH EQUITY PORTFOLIO | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2020-06-30 (85,87 USD) | 2025-09-30 (105,95 USD) | 22 |
+| Voya Large Cap Growth Portfolio | WAYMO LLC SER A-2 CVT PFD UNITS PP (EP) | 2025-12-31 (155,16 USD) | 2026-06-30 (196,07 USD) | 3 |
+
+## X Holdings Corp. (CP:x holdings corp) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2023-03-31 | 32 M$ | 7 | 7 |
+| 2023-06-30 | 79 M$ | 17 | 17 |
+| 2023-09-30 | 85 M$ | 17 | 17 |
+| 2023-12-31 | 87 M$ | 19 | 19 |
+| 2024-03-31 | 78 M$ | 19 | 19 |
+| 2024-06-30 | 81 M$ | 19 | 19 |
+| 2024-09-30 | 71 M$ | 19 | 19 |
+| 2024-12-31 | 82 M$ | 19 | 19 |
+| 2025-03-31 | 209 M$ | 19 | 19 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| BARON OPPORTUNITY FUND | X HOLDINGS CORP (EC) | 2023-12-31 (27,32 USD) | 2025-03-31 (101,50 USD) | 6 |
+| Baron Partners Fund | X HOLDINGS CORP (EC) | 2023-12-31 (27,32 USD) | 2025-03-31 (101,50 USD) | 6 |
+| Fidelity Advisor Diversified Stock Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-03-31 (36,54 USD) | 2025-03-31 (101,50 USD) | 9 |
+| Fidelity Advisor New Insights Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-03-31 (36,54 USD) | 2025-03-31 (101,50 USD) | 9 |
+| Fidelity Blue Chip Growth Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-04-30 (33,34 USD) | 2025-01-31 (31,56 USD) | 8 |
+| Fidelity Blue Chip Growth K6 Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-04-30 (33,34 USD) | 2025-01-31 (31,56 USD) | 8 |
+| Fidelity Contrafund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-03-31 (36,54 USD) | 2025-03-31 (101,50 USD) | 9 |
+| Fidelity Contrafund K6 | X HOLDINGS CORP CLASS A P/P (EC) | 2023-03-31 (36,54 USD) | 2025-03-31 (101,50 USD) | 9 |
+| Fidelity Growth Company Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-05-31 (34,94 USD) | 2025-02-28 (67,63 USD) | 8 |
+| Fidelity Growth Company K6 Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-05-31 (34,94 USD) | 2025-02-28 (67,63 USD) | 8 |
+| Fidelity OTC K6 Portfolio | X HOLDINGS CORP CLASS A P/P (EC) | 2023-04-30 (33,34 USD) | 2025-01-31 (31,56 USD) | 8 |
+| Fidelity OTC Portfolio | X HOLDINGS CORP CLASS A P/P (EC) | 2023-04-30 (33,34 USD) | 2025-01-31 (31,56 USD) | 8 |
+| Fidelity Puritan Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-05-31 (34,94 USD) | 2025-02-28 (67,63 USD) | 8 |
+| Fidelity Puritan K6 Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-05-31 (34,94 USD) | 2025-02-28 (67,63 USD) | 8 |
+| Fidelity Series Growth Company Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-05-31 (34,94 USD) | 2025-02-28 (67,63 USD) | 8 |
+| Fidelity Series Opportunistic Insights Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-03-31 (36,54 USD) | 2025-03-31 (101,50 USD) | 9 |
+| Fidelity U.S. Equity Central Fund | X HOLDINGS CORP CLASS A P/P (EC) | 2023-03-31 (36,54 USD) | 2025-03-31 (101,50 USD) | 9 |
+| Select Communication Services Portfolio | X HOLDINGS CORP CLASS A P/P (EC) | 2023-05-31 (34,94 USD) | 2025-02-28 (67,63 USD) | 8 |
+| VIP Contrafund Portfolio | X HOLDINGS CORP CLASS A P/P (EC) | 2023-03-31 (36,54 USD) | 2025-03-31 (101,50 USD) | 9 |
+
+## X.AI Corp. (CP:x ai corp) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2024-06-30 | 129 M$ | 9 | 9 |
+| 2024-09-30 | 193 M$ | 13 | 13 |
+| 2024-12-31 | 641 M$ | 35 | 41 |
+| 2025-03-31 | 825 M$ | 37 | 46 |
+| 2025-06-30 | 17 M$ | 1 | 2 |
+| 2025-09-30 | 8 M$ | 1 | 1 |
+| 2025-12-31 | 10 M$ | 1 | 1 |
+| 2026-03-31 | 7 M$ | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| ARK Venture Fund | X.AI CORP. (EC) | 2024-07-31 (11,97 USD) | 2025-01-31 (21,65 USD) | 3 |
+| BARON ASSET FUND | X.AI, CORP. (EP) | 2024-06-30 (11,97 USD) | 2025-03-31 (36,56 USD) | 4 |
+| BARON FIFTH AVENUE GROWTH FUND | X.AI, CORP. (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (36,56 USD) | 2 |
+| BARON OPPORTUNITY FUND | X.AI, CORP. (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (36,56 USD) | 2 |
+| Baron Focused Growth Fund | X.AI, CORP. (EP) | 2024-06-30 (11,97 USD) | 2025-03-31 (36,56 USD) | 4 |
+| BlackRock Global Allocation Fund, Inc. | XAI CORP (EP) | 2025-01-31 (21,65 USD) | 2025-01-31 (21,65 USD) | 1 |
+| BlackRock Global Allocation Portfolio | xAI Corp. (EC) | 2024-12-31 (21,65 USD) | 2024-12-31 (21,65 USD) | 1 |
+| BlackRock Global Allocation Portfolio | xAI Corp., Series C (EP) | 2025-03-31 (21,65 USD) | 2025-03-31 (21,65 USD) | 1 |
+| BlackRock Global Allocation V.I. Fund | xAI Corp. (EC) | 2024-12-31 (21,65 USD) | 2024-12-31 (21,65 USD) | 1 |
+| BlackRock Global Allocation V.I. Fund | xAI Corp., Series C (EP) | 2025-03-31 (21,65 USD) | 2025-03-31 (21,65 USD) | 1 |
+| BlackRock Strategic Global Bond Fund, Inc. | XAI CORP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (21,65 USD) | 2 |
+| BlackRock Strategic Income Opportunities Portfolio | xAI Corp. (EC) | 2024-12-31 (21,65 USD) | 2024-12-31 (21,65 USD) | 1 |
+| BlackRock Strategic Income Opportunities Portfolio | xAI Corp., Series C (EP) | 2025-03-31 (21,65 USD) | 2025-03-31 (21,65 USD) | 1 |
+| BlackRock Total Return Fund | xAI Corp (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (21,65 USD) | 2 |
+| Fidelity Advisor Equity Growth Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Advisor Growth Opportunities Fund | xAI Corp SER B PC PP (EP) | 2024-05-31 (11,97 USD) | 2025-02-28 (21,65 USD) | 4 |
+| Fidelity Advisor Growth Opportunities Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Advisor New Insights Fund | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| Fidelity Advisor Series Equity Growth Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Advisor Series Growth Opportunities Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Advisor Technology Fund | xAI Corp SER C PC PP (EP) | 2025-01-31 (21,65 USD) | 2025-01-31 (21,65 USD) | 1 |
+| Fidelity Blue Chip Growth Fund | xAI Corp SER B PC PP (EP) | 2024-07-31 (11,97 USD) | 2025-01-31 (21,65 USD) | 3 |
+| Fidelity Blue Chip Growth Fund | xAI Corp SER C PC PP (EP) | 2025-01-31 (21,65 USD) | 2025-01-31 (21,65 USD) | 1 |
+| Fidelity Blue Chip Growth K6 Fund | xAI Corp SER B PC PP (EP) | 2024-07-31 (11,97 USD) | 2025-01-31 (21,65 USD) | 3 |
+| Fidelity Blue Chip Growth K6 Fund | xAI Corp SER C PC PP (EP) | 2025-01-31 (21,65 USD) | 2025-01-31 (21,65 USD) | 1 |
+| Fidelity Capital Appreciation Fund | xAI Corp SER C PC PP (EP) | 2025-01-31 (21,65 USD) | 2025-01-31 (21,65 USD) | 1 |
+| Fidelity Contrafund | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| Fidelity Contrafund K6 | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| Fidelity Equity Growth K6 Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Growth Company Fund | xAI Corp SER B PC PP (EP) | 2024-05-31 (11,97 USD) | 2025-02-28 (21,65 USD) | 4 |
+| Fidelity Growth Company Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Growth Company K6 Fund | xAI Corp SER B PC PP (EP) | 2024-05-31 (11,97 USD) | 2025-02-28 (21,65 USD) | 4 |
+| Fidelity Growth Company K6 Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Growth Discovery Fund | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| Fidelity Series Blue Chip Growth Fund | xAI Corp SER B PC PP (EP) | 2024-07-31 (11,97 USD) | 2025-01-31 (21,65 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | xAI Corp SER C PC PP (EP) | 2025-01-31 (21,65 USD) | 2025-01-31 (21,65 USD) | 1 |
+| Fidelity Series Growth Company Fund | xAI Corp SER B PC PP (EP) | 2024-05-31 (11,97 USD) | 2025-02-28 (21,65 USD) | 4 |
+| Fidelity Series Growth Company Fund | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| Fidelity Series Opportunistic Insights Fund | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| Fidelity Trend Fund | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| Select Technology Portfolio | xAI Corp SER C PC PP (EP) | 2024-11-30 (21,65 USD) | 2025-02-28 (21,65 USD) | 2 |
+| StepStone Private Venture and Growth Fund | X.AI CORP. (EP) | 2024-06-30 (11,97 USD) | 2024-12-31 (21,65 USD) | 3 |
+| T. Rowe Price Global Stock Fund | X.AI CORP SER E CVT PFD PP (EP) | 2026-01-31 (75,46 USD) | 2026-01-31 (75,46 USD) | 1 |
+| T. Rowe Price Science & Technology Fund, Inc. | X.AI CORP SER C CVT PFD PP (EP) | 2025-09-30 (36,56 USD) | 2025-09-30 (36,56 USD) | 1 |
+| T. Rowe Price Science & Technology Fund, Inc. | X.AI CORP SER E CVT PFD PP (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| The Private Shares Fund | X.AI, CORP. PERFERRED SERIES C   / (EP) | 2024-06-30 (11,97 USD) | 2025-06-30 (36,56 USD) | 5 |
+| VIP Contrafund Portfolio | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| VIP Dynamic Capital Appreciation Portfolio | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| VIP Growth Opportunities Portfolio | xAI Corp SER B PC PP (EP) | 2024-06-30 (11,97 USD) | 2025-03-31 (30,15 USD) | 4 |
+| VIP Growth Opportunities Portfolio | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| VIP Growth Portfolio | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+| VIP Technology Portfolio | xAI Corp SER C PC PP (EP) | 2024-12-31 (21,65 USD) | 2025-03-31 (30,15 USD) | 2 |
+
+## X.AI Holdings Corp. (CP:x ai holdings corp) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2025-03-31 | 29 M$ | 1 | 1 |
+| 2025-06-30 | 1 352 M$ | 42 | 61 |
+| 2025-09-30 | 1 330 M$ | 39 | 62 |
+| 2025-12-31 | 2 456 M$ | 42 | 72 |
+| 2026-03-31 | 751 M$ | 7 | 15 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| ARK Venture Fund | X.AI Holdings Corp. (EC) | 2025-04-30 (36,56 USD) | 2026-01-30 (75,46 USD) | 4 |
+| BARON ASSET FUND | X.AI, HOLDINGS CORP. CLASS B (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| BARON FIFTH AVENUE GROWTH FUND | X.AI HOLDINGS CORP. (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| BARON FIFTH AVENUE GROWTH FUND | X.AI HOLDINGS CORP., CLASS C (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| BARON OPPORTUNITY FUND | X.AI HOLDINGS CORP. (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| BARON OPPORTUNITY FUND | X.AI HOLDINGS CORP., CLASS C (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Baron First Principles ETF | X.AI HOLDINGS CORP. (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| Baron Focused Growth Fund | X.AI, HOLDINGS CORP. CLASS B (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Baron Partners Fund | X.AI HOLDINGS CORP. (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| BlackRock Global Allocation Portfolio | x.AI, Inc., Series C, Class E (EC) | 2025-06-30 (33,17 USD) | 2025-06-30 (33,17 USD) | 1 |
+| BlackRock Global Allocation V.I. Fund | x.AI, Inc., Series C, Class E (EC) | 2025-06-30 (33,17 USD) | 2025-06-30 (33,17 USD) | 1 |
+| BlackRock Strategic Income Opportunities Portfolio | x.AI, Inc., Series C, Class E (EC) | 2025-06-30 (33,17 USD) | 2025-06-30 (33,17 USD) | 1 |
+| BlackRock Total Return Fund | X.AI HOLDINGS CORP SERIES C PREF E (EP) | 2025-06-30 (33,17 USD) | 2025-12-31 (66,80 USD) | 3 |
+| Fidelity Advisor Diversified Stock Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Advisor Equity Growth Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Advisor Growth Opportunities Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-08-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 2 |
+| Fidelity Advisor Growth Opportunities Fund | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Advisor Growth Opportunities Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Advisor New Insights Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Advisor New Insights Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Advisor New Insights Fund | X.AI HOLDINGS CORP SER E PC PP (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| Fidelity Advisor Series Equity Growth Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Advisor Series Growth Opportunities Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-08-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 2 |
+| Fidelity Advisor Series Growth Opportunities Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Advisor Technology Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-04-30 (36,56 USD) | 2025-10-31 (36,56 USD) | 3 |
+| Fidelity Blue Chip Growth Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Blue Chip Growth Fund | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Blue Chip Growth Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Blue Chip Growth K6 Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Blue Chip Growth K6 Fund | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Blue Chip Growth K6 Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Capital Appreciation Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Contrafund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Contrafund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Contrafund | X.AI HOLDINGS CORP SER E PC PP (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| Fidelity Contrafund K6 | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Contrafund K6 | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Contrafund K6 | X.AI HOLDINGS CORP SER E PC PP (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| Fidelity Equity Growth K6 Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Growth Company Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Growth Company Fund | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Growth Company Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Growth Company K6 Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Growth Company K6 Fund | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Growth Company K6 Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Growth Discovery Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity OTC K6 Portfolio | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity OTC Portfolio | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Puritan Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Puritan K6 Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-07-31 (36,56 USD) | 2026-01-31 (75,46 USD) | 3 |
+| Fidelity Series Blue Chip Growth Fund | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Series Blue Chip Growth Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-04-30 (36,56 USD) | 2026-01-31 (75,46 USD) | 4 |
+| Fidelity Series Growth Company Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Series Growth Company Fund | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Series Growth Company Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Fidelity Series Opportunistic Insights Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Series Opportunistic Insights Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity Series Opportunistic Insights Fund | X.AI HOLDINGS CORP SER E PC PP (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| Fidelity Trend Fund | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Fidelity U.S. Equity Central Fund | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| Select Communication Services Portfolio | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| Select Technology Portfolio | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-05-31 (36,56 USD) | 2025-11-30 (65,19 USD) | 3 |
+| StepStone Private Venture and Growth Fund | X.AI Holdings Corp. (EP) | 2025-03-31 (36,56 USD) | 2025-12-31 (75,46 USD) | 4 |
+| T. Rowe Price Science & Technology Fund, Inc. | X.AI CORP SER C CVT PFD PP (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| VIP Contrafund Portfolio | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| VIP Contrafund Portfolio | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| VIP Contrafund Portfolio | X.AI HOLDINGS CORP SER E PC PP (EP) | 2025-12-31 (75,46 USD) | 2025-12-31 (75,46 USD) | 1 |
+| VIP Dynamic Capital Appreciation Portfolio | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| VIP Growth Opportunities Portfolio | X.AI HOLDINGS CORP CLASS A P/P (EC) | 2025-09-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 2 |
+| VIP Growth Opportunities Portfolio | X.AI HOLDINGS CORP SER B PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| VIP Growth Opportunities Portfolio | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| VIP Growth Portfolio | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+| VIP Technology Portfolio | X.AI HOLDINGS CORP SER C PC PP (EP) | 2025-06-30 (36,56 USD) | 2025-12-31 (75,46 USD) | 3 |
+
+## Zymergen Inc. (CP:zymergen inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2020-09-30 | 11 M$ | 3 | 3 |
+| 2020-12-31 | 14 M$ | 3 | 3 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| BARON GROWTH FUND | ZYMERGEN INC. SERIES D PREFERRED STOCK (EP) | 2020-09-30 (6,49 USD) | 2020-12-31 (8,21 USD) | 2 |
+| Baron Global Advantage Fund | ZYMERGEN INC. SERIES D PREFERRED STOCK (EP) | 2020-09-30 (6,49 USD) | 2020-12-31 (8,21 USD) | 2 |
+| VY(R) BARON GROWTH PORTFOLIO | ZYMERGEN INC D PREF STOCK (EP) | 2020-09-30 (6,49 USD) | 2020-12-31 (8,21 USD) | 2 |
+
 ## OpenAI et Anthropic : faits balisés par les déposants (D-0060, volet 3)
 
 Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par déposant. Point de vue du déposant, jamais une valorisation du laboratoire ; un trimestre absent n'est pas un zéro.

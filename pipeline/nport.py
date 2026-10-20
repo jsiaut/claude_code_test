@@ -1050,6 +1050,22 @@ def quarter_end(d):
     return (dt.date(y + (q == 4), (3 * q) % 12 + 1, 1) - dt.timedelta(days=1)).isoformat()
 
 
+FILING_DAYS = 60     # un N-PORT se dépose dans les 60 jours qui suivent la fin du trimestre du fonds (formulaire, Instruction générale A)
+
+
+def quarter_complete(qe, m=None):
+    """Un trimestre civil est complet si les archives scannées couvrent tous les dépôts de ses rapports : du début du
+    trimestre à 60 jours après sa fin. Sinon sa valeur détenue est partielle (D-0065, point 16)."""
+    m = u_manifest() if m is None else m
+    sc = [r for r in m.values() if r.get("status") == "scanned"]
+    if not sc:
+        return False
+    lo, hi = min(r["filed_from"] for r in sc), max(r["filed_to"] for r in sc)
+    end = dt.date.fromisoformat(qe)
+    start = dt.date(end.year, end.month - 2, 1).isoformat()
+    return start >= lo and (end + dt.timedelta(days=FILING_DAYS)).isoformat() <= hi
+
+
 def u_selected(as_of, ent_rows=None, reg=None, tick=None):
     """Positions de la mesure, au dernier dépôt de chaque série par date, avec leur titre ; et les étapes."""
     p = u_positions()
@@ -1104,14 +1120,19 @@ def u_cells(as_of, ent_rows=None, reg=None, tick=None):
     sel = sel.assign(quarter=[quarter_end(d) for d in sel["report_date"]])
     last = sel.groupby(["node", "quarter", "fund"])["report_date"].transform("max")
     q = sel[sel["report_date"] == last]
+    man = u_manifest()
+    complete = {qe: quarter_complete(qe, man) for qe in set(q["quarter"])}
     for (node, qe), g in q.groupby(["node", "quarter"], sort=True):
         usd = sum(_dec(v) or 0 for v in g["value_usd"])
+        fl = {"perspective": "counterparty", "series": int(g["fund"].nunique()), "positions": int(len(g)),
+              "report_dates": [min(g["report_date"]), max(g["report_date"])],
+              "entities": sorted(set(g["entity_id"])), "accessions": sorted(set(g["accession"]))[:20], "basis": HELD_BASIS}
+        if not complete[qe]:
+            fl["coverage"] = ("trimestre partiel : les archives scannées ne couvrent pas tous les dépôts de ses rapports, "
+                              "du début du trimestre à 60 jours après sa fin")
         out.append(cell("nport_equity_held", node, None, qe, "as_known", as_of, value=usd, unit="USD",
-                        knowledge_date=max(str(kd.get(a) or "") for a in g["accession"])[:10] or None,
-                        flags={"perspective": "counterparty", "series": int(g["fund"].nunique()), "positions": int(len(g)),
-                               "report_dates": [min(g["report_date"]), max(g["report_date"])],
-                               "entities": sorted(set(g["entity_id"])), "accessions": sorted(set(g["accession"]))[:20],
-                               "basis": HELD_BASIS}))
+                        status="computed" if complete[qe] else "partial",
+                        knowledge_date=max(str(kd.get(a) or "") for a in g["accession"])[:10] or None, flags=fl))
     return out
 
 
@@ -1125,7 +1146,7 @@ def neighbors(p):
     for nm, g in p.groupby(p["issuer_name"].fillna(""), sort=True):
         d = max(x for x in g["report_date"] if x) if g["report_date"].notna().any() else None
         at = g[g["report_date"] == d] if d else g
-        out.append({"name": nm, "legal_form": next((x for x in g["legal_form"] if x), None),
+        out.append({"name": nm, "legal_form": next((x for x in g["legal_form"] if isinstance(x, str) and x), None),
                     "positions": int(len(g)), "series": int(pd.Series(fund_key(g)).nunique()),
                     "last_date": d, "value_usd_last": str(sum(_dec(v) or 0 for v in at["value_usd"])),
                     "asset_cats": sorted(set(g["asset_cat"].dropna()))})
@@ -1179,11 +1200,13 @@ def u_exclusions(as_of, ent_rows=None, reg=None, tick=None):
         reason = "conflicting" if r["legal_form"] else "pending_entity"
         why = (f"commence par « {r['legal_form']} », suivie d'une autre forme juridique" if r["legal_form"]
                else "aucune dénomination légale du registre en tête du nom")
+        usd = f"{round(float(r['value_usd_last'])):,}".replace(",", " ")
         ex("entity", r["name"], reason, f"nom d'émetteur déclaré par des fonds, gardé par le lexique et non rattaché ({why}) : "
-           f"{r['positions']} positions, {r['series']} séries, {r['value_usd_last']} $ déclarés au {r['last_date']} "
+           f"{r['positions']} positions, {r['series']} séries, {usd} $ déclarés au {r['last_date']} "
            f"({', '.join(r['asset_cats'])}) ; jamais rattaché sans extrait (D-0065, point 6)")
     listed = listing(ent_rows, as_of, tick)
-    unknown = sorted({e for e in p["entity_id"].dropna() if e in listed and listed[e] is None})
+    reach, _ = mark_selection(p, as_of, {})       # positions qui atteignent l'étape de la cotation (point 7)
+    unknown = sorted({e for e in reach["entity_id"] if e in listed and listed[e] is None})
     for e in unknown:
         ex("entity", e, "not_processed", "entité cotée (symbole au 2026-10-07) sans submissions complètes en cache : "
            "date de cotation inconnue, positions hors de la mesure (D-0065, point 7)")

@@ -300,6 +300,15 @@ class UnlistedMeasure(unittest.TestCase):
             finally:
                 config.CACHE = old
 
+    def test_a_quarter_is_complete_only_when_all_its_filings_are_scanned(self):
+        m = {"2019q4": {"status": "scanned", "filed_from": "2019-10-01", "filed_to": "2019-12-31"},
+             "2026q3": {"status": "scanned", "filed_from": "2026-07-01", "filed_to": "2026-09-30"},
+             "2026q4": {"status": "after_as_of", "filed_from": "2026-10-01", "filed_to": "2026-12-31"}}
+        self.assertFalse(P.quarter_complete("2019-09-30", m))      # rapports de juillet déposés avant la première archive
+        self.assertTrue(P.quarter_complete("2019-12-31", m))       # archives contiguës entre la première et la dernière
+        self.assertTrue(P.quarter_complete("2026-06-30", m))
+        self.assertFalse(P.quarter_complete("2026-09-30", m))      # dépôts jusqu'à fin novembre 2026
+
     def test_quarter_end(self):
         self.assertEqual([P.quarter_end(d) for d in ("2025-01-31", "2025-03-31", "2025-11-30")],
                          ["2025-03-31", "2025-03-31", "2025-12-31"])
@@ -336,6 +345,34 @@ class UnlistedCorrections(unittest.TestCase):
         self.assertEqual(steps["quoted_in_archive"], 4)    # positions de niveau 3 d'Anthropic dans une archive cotée
         sel, steps = P.mark_selection(p, "2026-10-07", {"e:spx": "2026-06-12"}, {("e:spx", "2021q1")})
         self.assertEqual(steps["quoted_in_archive"], 0)    # une entité à symbole suit sa date de cotation
+
+
+class UnlistedExclusions(unittest.TestCase):
+    def test_neighbors_without_a_legal_form_are_pending_and_listing_gaps_need_measure_positions(self):
+        import pipeline.nport as N
+        p = UnlistedMeasure().positions()
+        extra = p.iloc[[0]].assign(issuer_name="ANTHROPIC SERIES G", entity_id=float("nan"), legal_form=float("nan"),
+                                   node=None, accession="N1", value_usd="900")
+        debt = p.iloc[[5]].assign(asset_cat="DBT", unit="PA", accession="D1")       # dette d'une entité cotée
+        allp = pd.concat([p, extra, debt], ignore_index=True)
+        saved = (N.u_manifest, N.u_positions, N.attributed, N.listing, N.archive_list, N.config.load)
+        cfg = {"nport": {"period": ["2019-10-01", "2026-10-07"], "unlisted": {}}}
+        N.u_manifest = lambda: {"2025q2": {"status": "scanned", "lexicon": "lx-x"}}
+        N.u_positions = lambda *a, **k: allp
+        N.attributed = lambda q, *a, **k: q
+        N.listing = lambda *a, **k: {"e:spx": None}
+        N.archive_list = lambda html=None: []
+        N.config.load = lambda *a, **k: cfg
+        try:
+            ex = N.u_exclusions("2026-10-07", ROWS)
+        finally:
+            (N.u_manifest, N.u_positions, N.attributed, N.listing, N.archive_list, N.config.load) = saved
+        by = {e["item_key"]: e for e in ex}
+        e = by["nport_unlisted:ANTHROPIC SERIES G"]
+        self.assertEqual(e["reason"], "pending_entity")
+        self.assertIn("900 $ déclarés", e["detail"])
+        self.assertIn("nport_unlisted:e:spx", by)            # SpaceX porte des positions de la mesure, date inconnue
+        self.assertEqual(sum(1 for k in by if k.startswith("nport_unlisted:e:")), 1)
 
 
 class UnlistedFetch(unittest.TestCase):

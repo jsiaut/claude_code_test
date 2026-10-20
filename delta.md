@@ -145,10 +145,10 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Arêtes de montant : commercial 3 155, credit_support 103, customer_consideration 94, financing 1 860 ; arêtes de relation : 3 130.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : Akamai (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Applied Digital (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 96,0 % [94,0 % ; 98,0 %] ; Apollo (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; ASML (exercice clos le 2025-12-31) : nommés 61,2 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; Backblaze (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blackstone (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Cipher (exercice clos le 2025-12-31) : nommés 70,0 %, anonymes d'au moins 10 % 0,0 % ; Core Scientific (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Dell (exercice clos le 2026-01-30) : nommés 0,0 %, anonymes d'au moins 10 % 12,0 % [11,5 % ; 12,5 %] ; Galaxy (exercice clos le 2025-12-31) : nommés 38,0 %, anonymes d'au moins 10 % 0,0 % ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Hut 8 (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Intel (exercice clos le 2025-12-27) : nommés 43,0 %, anonymes d'au moins 10 % 43,0 % [42,5 % ; 43,5 %] ; IREN (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 7,3 %, anonymes d'au moins 10 % 0,0 % ; Micron (exercice clos le 2025-08-28) : nommés 17,0 %, anonymes d'au moins 10 % 0,0 % ; Nebius (exercice clos le 2025-12-31) : nommés 40,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blue Owl (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Riot (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SK hynix (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Supermicro (exercice clos le 2026-06-30) : nommés 0,2 %, anonymes d'au moins 10 % 28,1 % [28,0 % ; 28,2 %] ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TSMC (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TeraWulf (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
 - Cellules de la question 4, par statut et motif : calculée 18 132 ; indéterminée / historique tronqué 8 389 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 710 ; indéterminée / précondition non remplie 1 182 ; indéterminée / client anonyme 1 060 ; indéterminée / recherche incomplète 998 ; bornée 799 ; indéterminée / non publié 625 ; indéterminée / concept non résolu 258 ; indéterminée / terme manquant 176.
-- Requêtes : 25 291 au journal, dont 25 000 réussies, 116 359 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-20T16:20:45.298+00:00.
+- Requêtes : 25 333 au journal, dont 25 042 réussies, 128 296 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-20T18:45:06.717+00:00.
 - Blocs lus : 10 600 sur 10 956 clés de contenu ; par item de 8-K : 1.01 469, 1.02 49, 2.01 38, 2.03 142, 3.03 35, 8.01 824 ; pièces arrêtées à leur en-tête : EX-4 356.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 162 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 595 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -209,9 +209,9 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 ## Exclusions nouvelles, par motif
 
 - `not_processed` : 27 966
-- `conflicting` : 1 377
+- `pending_entity` : 1 943
+- `conflicting` : 1 382
 - `out_of_scope` : 1 186
-- `pending_entity` : 587
 - `financial_parties_only` : 356
 - `invalid_aggregate` : 52
 - `parse_failed` : 32
@@ -285,6 +285,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0062 — Réassemblage plus rapide, mêmes tables à l'octet près : travail répété supprimé, mémo des citations, mémo des étapes qui ne lisent pas les observations, mode aperçu.
 - D-0063 — Rendu plus rapide, mêmes fichiers : tables lues en mémoire, requêtes répétées regroupées, ordre fixé de deux requêtes qui n'en avaient pas.
 - D-0064 — OpenAI et Anthropic : la chaîne de calcul d'Anthropic dans les 8-K (volet 7) et les lettres de commentaires de la SEC (volet 6). Règles fixées avant tout tirage.
+- D-0065 — Volet 5 : marques de tiers des non-cotés du modèle dans les Form N-PORT Data Sets (parts d'OpenAI, d'Anthropic et des autres, en un seul passage). Règles fixées avant tout tirage.
 
 ## Critères des annexes E et F
 
