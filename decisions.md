@@ -1958,3 +1958,34 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - unités du montage `labs_tagged`, dans les 17 dépôts à instance : 25 fenêtres. 20 sont déjà lues dans un bloc du même dépôt (Microsoft 10, Amazon 4, CoreWeave 3, NVIDIA, TeraWulf et Apollo 1 chacun), et 2 sont des doublons de texte (paragraphe des engagements de Microsoft, identique d'un 10-Q à l'autre). Aucune n'est dans un facteur de risque, et aucun fait n'est masqué ;
   - restent 3 blocs à lire : deux du 10-Q de Riot du 10 août 2026 (bail de Rockdale) et un du 10-Q de Microsoft du 30 avril 2025 (note des placements) ;
   - liste de lecture `labs_tagged`, du dépôt le plus récent au plus ancien.
+
+  (10) Intégration et résultats (2026-10-20) :
+  - volet 3, lecture : 3 blocs lus, 5 lignes valides, aucune rejetée :
+    - Riot : bail de Rockdale avec Anthropic PBC, contrepartie dérivée du libellé du membre (le texte écrit « a leading frontier AI lab »). 191 MW de charge informatique critique, dont 96 MW à livrer en décembre 2027 ; durée initiale de 20 ans à compter de la livraison complète prévue en juin 2028, deux prolongations de cinq ans ; environ 9,1 Md$ de loyer de base sur la durée initiale ;
+    - Riot encore : avenant du bail d'AMD (50 MW, jusqu'à 200 MW), et facilité intermédiaire de 573,0 M$ (Morgan Stanley Senior Funding, agent) qui finance les équipements du bail avec Anthropic ;
+    - Microsoft : engagements de 13 Md$ envers OpenAI Global, LLC au 31 mars 2025, le seul trimestre qui manquait ;
+  - lignes de NVIDIA (point 5) : trois lignes typées `equity_primary`. La paire NVIDIA → Anthropic apparaît, avec un engagement de 10,0 Md$ au 26 juillet 2026 dans `counterparty_exposure` ;
+  - `lab_tagged_value` : 127 cellules (OpenAI 102, Anthropic 25) chez 12 déposants. Sur les 139 faits retenus, 12 reprennent à l'identique (même contexte, même valeur) le fait d'un dépôt antérieur et ne comptent qu'une fois. Un conflit, celui d'Apollo (35 Md$, Broadcom dans le texte) :
+    - Microsoft, autres produits et charges balisés sur OpenAI : −1,5 Md$ sur l'exercice 2024 ; −4,8 Md$ sur l'exercice 2025, dont −688 M$, −1,2 Md$ et −768 M$ aux trois premiers trimestres ; −4,1 Md$ au T1 de l'exercice 2026, +10,0 Md$ au T2 (recapitalisation d'OpenAI), −19 M$ au T3, +6,5 Md$ sur l'exercice. S'y ajoutent les versements cumulés (11,6 à 11,9 Md$), les engagements de 13 Md$ sur huit trimestres, la participation (27 %, puis 25 % au 30 juin 2026), la créance de 6,0 Md$ et le revenu de 24,1 Md$ ;
+    - Amazon : carnet (RPO) de 38 Md$ d'OpenAI au 31 mars 2026 ; hausse du carnet de 100 Md$ pour OpenAI (T1 2026) et pour Anthropic (T2 2026), écoulée sur environ 10 ans pour Anthropic ; facilité d'Anthropic d'au plus 20 Md$, dont 15 Md$ encore disponibles, expirant 30 mois après un événement de liquidité ;
+    - CoreWeave : actif sur contrat de 11,9 Md$ avec OpenAI OpCo, LLC ; 8,75 millions d'actions émises au titre des incitations du contrat ; montants associés, de 350 M$ au total à chaque clôture ;
+    - Riot et TeraWulf : baux avec Anthropic (191 MW et 401 MW, 20 ans, deux options de cinq ans) ;
+    - NVIDIA : engagement de 10 Md$ envers Anthropic, PBC ;
+    - Cerebras : bons d'OpenAI sur 33,4 millions d'actions, dont 5,6 millions acquis au 30 juin 2026 ; prêt de fonds de roulement d'OpenAI de 1,0 Md$ à 6 % (918 M$ au bilan) ; capacité engagée de 750 MW, jusqu'à 2 GW, option sur 1,25 GW ; revenu tiré d'OpenAI de 16,9 M$ au T1 2026 et de 56,8 M$ au T2 ;
+    - tiers hors du graphe : Salesforce (Anthropic pèse 22 %, puis 45 %, de ses placements stratégiques ; réévaluations à la hausse de 2,7 Md$ au trimestre et de 3,0 Md$ au semestre clos le 31 juillet 2026), Zoom Communications (titres d'Anthropic de 1 267 M$ au 30 avril 2026), Eightco Holdings (placements liés à OpenAI de 92,6 M$), Destiny Tech100 (un fait de participation) ;
+  - `lab_ledger` : 36 cellules pour 10 partenaires à montant ; 15 partenaires en tout (Anthropic 8, OpenAI 7). Les engagements de financement signés, sans montant admissible d'arête, figurent par l'état de la paire (`counterparty_exposure`) ;
+  - OpenAI : 118 arêtes (115), dont 69 à montant (69). Anthropic : 76 arêtes (73), dont 57 à montant (56), avec Riot et NVIDIA pour contreparties nouvelles ;
+  - paires : 242 (240). Nouvelles : NVIDIA → Anthropic (financement seul) et Riot → Anthropic (structure commerciale seule), toutes deux « causalité non établie ». Conclusions : causalité non établie 162 (160), achats réciproques seulement 44, relation commerciale doublée d'un financement 26, dépendance documentée 10 ;
+  - cycles (E.6) : 106 (106). Annexe F : 399 événements, aucun nouveau, aucun disparu. E.7 : 170 issues, 56 % indéterminées, discrimination possible ; E.1 : étayé 3, non étayé 71, indéterminé 11, tous inchangés ;
+  - rendus :
+    - tables : documents 25 104 (25 104), faits 1 581 118 (1 581 051, dont 67 faits `nds_num`), observations 29 269 (29 264), entités 3 576 (3 576), liens 10 992 (10 984), mesures 171 994 (171 569), contrôles 69 952 (69 950), exclusions 31 430 (31 430) ;
+    - 14 519 nombres publiés (14 077) ;
+    - exclusions inchangées, motif par motif ;
+  - contrôles, vue `as_known` : `mismatch` 1 833, `not_testable` 1 342 (1 340), `ok` 29 886, `tautological` 1 393 ;
+  - lacunes déclarées :
+    - les 278 autres lignes de financement sans type d'arête (point 5) n'ouvrent toujours aucune arête. Leur traitement attend une décision ;
+    - Riot balise sa puissance en MWh et TeraWulf un nombre d'options en dollars : les valeurs se publient telles que balisées, avec l'unité signalée. Un fait sans valeur d'Eightco s'affiche « n.d. » ;
+    - Microsoft ne balise OpenAI qu'à partir de ses dépôts de l'exercice 2025 (comparatif de 2024 compris). Alphabet, AMD et Oracle ne balisent aucun laboratoire dans les instances en cache ;
+    - les extraits des Notes Data Sets ne gardent que les dépôts dont une note nomme une cible du lexique : les séries des tiers sont partielles ;
+    - l'engagement de 50 Md$ d'Amazon envers OpenAI compte encore les montants déjà versés (D-0059, point 11) ;
+  - tests unitaires : 218, tous passés.

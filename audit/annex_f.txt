@@ -89,16 +89,16 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..3549bab 100644
+index 1378604..75e88f0 100644
 --- a/config.yaml
 +++ b/config.yaml
-@@ -16,9 +16,180 @@ user_agent:
+@@ -16,9 +16,191 @@ user_agent:
    value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
    sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
  
 -scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
 -scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
-+scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
++scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 +scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
 +  date: 2026-10-07
 +  decision: "prêteurs et texte"
@@ -272,10 +272,21 @@ index 1378604..3549bab 100644
 +      annex_e_e7: {outcomes: 164, indeterminate: 93, result: discrimination_possible}
 +      fragility_events: 398
 +    execution: "sans sous-agent (consigne de l'utilisateur)"
++  - date: 2026-10-20
++    decision: "continue avec les volets 3 et 4"
++    question: "OpenAI et Anthropic : faits balisés qui nomment un laboratoire (volet 3), grand livre par laboratoire (volet 4) (D-0060)"
++    blocks: [labs]           # mesures lab_tagged_value et lab_ledger ; les unités du volet 3 passent par le bloc montages
++    page: "remue-méninges sur OpenAI et Anthropic dans la conversation du 2026-10-19 (D-0059, D-0060)"
++    yield_presented:             # état publié au commit 68248e4, avant les volets
++      relationship_conclusions: {pairs: 240, documented_dependency: 10, commercial_with_financing: 26, reciprocal_commercial_only: 44, causality_not_established: 160}
++      documented_paths: {cycles: 106}
++      annex_e_e7: {outcomes: 170, indeterminate: 96, result: discrimination_possible}
++      fragility_events: 399
++    execution: "sans sous-agent (consigne de l'utilisateur)"
  window:
    start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
    include_interim: true
-@@ -38,16 +209,187 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+@@ -38,16 +220,187 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
    AMD: "0000002488"
    AVGO: "0001730168"
    MRVL: "0001835632"
@@ -463,7 +474,7 @@ index 1378604..3549bab 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +397,771 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +408,771 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -1235,7 +1246,7 @@ index 1378604..3549bab 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1223,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1234,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -1243,7 +1254,7 @@ index 1378604..3549bab 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1239,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1250,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1252,7 +1263,7 @@ index 1378604..3549bab 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1428,73 @@ annex_e:
+@@ -318,6 +1439,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1326,7 +1337,7 @@ index 1378604..3549bab 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1547,42 @@ annex_f:
+@@ -370,6 +1558,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1369,7 +1380,7 @@ index 1378604..3549bab 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1602,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1613,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1380,7 +1391,7 @@ index 1378604..3549bab 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1655,255 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1666,267 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1612,6 +1623,18 @@ index 1378604..3549bab 100644
 +    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
 +                  '\bStargate\b']
 +    cap: 300
++    dedupe: true
++    skip_read: true
++    skip_risk_factors: true
++    order: recent_first
++  labs_tagged:                        # D-0060, volet 3 : paragraphes qui portent un fait balisé nommant un laboratoire
++    decision: D-0060
++    source: tagged                    # faits retenus par pipeline.labs (instances des groupes en cache) ; aucune requête
++    groups: all
++    period: ["2017-01-29", "2026-10-07"]
++    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
++                  '\bStargate\b', '\bfrontier AI lab\b']
++    cap: 100
 +    dedupe: true
 +    skip_read: true
 +    skip_risk_factors: true

@@ -2235,6 +2235,202 @@ Valeur déclarée ÷ nominal, dans la monnaie du titre, au dernier dépôt de ch
 | 2026-06-30 | 96,0 % | 1 |
 | 2026-07-31 | 96,8 % | 4 |
 
+## OpenAI et Anthropic : faits balisés par les déposants (D-0060, volet 3)
+
+Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par déposant. Point de vue du déposant, jamais une valorisation du laboratoire ; un trimestre absent n'est pas un zéro.
+
+**Anthropic — Amazon**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Anthropic | 2026-04-01 → 2026-06-30 | 100 000 M$ | 10-Q 0001018724-26-000026 |
+| `LineOfCreditFacilityCurrentBorrowingCapacity` | Anthropic | au 2026-06-30 | 15 000 M$ | 10-Q 0001018724-26-000026 |
+| `LineOfCreditFacilityExpirationPeriod` | Anthropic | 2026-01-01 → 2026-06-30 | 30 mois | 10-Q 0001018724-26-000026 |
+| `LineOfCreditFacilityExpirationPeriod` | Anthropic | 2026-04-01 → 2026-04-29 | 30 mois | 10-Q 0001018724-26-000014 |
+| `LineOfCreditFacilityMaximumBorrowingCapacity` | Anthropic | au 2026-06-30 | 20 000 M$ | 10-Q 0001018724-26-000026 |
+| `LineOfCreditFacilityMaximumBorrowingCapacity` | Anthropic | au 2026-04-29 | 20 000 M$ | 10-Q 0001018724-26-000014 |
+| `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Anthropic | au 2026-06-30 | 10 ans | 10-Q 0001018724-26-000026 |
+
+**Anthropic — Apollo**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `CapitalSolutionAgreementAmount` | Anthropic | 2026-04-01 → 2026-06-30 | 35 000 M$ | 10-Q 0001858681-26-000040 |
+
+**Anthropic — NVIDIA**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `OtherCommitment` | Anthropic, PBC | au 2025-11-19 | 10 000 M$ | 10-Q 0001045810-25-000230 |
+
+**Anthropic — Riot**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `ExpectedDataCenterRevenueDuringInitialTerm` | Anthropic Lease | 2026-08-01 → 2026-08-31 | 9 100 M$ | 10-Q 0001104659-26-093448 |
+| `InitialMegawattsOfPowerDeployment` | Anthropic Lease | 2026-08-01 → 2026-08-31 | 96 MW (unité balisée : MWh) | 10-Q 0001104659-26-093448 |
+| `InitialMegawattsOfPowerDeployment` | Anthropic Lease | 2026-08-01 → 2026-08-31 | 191 MW (unité balisée : MWh) | 10-Q 0001104659-26-093448 |
+| `OperatingLeaseOptionToExtendTermOfLeaseNumberOfSuccessiveExtension` | Anthropic Lease | 2026-08-01 → 2026-08-31 | 2 | 10-Q 0001104659-26-093448 |
+| `LesseeOperatingLeaseRenewalTerm` | Anthropic Lease | au 2026-08-31 | 5 ans | 10-Q 0001104659-26-093448 |
+| `LesseeOperatingLeaseTermOfContract` | Anthropic Lease | au 2026-08-31 | 20 ans | 10-Q 0001104659-26-093448 |
+
+**Anthropic — TeraWulf**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `LessorOperatingLeaseLeaseNotYetCommencedRenewalTerm1` | Anthropic HPC Lease | au 2026-07-06 | 5 ans | 10-Q 0001083301-26-000166 |
+| `LessorOperatingLeaseLeaseNotYetCommencedTermOfContract1` | Anthropic HPC Lease | au 2026-07-06 | 20 ans | 10-Q 0001083301-26-000166 |
+| `LessorOperatingLeaseLeaseNotYetCommencedMegawattsOfCriticalITLoad` | Anthropic HPC Lease | au 2026-07-06 | 401 MW | 10-Q 0001083301-26-000166 |
+| `LessorOperatingLeaseLeaseNotYetCommencedNumberOfRenewalOptions` | Anthropic HPC Lease | au 2026-07-06 | 2 (unité balisée : USD) | 10-Q 0001083301-26-000166 |
+
+**Anthropic — SALESFORCE, INC. (cik:0001108524, hors du graphe)**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `ConcentrationRiskPercentage1` | AnthropicPBC | au 2026-07-31 | 45,0 % | 10-Q 0001108524-26-000190 |
+| `ConcentrationRiskPercentage1` | AnthropicPBC | au 2026-01-31 | 22,0 % | 10-Q 0001108524-26-000190 |
+| `EquitySecuritiesWithoutReadilyDeterminableFairValueUpwardPriceAdjustmentAnnualAmount` | AnthropicPBC | au 2026-07-31 | 2 700 M$ | 10-Q 0001108524-26-000190 |
+| `EquitySecuritiesWithoutReadilyDeterminableFairValueUpwardPriceAdjustmentAnnualAmount` | AnthropicPBC | au 2026-07-31 | 3 000 M$ | 10-Q 0001108524-26-000190 |
+
+**Anthropic — ZOOM COMMUNICATIONS, INC. (cik:0001585521, hors du graphe)**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `EquitySecuritiesWithoutReadilyDeterminableFairValueAmount` | EquitySecuritiesWithoutReadilyDeterminableFairValueAnthropic | au 2026-04-30 | 1 267 M$ | 10-Q 0001585521-26-000071 |
+| `PaymentsToAcquireLongtermInvestments` | EquitySecuritiesWithoutReadilyDeterminableFairValueAnthropic | au 2026-04-30 | 46 M$ | 10-Q 0001585521-26-000071 |
+
+**OpenAI — Amazon**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Open AI | 2026-01-01 → 2026-03-31 | 100 000 M$ | 10-Q 0001018724-26-000014 |
+| `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Open AI | 2026-01-01 → 2026-03-31 | 100 000 M$ | 10-Q 0001018724-26-000026 |
+| `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Open AI | au 2026-03-31 | 8 ans | 10-Q 0001018724-26-000014 |
+| `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Open AI | au 2026-03-31 | 8 ans | 10-Q 0001018724-26-000026 |
+| `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000014 |
+| `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000026 |
+
+**OpenAI — CEREBRAS SYSTEMS INC.**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | OpenAIWarrant | au 2026-03-31 | 82 $ | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | OpenAIWarrant | au 2026-06-30 | 82 $ | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | OpenAIWarrant | au 2026-01-31 | 4 459 337 actions | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | OpenAIWarrant | au 2026-03-31 | 4 459 337 actions | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | OpenAIWarrant | au 2026-06-30 | 5 574 171 actions | 10-Q 0001628280-26-056357 |
+| `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` | OpenAI | au 2026-03-31 | 250 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
+| `CommittedComputeCapacityUnderMasterRelationshipAgreement` | OpenAI | au 2025-12-31 | 750 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-03-31 | 800 000 $ | 10-Q 0001628280-26-044981 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-06-30 | 2 M$ | 10-Q 0001628280-26-056357 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-06-30 | 3 M$ | 10-Q 0001628280-26-056357 |
+| `LongTermDebtOffsettingAmount` | OpenAI | au 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
+| `LongTermDebtOffsettingAmount` | OpenAI | au 2026-06-30 | -86 M$ | 10-Q 0001628280-26-056357 |
+| `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` | OpenAI | au 2025-12-31 | 2 GW | 10-Q 0001628280-26-044981 |
+| `NoncashInterestExpense` | OpenAI | au 2026-03-31 | 19 M$ | 10-Q 0001628280-26-044981 |
+| `NoncashInterestExpense` | OpenAI | au 2026-06-30 | 20 M$ | 10-Q 0001628280-26-056357 |
+| `NoncashInterestExpense` | OpenAI | au 2026-06-30 | 39 M$ | 10-Q 0001628280-26-056357 |
+| `NoncashRepaymentOfDebt` | OpenAI | au 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
+| `NoncashRepaymentOfDebt` | OpenAI | au 2026-06-30 | 86 M$ | 10-Q 0001628280-26-056357 |
+| `OptionToPurchaseAdditionalComputeCapacity` | OpenAI | au 2025-12-31 | 1,25 GW | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | OpenAIWarrant | au 2025-12-31 | 0 $ | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | OpenAIWarrant | au 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2025-12-31 | 33 445 026 actions | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2026-06-30 | 33 445 026 actions | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2026-07-31 | 10 033 508 actions | 10-Q 0001628280-26-056357 |
+| `DebtInstrumentCarryingAmount` | OpenAI | au 2026-03-31 | 983 M$ | 10-Q 0001628280-26-044981 |
+| `DebtInstrumentCarryingAmount` | OpenAI | au 2026-06-30 | 918 M$ | 10-Q 0001628280-26-056357 |
+| `DebtInstrumentFaceAmount` | OpenAI | au 2025-12-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
+| `DebtInstrumentInterestRateStatedPercentage` | OpenAI | au 2026-03-31 | 6,0 % | 10-Q 0001628280-26-044981 |
+| `DebtInstrumentInterestRateStatedPercentage` | OpenAI | au 2026-06-30 | 6,0 % | 10-Q 0001628280-26-056357 |
+| `LongTermDebtCurrent` | OpenAI | au 2026-03-31 | 621 M$ | 10-Q 0001628280-26-044981 |
+| `LongTermDebtCurrent` | OpenAI | au 2026-06-30 | 736 M$ | 10-Q 0001628280-26-056357 |
+| `LongTermDebtNoncurrent` | OpenAI | au 2026-03-31 | 362 M$ | 10-Q 0001628280-26-044981 |
+| `LongTermDebtNoncurrent` | OpenAI | au 2026-06-30 | 182 M$ | 10-Q 0001628280-26-056357 |
+| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-01-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
+| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-03-31 | 1 005 M$ | 10-Q 0001628280-26-044981 |
+| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-06-30 | 1 005 M$ | 10-Q 0001628280-26-056357 |
+| `RepaymentsOfLongTermDebt` | OpenAI | au 2026-03-31 | 0 $ | 10-Q 0001628280-26-044981 |
+| `RepaymentsOfLongTermDebt` | OpenAI | au 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-03-31 | 17 M$ | 10-Q 0001628280-26-044981 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-06-30 | 57 M$ | 10-Q 0001628280-26-056357 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-06-30 | 74 M$ | 10-Q 0001628280-26-056357 |
+
+**OpenAI — CoreWeave**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `StockIssuedDuringPeriodSharesIssuedForContractIncentives` | OpenAI OpCo, LLC | 2025-03-01 → 2025-03-31 | 8 750 000 actions | 10-Q 0001769628-25-000041 |
+| `ContractWithCustomerAssetGross` | OpenAI OpCo, LLC | au 2025-03-31 | 11 900 M$ | 10-Q 0001769628-25-000014 |
+| `ContractWithCustomerAssetGross` | OpenAI OpCo, LLC | au 2025-06-30 | 11 900 M$ | 10-Q 0001769628-25-000041 |
+| `ContractWithCustomerLiabilityCurrent` | OpenAI OpCo, LLC | au 2025-03-31 | 27 M$ | 10-Q 0001769628-25-000014 |
+| `ContractWithCustomerLiabilityCurrent` | OpenAI OpCo, LLC | au 2025-06-30 | 41 M$ | 10-Q 0001769628-25-000041 |
+| `ContractWithCustomerLiabilityCurrent` | OpenAI OpCo, LLC | au 2025-09-30 | 52 M$ | 10-Q 0001769628-25-000062 |
+| `ContractWithCustomerLiabilityNoncurrent` | OpenAI OpCo, LLC | au 2025-03-31 | 323 M$ | 10-Q 0001769628-25-000014 |
+| `ContractWithCustomerLiabilityNoncurrent` | OpenAI OpCo, LLC | au 2025-06-30 | 309 M$ | 10-Q 0001769628-25-000041 |
+| `ContractWithCustomerLiabilityNoncurrent` | OpenAI OpCo, LLC | au 2025-09-30 | 298 M$ | 10-Q 0001769628-25-000062 |
+| `ContractWithCustomerLiability` | OpenAI OpCo, LLC | au 2025-03-31 | 450 M$ | 10-Q 0001769628-25-000014 |
+
+**OpenAI — Microsoft**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2025-09-30 | 11 600 M$ | 10-Q 0001193125-25-256321 |
+| `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2025-12-31 | 11 700 M$ | 10-Q 0001193125-26-027207 |
+| `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2026-03-31 | 11 800 M$ | 10-Q 0001193125-26-191507 |
+| `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2026-06-30 | 11 900 M$ | 10-K 0001193125-26-323660 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2024-09-30 | 13 000 M$ | 10-Q 0000950170-24-118967 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2024-12-31 | 13 000 M$ | 10-Q 0000950170-25-010491 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2025-03-31 | 13 000 M$ | 10-Q 0000950170-25-061046 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2025-06-30 | 13 000 M$ | 10-K 0000950170-25-100235 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2025-09-30 | 13 000 M$ | 10-Q 0001193125-25-256321 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2025-12-31 | 13 000 M$ | 10-Q 0001193125-26-027207 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2026-03-31 | 13 000 M$ | 10-Q 0001193125-26-191507 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2026-06-30 | 13 000 M$ | 10-K 0001193125-26-323660 |
+| `InvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2025-10-28 | 27,0 % | 10-Q 0001193125-25-256321 |
+| `PurchaseCommitmentIncrementalAmountCommitted` | OpenAI Global, LLC | 2025-10-28 → 2025-10-28 | 250 000 M$ | 10-Q 0001193125-25-256321 |
+| `AccountsReceivableNet` | OpenAI Global, LLC | au 2026-06-30 | 6 000 M$ | 10-K 0001193125-26-323660 |
+| `EquityMethodInvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2025-12-31 | 27,0 % | 10-Q 0001193125-26-027207 |
+| `EquityMethodInvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2026-03-31 | 27,0 % | 10-Q 0001193125-26-191507 |
+| `EquityMethodInvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2026-06-30 | 25,0 % | 10-K 0001193125-26-323660 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2023-07-01 → 2024-06-30 | -1 500 M$ | 10-K 0001193125-26-323660 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2024-07-01 → 2024-09-30 | -688 M$ | 10-Q 0001193125-25-256321 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2024-07-01 → 2024-12-31 | -1 900 M$ | 10-Q 0001193125-26-027207 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2024-10-01 → 2024-12-31 | -1 200 M$ | 10-Q 0001193125-26-027207 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2024-07-01 → 2025-03-31 | -2 700 M$ | 10-Q 0001193125-26-191507 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-01-01 → 2025-03-31 | -768 M$ | 10-Q 0001193125-26-191507 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2024-07-01 → 2025-06-30 | -4 800 M$ | 10-K 0001193125-26-323660 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-07-01 → 2025-09-30 | -4 100 M$ | 10-Q 0001193125-25-256321 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-07-01 → 2025-12-31 | 5 900 M$ | 10-Q 0001193125-26-027207 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-10-01 → 2025-12-31 | 10 000 M$ | 10-Q 0001193125-26-027207 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-07-01 → 2026-03-31 | 5 900 M$ | 10-Q 0001193125-26-191507 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2026-01-01 → 2026-03-31 | -19 M$ | 10-Q 0001193125-26-191507 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-07-01 → 2026-06-30 | 6 500 M$ | 10-K 0001193125-26-323660 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI Global, LLC | 2025-07-01 → 2026-06-30 | 24 100 M$ | 10-K 0001193125-26-323660 |
+
+**OpenAI — DESTINY TECH100 INC. (cik:0001843974, hors du graphe)**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `MinorityInterestOwnershipPercentageByNoncontrollingOwners` | OpenAIInc | au 2024-01-31 | 100,0 % | N-CSR/A 0001398344-25-009943 |
+
+**OpenAI — EIGHTCO HOLDINGS INC. (cik:0001892492, hors du graphe)**
+
+| Fait balisé | Membre | Période | Valeur | Pièce |
+| --- | --- | --- | ---: | --- |
+| `TreasuryPositionPercentage` | OpenAI | au 2026-03-31 | 30,0 % | 10-K 0001493152-26-016664 |
+| `BusinessCombinationConsiderationTransferred1` | OpenAI | au 2026-03-31 | 93 M$ | 10-Q 0001493152-26-023890 |
+| `BusinessCombinationConsiderationTransferred1` | OpenAI | au 2026-06-30 | 93 M$ | 10-Q 0001493152-26-036637 |
+| `Investments` | OpenAI | au 2026-03-31 | 90 M$ | 10-K 0001493152-26-016664 |
+| `OtherInvestments` | OpenAI | au 2026-03-31 | 93 M$ | 10-Q 0001493152-26-023890 |
+| `OtherInvestments` | OpenAI | au 2026-06-30 | 93 M$ | 10-Q 0001493152-26-036637 |
+| `OtherInvestments` | OpenAI | au 2025-12-31 | n.d. (sans valeur) | 10-Q 0001493152-26-023890 |
+| `OtherInvestments` | OpenAI | au 2026-03-31 | 93 M$ | 10-Q 0001493152-26-023890 |
+| `OtherInvestments` | OpenAI | au 2026-06-30 | 93 M$ | 10-Q 0001493152-26-036637 |
+| `PaymentsToAcquireInterestInSubsidiariesAndAffiliates` | OpenAI | au 2026-02-28 | 125 M$ | 10-K 0001493152-26-016664 |
+| `PaymentsToAcquireInvestments` | OpenAI | au 2026-02-28 | 50 M$ | 10-K 0001493152-26-016664 |
+| `PaymentsToAcquireInvestments` | OpenAI | au 2026-03-31 | 40 M$ | 10-K 0001493152-26-016664 |
+
 ## BLUE OWL CAPITAL CORP II (véhicule BDC, cik:0001655887)
 
 | Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |
