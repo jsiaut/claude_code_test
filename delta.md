@@ -148,7 +148,7 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Requêtes : 25 112 au journal, dont 24 822 réussies, 116 312 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-19T14:07:02.931+00:00.
 - Blocs lus : 10 499 sur 10 855 clés de contenu ; par item de 8-K : 1.01 469, 1.02 49, 2.01 38, 2.03 142, 3.03 35, 8.01 824 ; pièces arrêtées à leur en-tête : EX-4 356.
 - Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 1990 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 132 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -282,6 +282,8 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - D-0059 — OpenAI et Anthropic : montage de corpus et entités par extrait (volets 1 et 2). Règles fixées avant tout traitement.
 - D-0060 — OpenAI et Anthropic : faits balisés qui nomment un laboratoire (volet 3) et grand livre par laboratoire (volet 4). Règles fixées avant tout traitement.
 - D-0061 — Lignes de financement sans type d'arête : la règle de D-0060 (point 5) appliquée aux 278 autres lignes. Règles fixées avant tout traitement.
+- D-0062 — Réassemblage plus rapide, mêmes tables à l'octet près : travail répété supprimé, mémo des citations, mémo des étapes qui ne lisent pas les observations, mode aperçu.
+- D-0063 — Rendu plus rapide, mêmes fichiers : tables lues en mémoire, requêtes répétées regroupées, ordre fixé de deux requêtes qui n'en avaient pas.
 
 ## Critères des annexes E et F
 

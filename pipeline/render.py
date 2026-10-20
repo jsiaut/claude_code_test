@@ -130,8 +130,15 @@ def load(con, as_of):
         ND_FR["not_processed"] = ("non traité (unité de la découverte non encore lue, ou bloc de §14 fermé)"
                                   if "discovery" in sc else "non traité (bloc de §14 non lu ou fermé)")
     t = config.ROOT / "tables"
+    # tables chargées en mémoire une fois, dans l'ordre du fichier : une vue relisait et décompressait le
+    # Parquet à chaque requête (des milliers de requêtes ponctuelles)
     for name in ("measures", "controls", "exclusions", "links", "observations", "entities", "facts", "documents"):
-        con.execute(f"CREATE OR REPLACE VIEW {name} AS SELECT * FROM '{t / (name + '.parquet')}'")
+        con.execute(f"CREATE OR REPLACE TABLE {name} AS SELECT * FROM '{t / (name + '.parquet')}'")
+    _ONE.clear()
+    _ONE["con"] = con
+    for r in q(con, "SELECT * FROM measures"):
+        _ONE.setdefault((r["measure"], r["subject"], r["period_end"], r["term"], r["view"], r["breakdown_key"],
+                         r["counterparty"], r["financing_policy"]), r)
     # nom d'affichage d'un groupe de contrepartie : la dénomination telle qu'écrite dans la pièce
     for ref, name in con.execute("""SELECT m.ref, min(e.name) FROM entities m JOIN entities e
                                     ON e.entity_id = m.entity_id AND e.record_kind = 'entity'
@@ -311,9 +318,16 @@ def last_years(con, g, n=2):
     return sorted(r["period_end"] for r in rows)
 
 
+_ONE = {}      # première ligne de measures par clé de one(), dans l'ordre de la table (voir load)
+
+
 def one(con, measure, g, pe, term=NONE, view="as_known", breakdown=NONE, counterparty=NONE, policy=NONE):
     if isinstance(term, tuple):
         term, breakdown = term
+    key = (measure, g, str(pe), term, view, breakdown, counterparty, policy)
+    if _ONE.get("con") is con and all(isinstance(x, str) for x in key):
+        r = _ONE.get(key)                        # même ligne que la requête, sans relire la table
+        return dict(r) if r is not None else None
     r = q(con, """SELECT * FROM measures WHERE measure = ? AND subject = ? AND period_end = ? AND term = ? AND view = ?
                   AND breakdown_key = ? AND counterparty = ? AND financing_policy = ?""",
           measure, g, str(pe), term, view, breakdown, counterparty, policy)
@@ -655,7 +669,8 @@ def lender_section(con, T):
     for subj in sorted({k[0] for k in by if k[0].startswith("CP:")}):
         m = q(con, """SELECT m.ref, min(m.common_control_start) AS cc, min(m.legal_date) AS ld FROM entities e
                       JOIN entities m ON m.entity_id = e.entity_id AND m.record_kind = 'membership'
-                      WHERE e.record_kind = 'entity' AND e.normalized_name = ? AND m.ref NOT LIKE 'CP:%' GROUP BY 1""",
+                      WHERE e.record_kind = 'entity' AND e.normalized_name = ? AND m.ref NOT LIKE 'CP:%' GROUP BY 1
+                      ORDER BY 1""",
               subj[3:])
         for r in m:
             notes.append(f"{group_label(subj)} appartient au groupe {group_label(r['ref'])}"
@@ -1577,7 +1592,8 @@ def labs_ledger_section(con, T):
     edges = q(con, """SELECT l.*, o.accession, o.form FROM links l LEFT JOIN observations o
                       ON o.obs_key = json_extract_string(l.evidence_keys, '$[0]')
                       WHERE l.link_kind = 'edge' AND coalesce(l.elimination_status, '') <> 'eliminated'
-                        AND ((l.from_group LIKE 'LAB:%' AND l.to_group NOT LIKE 'LAB:%') OR (l.to_group LIKE 'LAB:%' AND l.from_group NOT LIKE 'LAB:%'))""")
+                        AND ((l.from_group LIKE 'LAB:%' AND l.to_group NOT LIKE 'LAB:%') OR (l.to_group LIKE 'LAB:%' AND l.from_group NOT LIKE 'LAB:%'))
+                      ORDER BY l.link_key""")
     tagged = labs_tagged_cells(con)
     L = ["## Grand livre des laboratoires (D-0060, volet 4)", ""]
     L.append("Pour chaque laboratoire et chaque groupe qui a une arête avec lui : les instruments qui les lient, dans le sens des "
@@ -2139,42 +2155,74 @@ RULE_TEXT = {
                       "(is_tagged = false)"}
 
 
+MEASURE_PK = ("measure", "subject", "counterparty", "period_start", "period_end", "view", "as_of", "term",
+              "breakdown_key", "financing_policy", "constant_perimeter", "variant")
+
+
+def _by_key(con, table, key_col, cols, keys):
+    """Lignes d'une table pour une liste de clés uniques, en une requête : {clé: ligne}."""
+    if not keys:
+        return {}
+    rows = con.execute(f"SELECT {', '.join(cols)} FROM {table} WHERE {key_col} IN (SELECT unnest(?::VARCHAR[]))",
+                       [sorted(keys)]).fetchall()
+    return {r[0]: r for r in rows}
+
+
 def numbers_csv(con, rows, path):
-    """Chaque nombre publié, avec l'accession et l'emplacement de chacun de ses termes."""
+    """Chaque nombre publié, avec l'accession et l'emplacement de chacun de ses termes. Les cellules, les
+    preuves des liens et les termes se lisent d'un bloc (une requête par table, et non quatre par nombre) ;
+    l'ordre des termes reste celui des requêtes d'avant (clé du fait, puis clé de l'observation)."""
+    cell = {tuple(r[:12]): (r[12], r[13]) for r in
+            con.execute(f"SELECT {', '.join(MEASURE_PK)}, lineage, flags FROM measures").fetchall()}
+    evidence = dict(con.execute("SELECT link_key, evidence_keys FROM links").fetchall())
+    plan = []
+    for r in rows:
+        fkeys, okeys, found = [], [], False
+        if r["kind"] == "measure":
+            k = json.loads(r["key"])
+            key = tuple(k[x] for x in MEASURE_PK)
+            c = cell.get(key) if all(isinstance(x, str) for x in key) else _cell_by_query(con, key)
+            if c:
+                found = True
+                lin = json.loads(c[0]) if c[0] else []
+                fl = json.loads(c[1]) if c[1] else {}
+                fkeys = [x for x in lin if not x.startswith("obs:")]
+                okeys = [x[4:] for x in lin if x.startswith("obs:")]
+                for lk in fl.get("links") or []:
+                    ev = evidence.get(lk) if isinstance(lk, str) else _evidence_by_query(con, lk)
+                    if ev:
+                        okeys += json.loads(ev)
+        plan.append((r, found, fkeys, okeys))
+    facts = _by_key(con, "facts", "fact_key", ("fact_key", "accession", "locator", "is_tagged", "tier"),
+                    {f for _, ok, fk, _ in plan if ok for f in fk})
+    obs = _by_key(con, "observations", "obs_key", ("obs_key", "accession", "locator", "tier"),
+                  {o for _, ok, _, ks in plan if ok for o in ks})
     with open(path, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["document", "token", "kind", "cell_key", "field", "value", "text", "term_key", "accession",
                     "locator", "is_tagged", "tier"])
-        for r in rows:
+        for r, found, fkeys, okeys in plan:
             terms = []
-            if r["kind"] == "measure":
-                k = json.loads(r["key"])
-                c = q(con, """SELECT lineage, flags FROM measures WHERE measure = ? AND subject = ? AND counterparty = ?
-                              AND period_start = ? AND period_end = ? AND view = ? AND as_of = ? AND term = ?
-                              AND breakdown_key = ? AND financing_policy = ? AND constant_perimeter = ? AND variant = ?""",
-                      *[k[x] for x in ("measure", "subject", "counterparty", "period_start", "period_end", "view", "as_of",
-                                       "term", "breakdown_key", "financing_policy", "constant_perimeter", "variant")])
-                if c:
-                    lin = json.loads(c[0]["lineage"]) if c[0]["lineage"] else []
-                    fl = json.loads(c[0]["flags"]) if c[0]["flags"] else {}
-                    fkeys = [x for x in lin if not x.startswith("obs:")]
-                    okeys = [x[4:] for x in lin if x.startswith("obs:")]
-                    for lk in fl.get("links") or []:
-                        ev = q(con, "SELECT evidence_keys FROM links WHERE link_key = ?", lk)
-                        if ev and ev[0]["evidence_keys"]:
-                            okeys += json.loads(ev[0]["evidence_keys"])
-                    if fkeys:
-                        for f in q(con, f"""SELECT fact_key, accession, locator, is_tagged, tier FROM facts
-                                            WHERE fact_key IN ({','.join('?' * len(fkeys))}) ORDER BY fact_key""", *fkeys):
-                            terms.append((f["fact_key"], f["accession"], f["locator"], f["is_tagged"], f["tier"]))
-                    if okeys:
-                        for o in q(con, f"""SELECT obs_key, accession, locator, tier FROM observations
-                                            WHERE obs_key IN ({','.join('?' * len(okeys))}) ORDER BY obs_key""", *okeys):
-                            terms.append((o["obs_key"], o["accession"], o["locator"], False, o["tier"]))
+            if found:
+                terms += [facts[f] for f in sorted(set(fkeys)) if f in facts]
+                terms += [(o[0], o[1], o[2], False, o[3]) for o in (obs[x] for x in sorted(set(okeys)) if x in obs)]
             if not terms:
                 terms = [(None, None, None, None, None)]
             for t in terms:
                 w.writerow([r["document"], r["token"], r["kind"], r["key"], r["field"], r["value"], r["text"], *t])
+
+
+def _cell_by_query(con, key):
+    """Repli de numbers_csv quand une clé n'est pas faite de chaînes : la requête d'avant."""
+    c = q(con, """SELECT lineage, flags FROM measures WHERE measure = ? AND subject = ? AND counterparty = ?
+                  AND period_start = ? AND period_end = ? AND view = ? AND as_of = ? AND term = ?
+                  AND breakdown_key = ? AND financing_policy = ? AND constant_perimeter = ? AND variant = ?""", *key)
+    return (c[0]["lineage"], c[0]["flags"]) if c else None
+
+
+def _evidence_by_query(con, lk):
+    ev = q(con, "SELECT evidence_keys FROM links WHERE link_key = ?", lk)
+    return ev[0]["evidence_keys"] if ev else None
 
 
 def audit(con, as_of, rows, stats):
@@ -2281,6 +2329,29 @@ TEXT_KIND_FR = {"concentration_text": "paragraphes sur les clients", "investment
                 "exhibit_body": "corps d'EX-10"}
 
 
+def edges_citing(con, first):
+    """Arêtes dont la liste des preuves contient, comme sous-chaîne, la clé d'une ligne des passes du bloc
+    text : ce que testait `evidence_keys LIKE '%' || obs_key || '%'` pour chaque arête et chaque ligne. Les
+    clés se cherchent par leur préfixe commun, position par position. None si une clé est vide ou contient
+    un caractère spécial de LIKE : la requête d'avant s'applique alors."""
+    keys = [k for (k,) in con.execute("""SELECT obs_key FROM observations WHERE pass_id >= ?
+                                         AND CAST(block_kind AS VARCHAR) NOT LIKE 'discovery_%'""", [first]).fetchall()]
+    if any(k is None or k == "" or "%" in k or "_" in k or "\\" in k for k in keys):
+        return None
+    if not keys:
+        return []
+    m = min(len(k) for k in keys)
+    by_prefix = {}
+    for k in keys:
+        by_prefix.setdefault(k[:m], []).append(k)
+    hit = []
+    for lk, ev in con.execute("SELECT link_key, evidence_keys FROM links WHERE link_kind = 'edge'").fetchall():
+        if ev is not None and any(ev.startswith(k, i) for i in range(len(ev) - m + 1)
+                                  for k in by_prefix.get(ev[i:i + m], ())):
+            hit.append(lk)
+    return hit
+
+
 def text_yield_section(con, T, stats):
     """Rendement du bloc `text` (§14) : blocs lus et restants par type, lignes rendues, et ce qui
     a changé depuis le rendement présenté à l'utilisateur avant l'ouverture."""
@@ -2310,10 +2381,16 @@ def text_yield_section(con, T, stats):
     L.append(f"- Lignes rendues dans les passes du bloc : {T.n('observations', {'text_obs': True}, obs)} observations, "
              f"{T.n('observations', {'text_abst': True}, abst)} abstentions motivées, "
              f"{T.n('observations', {'text_rejected': True}, rej)} rejetées par la validation.")
-    ed = q(con, f"""SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
-                    WHERE l.link_kind = 'edge' AND EXISTS (SELECT 1 FROM observations o WHERE o.pass_id >= ?
-                          AND CAST(o.block_kind AS VARCHAR) NOT LIKE 'discovery_%'
-                          AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""", first)
+    hit = edges_citing(con, first)
+    if hit is None:
+        ed = q(con, f"""SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
+                        WHERE l.link_kind = 'edge' AND EXISTS (SELECT 1 FROM observations o WHERE o.pass_id >= ?
+                              AND CAST(o.block_kind AS VARCHAR) NOT LIKE 'discovery_%'
+                              AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""", first)
+    else:
+        ed = q(con, """SELECT family, edge_evidence, count(DISTINCT link_key) AS n FROM links
+                       WHERE link_kind = 'edge' AND link_key IN (SELECT unnest(?::VARCHAR[])) GROUP BY 1, 2 ORDER BY 1, 2""",
+               hit)
     if ed:
         L.append("- Arêtes établies par une ligne du bloc : " + ", ".join(
             f"{r['family']} ({'montant' if r['edge_evidence'] == 'amount' else 'relation'}) "
@@ -2561,9 +2638,19 @@ def nf_discovery_lines(con, T):
 
 
 def block_stats():
+    """Blocs du catalogue et blocs lus. Ne dépend que du catalogue, de la configuration, du code et des
+    fichiers d'observations présents (non de leur contenu) : repris du mémo (D-0062) tant que rien de cela
+    ne change, la lecture du catalogue entier coûtant à elle seule plusieurs secondes."""
+    import inspect
+    from . import memo
+    read = {p.stem for p in config.OBS_DIR.glob("*.jsonl") if not p.name.endswith(".rejected.jsonl")}
+    key = memo.digest([inspect.getsource(_block_stats), sorted(read)])
+    return memo.Memo(memo.inputs_fingerprint()).value("render_block_stats", lambda: _block_stats(read), key=key)
+
+
+def _block_stats(read):
     from . import reader
     cat = {b["content_key"]: b for b in reader.load_catalog()}
-    read = {p.stem for p in config.OBS_DIR.glob("*.jsonl") if not p.name.endswith(".rejected.jsonl")}
     by_item = Counter()
     for k, b in cat.items():
         if k in read and b["block_kind"].startswith("item_8k_"):

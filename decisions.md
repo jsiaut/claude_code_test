@@ -2098,3 +2098,33 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - la première exécution sans mémo des citations les recherche toutes : environ 9 min de plus ;
   - le rendu (11 min) n'est pas touché ;
   - tests unitaires : 231, tous passés.
+- **D-0063 — Rendu plus rapide, mêmes fichiers : tables lues en mémoire, requêtes répétées regroupées, ordre fixé de deux requêtes qui n'en avaient pas.** (1) Décision de l'utilisateur, le 2026-10-20 : « Oui occupe-toi aussi du rendu ». Elle répond au rapport de D-0062, qui proposait la même méthode pour le rendu (11 min). Aucune règle de rendu ne change, aucune requête réseau ; l'as_of reste le 2026-10-07.
+
+  (2) Constat du profil (667 s, soit 11 min 11 s) : 596 s dans les requêtes DuckDB. Les huit tables étaient des vues sur les fichiers Parquet, et chaque requête relisait et décompressait le fichier : 22 ms pour une requête ponctuelle sur `measures`. Les postes :
+  - `audit/numbers.csv`, 304 s : quatre requêtes par nombre publié (14 531) ;
+  - `series.md`, 137 s, et la section des fragilités, 56 s : une requête `one()` par case de tableau, environ 15 000 ;
+  - rendement du bloc text, 65 s : une requête comparait chaque arête à chaque ligne par `LIKE '%…%'`, environ 240 millions de comparaisons ;
+  - statistiques du catalogue, 40 s : le catalogue entier relu.
+
+  (3) Corrections, même résultat :
+  - les tables sont chargées en mémoire une fois, dans l'ordre du fichier : 22 ms → 2,6 ms par requête ponctuelle ;
+  - `one()` lit un index construit au chargement : la première ligne de la table pour sa clé, comme la requête, et chaque appel reçoit sa copie ;
+  - `numbers_csv` lit les cellules, les preuves des liens, les faits et les observations d'un bloc, une requête par table ; l'ordre des termes ne change pas ;
+  - arêtes citées par le bloc text : les clés des lignes se cherchent par leur préfixe commun, avec la sémantique de sous-chaîne du `LIKE` ; si une clé contient un caractère spécial de `LIKE`, la requête d'avant s'applique ;
+  - statistiques du catalogue reprises du mémo de D-0062 tant que le catalogue, la configuration, le code et la liste des fichiers d'observations ne changent pas.
+
+  (4) Ordre fixé, constat lié. Deux requêtes sans `ORDER BY` rendaient leurs lignes dans l'ordre de DuckDB, qui varie d'une exécution à l'autre :
+  - les groupes d'une même entité dans « Appartenances datées » (VMware, Inc., groupes Broadcom et Dell) : le rendu de l'ancien code, profilé le 2026-10-20, les a sortis dans l'ordre inverse de celui du dépôt ;
+  - les arêtes du grand livre des laboratoires, dont la dernière de chaque instrument s'affiche.
+  Elles prennent l'ordre de la clé du groupe et de celle du lien, qui est aussi celui du dernier rendu du dépôt.
+
+  (5) Vérifications, sur les mêmes tables :
+  - `synthesis.md`, `delta.md`, `series.md` et les fichiers de `audit/` sont identiques à l'octet près à ceux de l'ancien code, hormis la ligne de VMware (point 4) ;
+  - ils sont identiques à ceux du dépôt, hormis `delta.md`, qui prend les décisions D-0062 et D-0063 et la durée du dernier assemblage ;
+  - deux rendus successifs donnent les mêmes fichiers ;
+  - 4 tests d'équivalence (`tests/test_render_speed.py`) : l'index de `one()` contre la requête, `numbers_csv` contre son ancienne version, les arêtes citées contre la requête `LIKE`, une clé contenue dans une autre comprise ; 235 tests passés.
+
+  (6) Durées :
+  - rendu : 11 min 11 s → 36 s à mémo du catalogue vide, 24 à 30 s ensuite ;
+  - cycle après une lecture : réassemblage 2 min 15 s et rendu 30 s, contre 33 min 52 s et 11 min 11 s ;
+  - après un redémarrage de la machine, le premier réassemblage prend 4 min, le cache disque étant vide.
