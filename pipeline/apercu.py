@@ -111,8 +111,9 @@ def main(as_of, use_cache=True):
                 x = o[k]
                 print(f"    − {x['subject']} / {x['counterparty']} {_fmt(x['period_end'])} {x['status']}")
             for k, v in list(c.items())[:3]:
+                cols = [f"{col} {_fmt(x)} → {_fmt(y)}" for col, (x, y) in v.items() if col not in ("flags", "lineage")]
                 print(f"    ~ {k[1]} / {k[2]} {_fmt(k[4])} : " +
-                      " ; ".join(f"{col} {_fmt(x)} → {_fmt(y)}" for col, (x, y) in v.items() if col != "flags"))
+                      (" ; ".join(cols) if cols else "preuves seulement (" + ", ".join(v) + ")"))
     for f in ("apercu.duckdb", "apercu.duckdb.wal"):     # base de travail de l'aperçu, sans usage ensuite
         (config.DB_DIR / f).unlink(missing_ok=True)
     out = config.ROOT / "work" / "tmp" / "apercu.json"
