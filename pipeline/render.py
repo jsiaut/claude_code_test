@@ -1426,6 +1426,16 @@ LAB_NAT_FR = {"financing_cash": "versement", "investment_carrying_amount": "vale
               "consideration_payable_to_customer": "contrepartie payable au client", "revenue_recognized_gross": "revenu (brut)",
               "revenue_recognized_net": "revenu (net)", "guarantee_amount": "montant garanti", "lease_payment": "loyers",
               "prepayment": "avance", "other": "autre", "none": "sans nature"}
+LAB_BASIS_FR = {"fair_value": "juste valeur", "carrying_amount": "valeur au bilan", "cost": "coût", "equity_method": "mise en équivalence",
+                "undiscounted": "non actualisé", "discounted": "actualisé", "commitment_cap": "plafond", "outstanding_balance": "encours",
+                "maximum_exposure": "exposition maximale"}
+LAB_QUAL_FR = {"at_most": "au plus ", "approximately": "environ ", "up_to": "jusqu'à ", "more_than": "plus de ", "at_least": "au moins "}
+LAB_EVENT_FR = {"funding": "versement", "recognition": "comptabilisation", "measurement_change": "variation de valeur",
+                "observable_price_adjustment": "réévaluation sur prix observables", "conversion": "conversion", "commitment": "engagement",
+                "signing": "signature", "amendment": "avenant", "repayment": "remboursement", "payment": "paiement",
+                "impairment": "dépréciation", "termination": "résiliation"}
+LAB_STAGE_FR = {"signed": "signé", "drawn_or_paid": "versé ou tiré", "recognized": "comptabilisé", "settled": "réglé",
+                "intent_non_binding": "intention sans engagement", "announced": "annoncé"}
 
 
 def duration_fr(v):
@@ -1443,13 +1453,18 @@ def lab_value(T, c):
                                  "breakdown_key", "financing_policy", "constant_perimeter", "variant")}
         return T._reg("measure", key, "value_text", c["value_text"], duration_fr(c["value_text"]))
     u = c.get("unit") or ""
+    concept = (c.get("breakdown_key") or "").split("|")[0].split(":")[-1]
+    v = Decimal(str(c["value"])) if c["value"] is not None else None
+    dec = 0 if v is None or v == v.to_integral_value() else 2
+    if u == "USD" and "NumberOf" in concept:          # nombre balisé en dollars par le déposant
+        return T.m(c, fmt="n", dec=dec) + " (unité balisée : USD)"
     if u == "USD":
         return T.m(c)
     if u == "pure":
         return T.m(c, fmt="pct", dec=1)
-    v = Decimal(str(c["value"])) if c["value"] is not None else None
-    dec = 0 if v is None or v == v.to_integral_value() else 2
     txt = T.m(c, fmt="n", dec=dec)
+    if u in ("item", "items", "segment"):
+        return txt
     if u == "shares":
         return txt + " actions"
     if u in ("MWh", "megawatt"):
@@ -1613,22 +1628,30 @@ def labs_ledger_section(con, T):
                 L.append("| --- | --- | --- | --- | ---: | --- | --- | ---: |")
                 for c in sorted(pc, key=lambda c: (c["fl"].get("direction"), c["fl"].get("family"), c["breakdown_key"])):
                     fl = c["fl"]
+                    src = q(con, """SELECT o.amount_qualifier, o.event_type FROM links l JOIN observations o
+                                     ON o.obs_key = json_extract_string(l.evidence_keys, '$[0]') WHERE l.link_key = ?""",
+                            fl.get("link_key"))
+                    qual, evt = (src[0]["amount_qualifier"], src[0]["event_type"]) if src else (None, None)
                     nat = LAB_NAT_FR.get(fl.get("amount_nature"), fl.get("amount_nature"))
-                    if fl.get("measurement_basis") not in (None, NONE):
-                        nat += f" ({fr(fl['measurement_basis'])})"
-                    val = lab_value(T, c)
-                    L.append(f"| {LAB_DIR_FR.get(fl.get('direction'), fl.get('direction'))} | {fl.get('instrument_key') or '(arête seule)'} | "
+                    basis = LAB_BASIS_FR.get(fl.get("measurement_basis"), fl.get("measurement_basis"))
+                    if basis not in (None, NONE) and basis not in nat:
+                        nat += f", {basis}"
+                    if fl.get("amount_nature") == "other" and LAB_EVENT_FR.get(evt):
+                        nat += f" ({LAB_EVENT_FR[evt]})"
+                    val = LAB_QUAL_FR.get(qual, "") + lab_value(T, c)
+                    ik = fl.get("instrument_key") or "arête sans clé d'instrument"
+                    L.append(f"| {LAB_DIR_FR.get(fl.get('direction'), fl.get('direction'))} | {ik} | "
                              f"{LAB_EDGE_FR.get(fl.get('edge_type'), fl.get('edge_type'))} | {nat} | {val} | {c['period_end']} | "
                              f"{fl.get('form')} {fl.get('accession')} | {T.n('links', {'lab_ledger_amounts': c['breakdown_key'], 'pair': [lab, p]}, fl.get('n_amounts'))} |")
             with_cell = {c["fl"].get("instrument_key") for c in pc}
             rel = defaultdict(list)
             for e in es:
                 if e["amount"] is None and (e["instrument_key"] or None) not in with_cell:
-                    rel[e["instrument_key"] or "(arête seule)"].append(e)
+                    rel[e["instrument_key"] or "arête sans clé d'instrument"].append(e)
             if rel:
                 L.append("")
                 L.append("Sans montant admissible : " + " ; ".join(
-                    f"{ik} ({LAB_EDGE_FR.get(v[-1]['edge_type'], v[-1]['edge_type'])}, {fr(v[-1]['stage'])}, "
+                    f"{ik} ({LAB_EDGE_FR.get(v[-1]['edge_type'], v[-1]['edge_type'])}, {LAB_STAGE_FR.get(v[-1]['stage'], v[-1]['stage'])}, "
                     f"{v[-1]['form'] or '?'} {v[-1]['accession'] or '?'})" for ik, v in sorted(rel.items(), key=lambda kv: str(kv[0]))) + ".")
             L.append("")
     return L
