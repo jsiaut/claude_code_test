@@ -2273,3 +2273,91 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - paires nouvelles : Alphabet → Fluidstack Ltd. (6 arêtes, structure financière), TeraWulf → Fluidstack Ltd. et TeraWulf → FS CS I LLC (une arête chacune). Toutes sont `causalité non établie`, avec un contrôle bilatéral C5 non testable ; Cipher → Amazon passe de 1 à 3 arêtes et Hut 8 → Fluidstack Ltd. de 2 à 3 ;
   - cellules de rang 1 : 39 684 → 39 798 calculées ; motifs `historique tronqué` 8 153 → 8 389 ;
   - tests : 245, tous passés.
+- **D-0065 — Volet 5 : marques de tiers des non-cotés du modèle dans les Form N-PORT Data Sets (parts d'OpenAI, d'Anthropic et des autres, en un seul passage). Règles fixées avant tout tirage.** (1) Décision de l'utilisateur, le 2026-10-20 : « Fais plutôt le volet 5 et profites-en pour scanner en un seul passage tous les non-côtés du modèle ». C'est le volet 5 du remue-méninges de D-0059 (point 1) : « Quelques fonds enregistrés (fonds à intervalle de capital-risque, fonds fermés, grands fonds actions) détiennent des actions non cotées d'OpenAI et d'Anthropic. On obtiendrait une valeur déclarée par action, par fonds et par mois : une marque de tiers, comme la série obligataire de SoftBank. […] Astuce : scanner en un seul passage tous les non-cotés du modèle (xAI, Cerebras, Crusoe, Lambda, Nscale…) ». Il passe avant les trois propositions du rapport de D-0064, qui restent des propositions. Aucun bloc n'est lu : le volet est fait de code, d'un tirage et de deux mesures. Réseau : les 28 archives de D-0058 sont tirées de nouveau (11,94 Go en D-0058), par le client SEC unique et journalisé. L'as_of reste le 2026-10-07.
+
+  (2) Constat, sans requête, sur les tables du commit 5c05d30 et sur le cache :
+  - les extraits de D-0058 (point 8) ne gardent que les positions de SoftBank, soit 31 746 lignes. Aucune autre ligne des archives n'est en cache : il faut les tirer de nouveau ;
+  - registre : 1 943 entités, 161 alias et 1 475 appartenances. 1 392 dénominations légales servent déjà à rattacher les positions des BDC (D-0022, D-0045) : nom normalisé, mot de forme juridique final, au moins deux mots ;
+  - non-cotés que nomme le registre, entre autres :
+    - laboratoires : OpenAI (OpenAI, OpenAI Global, LLC, OpenAI Group PBC, OpenAI OpCo, LLC, OpenAI Infra Holdings, LLC) et Anthropic (Anthropic, Anthropic PBC) ;
+    - groupes non déposants : Lambda (Lambda, Inc.) et Nscale (28 entités ; Nscale Limited a déposé un S-1 et n'a pas de symbole au 2026-10-07) ;
+    - groupe SpaceX : X.AI Holdings Corp., X.AI Corp., X.AI LLC, X Corp. et X Holdings Corp. ;
+    - contreparties : Crusoe Energy Systems, Inc., Fluidstack Ltd. et cinq sociétés de Fluidstack, Cohere, Inc., Hugging Face, Inc., Inflection AI, Inc., ANYSPHERE, INC. D'autres n'y figurent que sous un nom sans forme juridique (« Scale AI », « Mistral AI », « Vantage Data Centers », « Crusoe », « xAI »), qui ne rattache rien (D-0022) ;
+  - cotation, d'après la liste des symboles d'EDGAR du 2026-10-07 (`company_tickers.json`, en cache) : 125 entités du registre ont un symbole. Parmi elles :
+    - Cerebras Systems Inc. (CBRS), dont aucune submission n'est en cache ;
+    - SpaceX, dont le premier 424B4 est du 2026-06-12, et CoreWeave, du 2025-03-31.
+
+    Leurs positions d'avant ces dates sont celles d'un non-coté ;
+  - codes des tables, vérifiés sur les extraits de SoftBank : ASSET_CAT (EC, DBT, LON, DCR, DE, SN, ABS-MBS, OTHER), UNIT (NS, PA, NC, OU), FAIR_VALUE_LEVEL (1, 2, 3, N/A), ISSUER_TYPE (CORP, OTHER, NUSS). Le formulaire (Items C.4 et C.8) nomme les autres catégories, dont « equity-preferred » et « private fund ». Il précise que « N/A » s'emploie quand la valeur liquidative sert d'expédient pratique.
+
+  (3) Sources et tirage :
+  - les 28 archives trimestrielles de la page en cache (D-0058, point 27), du 2019-10-01 à l'as_of. Une archive dont l'en-tête Last-Modified est postérieur à l'as_of n'est ni gardée ni scannée (`not_public`) ;
+  - chacune est tirée par le client unique, scannée dans un processus à part, puis effacée, de la plus récente à la plus ancienne. L'archive suivante se tire pendant le scan de la précédente. Il n'y a donc jamais qu'un processus réseau, et au plus deux archives sur le disque ;
+  - extraits sous `cache/datasets/nport/{archive}/unlisted/`. Le manifeste `cache/datasets/nport/unlisted_manifest.jsonl` garde, pour chaque archive, l'en-tête Last-Modified et celui de D-0058, la taille, l'empreinte, la version du lexique et les décomptes ;
+  - les extraits de SoftBank, leur manifeste et la mesure `nport_price_to_par` ne changent pas.
+
+  (4) Lexique, tiré du registre du commit 5c05d30 et de `config.yaml`, figé avant le premier tirage. Sa version est consignée au manifeste. Il comprend :
+  - (a) les dénominations légales des entités et alias confirmés, selon la règle des BDC ;
+  - (b) leurs bases, c'est-à-dire la dénomination sans sa forme juridique finale, quand il reste au moins deux mots (« crusoe energy systems ») ;
+  - (c) les termes des lexiques de la configuration : laboratoires, découverte (`seed`, `confirmed`) et piste des non-déposants. Ce sont les seuls noms courts ;
+  - (d) les noms d'entités confirmées sans forme juridique, quand ils ont au moins deux mots (« scale ai », « vantage data centers »). Une description (« a syndicate of banks ») ou une suite de parties jointes par « and » n'en est pas une.
+
+  Chaque chaîne vaut aussi sous sa variante de ponctuation, le point retiré plutôt que remplacé par une espace (« X.AI » et « XAI »). La comparaison se fait sur les noms normalisés (§10.2), en mots entiers, sans casse. Un alias court (« OAI », « Meta ») n'est pas un terme : il ne vaut que dans le document qui le définit (D-0021).
+
+  (5) Lignes gardées : une position dont le nom d'émetteur (ISSUER_NAME) ou l'intitulé (ISSUER_TITLE) contient une chaîne du lexique, et qui n'est évaluée ni au niveau 1 ni au niveau 2 de la hiérarchie de juste valeur (Item C.8). Le niveau est donc 3, « N/A » ou vide : ce sont les positions que le fonds évalue lui-même. Une position des niveaux 1 et 2 est comptée, par entité ou chaîne, par niveau et par catégorie, mais elle n'est pas gardée. Sont gardés aussi les identifiants, les caractéristiques de dette, le dépôt, le déclarant et la série des positions gardées.
+
+  (6) Rattachement, à l'assemblage. C'est la règle des BDC (D-0022, D-0045), appliquée au seul nom d'émetteur :
+  - le nom doit commencer par une dénomination légale (a), au besoin sous la variante de ponctuation. La plus longue l'emporte ;
+  - un autre mot de forme juridique dans les quatre mots qui suivent, avant tout mot d'instrument, laisse le nom sans rattachement ;
+  - le groupe est celui de l'entité à la date de portefeuille (`group_at`, vue `as_known`) ;
+  - l'intitulé ne rattache jamais rien. Un véhicule qui détient un laboratoire n'est pas le laboratoire ;
+  - un nom gardé par (b), (c) ou (d) seulement est un nom voisin. Il n'est jamais rattaché sans un extrait (D-0021, D-0022). Il sort en `pending_entity`, avec le nombre de positions et de séries et la valeur déclarée à sa dernière date ;
+  - un véhicule nommé d'après un laboratoire est la mention que décrit D-0036 (point 4). Il est compté comme un nom voisin, jamais comme une part du laboratoire.
+
+  (7) Cotation :
+  - une entité dont le CIK porte un symbole dans la liste du 2026-10-07 est cotée à partir du dépôt de son premier prospectus 424B4 ou 424B1, lu dans ses submissions EDGAR. Sans un tel prospectus, elle est cotée sur toute la période ;
+  - ses positions n'entrent dans la mesure que si leur date de portefeuille précède cette date ;
+  - les submissions se lisent dans le cache. Elles se tirent une fois, après le scan, pour les seules entités cotées qui portent des positions de la mesure ;
+  - une entité sans symbole est non cotée aux États-Unis. Le niveau 3 dit alors à lui seul que le fonds n'a pas de prix observable.
+
+  (8) Mesures. Ce sont deux séries descriptives par nœud, des marques déclarées par des tiers (perspective `counterparty`). Ce n'est jamais une valorisation du nœud, ni un fait comptable, ni une probabilité de défaut. Elles n'entrent dans aucune mesure de financement, ni dans l'exposition, les paires, les cycles ou l'annexe F, ni dans aucun agrégat entre nœuds.
+  - `nport_equity_mark`, par nœud, fonds (la série, à défaut le déclarant), titre et date de portefeuille : la valeur déclarée par action, dans la monnaie du titre. C'est la valeur en dollars convertie par le taux déclaré (D-0058, point 28). Positions retenues :
+    - rattachées (point 6) et non cotées à leur date (point 7) ;
+    - en actions ordinaires ou de préférence (EC, EP), en nombre d'actions (NS), longues, de solde positif ;
+    - au niveau 3 ;
+    - au dernier dépôt de chaque série pour cette date : un amendement remplace le dépôt (D-0058, points 8 et 28).
+
+    Le titre est l'ISIN, à défaut le CUSIP, à défaut l'intitulé normalisé, précédé de la catégorie. Les positions d'un même titre dans un même dépôt s'additionnent. Sont publiés avec la valeur : le nombre d'actions, la valeur en dollars, la catégorie, l'intitulé, le titre restreint (Item C.6), les noms de la série et du déclarant, et l'accession ;
+  - `nport_equity_held`, par nœud et par trimestre civil : la somme des valeurs en dollars des positions de la mesure précédente, au dernier rapport de chaque série dans le trimestre. Sont publiés avec la somme : le nombre de séries et de positions, et les dates de portefeuille. C'est ce que les fonds enregistrés déclarent détenir, jamais une valeur du nœud ;
+  - le registre des mesures et `schema.sql` sont mis à jour (test `test_schema_sync`).
+
+  (9) Hors des mesures, et comptés :
+  - les positions des niveaux 1 et 2 (cotées, ou évaluées sur des données observables) ;
+  - les positions rattachées hors actions (dette, prêts, dérivés, autres) et les actions en autres unités (OU) ;
+  - les positions d'une entité cotée à leur date ;
+  - les noms voisins et les véhicules (point 6) ;
+  - les positions vendeuses.
+
+  (10) Données personnelles (D-0051 ; D-0058, point 10) : les tables lues nomment des fonds et des émetteurs, jamais des signataires. Aucune personne physique n'est un nœud. Un nom d'émetteur qui serait celui d'une personne n'est ni rattaché ni cité.
+
+  (11) Réseau (§9.5) : un seul client et un seul User-Agent, envoyé aux seuls hôtes de la SEC ; au plus 5 requêtes par seconde ; jamais deux processus réseau à la fois ; une pause d'au moins dix minutes après un 403 ; chaque requête au journal.
+
+  (12) Code, avant tout tirage :
+  - `pipeline/nport.py` : lexique, scan, tirage avec recouvrement, positions, rattachement, cotation, mesures, exclusions et volume ;
+  - registre des mesures et `schema.sql` ;
+  - `assemble` : cellules et exclusions du scan ;
+  - rendus : `synthesis.md` et `series.md` ;
+  - tests (`test_nport`).
+
+  (13) Ordre et commits :
+  - la décision, la configuration et le code, avec leurs tests, poussés avant toute requête ;
+  - tirage et scan des 28 archives. Le volume est consigné ici avant tout calcul, en décomptes seulement, avec les constats d'identité ; toute correction est fixée avant le calcul. Commit ;
+  - submissions des entités cotées concernées (point 7) ;
+  - réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (14) Limites connues avant calcul :
+  - un non-coté sans dénomination légale au registre n'est pas rattaché ; seuls ses noms voisins sont comptés ;
+  - une variante de forme juridique (« LLC » pour « Inc. ») ne rattache pas ;
+  - une position privée déclarée au niveau 2 n'entre pas ;
+  - deux fonds peuvent détenir deux catégories d'actions différentes, dont les valeurs par action ne se comparent pas sans le titre ;
+  - les noms ajoutés au registre après le scan ne sont pas scannés. Une archive scannée avec un lexique antérieur est signalée (`not_processed`).

@@ -278,6 +278,9 @@ MEASURES = {
     "form_d_offering_amount": (2, [NONE], "instant", "14"),
     # D-0058, volet F : valorisation des obligations de SoftBank déclarée par des fonds (Form N-PORT Data Sets)
     "nport_price_to_par": (2, [NONE], "instant", "14"),
+    # D-0065 : marques de tiers des non-cotés du modèle (Form N-PORT Data Sets) : valeur par action, valeur détenue
+    "nport_equity_mark": (2, [NONE], "instant", "14"),
+    "nport_equity_held": (2, [NONE], "instant", "14"),
     # D-0060 : OpenAI et Anthropic vus par les déposants (bloc labs) : faits balisés, grand livre par laboratoire
     "lab_tagged_value": (2, [NONE], "window", "14"),
     "lab_ledger": (2, [NONE], "window", "14"),

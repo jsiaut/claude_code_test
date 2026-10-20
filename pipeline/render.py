@@ -529,6 +529,7 @@ def synthesis(con, as_of, stats):
     L += lender_liabilities_section(con, T)
     L += montages_section(con, T)
     L += nport_section(con, T)
+    L += unlisted_section(con, T)
     L += labs_tagged_section(con, T)
     L += labs_ledger_section(con, T)
     # Évolution et non établi
@@ -1193,6 +1194,95 @@ def nport_section(con, T):
     L.append(f"Titres sans position déclarée dans ces trois mois (remboursés, rachetés ou cédés par les fonds) : "
              f"{T.n('measures', {'measure': 'nport_price_to_par', 'securities_without_recent_position': True}, len(gone))}.")
     L.append("")
+    return L
+
+
+def unlisted_cells(con):
+    """Cellules de D-0065, par nœud : valeurs par action (nport_equity_mark) et valeurs détenues (nport_equity_held)."""
+    marks, held = defaultdict(list), defaultdict(list)
+    for r in q(con, """SELECT * FROM measures WHERE measure IN ('nport_equity_mark', 'nport_equity_held') AND view = 'as_known'
+                       ORDER BY subject, period_end, counterparty, breakdown_key"""):
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+        (marks if r["measure"] == "nport_equity_mark" else held)[r["subject"]].append(r)
+    return marks, held
+
+
+def per_share(T, r):
+    return T.m(r, fmt="num", dec=2) + (f" {r['unit']}" if r.get("unit") and r.get("value") is not None else "")
+
+
+def unlisted_section(con, T):
+    """D-0065 : marques de tiers des non-cotés du modèle, déclarées par les fonds enregistrés (Form N-PORT)."""
+    marks, held = unlisted_cells(con)
+    if not marks and not held:
+        return []
+    L = ["## Non-cotés du modèle valorisés par les fonds (Form N-PORT)", ""]
+    L.append("Valeur par action que des fonds enregistrés déclarent pour les actions d'un nœud du modèle qu'ils évaluent "
+             "eux-mêmes (niveau 3 de la hiérarchie de juste valeur), au dernier dépôt de chaque série pour la date de "
+             "portefeuille, et somme de ces valeurs par trimestre civil (Form N-PORT Data Sets ; D-0065). Une position n'est "
+             "rattachée que si le nom d'émetteur déclaré commence par une dénomination légale du registre, et une entité cotée "
+             "n'y entre qu'avant son introduction en bourse. Ce sont des marques déclarées par des tiers (perspective "
+             "`counterparty`) : jamais une valorisation du nœud ni un fait comptable, hors des mesures de financement, de "
+             "l'exposition, des paires et de l'annexe F. Deux fonds peuvent détenir deux catégories d'actions différentes : "
+             "leurs valeurs par action ne se comparent qu'à titre égal. Le détail par fonds et par titre est dans `series.md`.")
+    L.append("")
+    L.append("| Nœud | Dernier trimestre | Valeur détenue déclarée | Séries | Valeur par action à la dernière date (plus basse – plus haute) | Premier trimestre (valeur détenue) |")
+    L.append("| --- | --- | ---: | ---: | --- | --- |")
+    order = sorted(held, key=lambda s: (-(Decimal(str(held[s][-1]["value"])) if held[s][-1]["value"] is not None else 0), s))
+    for s in order:
+        hs, ms = held[s], [m for m in marks.get(s, []) if m["value"] is not None]
+        h = hs[-1]
+        last = max((m["period_end"] for m in ms), default=None)
+        at = [m for m in ms if m["period_end"] == last]
+        lo = min(at, key=lambda m: (Decimal(str(m["value"])), m["counterparty"], m["breakdown_key"])) if at else None
+        hi = max(at, key=lambda m: (Decimal(str(m["value"])), m["counterparty"], m["breakdown_key"])) if at else None
+        rng = (f"{per_share(T, lo)} – {per_share(T, hi)} ({last})" if lo is not None and lo is not hi
+               else (f"{per_share(T, lo)} ({last})" if lo is not None else "—"))
+        L.append(f"| {group_label(s)} | {h['period_end']} | {T.m(h)} | "
+                 f"{T.n('measures', {'nport_unlisted_series': [s, h['period_end']]}, h['fl'].get('series'))} | {rng} | "
+                 f"{hs[0]['period_end']} ({T.m(hs[0])}) |")
+    L.append("")
+    ex = q(con, """SELECT reason, count(*) AS n FROM exclusions WHERE item_key LIKE 'nport_unlisted:%' GROUP BY 1 ORDER BY 1""")
+    if ex:
+        L.append("Exclusions du scan : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'nport_unlisted': r['reason']}, r['n'])}"
+                                                   for r in ex) + ". Un nom d'émetteur gardé par le lexique sans commencer par "
+                 "une dénomination légale (véhicule nommé d'après un nœud, autre forme juridique, nom commercial) est compté "
+                 "en `pending_entity`, jamais rattaché sans extrait (D-0065, point 6).")
+        L.append("")
+    return L
+
+
+def unlisted_series(con, T):
+    """D-0065 : par nœud, valeur détenue par trimestre, puis chaque fonds et titre de sa première à sa dernière date."""
+    marks, held = unlisted_cells(con)
+    L = []
+    for s in sorted(set(held) | set(marks), key=lambda x: group_label(x)):
+        L.append(f"## {group_label(s)} ({s}) : actions valorisées par les fonds (Form N-PORT)")
+        L.append("")
+        L.append("Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier "
+                 "rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud "
+                 "(D-0065, point 8).")
+        L.append("")
+        if held.get(s):
+            L.append("| Trimestre | Valeur détenue déclarée | Séries | Positions |")
+            L.append("| --- | ---: | ---: | ---: |")
+            for h in held[s]:
+                L.append(f"| {h['period_end']} | {T.m(h)} | "
+                         f"{T.n('measures', {'nport_unlisted_series': [s, h['period_end']]}, h['fl'].get('series'))} | "
+                         f"{T.n('measures', {'nport_unlisted_positions': [s, h['period_end']]}, h['fl'].get('positions'))} |")
+            L.append("")
+        by = defaultdict(list)
+        for m in marks.get(s, []):
+            by[(m["counterparty"], m["breakdown_key"])].append(m)
+        if by:
+            L.append("| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |")
+            L.append("| --- | --- | --- | --- | ---: |")
+            for (cp, bk), rs in sorted(by.items(), key=lambda kv: ((kv[1][-1]["fl"].get("series_name") or kv[0][0]), kv[0])):
+                f0, f1 = rs[0], rs[-1]
+                L.append(f"| {f1['fl'].get('series_name') or f1['fl'].get('registrant_name') or cp} | "
+                         f"{f1['fl'].get('title') or bk.split('|', 1)[-1]} ({bk.split('|', 1)[0]}) | {f0['period_end']} ({per_share(T, f0)}) | "
+                         f"{f1['period_end']} ({per_share(T, f1)}) | {T.n('measures', {'nport_unlisted_dates': [s, cp, bk]}, len(rs))} |")
+            L.append("")
     return L
 
 
@@ -2088,6 +2178,8 @@ def series(con, as_of, stats):
                 L.append(f"| {r['period_end']} | {T.m(r, fmt='pct')} | "
                          f"{T.n('measures', {'nport_series': [sec, r['period_end']]}, r['fl'].get('n_series'))} |")
             L.append("")
+    if "nport" in (config.load().get("scope") or []):
+        L += unlisted_series(con, T)
     if "labs" in (config.load().get("scope") or []):
         L += labs_tagged_series(con, T)
     if "lender_portfolio" in (config.load().get("scope") or []):

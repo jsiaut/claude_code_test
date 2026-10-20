@@ -561,6 +561,630 @@ def exclusions(as_of):
     return out
 
 
+# -- D-0065 : non-cotés du modèle, en un seul passage (volet 5 de D-0059) -------------------------------
+#
+# Lexique tiré du registre et de la configuration, figé au premier tirage ; positions gardées hors des niveaux 1
+# et 2 de la hiérarchie de juste valeur ; rattachement par le seul nom d'émetteur, qui commence par une
+# dénomination légale (règle des BDC) ; mesures nport_equity_mark (valeur par action, par fonds et par date) et
+# nport_equity_held (valeur détenue par les fonds, par trimestre civil), marques déclarées par des tiers.
+
+U_SUBDIR = "unlisted"
+U_MANIFEST = BASE / "unlisted_manifest.jsonl"
+U_TABLES = ("holding", "identifiers", "debt", "submission", "registrant", "fund")
+INNER_DOT = re.compile(r"(?<=\w)\.(?=\w)")
+PARTY_LIST = re.compile(r"^(a|an) | and ")
+
+
+def cfg_unlisted(cfg=None):
+    return cfg_nport(cfg).get("unlisted") or {}
+
+
+def dotless(name):
+    """Variante de ponctuation : le point retiré plutôt que remplacé par une espace (« X.AI » donne « xai »)."""
+    from .graph import normalize_name
+    return normalize_name(INNER_DOT.sub("", name or ""))
+
+
+def forms(name):
+    """Formes comparées d'un nom : normalisé (§10.2), puis sans ses points s'il en diffère."""
+    from .graph import normalize_name
+    a, b = normalize_name(name or ""), dotless(name)
+    return (a,) if b == a else (a, b)
+
+
+def _base(n):
+    """Dénomination normalisée sans sa ou ses formes juridiques finales (« samsung electronics co ltd »)."""
+    from .entities import LEGAL_SUFFIX
+    s = n
+    while True:
+        m = LEGAL_SUFFIX.search(s)
+        if not m or m.start() == 0:
+            return s.strip()
+        s = s[:m.start()].strip()
+
+
+def _entity_rows():
+    df = pd.read_parquet(config.ROOT / "tables" / "entities.parquet")
+    return df.astype(object).where(df.notna(), None).to_dict("records")
+
+
+def config_terms(cfg):
+    """Termes des lexiques de la configuration (D-0065, point 4, c) : laboratoires, découverte, non-déposants."""
+    d = cfg.get("discovery") or {}
+    out = list(cfg.get("labs") or [])
+    out += [x["term"] for k in ("seed", "confirmed") for x in ((d.get("lexicon") or {}).get(k) or [])]
+    out += [x["term"] for x in ((d.get("non_filer") or {}).get("lexicon") or [])]
+    return out
+
+
+def legal_forms(ent_rows):
+    """Dénominations légales de la règle des BDC (D-0022, D-0045) et variante sans points de chacune, prise
+    sur le nom d'origine : forme -> entity_id."""
+    from . import lender
+    legal = lender.legal_names(ent_rows)
+    out = dict(legal)
+    for r in ent_rows:
+        if (r["record_kind"] in ("entity", "alias") and r.get("status") != "pending"
+                and r.get("normalized_name") in legal):
+            out.setdefault(dotless(r.get("name")), legal[r["normalized_name"]])
+    return out
+
+
+def lexicon(ent_rows=None, cfg=None):
+    """Lexique du scan (D-0065, point 4) : {"legal": {forme: entity_id}, "keep": {chaîne: partie}, "version"}.
+    (a) dénominations légales ; (b) leurs bases d'au moins deux mots ; (c) termes de la configuration ; (d) noms
+    d'entités confirmées sans forme juridique, d'au moins deux mots, hors descriptions et listes de parties.
+    Chaque chaîne vaut aussi sans ses points."""
+    from .entities import LEGAL_SUFFIX
+    cfg = cfg or config.load()
+    ent_rows = _entity_rows() if ent_rows is None else ent_rows
+    legal = legal_forms(ent_rows)
+    keep = {}
+
+    def add(s, part):
+        s = (s or "").strip()
+        if s:
+            keep.setdefault(s, part)
+    for f in legal:
+        add(f, "a")
+    for f in legal:
+        b = _base(f)
+        if len(b.split()) >= 2:
+            add(b, "b")
+    for t in config_terms(cfg):
+        for f in forms(t):
+            add(f, "c")
+    for r in ent_rows:
+        if r["record_kind"] != "entity" or r.get("status") == "pending":
+            continue
+        for f in forms(r.get("name")):
+            if f and f not in legal and not LEGAL_SUFFIX.search(f) and len(f.split()) >= 2 and not PARTY_LIST.search(f):
+                add(f, "d")
+    blob = json.dumps({"legal": sorted(legal.items()), "keep": sorted(keep.items())}, ensure_ascii=False)
+    return {"legal": legal, "keep": keep, "version": "lx-" + cache.sha256(blob.encode())[:12],
+            "parts": {p: sum(1 for v in keep.values() if v == p) for p in "abcd"}}
+
+
+def finder(keys):
+    """Plus longue chaîne de `keys` contenue mot pour mot dans l'une des formes d'un texte, ou None (préfiltre
+    des BDC : seules les chaînes dont le premier mot figure dans le texte se testent)."""
+    from .lender import name_finder
+    find = name_finder(sorted(keys, key=lambda k: (-len(k), k)))
+
+    def hit(text):
+        for f in forms(text):
+            k = find(" " + f + " ")
+            if k:
+                return k
+        return None
+    return hit
+
+
+def attribute(name, legal):
+    """Entité d'un nom d'émetteur (D-0065, point 6) : le nom commence par une dénomination légale, la plus
+    longue l'emporte, et aucune autre forme juridique ne la suit avant un mot d'instrument (règle des BDC).
+    Renvoie (entity_id, forme), (None, forme) si la forme trouvée n'est pas l'émetteur, (None, None) sinon."""
+    from .lender import issuer_unambiguous
+    found = None
+    for f in forms(name):
+        toks = f.split()
+        for i in range(len(toks), 0, -1):
+            k = " ".join(toks[:i])
+            if k in legal:
+                if issuer_unambiguous(" " + f + " ", k):
+                    return legal[k], k
+                found = found or k
+                break
+    return None, found
+
+
+def scan_unlisted(zpath, lex, c=None, chunk=500_000):
+    """Positions gardées d'une archive (D-0065, point 5) et leurs tables liées, avec les décomptes de toutes les
+    positions qui contiennent une chaîne du lexique, par entité rattachée (nom d'émetteur) ou à défaut par
+    chaîne, par niveau de juste valeur et par catégorie. Retourne (tables, statistiques, décomptes)."""
+    c = c or cols()
+    h = c["holding"]
+    quoted = set(cfg_unlisted().get("quoted_levels") or ["1", "2"])
+    hit = finder(lex["keep"])
+    memo_hit, memo_att = {}, {}
+
+    def lookup(values, memo, fn):
+        for v in values:
+            if v not in memo:
+                memo[v] = fn(v) if v else None
+        return memo
+    kept, counts, columns = [], [], None
+    with zipfile.ZipFile(zpath) as z:
+        m = _member(z, c["tables"]["holding"])
+        with z.open(m) as fh:
+            for df in pd.read_csv(io.TextIOWrapper(fh, encoding="utf-8", errors="replace"), sep="\t", dtype=str,
+                                  chunksize=chunk, quoting=csv.QUOTE_NONE, keep_default_na=False, na_values=[""],
+                                  on_bad_lines="warn"):
+                columns = columns or list(df.columns)
+                name = df[h["issuer_name"]].fillna("")
+                title = df[h["title"]].fillna("")
+                nh = name.map(lookup(name.unique(), memo_hit, hit))
+                th = title.map(lookup(title.unique(), memo_hit, hit))
+                matched = nh.notna() | th.notna()
+                if not matched.any():
+                    continue
+                x = df[matched]
+                nm = name[matched]
+                ent = nm.map(lookup(nm.unique(), memo_att, lambda v: attribute(v, lex["legal"])[0]))
+                key = ent.where(ent.notna(), nh[matched].where(nh[matched].notna(), th[matched]))
+                level = x[h["fair_value_level"]].fillna("").str.strip()
+                counts.append(pd.DataFrame({"kind": ent.notna().map({True: "entity", False: "string"}).values,
+                                            "key": key.values, "level": level.values,
+                                            "asset_cat": x[h["asset_cat"]].fillna("").values}))
+                k = x[~level.isin(quoted)]
+                if len(k):
+                    kept.append(k)
+        hold = pd.concat(kept, ignore_index=True) if kept else pd.DataFrame(columns=columns or [])
+        ids = set(hold[h["holding_id"]]) if len(hold) else set()
+        acc = set(hold[h["accession"]]) if len(hold) else set()
+        out = {"holding": hold}
+        for t in ("identifiers", "debt"):
+            out[t] = _read(z, c["tables"][t], key=(c[t]["holding_id"], ids))
+        for t in ("submission", "registrant", "fund"):
+            out[t] = _read(z, c["tables"][t], key=(c[t]["accession"], acc))
+    cnt = (pd.concat(counts, ignore_index=True).groupby(["kind", "key", "level", "asset_cat"], dropna=False).size()
+           .reset_index(name="n") if counts else pd.DataFrame(columns=["kind", "key", "level", "asset_cat", "n"]))
+    stats = {k: len(v) for k, v in out.items()}
+    stats["matched"] = int(cnt["n"].sum()) if len(cnt) else 0
+    stats["matched_by_level"] = ({str(k): int(v) for k, v in cnt.groupby("level")["n"].sum().items()} if len(cnt) else {})
+    return out, stats, cnt
+
+
+def _scan_unlisted_job(name, zpath, lex, meta):
+    import hashlib
+    sha = hashlib.sha256()
+    with open(zpath, "rb") as fh:
+        for b in iter(lambda: fh.read(1 << 22), b""):
+            sha.update(b)
+    out, stats, cnt = scan_unlisted(zpath, lex)
+    d = BASE / name / U_SUBDIR
+    d.mkdir(parents=True, exist_ok=True)
+    for k, df in out.items():
+        df.to_parquet(d / f"{k}.parquet", index=False, compression="zstd")
+    cnt.to_parquet(d / "counts.parquet", index=False, compression="zstd")
+    return dict(meta, status="scanned", bytes=zpath.stat().st_size, sha256=sha.hexdigest(), stats=stats)
+
+
+def u_manifest():
+    if not U_MANIFEST.exists():
+        return {}
+    return {r["name"]: r for r in (json.loads(l) for l in U_MANIFEST.read_text(encoding="utf-8").splitlines() if l)}
+
+
+def _u_append(rec):
+    with open(U_MANIFEST, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+
+def lexicon_path(version):
+    return BASE / f"unlisted_lexicon_{version}.json"
+
+
+def save_lexicon(lex):
+    """Lexique figé du scan, gardé sous sa version (D-0065, point 4)."""
+    p = lexicon_path(lex["version"])
+    if not p.exists():
+        BASE.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps({k: lex[k] for k in ("version", "parts", "legal", "keep")}, ensure_ascii=False,
+                                sort_keys=True, indent=0), encoding="utf-8")
+    return p
+
+
+def fetch_unlisted(only=None):
+    """De la plus récente archive à la plus ancienne : tirée par le client unique pendant que la précédente se
+    scanne dans un processus à part, puis effacée (D-0065, point 3). Une archive publiée après l'as_of n'est ni
+    gardée ni scannée ; une archive déjà scannée avec la même version du lexique ne se tire pas."""
+    from concurrent.futures import ProcessPoolExecutor
+    from .discovery import AS_OF
+    cfg = config.load()
+    n = cfg_nport(cfg)
+    lex = lexicon(cfg=cfg)
+    save_lexicon(lex)
+    client = net.SecClient(AS_OF, cfg)
+    done, d58 = u_manifest(), manifest()
+
+    def todo_(a):
+        r = done.get(a["name"]) or {}
+        return (not only or a["name"] in only) and not (
+            r.get("status") == "after_as_of" or (r.get("status") == "scanned" and r.get("lexicon") == lex["version"]))
+    todo = [a for a in in_period(archive_list(), n["period"][0], n["period"][1]) if todo_(a)]
+    BASE.mkdir(parents=True, exist_ok=True)
+    print("lexique", lex["version"], json.dumps(lex["parts"]), "; archives à tirer :", len(todo), flush=True)
+
+    def finish(p):
+        if p is None:
+            return
+        a, zpath, fut = p
+        try:
+            rec = fut.result()
+        except Exception as exc:          # scan échoué : l'archive reste à reprendre
+            rec = dict(a, status="parse_failed", reason=repr(exc)[:300], lexicon=lex["version"])
+        if zpath.exists():
+            zpath.unlink()
+        _u_append(rec)
+        print(a["name"], rec.get("status"), json.dumps(rec.get("stats") or {}), flush=True)
+    pending = None
+    with ProcessPoolExecutor(max_workers=1) as pp:
+        try:
+            for a in todo:
+                zpath = BASE / f"{a['name']}.zip"
+                t0 = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+                try:
+                    _, headers = client.get(a["url"], timeout=900, dest=zpath)
+                except net.NotCollected as exc:
+                    finish(pending)
+                    pending = None
+                    _u_append(dict(a, status="not_collected", reason=str(exc), lexicon=lex["version"]))
+                    print(a["name"], "not_collected", exc, flush=True)
+                    continue
+                lm, published = _published(headers)
+                meta = dict(a, retrieved=t0, last_modified=lm, lexicon=lex["version"],
+                            last_modified_d58=(d58.get(a["name"]) or {}).get("last_modified"))
+                finish(pending)           # le scan précédent a tourné pendant ce tirage
+                pending = None
+                if published and published > AS_OF:
+                    zpath.unlink()        # connaissance postérieure, ni gardée ni scannée
+                    _u_append(dict(meta, status="after_as_of"))
+                    print(a["name"], "after_as_of", lm, flush=True)
+                    continue
+                pending = (a, zpath, pp.submit(_scan_unlisted_job, a["name"], zpath, lex, meta))
+        finally:
+            finish(pending)
+
+
+# -- positions, rattachement, cotation --------------------------------------------------------------
+
+def u_positions(c=None, archives=None):
+    """Positions gardées des archives scannées (D-0065), jointes à leur dépôt, leur série, leur déclarant et leur
+    ISIN ; une ligne par position déclarée."""
+    c = c or cols()
+    m = u_manifest()
+    h, s, f, g, i = (c[k] for k in ("holding", "submission", "fund", "registrant", "identifiers"))
+    conv = cfg_nport().get("exchange_rate_convention", "currency_per_usd")
+    rows = []
+    for name, r in sorted(m.items()):
+        if r.get("status") != "scanned" or (archives and name not in archives):
+            continue
+        d = BASE / name / U_SUBDIR
+        t = {k: pd.read_parquet(d / f"{k}.parquet") for k in U_TABLES}
+        x = t["holding"].rename(columns={v: k for k, v in h.items()})
+        if x.empty:
+            continue
+        x = x.merge(t["submission"].rename(columns={v: k for k, v in s.items()}), on="accession", how="left")
+        x = x.merge(t["fund"].rename(columns={v: k for k, v in f.items()}), on="accession", how="left", suffixes=("", "_fund"))
+        x = x.merge(t["registrant"].rename(columns={v: k for k, v in g.items()}), on="accession", how="left", suffixes=("", "_reg"))
+        ids = t["identifiers"].rename(columns={v: k for k, v in i.items()})
+        if len(ids):
+            ids = ids.groupby("holding_id", as_index=False).agg({"isin": lambda v: next((y for y in v if isinstance(y, str) and y), None)})
+            x = x.merge(ids, on="holding_id", how="left")
+        else:
+            x["isin"] = None
+        x["archive"] = name
+        for col in ("filing_date", "report_date"):
+            x[col] = [_iso(v) for v in x[col]]
+        x["value_local"] = [_local_value(v, rr, cur, conv) for v, rr, cur in zip(x["value_usd"], x["exchange_rate"], x["currency"])]
+        rows.append(x)
+    return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
+
+
+def attributed(p, ent_rows=None, reg=None):
+    """Rattachement des positions sur le registre courant (D-0065, point 6) : entité, forme trouvée, et groupe de
+    l'entité à la date de portefeuille (vue as_known)."""
+    from .entities import Registry
+    ent_rows = _entity_rows() if ent_rows is None else ent_rows
+    reg = reg or Registry(ent_rows)
+    legal = legal_forms(ent_rows)
+    names = p["issuer_name"].fillna("")
+    memo = {nm: (attribute(nm, legal) if nm else (None, None)) for nm in names.unique()}
+    p = p.copy()
+    p["entity_id"] = [memo[nm][0] for nm in names]
+    p["legal_form"] = [memo[nm][1] for nm in names]
+    p["node"] = [reg.group_at(e, d, "as_known") if e else None for e, d in zip(p["entity_id"], p["report_date"])]
+    return p
+
+
+def tickers(cfg=None):
+    """CIK (dix chiffres) -> symboles, d'après la liste d'EDGAR en cache (D-0065, point 7)."""
+    day = cfg_unlisted(cfg).get("tickers") or "2026-10-07"
+    d = json.loads(cache.read(cache.api_path("none", "company_tickers", day)))
+    out = {}
+    for v in d.values():
+        out.setdefault(str(v["cik_str"]).zfill(10), []).append(v["ticker"])
+    return out
+
+
+def listing_date(cik, as_of, forms_=("424B4", "424B1")):
+    """Dépôt du premier prospectus d'introduction (424B4 ou 424B1, à l'as_of au plus) dans les submissions en
+    cache ; "" si elles n'en montrent aucun (cotée sur toute la période) ; None si elles ne sont pas en cache,
+    ou pas toutes leurs pages (D-0065, point 7)."""
+    c = str(cik).zfill(10)
+    main = cache.latest_api(c, "submissions")
+    if main is None:
+        return None
+    j = json.loads(cache.read(main))
+    pages = [j["filings"]["recent"]]
+    for fdesc in j["filings"].get("files") or []:
+        q = cache.latest_api(c, "submissions-" + fdesc["name"].rsplit("-", 1)[-1].replace(".json", ""))
+        if q is None:
+            return None
+        pages.append(json.loads(cache.read(q)))
+    dates = [d for pg in pages for fm, d in zip(pg.get("form", []), pg.get("filingDate", []))
+             if fm in forms_ and d <= as_of]
+    return min(dates) if dates else ""
+
+
+def listing(ent_rows, as_of, tick=None, forms_=None):
+    """Par entité dont le CIK porte un symbole : sa date de cotation ("" sur toute la période, None si inconnue)."""
+    tick = tickers() if tick is None else tick
+    forms_ = tuple(forms_ or cfg_unlisted().get("listing_forms") or ("424B4", "424B1"))
+    out = {}
+    for r in ent_rows:
+        if r["record_kind"] == "entity" and r.get("cik") and str(r["cik"]).zfill(10) in tick:
+            out[r["entity_id"]] = listing_date(r["cik"], as_of, forms_)
+    return out
+
+
+def mark_selection(p, as_of, listed):
+    """Positions de nport_equity_mark (D-0065, point 8), avant le dernier dépôt de chaque série, et décompte des
+    positions écartées à chaque étape. `listed` : entité cotée -> date de cotation ("" toujours, None inconnue)."""
+    mk = cfg_unlisted().get("mark") or {}
+    steps = {}
+
+    def keep(q, step, mask):
+        mask = pd.Series(list(mask), index=q.index, dtype=bool)
+        steps[step] = int((~mask).sum())
+        return q[mask].copy()
+    p = keep(p, "not_attributed", p["entity_id"].notna() & p["node"].notna())
+    p = keep(p, "not_equity", p["asset_cat"].isin(mk.get("asset_cats") or ["EC", "EP"]))
+    p = keep(p, "not_shares", p["unit"] == (mk.get("unit") or "NS"))
+    p = keep(p, "not_long", p["payoff"] == (mk.get("payoff") or "Long"))
+    p = keep(p, "not_positive", [(_dec(v) or 0) > 0 for v in p["balance"]])
+    p = keep(p, "not_level_3", p["fair_value_level"].fillna("").str.strip() == str(mk.get("level") or "3"))
+    p = keep(p, "listing_unknown", [not (e in listed and listed[e] is None) for e in p["entity_id"]])
+    p = keep(p, "listed_at_date", [e not in listed or (listed[e] != "" and str(d) < listed[e])
+                                   for e, d in zip(p["entity_id"], p["report_date"])])
+    return p, steps
+
+
+def equity_key(asset_cat, isin, cusip, title):
+    """Titre d'une position en actions : catégorie, puis ISIN, à défaut CUSIP, à défaut intitulé normalisé."""
+    from .graph import normalize_name
+    i, cu = _ident(isin, ISIN_RX), _ident(cusip, CUSIP_RX)
+    return f"{asset_cat}|" + (i or (f"CUSIP:{cu}" if cu else "TITLE:" + normalize_name(title or "")))
+
+
+def fund_ref(series_id, cik):
+    """Contrepartie d'une cellule : la série du fonds, à défaut son déclarant (fonds fermé)."""
+    if isinstance(series_id, str) and series_id:
+        return f"series:{series_id}"
+    return f"cik:{str(cik).zfill(10)}" if isinstance(cik, str) and cik else "none"
+
+
+MARK_BASIS = ("valeur déclarée par action par un fonds enregistré (Form N-PORT Data Sets), perspective counterparty : "
+              "valeur dans la monnaie du titre sur le nombre d'actions, positions en actions évaluées au niveau 3, au dernier "
+              "dépôt de la série pour la date de portefeuille ; jamais une valorisation du nœud ni un fait comptable, hors des "
+              "mesures de financement, de l'exposition, des paires, des cycles et de l'annexe F (D-0065, point 8)")
+HELD_BASIS = ("somme des valeurs en dollars que les fonds enregistrés déclarent pour leurs positions en actions du nœud évaluées "
+              "au niveau 3, au dernier rapport de chaque série dans le trimestre civil (Form N-PORT Data Sets), perspective "
+              "counterparty ; jamais une valeur du nœud, hors des mesures de financement, de l'exposition, des paires, des "
+              "cycles et de l'annexe F (D-0065, point 8)")
+
+
+def quarter_end(d):
+    y, m = int(d[:4]), int(d[5:7])
+    q = (m - 1) // 3 + 1
+    return (dt.date(y + (q == 4), (3 * q) % 12 + 1, 1) - dt.timedelta(days=1)).isoformat()
+
+
+def u_selected(as_of, ent_rows=None, reg=None, tick=None):
+    """Positions de la mesure, au dernier dépôt de chaque série par date, avec leur titre ; et les étapes."""
+    p = u_positions()
+    if p.empty:
+        return p, {}
+    ent_rows = _entity_rows() if ent_rows is None else ent_rows
+    p = attributed(p, ent_rows, reg)
+    sel, steps = mark_selection(p, as_of, listing(ent_rows, as_of, tick))
+    sel = latest_by_fund(sel)
+    if len(sel):
+        sel["security"] = [equity_key(a, i, cu, t) for a, i, cu, t in zip(sel["asset_cat"], sel["isin"], sel["cusip"], sel["title"])]
+        sel["fund_ref"] = [fund_ref(s, k) for s, k in zip(sel["series_id"], sel["cik"])]
+    return sel, steps
+
+
+def u_cells(as_of, ent_rows=None, reg=None, tick=None):
+    """Cellules nport_equity_mark (nœud, fonds, titre, date) et nport_equity_held (nœud, trimestre civil)."""
+    from .measures import cell
+    if not u_manifest():
+        return []
+    sel, _ = u_selected(as_of, ent_rows, reg, tick)
+    if sel.empty:
+        return []
+    kd = sel.groupby("accession")["filing_date"].max().to_dict()
+    out = []
+    for (node, fref, sec, d), g in sel.groupby(["node", "fund_ref", "security", "report_date"], sort=True):
+        shares = sum(_dec(v) for v in g["balance"])
+        vloc = [_dec(v) for v in g["value_local"]]
+        usd = sum(_dec(v) or 0 for v in g["value_usd"])
+        cur = sorted(set(g["currency"].dropna()))
+        fl = {"perspective": "counterparty", "shares": str(shares), "value_usd": str(usd), "currency": ";".join(cur),
+              "positions": int(len(g)), "asset_cat": sec.split("|", 1)[0],
+              "title": next(iter(sorted(set(g["title"].dropna()))), None),
+              "issuer_names": sorted(set(g["issuer_name"].dropna())), "entities": sorted(set(g["entity_id"])),
+              "restricted": sorted(set(g["restricted"].dropna())) if "restricted" in g else [],
+              "series_name": next(iter(sorted(set(g["series_name"].dropna()))), None),
+              "registrant_name": next(iter(sorted(set(g["registrant_name"].dropna()))), None),
+              "accessions": sorted(set(g["accession"])), "basis": MARK_BASIS}
+        k = max(str(kd.get(a) or "") for a in g["accession"])[:10] or None
+        if len(cur) > 1:
+            out.append(cell("nport_equity_mark", node, None, d, "as_known", as_of, counterparty=fref, breakdown=sec,
+                            status="not_determinable", nd_reason="mixed_currency", knowledge_date=k, flags=fl))
+        elif any(v is None for v in vloc):
+            out.append(cell("nport_equity_mark", node, None, d, "as_known", as_of, counterparty=fref, breakdown=sec,
+                            status="not_determinable", nd_reason="not_disclosed", knowledge_date=k,
+                            flags=dict(fl, note="taux de change non déclaré : valeur dans la monnaie du titre inconnue")))
+        else:
+            num = sum(vloc)
+            out.append(cell("nport_equity_mark", node, None, d, "as_known", as_of, counterparty=fref, breakdown=sec,
+                            value=num / shares, numerator=num, denominator=shares, unit=cur[0] if cur else None,
+                            knowledge_date=k, flags=fl))
+    sel = sel.assign(quarter=[quarter_end(d) for d in sel["report_date"]])
+    last = sel.groupby(["node", "quarter", "fund"])["report_date"].transform("max")
+    q = sel[sel["report_date"] == last]
+    for (node, qe), g in q.groupby(["node", "quarter"], sort=True):
+        usd = sum(_dec(v) or 0 for v in g["value_usd"])
+        out.append(cell("nport_equity_held", node, None, qe, "as_known", as_of, value=usd, unit="USD",
+                        knowledge_date=max(str(kd.get(a) or "") for a in g["accession"])[:10] or None,
+                        flags={"perspective": "counterparty", "series": int(g["fund"].nunique()), "positions": int(len(g)),
+                               "report_dates": [min(g["report_date"]), max(g["report_date"])],
+                               "entities": sorted(set(g["entity_id"])), "accessions": sorted(set(g["accession"]))[:20],
+                               "basis": HELD_BASIS}))
+    return out
+
+
+def neighbors(p):
+    """Noms d'émetteur gardés et non rattachés (D-0065, point 6) : par nom déclaré, la chaîne qui l'a gardé, le
+    nombre de positions et de séries, et la valeur déclarée en dollars à sa dernière date."""
+    p = p[p["entity_id"].isna()]
+    if p.empty:
+        return []
+    out = []
+    for nm, g in p.groupby(p["issuer_name"].fillna(""), sort=True):
+        d = max(x for x in g["report_date"] if x) if g["report_date"].notna().any() else None
+        at = g[g["report_date"] == d] if d else g
+        out.append({"name": nm, "legal_form": next((x for x in g["legal_form"] if x), None),
+                    "positions": int(len(g)), "series": int(pd.Series(fund_key(g)).nunique()),
+                    "last_date": d, "value_usd_last": str(sum(_dec(v) or 0 for v in at["value_usd"])),
+                    "asset_cats": sorted(set(g["asset_cat"].dropna()))})
+    return out
+
+
+def u_exclusions(as_of, ent_rows=None, reg=None, tick=None):
+    """Archives de la période non tirées, non scannées, publiées après l'as_of ou scannées avec un lexique
+    antérieur ; noms voisins non rattachés ; entités cotées sans date de cotation connue (§11)."""
+    cfg = config.load()
+    n = cfg_nport(cfg)
+    m = u_manifest()
+    if not n or not m:
+        return []
+    ent_rows = _entity_rows() if ent_rows is None else ent_rows
+    legal = set(legal_forms(ent_rows))
+    out = []
+
+    def ex(kind, key, reason, detail, group=None):
+        out.append({"exclusion_key": f"{reason}:nport_unlisted:{key}", "item_kind": kind,
+                    "item_key": f"nport_unlisted:{key}", "reason": reason, "detail": detail, "group_id": group,
+                    "accession": None, "content_key": None, "as_of": as_of})
+    scanned_with = {}
+    for a in in_period(archive_list(), n["period"][0], n["period"][1]):
+        r = m.get(a["name"])
+        if r is None:
+            ex("period", a["name"], "not_processed", f"archive des Form N-PORT Data Sets non tirée pour les non-cotés "
+               f"({a['filed_from']} au {a['filed_to']}, D-0065)")
+        elif r.get("status") == "not_collected":
+            ex("period", a["name"], "not_collected", f"archive des Form N-PORT Data Sets non tirée : {r.get('reason')}")
+        elif r.get("status") == "parse_failed":
+            ex("period", a["name"], "parse_failed", f"archive des Form N-PORT Data Sets non scannée : {r.get('reason')}")
+        elif r.get("status") == "after_as_of":
+            ex("period", a["name"], "not_public", f"archive des Form N-PORT Data Sets publiée après l'as_of (Last-Modified "
+               f"{r.get('last_modified')}) : connaissance postérieure, ni gardée ni lue (D-0065, point 3)")
+        else:
+            scanned_with.setdefault(r.get("lexicon"), []).append(a["name"])
+    for v, names in sorted(scanned_with.items(), key=lambda kv: str(kv[0])):
+        p = lexicon_path(v)
+        new = sorted(legal - set(json.loads(p.read_text(encoding="utf-8"))["legal"])) if p.exists() else None
+        if new is None or new:
+            for nm in names:
+                ex("period", nm, "not_processed", "archive scannée avec un lexique antérieur : "
+                   + (f"{len(new)} dénominations légales ajoutées depuis, non scannées" if new is not None
+                      else f"lexique {v} introuvable") + " (D-0065, point 14)")
+    p = u_positions()
+    if p.empty:
+        return out
+    p = attributed(p, ent_rows, reg)
+    for r in neighbors(p):
+        reason = "conflicting" if r["legal_form"] else "pending_entity"
+        why = (f"commence par « {r['legal_form']} », suivie d'une autre forme juridique" if r["legal_form"]
+               else "aucune dénomination légale du registre en tête du nom")
+        ex("entity", r["name"], reason, f"nom d'émetteur déclaré par des fonds, gardé par le lexique et non rattaché ({why}) : "
+           f"{r['positions']} positions, {r['series']} séries, {r['value_usd_last']} $ déclarés au {r['last_date']} "
+           f"({', '.join(r['asset_cats'])}) ; jamais rattaché sans extrait (D-0065, point 6)")
+    listed = listing(ent_rows, as_of, tick)
+    unknown = sorted({e for e in p["entity_id"].dropna() if e in listed and listed[e] is None})
+    for e in unknown:
+        ex("entity", e, "not_processed", "entité cotée (symbole au 2026-10-07) sans submissions complètes en cache : "
+           "date de cotation inconnue, positions hors de la mesure (D-0065, point 7)")
+    return out
+
+
+def u_volume(as_of=None):
+    """Décomptes du scan et de la sélection, sans aucune valeur de la mesure (consignés avant calcul)."""
+    from .discovery import AS_OF
+    as_of = as_of or AS_OF
+    m = u_manifest()
+    cnt = []
+    for name, r in sorted(m.items()):
+        f = BASE / name / U_SUBDIR / "counts.parquet"
+        if r.get("status") == "scanned" and f.exists():
+            cnt.append(pd.read_parquet(f).assign(archive=name))
+    cnt = pd.concat(cnt, ignore_index=True) if cnt else pd.DataFrame(columns=["kind", "key", "level", "asset_cat", "n"])
+    ent_rows = _entity_rows()
+    from .entities import Registry
+    reg = Registry(ent_rows)
+    p = attributed(u_positions(), ent_rows, reg)
+    listed = listing(ent_rows, as_of)
+    sel, steps = mark_selection(p, as_of, listed)
+    last = latest_by_fund(sel)
+    node_of = {e: reg.group_at(e, as_of, "as_known") for e in set(p["entity_id"].dropna())}
+    by_node = {}
+    for node, g in last.groupby("node"):
+        by_node[node] = {"positions": int(len(g)), "series": int(g["fund"].nunique()), "entities": sorted(set(g["entity_id"])),
+                         "report_dates": int(g["report_date"].nunique()),
+                         "first_last": [min(g["report_date"]), max(g["report_date"])]}
+    ents = cnt[cnt["kind"] == "entity"]
+    lvl = {}
+    for (e, lv), n_ in ents.groupby(["key", "level"])["n"].sum().items():
+        lvl.setdefault(node_of.get(e) or reg.group_at(e, as_of, "as_known") or e, {})
+        k = lv or "vide"
+        lvl[node_of.get(e) or e][k] = lvl[node_of.get(e) or e].get(k, 0) + int(n_)
+    nb = neighbors(p)
+    return {"archives": {s: sum(1 for r in m.values() if r.get("status") == s) for s in sorted({r.get("status") for r in m.values()})},
+            "bytes": sum(int(r.get("bytes") or 0) for r in m.values() if r.get("status") == "scanned"),
+            "lexicon": sorted({r.get("lexicon") for r in m.values() if r.get("lexicon")}),
+            "matched": int(cnt["n"].sum()) if len(cnt) else 0,
+            "matched_by_level": {str(k): int(v) for k, v in cnt.groupby("level")["n"].sum().items()} if len(cnt) else {},
+            "kept_positions": int(len(p)), "attributed": int(p["entity_id"].notna().sum()),
+            "neighbors": len(nb), "neighbor_positions": sum(r["positions"] for r in nb),
+            "listed_entities_attributed": sorted({e for e in p["entity_id"].dropna() if e in listed}),
+            "listing": {e: listed[e] for e in sorted({e for e in p["entity_id"].dropna() if e in listed})},
+            "steps": steps, "selected": int(len(sel)), "after_latest_filing": int(len(last)),
+            "by_node": by_node, "matched_levels_by_node": lvl}
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "page":
@@ -574,6 +1198,17 @@ if __name__ == "__main__":
         stamp()
     elif cmd == "volume":
         print(json.dumps(volume(), ensure_ascii=False, indent=1, default=str))
+    elif cmd == "unlisted-lexicon":
+        lx = lexicon()
+        print(lx["version"], json.dumps(lx["parts"]), save_lexicon(lx))
+    elif cmd == "unlisted-fetch":
+        fetch_unlisted(only=set(sys.argv[2:]) or None)
+    elif cmd == "unlisted-volume":
+        print(json.dumps(u_volume(), ensure_ascii=False, indent=1, default=str))
+    elif cmd == "unlisted-status":
+        um = u_manifest()
+        print(len(um), "archives au manifeste des non-cotés ;",
+              {s: sum(1 for r in um.values() if r.get("status") == s) for s in sorted({r.get("status") for r in um.values()})})
     else:
         m = manifest()
         leis = softbank_leis(m)
