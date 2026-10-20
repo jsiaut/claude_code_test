@@ -305,6 +305,39 @@ class UnlistedMeasure(unittest.TestCase):
                          ["2025-03-31", "2025-03-31", "2025-12-31"])
 
 
+class UnlistedCorrections(unittest.TestCase):
+    """D-0065, point 15 : corrections fixées avant le calcul."""
+
+    def test_a_vehicle_word_after_the_legal_name_leaves_it_unattributed(self):
+        legal = P.lexicon(ROWS, CFG)["legal"]
+        self.assertEqual(P.attribute("Anthropic PBC Private Equity (SPV Ravine Master Aggr", legal), (None, "anthropic pbc"))
+        self.assertEqual(P.attribute("Anthropic PBC SER H-1 CVT PFD PP", legal)[0], "e:ant")
+
+    def test_majority_of_quoted_equity_positions_lists_an_entity_in_its_archive(self):
+        import pipeline.nport as N
+        with tempfile.TemporaryDirectory() as d:
+            saved = N.BASE
+            N.BASE = Path(d)
+            try:
+                for arch, rows in (("2021q1", [("e:aig", "1", 30), ("e:aig", "3", 2), ("e:ant", "1", 1), ("e:ant", "2", 4), ("e:ant", "3", 600)]),
+                                   ("2019q4", [("e:aig", "3", 5)])):
+                    (Path(d) / arch / "unlisted").mkdir(parents=True)
+                    pd.DataFrame([{"kind": "entity", "key": k, "level": lv, "asset_cat": "EC", "n": n} for k, lv, n in rows]
+                                 + [{"kind": "entity", "key": "e:aig", "level": "2", "asset_cat": "DBT", "n": 900}]).to_parquet(
+                        Path(d) / arch / "unlisted" / "counts.parquet")
+                m = {"2021q1": {"status": "scanned"}, "2019q4": {"status": "scanned"}}
+                q = N.quoted_archives(m)
+            finally:
+                N.BASE = saved
+        self.assertEqual(q, {("e:aig", "2021q1")})          # la dette ne compte pas ; Anthropic reste non cotée
+        p = UnlistedMeasure().positions().assign(archive="2021q1")
+        p.loc[p["entity_id"] == "e:ant", "archive"] = "2021q1"
+        sel, steps = P.mark_selection(p, "2026-10-07", {"e:spx": "2026-06-12"}, {("e:ant", "2021q1")})
+        self.assertEqual(steps["quoted_in_archive"], 4)    # positions de niveau 3 d'Anthropic dans une archive cotée
+        sel, steps = P.mark_selection(p, "2026-10-07", {"e:spx": "2026-06-12"}, {("e:spx", "2021q1")})
+        self.assertEqual(steps["quoted_in_archive"], 0)    # une entité à symbole suit sa date de cotation
+
+
 class UnlistedFetch(unittest.TestCase):
     def test_overlapped_pulls_skip_late_archives_and_delete_zips(self):
         import pipeline.nport as N

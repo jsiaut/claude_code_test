@@ -680,10 +680,14 @@ def finder(keys):
     return hit
 
 
+VEHICLE_WORDS = {"spv", "feeder", "aggregator", "aggr", "co-invest", "coinvest"}
+
+
 def attribute(name, legal):
     """Entité d'un nom d'émetteur (D-0065, point 6) : le nom commence par une dénomination légale, la plus
-    longue l'emporte, et aucune autre forme juridique ne la suit avant un mot d'instrument (règle des BDC).
-    Renvoie (entity_id, forme), (None, forme) si la forme trouvée n'est pas l'émetteur, (None, None) sinon."""
+    longue l'emporte, et aucune autre forme juridique ne la suit avant un mot d'instrument (règle des BDC). Un mot
+    de véhicule après la dénomination (« SPV ») la laisse sans rattachement (point 15). Renvoie (entity_id, forme),
+    (None, forme) si la forme trouvée n'est pas l'émetteur, (None, None) sinon."""
     from .lender import issuer_unambiguous
     found = None
     for f in forms(name):
@@ -691,7 +695,7 @@ def attribute(name, legal):
         for i in range(len(toks), 0, -1):
             k = " ".join(toks[:i])
             if k in legal:
-                if issuer_unambiguous(" " + f + " ", k):
+                if issuer_unambiguous(" " + f + " ", k) and not VEHICLE_WORDS & set(toks[i:]):
                     return legal[k], k
                 found = found or k
                 break
@@ -949,10 +953,53 @@ def listing(ent_rows, as_of, tick=None, forms_=None):
     return out
 
 
-def mark_selection(p, as_of, listed):
-    """Positions de nport_equity_mark (D-0065, point 8), avant le dernier dépôt de chaque série, et décompte des
-    positions écartées à chaque étape. `listed` : entité cotée -> date de cotation ("" toujours, None inconnue)."""
+def fetch_listing_submissions(as_of=None):
+    """Submissions des entités cotées sans date de cotation connue qui portent des positions de la mesure
+    (D-0065, point 7) : tirées une fois par le client unique, toutes leurs pages, après le scan."""
+    from .discovery import AS_OF
+    from .edgar import Edgar
+    as_of = as_of or AS_OF
+    ent_rows = _entity_rows()
+    listed = listing(ent_rows, as_of)
+    sel, _ = mark_selection(attributed(u_positions(), ent_rows), as_of, {})
+    need = sorted({e for e in sel["entity_id"] if e in listed and listed[e] is None})
+    ciks = {r["entity_id"]: r["cik"] for r in ent_rows if r["record_kind"] == "entity" and r["entity_id"] in need}
+    ed = Edgar(net.SecClient(as_of, config.load()), as_of)
+    for e, cik in sorted(ciks.items()):
+        try:
+            _, rows, pages, complete = ed.submissions(cik)
+        except net.NotCollected as exc:
+            print(e, cik, "non tirées :", exc, flush=True)
+            continue
+        print(e, cik, len(rows), "dépôts", "complet" if complete else "incomplet", "; cotation :",
+              listing_date(cik, as_of) or "toute la période", flush=True)
+
+
+def quoted_archives(m=None, cats=None):
+    """(entité, archive) où la majorité des positions en actions de l'entité, toutes séries confondues, sont évaluées
+    aux niveaux 1 ou 2 : l'entité y est cotée (D-0065, point 15, sur la règle de majorité de D-0058, point 28)."""
+    m = u_manifest() if m is None else m
+    cats = cats or (cfg_unlisted().get("mark") or {}).get("asset_cats") or ["EC", "EP"]
+    quoted = set(cfg_unlisted().get("quoted_levels") or ["1", "2"])
+    out = set()
+    for name, r in sorted(m.items()):
+        f = BASE / name / U_SUBDIR / "counts.parquet"
+        if r.get("status") != "scanned" or not f.exists():
+            continue
+        c = pd.read_parquet(f)
+        c = c[(c["kind"] == "entity") & c["asset_cat"].isin(cats)]
+        for e, g in c.groupby("key"):
+            if 2 * int(g.loc[g["level"].isin(quoted), "n"].sum()) > int(g["n"].sum()):
+                out.add((e, name))
+    return out
+
+
+def mark_selection(p, as_of, listed, quoted=None):
+    """Positions de nport_equity_mark (D-0065, points 8 et 15), avant le dernier dépôt de chaque série, et décompte
+    des positions écartées à chaque étape. `listed` : entité à symbole -> date de cotation ("" toujours, None
+    inconnue) ; `quoted` : (entité sans symbole, archive) où l'entité est cotée (`quoted_archives`)."""
     mk = cfg_unlisted().get("mark") or {}
+    quoted = quoted or set()
     steps = {}
 
     def keep(q, step, mask):
@@ -968,6 +1015,8 @@ def mark_selection(p, as_of, listed):
     p = keep(p, "listing_unknown", [not (e in listed and listed[e] is None) for e in p["entity_id"]])
     p = keep(p, "listed_at_date", [e not in listed or (listed[e] != "" and str(d) < listed[e])
                                    for e, d in zip(p["entity_id"], p["report_date"])])
+    arch = p["archive"] if "archive" in p else [None] * len(p)
+    p = keep(p, "quoted_in_archive", [e in listed or (e, a) not in quoted for e, a in zip(p["entity_id"], arch)])
     return p, steps
 
 
@@ -1008,7 +1057,7 @@ def u_selected(as_of, ent_rows=None, reg=None, tick=None):
         return p, {}
     ent_rows = _entity_rows() if ent_rows is None else ent_rows
     p = attributed(p, ent_rows, reg)
-    sel, steps = mark_selection(p, as_of, listing(ent_rows, as_of, tick))
+    sel, steps = mark_selection(p, as_of, listing(ent_rows, as_of, tick), quoted_archives())
     sel = latest_by_fund(sel)
     if len(sel):
         sel["security"] = [equity_key(a, i, cu, t) for a, i, cu, t in zip(sel["asset_cat"], sel["isin"], sel["cusip"], sel["title"])]
@@ -1157,7 +1206,7 @@ def u_volume(as_of=None):
     reg = Registry(ent_rows)
     p = attributed(u_positions(), ent_rows, reg)
     listed = listing(ent_rows, as_of)
-    sel, steps = mark_selection(p, as_of, listed)
+    sel, steps = mark_selection(p, as_of, listed, quoted_archives(m))
     last = latest_by_fund(sel)
     node_of = {e: reg.group_at(e, as_of, "as_known") for e in set(p["entity_id"].dropna())}
     by_node = {}
@@ -1168,9 +1217,9 @@ def u_volume(as_of=None):
     ents = cnt[cnt["kind"] == "entity"]
     lvl = {}
     for (e, lv), n_ in ents.groupby(["key", "level"])["n"].sum().items():
-        lvl.setdefault(node_of.get(e) or reg.group_at(e, as_of, "as_known") or e, {})
+        nk = node_of.get(e) or reg.group_at(e, as_of, "as_known") or e
         k = lv or "vide"
-        lvl[node_of.get(e) or e][k] = lvl[node_of.get(e) or e].get(k, 0) + int(n_)
+        lvl.setdefault(nk, {})[k] = lvl.setdefault(nk, {}).get(k, 0) + int(n_)
     nb = neighbors(p)
     return {"archives": {s: sum(1 for r in m.values() if r.get("status") == s) for s in sorted({r.get("status") for r in m.values()})},
             "bytes": sum(int(r.get("bytes") or 0) for r in m.values() if r.get("status") == "scanned"),
@@ -1203,6 +1252,8 @@ if __name__ == "__main__":
         print(lx["version"], json.dumps(lx["parts"]), save_lexicon(lx))
     elif cmd == "unlisted-fetch":
         fetch_unlisted(only=set(sys.argv[2:]) or None)
+    elif cmd == "unlisted-submissions":
+        fetch_listing_submissions()
     elif cmd == "unlisted-volume":
         print(json.dumps(u_volume(), ensure_ascii=False, indent=1, default=str))
     elif cmd == "unlisted-status":
