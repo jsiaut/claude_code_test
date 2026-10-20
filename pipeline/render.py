@@ -139,15 +139,24 @@ def load(con, as_of):
     for r in q(con, "SELECT * FROM measures"):
         _ONE.setdefault((r["measure"], r["subject"], r["period_end"], r["term"], r["view"], r["breakdown_key"],
                          r["counterparty"], r["financing_policy"]), r)
-    # nom d'affichage d'un groupe de contrepartie : la dénomination telle qu'écrite dans la pièce
+    CP_NAMES.update(cp_names(con))
+
+
+def cp_names(con):
+    """Nom d'affichage d'un groupe de contrepartie : la dénomination telle qu'écrite dans la pièce. Celle de la tête
+    (même nom normalisé que la clé du groupe) passe d'abord : une filiale rattachée par extrait ne lui donne pas son
+    nom (D-0064, Fluidstack CS I Inc. sous Fluidstack Ltd.). Un groupe propre calculé hors de toute appartenance datée
+    (avant une combinaison) garde le même nom."""
+    heads = dict(con.execute("""SELECT 'CP:' || normalized_name, min(name) FROM entities WHERE record_kind = 'entity'
+                                AND normalized_name IS NOT NULL GROUP BY 1""").fetchall())
+    out = {}
     for ref, name in con.execute("""SELECT m.ref, min(e.name) FROM entities m JOIN entities e
                                     ON e.entity_id = m.entity_id AND e.record_kind = 'entity'
                                     WHERE m.record_kind = 'membership' AND m.ref LIKE 'CP:%' GROUP BY 1""").fetchall():
-        CP_NAMES[ref] = name
-    # groupe propre calculé hors de toute appartenance datée (avant une combinaison) : même nom
-    for norm, name in con.execute("""SELECT normalized_name, min(name) FROM entities WHERE record_kind = 'entity'
-                                     AND normalized_name IS NOT NULL GROUP BY 1""").fetchall():
-        CP_NAMES.setdefault("CP:" + norm, name)
+        out[ref] = heads.get(ref, name)
+    for ref, name in heads.items():
+        out.setdefault(ref, name)
+    return out
 
 
 def q(con, sql, *args):

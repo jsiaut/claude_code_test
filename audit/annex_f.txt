@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..75e88f0 100644
+index 1378604..85a07dc 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,191 @@ user_agent:
@@ -474,7 +474,7 @@ index 1378604..75e88f0 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +408,771 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +408,774 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -1083,6 +1083,7 @@ index 1378604..75e88f0 100644
 +  - {name: "Samsung Electronics America, Inc.", group: "NF:SAMSUNG", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0057, block: 5d389ec3a001439bb7fc07e43bd202b8cff88b3cf631232aa03ca574e957b0d1, accession: 0000917273-25-000021, quote: "Samsung Electronics America, Inc., a Delaware corporation, Samsung Semiconductor, Inc., a California corporation and Samsung Austin Semiconductor, L.P., a Texas limited partnership (collectively, \"Samsung,\"", membership_note: "règle B de D-0044, point 7 (D-0057, point 6) : désignée, avec Samsung Electronics Co., Ltd., par le terme défini « Samsung », alias confirmé du groupe (accord transactionnel de Rambus du 19 janvier 2010, pièce du 10-K de 2024) ; même désignation chez Netlist : « Samsung Electronics America, Inc. (\"SEA\") (collectively, \"Samsung\") » (bloc cc4e4fe046d3)"}
 +  - {name: "Samsung Semiconductor, Inc.", group: "NF:SAMSUNG", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0057, block: 5d389ec3a001439bb7fc07e43bd202b8cff88b3cf631232aa03ca574e957b0d1, accession: 0000917273-25-000021, quote: "Samsung Electronics America, Inc., a Delaware corporation, Samsung Semiconductor, Inc., a California corporation and Samsung Austin Semiconductor, L.P., a Texas limited partnership (collectively, \"Samsung,\"", membership_note: "règle B de D-0044, point 7 (D-0057, point 6) : désignée, avec Samsung Electronics Co., Ltd., par le terme défini « Samsung », alias confirmé du groupe (accord transactionnel de Rambus du 19 janvier 2010, pièce du 10-K de 2024) ; même désignation chez Netlist : « Samsung Semiconductor, Inc. (\"SSI\") (collectively, \"Samsung\") » (bloc e8af9e3c6e30)"}
 +  - {name: "Samsung Austin Semiconductor, L.P.", group: "NF:SAMSUNG", treatment: undetermined, valid_from: "none", rule: executor_decision, decision: D-0057, block: 5d389ec3a001439bb7fc07e43bd202b8cff88b3cf631232aa03ca574e957b0d1, accession: 0000917273-25-000021, quote: "Samsung Electronics America, Inc., a Delaware corporation, Samsung Semiconductor, Inc., a California corporation and Samsung Austin Semiconductor, L.P., a Texas limited partnership (collectively, \"Samsung,\"", membership_note: "règle B de D-0044, point 7 (D-0057, point 6) : désignée, avec Samsung Electronics Co., Ltd., par le terme défini « Samsung », alias confirmé du groupe (accord transactionnel de Rambus du 19 janvier 2010, pièce du 10-K de 2024)"}
++  - {name: "Fluidstack CS I Inc.", group: "CP:fluidstack ltd", treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0064, block: 73a749fb1bc8529edb70db1ce967a08ed6fc8ca175f31f02d51b19be219f431e, accession: 0001104659-25-122293, quote: "Fluidstack CS I Inc., a wholly-owned indirect subsidiary of Fluidstack Ltd. (\"Fluidstack\")", membership_note: "filiale indirecte à 100 % de Fluidstack Ltd. (8-K de TeraWulf du 2025-12-18 ; même phrase dans le second 8-K du même jour et dans le 8-K 0001104659-25-122616, bloc c45454a885ae) ; détient 49,9 % de FS CS I LLC, la coentreprise d'Abernathy (D-0064, point 6) ; Fluidstack USA I à IV restent des contreparties propres, faute d'un extrait qui nomme leur lien"}
 +entity_aliases:
 +  - {alias: "NVIDIA", of: "NVIDIA Corporation", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "NVIDIA Corporation (\"NVIDIA\")"}
 +  - {alias: "Meta", of: "Meta Platforms, Inc.", decision: D-0021, block: 943d65c0fd815aa4a4da6c197bb4d1dcd7c2ee6576608488dc012e6dbb28423e, accession: 0001769628-25-000050, quote: "Meta Platforms, Inc. (\"Meta\")"}
@@ -1197,6 +1198,8 @@ index 1378604..75e88f0 100644
 +  - {alias: "Samsung", of: "NF:SAMSUNG", decision: D-0057, block: cc4e4fe046d34bfcf86f748a129a29c26341b50289320f58ec6a73f6dbdc536c, accession: 0001104659-26-094127, quote: "Samsung Electronics Co., Ltd. (\"Samsung\")", note: "terme défini du 10-Q de Netlist au 30 juin 2026 ; même définition chez Straight Path (« Samsung Electronics Co., Ltd. (\"Samsung\") », bloc 67538b1ed6fb) et chez Network-1 (bloc 6abaa78ff65f)"}
 +  - {alias: "Samsung Electronics Co.", of: "Samsung Electronics Co., Ltd.", decision: D-0057, block: 6580e623b04cf12b6aa6c5f78d3c2cd6b17ffc9dd3f161a94626cb8e458d04b4, accession: 0001213900-24-021235, quote: "Samsung Electronics Co. (\"Samsung\")", note: "graphie des rapports d'Immersion ; « Samsung » y désigne la même société que dans sa pièce de 2019 : « Samsung Electronics Co., Ltd., a South Korean corporation … (collectively \"Samsung\") » (bloc 3f64fd6b2893)"}
 +  - {alias: "ASML Holding N.V.", of: "ASML HOLDING NV", decision: D-0057, block: 64332d4b1ef46903276346eb5fd89899194bbcb52d98b63f5e9dd5729dc5648e, accession: 0001628280-26-011377, quote: "The Consolidated financial statements include the Financial statements of ASML Holding N.V. and all of its subsidiaries", note: "graphie de la tête du groupe ASML (CIK 937966, « ASML HOLDING NV » sur EDGAR) dans ses propres dépôts ; aussi dans le 20-F de 2019 : « for which ASML Holding N.V. executed a parental guarantee agreement with the landlord » (bloc ddc026ce92b6) ; les lignes d'Intel et de TSMC qui la nomment vont au groupe (D-0057, point 8)"}
++  - {alias: "Abernathy Joint Venture", of: "FS CS I LLC", decision: D-0064, block: 72ee0c37e74178ec3d790b4a6aa0d83d51212bf9e256967c3b8ecfa8694d4011, accession: 0001083301-26-000166, quote: "FS CS I LLC (the \"Abernathy Joint Venture\")"}
++  - {alias: "Fluidstack USA III", of: "Fluidstack USA III Inc.", decision: D-0064, block: af906164e925020db56c3626ef70b20302465244e650a898ce7fe24efeb1f189, accession: 0001104659-25-124839, quote: "\"Fluidstack USA III\" means Fluidstack USA III Inc., a Delaware corporation."}
 +own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
 +  - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
 +  - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
@@ -1246,7 +1249,7 @@ index 1378604..75e88f0 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1234,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1237,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -1254,7 +1257,7 @@ index 1378604..75e88f0 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1250,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1253,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1263,7 +1266,7 @@ index 1378604..75e88f0 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1439,73 @@ annex_e:
+@@ -318,6 +1442,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1337,7 +1340,7 @@ index 1378604..75e88f0 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1558,42 @@ annex_f:
+@@ -370,6 +1561,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1380,7 +1383,7 @@ index 1378604..75e88f0 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1613,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1616,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1391,7 +1394,7 @@ index 1378604..75e88f0 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1666,267 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1669,315 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1638,6 +1641,54 @@ index 1378604..75e88f0 100644
 +    dedupe: true
 +    skip_read: true
 +    skip_risk_factors: true
++    order: recent_first
++  anthropic_chain:                    # D-0064, volet 7 : chaîne de calcul d'Anthropic, 8-K et leurs pièces
++    decision: D-0064
++    period: ["2023-01-01", "2026-10-07"]
++    queries:                          # forme racine 8-K : 8-K et 8-K/A, pièces comprises (point 10) ; « Anthropic » croisé avec l'infrastructure (point 3)
++      - {q: '"Fluidstack"', forms: ["8-K"]}
++      - {q: '"Anthropic" "data center"', forms: ["8-K"]}
++      - {q: '"Anthropic" "compute"', forms: ["8-K"]}
++      - {q: '"Anthropic" "megawatts"', forms: ["8-K"]}
++      - {q: '"Anthropic" "gigawatt"', forms: ["8-K"]}
++      - {q: '"Anthropic" "TPU"', forms: ["8-K"]}
++      - {q: '"Anthropic" "Trainium"', forms: ["8-K"]}
++      - {q: '"Anthropic" "Azure"', forms: ["8-K"]}
++      - {q: '"Anthropic" "Google Cloud"', forms: ["8-K"]}
++      - {q: '"Anthropic" "Amazon Web Services"', forms: ["8-K"]}
++    terms:
++      - {rx: '\b[Ff]luid[Ss]tack\b|\bFLUIDSTACK\b', owner: ["fluidstack"], label: "Fluidstack"}
++      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)', label: "Anthropic"}   # « Anthropic Capital » : gérant homonyme (D-0041)
++    priority:                         # classes de lecture, puis du plus récent au plus ancien (point 3)
++      - '\b[Ff]luid[Ss]tack\b|\bFLUIDSTACK\b'
++      - '(?i)\b(?:data ?cent(?:er|re)s?|megawatts?|gigawatts?|mw|gw|tpus?|trainium|compute|capacity|colocation|hosting|cloud|leases?|leased)\b'
++    noted_terms: ['\bAnthropic\b', '\bANTHROPIC\b', '\b[Ff]luid[Ss]tack\b', '\bGoogle\b', '\bAlphabet\b', '\bAmazon\b',
++                  '\bAWS\b', '\bMicrosoft\b', '\bAzure\b', '\bNVIDIA\b', '\bTPUs?\b', '\bTrainium\b', '\bProject Rainier\b',
++                  '\bOpenAI\b']
++    evidence: triplet                 # pièce de 8-K classée par son triplet : EX-99 et items 2.02, 7.01 furnished (point 3)
++    cap: 80
++    dedupe: true
++    skip_read: true
++    skip_risk_factors: true
++    order: recent_first
++  sec_letters:                        # D-0064, volet 6 : lettres du personnel de la SEC (UPLOAD) et réponses des sociétés (CORRESP)
++    decision: D-0064
++    period: ["2019-01-01", "2026-10-07"]
++    queries:
++      - {q: '"OpenAI"', forms: ["CORRESP", "UPLOAD"]}
++      - {q: '"Anthropic"', forms: ["CORRESP", "UPLOAD"]}
++    terms:
++      - {rx: '\bOpenAI\b|\bOPENAI\b', label: "OpenAI"}
++      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)', label: "Anthropic"}
++    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bequity method\b', '\bconsolidat\w*',
++                  '\bvariable interest\b', '\bfair value\b', '\bconcentration\b', '\bmajor customer\w*']
++    exclude:                          # point 12 : chaque UPLOAD porte la lettre en PDF et son texte extrait par EDGAR
++      - {forms: ["UPLOAD"], file_types: ["TEXT-EXTRACT"], reason: "texte extrait par EDGAR de la lettre en PDF du même dépôt (type LETTER), qui se lit ; le normaliseur en fait un seul paragraphe (D-0064, point 12)"}
++    cap: 60
++    dedupe: true
++    skip_read: true
++    skip_risk_factors: false          # une lettre n'a pas de section de facteurs de risque ; elle en cite les pages
++    pdf_text: true                    # lettres UPLOAD en PDF : texte extrait, en paragraphes
 +    order: recent_first
 +
 +nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)

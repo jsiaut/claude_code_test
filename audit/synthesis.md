@@ -15,10 +15,10 @@
 - **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10 ; `nport` le 2026-10-19 ; `labs` le 2026-10-20, chaque fois après le rendement présenté). Premier passage : faits balisés des trente-deux groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17; Intel, Micron, TSMC depuis le 2026-10-18; ASML, SK hynix depuis le 2026-10-18. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 56 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 170 issues ; motifs : intervalle à cheval sur le seuil : 40, précondition non remplie : 29, historique tronqué : 11, recherche incomplète : 10, terme manquant : 5, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1. Issues déterminées : E.1 non étayé 71, E.1 étayé 3. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 1 833, `not_testable` 1 342, `ok` 29 886, `tautological` 1 393 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Contrôles comptables, vue `as_known`** : `mismatch` 1 833, `not_testable` 1 345, `ok` 29 886, `tautological` 1 393 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 3 011, `not_testable` 1 611, `ok` 29 483, `tautological` 1 393.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 192/869, C11 99/835, C12 425/2 026, C13 0/357, C14 85/1 182, C15 133/834, C16 2/496, C1 422/15 283, C2 169/8 969, C3 215/636, C5 0/242, C6 0/1 393, C7 9/529, C8 76/208, C9 6/595.
-- **Exclusions principales** : `not_processed` 27 899, `conflicting` 1 377, `out_of_scope` 1 098, `pending_entity` 586, `financial_parties_only` 356, `invalid_aggregate` 51, `parse_failed` 32, `submitted_draft` 19, `history_left_censored` 10, `not_public` 2.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 192/869, C11 99/835, C12 425/2 026, C13 0/357, C14 85/1 182, C15 133/834, C16 2/496, C1 422/15 283, C2 169/8 969, C3 215/636, C5 0/245, C6 0/1 393, C7 9/529, C8 76/208, C9 6/595.
+- **Exclusions principales** : `not_processed` 27 966, `conflicting` 1 377, `out_of_scope` 1 186, `pending_entity` 587, `financial_parties_only` 356, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 19, `history_left_censored` 10, `not_public` 2.
 - **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.
 
 ## Événements (annexe F)
@@ -2660,15 +2660,15 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Cipher → Amazon
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Cipher → Fluidstack Ltd.
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -2866,6 +2866,14 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
+### Alphabet → Fluidstack Ltd.
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 6 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 67 % (2 sur 3).
+- Annexe E : E5 : indéterminé — non publié.
+
 ### Alphabet → Kitty Hawk Corporation
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
@@ -2932,10 +2940,10 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Hut 8 → Fluidstack Ltd.
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 2 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 29 trimestres ; sensibilité `ever_financed` : inconnu 29 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (historique tronqué) ; 2022-06-30 : n.d. (historique tronqué) ; 2023-06-30 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Hut 8 → Fluidstack USA IV Inc.
@@ -4058,9 +4066,25 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
+### TeraWulf → Fluidstack Ltd.
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
 ### TeraWulf → Fluidstack USA I Inc.
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### TeraWulf → FS CS I LLC
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -4084,7 +4108,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### TeraWulf → Anthropic
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
@@ -4095,7 +4119,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 | Fournisseur | Exercice | Revenu attribué à des clients nommés | Clients anonymes d'au moins 10 % | Résidu | Paires vues seulement côté client |
 | --- | --- | ---: | ---: | ---: | ---: |
 | NVIDIA | 2026-01-25 | 0,0 % | 36,0 % [35,0 % ; 37,0 %] | 64,0 % | 1 |
-| Alphabet | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 5 |
+| Alphabet | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 6 |
 | Amazon | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 5 |
 | Meta | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 0 |
 | Microsoft | 2026-06-30 | 7,3 % | 0,0 % [0,0 % ; 0,0 %] | 92,7 % | 1 |
@@ -4943,7 +4967,7 @@ Un montage que les notes d'un groupe décrivent sans nommer son financeur, ident
 - obligations garanties de Beignet Investor LLC (6,581 %, 2049) : 27,29 Md$ — Blue Owl Real Estate Net Lease Trust, 10-Q rendu public le 2025-11-07.
 - Les notes suivantes de Meta (10-K 2025, 10-Q de 2026) ne nomment plus que « the Venture » : leurs lignes restent des abstentions (`no_named_counterparty`), et l'identification se lit ici.
 
-Exclusions du bloc : `out_of_scope` 287 (relevés de portefeuille non lus, pièces écartées par la règle d'un montage ou sans paragraphe qualifiant, textes au-delà du plafond ; D-0046, D-0049).
+Exclusions du bloc : `not_processed` 67, `out_of_scope` 375 (relevés de portefeuille non lus, pièces écartées par la règle d'un montage ou sans paragraphe qualifiant, textes au-delà du plafond ; D-0046, D-0049).
 
 ## Obligations de SoftBank valorisées par les fonds (Form N-PORT)
 
@@ -5158,7 +5182,7 @@ Pour chaque laboratoire et chaque groupe qui a une arête avec lui : les instrum
 
 ### Anthropic
 
-Partenaires : 8 ; arêtes : 76.
+Partenaires : 8 ; arêtes : 77.
 
 #### Amazon
 
@@ -5178,6 +5202,13 @@ Partenaires : 8 ; arêtes : 76.
 
 Sans montant admissible : amzn:anthropic_financing_facility (obligations convertibles, signé, 10-Q 0001018724-26-000026).
 
+#### TeraWulf
+
+4 arêtes, dont 0 à montant.
+- Capacités balisées (jamais additionnées) : 401 MW, `LessorOperatingLeaseLeaseNotYetCommencedMegawattsOfCriticalITLoad` (au 2026-07-06).
+
+Sans montant admissible : terawulf:anthropic_hawesville_lease (bail de capacité, signé, 10-Q 0001083301-26-000166) ; wulf:justified_anthropic_lease (bail de capacité, signé, 8-K 0001104659-26-080583).
+
 #### Akamai
 
 3 arêtes, dont 2 à montant.
@@ -5186,13 +5217,6 @@ Sans montant admissible : amzn:anthropic_financing_facility (obligations convert
 | --- | --- | --- | --- | ---: | --- | --- | ---: |
 | laboratoire → partenaire | akam:anthropic_msa | engagement d'achat | engagement de capacité | environ 11 600 M$ | 2026-09-18 | 8-K 0001193125-26-401048 | 1 |
 | partenaire → laboratoire | akam:anthropic_warrant | titres ou bons remis au client | contrepartie payable au client | jusqu'à 387 051 actions | 2026-09-18 | 8-K 0001193125-26-401048 | 1 |
-
-#### TeraWulf
-
-3 arêtes, dont 0 à montant.
-- Capacités balisées (jamais additionnées) : 401 MW, `LessorOperatingLeaseLeaseNotYetCommencedMegawattsOfCriticalITLoad` (au 2026-07-06).
-
-Sans montant admissible : terawulf:anthropic_hawesville_lease (bail de capacité, signé, 10-Q 0001083301-26-000166) ; wulf:justified_anthropic_lease (bail de capacité, signé, 8-K 0001104659-26-080583).
 
 #### Riot
 
@@ -5327,5 +5351,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 15 920, concept non résolu 7 175, terme manquant 6 395, non publié 5 779, historique tronqué 4 114, période antérieure absente 1 738, annuel seulement 1 116, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 859, client anonyme 748, précondition non remplie 733, dénominateur négatif ou nul 565, recherche incomplète 522, frontière de retraitement 195, non collecté 152, période non écoulée à la date de coupure 113, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 20, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 15 920, concept non résolu 7 175, terme manquant 6 395, non publié 5 784, historique tronqué 4 232, période antérieure absente 1 738, annuel seulement 1 116, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 859, client anonyme 748, précondition non remplie 739, dénominateur négatif ou nul 565, recherche incomplète 522, frontière de retraitement 195, non collecté 152, période non écoulée à la date de coupure 113, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 20, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
 

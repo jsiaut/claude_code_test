@@ -2255,3 +2255,21 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Destiny Tech100 (2024 et 2025) : le fonds détient OpenAI par un véhicule (DXYZ OAI I LLC) qui n'avait que de la trésorerie au 31 décembre 2023 et a investi le 22 janvier 2024. Le personnel conteste que le N-PORT au 31 décembre 2023 présente OpenAI comme un placement ; le fonds refuse de le modifier en 2024 et s'y engage en 2025. Les véhicules ne sont pas consolidés ;
     - Klarna (juillet 2025) : partenariat avec OpenAI annoncé en 2023, assistant de service client fondé sur OpenAI depuis février 2024 ;
   - attendu du remue-méninges non vérifié : aucune lettre de Microsoft, d'Amazon, d'AMD ni d'Oracle ne nomme un laboratoire dans la recherche plein texte.
+
+  (14) Intégration et résultats (2026-10-20) :
+  - entités par extrait (point 6) :
+    - Fluidstack CS I Inc. rejoint le groupe de Fluidstack Ltd. (`consolidated_subsidiary`) sur l'extrait « Fluidstack CS I Inc., a wholly-owned indirect subsidiary of Fluidstack Ltd. » (8-K de TeraWulf du 2025-12-18 ; même phrase dans deux autres 8-K déjà lus). Fluidstack USA I à IV restent des contreparties propres : aucun bloc lu ne nomme leur lien, le 8-K de Hut 8 du 2025-12-17 ne parlant que d'« a subsidiary of Fluidstack Ltd. » sans la nommer ;
+    - deux alias nés d'un extrait qui les définit (D-0021) : « Abernathy Joint Venture » pour FS CS I LLC (10-Q de TeraWulf du 2026-08-05) et « Fluidstack USA III » pour Fluidstack USA III Inc. (acte de Flash Compute) ;
+  - correction de lecture avant le second réassemblage : quatre lignes du volet 7 portaient un preneur non résolu (« Cipher », « La Lupa Data LLC », filiale de TeraWulf), qui laissait trois arêtes sans groupe d'arrivée ou rattachait le bail de Core42 à une contrepartie propre. Le preneur devient « the Company », le déclarant (règle des blocs de montage) ;
+  - correction du rendu : un groupe de contrepartie affichait le plus petit nom de ses membres. Fluidstack CS I Inc. donnait donc son nom au groupe de Fluidstack Ltd. Le nom de la tête (même nom normalisé que la clé du groupe) passe désormais d'abord. Aucun des 1 070 autres groupes de contrepartie à appartenance ne change de nom ; un test de plus ;
+  - réassemblages : le premier, sans mémo des étapes (le code ayant changé), en 13 min ; le second, après la correction des preneurs, en 2 min 44 s ; rendu en 26 s ;
+  - tables, contre le dépôt d'avant D-0064 :
+    - observations 29 269 → 29 380 (111 lignes : 90 du volet 7, 21 du volet 6) ;
+    - arêtes 8 326 → 8 342, dont 5 212 à montant avant comme après : les 16 arêtes nouvelles sont des relations, leurs pièces étant furnished (niveau E) ou des contrats de financement de niveau D ;
+    - entités 3 576 → 3 579 ;
+    - exclusions 31 430 → 31 587 : 146 du volet 7 (67 `not_processed` et 78 `out_of_scope` au-delà du plafond, ces dernières venant de dépôts de groupes suivis ; une pièce sans fenêtre), 6 textes extraits par EDGAR du volet 6, les 3 fenêtres de Stargate dans les facteurs de risque (point 7), un nom en attente (« Dell Technologies », ligne descriptive) et un agrégat invalide ;
+  - agrégat invalide : l'exposition d'Alphabet envers Fluidstack Ltd. au 2026-06-30 (obligations conditionnelles, plafond d'engagement, garantie) devient `not_determinable` (invariant (a) de §7.6). Ses garanties ne sont chiffrées que dans des pièces furnished. La cellule n'existait pas avant ;
+  - arêtes d'Anthropic 76 → 77 : le bail de Justified chez TeraWulf est une relation, sans montant admissible, et son montant d'environ 19 Md$ reste dans la ligne. Arêtes de Fluidstack (toutes dénominations) 30 → 38, dont 4 à montant avant comme après ;
+  - paires nouvelles : Alphabet → Fluidstack Ltd. (6 arêtes, structure financière), TeraWulf → Fluidstack Ltd. et TeraWulf → FS CS I LLC (une arête chacune). Toutes sont `causalité non établie`, avec un contrôle bilatéral C5 non testable ; Cipher → Amazon passe de 1 à 3 arêtes et Hut 8 → Fluidstack Ltd. de 2 à 3 ;
+  - cellules de rang 1 : 39 684 → 39 798 calculées ; motifs `historique tronqué` 8 153 → 8 389 ;
+  - tests : 245, tous passés.

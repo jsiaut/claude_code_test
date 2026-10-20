@@ -164,5 +164,25 @@ class OneIndexAndMemoryTables(unittest.TestCase):
                 R._ONE.clear()
 
 
+
+class CounterpartyGroupName(unittest.TestCase):
+    """D-0064 : une filiale rattachée par extrait à un groupe de contrepartie ne lui donne pas son nom ; la tête
+    (même nom normalisé que la clé) passe d'abord, et un groupe sans tête garde le plus petit nom de ses membres."""
+
+    def test_head_name_first(self):
+        con = duckdb.connect()
+        con.execute("CREATE TABLE entities (entity_id VARCHAR, record_kind VARCHAR, ref VARCHAR, name VARCHAR, normalized_name VARCHAR)")
+        rows = [("e1", "entity", None, "Fluidstack Ltd.", "fluidstack ltd"),
+                ("e2", "entity", None, "Fluidstack CS I Inc.", "fluidstack cs i inc"),
+                ("e2", "membership", "CP:fluidstack ltd", None, None),
+                ("e3", "entity", None, "Galaxy Helios I LLC", "galaxy helios i llc"),
+                ("e3", "membership", "CP:sans tete", None, None)]
+        con.executemany("INSERT INTO entities VALUES (?, ?, ?, ?, ?)", rows)
+        names = R.cp_names(con)
+        self.assertEqual(names["CP:fluidstack ltd"], "Fluidstack Ltd.")
+        self.assertEqual(names["CP:fluidstack cs i inc"], "Fluidstack CS I Inc.")
+        self.assertEqual(names["CP:sans tete"], "Galaxy Helios I LLC")
+
+
 if __name__ == "__main__":
     unittest.main()
