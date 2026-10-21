@@ -1676,7 +1676,7 @@ LAB_NAT_FR = {"financing_cash": "versement", "investment_carrying_amount": "vale
               "commitment_unexecuted": "engagement non exécuté", "capacity_commitment": "engagement de capacité",
               "consideration_payable_to_customer": "contrepartie payable au client", "revenue_recognized_gross": "revenu (brut)",
               "revenue_recognized_net": "revenu (net)", "guarantee_amount": "montant garanti", "lease_payment": "loyers",
-              "prepayment": "avance", "other": "autre", "none": "sans nature"}
+              "prepayment": "avance", "fee": "redevance", "other": "autre", "none": "sans nature"}
 LAB_BASIS_FR = {"fair_value": "juste valeur", "carrying_amount": "valeur au bilan", "cost": "coût", "equity_method": "mise en équivalence",
                 "undiscounted": "non actualisé", "discounted": "actualisé", "commitment_cap": "plafond", "outstanding_balance": "encours",
                 "maximum_exposure": "exposition maximale"}
