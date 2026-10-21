@@ -1880,17 +1880,18 @@ def labs_ledger_section(con, T):
                 L.append("| --- | --- | --- | --- | ---: | --- | --- | ---: |")
                 for c in sorted(pc, key=lambda c: (c["fl"].get("direction"), c["fl"].get("family"), c["breakdown_key"])):
                     fl = c["fl"]
-                    src = q(con, """SELECT o.amount_qualifier, o.event_type FROM links l JOIN observations o
+                    src = q(con, """SELECT o.amount_qualifier, o.event_type, o.period_label FROM links l JOIN observations o
                                      ON o.obs_key = json_extract_string(l.evidence_keys, '$[0]') WHERE l.link_key = ?""",
                             fl.get("link_key"))
-                    qual, evt = (src[0]["amount_qualifier"], src[0]["event_type"]) if src else (None, None)
+                    qual, evt, plab = ((src[0]["amount_qualifier"], src[0]["event_type"], src[0]["period_label"])
+                                       if src else (None, None, None))
                     nat = LAB_NAT_FR.get(fl.get("amount_nature"), fl.get("amount_nature"))
                     basis = LAB_BASIS_FR.get(fl.get("measurement_basis"), fl.get("measurement_basis"))
                     if basis not in (None, NONE) and basis not in nat:
                         nat += f", {basis}"
                     if fl.get("amount_nature") == "other" and LAB_EVENT_FR.get(evt):
                         nat += f" ({LAB_EVENT_FR[evt]})"
-                    val = LAB_QUAL_FR.get(qual, "") + lab_value(T, c)
+                    val = LAB_QUAL_FR.get(qual, "") + lab_value(T, c) + (f" ({plab})" if plab else "")
                     ik = fl.get("instrument_key") or "arête sans clé d'instrument"
                     L.append(f"| {LAB_DIR_FR.get(fl.get('direction'), fl.get('direction'))} | {ik} | "
                              f"{LAB_EDGE_FR.get(fl.get('edge_type'), fl.get('edge_type'))} | {nat} | {val} | {c['period_end']} | "

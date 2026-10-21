@@ -339,6 +339,19 @@ class AnthropicChain(unittest.TestCase):
         self.assertEqual(g("Abernathy Joint Venture"), "CP:fs cs i llc")
         self.assertEqual(g("Fluidstack USA III"), "CP:fluidstack usa iii inc")
 
+    def test_chain_aliases_by_extract(self):
+        """D-0066 : « AWS » (8-K d'Amazon) et « Cerebras » (S-1 de Cerebras), alias nés d'un extrait qui les définit ;
+        la cible déposante découverte garde son CIK, comme Sprint Corporation (D-0022)."""
+        from pipeline import config
+        from pipeline import entities as E
+        rows, reg = E.build({"meta": {}}, config.load(), {"AWS": False, "Cerebras": False},
+                            discovered=[("CEREBRAS SYSTEMS INC.", "2021728")])
+        r = lambda n: E.resolve(reg, n, "2026-06-30")
+        self.assertEqual(r("AWS")[:2], ("name:amazon web services inc", "AMZN"))
+        self.assertEqual(r("Cerebras")[:2], ("name:cerebras systems inc", "CP:cerebras systems inc"))
+        ent = [x for x in rows if x["entity_id"] == "name:cerebras systems inc" and x["record_kind"] == "entity"]
+        self.assertEqual([(x["cik"], x["is_filer"]) for x in ent], [("2021728", True)])
+
     def test_search_sends_forms(self):
         """Les formulaires racines d'une requête vont dans `forms`, et dans le journal des requêtes."""
         spec = {"period": ["2023-01-01", "2026-10-07"], "queries": [{"q": '"Fluidstack"', "forms": ["8-K", "8-K/A"]},
