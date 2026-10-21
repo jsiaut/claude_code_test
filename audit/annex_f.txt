@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..ff82a83 100644
+index 1378604..26ff096 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,191 @@ user_agent:
@@ -474,7 +474,7 @@ index 1378604..ff82a83 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +408,774 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +408,776 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -1200,7 +1200,9 @@ index 1378604..ff82a83 100644
 +  - {alias: "ASML Holding N.V.", of: "ASML HOLDING NV", decision: D-0057, block: 64332d4b1ef46903276346eb5fd89899194bbcb52d98b63f5e9dd5729dc5648e, accession: 0001628280-26-011377, quote: "The Consolidated financial statements include the Financial statements of ASML Holding N.V. and all of its subsidiaries", note: "graphie de la tête du groupe ASML (CIK 937966, « ASML HOLDING NV » sur EDGAR) dans ses propres dépôts ; aussi dans le 20-F de 2019 : « for which ASML Holding N.V. executed a parental guarantee agreement with the landlord » (bloc ddc026ce92b6) ; les lignes d'Intel et de TSMC qui la nomment vont au groupe (D-0057, point 8)"}
 +  - {alias: "Abernathy Joint Venture", of: "FS CS I LLC", decision: D-0064, block: 72ee0c37e74178ec3d790b4a6aa0d83d51212bf9e256967c3b8ecfa8694d4011, accession: 0001083301-26-000166, quote: "FS CS I LLC (the \"Abernathy Joint Venture\")"}
 +  - {alias: "Fluidstack USA III", of: "Fluidstack USA III Inc.", decision: D-0064, block: af906164e925020db56c3626ef70b20302465244e650a898ce7fe24efeb1f189, accession: 0001104659-25-124839, quote: "\"Fluidstack USA III\" means Fluidstack USA III Inc., a Delaware corporation."}
-+own_entities:                 # entités sans suffixe de forme juridique, identité établie par l'extrait
++  - {alias: "AWS", of: "Amazon Web Services, Inc.", decision: D-0066, block: 7a3af0ea4081e287058057565732ed97d6088d4aaea0934371eed2451c0fd6a8, accession: 0001104659-26-021050, quote: "Amazon Web Services (\"AWS\") cloud services to OpenAI"}
++  - {alias: "Cerebras", of: "Cerebras Systems Inc.", decision: D-0066, block: 957b541ff4a1437bd319b208389993b5a632f1ff7c70ceee99560c76829d86ae, accession: 0001628280-26-025762, quote: "the provision of the Services by Cerebras Systems Inc. (\"Cerebras\") to OpenAI OpCo, LLC (\"OpenAI\")"}
++own_entities:                # entités sans suffixe de forme juridique, identité établie par l'extrait
 +  - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
 +  - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
 +  - {name: "MAIV", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "we contributed an aggregate amount of $50 million to a fund managed by Magnetar (\"MAIV\")", group: CRWV, treatment: consolidated_subsidiary, valid_from: "2025-12-31", membership_note: "D-0019 : le 10-K 2025 de CoreWeave dit consolider le fonds (modèle des droits de vote) ; entrée attestée au 2025-12-31"}
@@ -1249,7 +1251,7 @@ index 1378604..ff82a83 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1237,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1239,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -1257,7 +1259,7 @@ index 1378604..ff82a83 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1253,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1255,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1266,7 +1268,7 @@ index 1378604..ff82a83 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1442,73 @@ annex_e:
+@@ -318,6 +1444,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1340,7 +1342,7 @@ index 1378604..ff82a83 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1561,42 @@ annex_f:
+@@ -370,6 +1563,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1383,7 +1385,7 @@ index 1378604..ff82a83 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1616,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1618,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1394,7 +1396,7 @@ index 1378604..ff82a83 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1669,322 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1671,348 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1529,6 +1531,7 @@ index 1378604..ff82a83 100644
 +      - {rx: '\bMeta\b', owner: ["meta platforms"]}
 +      - {rx: '\bBlue Owl\b', owner: ["blue owl"]}
 +    noted_terms: ['\bBeignet\b', 'Richland Parish', '\bMeta\b', '\bHyperion\b', '\bBlue Owl\b']
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 40
 +  athene_whco:
 +    decision: D-0049
@@ -1551,6 +1554,7 @@ index 1378604..ff82a83 100644
 +      - {rx: '\bApollo\b', owner: ["apollo global management", "athene"]}
 +      - {rx: '\bAthene\b', owner: ["apollo global management", "athene"]}
 +    noted_terms: ['\bWarehouseCo\b', '\bWHCO\b', '[Cc]apital [Ss]olution', '\bBroadcom\b', '\bAnthropic\b', '\bApollo\b', '\bAthene\b']
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 40
 +  galaxy_helios:
 +    decision: D-0049
@@ -1565,6 +1569,7 @@ index 1378604..ff82a83 100644
 +      - {rx: '\bCoreWeave\b', owner: ["coreweave"]}
 +      - {rx: '\bGalaxy\b', owner: ["galaxy digital"]}
 +    noted_terms: ['\bHelios\b', '\bCoreWeave\b', '\bGalaxy\b']
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 71                           # amendement de D-0049, point 11 (plafond initial : 40)
 +    focus: "galaxy digital"           # ordre : autres déposants, 8-K, rapports périodiques ; plus récent d'abord
 +    dedupe: true                      # un texte distinct se lit une fois
@@ -1589,6 +1594,7 @@ index 1378604..ff82a83 100644
 +    # « SBG », « Vision Fund »
 +    noted_terms: ['\bSoft[Bb]ank\b', '\bSOFTBANK\b', '\bSB Energy\b', '\bSVF II\b', '\bAmpere Computing\b', '\bGraphcore\b',
 +                  '\bArm (?:Holdings|Limited|Ltd)\b', '\bStargate\b', '\bArm\b', '\bAmpere\b', '\bSVF\b', '\bSBG\b', '\bVision Fund\b']
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 300
 +    dedupe: true
 +    skip_read: true
@@ -1608,6 +1614,7 @@ index 1378604..ff82a83 100644
 +    count_only_forms: ["D", "D/A"]    # bloc `form_d`
 +    exclude:                          # amendement du point 21, avant toute lecture
 +      - {forms: ["DRS", "DRS/A"], reason: "projet confidentiel soumis, non déposé (SPEC §2.1, submitted_draft) : il n'entre dans aucune mesure ; la version publique déposée se lit"}
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 60
 +    dedupe: true
 +    skip_read: true
@@ -1625,6 +1632,7 @@ index 1378604..ff82a83 100644
 +    # « Stargate » (servi aux volets A et E de D-0058)
 +    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
 +                  '\bStargate\b']
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 300
 +    dedupe: true
 +    skip_read: true
@@ -1637,6 +1645,7 @@ index 1378604..ff82a83 100644
 +    period: ["2017-01-29", "2026-10-07"]
 +    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
 +                  '\bStargate\b', '\bfrontier AI lab\b']
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 100
 +    dedupe: true
 +    skip_read: true
@@ -1666,7 +1675,7 @@ index 1378604..ff82a83 100644
 +                  '\bAWS\b', '\bMicrosoft\b', '\bAzure\b', '\bNVIDIA\b', '\bTPUs?\b', '\bTrainium\b', '\bProject Rainier\b',
 +                  '\bOpenAI\b']
 +    evidence: triplet                 # pièce de 8-K classée par son triplet : EX-99 et items 2.02, 7.01 furnished (point 3)
-+    cap: 80
++    cap: 225                          # D-0066, point 6 : tous les textes distincts (plafond initial : 80)
 +    dedupe: true
 +    skip_read: true
 +    skip_risk_factors: true
@@ -1684,12 +1693,23 @@ index 1378604..ff82a83 100644
 +                  '\bvariable interest\b', '\bfair value\b', '\bconcentration\b', '\bmajor customer\w*']
 +    exclude:                          # point 12 : chaque UPLOAD porte la lettre en PDF et son texte extrait par EDGAR
 +      - {forms: ["UPLOAD"], file_types: ["TEXT-EXTRACT"], reason: "texte extrait par EDGAR de la lettre en PDF du même dépôt (type LETTER), qui se lit ; le normaliseur en fait un seul paragraphe (D-0064, point 12)"}
++    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
 +    cap: 60
 +    dedupe: true
 +    skip_read: true
 +    skip_risk_factors: false          # une lettre n'a pas de section de facteurs de risque ; elle en cite les pages
 +    pdf_text: true                    # lettres UPLOAD en PDF : texte extrait, en paragraphes
 +    order: recent_first
++  spacex_anthropic:                   # D-0066, point 7 : passage du résumé du 424B4 de SpaceX sur les contrats d'Anthropic
++    decision: D-0066
++    source: span                      # passage fixé d'un document en cache, lignes jointes ; aucune requête
++    evidence: triplet
++    spans:
++      - {cik: "0001181412", accession: "0001628280-26-042639", file: "spaceexplorationtechnologi.htm", form: "424B4",
++         filing_date: "2026-06-12", filer: "SPACE EXPLORATION TECHNOLOGIES CORP",
++         start: 'For example, in May 2026, we entered into Cloud Services Agreements with Anthropic',
++         end: "upon 90 days' notice\\."}
++    noted_terms: ['\bAnthropic\b', '\bCOLOSSUS\b', '\bNVIDIA\b']
 +
 +nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
 +  decision: D-0058
@@ -1718,3 +1738,11 @@ index 1378604..ff82a83 100644
 +    quoted_levels: ["1", "2"]          # niveaux de la hiérarchie de juste valeur comptés, non gardés (point 5)
 +    mark: {asset_cats: [EC, EP], unit: NS, payoff: Long, level: "3"}   # positions de nport_equity_mark (point 8)
 +    listing_forms: [424B4, 424B1]      # premier prospectus d'introduction : date de cotation (point 7)
++    credit:                  # D-0066, point 4 : positions de nport_credit_mark (prêts et titres de dette, nominal, niveau 3)
++      decision: D-0066
++      asset_cats: [LON, DBT]
++      unit: PA
++      payoff: Long
++      level: "3"
++      pool_max_positions: 100          # au-delà, dans un même dépôt et pour un même émetteur : prêts de plateforme
++      platform_title_rx: '\bmarketplace loans?\b'   # intitulé d'un prêt de plateforme (casse ignorée)

@@ -2519,3 +2519,45 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - 10 lignes à montant, tel qu'écrit : Cipher, 5,5 Md$ d'AWS et 3,0 Md$ de Fluidstack (deux pièces), garantie de Google sur Fluidstack de 1,4 Md$ (deux pièces) ; TeraWulf, 3,7 et 6,7 Md$ de Fluidstack, garanties de Google de 1,8 et 3,2 Md$ ; Microsoft, gain de 3,2 Md$ sur Anthropic. Leurs blocs étant de niveau E, aucune ne donne d'arête à montant : leurs arêtes sont des relations (point 5) ;
   - relations sans montant : signées, la commande de 470 MW d'Anthropic chez ERock, l'accord pluriannuel d'Anthropic avec CoreWeave et celui de Meta avec Amazon (Graviton) ; `intent_non_binding`, la lettre d'intention de Fluidstack avec Soluna et les annonces d'AMD avec Anthropic (2 GW) et Microsoft (Azure) ;
   - aucun nom de personne physique n'est cité (contrôle sur les citations, notes et contreparties des 163 lignes).
+
+  (16) Intégration et résultats (2026-10-21) :
+  - entités par extrait, après le premier réassemblage. Deux noms nouveaux restaient en attente, sur des lignes descriptives de la chaîne ; chacun devient un alias né d'un extrait qui le définit (D-0021) :
+    - « AWS », pour Amazon Web Services, Inc. : « Amazon Web Services ("AWS") cloud services to OpenAI » (8-K d'Amazon du 2026-02-27, déjà source de l'alias « Amazon Web Services ») ;
+    - « Cerebras », pour Cerebras Systems Inc. : « the provision of the Services by Cerebras Systems Inc. ("Cerebras") to OpenAI OpCo, LLC ("OpenAI") » (S-1 de Cerebras, pièce EX-10.11, bloc lu). L'entité prend la dénomination de l'extrait et garde son CIK, comme Sprint Corporation (D-0022) ;
+  - ligne du 424B4, avant le second réassemblage : elle porte son libellé de période tel qu'écrit, « per month through May 2029 ». Le grand livre affiche désormais ce libellé à côté du dernier montant, pour cette ligne et pour les trois qui en avaient déjà un (« through October 2030 » pour CoreWeave et OpenAI, « 2028 » pour SB Energy et OpenAI, « semestre clos le 30 juin 2026 » pour Amazon et Anthropic). La nature `fee` s'y lit « redevance » ;
+  - réassemblages : le premier, à froid, en 1 193 s ; le second en 953 s, le mémo ne reprenant rien, la configuration ayant changé ; rendu en 42 s ;
+  - tables, contre le dépôt d'avant D-0066 (commit a485fcd) :
+    - observations 29 380 → 29 544 : 163 lignes de la chaîne et celle du 424B4 ; la ligne de la note devient une abstention. 91 lignes changent de niveau (C → E 57, C → D 34), 16 d'assurance seulement ;
+    - arêtes 8 342 → 8 358, dont à montant 5 212 → 5 209. 17 arêtes nouvelles : les 16 de la chaîne, toutes des relations (niveau E), et celle du 424B4, à montant (niveau C) ; la relation de la note disparaît ;
+    - quatre arêtes de Galaxy Helios perdent leur montant et deviennent des relations, leurs pièces étant des EX-99 (point 5) : les baux de CoreWeave de Helios I (4,5 Md$) et de Helios II (10,4 Md$ et 100 M$), et le prêt à terme de Helios I auprès de Deutsche Bank (434 M$). Leurs montants restent dans les lignes ;
+    - entités 3 579 → 3 581 ;
+    - exclusions 32 948 → 32 789 : `not_processed` − 67 et `out_of_scope` − 78, les fenêtres au-delà du plafond étant lues ; `pending_entity` − 16, les noms N-PORT rattachés par la règle du terme ; deux `out_of_scope` de prêts de plateforme (Block, Inc. : 287 611 positions dans 72 dépôts ; Prosper : 14) ;
+    - mesures 177 892 → 179 108 ; contrôles 69 955 → 69 960 (C5 245 → 250) ;
+  - grand livre d'Anthropic : SpaceX, redevance de 1 250 M$ (per month through May 2029), engagement d'achat, 424B4 du 2026-06-12. Aucun total n'est calculé ;
+  - paires nouvelles, toutes `causalité non établie` : AMD → Anthropic, AMD → Microsoft, Amazon → Meta, CoreWeave → Anthropic, Microsoft → Anthropic (une arête chacune). Arêtes en plus : Alphabet → Fluidstack Ltd. 6 → 10, Cipher → Fluidstack Ltd. 3 → 5, Cipher → Amazon 3 → 4, TeraWulf → Fluidstack Ltd. 1 → 3 ; SpaceX → Anthropic reste à une arête, désormais à montant ;
+  - cycles de E.6 : 106 → 108. AMD → OpenAI → Microsoft → AMD et CoreWeave → NVIDIA → Anthropic → CoreWeave, tous deux « relation commerciale doublée d'un financement », à titre descriptif ;
+  - cellules de rang 1 : calculées 39 798 → 40 248 ; motifs `historique tronqué` 8 389 → 8 507 ;
+  - N-PORT, rattachement étendu :
+    - 71 cellules `nport_equity_mark` de plus (OpenAI 23, SpaceX 22, Anthropic 14, CoreWeave 12), aucune existante ne change ;
+    - 23 cellules `nport_equity_held` augmentent. Anthropic au 2026-06-30 : 15 233 → 15 353 M$, sur 106 → 109 séries. OpenAI : 4 345 → 4 507 M$, sur 58 → 69 séries. CoreWeave au 2025-03-31 : 508 → 520 M$ ;
+  - N-PORT, marques de crédit : 522 cellules sur 69 nœuds, du 2019-09-30 au 2026-07-31, comme au décompte (point 13). Seize couples nœud et catégorie ont une position dans les trois mois avant le 2026-07-31. Dernières marques :
+    - Nscale, prêts, 100,0 % de 334,1 M$ sur 19 séries (2026-06-30) ;
+    - CoreWeave, prêts, 99,8 % de 49,3 M$ (2026-07-31 ; plus bas 98,4 % au 2023-10-31) ;
+    - SoftBank, prêt de premier rang de Kronos I (UK), 100,0 % de 35,0 M$ ;
+    - SVF II Finco Cayman, 100,3 % de 16,9 M$ (plus bas 93,5 % au 2023-09-30) ;
+    - Cloudera, 60,0 % ;
+    - Beignet Investor LLC : 6 919 M$ au pair, à la seule date du 2025-09-30 (94 séries).
+
+    Aucune des seize lignes ne porte de part en défaut, en arriéré d'intérêts ou en PIK. Sur l'ensemble, 70 cellules en portent une, sur huit couples nœud et catégorie :
+    - General Motors (en euros et en dollars) : défaut jusqu'à 100 % ;
+    - JPMorgan Chase & Co : défaut et PIK ;
+    - T-Mobile : défaut 57 % ;
+    - Nielsen : arriéré ;
+    - AP Grange : arriéré jusqu'à 36 %, PIK jusqu'à 90 % ;
+    - Core Scientific et iRobot : PIK 100 % ;
+  - tests : 267, tous passés.
+
+  (17) Limites constatées après calcul, sans changer la sélection fixée d'avance :
+  - 54 cellules de marque de crédit dépassent 1,5. 52 sont des titres de dette de banques : des titres structurés, dont le nominal déclaré n'est pas celui d'une dette ordinaire. Le plus haut est à 25 750 fois le nominal (JPMorgan Chase Bank, N.A., 2025-12-31). Les deux autres sont Berkshire Hathaway (2,7, 2021-09-30) et Micron (8,5, 2021-06-30) ;
+  - 75 cellules sont sous 0,5 : General Motors 32 et T-Mobile 9, proches de zéro ; JPMorgan Chase & Co 14 ; WeWork 9 ; Core Scientific 5 (25 à 30 %, d'octobre 2022 à octobre 2023) ; AP Grange 2 ; JPMorgan Chase Bank en livres turques 2 ; iRobot (46,9 %) et QVC (44,5 %), une chacune ;
+  - ces cellules sont publiées telles que déclarées, et aucune n'est dans le tableau des trois derniers mois de la synthèse. Écarter les titres structurés des banques serait une décision nouvelle.

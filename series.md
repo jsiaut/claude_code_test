@@ -2265,9 +2265,9 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | 2025-06-30 | 184 M$ | 17 | 29 |
 | 2025-09-30 | 1 120 M$ | 43 | 68 |
 | 2025-12-31 | 2 129 M$ | 54 | 83 |
-| 2026-03-31 | 5 273 M$ | 65 | 119 |
-| 2026-06-30 | 15 233 M$ | 106 | 196 |
-| 2026-09-30 | 1 456 M$ (partiel) | 28 | 49 |
+| 2026-03-31 | 5 278 M$ | 65 | 122 |
+| 2026-06-30 | 15 353 M$ | 109 | 205 |
+| 2026-09-30 | 1 622 M$ (partiel) | 30 | 51 |
 
 | Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
 | --- | --- | --- | --- | ---: |
@@ -2290,22 +2290,30 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | BlackRock Advantage Large Cap Core Fund | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
 | BlackRock Advantage Large Cap Growth Fund | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
 | BlackRock Capital Appreciation Fund, Inc. | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
+| BlackRock Capital Appreciation Portfolio | ANTHROPIC SERIES H (EC) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
 | BlackRock ESG Capital Allocation Term Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock ESG Capital Allocation Term Trust | ANTHROPIC SERIES G (EC) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
 | BlackRock Global Allocation Fund, Inc. | Anthropic PBC (EP) | 2025-10-31 (140,97 USD) | 2026-04-30 (318,57 USD) | 2 |
 | BlackRock Global Allocation Fund, Inc. | Anthropic PBC, Series F (EP) | 2026-01-31 (243,40 USD) | 2026-07-31 (589,01 USD) | 2 |
 | BlackRock Global Allocation Portfolio | Anthropic PBC (EP) | 2025-09-30 (140,97 USD) | 2026-03-31 (259,14 USD) | 2 |
 | BlackRock Global Allocation Portfolio | Anthropic PBC, Series F (EP) | 2025-12-31 (203,36 USD) | 2026-06-30 (589,01 USD) | 2 |
 | BlackRock Large Cap Focus Growth Fund, Inc. | ANTHROPIC PBC (EP) | 2026-05-29 (589,01 USD) | 2026-05-29 (589,01 USD) | 1 |
 | BlackRock Science & Technology Term Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Science & Technology Term Trust | ANTHROPIC SERIES H (EC) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
 | BlackRock Science & Technology Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Science & Technology Trust | ANTHROPIC SERIES H (EC) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
 | BlackRock Strategic Global Bond Fund, Inc. | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Strategic Global Bond Fund, Inc. | ANTHROPIC SERIES G (EC) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
 | BlackRock Strategic Income Opportunities Portfolio | Anthropic PBC (EP) | 2025-09-30 (140,97 USD) | 2026-03-31 (259,14 USD) | 2 |
 | BlackRock Strategic Income Opportunities Portfolio | Anthropic PBC, Series F (EP) | 2025-12-31 (203,36 USD) | 2026-06-30 (589,01 USD) | 2 |
 | BlackRock Technology & Private Equity Term Trust | ANTHROPIC PBC (EC) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| BlackRock Technology & Private Equity Term Trust | ANTHROPIC SERIES H (EC) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
 | BlackRock Technology Opportunities Fund | ANTHROPIC PBC (EP) | 2025-11-28 (203,36 USD) | 2026-05-29 (589,00 USD) | 3 |
+| BlackRock Total Return Fund | ANTHROPIC SERIES G (EC) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
 | BlackRock Total Return Fund | ANTHROPIC PBC (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
 | Capital World Growth & Income Fund | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-05-31 (589,01 USD) | 2026-05-31 (589,01 USD) | 1 |
 | Capital World Growth & Income Fund | ANTHROPIC PBC CL H-1 PFD PP (PHYSICAL) (NOT LISTED OR TRADING) (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
+| ClearBridge Select Fund | ANTHROPIC PRIVATE PLACEMENT (EC) | 2026-04-30 (259,14 USD) | 2026-07-31 (589,01 USD) | 2 |
 | Fidelity Advisor Capital Development Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
 | Fidelity Advisor Diversified Stock Fund | ANTHROPIC PBC SERIES G PC PP (EP) | 2026-03-31 (259,14 USD) | 2026-06-30 (589,01 USD) | 2 |
 | Fidelity Advisor Diversified Stock Fund | ANTHROPIC PBC SERIES H PC PP (EP) | 2026-06-30 (589,01 USD) | 2026-06-30 (589,01 USD) | 1 |
@@ -2508,6 +2516,7 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | VIP Technology Portfolio | ANTHROPIC PBC SER B PC PP (EP) | 2024-03-31 (30,00 USD) | 2026-06-30 (589,01 USD) | 10 |
 | VIP Technology Portfolio | ANTHROPIC PBC SERIES D PC PP (EP) | 2024-06-30 (30,00 USD) | 2026-06-30 (622,94 USD) | 9 |
 | VIP Technology Portfolio | ANTHROPIC PBC SERIES F PC PP (EP) | 2025-09-30 (140,97 USD) | 2026-06-30 (589,01 USD) | 4 |
+| iShares A.I. Innovation and Tech Active ETF | ANTHROPIC SERIES G (EC) | 2026-04-30 (318,57 USD) | 2026-07-31 (589,01 USD) | 2 |
 
 ## Aurora Innovation, Inc. (CP:aurora innovation inc) : actions valorisées par les fonds (Form N-PORT)
 
@@ -2557,7 +2566,19 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | --- | --- | --- | --- | ---: |
 | Victory Extended Market Index Fund | VMWARE INC (EC) | 2026-01-31 (0,01 USD) | 2026-04-30 (0,01 USD) | 2 |
 
-## CEREBRAS SYSTEMS INC. (CP:cerebras systems inc) : actions valorisées par les fonds (Form N-PORT)
+## CURIOSITYSTREAM INC. (CP:curiositystream inc) : actions valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
+
+| Trimestre | Valeur détenue déclarée | Séries | Positions |
+| --- | ---: | ---: | ---: |
+| 2019-09-30 | 9 M$ (partiel) | 1 | 1 |
+
+| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
+| --- | --- | --- | --- | ---: |
+| AMG TimesSquare Small Cap Growth Fund | CURIOSITYSTREAM INC PVD CNV A 144A (EP) | 2019-09-30 (10,00 USD) | 2019-09-30 (10,00 USD) | 1 |
+
+## Cerebras Systems Inc. (CP:cerebras systems inc) : actions valorisées par les fonds (Form N-PORT)
 
 Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
 
@@ -2622,18 +2643,6 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | VIP Technology Portfolio | CEREBRAS SYSTEMS INC SER G PC PP (EP) | 2025-09-30 (36,23 USD) | 2026-03-31 (89,02 USD) | 3 |
 | VIP Technology Portfolio | CEREBRAS SYSTEMS INC SER H PC PP (EP) | 2026-03-31 (89,02 USD) | 2026-03-31 (89,02 USD) | 1 |
 
-## CURIOSITYSTREAM INC. (CP:curiositystream inc) : actions valorisées par les fonds (Form N-PORT)
-
-Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
-
-| Trimestre | Valeur détenue déclarée | Séries | Positions |
-| --- | ---: | ---: | ---: |
-| 2019-09-30 | 9 M$ (partiel) | 1 | 1 |
-
-| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
-| --- | --- | --- | --- | ---: |
-| AMG TimesSquare Small Cap Growth Fund | CURIOSITYSTREAM INC PVD CNV A 144A (EP) | 2019-09-30 (10,00 USD) | 2019-09-30 (10,00 USD) | 1 |
-
 ## Coinbase, Inc. (CP:coinbase inc) : actions valorisées par les fonds (Form N-PORT)
 
 Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
@@ -2693,16 +2702,20 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | --- | ---: | ---: | ---: |
 | 2023-12-31 | 162 M$ | 17 | 17 |
 | 2024-03-31 | 262 M$ | 22 | 22 |
-| 2024-06-30 | 536 M$ | 25 | 35 |
-| 2024-09-30 | 652 M$ | 26 | 41 |
-| 2024-12-31 | 808 M$ | 26 | 44 |
-| 2025-03-31 | 508 M$ | 13 | 26 |
+| 2024-06-30 | 539 M$ | 28 | 38 |
+| 2024-09-30 | 666 M$ | 30 | 45 |
+| 2024-12-31 | 825 M$ | 30 | 48 |
+| 2025-03-31 | 520 M$ | 14 | 27 |
 
 | Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
 | --- | --- | --- | --- | ---: |
+| BlackRock Capital Allocation Term Trust | COREWEAVE CONVERTIBLE PREF EQ (EP) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,27 USD) | 3 |
+| BlackRock ESG Capital Allocation Term Trust | COREWEAVE CONVERTIBLE PREF EQ (EP) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,27 USD) | 3 |
+| BlackRock Global Allocation Fund, Inc. | COREWEAVE CONVERTIBLE PREF EQ (EP) | 2024-07-31 (1,02 USD) | 2025-01-31 (1,27 USD) | 3 |
 | BlackRock Global Allocation Portfolio | Coreweave, Inc. (EC) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,80 USD) | 3 |
 | BlackRock Global Allocation V.I. Fund | Coreweave, Inc. (EC) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,80 USD) | 3 |
 | BlackRock Global Long/Short Credit Fund | Coreweave, Inc. (EC) | 2024-07-31 (1,02 USD) | 2025-01-31 (1,80 USD) | 3 |
+| BlackRock Strategic Global Bond Fund, Inc. | COREWEAVE CONVERTIBLE PREF EQ (EP) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,27 USD) | 3 |
 | BlackRock Strategic Income Opportunities Portfolio | Coreweave, Inc. (EC) | 2024-06-30 (1,00 USD) | 2024-12-31 (1,80 USD) | 3 |
 | Fidelity Advisor Diversified Stock Fund | COREWEAVE INC CL A (EC) | 2024-06-30 (778,47 USD) | 2024-09-30 (848,22 USD) | 2 |
 | Fidelity Advisor Diversified Stock Fund | COREWEAVE INC CL A P/P (EC) | 2024-12-31 (939,85 USD) | 2024-12-31 (939,85 USD) | 1 |
@@ -3034,10 +3047,10 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | 2025-03-31 | 282 M$ | 4 | 5 |
 | 2025-06-30 | 461 M$ | 4 | 6 |
 | 2025-09-30 | 693 M$ | 4 | 6 |
-| 2025-12-31 | 1 577 M$ | 32 | 64 |
-| 2026-03-31 | 2 703 M$ | 48 | 91 |
-| 2026-06-30 | 4 345 M$ | 58 | 118 |
-| 2026-09-30 | 600 M$ (partiel) | 11 | 21 |
+| 2025-12-31 | 1 598 M$ | 35 | 67 |
+| 2026-03-31 | 2 747 M$ | 53 | 96 |
+| 2026-06-30 | 4 507 M$ | 69 | 129 |
+| 2026-09-30 | 685 M$ (partiel) | 15 | 25 |
 
 | Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
 | --- | --- | --- | --- | ---: |
@@ -3047,6 +3060,12 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | ARK Venture Fund | OpenAI Global, LLC (EC) | 2024-04-30 (150,00 USD) | 2026-01-30 (483,12 USD) | 8 |
 | ARK Venture Fund | OpenAI Group PBC (EC) | 2026-01-30 (483,12 USD) | 2026-07-31 (678,11 USD) | 3 |
 | ARK Venture Fund | OpenAI Group PBC, Series C (EC) | 2026-04-30 (687,69 USD) | 2026-07-31 (678,11 USD) | 2 |
+| BlackRock Capital Allocation Term Trust | OPENAI SERIES C (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| BlackRock Science & Technology Trust | OPENAI SERIES C (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| BlackRock Strategic Global Bond Fund, Inc. | OPENAI SERIES C (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| BlackRock Technology & Private Equity Term Trust | OPENAI SERIES C (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| BlackRock Total Return Fund | OPENAI SERIES C (EC) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| ClearBridge Select Fund | OpenAI Private Placement (EC) | 2025-10-31 (430,00 USD) | 2026-07-31 (687,69 USD) | 4 |
 | Fidelity Advisor Equity Growth Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
 | Fidelity Advisor Growth Opportunities Fund | OPENAI GROUP PBC A PP (EC) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
 | Fidelity Advisor Growth Opportunities Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
@@ -3107,12 +3126,18 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | Growth Fund of America | OPENAI GROUP PBC CL A-2 CV PFD (DRS) (NOT LISTED OR TRADING) (EP) | 2025-11-30 (483,56 USD) | 2025-11-30 (483,56 USD) | 1 |
 | Growth Fund of America | OPENAI GROUP PBC CL A-2 CV PFD PP (DRS) (NOT LISTED OR TRADING) (EP) | 2026-02-28 (653,30 USD) | 2026-05-31 (687,69 USD) | 2 |
 | Growth Fund of America | OPENAI GROUP PBC CL C CV PFD PP (NOT LISTED OR TRADING) (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| JPMorgan Growth Advantage Fund | Openai (EC) | 2025-12-31 (430,00 USD) | 2026-06-30 (687,69 USD) | 3 |
+| NYLI Winslow Large Cap Growth Fund | OpenAI (EC) | 2026-01-31 (430,00 USD) | 2026-04-30 (687,69 USD) | 2 |
+| NYLIM VP Winslow Large Cap Growth Portfolio | OpenAI (EC) | 2025-12-31 (430,00 USD) | 2026-03-31 (687,69 USD) | 2 |
+| NYLIM VP Winslow Large Cap Growth Portfolio | OpenAI, Class A (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
+| NYLIM Winslow Large Cap Growth Fund | OpenAI, Class A (EC) | 2026-07-31 (687,69 USD) | 2026-07-31 (687,69 USD) | 1 |
 | New Economy Fund | OPENAI GLOBAL LLC RTS 1:1 @ USD PP (DRS) (NOT LISTED OR TRADING) (EC) | 2024-11-30 (1,00 USD) | 2025-08-31 (2,50 USD) | 4 |
 | New Economy Fund | OPENAI GROUP PBC CL A (DRS) (NOT LISTED OR TRADING) (EC) | 2025-11-30 (483,56 USD) | 2025-11-30 (483,56 USD) | 1 |
 | New Economy Fund | OPENAI GROUP PBC CL A PP (DRS) (NOT LISTED OR TRADING) (EC) | 2026-02-28 (653,30 USD) | 2026-05-31 (687,69 USD) | 2 |
 | New Economy Fund | OPENAI GROUP PBC CL A-2 CV PFD (DRS) (NOT LISTED OR TRADING) (EP) | 2025-11-30 (483,56 USD) | 2025-11-30 (483,56 USD) | 1 |
 | New Economy Fund | OPENAI GROUP PBC CL A-2 CV PFD PP (DRS) (NOT LISTED OR TRADING) (EP) | 2026-02-28 (653,30 USD) | 2026-05-31 (687,69 USD) | 2 |
 | New Economy Fund | OPENAI GROUP PBC CL C CV PFD PP (NOT LISTED OR TRADING) (EP) | 2026-05-31 (687,69 USD) | 2026-05-31 (687,69 USD) | 1 |
+| Nuveen Winslow Large-Cap Growth ESG Fund | OPENAI (EC) | 2026-04-30 (687,69 USD) | 2026-07-31 (687,69 USD) | 2 |
 | Robinhood Ventures Fund I | OpenAI Group PBC (Class A Common Stock) (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
 | Select Communication Services Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
 | Select Communication Services Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
@@ -3168,6 +3193,7 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | VIP Technology Portfolio | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
 | VIP Technology Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
 | VIP Technology Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
+| iShares A.I. Innovation and Tech Active ETF | OPENAI SERIES C (EC) | 2026-04-30 (687,69 USD) | 2026-07-31 (687,69 USD) | 2 |
 
 ## PENDRELL CORP (CP:pendrell corp) : actions valorisées par les fonds (Form N-PORT)
 
@@ -3353,18 +3379,18 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | Trimestre | Valeur détenue déclarée | Séries | Positions |
 | --- | ---: | ---: | ---: |
 | 2019-09-30 | 320 M$ (partiel) | 4 | 13 |
-| 2019-12-31 | 737 M$ | 14 | 40 |
-| 2020-03-31 | 717 M$ | 14 | 40 |
-| 2020-06-30 | 758 M$ | 14 | 40 |
-| 2020-09-30 | 1 116 M$ | 18 | 50 |
-| 2020-12-31 | 1 143 M$ | 20 | 54 |
-| 2021-03-31 | 1 669 M$ | 24 | 65 |
-| 2021-06-30 | 1 836 M$ | 29 | 72 |
-| 2021-09-30 | 1 836 M$ | 29 | 72 |
-| 2021-12-31 | 2 143 M$ | 29 | 72 |
-| 2022-03-31 | 2 448 M$ | 29 | 72 |
-| 2022-06-30 | 2 979 M$ | 29 | 71 |
-| 2022-09-30 | 3 169 M$ | 29 | 70 |
+| 2019-12-31 | 739 M$ | 16 | 42 |
+| 2020-03-31 | 730 M$ | 16 | 42 |
+| 2020-06-30 | 771 M$ | 16 | 42 |
+| 2020-09-30 | 1 132 M$ | 20 | 52 |
+| 2020-12-31 | 1 161 M$ | 22 | 56 |
+| 2021-03-31 | 1 692 M$ | 26 | 67 |
+| 2021-06-30 | 1 861 M$ | 31 | 74 |
+| 2021-09-30 | 1 861 M$ | 31 | 74 |
+| 2021-12-31 | 2 176 M$ | 31 | 74 |
+| 2022-03-31 | 2 481 M$ | 31 | 74 |
+| 2022-06-30 | 2 985 M$ | 30 | 72 |
+| 2022-09-30 | 3 177 M$ | 30 | 71 |
 | 2022-12-31 | 3 327 M$ | 29 | 70 |
 | 2023-03-31 | 3 507 M$ | 30 | 72 |
 | 2023-06-30 | 3 596 M$ | 30 | 72 |
@@ -3537,10 +3563,11 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | Select Technology Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2026-02-28 (526,59 USD) | 2026-02-28 (526,59 USD) | 1 |
 | StepStone Private Venture and Growth Fund | Space Exploration Technologies Corp. (EC) | 2024-06-30 (112,00 USD) | 2026-03-31 (526,59 USD) | 8 |
 | StepStone Private Venture and Growth Fund | Space Exploration Technologies Corp. - 4 (EP) | 2025-09-30 (2 120,00 USD) | 2026-03-31 (1 280,34 USD) | 3 |
-| T. Rowe Price Global Growth Stock Fund | SPACEX SERIES K CVT PFD STOCK PP (EP) | 2023-01-31 (770,00 USD) | 2025-07-31 (1 850,00 USD) | 11 |
+| T. Rowe Price Global Growth Stock Fund | SPACEX SERIES K CVT PFD STOCK PP (EP) | 2019-10-31 (214,00 USD) | 2025-07-31 (1 850,00 USD) | 23 |
+| T. Rowe Price Institutional Global Growth Equity Fund | SPACEX SERIES K CVT PFD STOCK PP (EP) | 2019-10-31 (214,00 USD) | 2019-10-31 (214,00 USD) | 1 |
 | T. Rowe Price Science & Technology Fund, Inc. | X.AI CORP SER C CVT PFD PP (EP) | 2026-03-31 (75,46 USD) | 2026-03-31 (75,46 USD) | 1 |
 | T. Rowe Price Science & Technology Fund, Inc. | X.AI CORP SER E CVT PFD PP (EP) | 2026-03-31 (75,46 USD) | 2026-03-31 (75,46 USD) | 1 |
-| The Private Shares Fund | SPACE EXPLORATION TECHNOLOGIES CORP. COMMON SHARES   / (EC) | 2022-06-30 (70,00 USD) | 2026-03-31 (526,59 USD) | 16 |
+| The Private Shares Fund | SPACE EXPLORATION TECHNOLOGIES CORP. COMMON SHARES   / (EC) | 2020-03-31 (220,73 USD) | 2026-03-31 (526,59 USD) | 25 |
 | VIP Balanced Portfolio | SPACE EXPLORATION TECH CORP (EC) | 2021-03-31 (419,99 USD) | 2022-12-31 (77,00 USD) | 8 |
 | VIP Balanced Portfolio | SPACE EXPLORATION TECH CORP PP (EC) | 2023-03-31 (77,00 USD) | 2026-03-31 (526,59 USD) | 13 |
 | VIP Balanced Portfolio | SPACE EXPLORATION TECHNOLOGIES CORP CLASS C PP (EC) | 2025-03-31 (185,00 USD) | 2026-03-31 (526,59 USD) | 5 |
@@ -3973,6 +4000,1259 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | Baron Global Advantage Fund | ZYMERGEN INC. SERIES D PREFERRED STOCK (EP) | 2020-09-30 (6,49 USD) | 2020-12-31 (8,21 USD) | 2 |
 | VY(R) BARON GROWTH PORTFOLIO | ZYMERGEN INC D PREF STOCK (EP) | 2020-09-30 (6,49 USD) | 2020-12-31 (8,21 USD) | 2 |
 
+## AP Grange Holdings, LLC (CP:ap grange holdings llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-07-31 | 100,0 % | 7,8 M USD | 3 | 3 | 1 | 2045-03-20 | 6,5 | — | AP GRANGE HOLDINGS LLC |
+| 2024-08-31 | 100,0 % | 18,8 M USD | 3 | 6 | 1 | 2045-03-20 | 5 – 6,5 | — | AP Grange Holdings |
+| 2024-09-30 | 101,0 % | 266,7 M USD | 10 | 14 | 2 | 2045-03-20 | 5 – 6,5 | — | AP Grange Holdings |
+| 2024-10-31 | 100,4 % | 7,8 M USD | 3 | 3 | 1 | 2045-03-20 | 6,5 | — | AP GRANGE HOLDINGS LLC |
+| 2024-11-30 | 101,8 % | 19,1 M USD | 3 | 6 | 1 | 2045-03-20 | 5 – 6,5 | PIK 90,1 % | AP Grange Holdings |
+| 2024-12-31 | 101,6 % | 270,6 M USD | 10 | 14 | 2 | 2045-03-20 | 5 – 6,5 | PIK 80,0 % | AP Grange Holdings |
+| 2025-01-31 | 98,6 % | 7,9 M USD | 3 | 3 | 1 | 2045-03-20 | 6,5 | — | AP GRANGE HOLDINGS LLC |
+| 2025-02-28 | 102,6 % | 19,3 M USD | 3 | 6 | 1 | 2045-03-20 | 5 – 6,5 | PIK 90,2 % | AP Grange Holdings |
+| 2025-03-31 | 100,4 % | 276,2 M USD | 10 | 18 | 2 | 2045-03-20 | 5 – 6,5 | PIK 77,0 % | AP Grange Holdings |
+| 2025-04-30 | 96,8 % | 8,0 M USD | 3 | 3 | 1 | 2045-03-20 | 6,5 | — | AP GRANGE HOLDINGS LLC |
+| 2025-05-31 | 100,9 % | 19,5 M USD | 3 | 9 | 2 | 2045-03-20 | 5 – 6,5 | PIK 86,7 % | AP Grange Holdings |
+| 2025-06-30 | 101,1 % | 278,7 M USD | 10 | 18 | 2 | 2045-03-20 | 5 – 6,5 | PIK 76,3 % | AP Grange Holdings |
+| 2025-07-31 | 101,0 % | 7,8 M USD | 3 | 3 | 1 | 2045-03-20 | 6,5 | arriéré 9,3 % | AP Grange Holdings LLC |
+| 2025-08-31 | 102,6 % | 19,7 M USD | 3 | 9 | 2 | 2045-03-20 | 5 – 6,5 | PIK 85,7 % | AP Grange Holdings |
+| 2025-09-30 | 104,9 % | 280,4 M USD | 10 | 18 | 2 | 2045-03-20 | 5 – 6,5 | arriéré 6,4 %, PIK 75,8 % | AP Grange Holdings LLC |
+| 2025-10-31 | 106,6 % | 20,9 M USD | 8 | 8 | 2 | 2045-03-20 | 6,5 | arriéré 3,5 % | AP Grange Holdings LLC |
+| 2025-11-30 | 110,5 % | 72,5 M USD | 9 | 15 | 3 | 2045-03-20 | 5 – 6,5 | PIK 23,3 % | AP Grange Holdings LLC |
+| 2025-12-31 | 106,4 % | 50,2 M USD | 7 | 7 | 2 | 2045-03-20 | 6,5 | arriéré 36,0 % | AP Grange Holdings LLC |
+| 2026-01-31 | 108,3 % | 18,1 M USD | 6 | 6 | 2 | 2045-03-20 | 6,5 | arriéré 4,0 % | AP Grange Holdings, LLC |
+| 2026-03-31 | 105,2 % | 51,9 M USD | 7 | 7 | 2 | 2045-03-20 | 6,5 | arriéré 34,8 % | AP Grange Holdings LLC |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-12-31 | 0,0 % | 1,2 M USD | 1 | 1 | 1 | 2045-03-20 | 6,5 | — | AP GRANGE HOLDINGS, LLC, Term Loan |
+| 2026-03-31 | 0,0 % | 1,3 M USD | 1 | 1 | 1 | 2045-03-20 | 6,5 | — | AP Grange Holdings, LLC, Term Loan |
+
+## AT&T Inc. (CP:at&t inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-06-30 | 99,9 % | 0,2 M USD | 1 | 1 | 1 | 2022-01-28 | 1,091 | — | AT&T Inc. 2021 Delayed Draw Term Loan |
+| 2021-08-31 | 100,1 % | 134,8 M USD | 4 | 4 | 1 | 2022-01-28 | 0 – 1,088 | — | AT&T Inc. 2021 Delayed Draw Term Loan |
+| 2021-09-30 | 99,9 % | 0,8 M USD | 2 | 2 | 2 | 2022-01-28 | 1,08 – 1,082 | — | AT&T Inc. |
+| 2021-11-30 | 100,1 % | 134,8 M USD | 4 | 4 | 1 | 2022-03-23 | 1,091 | — | AT&T Inc. 2021 Delayed Draw Term Loan |
+| 2021-12-31 | 100,0 % | 0,2 M USD | 1 | 1 | 1 | 2022-03-23 | 1,104 | — | AT&T Inc. 2021 Delayed Draw Term Loan |
+
+## AbbVie Inc. (CP:abbvie inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-04-30 | 100,0 % | 2,7 M USD | 1 | 1 | 1 | 2021-05-21 | 0,5323788 | — | AbbVie, Inc. |
+
+## Amazon (AMZN) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-06-30 | 78,9 % | 10,2 M USD | 2 | 2 | 1 | 2049-10-01 | 2,654 | — | Amazon.com Inc |
+| 2024-09-30 | 82,9 % | 10,0 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | Amazon.com Inc |
+| 2024-12-31 | 79,0 % | 9,9 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | Amazon.com, Inc. |
+| 2025-03-31 | 81,3 % | 9,8 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | Amazon.com, Inc. |
+| 2025-06-30 | 81,4 % | 9,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | Amazon.com, Inc. |
+| 2025-09-30 | 83,3 % | 9,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | Amazon.com, Inc. |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-03-31 | 92,8 % | 8,4 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2021-06-30 | 96,3 % | 10,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2021-09-30 | 97,3 % | 10,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2021-12-31 | 96,0 % | 10,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2022-03-31 | 89,6 % | 10,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2022-06-30 | 83,7 % | 10,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2022-09-30 | 76,6 % | 10,7 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2022-12-31 | 76,6 % | 10,6 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2023-03-31 | 78,2 % | 10,6 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2023-06-30 | 76,7 % | 10,5 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2023-09-30 | 73,0 % | 10,4 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2023-12-31 | 81,0 % | 10,3 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+| 2024-03-31 | 78,7 % | 10,2 M USD | 2 | 2 | 1 | 2042-10-10 | 2,654 | — | CTL Logistics |
+
+## Applied Digital (APLD) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2026-03-31 | 101,2 % | 0,5 M USD | 1 | 2 | 1 | 2026-04-08 | 14,620313 | — | Equipment Financing |
+
+## BARCLAYS BANK PLC (CP:barclays bank plc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-06-30 | 104,7 % | 8,6 M USD | 1 | 1 | 1 | 2025-02-18 | 0 | — | Barclays Bank PLC |
+| 2023-06-30 | 172,7 % | 1,2 M USD | 1 | 1 | 1 | 2025-02-04 | 0 | — | BACR 0 02/04/25 |
+| 2023-09-29 | 194,8 % | 40,4 M USD | 2 | 3 | 3 | 2024-07-12 – 2026-08-28 | 0 – 8 | — | Barclays Bank PLC |
+| 2023-12-29 | 214,8 % | 39,5 M USD | 2 | 3 | 3 | 2024-07-12 – 2026-08-28 | 0 – 8 | — | Barclays Bank PLC |
+| 2024-03-28 | 151,3 % | 76,0 M USD | 3 | 5 | 3 | 2024-09-27 – 2029-02-16 | 1 – 8 | — | Barclays Bank PLC |
+| 2024-04-30 | 149,7 % | 17,6 M USD | 5 | 7 | 2 | 2024-09-27 – 2029-02-16 | 1 – 8 | — | Barclays Bank PLC |
+| 2024-05-31 | 131 537,0 % | 0,0 M USD | 1 | 1 | 1 | 2024-09-27 | 8 | — | Barclays Bank PLC |
+| 2024-06-28 | 197,0 % | 36,6 M USD | 2 | 3 | 3 | 2024-12-30 – 2029-02-16 | 1 – 8 | — | BACR 1 02/16/29 MSFT |
+| 2024-07-31 | 164 348,5 % | 0,0 M USD | 2 | 2 | 1 | 2024-12-30 | 8 | — | Barclays Bank PLC |
+| 2024-09-30 | 1 031,4 % | 3,2 M USD | 2 | 2 | 2 | 2024-12-30 – 2029-02-16 | 1 – 8 | — | BACR 1 02/16/29 MSFT |
+| 2024-11-30 | 103,4 % | 2,0 M USD | 1 | 1 | 1 | 2027-11-04 | 1,25 | — | Barclays Bank PLC |
+| 2024-12-31 | 98,2 % | 3,2 M USD | 1 | 1 | 1 | 2029-02-16 | 1 | — | BACR 1 02/16/29 MSFT |
+| 2025-02-28 | 96,4 % | 2,0 M USD | 1 | 1 | 1 | 2027-11-04 | 1,25 | — | Barclays Bank PLC |
+| 2025-03-31 | 97,9 % | 3,0 M USD | 1 | 1 | 1 | 2029-02-16 | 1 | — | BACR 1 02/16/29 MSFT |
+| 2025-05-31 | 101,9 % | 2,7 M USD | 1 | 2 | 2 | 2027-11-04 – 2028-05-26 | 1,25 | — | Barclays Bank PLC |
+| 2025-06-30 | 110,4 % | 21,9 M USD | 3 | 4 | 4 | 2027-04-14 – 2029-02-16 | 0,000101 – 1,25 | — | BACR FLOAT 04/14/27 |
+| 2025-07-31 | 115,5 % | 7,6 M USD | 1 | 1 | 1 | 2028-05-26 | 1,25 | — | Barclays Bank PLC |
+| 2025-08-31 | 112,7 % | 1,1 M USD | 1 | 1 | 1 | 2028-05-26 | 1,25 | — | Barclays Bank PLC |
+| 2025-09-30 | 110,6 % | 21,8 M USD | 4 | 5 | 5 | 2027-04-14 – 2033-08-31 | 1 – 11,71 | — | BACR FLOAT 04/14/27 |
+| 2025-10-31 | 111,6 % | 7,6 M USD | 1 | 1 | 1 | 2028-05-26 | 1,25 | — | Barclays Bank PLC |
+| 2025-11-30 | 108,1 % | 1,0 M USD | 1 | 1 | 1 | 2028-05-26 | 1,25 | — | Barclays Bank PLC |
+| 2025-12-31 | 106,8 % | 19,3 M USD | 3 | 3 | 3 | 2028-05-26 – 2033-08-31 | 1 – 11,71 | — | BACR 1 02/16/29 MSFT |
+| 2026-02-28 | 102,8 % | 1,0 M USD | 1 | 1 | 1 | 2029-02-16 | 1 | — | Barclays Bank PLC |
+| 2026-03-31 | 99,9 % | 5,2 M USD | 3 | 3 | 3 | 2028-03-08 – 2033-08-31 | 0,000101 – 11,13 | — | BACR 1 02/16/29 MSFT |
+| 2026-06-30 | 100,0 % | 3,4 M USD | 2 | 2 | 2 | 2028-03-08 – 2033-08-31 | 0,000101 – 11,13 | — | BACR FLOAT 03/08/28 |
+
+## BARNES & NOBLE INC (CP:barnes & noble inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2020-03-31 | 89,8 % | 1,8 M USD | 1 | 1 | 1 | 2024-08-07 | 9,18 | — | Barnes & Noble Inc FILO Term Loan |
+| 2020-06-30 | 92,0 % | 1,7 M USD | 1 | 1 | 1 | 2024-08-07 | 8,75 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2020-09-30 | 93,5 % | 1,7 M USD | 1 | 1 | 1 | 2024-08-07 | 11,58 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2020-12-31 | 94,4 % | 1,7 M USD | 1 | 1 | 1 | 2024-08-07 | 11,58 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2021-03-31 | 94,5 % | 1,6 M USD | 1 | 1 | 1 | 2024-08-07 | 11,58 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2021-06-30 | 95,1 % | 1,6 M USD | 1 | 1 | 1 | 2024-08-07 | 11,58 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2021-09-30 | 98,8 % | 1,6 M USD | 1 | 1 | 1 | 2024-08-07 | 11,58 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2021-12-31 | 99,5 % | 2,9 M USD | 1 | 1 | 1 | 2026-12-20 | 9,31 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2022-03-31 | 98,7 % | 2,9 M USD | 1 | 1 | 1 | 2026-12-20 | 9,31 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2022-06-30 | 97,2 % | 2,8 M USD | 1 | 1 | 1 | 2026-12-20 | 12,06 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2022-09-30 | 97,4 % | 2,8 M USD | 1 | 1 | 1 | 2026-12-20 | 13,56 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2022-12-31 | 96,1 % | 2,8 M USD | 1 | 1 | 1 | 2026-12-20 | 12,73 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2023-03-31 | 97,8 % | 2,7 M USD | 1 | 1 | 1 | 2026-12-20 | 13,17 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2023-06-30 | 98,3 % | 2,7 M USD | 1 | 1 | 1 | 2026-12-20 | 15,56 | — | Barnes & Noble, Inc. FILO Term Loan |
+| 2023-09-30 | 99,3 % | 2,7 M USD | 1 | 1 | 1 | 2026-12-20 | 14,48 | — | Barnes & Noble Inc FILO Term Loan |
+| 2023-12-31 | 99,4 % | 2,6 M USD | 1 | 1 | 1 | 2026-12-20 | 14,27 | — | Barnes & Noble Inc FILO Term Loan |
+| 2024-03-31 | 99,9 % | 2,1 M USD | 1 | 1 | 1 | 2026-12-20 | 15,81 | — | Barnes & Noble Inc FILO Term Loan |
+| 2024-06-30 | 100,1 % | 2,1 M USD | 1 | 1 | 1 | 2026-12-20 | 15,81 | — | Barnes & Noble Inc FILO Term Loan |
+| 2024-09-30 | 99,8 % | 2,0 M USD | 1 | 1 | 1 | 2026-12-20 | 15,31 | — | Barnes & Noble Inc FILO Term Loan |
+| 2024-12-31 | 99,3 % | 2,0 M USD | 1 | 1 | 1 | 2026-12-20 | 15,31 | — | Barnes & Noble Inc FILO Term Loan |
+| 2025-03-31 | 99,3 % | 2,0 M USD | 1 | 1 | 1 | 2026-12-20 | 15,31 | — | Barnes & Noble Inc FILO Term Loan |
+| 2025-06-30 | 98,3 % | 1,7 M USD | 1 | 1 | 1 | 2026-12-20 | 13,66 | — | Barnes & Noble Inc FILO Term Loan |
+| 2025-09-30 | 98,6 % | 1,7 M USD | 1 | 1 | 1 | 2030-05-07 | 13,41 | — | Barnes & Noble Inc 2025 FILO Term Loan |
+| 2025-12-31 | 98,7 % | 1,6 M USD | 1 | 1 | 1 | 2030-05-07 | 10,98 | — | Barnes & Noble Inc 2025 FILO Term Loan |
+| 2026-03-31 | 97,0 % | 1,6 M USD | 1 | 1 | 1 | 2030-05-07 | 10,93 | — | Barnes & Noble Inc 2025 FILO Term Loan |
+| 2026-06-30 | 97,5 % | 1,6 M USD | 1 | 1 | 1 | 2030-05-07 | 10,9 | — | Barnes & Noble Inc 2025 FILO Term Loan |
+
+## BNP PARIBAS SECURITIES CORP. (CP:bnp paribas securities corp) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-05-28 | 7 112,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-07-01 | 19,34 | — | BNP PARIBAS SECURITIES CORPORATION (COGNIZANT TECHNOLOGY SOLUTIONS CORP) 19.34% 07/01/2021 (CTSH US) |
+| 2021-08-31 | 8 940,7 % | 0,1 M USD | 1 | 5 | 5 | 2021-10-15 – 2021-10-21 | 16,06 – 21,32 | — | BNP PARIBAS SECURITIES CORPORATION (FIDELITY NATIONAL FINANCIAL INC) 21.32% 10/15/2021 (FNF US) |
+
+## BOEING CO (CP:boeing co) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2020-02-29 | 99,8 % | 514,9 M USD | 3 | 3 | 1 | 2022-02-06 | 0 | — | BOEING COMPANY THE TERM LOAN |
+| 2020-05-31 | 98,1 % | 514,9 M USD | 3 | 3 | 1 | 2022-02-07 | 1,77 | — | BOEING COMPANY THE TERM LOAN |
+| 2020-08-31 | 97,2 % | 514,9 M USD | 3 | 3 | 1 | 2022-02-07 | 1,56 | — | BOEING COMPANY THE TERM LOAN |
+| 2021-08-31 | 99,2 % | 16,6 M USD | 2 | 2 | 1 | 2022-10-30 | 0,8875 | — | Boeing Co., Revolver Loan |
+| 2022-02-28 | 99,2 % | 50,0 M USD | 4 | 4 | 1 | 2022-10-30 | 1,0464 | — | Boeing Co., Revolver Loan |
+| 2022-05-31 | 99,2 % | 50,0 M USD | 4 | 4 | 1 | 2022-10-30 | 1,9249 | — | Boeing Co., Revolver Loan |
+| 2022-08-31 | 99,2 % | 50,0 M USD | 4 | 4 | 1 | 2022-10-30 | 3,3584 | — | Boeing Co., Term Loan |
+
+## BOFA SECURITIES, INC. (CP:bofa securities inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2020-11-30 | 7 527,8 % | 0,0 M USD | 1 | 2 | 2 | 2021-01-28 | 20,54 – 21,13 | — | BOFA SECURITIES INC. (BRISTOL-MYERS SQUIBB CO) 20.54% 01/28/2021 (BMY US) |
+| 2021-02-26 | 4 908,2 % | 0,1 M USD | 1 | 4 | 4 | 2021-04-09 | 12,84 – 20,93 | — | BOFA SECURITIES INC. (AMEREN CORP) 17.88% 04/09/2021 (AEE US) |
+
+## Barclays Capital Inc. (CP:barclays capital inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-05-28 | 7 851,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-07-15 | 18,1 | — | BARCLAYS CAPITAL INC. (CITIGROUP INC) 18.10% 07/15/2021 (C US) |
+| 2021-08-31 | 8 982,2 % | 0,0 M USD | 1 | 2 | 2 | 2021-10-15 – 2021-10-21 | 12,16 – 15,27 | — | BARCLAYS CAPITAL INC. (AMEREN CORP) 15.27% 10/15/2021 (AEE US) |
+| 2022-02-28 | 4 337,2 % | 0,2 M USD | 1 | 2 | 2 | 2022-04-07 | 9,57 – 14,23 | — | BARCLAYS CAPITAL INC. (COGNIZANT TECHNOLOGY SOLUTIONS CORP) 9.57% 04/07/2022 (CTSH US) |
+
+## Beignet Investor LLC (CP:beignet investor llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-09-30 | 100,0 % | 6 919,3 M USD | 94 | 94 | 1 | 2049-06-01 | 6,85 | — | PROJECT BEIGNET SR SEC 144A PROJECT BEIGNET SR SEC 144A |
+
+## Berkshire Hathaway Inc. (CP:berkshire hathaway inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-09-30 | 27 070,0 % | 0,0 M USD | 1 | 1 | 1 | 2022-04-24 | 0 | — | Berkshire Hathaway Inc. COM USD0.0033 CLASS'B' |
+
+## Broadcom (AVGO) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-03-31 | 100,0 % | 0,3 M USD | 4 | 4 | 1 | 2029-04-15 | 0,04 | — | Broadcom, Inc. |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-11-30 | 99,8 % | 56,4 M USD | 2 | 2 | 1 | 2022-11-04 | 0 | — | BROADCOM INC 2019 1ST LIEN TERM LOAN A3 |
+| 2020-02-29 | 99,7 % | 331,0 M USD | 3 | 5 | 2 | 2022-11-04 – 2024-11-04 | 0 – 2,79 | — | BROADCOM INC 2019 TERM LOAN A5 |
+| 2020-09-30 | 99,8 % | 0,2 M USD | 1 | 1 | 1 | 2022-11-04 | 1,2836304 | — | Broadcom Inc. |
+| 2024-06-30 | 99,5 % | 471,2 M USD | 13 | 22 | 2 | 2025-08-15 – 2026-08-14 | 6,46725 – 6,59225 | — | BROADCOM INC 2023 TERM LOAN A2 |
+| 2024-09-30 | 99,8 % | 246,0 M USD | 15 | 15 | 1 | 2026-08-14 | 5,9803 | — | BROADCOM INC 2023 TERM LOAN A3 |
+| 2024-12-31 | 99,7 % | 128,6 M USD | 16 | 16 | 2 | 2026-08-14 – 2028-08-15 | 0 – 5,4628 | — | BROADCOM INC 2023 TERM LOAN A3 |
+| 2025-01-31 | 99,8 % | 2,9 M USD | 1 | 1 | 1 | 2028-08-15 | 5,437 | — | Broadcom Inc. Term A-5 Loan |
+| 2025-03-31 | 99,9 % | 4,3 M USD | 1 | 1 | 1 | 2028-08-15 | 5,452 | — | Broadcom Inc. Term A-5 Loan |
+| 2025-04-30 | 99,9 % | 2,9 M USD | 1 | 1 | 1 | 2028-08-15 | 5,452 | — | Broadcom Inc. Term A-5 Loan |
+| 2025-06-30 | 99,9 % | 4,3 M USD | 1 | 1 | 1 | 2028-08-15 | 5,447 | — | Broadcom Inc. Term A-5 Loan |
+
+## CITIGROUP INC (CP:citigroup inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-12-31 | 100,0 % | 1,5 M USD | 1 | 1 | 1 | 2030-12-11 | 5,92 | — | Citigroup Inc. |
+| 2026-02-28 | 98,1 % | 1,7 M USD | 1 | 1 | 1 | 2030-12-11 | 0 | — | CITIGROUP INC VAR 12/11/2030 |
+| 2026-03-31 | 95,0 % | 1,5 M USD | 1 | 1 | 1 | 2030-12-11 | 5,92 | — | Citigroup Inc. |
+| 2026-05-31 | 95,2 % | 1,7 M USD | 1 | 1 | 1 | 2030-12-11 | 0,0592 | — | CITIGROUP INC VAR 12/11/2030 |
+| 2026-06-30 | 94,9 % | 1,5 M USD | 1 | 1 | 1 | 2030-12-11 | 5,92 | — | Citigroup Inc. |
+| 2026-07-31 | 100,0 % | 0,3 M USD | 1 | 1 | 1 | 2030-01-03 | 0 | — | Citigroup Global Markets Holdings Inc/United States |
+
+## Citigroup Global Markets Inc. (CP:citigroup global markets inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-02-26 | 5 815,1 % | 0,1 M USD | 1 | 2 | 2 | 2021-04-09 | 16,54 – 24,37 | — | CITIGROUP GLOBAL MARKETS INC. (ARTHUR J GALLAGHER & CO) 16.54% 04/09/2021 (AJG US) |
+| 2021-05-28 | 4 725,3 % | 0,2 M USD | 1 | 2 | 2 | 2021-06-07 – 2021-07-08 | 17,29 – 23,04 | — | CITIGROUP GLOBAL MARKETS INC. (EQUITABLE HOLDINGS INC) 17.29% 07/08/2021 (EQH US) |
+
+## Cloudera, Inc. (CP:cloudera inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2020-12-31 | 99,9 % | 0,1 M USD | 1 | 1 | 1 | 2027-12-22 | 3,25 | — | Cloudera Inc |
+| 2021-01-31 | 100,4 % | 1,9 M USD | 4 | 4 | 2 | 2027-12-17 – 2027-12-22 | 3,25 | — | Cloudera, Inc., Term Loan |
+| 2021-02-26 | 100,0 % | 0,8 M USD | 1 | 1 | 1 | 2027-12-22 | 3,25 | — | Cloudera Inc |
+| 2021-02-28 | 100,5 % | 16,9 M USD | 2 | 2 | 2 | 2027-12-22 | 3,25 | — | Cloudera, Inc. Term Loan B |
+| 2021-03-31 | 99,8 % | 5,1 M USD | 9 | 9 | 3 | 2027-12-22 | 0 – 3,25 | — | Cloudera, Inc. Term Loan B |
+| 2021-08-31 | 99,9 % | 20,7 M USD | 2 | 2 | 2 | 2029-08-09 – 2029-08-10 | 0 | — | CLOUDERA INC |
+| 2021-09-30 | 99,5 % | 29,4 M USD | 15 | 15 | 4 | 2029-08-10 | 0 – 6,5 | — | CLOUDERA INC |
+| 2021-10-31 | 100,0 % | 3,5 M USD | 4 | 4 | 1 | 2029-10-08 | 6,5 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2021-11-30 | 99,8 % | 18,6 M USD | 2 | 2 | 1 | 2029-10-08 | 6,5 | — | Cloudera Inc |
+| 2021-12-31 | 99,9 % | 33,4 M USD | 14 | 14 | 3 | 2029-08-10 – 2029-10-08 | 6,5 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2022-01-31 | 99,9 % | 5,1 M USD | 5 | 5 | 1 | 2029-10-08 | 6,5 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2022-02-28 | 98,8 % | 18,6 M USD | 2 | 2 | 1 | 2029-10-08 | 6,5 | — | Cloudera Inc |
+| 2022-03-31 | 98,4 % | 34,7 M USD | 17 | 17 | 3 | 2028-10-08 – 2029-10-08 | 4,25 – 6,5 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2022-04-29 | 97,5 % | 1,6 M USD | 1 | 1 | 1 | 2029-10-08 | 6,5 | — | Cloudera Inc |
+| 2022-04-30 | 97,5 % | 5,3 M USD | 5 | 6 | 2 | 2028-10-08 – 2029-10-08 | 4,51 – 6,76371 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2022-05-31 | 92,5 % | 6,8 M USD | 1 | 1 | 1 | 2029-10-08 | 7,05957 | — | Cloudera Inc |
+| 2022-06-30 | 87,2 % | 30,0 M USD | 14 | 14 | 2 | 2029-08-10 – 2029-10-08 | 7,66614 – 7,79 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2022-09-30 | 86,2 % | 81,8 M USD | 17 | 29 | 3 | 2028-10-08 – 2029-10-08 | 6,86529 – 9,1427 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2023-01-31 | 87,9 % | 4,3 M USD | 6 | 6 | 1 | 2029-10-08 | 10,56971 – 10,57 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2023-03-31 | 95,4 % | 23,3 M USD | 15 | 15 | 1 | 2028-10-08 | 8,38486 – 8,66 | — | Cloudera, Inc. 2021 Term Loan |
+| 2023-05-31 | 85,0 % | 3,3 M USD | 1 | 1 | 1 | 2029-10-08 | 11,08221 | — | Cloudera Inc |
+| 2023-06-30 | 90,1 % | 31,0 M USD | 13 | 13 | 1 | 2029-10-08 | 11,08 – 11,25344 | — | Cloudera, Inc. 2021 Second Lien Term Loan |
+| 2023-09-29 | 98,2 % | 8,3 M USD | 3 | 3 | 1 | 2028-10-08 | 9,069 – 9,16608 | — | Cloudera Inc |
+| 2023-09-30 | 98,0 % | 14,8 M USD | 11 | 11 | 1 | 2028-10-08 | 9,16608 – 9,17 | — | Cloudera Inc 2021 Term Loan |
+| 2023-11-30 | 98,2 % | 1,5 M USD | 1 | 1 | 1 | 2028-10-08 | 9,19835 | — | CLOUDERA INC TLB 3.75 |
+| 2024-01-31 | 98,6 % | 15,0 M USD | 7 | 7 | 1 | 2028-10-08 | 9,18 – 9,194295 | — | Cloudera, Inc., 1st Lien Term Loan |
+| 2024-06-28 | 100,2 % | 8,2 M USD | 2 | 2 | 1 | 2028-10-08 | 9,19393 | — | Cloudera Inc |
+| 2024-06-30 | 100,0 % | 2,9 M USD | 8 | 8 | 1 | 2028-10-08 – 2028-10-10 | 9,19 – 9,19393 | — | Cloudera Inc 2021 Term Loan |
+| 2024-10-31 | 95,5 % | 11,7 M USD | 7 | 7 | 1 | 2029-10-08 – 2029-10-10 | 10,78516 – 10,79 | — | Cloudera Inc 2021 Second Lien Term Loan |
+| 2024-11-29 | 94,2 % | 3,3 M USD | 1 | 1 | 1 | 2029-10-08 | 10,67258 | — | Cloudera Inc |
+| 2024-11-30 | 98,0 % | 5,8 M USD | 3 | 3 | 1 | 2029-10-08 | 0 | — | CLOUDERA INC |
+| 2026-06-30 | 60,0 % | 0,3 M USD | 1 | 1 | 1 | 2029-10-08 | 9,74 | — | Cloudera Inc 2021 Second Lien Term Loan |
+
+## Core Scientific (CORZ) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-10-31 | 100,0 % | 26,7 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | PIK 100,0 % | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2022-01-31 | 100,0 % | 27,1 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | PIK 100,0 % | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2022-04-30 | 100,0 % | 27,5 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | — | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2022-07-31 | 100,0 % | 27,9 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | — | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2022-10-31 | 30,0 % | 28,3 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | — | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2023-01-31 | 25,5 % | 28,3 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | — | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2023-04-30 | 25,2 % | 28,3 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | — | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2023-07-31 | 25,6 % | 28,3 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | — | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2023-10-31 | 25,6 % | 28,3 M USD | 1 | 1 | 1 | 2025-04-19 | 10 | — | CORE SCIENTIFIC INC CONVERT NOTE |
+| 2024-01-31 | 63,9 % | 14,8 M USD | 1 | 1 | 1 | 2029-01-23 | 10 | PIK 100,0 % | CORE SCIENTIFIC INC NEW SR SEC GLBL |
+
+## CoreWeave (CRWV) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-09-29 | 98,2 % | 0,7 M USD | 1 | 1 | 1 | 2028-07-30 | 14,06608 | — | COREWEAVE SENIOR |
+| 2023-12-29 | 98,4 % | 9,7 M USD | 1 | 1 | 1 | 2028-07-30 | 14,10596 | — | COREWEAVE SENIOR |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-09-30 | 99,2 % | 111,8 M USD | 6 | 6 | 3 | 2028-07-31 | 1,581 – 14,13 | — | COREWEAVE COMPUTE ACQCO II LLC DDTL |
+| 2023-10-31 | 98,4 % | 1,6 M USD | 1 | 1 | 1 | 2028-07-31 | 14,129751 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw Term Loan |
+| 2023-12-31 | 99,2 % | 111,8 M USD | 6 | 6 | 2 | 2028-06-30 – 2028-07-31 | 8,8494 – 14,15 | — | COREWEAVE COMPUTE ACQCO II LLC DDTL |
+| 2024-01-31 | 98,9 % | 1,4 M USD | 1 | 1 | 1 | 2028-07-31 | 14,11818 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw Term Loan |
+| 2024-03-28 | 99,4 % | 16,2 M USD | 1 | 1 | 1 | 2028-07-30 | 14,06389291 | — | COREWEAVE SENIOR |
+| 2024-03-31 | 100,1 % | 113,9 M USD | 7 | 7 | 2 | 2028-06-30 – 2028-07-31 | 14,0638 – 14,08 | — | COREWEAVE COMPUTE ACQCO II LLC DDTL |
+| 2024-04-30 | 99,9 % | 1,4 M USD | 1 | 1 | 1 | 2028-07-31 | 14,064857 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw Term Loan |
+| 2024-06-28 | 99,8 % | 16,7 M USD | 1 | 2 | 2 | 2028-07-30 – 2029-05-15 | 11,33458 – 14,48387899 | — | COREWEAVE 2ND ABL:TL |
+| 2024-06-30 | 100,3 % | 436,8 M USD | 23 | 28 | 4 | 2028-06-30 – 2029-05-16 | 0,8398 – 14,97 | — | COREWEAVE CMPTE ACQU CO II LLC 2024 DELAYED DRAW TERM LOAN |
+| 2024-07-31 | 99,2 % | 3,0 M USD | 1 | 2 | 2 | 2028-07-31 – 2029-05-16 | 11,334572 – 14,808538 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw Term Loan |
+| 2024-09-30 | 100,2 % | 540,1 M USD | 24 | 33 | 10 | 2028-06-30 – 2029-08-27 | 2,2952 – 14,951 | — | COREWEAVE COMPUTE ACQCO IV LLC 2024 DELAYED DRAW TERM LOAN |
+| 2024-10-31 | 99,2 % | 2,9 M USD | 1 | 2 | 2 | 2028-07-31 – 2029-05-16 | 10,75171927 – 14,47325702 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw 1st Lien Term Loan |
+| 2024-12-31 | 100,2 % | 530,5 M USD | 24 | 38 | 15 | 2028-06-30 – 2029-12-10 | 0,5 – 14,25 | — | COREWEAVE COMPUTE ACQCO IV LLC 2024 DELAYED DRAW TERM LOAN |
+| 2025-01-31 | 99,6 % | 2,8 M USD | 1 | 2 | 2 | 2028-07-31 – 2029-05-16 | 10,44630664 – 14,02105683 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw 1st Lien Term Loan |
+| 2025-03-31 | 100,2 % | 517,6 M USD | 24 | 39 | 16 | 2028-06-30 – 2031-12-10 | 6,1579 – 13,95 | — | COREWEAVE CMPTE ACQU CO II LLC 2024 DELAYED DRAW TERM LOAN |
+| 2025-04-30 | 98,9 % | 2,7 M USD | 1 | 2 | 2 | 2028-07-31 – 2029-05-16 | 10,2894 – 13,9143 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw 1st Lien Term Loan |
+| 2025-06-30 | 100,9 % | 514,8 M USD | 24 | 44 | 21 | 2028-07-30 – 2032-05-21 | 0,5 – 17,532 | — | COREWEAVE CMPTE ACQU CO II LLC 2024 DELAYED DRAW TERM LOAN |
+| 2025-07-31 | 99,1 % | 2,7 M USD | 1 | 2 | 2 | 2028-07-31 – 2029-05-16 | 6,77193413 – 13,93202938 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw 1st Lien Term Loan |
+| 2025-09-30 | 101,2 % | 507,6 M USD | 24 | 46 | 23 | 2028-07-30 – 2032-08-26 | 0 – 14,81 | — | COREWEAVE CMPTE ACQU CO II LLC 2024 DELAYED DRAW TERM LOAN |
+| 2025-10-31 | 100,7 % | 2,1 M USD | 1 | 2 | 2 | 2028-07-31 – 2029-05-16 | 10,03495051 – 13,64691727 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw 1st Lien Term Loan |
+| 2025-12-31 | 100,9 % | 417,4 M USD | 24 | 53 | 27 | 2028-07-30 – 2032-12-30 | 0 – 14,687 | — | COREWEAVE CMPTE ACQU CO II LLC 2024 DELAYED DRAW TERM LOAN |
+| 2026-01-31 | 99,7 % | 2,0 M USD | 1 | 2 | 2 | 2028-07-31 – 2029-05-16 | 9,74530932 – 13,32179457 | — | CoreWeave Compute Acquisition Co. II LLC, Delayed Draw 1st Lien Term Loan |
+| 2026-03-31 | 101,0 % | 378,5 M USD | 24 | 53 | 24 | 2028-07-30 – 2033-02-02 | 7,88 – 14,25 | — | COREWEAVE CMPTE ACQU CO II LLC 2024 DELAYED DRAW TERM LOAN |
+| 2026-04-30 | 100,3 % | 22,9 M USD | 6 | 7 | 3 | 2028-07-31 – 2032-03-31 | 5,9022 – 13,30192893 | — | CoreWeave Compute Acquisition Co. VIII, LLC, Delayed Draw Term Loan |
+| 2026-05-31 | 100,5 % | 122,7 M USD | 6 | 6 | 1 | 2032-03-31 | 5,8703 | — | CoreWeave Compute Acquisition Co. VIII, LLC, Delayed Draw Term Loan |
+| 2026-06-30 | 101,2 % | 305,3 M USD | 28 | 55 | 24 | 2028-07-30 – 2033-02-02 | 0 – 13,352 | — | Coreweave Compute Acquisition Co. IV LLC |
+| 2026-07-31 | 99,8 % | 49,3 M USD | 6 | 10 | 3 | 2028-07-31 – 2032-03-31 | 0 – 13,36269736 | — | CoreWeave Compute Acquisition Co. VIII, LLC, Delayed Draw Term Loan |
+
+## Credit Suisse Securities (USA) LLC (CP:credit suisse securities usa llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (GBP)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-08-31 | 3 407,8 % | 0,1 M GBP | 1 | 1 | 1 | 2022-10-20 | 24,3 | — | CREDIT SUISSE SECURITIES (USA) LLC (BRITISH AMERICAN TOBACCO PLC) 24.30% 10/20/2022 (BATS LN) |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-05-28 | 4 660,0 % | 0,1 M USD | 1 | 1 | 1 | 2021-07-12 | 14,35 | — | CREDIT SUISSE SECURITIES (USA) LLC (FIDELITY NATIONAL FINANCIAL INC) 14.35% 07/12/2021 (FNF US) |
+
+## DISH NETWORK CORP (CP:dish network corp) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-11-29 | 108,3 % | 9,1 M USD | 3 | 3 | 1 | 2029-11-09 | 10,75 | — | DISH Network Corp new mon |
+
+## Dell (DELL) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-12-31 | 100,8 % | 1,4 M USD | 1 | 1 | 1 | 2025-09-19 | 0,0371 | — | Dell International L.L.C. - Senior |
+| 2020-03-31 | 96,0 % | 1,4 M USD | 1 | 1 | 1 | 2025-09-19 | 0,0299 | — | Dell International L.L.C. - Senior |
+| 2020-06-30 | 97,5 % | 1,3 M USD | 1 | 1 | 1 | 2025-09-19 | 0,0275 | — | Dell International L.L.C. - Senior |
+| 2020-09-30 | 99,6 % | 1,3 M USD | 1 | 1 | 1 | 2025-09-19 | 0,0275 | — | Dell International L.L.C. - Senior |
+| 2020-12-31 | 100,2 % | 1,3 M USD | 1 | 1 | 1 | 2025-09-19 | 0,0275 | — | Dell International L.L.C. - Senior |
+| 2021-03-31 | 100,0 % | 0,9 M USD | 1 | 1 | 1 | 2025-09-19 | 0,02 | — | Dell International L.L.C. - Senior |
+| 2021-06-30 | 100,1 % | 0,9 M USD | 1 | 1 | 1 | 2025-09-19 | 0,02 | — | Dell International L.L.C. - Senior |
+| 2021-09-30 | 100,1 % | 0,9 M USD | 1 | 1 | 1 | 2025-09-19 | 0,02 | — | Dell International L.L.C. - Senior |
+
+## Deutsche Bank AG (CP:deutsche bank ag) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (CNY)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-12-31 | 91,1 % | 2,0 M CNY | 1 | 1 | 1 | 2025-04-10 | 5,6 | — | DEUTSCHE BANK AG |
+| 2020-03-31 | 92,7 % | 2,0 M CNY | 1 | 1 | 1 | 2025-04-10 | 5,6 | — | DEUTSCHE BANK AG |
+| 2020-06-30 | 90,8 % | 2,0 M CNY | 1 | 1 | 1 | 2025-04-10 | 3,6705 | — | DEUTSCHE BANK AG |
+
+**titres de dette (INR)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2026-06-30 | 97,9 % | 2 025,0 M INR | 2 | 2 | 1 | 2034-07-18 | 8,01 | — | Deutsche Bank AG |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-06-30 | 100,0 % | 4,2 M USD | 1 | 2 | 2 | 2034-05-21 | 8,0537076 – 14,8037076 | — | LOFT 2024-1A A |
+| 2025-09-30 | 100,5 % | 12,2 M USD | 1 | 3 | 3 | 2034-05-21 – 2035-01-21 | 8,1240552 – 14,8740552 | — | CRFT 2025-2A CLN |
+| 2025-12-31 | 99,9 % | 12,2 M USD | 1 | 3 | 3 | 2034-05-21 – 2035-01-21 | 7,665066 – 14,415066 | — | CRFT 2025-2A CLN |
+| 2026-03-31 | 100,4 % | 14,2 M USD | 2 | 4 | 4 | 2032-11-28 – 2035-01-21 | 0 – 14,1716592 | — | CRFT 2025-2A CLN |
+| 2026-06-30 | 99,9 % | 39,5 M USD | 2 | 5 | 5 | 2032-11-28 – 2035-10-21 | 0 – 14,1043032 | — | CRFT 2025-2A CLN |
+
+## DigitalBridge Group, Inc. (CP:digitalbridge group inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-09-30 | 94,3 % | 95,0 M USD | 2 | 2 | 1 | 2027-12-15 | 8,4017 | — | PROJECT LUMINOUS USD 1ST LIEN CANADIAN BORROWER |
+| 2023-12-31 | 94,5 % | 95,0 M USD | 2 | 2 | 1 | 2027-12-15 | 8,3618 | — | PROJECT LUMINOUS USD 1ST LIEN CANADIAN BORROWER |
+| 2024-03-31 | 95,1 % | 84,2 M USD | 2 | 2 | 1 | 2024-12-15 | 8,3203 | — | PROJECT LUMINOUS USD 1ST LIEN CANADIAN BORROWER |
+| 2024-06-30 | 95,0 % | 77,2 M USD | 2 | 4 | 2 | 2024-12-15 – 2027-12-15 | 8,32324 – 8,3255 | — | PROJECT LUMINOUS 2024 ADD ON TERM LOAN |
+| 2024-09-30 | 95,3 % | 64,5 M USD | 2 | 4 | 2 | 2024-12-15 – 2027-12-15 | 8,32065 – 8,32833 | — | PROJECT LUMINOUS 2024 ADD ON TERM LOAN |
+| 2024-12-31 | 95,7 % | 64,5 M USD | 2 | 4 | 2 | 2025-12-15 – 2027-12-15 | 7,804 | — | PROJECT LUMINOUS 2024 ADD ON TERM LOAN |
+| 2025-03-31 | 98,8 % | 13,1 M USD | 2 | 4 | 2 | 2027-12-15 | 7,3094 | — | PROJECT LUMINOUS 2024 ADD ON TERM LOAN |
+
+## ECHOSTAR CORP (CP:echostar corp) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-10-31 | 105,5 % | 315,0 M USD | 8 | 8 | 1 | 2029-09-27 | 0,1075 | — | ECHOSTAR CORP NEW 10.75% 09/27/2029 |
+
+## GEN DIGITAL INC. (CP:gen digital inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-03-31 | 98,9 % | 2,4 M USD | 1 | 1 | 1 | 2029-01-28 | 2 | — | NORTONLIFELOCK INC. - Term Loan B |
+| 2022-06-30 | 95,1 % | 2,4 M USD | 1 | 1 | 1 | 2029-01-28 | 2 | — | NORTONLIFELOCK INC. - Term Loan B |
+| 2022-09-30 | 96,4 % | 2,4 M USD | 1 | 1 | 1 | 2029-09-12 | 0,048475 | — | NORTONLIFELOCK INC. - First Lien |
+| 2022-12-31 | 98,5 % | 2,4 M USD | 1 | 1 | 1 | 2029-09-12 | 0,0642304 | — | NORTONLIFELOCK INC. - First Lien |
+| 2023-03-31 | 99,0 % | 2,2 M USD | 1 | 1 | 1 | 2029-09-12 | 3,45351 | — | NORTONLIFELOCK INC. - First Lien |
+| 2023-06-30 | 99,2 % | 2,1 M USD | 1 | 1 | 1 | 2029-09-12 | 0,0720249 | — | NORTONLIFELOCK INC. - First Lien |
+| 2023-09-30 | 99,8 % | 2,1 M USD | 1 | 1 | 1 | 2029-09-12 | 0,0741608 | — | NORTONLIFELOCK INC. - First Lien |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-01-31 | 99,6 % | 5,1 M USD | 1 | 1 | 1 | 2029-01-28 | 0 | — | NORTONLIFELOCK INC. |
+| 2024-06-30 | 99,8 % | 1,9 M USD | 2 | 2 | 1 | 2029-09-12 | 7,33 | — | Gen Digital, Inc. |
+
+## GENERAL MOTORS CO (CP:general motors co) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (EUR)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2019-12-31 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2020-03-31 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2020-06-30 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2020-09-30 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2020-12-31 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2021-03-31 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2021-06-30 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2021-09-30 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2021-12-31 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2022-03-31 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2022-06-30 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2022-09-30 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+| 2022-12-31 | 0,0 % | 20,0 M EUR | 1 | 1 | 1 | 2033-07-05 | 8,375 | défaut 100,0 %, arriéré 100,0 % | MOTORS LIQUIDATION CO SR UNSECURED 07/33 8.375 |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 0,0 % | 12,8 M USD | 3 | 3 | 3 | 2016-04-15 – 2033-07-15 | 0 – 7,7 | défaut 64,7 % | GENERAL MTRS CORP DEB 7.7 16 04/16 7.7 |
+| 2019-10-31 | 0,0 % | 7,9 M USD | 1 | 9 | 9 | 2020-12-01 – 2036-03-15 | 0 | — | General Motors Co |
+| 2019-11-30 | 0,0 % | 37,6 M USD | 2 | 3 | 2 | 2016-04-15 – 2025-09-01 | 7,4 – 7,7 | défaut 100,0 % | General Motors Co. |
+| 2019-12-31 | 0,0 % | 12,8 M USD | 3 | 3 | 3 | 2016-04-15 – 2033-07-15 | 0 – 7,7 | défaut 84,3 % | GENERAL MTRS CORP DEB 7.7 16 04/16 7.7 |
+| 2020-01-31 | 0,0 % | 7,9 M USD | 1 | 9 | 9 | 2020-12-01 – 2036-03-15 | 0 | — | General Motors Co |
+| 2020-02-29 | 0,0 % | 37,6 M USD | 2 | 3 | 2 | 2016-04-15 – 2025-09-01 | 7,4 – 7,7 | défaut 100,0 % | General Motors Co. |
+| 2020-03-31 | 0,0 % | 11,2 M USD | 3 | 3 | 3 | 2016-04-15 – 2033-07-15 | 0 – 7,7 | défaut 100,0 % | GENERAL MTRS CORP DEB 7.7 16 04/16 7.7 |
+| 2020-04-30 | 0,0 % | 7,9 M USD | 1 | 9 | 9 | 2020-12-01 – 2036-03-15 | 0 | — | General Motors Co |
+| 2020-05-31 | 0,0 % | 37,6 M USD | 2 | 3 | 2 | 2016-04-15 – 2025-09-01 | 7,4 – 7,7 | défaut 100,0 % | General Motors Co. |
+| 2020-06-30 | 0,0 % | 11,2 M USD | 3 | 3 | 3 | 2016-04-15 – 2033-07-15 | 0 – 7,7 | défaut 100,0 % | GENERAL MTRS CORP DEB 7.7 16 04/16 7.7 |
+| 2020-07-31 | 0,0 % | 7,9 M USD | 1 | 9 | 9 | 2020-12-01 – 2036-03-15 | 0 | — | General Motors Co |
+| 2020-08-31 | 0,0 % | 37,6 M USD | 2 | 3 | 2 | 2016-04-15 – 2025-09-01 | 7,4 – 7,7 | défaut 100,0 % | General Motors Co. |
+| 2020-09-30 | 0,0 % | 11,2 M USD | 3 | 3 | 3 | 2016-04-15 – 2033-07-15 | 0 – 7,7 | défaut 100,0 % | GENERAL MTRS CORP DEB 7.7 16 04/16 7.7 |
+| 2020-10-31 | 0,0 % | 7,9 M USD | 1 | 9 | 9 | 2020-12-01 – 2036-03-15 | 0 | — | General Motors Co |
+| 2020-11-30 | 0,0 % | 37,6 M USD | 2 | 3 | 2 | 2016-04-15 – 2025-09-01 | 7,4 – 7,7 | défaut 100,0 % | General Motors Co. |
+| 2020-12-31 | 0,0 % | 11,2 M USD | 3 | 3 | 3 | 2016-04-15 – 2033-07-15 | 0 – 7,7 | défaut 77,6 % | GENERAL MTRS CORP DEB 7.7 16 04/16 7.7 |
+| 2021-01-31 | 0,0 % | 7,9 M USD | 1 | 9 | 9 | 2020-12-01 – 2036-03-15 | 0 | — | General Motors Co |
+| 2021-02-28 | 0,0 % | 28,3 M USD | 2 | 2 | 1 | 2016-04-15 | 7,7 | défaut 100,0 % | General Motors Co. |
+
+## GLOBALFOUNDRIES Inc. (CP:globalfoundries inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 97,5 % | 1,3 M USD | 1 | 1 | 1 | 2026-06-05 | 6,1021 | — | GLOBALFOUNDRIES Inc |
+| 2019-12-31 | 97,0 % | 1,3 M USD | 1 | 1 | 1 | 2026-06-05 | 5,885 | — | GLOBALFOUNDRIES Inc |
+| 2020-03-31 | 85,0 % | 3,6 M USD | 2 | 2 | 1 | 2026-06-05 | 6,25 | — | GlobalFoundries Inc USD Term Loan B |
+| 2020-06-30 | 96,0 % | 3,6 M USD | 3 | 3 | 1 | 2026-06-05 | 5,06 | — | GlobalFoundries Inc USD Term Loan B |
+| 2020-09-30 | 99,5 % | 2,0 M USD | 1 | 1 | 1 | 2026-06-05 | 5 | — | Globalfoundries Inc./Initial Dollar Term Loan |
+
+## GOLDMAN SACHS GROUP INC (CP:goldman sachs group inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (EUR)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-01-31 | 127,7 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2022-04-29 | 113,2 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2022-07-29 | 112,0 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2022-10-31 | 99,8 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2023-01-31 | 103,4 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2023-04-28 | 100,9 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2023-07-31 | 102,2 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2023-10-31 | 99,0 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2024-01-31 | 105,1 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2024-04-30 | 104,6 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2024-07-31 | 105,0 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2024-10-31 | 106,2 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2025-01-31 | 106,0 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2025-04-30 | 105,4 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2025-07-31 | 106,1 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2025-10-31 | 106,2 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+| 2026-01-30 | 105,7 % | 5,0 M EUR | 1 | 1 | 1 | 2030-08-24 | 5,22 | — | Goldman Sachs Group Inc/The |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 102,5 % | 5,7 M USD | 5 | 5 | 1 | 2025-06-23 | 0,005 | — | GS Finance Corporation, Convertible |
+| 2019-10-31 | 104,6 % | 0,8 M USD | 1 | 1 | 1 | 2025-06-23 | 0,005 | — | GS Finance Corporation, Convertible |
+| 2019-12-31 | 110,5 % | 5,7 M USD | 5 | 5 | 1 | 2025-06-23 | 0,005 | — | GS Finance Corporation, Convertible |
+| 2020-01-31 | 113,4 % | 0,8 M USD | 1 | 1 | 1 | 2025-06-23 | 0,005 | — | GS Finance Corporation, Convertible |
+
+## GOLDMAN SACHS LENDING PARTNERS LLC (CP:goldman sachs lending partners llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 99,8 % | 13,3 M USD | 2 | 2 | 1 | 2022-09-17 | 3,953125 | — | Goldman Sachs Lending Partners LLC, Term Loan |
+| 2019-12-31 | 99,8 % | 12,9 M USD | 2 | 2 | 1 | 2022-09-17 | 3,9531 | — | Goldman Sachs Lending Partners LLC, Term Loan |
+| 2020-03-31 | 99,8 % | 12,6 M USD | 2 | 2 | 1 | 2022-09-17 | 3,595547 | — | Goldman Sachs Lending Partners LLC, Term Loan |
+
+## Goldman Sachs & Co. LLC (CP:goldman sachs & co llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-05-28 | 5 309,9 % | 0,1 M USD | 1 | 3 | 3 | 2021-07-06 – 2021-07-08 | 11,23 – 18,8 | — | GOLDMAN SACHS & CO. LLC (CAPITAL ONE FINANCIAL CORP) 18.80% 07/08/2021 (COF US) |
+| 2021-11-30 | 22 280,0 % | 0,0 M USD | 1 | 1 | 1 | 2022-01-21 | 17,67 | — | GOLDMAN SACHS & CO. LLC (DOLLAR GENERAL CORP) 0% 01/19/2022 (DG US) |
+| 2022-02-28 | 22 396,8 % | 0,0 M USD | 1 | 1 | 1 | 2022-03-21 | 13,24 | — | GOLDMAN SACHS & CO. LLC (WILLIS TOWERS WATSON PLC) 13.24% 03/21/2022 (WTW US) |
+| 2023-02-28 | 7 599,7 % | 0,3 M USD | 1 | 3 | 3 | 2023-04-13 | 11,09 – 30,76 | — | GOLDMAN SACHS & CO. LLC (FOX CORP) 23.84 04/13/2023 (FOXA US) |
+
+## HSBC Bank plc (CP:hsbc bank plc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (CNY)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-10-31 | 99,4 % | 36,8 M CNY | 1 | 1 | 1 | 2026-04-04 | 3,12 | — | HSBC BANK PLC |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-02-26 | 2 749,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-04-09 | 22,85 | — | HSBC BANK PLC (PPL CORP) 22.85% 04/09/2021 (PPL US) |
+| 2024-07-31 | 7 895,5 % | 0,1 M USD | 2 | 2 | 1 | 2025-08-07 | 0 | — | HSBC BANK PLC - ON SEMICONDUCTOR CORPOR |
+
+## HSBC Securities (USA) Inc. (CP:hsbc securities usa inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (EUR)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-11-30 | 4 083,1 % | 0,4 M EUR | 1 | 2 | 2 | 2024-02-01 | 18,6 – 22,9 | — | HSBC SECURITIES (USA) INC (KONINKLIJKE PHILIPS NV) 22.90 02/01/2024 (PHIA NA) |
+
+**titres de dette (GBP)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-02-29 | 5 025,0 % | 0,0 M GBP | 1 | 1 | 1 | 2024-04-29 | 19,27 | — | HSBC SECURITIES (USA) INC (RECKITT BENCKISER GROUP PLC) 19.27 04/29/2024 (RKT LN) |
+
+## IREN (IREN) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2026-06-30 | 100,0 % | 10,0 M USD | 1 | 2 | 2 | 2031-12-31 | 5,97 | — | IE US HARDWARE 3 LLC |
+
+## IROBOT CORP (CP:irobot corp) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-09-30 | 107,0 % | 29,4 M USD | 1 | 1 | 1 | 2026-07-24 | 11,98 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2023-12-31 | 103,8 % | 29,6 M USD | 1 | 1 | 1 | 2026-07-24 | 11,92 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2024-03-31 | 97,0 % | 25,9 M USD | 1 | 1 | 1 | 2026-07-24 | 11,95 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2024-06-30 | 95,8 % | 26,1 M USD | 1 | 1 | 1 | 2026-07-24 | 11,95 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2024-09-30 | 96,5 % | 26,3 M USD | 1 | 1 | 1 | 2026-07-24 | 11,91 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2024-12-31 | 96,8 % | 26,4 M USD | 1 | 1 | 1 | 2026-07-24 | 11,26 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2025-03-31 | 91,0 % | 27,1 M USD | 1 | 1 | 1 | 2026-07-24 | 10,93 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2025-06-30 | 53,1 % | 26,7 M USD | 1 | 1 | 1 | 2026-07-24 | 10,91 | PIK 100,0 % | iRobot Corporation Term Loan |
+| 2025-09-30 | 46,9 % | 26,9 M USD | 1 | 1 | 1 | 2026-07-24 | 0 | PIK 100,0 % | iRobot Corporation Term Loan |
+
+## Installed Building Products, Inc. (CP:installed building products inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-10-31 | 100,4 % | 9,4 M USD | 1 | 1 | 1 | 2025-04-15 | 4,29 | — | Installed Building Products, Inc. 2018 1st Lien Term Loan |
+
+## J.P. MORGAN SECURITIES LLC (CP:j p morgan securities llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-05-28 | 9 111,1 % | 0,1 M USD | 1 | 5 | 5 | 2021-07-06 – 2021-07-15 | 16,13 – 22,45 | — | J.P. MORGAN SECURITIES LLC (COMERICA INC) 20.94% 07/15/2021 (CMA US) |
+| 2021-08-31 | 19 492,9 % | 0,0 M USD | 1 | 2 | 2 | 2021-10-15 | 16,96 – 19 | — | J.P. MORGAN SECURITIES LLC (ARTHUR J GALLAGHER & CO) 16.96% 10/15/2021 (AJG US) |
+| 2021-11-30 | 6 332,1 % | 0,3 M USD | 1 | 6 | 6 | 2021-12-15 – 2022-01-21 | 14,98 – 21,65 | — | J.P. MORGAN SECURITIES LLC (AMEREN CORP) 0% 01/19/2022 (AEE US) |
+
+## JP Morgan Chase Bank, N.A (CP:jp morgan chase bank n a) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (AZN)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-04-30 | 100,0 % | 2,9 M AZN | 1 | 1 | 1 | 2028-03-17 | 8,75 | — | JPMorgan Chase Bank NA |
+| 2025-07-31 | 98,1 % | 2,9 M AZN | 1 | 1 | 1 | 2028-03-17 | 8,75 | — | JPMorgan Chase Bank NA |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-06-30 | 100,0 % | 29,5 M USD | 1 | 1 | 1 | 2024-06-25 | 8 | — | JPMorgan Chase Bank NA |
+| 2023-09-29 | 96 606,4 % | 0,0 M USD | 1 | 1 | 1 | 2024-06-25 | 8 | — | JPMorgan Chase Bank NA |
+| 2023-12-29 | 106 082,0 % | 0,0 M USD | 1 | 1 | 1 | 2024-06-25 | 8 | — | JPMorgan Chase Bank NA |
+| 2025-12-31 | 2 574 991,0 % | 0,0 M USD | 1 | 1 | 1 | 2026-01-13 | 0 | — | JPMorgan Chase Bank NA |
+
+## JPMORGAN CHASE & CO (CP:jpmorgan chase & co) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-03-31 | 93,7 % | 1,5 M USD | 10 | 10 | 1 | 2023-11-01 | 0 | PIK 100,0 % | Ligado Networks, LLC |
+| 2022-07-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2022-10-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2023-01-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2023-04-30 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2023-07-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2023-10-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2024-01-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2024-04-30 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2024-07-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2024-10-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2025-01-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2025-04-30 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2025-07-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+| 2025-10-31 | 0,2 % | 33,7 M USD | 2 | 2 | 1 | 2015-01-15 | 0 | défaut 100,0 % | WASHINGTON MUTUAL BK NV |
+
+## JPMORGAN CHASE BANK, N.A. (CP:jpmorgan chase bank n a) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (IDR)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-06-30 | 100,2 % | 129 000,0 M IDR | 1 | 1 | 1 | 2031-02-19 | 6,5 | — | JP MORGAN CHASE BANK NA SR UNSECURED 144A 02/31 6.5 |
+
+**titres de dette (TRY)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-04-30 | 4,3 % | 1 820,0 M TRY | 1 | 1 | 1 | 2034-03-15 | 0 | — | JPMorgan Chase Bank NA |
+| 2024-05-31 | 4,7 % | 295,0 M TRY | 1 | 1 | 1 | 2034-03-15 | 0 | — | JPMorgan Chase Bank NA |
+
+## Jane Street Group, LLC (CP:jane street group llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 100,0 % | 19,1 M USD | 5 | 5 | 1 | 2022-08-25 | 5,0435 – 5,3033 | — | Jane Street Group LLC |
+| 2020-02-28 | 99,5 % | 6,4 M USD | 3 | 3 | 1 | 2025-01-07 | 4,5811 | — | Jane Street Group LLC |
+| 2025-12-31 | 100,0 % | 2,0 M USD | 1 | 1 | 1 | 2031-12-15 | 5,7232 | — | Jane Street Group LLC 2024 Term Loan B1 |
+| 2026-03-31 | 99,3 % | 2,0 M USD | 1 | 1 | 1 | 2031-12-15 | 5,6706 | — | Jane Street Group LLC 2024 Term Loan B1 |
+| 2026-06-30 | 100,0 % | 0,0 M USD | 1 | 1 | 1 | 2031-12-15 | 5,6644 | — | Jane Street Group LLC 2024 Term Loan B1 |
+
+## Lambda (NF:LAMBDA) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-07-31 | 103,0 % | 5,0 M USD | 1 | 1 | 1 | 2099-12-31 | 0 | — | Lambda, Inc. |
+| 2025-09-30 | 116,5 % | 7,0 M USD | 1 | 1 | 1 | 2030-06-30 | 0 | — | LAMBDA INC CB CVT SAFE 06.30 PP |
+
+## Lenovo Group Ltd. (CP:lenovo group ltd) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (EUR)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-10-31 | 100,0 % | 0,2 M EUR | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (EUR) |
+| 2023-01-31 | 100,0 % | 0,2 M EUR | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (EUR) |
+| 2023-04-30 | 99,7 % | 0,2 M EUR | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (EUR) |
+| 2023-07-31 | 99,9 % | 0,2 M EUR | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (EUR) |
+
+**titres de dette (GBP)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-10-31 | 100,0 % | 0,0 M GBP | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (GBP) |
+| 2023-01-31 | 100,0 % | 0,0 M GBP | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (GBP) |
+| 2023-04-30 | 99,7 % | 0,0 M GBP | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (GBP) |
+| 2023-07-31 | 99,9 % | 0,0 M GBP | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (GBP) |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-10-31 | 100,0 % | 0,3 M USD | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (USD) |
+| 2023-01-31 | 100,0 % | 0,3 M USD | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (USD) |
+| 2023-04-30 | 99,7 % | 0,3 M USD | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (USD) |
+| 2023-07-31 | 99,9 % | 0,3 M USD | 1 | 2 | 2 | 2024-09-22 | 6,75 – 10,75 | — | LENOVO GROUP LTD 11.750% 09/2024 MEZZ II D (USD) |
+
+## MCDERMOTT INTERNATIONAL INC (CP:mcdermott international inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-03-31 | 77,0 % | 1,1 M USD | 2 | 2 | 2 | 2021-12-15 – 2023-05-10 | 1 – 5,875 | — | MCDERMOTT INTERNATIONAL INC LETTER OF CREDIT |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2020-03-31 | 95,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-10-21 | 7,292062 | — | McDermott International, Inc., Term Loan |
+| 2020-05-31 | 96,0 % | 0,1 M USD | 1 | 1 | 1 | 2021-10-21 | 7,292061 | — | McDermott International, Inc., Term Loan |
+| 2020-06-30 | 98,5 % | 0,0 M USD | 1 | 1 | 1 | 2021-10-21 | 7,292062 | — | McDermott International, Inc., Term Loan |
+| 2021-03-31 | 77,0 % | 0,3 M USD | 1 | 1 | 1 | 2023-05-10 | 0 | — | MCDERMOTT INTERNATIONAL INC ROLL OFF LETTER OF CREDIT |
+| 2021-06-30 | 65,0 % | 0,3 M USD | 1 | 1 | 1 | 2023-05-10 | 0 | — | MCDERMOTT INTERNATIONAL INC ROLL OFF LETTER OF CREDIT |
+| 2021-09-30 | 58,0 % | 0,3 M USD | 1 | 1 | 1 | 2023-05-10 | 0 | — | MCDERMOTT INTERNATIONAL INC ROLL OFF LETTER OF CREDIT |
+| 2021-12-31 | 53,0 % | 0,3 M USD | 1 | 1 | 1 | 2023-05-10 | 0 | — | MCDERMOTT INTERNATIONAL INC ROLL OFF LETTER OF CREDIT |
+
+## Marvell (MRVL) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 99,9 % | 0,1 M USD | 1 | 1 | 1 | 2021-06-04 | 3,44 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2019-11-30 | 99,9 % | 55,1 M USD | 2 | 2 | 1 | 2021-06-04 | 3,16 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2019-12-31 | 99,9 % | 0,1 M USD | 1 | 1 | 1 | 2021-06-04 | 3,095 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-02-29 | 99,9 % | 35,4 M USD | 2 | 2 | 1 | 2021-06-04 | 3,05 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-03-31 | 97,9 % | 0,1 M USD | 1 | 1 | 1 | 2021-06-04 | 2,4 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-05-31 | 99,9 % | 35,4 M USD | 2 | 2 | 1 | 2021-06-04 | 1,65 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-06-30 | 99,6 % | 0,1 M USD | 1 | 1 | 1 | 2021-06-04 | 1,56 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-08-31 | 99,8 % | 35,4 M USD | 2 | 2 | 1 | 2021-06-04 | 1,53 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-09-30 | 100,1 % | 0,1 M USD | 1 | 1 | 1 | 2021-06-04 | 1,54 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-11-30 | 100,2 % | 27,6 M USD | 2 | 2 | 1 | 2021-06-04 | 1,52 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2020-12-31 | 100,2 % | 0,0 M USD | 1 | 1 | 1 | 2021-06-04 | 1,54 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2021-02-28 | 100,2 % | 15,8 M USD | 2 | 2 | 1 | 2021-06-04 | 1,51 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2021-03-31 | 100,2 % | 0,0 M USD | 1 | 1 | 1 | 2021-06-04 | 1,485 | — | Marvell Technology Group Ltd 2018 Term Loan A |
+| 2023-06-30 | 99,9 % | 2,5 M USD | 1 | 1 | 1 | 2024-04-19 | 0 | — | Marvell Technology, Inc. |
+
+## Match Group, Inc. (CP:match group inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-10-31 | 100,2 % | 0,8 M USD | 1 | 1 | 1 | 2022-11-16 | 4,44 | — | Match Group Inc. 2017 Term Loan B |
+
+## McAfee Corp. (CP:mcafee corp) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-03-31 | 99,3 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,045 | — | McAfee Corp. - Term Loan |
+| 2022-06-30 | 91,3 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,051451 | — | McAfee Corp. First Lien |
+| 2022-09-30 | 91,2 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0636208 | — | McAfee Corp. First Lien |
+| 2022-12-31 | 93,4 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0797396 | — | McAfee Corp. First Lien |
+| 2023-03-31 | 94,5 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 4,257585 | — | McAfee Corp. First Lien |
+| 2023-06-30 | 95,6 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0901026 | — | McAfee Corp. First Lien |
+| 2023-09-30 | 98,0 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0917968 | — | McAfee Corp. First Lien |
+| 2023-12-31 | 99,9 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0917008 | — | McAfee Corp. First Lien |
+| 2024-06-30 | 100,0 % | 2,6 M USD | 1 | 1 | 1 | 2029-03-01 | 0,090792 | — | McAfee Corp. First Lien |
+| 2024-09-30 | 99,8 % | 3,2 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0845055 | — | McAfee Corp. First Lien |
+| 2024-12-31 | 100,2 % | 3,1 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0780265 | — | McAfee Corp. First Lien |
+| 2025-03-31 | 95,9 % | 3,1 M USD | 1 | 1 | 1 | 2029-03-01 | 0,0732268 | — | McAfee Corp. First Lien |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-04-30 | 97,2 % | 0,7 M USD | 1 | 1 | 1 | 2029-03-01 | 4,5 | — | McAfee Corp., Term Loan B1 |
+
+## Micron (MU) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-06-30 | 851,3 % | 0,4 M USD | 1 | 1 | 1 | 2032-05-01 | 0,03125 | — | MICRON TECH CV 3.125 5/32 |
+
+## Mizuho Securities USA LLC (CP:mizuho securities usa llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-11-30 | 25 263,9 % | 0,0 M USD | 1 | 1 | 1 | 2024-01-25 | 13,55 | — | MIZUHO SECURITIES USA LLC (VISA INC) 13.55 01/25/2024 (V US) |
+
+## NOMURA SECURITIES INTERNATIONAL, INC. (CP:nomura securities international inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-04-30 | 100,3 % | 49,5 M USD | 1 | 2 | 1 | 2024-08-25 | 0,01 | — | NOMURA SECURITIES INTERNATIONAL INC |
+| 2024-07-31 | 100,0 % | 59,4 M USD | 1 | 2 | 1 | 2024-08-05 | 0,01 | — | NOMURA SECURITIES INTERNATIONAL INC |
+
+## National Westminster Bank plc (CP:national westminster bank plc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-10-31 | 99,9 % | 16,0 M USD | 1 | 1 | 1 | 2022-03-31 | 0 | — | NATIONAL WESTMINSTER BANK PLC |
+
+## Nielsen Holdings plc (CP:nielsen holdings plc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-11-30 | 97,0 % | 24,8 M USD | 6 | 6 | 1 | 2029-10-11 | 13,472 | arriéré 99,7 % | NIELSEN HOLDINGS |
+| 2023-02-28 | 98,0 % | 24,8 M USD | 6 | 6 | 1 | 2029-10-11 | 14,485 | — | NIELSEN HOLDINGS |
+| 2023-05-31 | 98,0 % | 24,8 M USD | 6 | 6 | 1 | 2029-10-11 | 14,745 | — | NIELSEN HOLDINGS |
+| 2023-08-31 | 98,0 % | 24,8 M USD | 6 | 6 | 1 | 2029-10-11 | 15,149 | — | NIELSEN HOLDINGS |
+| 2023-11-30 | 98,0 % | 24,8 M USD | 6 | 6 | 1 | 2029-10-11 | 15,257 | — | NIELSEN HOLDINGS |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-11-30 | 96,9 % | 0,4 M USD | 1 | 1 | 1 | 2029-10-11 | 0 | — | NIELSEN HOLDINGS TERM 2LN 10/11/2029 |
+| 2023-02-28 | 98,0 % | 0,4 M USD | 1 | 1 | 1 | 2029-10-11 | 0 | — | NIELSEN HOLDINGS TERM 2LN 10/11/2029 |
+| 2023-05-31 | 98,0 % | 0,4 M USD | 1 | 1 | 1 | 2029-10-11 | 0 | — | NIELSEN HOLDINGS TERM 2LN 10/11/2029 |
+| 2023-08-31 | 98,0 % | 0,4 M USD | 1 | 1 | 1 | 2029-10-11 | 0 | — | NIELSEN HOLDINGS TERM 2LN 10/11/2029 |
+| 2023-11-30 | 98,0 % | 0,4 M USD | 1 | 1 | 1 | 2029-10-11 | 0 | — | NIELSEN HOLDINGS TERM 2LN 10/11/2029 |
+
+## Nscale (NF:NSCALE) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2026-03-31 | 100,0 % | 336,3 M USD | 19 | 19 | 1 | 2032-08-11 | 0,3601 | — | NSCALE DELAYED DRAW TERM LOAN |
+| 2026-06-30 | 100,0 % | 334,1 M USD | 19 | 19 | 1 | 2032-08-23 | 0 – 8,66 | — | Nscale AS |
+
+## Oracle (ORCL) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-02-28 | 99,0 % | 2,8 M USD | 1 | 1 | 1 | 2027-08-16 | 0 | — | ORACLE TERM A1 08/16/2027 |
+| 2023-05-31 | 99,0 % | 2,8 M USD | 1 | 1 | 1 | 2027-08-16 | 0 | — | ORACLE TERM A1 08/16/2027 |
+| 2024-02-29 | 99,8 % | 1,7 M USD | 1 | 1 | 1 | 2027-08-16 | 7,02626 | — | ORACLE CORPORATION TLA1 1.6 |
+| 2024-03-31 | 99,9 % | 1,8 M USD | 1 | 1 | 1 | 2027-08-16 | 7,02626 | — | ORACLE CORPORATION TLA1 1.6 |
+| 2024-05-31 | 99,9 % | 1,7 M USD | 1 | 1 | 1 | 2027-08-16 | 8,348667968 | — | ORACLE CORPORATION TLA1 1.6 |
+
+## QVC INC (CP:qvc inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2026-03-31 | 44,5 % | 0,1 M USD | 1 | 1 | 1 | 2034-08-15 | 5,45 | — | QVC Inc |
+
+## RBC Capital Markets, LLC (CP:rbc capital markets llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (CAD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-02-28 | 6 539,6 % | 0,1 M CAD | 1 | 1 | 1 | 2023-04-11 | 17,35 | — | RBC CAPITAL MARKETS, LLC. (ROGERS COMMUNICATIONS INC) 17.35 04/11/2023 (RCI/B CN) |
+
+**titres de dette (EUR)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-05-31 | 3 215,0 % | 0,5 M EUR | 1 | 2 | 2 | 2023-07-27 | 19,85 – 20 | — | RBC CAPITAL MARKETS, LLC. (BAYER AG) 19.85 07/27/2023 (BAYN GY) |
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-12-31 | 3 195,0 % | 0,0 M USD | 1 | 1 | 1 | 2020-01-31 | 18,43 | — | RBC CAPITAL MARKETS LLC. (KRAFT HEINZ CO/THE) 18.43% 01/31/2020 (KHC US) |
+| 2021-08-31 | 8 050,9 % | 0,1 M USD | 1 | 2 | 2 | 2021-10-21 | 22,06 – 22,71 | — | RBC CAPITAL MARKETS LLC. (CITIGROUP INC) 0% 10/19/2021 (C US) |
+| 2023-02-28 | 9 347,3 % | 0,1 M USD | 1 | 3 | 3 | 2023-04-11 – 2023-04-13 | 13,27 – 26,94 | — | RBC CAPITAL MARKETS, LLC. (ALPHABET INC) 26.94 04/13/2023 (GOOG US) |
+| 2023-08-31 | 2 183,4 % | 1,6 M USD | 1 | 4 | 4 | 2023-10-30 | 6,77 – 20,6 | — | RBC CAPITAL MARKETS, LLC. (FIDELITY NATIONAL FINANCIAL INC) 14.71 10/30/2023 (FNF US) |
+| 2024-05-31 | 4 055,3 % | 0,2 M USD | 1 | 1 | 1 | 2024-07-18 | 20,26 | — | RBC CAPITAL MARKETS, LLC. (SUNCOR ENERGY INC) 20.26 07/18/2024 (SU US) |
+
+## SG Americas Securities, LLC (CP:sg americas securities llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2020-08-31 | 2 343,4 % | 0,2 M USD | 1 | 2 | 2 | 2020-10-22 | 21,63 – 21,94 | — | SG AMERICAS SECURITIES LLC (KRAFT HEINZ CO/THE) 21.94% 10/22/2020 (KHC US) |
+| 2021-05-28 | 9 005,7 % | 0,2 M USD | 1 | 7 | 7 | 2021-07-12 – 2021-07-15 | 9,22 – 20,33 | — | SG AMERICAS SECURITIES LLC (AMEREN CORP) 16.18% 07/12/2021 (AEE US) |
+| 2021-11-30 | 12 870,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-12-20 | 18,26 | — | SG AMERICAS SECURITIES LLC (KIMBERLY-CLARK CORP) 18.26% 12/20/2021 (KMB US) |
+| 2022-05-31 | 6 001,5 % | 0,2 M USD | 1 | 3 | 3 | 2022-07-22 | 19,04 – 23,4 | — | SG AMERICAS SECURITIES LLC (COMERICA INC) 19.04% 07/22/2022 (CMA US) |
+| 2022-08-31 | 7 800,3 % | 0,2 M USD | 1 | 2 | 2 | 2022-10-21 | 22,68 – 26,42 | — | SG AMERICAS SECURITIES LLC (APOLLO GLOBAL MANAGEMENT INC) 26.42% 10/21/2022 (APO US) |
+| 2023-02-28 | 7 042,7 % | 0,4 M USD | 1 | 2 | 2 | 2023-04-10 | 13,26 – 23,92 | — | SG AMERICAS SECURITIES LLC (CITIGROUP INC) 13.26 04/10/2023 (C US) |
+
+## SVF II Finco Cayman L.P. (CP:svf ii finco cayman l p) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2022-04-30 | 100,0 % | 3,8 M USD | 1 | 1 | 1 | 2023-12-22 | 5 | — | SVF II Finco Cayman LP Term Loan |
+| 2022-07-31 | 98,7 % | 3,7 M USD | 1 | 1 | 1 | 2023-12-22 | 5 | — | SVF II Finco Cayman LP Term Loan |
+| 2022-10-31 | 97,8 % | 3,7 M USD | 1 | 1 | 1 | 2023-12-22 | 5 | — | SVF II Finco Cayman LP Term Loan |
+| 2023-01-31 | 97,9 % | 3,7 M USD | 1 | 1 | 1 | 2023-12-22 | 5 | — | SVF II Finco Cayman LP Term Loan |
+| 2023-04-30 | 96,4 % | 3,6 M USD | 1 | 1 | 1 | 2023-12-22 | 5 | — | SVF II Finco Cayman LP Term Loan |
+| 2023-07-31 | 97,1 % | 3,6 M USD | 1 | 1 | 1 | 2023-12-22 | 5 | — | SVF II Finco Cayman LP Term Loan |
+| 2023-09-30 | 93,5 % | 571,2 M USD | 13 | 13 | 1 | 2025-12-21 | 5 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2023-10-31 | 97,4 % | 2,8 M USD | 1 | 1 | 1 | 2025-12-23 | 5 | — | SVF II Finco Cayman LP Term Loan |
+| 2023-12-31 | 95,5 % | 566,6 M USD | 13 | 13 | 1 | 2025-12-21 | 5 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2024-01-31 | 98,3 % | 2,8 M USD | 1 | 1 | 1 | 2025-12-23 | 6 | — | SVF II Finco Cayman LP Term Loan |
+| 2024-03-31 | 95,5 % | 566,6 M USD | 13 | 13 | 1 | 2025-12-23 | 6 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2024-04-30 | 98,7 % | 2,8 M USD | 1 | 1 | 1 | 2025-12-23 | 6 | — | SVF II Finco Cayman LP Term Loan |
+| 2024-06-30 | 95,8 % | 566,6 M USD | 13 | 13 | 1 | 2025-12-23 | 6 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2024-07-31 | 98,8 % | 2,8 M USD | 1 | 1 | 1 | 2025-12-23 | 6 | — | SVF II Finco Cayman LP Term Loan |
+| 2024-09-30 | 98,9 % | 557,3 M USD | 13 | 13 | 1 | 2025-12-23 | 6 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2024-10-31 | 99,3 % | 2,7 M USD | 1 | 1 | 1 | 2025-12-23 | 6 | — | SVF II Finco Cayman LP Term Loan |
+| 2024-12-31 | 98,7 % | 540,7 M USD | 13 | 13 | 1 | 2025-12-23 | 6 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2025-03-31 | 99,1 % | 530,9 M USD | 13 | 13 | 1 | 2025-12-21 | 6 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2025-06-30 | 100,0 % | 1 066,7 M USD | 18 | 39 | 3 | 2025-12-21 – 2029-12-23 | 0 – 6 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2025-09-30 | 100,0 % | 1 609,0 M USD | 19 | 41 | 4 | 2025-12-21 – 2029-12-23 | 6 – 7,6515 | — | SOFTBANK VISION FUND II FIXED TERM LOAN |
+| 2025-12-31 | 100,4 % | 549,4 M USD | 15 | 29 | 4 | 2029-04-25 | 0,75 – 7,65 | — | SOFTBANK VISION FUND II TRANCHE B1 TERM LOAN |
+| 2026-03-31 | 101,6 % | 530,7 M USD | 15 | 29 | 4 | 2029-04-25 | 6,9219 – 7,3496 | — | SOFTBANK VISION FUND II TRANCHE B1 TERM LOAN |
+| 2026-06-30 | 100,3 % | 16,9 M USD | 2 | 3 | 2 | 2029-04-25 | 6,9496 – 7,38 | — | SVF II Finco Cayman LP |
+
+## Sanmina Corporation (CP:sanmina corp) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-08-31 | 100,0 % | 3,0 M USD | 4 | 4 | 1 | 2032-08-06 | 6,316 | — | Sanmina Corp., Term Loan |
+| 2025-09-30 | 99,9 % | 6,2 M USD | 10 | 10 | 2 | 2032-08-06 | 5,88362 – 6,17 | — | SANMINA CORP TERM LOAN B |
+| 2025-10-31 | 100,0 % | 6,7 M USD | 4 | 4 | 2 | 2032-08-06 | 5,88362 – 5,99 | — | Sanmina Corp., 1st Lien Term Loan B |
+| 2025-12-31 | 100,3 % | 7,8 M USD | 12 | 12 | 2 | 2032-08-09 – 2032-10-27 | 5,7 – 5,92 | — | Sanmina Corp Term Loan B |
+| 2026-01-31 | 100,2 % | 6,7 M USD | 4 | 4 | 1 | 2032-10-27 | 5,69951 – 5,7 | — | Sanmina Corp., 1st Lien Term Loan B1 |
+| 2026-02-28 | 100,4 % | 3,1 M USD | 4 | 4 | 2 | 2032-08-06 – 2032-10-27 | 5,67 – 5,67134 | — | Sanmina Corp., Term Loan |
+| 2026-03-31 | 100,1 % | 8,0 M USD | 14 | 14 | 2 | 2032-10-27 | 5,665 – 5,6764 | — | Sanmina Corp Term Loan B |
+| 2026-04-30 | 100,4 % | 8,6 M USD | 6 | 6 | 2 | 2032-10-27 | 5,66 – 5,66479 | — | Sanmina Corp., 1st Lien Term Loan B1 |
+| 2026-06-30 | 100,2 % | 5,2 M USD | 11 | 11 | 2 | 2032-10-27 | 5,358 – 5,39 | — | Sanmina Corp 2026 Term Loan B |
+
+## SoftBank (NF:SOFTBANK) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-06-30 | 99,5 % | 0,8 M USD | 1 | 1 | 1 | 2029-07-08 | 6,75 | — | SoftBank Group Corp |
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2026-03-31 | 100,0 % | 35,0 M USD | 1 | 2 | 1 | 2027-08-21 – 2027-09-21 | 6,2062 – 6,4562 | — | Kronos I UK Ltd, First Lien Term Loan |
+| 2026-06-30 | 100,0 % | 35,0 M USD | 1 | 2 | 1 | 2027-08-21 – 2027-09-21 | 6,2062 – 6,4562 | — | Kronos I UK Ltd, First Lien Term Loan |
+
+## SpaceX (SPCX) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-10-31 | 100,2 % | 0,3 M USD | 1 | 1 | 1 | 2025-11-21 | 6,073 | — | Space Exploration Technologies Corp., Term Loan |
+| 2019-11-30 | 100,2 % | 64,5 M USD | 7 | 7 | 1 | 2025-11-21 | 6,1595 | — | Space Exploration Technologies Corp., Term Loan |
+
+## T-Mobile US, Inc. (CP:t-mobile us inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2019-09-30 | 0,0 % | 4,4 M USD | 8 | 9 | 3 | 2023-03-01 – 2026-02-01 | 4,5 – 6,375 | — | T-MOBILE USA INC |
+| 2019-10-31 | 0,0 % | 3,0 M USD | 5 | 5 | 2 | 2025-03-01 – 2026-02-01 | 4,5 – 6,375 | — | T-MOBILE USA INC |
+| 2019-11-29 | 0,0 % | 0,4 M USD | 3 | 3 | 1 | 2025-03-01 | 6,375 | — | T-MOBILE USA INC |
+| 2019-11-30 | 0,0 % | 9,1 M USD | 7 | 7 | 2 | 2026-02-01 – 2028-02-01 | 0 – 4,5 | — | T-Mobile US, Inc. |
+| 2019-12-31 | 0,0 % | 4,4 M USD | 8 | 9 | 3 | 2023-03-01 – 2026-02-01 | 4,5 – 6,375 | défaut 45,7 % | T-MOBILE USA INC |
+| 2020-01-31 | 0,0 % | 3,0 M USD | 6 | 6 | 2 | 2025-03-01 – 2026-02-01 | 4,5 – 6,375 | — | T-MOBILE USA INC |
+| 2020-02-28 | 0,0 % | 0,4 M USD | 3 | 3 | 1 | 2025-03-01 | 6,375 | — | T-MOBILE USA INC |
+| 2020-02-29 | 0,0 % | 9,1 M USD | 7 | 7 | 2 | 2026-02-01 – 2028-02-01 | 0 – 4,5 | — | T-Mobile US, Inc. |
+| 2020-03-31 | 0,0 % | 3,5 M USD | 5 | 7 | 4 | 2023-03-01 – 2500-12-31 | 4,5 – 6,375 | défaut 57,0 % | T-MOBILE USA INC |
+
+## TD SECURITIES (USA) LLC (CP:td securities usa llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-08-31 | 5 710,0 % | 0,1 M USD | 1 | 1 | 1 | 2021-10-15 | 14,08 | — | TD SECURITIES (USA) LLC (UNILEVER PLC) 14.08% 10/15/2021 (UL US) |
+| 2021-11-30 | 6 360,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-12-13 | 14,77 | — | TD SECURITIES (USA) LLC (PUBLIC SERVICE ENTERPRISE GROUP INC) 14.77% 12/13/2021 (PEG US) |
+| 2022-05-31 | 6 187,5 % | 0,1 M USD | 1 | 1 | 1 | 2022-07-22 | 20,42 | — | TD SECURITIES INC (SEALED AIR CORP) 20.42% 07/22/2022 (SEE US) |
+
+## Tempus AI, Inc. (CP:tempus ai inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-03-31 | 96,7 % | 5,9 M USD | 1 | 2 | 1 | 2030-02-04 | 8,04917 – 12,54917 | — | TEMPUS AI, INC.    / |
+| 2025-06-30 | 99,3 % | 5,9 M USD | 1 | 2 | 1 | 2030-02-04 | 8,04561 – 12,54561 | — | TEMPUS AI, INC.    / |
+| 2025-09-30 | 100,0 % | 6,0 M USD | 1 | 2 | 1 | 2030-02-04 | 7,7515 – 12,2515 | — | TEMPUS AI, INC.    / |
+| 2025-12-31 | 99,9 % | 6,0 M USD | 1 | 2 | 1 | 2030-02-04 | 7,42194 – 11,92194 | — | TEMPUS AI, INC.    / |
+| 2026-03-31 | 99,6 % | 6,0 M USD | 1 | 2 | 1 | 2030-02-04 | 7,44961 – 11,94961 | — | TEMPUS AI, INC.    / |
+| 2026-06-30 | 100,0 % | 0,0 M USD | 1 | 1 | 1 | 2030-02-04 | 0,5 | — | TEMPUS AI, INC.    / |
+
+## Trinity Capital Inc. (CP:trinity capital inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-12-31 | 99,2 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
+| 2025-03-31 | 99,9 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
+| 2025-06-30 | 100,4 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
+| 2025-09-30 | 101,2 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
+| 2025-12-31 | 101,2 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
+| 2026-03-31 | 99,9 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
+| 2026-06-30 | 100,3 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
+
+## UBS Securities LLC (CP:ubs securities llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2021-02-26 | 5 426,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-04-09 | 21 | — | UBS SECURITIES LLC (UNILEVER PLC) 0% 04/07/2021 (UL US) |
+| 2023-02-28 | 6 584,3 % | 0,6 M USD | 1 | 3 | 3 | 2023-04-13 | 15,2 – 24,7 | — | UBS SECURITIES LLC (FIDELITY NATIONAL INFORMATION SERVICES INC) 24.70 04/13/2023 (FIS US) |
+
+## WeWork Companies LLC (CP:wework companies llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2023-06-30 | 9,0 % | 4,5 M USD | 1 | 1 | 1 | 2027-08-15 | 12 | — | WEWORK COS LLC PIK |
+| 2025-05-31 | 0,0 % | 7,0 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COS LLC |
+| 2025-06-30 | 0,0 % | 4,5 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COS LLC |
+| 2025-08-31 | 0,0 % | 7,0 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COS LLC |
+| 2025-09-30 | 0,0 % | 4,5 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COS LLC |
+| 2025-11-30 | 0,0 % | 7,0 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COMPANIES LLC |
+| 2025-12-31 | 0,0 % | 4,5 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COMPANIES LLC |
+| 2026-02-28 | 0,0 % | 7,0 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COMPANIES LLC |
+| 2026-03-31 | 0,0 % | 4,5 M USD | 1 | 1 | 1 | 2027-08-15 | 0 | — | WEWORK COMPANIES LLC |
+
+## Wingspire Equipment Finance LLC (CP:wingspire equipment finance llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**titres de dette (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2024-12-31 | 100,0 % | 7,4 M USD | 1 | 1 | 1 | 2029-12-01 | 13,335473894935 | — | Wingspire Equipment Finance, LLC |
+| 2025-03-31 | 100,0 % | 7,5 M USD | 1 | 1 | 1 | 2029-12-01 | 13,34 | — | Wingspire Equipment Finance, LLC |
+| 2025-06-30 | 100,0 % | 7,2 M USD | 1 | 1 | 1 | 2029-12-01 | 13,34 | — | Wingspire Equipment Finance, LLC |
+| 2025-09-30 | 100,0 % | 6,8 M USD | 1 | 1 | 1 | 2029-12-01 | 13,34 | — | Wingspire Equipment Finance, LLC |
+| 2025-12-31 | 100,0 % | 6,2 M USD | 1 | 1 | 1 | 2029-12-01 | 13,335473894935 | — | Wingspire Equipment Finance, LLC |
+| 2026-03-31 | 100,0 % | 5,7 M USD | 1 | 1 | 1 | 2029-12-01 | 13,34 | — | Wingspire Equipment Finance, LLC |
+| 2026-06-30 | 100,0 % | 4,6 M USD | 1 | 1 | 1 | 2029-12-01 | 16,86 | — | Wingspire Equipment Finance, LLC |
+
+## X Corp. (CP:x corp) : prêts et dette valorisés par les fonds (Form N-PORT)
+
+Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
+
+**prêts (USD)**
+
+| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | Défaut, arriéré, PIK | Intitulé le plus fréquent |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 2025-12-31 | 98,1 % | 1,5 M USD | 2 | 2 | 1 | 2029-10-26 | 0 | — | X Corp Term Loan |
+
 ## OpenAI et Anthropic : faits balisés par les déposants (D-0060, volet 3)
 
 Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par déposant. Point de vue du déposant, jamais une valorisation du laboratoire ; un trimestre absent n'est pas un zéro.
@@ -4048,7 +5328,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000014 |
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000026 |
 
-**OpenAI — CEREBRAS SYSTEMS INC.**
+**OpenAI — Cerebras Systems Inc.**
 
 | Fait balisé | Membre | Période | Valeur | Pièce |
 | --- | --- | --- | ---: | --- |
