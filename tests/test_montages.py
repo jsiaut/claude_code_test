@@ -292,7 +292,7 @@ class AnthropicChain(unittest.TestCase):
         self.assertIsNone(own.search("Fluidstack signed a lease"))
         self.assertTrue(own.search("for Anthropic"))
         self.assertTrue(all(q["forms"] == ["8-K"] for q in sp["queries"]))   # forme racine : 8-K/A compris (point 10)
-        self.assertEqual((sp["cap"], sp["order"]), (80, "recent_first"))
+        self.assertEqual((sp["cap"], sp["order"]), (225, "recent_first"))          # D-0066, point 6 (plafond initial : 80)
 
     def test_priority_then_recent_first(self):
         sp = S["anthropic_chain"]
@@ -319,7 +319,12 @@ class AnthropicChain(unittest.TestCase):
         self.assertEqual(ev(d("8-K", "7.01,9.01"), sp), ("E", "unaudited", "furnished"))
         self.assertEqual(ev(d("8-K", "1.01,2.03,9.01"), sp), ("C", "unaudited", "filed"))
         self.assertEqual(ev(d("8-K/A", "2.02", "8-K/A"), sp)[0], "E")
-        self.assertEqual(ev(d("EX-99.1", "7.01"), S["stargate"]), ("C", "not_applicable", "filed"))
+        # D-0066, point 5 : tous les montages ; une pièce d'un autre formulaire garde le niveau de son formulaire
+        self.assertTrue(all(v.get("evidence") == "triplet" for v in S.values()))
+        self.assertEqual(ev(d("EX-99.1", "7.01"), S["stargate"]), ("E", "unaudited", "furnished"))
+        self.assertEqual(ev(d("EX-4.1", "1.01,2.03,9.01"), S["galaxy_helios"])[0], "D")
+        self.assertEqual(ev(d(None, None, "424B4"), S["spacex_anthropic"])[0], "C")
+        self.assertEqual(ev(d("EX-99.1", None, "6-K"), {})[0], M.D.form_evidence("6-K", None)[0])
 
     def test_fluidstack_entities_by_extract(self):
         """D-0064, point 6 : Fluidstack CS I Inc. rejoint Fluidstack Ltd. par l'extrait qui la dit filiale indirecte à
@@ -357,6 +362,69 @@ class AnthropicChain(unittest.TestCase):
         self.assertEqual(sent[0]["forms"], "8-K,8-K/A")
         self.assertNotIn("forms", sent[1])
         self.assertEqual([r["forms"] for r in logged], [["8-K", "8-K/A"], None])
+
+
+class Retier(unittest.TestCase):
+    """D-0066, point 5 : les blocs déjà préparés gardent texte, clé et lignes ; seul le niveau suit le triplet."""
+
+    def test_blocks_of_8k_follow_their_triplet_in_place(self):
+        import pandas as pd
+        b = lambda m, acc, doc, form, ft, tier, ck: {"montage": m, "accession": acc, "document": doc, "form": form,
+                                                     "exhibit_type": ft, "tier": tier, "assurance_level": "not_applicable",
+                                                     "filing_status": "filed", "content_key": ck, "text": ck}
+        cat = [b("t", "0001-26-000001", "ex99.htm", "8-K", "EX-99.1", "C", "k1"),
+               b("t", "0001-26-000002", "ex10.htm", "8-K", "EX-10.1", "C", "k2"),
+               b("t", "0001-26-000003", "q.htm", "10-Q", None, "B", "k3"),
+               b("u", "0001-26-000004", "ex99.htm", "8-K", "EX-99.1", "C", "k4")]
+        with tempfile.TemporaryDirectory() as tmp:
+            cp = pathlib.Path(tmp) / "blocks.jsonl"
+            cp.write_text("".join(json.dumps(x) + "\n" for x in cat))
+            docs = pathlib.Path(tmp) / "docs.parquet"
+            pd.DataFrame([{"adsh": "0001-26-000001", "file": "ex99.htm", "form": "8-K", "file_type": "EX-99.1", "items": "7.01,9.01"},
+                          {"adsh": "0001-26-000002", "file": "ex10.htm", "form": "8-K", "file_type": "EX-10.1",
+                           "items": "1.01,9.01"}]).to_parquet(docs)
+            saved = M.CATALOG, M.specs, M._paths
+            M.CATALOG = cp
+            M.specs = lambda cfg=None: {"t": {"evidence": "triplet"}, "u": {}}
+            M._paths = lambda mid: (None, docs if mid == "t" else pathlib.Path(tmp) / "none.parquet", None)
+            try:
+                ch = M.retier()
+            finally:
+                M.CATALOG, M.specs, M._paths = saved
+            out = [json.loads(x) for x in cp.read_text().splitlines()]
+        self.assertEqual(dict(ch), {("t", "C", "E"): 1, ("t", "C", "D"): 1})
+        self.assertEqual([x["tier"] for x in out], ["E", "D", "B", "C"])
+        self.assertEqual([x["content_key"] for x in out], ["k1", "k2", "k3", "k4"])
+        self.assertEqual((out[0]["filing_status"], out[0]["assurance_level"]), ("furnished", "unaudited"))
+
+
+class Span(unittest.TestCase):
+    """D-0066, point 7 : un passage fixé d'un document, lignes jointes, de la première occurrence du début à la fin."""
+
+    def test_passage_joins_lines_from_start_to_end(self):
+        lines = ["Prospectus summary", "capacity to customers. For example, in May 2026, we entered into Cloud Services",
+                 "Agreements with Anthropic PBC, with respect to compute. Pursuant to these agreements, the customer has",
+                 "agreed to pay us $1.25 billion per month. The agreements may be terminated by either party upon 90",
+                 "days' notice. The customer will retain its data.", "Business",
+                 "For example, in May 2026, we entered into Cloud Services Agreements with Anthropic PBC again."]
+        spec = {"source": "span", "evidence": "triplet", "noted_terms": [r"\bAnthropic\b"],
+                "spans": [{"cik": "1181412", "accession": "0001-26-000001", "file": "s.htm", "form": "424B4",
+                           "filing_date": "2026-06-12", "filer": "SPACE EXPLORATION TECHNOLOGIES CORP",
+                           "start": "For example, in May 2026, we entered into Cloud Services Agreements with Anthropic",
+                           "end": r"upon 90 days' notice\."}]}
+        saved = M.cache.read, M.document_text
+        M.cache.read = lambda path: b""
+        M.document_text = lambda raw, sp: ("\n".join(lines), "linearized")
+        try:
+            b, = M.span_blocks("spacex_anthropic", spec, {"0001181412": "SPCX"})
+        finally:
+            M.cache.read, M.document_text = saved
+        self.assertTrue(b["text"].startswith("For example, in May 2026, we entered"))
+        self.assertTrue(b["text"].endswith("upon 90 days' notice."))
+        self.assertIn("$1.25 billion per month", b["text"])
+        self.assertEqual(b["span"]["paragraphs"], [1, 4])
+        self.assertEqual((b["tier"], b["filing_status"], b["group_id"], b["terms"]), ("C", "filed", "SPCX", ["Anthropic"]))
+        self.assertEqual(S["spacex_anthropic"]["source"], "span")
 
 
 class SecLetters(unittest.TestCase):

@@ -431,7 +431,7 @@ def prepare_units(mid, spec, groups_by_cik):
             over.append({"adsh": d["adsh"], "file": d["file"], "window": k})
             continue
         grp = groups_by_cik.get(d["cik"]) or d["filer"]
-        tier, assurance, status = D.form_evidence(d["form"], None)
+        tier, assurance, status = M.evidence(d, spec)          # triplet pour une pièce de 8-K (D-0066, point 5)
         fd = d["file_date"]
         out.append({"content_key": blocks.content_key(text, cands), "block_kind": "montage_text", "signal_class": 5,
                     "sort_key": f"mt:{mid}:{n:05d}", "group_id": grp, "cik": d["cik"], "accession": d["adsh"],

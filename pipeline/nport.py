@@ -702,6 +702,68 @@ def attribute(name, legal):
     return None, found
 
 
+# D-0066, point 3 : après un terme de la configuration, seuls des mots de catégorie ou d'instrument ; un code (« G »,
+# « H-1 », un taux, une date) n'est admis qu'après un tel mot ; une forme juridique ou un mot de véhicule bloque
+CLASS_WORDS = set("series ser class cl preferred pref pfd prf common com stock stk shares share shs units unit ordinary ord "
+                  "convertible cvt conv pp private placement restricted".split())
+DEBT_WORDS = set("term loan loans tl tla tlb tlc ddtl delayed draw ddl revolver revolving rcf rc abl facility first 1st "
+                 "second 2nd lien senior sr secured sec unsecured notes note nts bond bonds debt incremental initial tranche "
+                 "unfunded funded sub subordinated junior mezzanine pik fixed floating frn".split())
+CODE_RX = re.compile(r"^(?:[a-z0-9]{1,3}(?:-[a-z0-9]{1,3})?|\d+(?:\.\d+)?%?|\d{1,2}/\d{1,2}/\d{2,4})$")
+SEPARATOR_RX = re.compile(r"^[/&-]+$")
+FORM_WORDS = {"inc", "corp", "llc", "lp", "ltd", "plc", "pbc", "co", "sa", "ag", "nv", "bv", "gmbh", "pte", "llp", "lllp",
+              "as", "asa", "ab", "oy", "kk", "kg", "se", "spa", "sarl", "limited", "company", "corporation", "incorporated"}
+TERM_BLOCK_WORDS = FORM_WORDS | VEHICLE_WORDS | {"fund", "funds"}
+
+
+def term_forms(ent_rows, cfg=None):
+    """Termes de la configuration (`config_terms`) qui désignent une seule entité confirmée du registre, par son nom
+    normalisé ou un alias (D-0066, point 3) : forme -> entity_id. Chaque terme vaut aussi sans ses points."""
+    names = {}
+    for r in ent_rows:
+        if r["record_kind"] in ("entity", "alias") and r.get("status") != "pending" and r.get("normalized_name"):
+            names.setdefault(r["normalized_name"], set()).add(r["entity_id"])
+    out = {}
+    for t in config_terms(cfg or config.load()):
+        for f in forms(t):
+            if len(names.get(f) or ()) == 1:
+                out[f] = next(iter(names[f]))
+    return out
+
+
+def class_words_only(rest):
+    """Les mots qui suivent le terme ne sont que des mots de catégorie ou d'instrument, et des codes qui suivent l'un
+    d'eux ; une forme juridique ou un mot de véhicule laisse le nom sans rattachement (D-0066, point 3)."""
+    if TERM_BLOCK_WORDS & set(rest):
+        return False
+    after_word = False
+    for w in rest:
+        if w in CLASS_WORDS or w in DEBT_WORDS:
+            after_word = True
+        elif SEPARATOR_RX.match(w):
+            continue
+        elif not (after_word and CODE_RX.match(w)):
+            return False
+    return True
+
+
+def term_attribute(name, terms):
+    """Rattachement étendu (D-0066, point 3) : le nom commence par un terme qui désigne une seule entité (le plus long
+    l'emporte), suivi seulement de mots de catégorie ou d'instrument (« ANTHROPIC SERIES G », « Nscale »). Renvoie
+    (entity_id, terme), (None, terme) si un autre mot suit le terme, (None, None) sinon."""
+    found = None
+    for f in forms(name):
+        toks = f.split()
+        for i in range(len(toks), 0, -1):
+            k = " ".join(toks[:i])
+            if k in terms:
+                if class_words_only(toks[i:]):
+                    return terms[k], k
+                found = found or k
+                break
+    return None, found
+
+
 def scan_unlisted(zpath, lex, c=None, chunk=500_000):
     """Positions gardées d'une archive (D-0065, point 5) et leurs tables liées, avec les décomptes de toutes les
     positions qui contiennent une chaîne du lexique, par entité rattachée (nom d'émetteur) ou à défaut par
@@ -864,11 +926,11 @@ def fetch_unlisted(only=None):
 # -- positions, rattachement, cotation --------------------------------------------------------------
 
 def u_positions(c=None, archives=None):
-    """Positions gardées des archives scannées (D-0065), jointes à leur dépôt, leur série, leur déclarant et leur
-    ISIN ; une ligne par position déclarée."""
+    """Positions gardées des archives scannées (D-0065), jointes à leur dépôt, leur série, leur déclarant, leur
+    ISIN et leurs caractéristiques de dette (Item C.9, D-0066) ; une ligne par position déclarée."""
     c = c or cols()
     m = u_manifest()
-    h, s, f, g, i = (c[k] for k in ("holding", "submission", "fund", "registrant", "identifiers"))
+    h, s, f, g, i, b = (c[k] for k in ("holding", "submission", "fund", "registrant", "identifiers", "debt"))
     conv = cfg_nport().get("exchange_rate_convention", "currency_per_usd")
     rows = []
     for name, r in sorted(m.items()):
@@ -888,26 +950,35 @@ def u_positions(c=None, archives=None):
             x = x.merge(ids, on="holding_id", how="left")
         else:
             x["isin"] = None
+        debt = t["debt"].rename(columns={v: k for k, v in b.items()}).reindex(columns=list(b))   # Item C.9 (D-0066)
+        x = x.merge(debt.drop_duplicates("holding_id"), on="holding_id", how="left", suffixes=("", "_debt"))
         x["archive"] = name
-        for col in ("filing_date", "report_date"):
+        for col in ("filing_date", "report_date", "maturity"):
             x[col] = [_iso(v) for v in x[col]]
         x["value_local"] = [_local_value(v, rr, cur, conv) for v, rr, cur in zip(x["value_usd"], x["exchange_rate"], x["currency"])]
         rows.append(x)
     return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
 
 
-def attributed(p, ent_rows=None, reg=None):
-    """Rattachement des positions sur le registre courant (D-0065, point 6) : entité, forme trouvée, et groupe de
-    l'entité à la date de portefeuille (vue as_known)."""
+def attributed(p, ent_rows=None, reg=None, cfg=None):
+    """Rattachement des positions sur le registre courant : dénomination légale en tête du nom (D-0065, point 6),
+    à défaut terme de la configuration suivi de mots de catégorie ou d'instrument (D-0066, point 3). Entité, forme
+    légale trouvée, règle qui rattache, et groupe de l'entité à la date de portefeuille (vue as_known)."""
     from .entities import Registry
     ent_rows = _entity_rows() if ent_rows is None else ent_rows
     reg = reg or Registry(ent_rows)
     legal = legal_forms(ent_rows)
+    terms = term_forms(ent_rows, cfg)
     names = p["issuer_name"].fillna("")
-    memo = {nm: (attribute(nm, legal) if nm else (None, None)) for nm in names.unique()}
+    memo = {}
+    for nm in names.unique():
+        e, k = attribute(nm, legal) if nm else (None, None)
+        t = term_attribute(nm, terms)[0] if nm and e is None else None
+        memo[nm] = (e or t, k, "legal_name" if e else ("config_term" if t else None))
     p = p.copy()
     p["entity_id"] = [memo[nm][0] for nm in names]
     p["legal_form"] = [memo[nm][1] for nm in names]
+    p["attribution"] = [memo[nm][2] for nm in names]
     p["node"] = [reg.group_at(e, d, "as_known") if e else None for e, d in zip(p["entity_id"], p["report_date"])]
     return p
 
@@ -1066,13 +1137,18 @@ def quarter_complete(qe, m=None):
     return start >= lo and (end + dt.timedelta(days=FILING_DAYS)).isoformat() <= hi
 
 
-def u_selected(as_of, ent_rows=None, reg=None, tick=None):
-    """Positions de la mesure, au dernier dépôt de chaque série par date, avec leur titre ; et les étapes."""
+def u_attributed(ent_rows=None, reg=None):
+    """Positions gardées, rattachées sur le registre courant (un seul chargement pour les mesures et les exclusions)."""
     p = u_positions()
+    return p if p.empty else attributed(p, _entity_rows() if ent_rows is None else ent_rows, reg)
+
+
+def u_selected(as_of, ent_rows=None, reg=None, tick=None, p=None):
+    """Positions de la mesure, au dernier dépôt de chaque série par date, avec leur titre ; et les étapes."""
+    ent_rows = _entity_rows() if ent_rows is None else ent_rows
+    p = u_attributed(ent_rows, reg) if p is None else p
     if p.empty:
         return p, {}
-    ent_rows = _entity_rows() if ent_rows is None else ent_rows
-    p = attributed(p, ent_rows, reg)
     sel, steps = mark_selection(p, as_of, listing(ent_rows, as_of, tick), quoted_archives())
     sel = latest_by_fund(sel)
     if len(sel):
@@ -1081,12 +1157,12 @@ def u_selected(as_of, ent_rows=None, reg=None, tick=None):
     return sel, steps
 
 
-def u_cells(as_of, ent_rows=None, reg=None, tick=None):
+def u_cells(as_of, ent_rows=None, reg=None, tick=None, p=None):
     """Cellules nport_equity_mark (nœud, fonds, titre, date) et nport_equity_held (nœud, trimestre civil)."""
     from .measures import cell
     if not u_manifest():
         return []
-    sel, _ = u_selected(as_of, ent_rows, reg, tick)
+    sel, _ = u_selected(as_of, ent_rows, reg, tick, p)
     if sel.empty:
         return []
     kd = sel.groupby("accession")["filing_date"].max().to_dict()
@@ -1153,9 +1229,9 @@ def neighbors(p):
     return out
 
 
-def u_exclusions(as_of, ent_rows=None, reg=None, tick=None):
+def u_exclusions(as_of, ent_rows=None, reg=None, tick=None, p=None):
     """Archives de la période non tirées, non scannées, publiées après l'as_of ou scannées avec un lexique
-    antérieur ; noms voisins non rattachés ; entités cotées sans date de cotation connue (§11)."""
+    antérieur ; noms voisins non rattachés ; entités cotées sans date de cotation connue ; prêts de plateforme (§11)."""
     cfg = config.load()
     n = cfg_nport(cfg)
     m = u_manifest()
@@ -1163,6 +1239,7 @@ def u_exclusions(as_of, ent_rows=None, reg=None, tick=None):
         return []
     ent_rows = _entity_rows() if ent_rows is None else ent_rows
     legal = set(legal_forms(ent_rows))
+    terms = set(term_forms(ent_rows, cfg))
     out = []
 
     def ex(kind, key, reason, detail, group=None):
@@ -1185,17 +1262,22 @@ def u_exclusions(as_of, ent_rows=None, reg=None, tick=None):
         else:
             scanned_with.setdefault(r.get("lexicon"), []).append(a["name"])
     for v, names in sorted(scanned_with.items(), key=lambda kv: str(kv[0])):
-        p = lexicon_path(v)
-        new = sorted(legal - set(json.loads(p.read_text(encoding="utf-8"))["legal"])) if p.exists() else None
-        if new is None or new:
+        lp = lexicon_path(v)
+        lx = json.loads(lp.read_text(encoding="utf-8")) if lp.exists() else None
+        new = sorted(legal - set(lx["legal"])) if lx else None
+        new_terms = sorted(terms - set(lx["keep"])) if lx else []          # D-0066 : terme qui rattache, non gardé
+        if lx is None:
+            why = f"lexique {v} introuvable"
+        elif new_terms:
+            why = f"{len(new)} dénominations légales et {len(new_terms)} termes ajoutés depuis, non scannés"
+        else:
+            why = f"{len(new)} dénominations légales ajoutées depuis, non scannées"
+        if new is None or new or new_terms:
             for nm in names:
-                ex("period", nm, "not_processed", "archive scannée avec un lexique antérieur : "
-                   + (f"{len(new)} dénominations légales ajoutées depuis, non scannées" if new is not None
-                      else f"lexique {v} introuvable") + " (D-0065, point 14)")
-    p = u_positions()
+                ex("period", nm, "not_processed", f"archive scannée avec un lexique antérieur : {why} (D-0065, point 14)")
+    p = u_attributed(ent_rows, reg) if p is None else p
     if p.empty:
         return out
-    p = attributed(p, ent_rows, reg)
     for r in neighbors(p):
         reason = "conflicting" if r["legal_form"] else "pending_entity"
         why = (f"commence par « {r['legal_form']} », suivie d'une autre forme juridique" if r["legal_form"]
@@ -1210,7 +1292,173 @@ def u_exclusions(as_of, ent_rows=None, reg=None, tick=None):
     for e in unknown:
         ex("entity", e, "not_processed", "entité cotée (symbole au 2026-10-07) sans submissions complètes en cache : "
            "date de cotation inconnue, positions hors de la mesure (D-0065, point 7)")
+    plat = []
+    credit_selection(p, out=plat)
+    for r in platforms(plat):
+        ex("entity", f"platform:{r['entity_id']}", "out_of_scope",
+           f"prêts de plateforme déclarés sous « {r['name']} » ({r['rule']}) : {r['positions']} positions, {r['filings']} "
+           f"dépôts, {r['series']} séries, du {r['first']} au {r['last']} ; le déclarant nomme la plateforme qui les a "
+           "consentis, non l'emprunteur, et leurs débiteurs ne sont jamais lus : hors de nport_credit_mark (D-0066, point 4)",
+           group=r["node"])
     return out
+
+
+# -- D-0066, point 4 : marques de crédit des prêts et de la dette des nœuds, évalués par les fonds ---------------
+
+CREDIT_BASIS = ("valorisation déclarée par des fonds enregistrés (Form N-PORT Data Sets), perspective counterparty : somme des "
+                "valeurs dans la monnaie du titre sur la somme des nominaux, prêts ou titres de dette du nœud évalués au "
+                "niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; jamais une probabilité de défaut ni "
+                "un fait comptable de l'emprunteur, hors des mesures de financement, de l'exposition, des paires, des cycles et "
+                "de l'annexe F (D-0066, point 4)")
+PLATFORM_RULES = {"pool": "plus de 100 positions d'un même émetteur dans un dépôt", "title": "intitulé « Marketplace Loan »"}
+
+
+def cfg_credit(cfg=None):
+    return cfg_unlisted(cfg).get("credit") or {}
+
+
+def credit_selection(p, out=None):
+    """Positions de nport_credit_mark (D-0066, point 4), avant le dernier dépôt de chaque série, et décompte des
+    positions écartées à chaque étape : rattachées, prêts ou titres de dette, en nominal, longues, de nominal positif,
+    au niveau 3, puis hors prêts de plateforme (plus de 100 positions d'un même émetteur dans un dépôt, ou intitulé
+    « Marketplace Loan »). Les prêts de plateforme écartés s'ajoutent à `out` (colonne `platform`)."""
+    cr = cfg_credit()
+    steps = {}
+
+    def keep(q, step, mask, rule=None):
+        mask = pd.Series(list(mask), index=q.index, dtype=bool)
+        steps[step] = int((~mask).sum())
+        if rule and out is not None and (~mask).any():
+            out.append(q[~mask].assign(platform=rule))
+        return q[mask].copy()
+    if p.empty:
+        return p, steps
+    p = keep(p, "not_attributed", p["entity_id"].notna() & p["node"].notna())
+    p = keep(p, "not_credit", p["asset_cat"].isin(cr.get("asset_cats") or ["LON", "DBT"]))
+    p = keep(p, "not_principal", p["unit"] == (cr.get("unit") or "PA"))
+    p = keep(p, "not_long", p["payoff"] == (cr.get("payoff") or "Long"))
+    p = keep(p, "not_positive", [(_dec(v) or 0) > 0 for v in p["balance"]])
+    p = keep(p, "not_level_3", p["fair_value_level"].fillna("").str.strip() == str(cr.get("level") or "3"))
+    n = p.groupby(["entity_id", "accession"])["balance"].transform("size") if len(p) else []
+    p = keep(p, "platform_pool", [k <= int(cr.get("pool_max_positions") or 100) for k in n], "pool")
+    rx = re.compile(cr.get("platform_title_rx") or r"\bmarketplace loans?\b", re.I)
+    p = keep(p, "platform_title", [not (isinstance(t, str) and rx.search(t)) for t in p["title"]], "title")
+    return p, steps
+
+
+def platforms(frames):
+    """Par entité : prêts de plateforme écartés, comptés (positions, dépôts, séries, dates), sans aucune valeur."""
+    if not frames:
+        return []
+    x = pd.concat(frames, ignore_index=True)
+    out = []
+    for e, g in x.groupby("entity_id", sort=True):
+        out.append({"entity_id": e, "node": next(iter(sorted(set(g["node"].dropna()))), None),
+                    "name": _mode(g["issuer_name"].dropna()), "positions": int(len(g)),
+                    "rule": " ; ".join(PLATFORM_RULES[k] for k in sorted(set(g["platform"]))),
+                    "filings": int(g["accession"].nunique()), "series": int(pd.Series(fund_key(g)).nunique()),
+                    "first": min(g["report_date"].dropna(), default=None), "last": max(g["report_date"].dropna(), default=None)})
+    return out
+
+
+def c_selected(as_of, ent_rows=None, reg=None, p=None):
+    """Positions de nport_credit_mark, au dernier dépôt de chaque série par date, avec leur titre ; et les étapes."""
+    p = u_attributed(ent_rows, reg) if p is None else p
+    if p.empty:
+        return p, {}
+    sel, steps = credit_selection(p)
+    sel = latest_by_fund(sel)
+    if len(sel):
+        sel["security"] = [equity_key(a, i, cu, t) for a, i, cu, t in zip(sel["asset_cat"], sel["isin"], sel["cusip"], sel["title"])]
+    return sel, steps
+
+
+def _share(g, col, den):
+    """Part du nominal dont la rubrique `col` de l'Item C.9 vaut « Y »."""
+    if col not in g:
+        return None
+    num = sum((_dec(b) or 0) for b, v in zip(g["balance"], g[col]) if isinstance(v, str) and v.strip().upper() == "Y")
+    return str((num / den).quantize(Decimal("0.000001")))
+
+
+def _extremes(values):
+    v = sorted(x for x in values if x is not None)
+    return [str(v[0]), str(v[-1])] if v else None
+
+
+def c_cells(as_of, ent_rows=None, reg=None, p=None):
+    """Cellules nport_credit_mark : une par nœud, catégorie (LON ou DBT), monnaie et date de portefeuille (D-0066)."""
+    from .measures import cell
+    from collections import Counter
+    if not u_manifest():
+        return []
+    sel, _ = c_selected(as_of, ent_rows, reg, p)
+    if sel.empty:
+        return []
+    kd = sel.groupby("accession")["filing_date"].max().to_dict()
+    sel = sel.assign(cur=sel["currency"].fillna("").str.strip().str.upper())
+    out = []
+    for (node, cat, cur, d), g in sel.groupby(["node", "asset_cat", "cur", "report_date"], sort=True):
+        den = sum(_dec(v) for v in g["balance"])
+        vloc = [_dec(v) for v in g["value_local"]]
+        tt = Counter(t.strip() for t in g["title"].dropna() if t.strip())
+        fl = {"perspective": "counterparty", "principal": str(den), "value_usd": str(sum(_dec(v) or 0 for v in g["value_usd"])),
+              "currency": cur or None, "asset_cat": cat, "positions": int(len(g)), "series": int(g["fund"].nunique()),
+              "titles": int(g["security"].nunique()),
+              "maturity": _extremes(g["maturity"]) if "maturity" in g else None,
+              "coupon": _extremes(_dec(v) for v in g["coupon"]) if "coupon" in g else None,
+              "top_titles": [[t, n] for t, n in sorted(tt.items(), key=lambda kv: (-kv[1], kv[0]))[:3]],
+              "default_share": _share(g, "is_default", den), "arrears_share": _share(g, "arrears", den),
+              "pik_share": _share(g, "pik", den),
+              "c9_share": str((sum(_dec(b) or 0 for b, v in zip(g["balance"], g["is_default"]) if isinstance(v, str))
+                               / den).quantize(Decimal("0.000001"))) if "is_default" in g else None,
+              "issuer_names": sorted(set(g["issuer_name"].dropna()))[:10], "entities": sorted(set(g["entity_id"])),
+              "attribution": sorted(set(g["attribution"].dropna())) if "attribution" in g else [],
+              "accessions": sorted(set(g["accession"]))[:20], "basis": CREDIT_BASIS}
+        k = max(str(kd.get(a) or "") for a in g["accession"])[:10] or None
+        bk = f"{cat}|{cur or 'none'}"
+        if any(v is None for v in vloc):
+            out.append(cell("nport_credit_mark", node, None, d, "as_known", as_of, breakdown=bk, status="not_determinable",
+                            nd_reason="not_disclosed", knowledge_date=k,
+                            flags=dict(fl, note="taux de change non déclaré : valeur dans la monnaie du titre inconnue")))
+        else:
+            num = sum(vloc)
+            out.append(cell("nport_credit_mark", node, None, d, "as_known", as_of, breakdown=bk, value=num / den,
+                            numerator=num, denominator=den, unit="pure", knowledge_date=k, flags=fl))
+    return out
+
+
+def unlisted(as_of, ent_rows=None, reg=None, tick=None):
+    """Cellules et exclusions de D-0065 et D-0066, sur un seul chargement des positions rattachées."""
+    ent_rows = _entity_rows() if ent_rows is None else ent_rows
+    if not u_manifest():
+        return [], u_exclusions(as_of, ent_rows, reg, tick)
+    p = u_attributed(ent_rows, reg)
+    return (u_cells(as_of, ent_rows, reg, tick, p) + c_cells(as_of, ent_rows, reg, p),
+            u_exclusions(as_of, ent_rows, reg, tick, p))
+
+
+def c_volume(as_of=None):
+    """Décomptes de la sélection des marques de crédit, sans aucune valeur (D-0066, point 11)."""
+    from .discovery import AS_OF
+    from collections import Counter
+    as_of = as_of or AS_OF
+    ent_rows = _entity_rows()
+    p = u_attributed(ent_rows)
+    by_rule = Counter(zip(p["attribution"].fillna("none"), p["asset_cat"].fillna("")))
+    term = p[p["attribution"] == "config_term"]
+    plat = []
+    sel, steps = credit_selection(p, out=plat)
+    last = latest_by_fund(sel)
+    return {"positions": int(len(p)), "by_rule_and_category": {f"{r}/{a}": int(n) for (r, a), n in sorted(by_rule.items())},
+            "term_names": int(term["issuer_name"].nunique()),
+            "term_by_node": dict(Counter(term["node"].fillna("none")).most_common()),
+            "steps": steps, "platforms": platforms(plat), "selected": int(len(sel)), "after_latest_filing": int(len(last)),
+            "nodes": int(last["node"].nunique()), "series": int(last["fund"].nunique()),
+            "report_dates": int(last["report_date"].nunique()),
+            "first_last": [min(last["report_date"]), max(last["report_date"])] if len(last) else None,
+            "by_node": dict(Counter(last["node"]).most_common()),
+            "cells": int(last.groupby(["node", "asset_cat", last["currency"].fillna(""), "report_date"]).ngroups) if len(last) else 0}
 
 
 def u_volume(as_of=None):
@@ -1279,6 +1527,8 @@ if __name__ == "__main__":
         fetch_listing_submissions()
     elif cmd == "unlisted-volume":
         print(json.dumps(u_volume(), ensure_ascii=False, indent=1, default=str))
+    elif cmd == "credit-volume":
+        print(json.dumps(c_volume(), ensure_ascii=False, indent=1, default=str))
     elif cmd == "unlisted-status":
         um = u_manifest()
         print(len(um), "archives au manifeste des non-cotés ;",

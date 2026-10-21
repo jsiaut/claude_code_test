@@ -530,6 +530,7 @@ def synthesis(con, as_of, stats):
     L += montages_section(con, T)
     L += nport_section(con, T)
     L += unlisted_section(con, T)
+    L += credit_section(con, T)
     L += labs_tagged_section(con, T)
     L += labs_ledger_section(con, T)
     # Évolution et non établi
@@ -1220,8 +1221,10 @@ def unlisted_section(con, T):
     L.append("Valeur par action que des fonds enregistrés déclarent pour les actions d'un nœud du modèle qu'ils évaluent "
              "eux-mêmes (niveau 3 de la hiérarchie de juste valeur), au dernier dépôt de chaque série pour la date de "
              "portefeuille, et somme de ces valeurs par trimestre civil (Form N-PORT Data Sets ; D-0065). Une position n'est "
-             "rattachée que si le nom d'émetteur déclaré commence par une dénomination légale du registre, et une entité cotée "
-             "n'y entre qu'avant son introduction en bourse. Ce sont des marques déclarées par des tiers (perspective "
+             "rattachée que si le nom d'émetteur déclaré commence par une dénomination légale du registre, ou n'est formé que "
+             "d'un terme de la configuration qui désigne une seule entité, suivi de mots de catégorie ou d'instrument "
+             "(« ANTHROPIC SERIES G » ; D-0066, point 3), et une entité cotée n'y entre qu'avant son introduction en bourse. "
+             "Ce sont des marques déclarées par des tiers (perspective "
              "`counterparty`) : jamais une valorisation du nœud ni un fait comptable, hors des mesures de financement, de "
              "l'exposition, des paires et de l'annexe F. Deux fonds peuvent détenir deux catégories d'actions différentes : "
              "leurs valeurs par action ne se comparent qu'à titre égal. Le détail par fonds et par titre est dans `series.md`.")
@@ -1254,8 +1257,9 @@ def unlisted_section(con, T):
     if ex:
         L.append("Exclusions du scan : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'nport_unlisted': r['reason']}, r['n'])}"
                                                    for r in ex) + ". Un nom d'émetteur gardé par le lexique sans commencer par "
-                 "une dénomination légale (véhicule nommé d'après un nœud, autre forme juridique, nom commercial) est compté "
-                 "en `pending_entity`, jamais rattaché sans extrait (D-0065, point 6).")
+                 "une dénomination légale ni être formé d'un terme suivi de mots de catégorie (véhicule nommé d'après un nœud, "
+                 "autre forme juridique, nom commercial) est compté en `pending_entity`, jamais rattaché sans extrait (D-0065, "
+                 "point 6 ; D-0066, point 3) ; les prêts de plateforme sont comptés en `out_of_scope` (D-0066, point 4).")
         L.append("")
     return L
 
@@ -1290,6 +1294,131 @@ def unlisted_series(con, T):
                 L.append(f"| {f1['fl'].get('series_name') or f1['fl'].get('registrant_name') or cp} | "
                          f"{f1['fl'].get('title') or bk.split('|', 1)[-1]} ({bk.split('|', 1)[0]}) | {f0['period_end']} ({per_share(T, f0)}) | "
                          f"{f1['period_end']} ({per_share(T, f1)}) | {T.n('measures', {'nport_unlisted_dates': [s, cp, bk]}, len(rs))} |")
+            L.append("")
+    return L
+
+
+def credit_cells(con):
+    """Cellules nport_credit_mark (D-0066), par nœud et par catégorie et monnaie, dans l'ordre des dates."""
+    by = defaultdict(list)
+    for r in q(con, """SELECT * FROM measures WHERE measure = 'nport_credit_mark' AND view = 'as_known'
+                       ORDER BY subject, breakdown_key, period_end"""):
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+        by[(r["subject"], r["breakdown_key"])].append(r)
+    return by
+
+
+CREDIT_CAT = {"LON": "prêts", "DBT": "titres de dette"}
+
+
+def credit_cat(bk):
+    cat, cur = (bk.split("|", 1) + [""])[:2]
+    return f"{CREDIT_CAT.get(cat, cat)} ({cur})"
+
+
+def credit_flags(T, r):
+    """Parts du nominal déclarées en défaut, en arriéré d'intérêts ou en intérêts capitalisés (Item C.9), si non nulles."""
+    out = []
+    for k, lab in (("default_share", "défaut"), ("arrears_share", "arriéré"), ("pik_share", "PIK")):
+        v = r["fl"].get(k)
+        if v not in (None, "") and Decimal(str(v)) > 0:
+            out.append(T.n("measures", {"nport_credit_share": [r["subject"], r["breakdown_key"], r["period_end"], k]}, v,
+                           text=f"{lab} {fr_num(Decimal(str(v)) * 100, 1)} %"))
+    return ", ".join(out) or "—"
+
+
+def credit_section(con, T):
+    """D-0066, point 4 : prêts et titres de dette des nœuds évalués par les fonds (Form N-PORT), valeur ÷ nominal."""
+    by = credit_cells(con)
+    if not by:
+        return []
+    last_date = max(r["period_end"] for rs in by.values() for r in rs)
+    recent = (dt.date.fromisoformat(last_date) - dt.timedelta(days=92)).isoformat()
+    L = ["## Prêts et dette des nœuds valorisés par les fonds (Form N-PORT)", ""]
+    L.append("Valeur que les fonds enregistrés déclarent pour les prêts (LON) et les titres de dette (DBT) d'un nœud du modèle "
+             "qu'ils évaluent eux-mêmes (niveau 3), rapportée au nominal, dans la monnaie du titre, au dernier dépôt de chaque "
+             "série pour la date de portefeuille (Form N-PORT Data Sets ; D-0066, point 4). Une cellule par nœud, catégorie, "
+             "monnaie et date : elle mêle les tranches et les rangs que les fonds détiennent, dont les intitulés et les "
+             "échéances sont dans `series.md`. C'est une marque déclarée par des tiers (perspective `counterparty`), jamais une "
+             "probabilité de défaut ni un fait comptable de l'emprunteur : elle n'entre dans aucune mesure de financement, ni "
+             "dans l'exposition, les paires, les cycles ou l'annexe F. Les parts en défaut, en arriéré d'intérêts ou en intérêts "
+             "capitalisés (PIK) sont celles du nominal que les fonds déclarent ainsi (Item C.9).")
+    L.append("")
+    n = sum(len(v) for v in by.values())
+    L.append(f"Cellules : {T.n('measures', {'measure': 'nport_credit_mark'}, n)}, sur "
+             f"{T.n('measures', {'measure': 'nport_credit_mark', 'nodes': True}, len({s for s, _ in by}))} nœuds, du "
+             f"{min(r['period_end'] for rs in by.values() for r in rs)} au {last_date}.")
+    L.append("")
+    L.append(f"Nœuds dont au moins un fonds déclare un prêt ou un titre de dette dans les trois mois qui précèdent la dernière "
+             f"date de portefeuille ({last_date}), par valeur déclarée en dollars à leur dernière date :")
+    L.append("")
+    L.append("| Nœud | Catégorie | Dernière date | Valeur ÷ nominal | Nominal détenu | Séries | Défaut, arriéré, PIK | "
+             "Plus bas (date) | Première date (valeur ÷ nominal) |")
+    L.append("| --- | --- | --- | ---: | ---: | ---: | --- | --- | --- |")
+    rows, gone = [], 0
+    for (s, bk), rs in by.items():
+        if rs[-1]["period_end"] < recent:
+            gone += 1
+            continue
+        rows.append((s, bk, rs))
+    rows.sort(key=lambda x: (-Decimal(str(x[2][-1]["fl"].get("value_usd") or 0)), x[0], x[1]))
+    for s, bk, rs in rows:
+        last = rs[-1]
+        vals = [r for r in rs if r["value"] is not None]
+        lo = min(vals, key=lambda r: (Decimal(str(r["value"])), r["period_end"])) if vals else None
+        cur = bk.split("|", 1)[-1]
+        L.append(f"| {group_label(s)} | {credit_cat(bk)} | {last['period_end']} | {T.m(last, fmt='pct')} | "
+                 f"{T.m(last, 'denominator', fmt='mn')} {cur} | "
+                 f"{T.n('measures', {'nport_credit_series': [s, bk, last['period_end']]}, last['fl'].get('series'))} | "
+                 f"{credit_flags(T, last)} | " + (f"{T.m(lo, fmt='pct')} ({lo['period_end']})" if lo else "—") +
+                 f" | {rs[0]['period_end']} ({T.m(rs[0], fmt='pct')}) |")
+    L.append("")
+    L.append(f"Nœuds et catégories sans position déclarée dans ces trois mois : "
+             f"{T.n('measures', {'measure': 'nport_credit_mark', 'without_recent_position': True}, gone)}.")
+    L.append("")
+    ex = q(con, """SELECT count(*) AS n FROM exclusions WHERE item_key LIKE 'nport_unlisted:platform:%'""")
+    if ex and ex[0]["n"]:
+        L.append(f"Prêts de plateforme écartés et comptés, par émetteur déclaré : "
+                 f"{T.n('exclusions', {'nport_credit_platforms': True}, ex[0]['n'])} (`out_of_scope`) ; le fonds y nomme la "
+                 "plateforme qui les a consentis, non l'emprunteur, et leurs débiteurs ne sont jamais lus (D-0066, point 4).")
+        L.append("")
+    return L
+
+
+def credit_series(con, T):
+    """D-0066 : par nœud et par catégorie et monnaie, chaque date de portefeuille avec ses caractéristiques déclarées."""
+    by = credit_cells(con)
+    L = []
+    nodes = defaultdict(list)
+    for (s, bk), rs in by.items():
+        nodes[s].append((bk, rs))
+    for s in sorted(nodes, key=lambda x: (group_label(x), x)):
+        L.append(f"## {group_label(s)} ({s}) : prêts et dette valorisés par les fonds (Form N-PORT)")
+        L.append("")
+        L.append("Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de "
+                 "chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se "
+                 "déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une "
+                 "probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).")
+        L.append("")
+        for bk, rs in sorted(nodes[s]):
+            L.append(f"**{credit_cat(bk)}**")
+            L.append("")
+            L.append("| Date | Valeur ÷ nominal | Nominal | Séries | Positions | Titres | Échéances | Coupons | "
+                     "Défaut, arriéré, PIK | Intitulé le plus fréquent |")
+            L.append("| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |")
+            cur = bk.split("|", 1)[-1]
+            for r in rs:
+                fl = r["fl"]
+                mt, cp = fl.get("maturity"), fl.get("coupon")
+                tt = (fl.get("top_titles") or [[None]])[0][0]
+                L.append(f"| {r['period_end']} | {T.m(r, fmt='pct')} | {T.m(r, 'denominator', fmt='mn')} {cur} | "
+                         f"{T.n('measures', {'nport_credit_series': [s, bk, r['period_end']]}, fl.get('series'))} | "
+                         f"{T.n('measures', {'nport_credit_positions': [s, bk, r['period_end']]}, fl.get('positions'))} | "
+                         f"{T.n('measures', {'nport_credit_titles': [s, bk, r['period_end']]}, fl.get('titles'))} | "
+                         + (f"{mt[0]} – {mt[1]}" if mt and mt[0] != mt[1] else (mt[0] if mt else "n.d.")) + " | "
+                         + (f"{cp[0].replace('.', ',')} – {cp[1].replace('.', ',')}" if cp and cp[0] != cp[1]
+                            else (cp[0].replace('.', ',') if cp else "n.d.")) +
+                         f" | {credit_flags(T, r)} | {(tt or '—').replace('|', '/')} |")
             L.append("")
     return L
 
@@ -2188,6 +2317,7 @@ def series(con, as_of, stats):
             L.append("")
     if "nport" in (config.load().get("scope") or []):
         L += unlisted_series(con, T)
+        L += credit_series(con, T)
     if "labs" in (config.load().get("scope") or []):
         L += labs_tagged_series(con, T)
     if "lender_portfolio" in (config.load().get("scope") or []):

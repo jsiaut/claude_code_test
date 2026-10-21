@@ -1799,6 +1799,7 @@ montages:
       - {rx: '\bMeta\b', owner: ["meta platforms"]}
       - {rx: '\bBlue Owl\b', owner: ["blue owl"]}
     noted_terms: ['\bBeignet\b', 'Richland Parish', '\bMeta\b', '\bHyperion\b', '\bBlue Owl\b']
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 40
   athene_whco:
     decision: D-0049
@@ -1821,6 +1822,7 @@ montages:
       - {rx: '\bApollo\b', owner: ["apollo global management", "athene"]}
       - {rx: '\bAthene\b', owner: ["apollo global management", "athene"]}
     noted_terms: ['\bWarehouseCo\b', '\bWHCO\b', '[Cc]apital [Ss]olution', '\bBroadcom\b', '\bAnthropic\b', '\bApollo\b', '\bAthene\b']
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 40
   galaxy_helios:
     decision: D-0049
@@ -1835,6 +1837,7 @@ montages:
       - {rx: '\bCoreWeave\b', owner: ["coreweave"]}
       - {rx: '\bGalaxy\b', owner: ["galaxy digital"]}
     noted_terms: ['\bHelios\b', '\bCoreWeave\b', '\bGalaxy\b']
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 71                           # amendement de D-0049, point 11 (plafond initial : 40)
     focus: "galaxy digital"           # ordre : autres déposants, 8-K, rapports périodiques ; plus récent d'abord
     dedupe: true                      # un texte distinct se lit une fois
@@ -1859,6 +1862,7 @@ montages:
     # « SBG », « Vision Fund »
     noted_terms: ['\bSoft[Bb]ank\b', '\bSOFTBANK\b', '\bSB Energy\b', '\bSVF II\b', '\bAmpere Computing\b', '\bGraphcore\b',
                   '\bArm (?:Holdings|Limited|Ltd)\b', '\bStargate\b', '\bArm\b', '\bAmpere\b', '\bSVF\b', '\bSBG\b', '\bVision Fund\b']
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 300
     dedupe: true
     skip_read: true
@@ -1878,6 +1882,7 @@ montages:
     count_only_forms: ["D", "D/A"]    # bloc `form_d`
     exclude:                          # amendement du point 21, avant toute lecture
       - {forms: ["DRS", "DRS/A"], reason: "projet confidentiel soumis, non déposé (SPEC §2.1, submitted_draft) : il n'entre dans aucune mesure ; la version publique déposée se lit"}
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 60
     dedupe: true
     skip_read: true
@@ -1895,6 +1900,7 @@ montages:
     # « Stargate » (servi aux volets A et E de D-0058)
     noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
                   '\bStargate\b']
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 300
     dedupe: true
     skip_read: true
@@ -1907,6 +1913,7 @@ montages:
     period: ["2017-01-29", "2026-10-07"]
     noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
                   '\bStargate\b', '\bfrontier AI lab\b']
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 100
     dedupe: true
     skip_read: true
@@ -1936,7 +1943,7 @@ montages:
                   '\bAWS\b', '\bMicrosoft\b', '\bAzure\b', '\bNVIDIA\b', '\bTPUs?\b', '\bTrainium\b', '\bProject Rainier\b',
                   '\bOpenAI\b']
     evidence: triplet                 # pièce de 8-K classée par son triplet : EX-99 et items 2.02, 7.01 furnished (point 3)
-    cap: 80
+    cap: 225                          # D-0066, point 6 : tous les textes distincts (plafond initial : 80)
     dedupe: true
     skip_read: true
     skip_risk_factors: true
@@ -1954,12 +1961,23 @@ montages:
                   '\bvariable interest\b', '\bfair value\b', '\bconcentration\b', '\bmajor customer\w*']
     exclude:                          # point 12 : chaque UPLOAD porte la lettre en PDF et son texte extrait par EDGAR
       - {forms: ["UPLOAD"], file_types: ["TEXT-EXTRACT"], reason: "texte extrait par EDGAR de la lettre en PDF du même dépôt (type LETTER), qui se lit ; le normaliseur en fait un seul paragraphe (D-0064, point 12)"}
+    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
     cap: 60
     dedupe: true
     skip_read: true
     skip_risk_factors: false          # une lettre n'a pas de section de facteurs de risque ; elle en cite les pages
     pdf_text: true                    # lettres UPLOAD en PDF : texte extrait, en paragraphes
     order: recent_first
+  spacex_anthropic:                   # D-0066, point 7 : passage du résumé du 424B4 de SpaceX sur les contrats d'Anthropic
+    decision: D-0066
+    source: span                      # passage fixé d'un document en cache, lignes jointes ; aucune requête
+    evidence: triplet
+    spans:
+      - {cik: "0001181412", accession: "0001628280-26-042639", file: "spaceexplorationtechnologi.htm", form: "424B4",
+         filing_date: "2026-06-12", filer: "SPACE EXPLORATION TECHNOLOGIES CORP",
+         start: 'For example, in May 2026, we entered into Cloud Services Agreements with Anthropic',
+         end: "upon 90 days' notice\\."}
+    noted_terms: ['\bAnthropic\b', '\bCOLOSSUS\b', '\bNVIDIA\b']
 
 nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
   decision: D-0058
@@ -1988,3 +2006,11 @@ nport:                       # D-0058, volet F : obligations de SoftBank valoris
     quoted_levels: ["1", "2"]          # niveaux de la hiérarchie de juste valeur comptés, non gardés (point 5)
     mark: {asset_cats: [EC, EP], unit: NS, payoff: Long, level: "3"}   # positions de nport_equity_mark (point 8)
     listing_forms: [424B4, 424B1]      # premier prospectus d'introduction : date de cotation (point 7)
+    credit:                  # D-0066, point 4 : positions de nport_credit_mark (prêts et titres de dette, nominal, niveau 3)
+      decision: D-0066
+      asset_cats: [LON, DBT]
+      unit: PA
+      payoff: Long
+      level: "3"
+      pool_max_positions: 100          # au-delà, dans un même dépôt et pour un même émetteur : prêts de plateforme
+      platform_title_rx: '\bmarketplace loans?\b'   # intitulé d'un prêt de plateforme (casse ignorée)

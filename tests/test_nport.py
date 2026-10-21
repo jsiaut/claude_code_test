@@ -455,5 +455,143 @@ class UnlistedRender(unittest.TestCase):
         self.assertTrue(any(x.startswith("| Fund One | Series F (EP) | 2026-06-30 (180,50 USD)") for x in S))
 
 
+# -- D-0066 : rattachement étendu et marques de crédit ------------------------------------------------
+
+TROWS = ROWS + [ent("e:oai", "OpenAI", kind="alias"), ent("e:nsc", "Nscale"), mem("e:nsc", "NF:NSCALE"),
+                ent("e:met", "Meta Platforms, Inc."), ent("e:met", "Meta", kind="alias"), mem("e:met", "META"),
+                ent("e:xc1", "X Corp."), ent("e:xc2", "X Corp", kind="alias"),
+                ent("e:blk", "Block, Inc."), mem("e:blk", "CP:block inc"),
+                ent("e:pro", "Prosper Funding LLC"), mem("e:pro", "CP:prosper funding llc")]
+TCFG = {"labs": ["OpenAI", "Anthropic"],
+        "discovery": {"lexicon": {"seed": [{"term": "xAI"}, {"term": "Meta"}], "confirmed": [{"term": "X Corp"}]},
+                      "non_filer": {"lexicon": [{"term": "Nscale"}, {"term": "Lambda Labs"}]}}}
+
+
+class UnlistedTerms(unittest.TestCase):
+    """D-0066, point 3 : un terme de la configuration qui désigne une seule entité confirmée, suivi seulement de mots de
+    catégorie ou d'instrument ; un code n'est admis qu'après un tel mot ; une forme juridique ou un véhicule bloque."""
+
+    def test_terms_designating_one_confirmed_entity(self):
+        t = P.term_forms(TROWS, TCFG)
+        self.assertEqual((t["openai"], t["nscale"], t["meta"]), ("e:oai", "e:nsc", "e:met"))
+        self.assertNotIn("x corp", t)            # deux entités sous ce nom
+        self.assertNotIn("anthropic", t)         # aucune entité de ce nom (« Anthropic PBC » seulement)
+        self.assertNotIn("xai", t)
+
+    def test_class_and_instrument_words_only(self):
+        t = P.term_forms(TROWS, TCFG)
+        a = lambda n: P.term_attribute(n, t)
+        self.assertEqual(a("OPENAI SERIES C"), ("e:oai", "openai"))
+        self.assertEqual(a("OpenAI Private Placement"), ("e:oai", "openai"))
+        self.assertEqual(a("Nscale"), ("e:nsc", "nscale"))
+        self.assertEqual(a("NSCALE DELAYED DRAW TERM LOAN A-3 4.5% 12/31/2030"), ("e:nsc", "nscale"))
+        self.assertEqual(a("META CW GPU"), (None, "meta"))                 # code sans mot de catégorie
+        self.assertEqual(a("OpenAI, Inc."), (None, "openai"))              # forme juridique
+        self.assertEqual(a("OPENAI SERIES G LLC"), (None, "openai"))       # forme juridique après un code
+        self.assertEqual(a("OpenAI SPV II"), (None, "openai"))             # véhicule
+        self.assertEqual(a("OpenAI Group PCB"), (None, "openai"))          # autre mot : nom voisin
+        self.assertEqual(a("Series C OpenAI"), (None, None))
+
+    def test_legal_names_first_then_terms(self):
+        p = pd.DataFrame([{"issuer_name": n, "report_date": "2025-06-30"}
+                          for n in ("OpenAI Global, LLC", "OPENAI SERIES C", "OpenAI, Inc.", "Nscale")])
+        x = P.attributed(p, TROWS, cfg=TCFG)
+        v = lambda col: [e if isinstance(e, str) else None for e in x[col]]
+        self.assertEqual(v("entity_id"), ["e:oai", "e:oai", None, "e:nsc"])
+        self.assertEqual(v("attribution"), ["legal_name", "config_term", None, "config_term"])
+        self.assertEqual(v("node"), ["LAB:OPENAI", "LAB:OPENAI", None, "NF:NSCALE"])
+        self.assertEqual([r["name"] for r in P.neighbors(x.assign(positions=1, asset_cat="EC", value_usd="1", series_id="S",
+                                                                 cik="1"))], ["OpenAI, Inc."])
+
+
+class Credit(unittest.TestCase):
+    """D-0066, point 4 : prêts et titres de dette rattachés, en nominal, longs, au niveau 3, au dernier dépôt de chaque
+    série ; prêts de plateforme écartés et comptés."""
+
+    def positions(self):
+        base = {"unit": "PA", "asset_cat": "LON", "payoff": "Long", "currency": "USD", "fair_value_level": "3",
+                "issuer_name": "Nscale", "title": "Delayed Draw Term Loan", "isin": None, "cusip": "N/A", "cik": "0000000001",
+                "series_name": "Fund One", "registrant_name": "Trust One", "maturity": "2030-12-31", "coupon": "0.095",
+                "is_default": "N", "arrears": "N", "pik": "N"}
+        rows = [dict(base, series_id="S1", report_date="2026-03-31", filing_date="2026-05-20", accession="A1",
+                     balance="1000", value_usd="980", value_local="980"),
+                dict(base, series_id="S2", report_date="2026-03-31", filing_date="2026-05-21", accession="A2",
+                     balance="3000", value_usd="2880", value_local="2880", pik="Y", coupon="0.11", maturity="2031-06-30"),
+                dict(base, series_id="S2", report_date="2026-03-31", filing_date="2026-04-20", accession="A2-old",
+                     balance="3000", value_usd="2000", value_local="2000"),                       # remplacé par l'amendement
+                dict(base, series_id="S3", report_date="2026-03-31", filing_date="2026-05-21", accession="A3",
+                     balance="500", value_usd="500", value_local="500", fair_value_level="2"),   # niveau 2 : hors mesure
+                dict(base, series_id="S4", report_date="2026-03-31", filing_date="2026-05-21", accession="A4",
+                     balance="500", value_usd="500", value_local="500", payoff="Short"),
+                dict(base, series_id="S5", report_date="2026-03-31", filing_date="2026-05-21", accession="A5",
+                     issuer_name="Prosper Funding LLC", title="Marketplace Loan 1234", balance="10", value_usd="9", value_local="9"),
+                dict(base, series_id="S6", report_date="2026-03-31", filing_date="2026-05-21", accession="A6",
+                     asset_cat="EC", unit="NS", balance="10", value_usd="9", value_local="9")]
+        rows += [dict(base, series_id="S7", report_date="2026-03-31", filing_date="2026-05-22", accession="A7",
+                      issuer_name="Block, Inc.", title="Square Loan", balance="10", value_usd="9", value_local="9")] * 101
+        return P.attributed(pd.DataFrame(rows), TROWS, cfg=TCFG)
+
+    def test_selection_and_platforms(self):
+        plat = []
+        sel, steps = P.credit_selection(self.positions(), out=plat)
+        self.assertEqual((steps["not_credit"], steps["not_long"], steps["not_level_3"]), (1, 1, 1))
+        self.assertEqual((steps["platform_pool"], steps["platform_title"]), (101, 1))
+        self.assertEqual(sorted(sel["accession"]), ["A1", "A2", "A2-old"])
+        r = {x["entity_id"]: x for x in P.platforms(plat)}
+        self.assertEqual((r["e:blk"]["positions"], r["e:blk"]["filings"], r["e:blk"]["series"]), (101, 1, 1))
+        self.assertIn("plus de 100 positions", r["e:blk"]["rule"])
+        self.assertIn("Marketplace Loan", r["e:pro"]["rule"])
+
+    def test_cells_value_to_principal_with_c9_shares(self):
+        import pipeline.nport as N
+        old = N.u_manifest
+        N.u_manifest = lambda: {"x": {}}
+        try:
+            cells = N.c_cells("2026-10-07", TROWS, p=self.positions())
+        finally:
+            N.u_manifest = old
+        self.assertEqual(len(cells), 1)
+        c = cells[0]
+        self.assertEqual((c["measure"], c["subject"], c["breakdown_key"], c["period_end"]),
+                         ("nport_credit_mark", "NF:NSCALE", "LON|USD", "2026-03-31"))
+        self.assertEqual(Decimal(c["value"]), Decimal("0.965"))           # (980 + 2880) / (1000 + 3000)
+        fl = json.loads(c["flags"])
+        self.assertEqual((fl["principal"], fl["positions"], fl["series"], fl["titles"]), ("4000", 2, 2, 1))
+        self.assertEqual((fl["maturity"], fl["coupon"]), (["2030-12-31", "2031-06-30"], ["0.095", "0.11"]))
+        self.assertEqual((fl["pik_share"], fl["default_share"], fl["c9_share"]), ("0.750000", "0.000000", "1.000000"))
+        self.assertEqual(fl["top_titles"], [["Delayed Draw Term Loan", 2]])
+        self.assertEqual(fl["attribution"], ["config_term"])
+
+
+class CreditRender(unittest.TestCase):
+    def test_section_and_series(self):
+        import duckdb
+        from pipeline import config
+        from pipeline import render as R
+        con = duckdb.connect()
+        con.execute((config.ROOT / "schema.sql").read_text(encoding="utf-8"))
+
+        def m(subject, bk, pe, value, flags):
+            con.execute("INSERT INTO measures (measure, subject, counterparty, period_start, period_end, view, as_of, term, "
+                        "breakdown_key, financing_policy, constant_perimeter, variant, status, value, denominator, unit, flags) "
+                        "VALUES ('nport_credit_mark', ?, 'none', 'none', ?, 'as_known', '2026-10-07', 'none', ?, 'none', 'none', "
+                        "'none', 'computed', ?, ?, 'pure', ?)", [subject, pe, bk, value, flags["principal"], json.dumps(flags)])
+        fl = {"principal": "40000000", "value_usd": "38600000", "series": 2, "positions": 2, "titles": 1,
+              "maturity": ["2030-12-31", "2031-06-30"], "coupon": ["0.095", "0.11"], "pik_share": "0.750000",
+              "default_share": "0.000000", "arrears_share": "0.000000", "top_titles": [["Delayed Draw Term Loan", 2]]}
+        m("NF:NSCALE", "LON|USD", "2025-12-31", 0.99, fl)
+        m("NF:NSCALE", "LON|USD", "2026-03-31", 0.965, fl)
+        m("CRWV", "LON|USD", "2024-06-30", 1.0, dict(fl, value_usd="1000", pik_share="0"))
+        L = R.credit_section(con, R.Tokens(con, "synthesis.md"))
+        rows = [x for x in L if x.startswith("| Nscale")]
+        self.assertEqual(len(rows), 1)
+        self.assertIn("| prêts (USD) | 2026-03-31 | 96,5 % | 40,0 M USD | 2 | PIK 75,0 % | 96,5 % (2026-03-31) | "
+                      "2025-12-31 (99,0 %) |", rows[0])
+        self.assertTrue(any("sans position déclarée dans ces trois mois : 1." in x for x in L))
+        S = R.credit_series(con, R.Tokens(con, "series.md"))
+        self.assertTrue(any(x.startswith("| 2026-03-31 | 96,5 % | 40,0 M USD | 2 | 2 | 1 | 2030-12-31 – 2031-06-30 | "
+                                         "0,095 – 0,11 | PIK 75,0 % | Delayed Draw Term Loan |") for x in S))
+
+
 if __name__ == "__main__":
     unittest.main()

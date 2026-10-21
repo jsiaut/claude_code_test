@@ -25,6 +25,12 @@ dont chaque paragraphe qualifiant est dans la section des facteurs de risque, §
 Options de D-0064 : `forms` par requête (formulaires racines de la recherche, pièces comprises), `priority`
 (classes de lecture, chacune du plus récent au plus ancien), `evidence: triplet` (pièce de 8-K classée par son
 triplet, comme le registre des documents) et `pdf_text` (lettres en PDF lues par leur texte extrait).
+
+D-0066 : `evidence: triplet` posé sur tous les montages, les items manquants lus dans les dépôts de la phase 0 ;
+`retier` recalcule en place le niveau des blocs déjà préparés (textes, clés et lignes inchangés) ; un montage à
+`source: span` lit un passage fixé (motifs de début et de fin), les lignes du document jointes.
+
+    python -m pipeline.montages retier              # niveau des blocs préparés, par le triplet
 """
 import json
 import re
@@ -359,18 +365,112 @@ def _excluded(d, spec):
     return None
 
 
+_FILING_ITEMS = {}
+
+
+def filing_items():
+    """Items des 8-K des dépôts de la phase 0 (db/filings.parquet), par accession : secours des montages dont
+    la recherche n'a pas gardé les items (D-0066, point 5)."""
+    if not _FILING_ITEMS:
+        p = config.DB_DIR / "filings.parquet"
+        if p.exists():
+            f = pd.read_parquet(p, columns=["accessionNumber", "items"])
+            _FILING_ITEMS.update({a: i for a, i in zip(f["accessionNumber"], f["items"]) if isinstance(i, str) and i})
+    return _FILING_ITEMS
+
+
+def _text_or_none(v):
+    return v if isinstance(v, str) and v and v.upper() not in ("NAN", "NONE") else None
+
+
 def evidence(d, spec):
     """Niveau de preuve d'une pièce de montage : par son formulaire (D.form_evidence), comme avant. Un montage à
-    `evidence: triplet` (D-0064) classe une pièce de 8-K par son triplet, comme le registre des documents (§2.1,
-    §2.3) : le type de pièce et les items viennent de la recherche plein texte ; contrat (EX-10, EX-4, EX-2) D,
-    EX-99 furnished E, document principal dont les items sont tous 2.02, 7.01 ou 9.01 furnished E, le reste C."""
+    `evidence: triplet` (D-0064 ; D-0066, point 5) classe une pièce de 8-K par son triplet, comme le registre des
+    documents (§2.1, §2.3) : le type de pièce vient du montage, les items de la recherche plein texte, à défaut
+    des dépôts de la phase 0 ; contrat (EX-10, EX-4, EX-2) D, EX-99 furnished E, document principal dont les
+    items sont tous 2.02, 7.01 ou 9.01 furnished E, le reste C."""
     if spec.get("evidence") == "triplet" and d["form"] in ("8-K", "8-K/A"):
         from . import documents
-        ft = (d.get("file_type") or "").upper()
+        ft = (_text_or_none(d.get("file_type")) or "").upper()
+        items = _text_or_none(d.get("items")) or filing_items().get(d.get("adsh"))
         status, _, assurance, tier = documents._classify("exhibit" if ft.startswith("EX-") else "primary_document",
-                                                        d["form"], ft, d.get("items"))
+                                                        d["form"], ft, items)
         return tier, assurance, status
     return D.form_evidence(d["form"], None)
+
+
+def retier():
+    """Niveau des blocs déjà préparés des montages à `evidence: triplet`, recalculé en place (D-0066, point 5) :
+    les textes, les clés de contenu et les lignes ne changent pas ; seuls le niveau, l'assurance et le statut de
+    dépôt suivent le triplet. Renvoie les changements comptés par (montage, ancien niveau, nouveau niveau)."""
+    from collections import Counter
+    sp = specs()
+    docs = {}
+    for mid, spec in sp.items():
+        p = _paths(mid)[1]
+        if spec.get("evidence") == "triplet" and p.exists():
+            for r in pd.read_parquet(p).to_dict("records"):
+                docs[(mid, r["adsh"], r["file"])] = r
+    changed, out = Counter(), []
+    with open(CATALOG, encoding="utf-8") as fh:
+        rows = [json.loads(line) for line in fh]
+    for b in rows:
+        spec = sp.get(b.get("montage")) or {}
+        if spec.get("evidence") == "triplet" and b.get("form") in ("8-K", "8-K/A"):
+            d = docs.get((b["montage"], b["accession"], b["document"])) or {
+                "adsh": b["accession"], "form": b["form"], "file_type": b.get("exhibit_type")}
+            tier, assurance, status = evidence(d, spec)
+            if (tier, assurance, status) != (b.get("tier"), b.get("assurance_level"), b.get("filing_status")):
+                changed[(b["montage"], b.get("tier"), tier)] += 1
+                b = dict(b, tier=tier, assurance_level=assurance, filing_status=status)
+        out.append(b)
+    tmp = CATALOG.with_suffix(".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
+        for b in out:
+            fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+    tmp.replace(CATALOG)
+    return changed
+
+
+def span_blocks(mid, spec, groups_by_cik):
+    """Montage à `source: span` (D-0066, point 7) : les paragraphes du document, ici des lignes, se joignent par une
+    espace ; chaque passage va de la première occurrence du motif de début à la fin de la première occurrence, après
+    elle, du motif de fin. Les paragraphes couverts sont notés avec le bloc."""
+    import bisect
+    from . import blocks
+    from .graph import normalize_name
+    out = []
+    for n, s in enumerate(spec.get("spans") or []):
+        cik = str(s["cik"]).zfill(10)
+        raw = cache.read(cache.archive_path(cik, s["accession"], s["file"]))
+        text, how = document_text(raw, spec)
+        norm = [re.sub(r"\s+", " ", x).strip() for x in paragraphs(text)]
+        offs, pos = [], 0
+        for x in norm:
+            offs.append(pos)
+            pos += len(x) + 1
+        joined = " ".join(norm)
+        ms = re.search(s["start"], joined)
+        me = re.compile(s["end"]).search(joined, ms.start()) if ms else None
+        if not ms or not me:
+            raise ValueError(f"{mid} : passage introuvable dans {s['accession']}/{s['file']}")
+        unit = joined[ms.start():me.end()]
+        a, b = bisect.bisect_right(offs, ms.start()) - 1, bisect.bisect_right(offs, me.end() - 1) - 1
+        d = {"adsh": s["accession"], "form": s["form"], "file_type": s.get("file_type")}
+        tier, assurance, status = evidence(d, spec)
+        fd = s["filing_date"]
+        out.append({"content_key": blocks.content_key(unit, []), "block_kind": "montage_text", "signal_class": 5,
+                    "sort_key": f"mt:{mid}:{n:05d}", "group_id": groups_by_cik.get(cik) or ("CP:" + normalize_name(s["filer"])),
+                    "cik": cik, "accession": s["accession"], "form": s["form"], "filing_date": fd, "acceptance": None,
+                    "knowledge_date": fd, "period_start": None, "period_end": fd, "document": s["file"],
+                    "locator": {"file": s["file"], "accession": s["accession"], "cik": cik, "byte_range": None},
+                    "text": unit, "candidate_facts": [], "chars": len(unit),
+                    "normalizer_version": config.NORMALIZER_VERSION, "delimiter_version": config.DELIMITER_VERSION,
+                    "filing_status": status, "assurance_level": assurance, "tier": tier, "filer_name": s["filer"],
+                    "exhibit_type": s.get("file_type"), "window": 0, "text_extraction": how,
+                    "terms": sorted(set(noted_rx(spec).findall(unit))), "queries": [], "montage": mid,
+                    "span": {"start": s["start"], "end": s["end"], "paragraphs": [a, b]}})
+    return out
 
 
 def priority_class(text, spec):
@@ -404,6 +504,8 @@ def _prepare_one(mid, spec, groups_by_cik):
     if spec.get("source") == "tagged":          # paragraphes qui portent un fait balisé (D-0060, point 4)
         from . import labs
         return labs.prepare_units(mid, spec, groups_by_cik)
+    if spec.get("source") == "span":            # passage fixé d'un document (D-0066, point 7)
+        return span_blocks(mid, spec, groups_by_cik)
     from . import blocks
     from .graph import normalize_name
     _, docs_path, info_path = _paths(mid)
@@ -589,5 +691,8 @@ if __name__ == "__main__":
         corpus(sys.argv[2])
     elif cmd == "prepare":
         prepare(sys.argv[2] if len(sys.argv) > 2 else None)
+    elif cmd == "retier":
+        for k, n in sorted(retier().items()):
+            print(*k, n)
     else:
         print(__doc__)

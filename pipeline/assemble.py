@@ -357,13 +357,12 @@ def run(as_of, use_cache=True, apercu=False):
         nport_excl = nport.exclusions(as_of)
         stats["nport"] = {"cells": len(ncells), "securities": len({c["breakdown_key"] if isinstance(c, dict) else c.breakdown_key
                                                                    for c in ncells})}
-        # D-0065 : non-cotés du modèle ; le rattachement dépend des lignes du registre (et des extraits)
-        ucells, uexcl = M.value("nport_unlisted", lambda: (nport.u_cells(as_of, ent_rows, reg), nport.u_exclusions(as_of, ent_rows, reg)),
-                                key=memo.digest([ent_rows, as_of]))
+        # D-0065 et D-0066 : non-cotés du modèle et marques de crédit ; le rattachement dépend des lignes du registre
+        ucells, uexcl = M.value("nport_unlisted", lambda: nport.unlisted(as_of, ent_rows, reg), key=memo.digest([ent_rows, as_of]))
         cells += ucells
         nport_excl += uexcl
         stats["nport_unlisted"] = {m: sum(1 for c in ucells if (c["measure"] if isinstance(c, dict) else c.measure) == m)
-                                   for m in ("nport_equity_mark", "nport_equity_held")}
+                                   for m in ("nport_equity_mark", "nport_equity_held", "nport_credit_mark")}
     stats["pairs"] = {f"{s}->{c}": {"structure": e["structure"], "linkage": e["linkage"], "conclusion": e["conclusion"],
                                     "edges": len(e["pair"].edges),
                                     "active_quarters": sum(1 for v in e["F"]["as_known"]["exposure_outstanding"].values()

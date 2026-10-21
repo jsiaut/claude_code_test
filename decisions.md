@@ -2418,3 +2418,92 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les positions des niveaux 1 et 2 ne sont pas gardées. La règle de majorité se compte donc par archive (point 15) ;
     - les prêts et la dette des non-cotés évalués au niveau 3 sont gardés (292 793 positions de prêts, dont CoreWeave et Nscale), mais ne sont pas mesurés ;
   - tests unitaires : 258, tous passés.
+- **D-0066 — Rattachement étendu des positions N-PORT, marques de crédit des prêts et de la dette, et les trois propositions de D-0064 (chaîne d'Anthropic au-delà du plafond, niveau des pièces des montages d'avant, montant d'Anthropic dans le 424B4 de SpaceX). Règles fixées avant tout traitement.** (1) Décision de l'utilisateur, le 2026-10-21 : « Fais les propositions 1, 2 et 3 ». Ce sont les trois propositions du rapport de D-0065 :
+  - « Rattacher aussi les noms formés du nom d'un laboratoire suivi de la seule catégorie du titre (« ANTHROPIC SERIES G »). Les positions sont déjà gardées » ;
+  - « Mesurer les marques de crédit des prêts aux non-cotés, évalués par les fonds : 292 793 positions de prêts gardées, dont CoreWeave et Nscale » ;
+  - « Reprendre les trois propositions du rapport de D-0064, toujours en attente » : continuer la chaîne d'Anthropic au-delà du plafond (145 fenêtres), reclasser les pièces EX-99 des montages d'avant, vérifier le montant d'Anthropic dans le 424B4 de SpaceX.
+
+  Lecture séquentielle par l'exécutant, sans sous-agent. Aucune requête n'est prévue : pièces et extraits sont en cache. L'as_of reste le 2026-10-07.
+
+  (2) Constat, sans lecture et sans aucune valeur, sur les tables du commit a485fcd :
+  - rattachement étendu. Sur les 93 termes des lexiques de la configuration, 34 désignent une seule entité confirmée du registre, par son nom normalisé ou un alias. Les autres n'en désignent aucune (« xAI », « X.AI », « Alphabet », « Stargate », « Lambda Labs »…). La règle du point 3 rattacherait 143 positions, sous 16 noms déclarés :
+    - OpenAI 24 (« OPENAI SERIES C », « OpenAI », « OpenAI Private Placement »…) et Anthropic 24 (« ANTHROPIC SERIES G », « ANTHROPIC », « ANTHROPIC SERIES H »…) ;
+    - SpaceX 22 (« SPACEX SERIES K CVT PFD STOCK PP », « SPACEX COMMON SHARES ») ;
+    - CoreWeave 54 : des actions de préférence convertibles (31) et des prêts (« COREWEAVE SENIOR » 13, « COREWEAVE 2ND ABL:TL » 10) ;
+    - Nscale 19 prêts, déclarés sous le seul nom « Nscale ».
+
+    Une première version, qui admettait un code de catégorie isolé, rattachait aussi « META CW GPU » à Meta. Le code n'est donc admis qu'après un mot de catégorie ;
+  - prêts et dette. 289 834 positions rattachées sont des prêts (288 956) ou des titres de dette (878), toutes au niveau 3 sauf 12. 287 614 portent un seul nom, « Block, Inc. ». Ce sont des prêts de la plateforme Square, un par commerçant, détenus par cinq fonds Franklin : jusqu'à 7 279 positions dans un même dépôt, quand aucune autre entité n'en a plus de 19 (une société de financement de CoreWeave). Le déclarant y nomme l'intermédiaire, non l'emprunteur. 14 autres sont des « Marketplace Loan » de Prosper. Restent 2 176 positions, 2 132 au dernier dépôt de chaque série, de 69 nœuds et 319 séries, sur 94 dates du 2019-09-30 au 2026-07-31. Parmi elles :
+    - CoreWeave, 453 : les prêts à tirage différé de CoreWeave Compute Acquisition Co. II et IV ;
+    - SVF II Finco Cayman, 243 : les prêts à terme de SoftBank Vision Fund II ;
+    - Beignet Investor LLC, 94 : l'obligation garantie « Project Beignet », de la coentreprise de Meta ;
+    - Nscale, 38 : son prêt à tirage différé ;
+    - Cloudera, AP Grange, General Motors, Broadcom, T-Mobile, Amazon (obligations « CTL Logistics »), et des titres structurés de banques ;
+  - montages d'avant. 71 blocs de 8-K y gardent le niveau de leur formulaire, au lieu du triplet du registre des documents (D-0064, point 3) :
+    - pièces EX-99 (Stargate 28, Galaxy Helios 11) : C au lieu de E ;
+    - contrats EX-4 et EX-10 (Galaxy Helios 19, `labs_corpus` 13) : C au lieu de D.
+
+    Ils portent 91 lignes, dont 31 observations, et 9 arêtes, dont 4 à montant. Ces quatre arêtes viennent de pièces EX-99 de Galaxy Helios : trois baux de CoreWeave (4,5 Md$, 10,4 Md$ et 100 M$) et un financement de 434 M$ ;
+  - chaîne d'Anthropic. Au-delà du plafond de 80 restent 145 textes distincts, soit 411 832 caractères : 40 de la classe Fluidstack, 61 de l'infrastructure, 44 autres. Il y a 127 pièces EX-99 (niveau E), 13 contrats (D) et 5 documents principaux de 8-K, déposés du 2023-04-27 au 2026-10-05. Les déposants : TeraWulf 29, Amazon 22, Cipher 12, Box 8, AMD 5, puis d'autres ;
+  - 424B4 de SpaceX (0001628280-26-042639). La phrase « the customer has agreed to pay us $1.25 billion per month through May 2029 » y figure deux fois : au résumé du prospectus et dans la description de l'activité. Les paragraphes de ce document sont des lignes d'environ 110 caractères. Les fenêtres de `labs_corpus`, de deux paragraphes de part et d'autre, s'arrêtent donc avant le montant. La note lue (événements postérieurs) ne dit que « a monthly fee ». Les deux fenêtres sont des abstentions `duplicate_of_other_block`, la ligne gardée étant celle de la note.
+
+  (3) Rattachement étendu (proposition 1). Il s'applique aux positions N-PORT, après la règle des dénominations légales (D-0065, point 6) :
+  - un nom d'émetteur formé d'un terme de la configuration est rattaché à l'entité que ce terme désigne, s'il n'est suivi que de mots de catégorie ou d'instrument. Les termes sont ceux des laboratoires, de la découverte (`seed`, `confirmed`) et de la piste des non-déposants. Le terme doit désigner une seule entité confirmée du registre, par son nom normalisé ou un alias ;
+  - mots de catégorie : series, class, preferred, common, stock, shares, units, ordinary, convertible, private placement, restricted, et leurs abréviations (ser, cl, pfd, pref, cvt, pp…). Mots d'instrument : term loan, delayed draw, revolver, ABL, first ou second lien, senior, secured, notes, bonds, tranche, unfunded, et leurs abréviations (tl, ddtl, 1st, 2nd…). Un code (« G », « H-1 », « A-3 », un taux, une date) n'est admis qu'après un tel mot ;
+  - une forme juridique (« Inc. », « LLC ») ou un mot de véhicule (« SPV », « fund ») après le terme laisse le nom sans rattachement (« Anthropic, Inc. », « x.AI, Inc. ») ;
+  - la règle vaut pour les laboratoires, comme proposé, et pour les autres termes (SpaceX, CoreWeave, Nscale…), car le prêt de Nscale n'est déclaré que sous « Nscale ». Le terme est celui que le modèle a déjà retenu pour ce nœud, et l'entité celle que le registre confirme ;
+  - restent des noms voisins : les fautes (« OpenAI Group PCB »), les noms sans forme juridique (« Space Exploration Technologies ») et les autres formes juridiques (« Crusoe Energy Systems LLC »). §10.2 exclut la troncature et la distance d'édition.
+
+  (4) Marques de crédit (proposition 2). Nouvelle mesure `nport_credit_mark`, par nœud, catégorie (prêt LON ou titre de dette DBT), monnaie et date de portefeuille :
+  - valeur : somme des valeurs dans la monnaie du titre sur somme des nominaux (unité PA), comme `nport_price_to_par` (D-0058, points 8 et 28) ;
+  - positions retenues : rattachées (D-0065, point 6, et point 3), prêts ou titres de dette, en nominal, longues, de nominal positif, au niveau 3, au dernier dépôt de chaque série pour la date ;
+  - publiés avec la valeur : le nominal, le nombre de positions, de séries et de titres, les échéances et les coupons extrêmes, les intitulés les plus fréquents, et la part du nominal déclarée en défaut, en arriéré d'intérêts ou en intérêts capitalisés (Item C.9) ;
+  - un prêt n'est pas coté : la cotation des actions de l'emprunteur ne joue pas, et le niveau 3 dit que le fonds l'évalue lui-même ;
+  - sont exclus et comptés les prêts de plateforme. Un fonds qui déclare plus de 100 positions d'un même émetteur dans un dépôt nomme la plateforme qui les a consentis, non l'emprunteur (Square, sous « Block, Inc. »). Un intitulé « Marketplace Loan » est traité de même (Prosper). Leurs débiteurs peuvent être des personnes physiques, qui ne sont jamais des nœuds ;
+  - perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur. La mesure n'entre dans aucune mesure de financement, ni dans l'exposition, les paires, les cycles ou l'annexe F.
+
+  (5) Niveau des pièces des montages d'avant (proposition 3, deuxième volet) :
+  - le niveau par le triplet (D-0064, point 3) s'applique aux pièces de 8-K et de 8-K/A de tous les montages, comme dans le registre des documents. Un contrat EX-10, EX-4 ou EX-2 est de niveau D. Une pièce EX-99 est furnished, de niveau E. Un document principal dont les items sont tous 2.02, 7.01 ou 9.01 est de niveau E. Le reste est de niveau C. Les items viennent des documents du montage, à défaut des dépôts de la phase 0 ;
+  - les blocs ne sont pas préparés de nouveau : seul leur niveau change, et leurs textes, leurs clés et leurs lignes restent les mêmes. L'option `evidence: triplet` est posée sur ces montages, pour qu'une préparation nouvelle donne les mêmes niveaux ;
+  - une ligne d'un bloc de niveau E n'est jamais la source d'un montant : son arête devient une relation. Une ligne de financement d'un contrat (D) n'est pas non plus un financement à montant (§2.6).
+
+  (6) Chaîne d'Anthropic au-delà du plafond (proposition 3, premier volet) :
+  - le plafond du montage `anthropic_chain` passe de 80 à 225 textes distincts, soit tous. Les 80 premiers blocs gardent leurs clés ;
+  - les 145 autres se lisent dans l'ordre du montage (classes, puis du plus récent au plus ancien), sur les conventions de D-0064 (points 5 et 6) : pas d'inférence, lignes descriptives pour les relations entre tiers, pièces furnished de niveau E, données personnelles ;
+  - une fenêtre d'un dépôt d'un groupe suivi se lit ici : le catalogue du groupe ne lit pas ces pièces. L'exclusion `out_of_scope` de D-0064 pour ces 78 fenêtres tombe.
+
+  (7) Montant d'Anthropic dans le 424B4 de SpaceX (proposition 3, troisième volet) :
+  - une unité de lecture est ajoutée, par un nouveau montage `spacex_anthropic` (source `span`). C'est le passage du résumé du prospectus qui va de « For example, in May 2026, we entered into Cloud Services Agreements with Anthropic » à la fin de la phrase sur la résiliation (« upon 90 days' notice »), lignes du document jointes. La description de l'activité le répète mot pour mot et n'est pas reprise. Niveau C (424B4, filed) ;
+  - la ligne prend le montant tel qu'écrit : 1,25 Md$ par mois jusqu'en mai 2029, montée en capacité en mai et juin 2026 à tarif réduit, résiliable par chaque partie après les trois premiers mois sur préavis de 90 jours. Aucun total n'est calculé ;
+  - le jour de la signature n'y est pas écrit (« in May 2026 ») : la ligne ne porte pas de date d'événement, comme les lignes « jour non écrit » d'avant ; son arête prend la date du dépôt ;
+  - la ligne de la note (fenêtre 5 de `labs_corpus`) devient une abstention `duplicate_of_other_block` ;
+  - les lettres CORRESP restent des pointeurs, de niveau E.
+
+  (8) Données personnelles (D-0051 ; D-0058, point 10) : aucune personne physique n'est un nœud ni n'est citée. Les débiteurs des prêts de plateforme ne sont pas lus.
+
+  (9) Réseau : aucune requête prévue. Si une pièce manquait, ce seraient les règles du client unique (§9.5), au journal.
+
+  (10) Code, avant tout traitement :
+  - `pipeline/nport.py` : termes désignant une entité, rattachement étendu, sélection et cellules de `nport_credit_mark`, prêts de plateforme, caractéristiques de dette jointes aux positions, exclusions, rendus ;
+  - `pipeline/montages.py` : niveau par le triplet pour tous les montages, reclassement des blocs en place, source `span`, plafond du montage ;
+  - registre des mesures, `schema.sql`, configuration ; tests.
+
+  (11) Ordre et commits :
+  - la décision, la configuration et le code, avec leurs tests ;
+  - l'unité du 424B4, puis sa lecture ; commit ;
+  - le reclassement des montages d'avant ; commit ;
+  - les 145 blocs de la chaîne d'Anthropic, leur volume consigné ici avant lecture, la lecture ; commit ;
+  - l'intégration : entités par extrait, réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (12) Limites connues avant calcul :
+  - une marque de crédit par nœud mêle des tranches de rang différent. Les intitulés et les échéances sont publiés avec ;
+  - une partie des prêts de CoreWeave est déclarée sous des abréviations (« CoreWeave CAC IV, LLC », « COREWEAVE COMPUTE AC »). Ces noms restent voisins, comme les prêts de Crusoe (« LLC » pour « Inc. ») ;
+  - les titres structurés de banques déclarés en prêts se mesurent comme une dette de leur émetteur ;
+  - les pièces EX-99 de la chaîne d'Anthropic ne donnent aucune arête à montant ;
+  - la règle de majorité de la cotation (D-0065, point 15) reste comptée sur les seuls noms rattachés par une dénomination légale. Le scan n'a gardé que les positions hors des niveaux 1 et 2, et n'a compté les autres que sous la chaîne trouvée (« anthropic »), qui ne distingue pas « ANTHROPIC SERIES G » de « Anthropic, Inc. ».
+
+  (13) Décomptes de la sélection codée, sans aucune valeur (`python -m pipeline.nport credit-volume`) :
+  - la règle du terme rattache 143 positions sous 16 noms, comme au constat : CoreWeave 54, Anthropic 24, OpenAI 24, SpaceX 22, Nscale 19 ;
+  - marques de crédit : 2 171 positions retenues, 2 127 au dernier dépôt de chaque série, de 69 nœuds et 318 séries, sur 94 dates du 2019-09-30 au 2026-07-31, soit 522 cellules. Le constat en comptait 2 176 : 8 positions de nominal nul ou négatif en sortent, dont 3 de Block, Inc. ;
+  - prêts de plateforme écartés : 287 611 positions de Block, Inc. (72 dépôts) et 14 de Prosper Marketplace, Inc. (12 dépôts) ;
+  - reclassement, à blanc : 85 blocs de 8-K changent de triplet. 71 changent de niveau, comme au constat. Les 14 autres sont des documents principaux de 8-K (Galaxy Helios 3, `labs_corpus` 5, `softbank_corpus` 6) : ils gardent le niveau C et passent de l'assurance `not_applicable` à `unaudited`, comme dans le registre des documents.
