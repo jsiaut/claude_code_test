@@ -476,6 +476,8 @@ def qualifier(d, spec, text):
     if rx is None:
         return None, False
     party = bool(spec.get("party_chars")) and bool(rx.search(text[:spec["party_chars"]]))
+    if party:                 # noms du laboratoire lus dans le préambule (D-0067, point 15)
+        d["party_terms"] = sorted({m.group(0) for m in rx.finditer(text[:spec["party_chars"]])})
     clause = re.compile("|".join(spec["clause_terms"]), re.I) if party and spec.get("clause_terms") else None
     req = re.compile("|".join(spec["require"]), re.I) if spec.get("require") else None
 
@@ -764,7 +766,8 @@ def _prepare_one(mid, spec, groups_by_cik):
                     "filing_status": status, "assurance_level": assurance, "tier": tier, "filer_name": d["filer"],
                     "exhibit_type": d["file_type"], "window": k, "text_extraction": how,
                     "terms": sorted(set(noted.findall(text))), "queries": d["queries"], "montage": mid,
-                    **({"reading": reading, "party": bool(d.get("party"))} if reading else {})})
+                    **({"reading": reading, "party": bool(d.get("party"))} if reading else {}),
+                    **({"party_terms": d["party_terms"]} if reading and d.get("party") and d.get("party_terms") else {})})
     info = json.loads(info_path.read_text())
     info.update({"no_window": no_window, "over_cap": over, "units": len(units) + len(dup), "excluded": excluded,
                  "duplicates": dup, "risk_factors": risk, "already_read": already})

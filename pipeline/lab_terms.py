@@ -49,11 +49,12 @@ def line_date(o):
     return None, None
 
 
-def labs_of(o, reg):
+def labs_of(o, reg, party_terms=None):
     """Laboratoires que concerne une ligne : contrepartie, payeur ou bénéficiaire résolus en laboratoire, ou nommés
-    par la citation (D-0067, point 7)."""
+    par la citation (D-0067, point 7) ; ou nommés au préambule de la pièce dont la ligne vient, quand le laboratoire
+    y est partie (`party_terms` : clé de contenu -> noms lus au préambule ; D-0067, point 15)."""
     d, _ = line_date(o)
-    out = set()
+    out = {lab for t in (party_terms or {}).get(o.get("content_key"), []) for lab, rx in LAB_RX.items() if rx.search(t)}
     for k in ("counterparty_name", "payer", "payee"):
         g = E.resolve(reg, _txt(o.get(k)), d)[1] if _txt(o.get(k)) else None
         if g in LABS:
@@ -75,7 +76,7 @@ def _flags(o, date_basis):
     return {k: (str(v) if isinstance(v, (dt.date, Decimal)) else v) for k, v in fl.items() if v not in (None, "")}
 
 
-def clause_cells(obs, reg, as_of):
+def clause_cells(obs, reg, as_of, party_terms=None):
     """lab_contract_clause : une cellule par ligne de clause qui concerne un laboratoire ; valeur : le montant écrit,
     sinon la capacité écrite, sinon aucune (le genre de clause en texte)."""
     out = []
@@ -84,7 +85,7 @@ def clause_cells(obs, reg, as_of):
         if o.get("kind") != "observation" or ck is None:
             continue
         d, basis = line_date(o)
-        for lab in labs_of(o, reg):
+        for lab in labs_of(o, reg, party_terms):
             if o.get("amount") is not None:
                 value, unit = Decimal(str(o["amount"])), o.get("unit")
             elif o.get("capacity_value") is not None:
@@ -99,14 +100,14 @@ def clause_cells(obs, reg, as_of):
     return out
 
 
-def capacity_cells(obs, reg, as_of):
+def capacity_cells(obs, reg, as_of, party_terms=None):
     """lab_capacity : une cellule par ligne de capacité qui concerne un laboratoire, telle qu'écrite."""
     out = []
     for o in obs:
         if o.get("kind") != "observation" or o.get("capacity_value") is None:
             continue
         d, basis = line_date(o)
-        for lab in labs_of(o, reg):
+        for lab in labs_of(o, reg, party_terms):
             v = Decimal(str(o["capacity_value"]))
             bk = "|".join((_txt(o.get("capacity_kind")) or NONE, _txt(o.get("instrument_key")) or NONE, o["obs_key"]))
             out.append(cell("lab_capacity", o.get("group_id") or NONE, _d(o.get("period_start")), d, "as_known", as_of,
@@ -150,7 +151,7 @@ def mark_decreases(marks):
     return compared, down, first
 
 
-def event_lines(obs, reg):
+def event_lines(obs, reg, party_terms=None):
     """Lignes d'événement par laboratoire et par identifiant (L1, L2, L3, L4, L5), avec leur date."""
     out = defaultdict(list)
     for o in obs:
@@ -169,16 +170,16 @@ def event_lines(obs, reg):
         if not ids:
             continue
         d, basis = line_date(o)
-        for lab in labs_of(o, reg):
+        for lab in labs_of(o, reg, party_terms):
             for lid in ids:
                 out[(lab, lid)].append((d, basis, o))
     return out
 
 
-def event_cells(obs, reg, marks, as_of):
+def event_cells(obs, reg, marks, as_of, party_terms=None):
     """lab_event : une cellule par laboratoire, événement et trimestre (D-0067, point 7)."""
     as_of_d = _d(as_of)
-    lines = event_lines(obs, reg)
+    lines = event_lines(obs, reg, party_terms)
     compared, down, first = mark_decreases(marks)
     out = []
     for lab in LABS:
@@ -219,6 +220,7 @@ def event_cells(obs, reg, marks, as_of):
     return out
 
 
-def cells(obs, reg, marks, as_of):
+def cells(obs, reg, marks, as_of, party_terms=None):
     """Les trois mesures de D-0067 (volets 8 et 9)."""
-    return clause_cells(obs, reg, as_of) + capacity_cells(obs, reg, as_of) + event_cells(obs, reg, marks, as_of)
+    return (clause_cells(obs, reg, as_of, party_terms) + capacity_cells(obs, reg, as_of, party_terms)
+            + event_cells(obs, reg, marks, as_of, party_terms))

@@ -366,8 +366,9 @@ def run(as_of, use_cache=True, apercu=False):
     # D-0067 : clauses des contrats, capacités et événements propres aux laboratoires (hors annexe F)
     if "labs" in scope:
         from . import lab_terms
+        party_terms = {b["content_key"]: b["party_terms"] for b in catalog if b.get("party_terms")}
         lt = lab_terms.cells(valid, reg, [c for c in cells if isinstance(c, dict) and c.get("measure") == "nport_equity_mark"],
-                             as_of)
+                             as_of, party_terms)
         cells += lt
         stats["lab_terms"] = dict(Counter(f"{c['measure']}|{c.get('value_text') or c['status']}"
                                           if c["measure"] == "lab_event" else c["measure"] for c in lt))

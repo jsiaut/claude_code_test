@@ -126,6 +126,18 @@ class Cells(unittest.TestCase):
         self.assertEqual((cap[0]["value"], cap[0]["unit"], cap[0]["counterparty"]), (Decimal("1"), "GW", "LAB:OPENAI"))
         self.assertIn('"capacity_kind": "compute"', cap[0]["flags"])
 
+    def test_party_terms(self):
+        """D-0067, point 15 : une clause qui ne nomme pas le laboratoire (« the Warrantholder ») le concerne quand le
+        préambule de sa pièce le nomme ; sans préambule, elle ne concerne aucun laboratoire."""
+        reg = _reg()
+        o = obs(8, clause_kind="term", period_label="the seventh anniversary of the Issue Date", counterparty_name=None,
+                quote="the seventh anniversary of the Issue Date", content_key="ckparty")
+        self.assertEqual(LT.labs_of(o, reg), [])
+        self.assertEqual(LT.labs_of(o, reg, {"ckparty": ["Anthropic"]}), ["LAB:ANTHROPIC"])
+        self.assertEqual(LT.labs_of(o, reg, {"ckparty": ["OPENAI", "OpenAI"]}), ["LAB:OPENAI"])
+        cl = LT.clause_cells([o], reg, self.AS_OF, {"ckparty": ["Anthropic"]})
+        self.assertEqual([(c["counterparty"], c["value_text"]) for c in cl], [("LAB:ANTHROPIC", "term")])
+
     def test_events(self):
         reg = _reg()
         mk = lambda fund, pe, v: {"measure": "nport_equity_mark", "view": "as_known", "subject": "LAB:ANTHROPIC",
