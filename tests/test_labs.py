@@ -136,6 +136,20 @@ class Ledger(unittest.TestCase):
         got = sorted((c["subject"], c["breakdown_key"].split("|")[0], c["unit"]) for c in out)
         self.assertEqual(got, [("AMD", "to_lab", "USD"), ("AMD", "to_lab", "shares"), ("MSFT", "from_lab", "USD")])
 
+    def test_same_day_closed_edge_is_not_the_latest(self):
+        """D-0067, point 17 : à date égale, les bons déchus ne passent pas pour le dernier montant du bon en vigueur ;
+        une clôture datée plus tard reste le dernier état connu."""
+        kw = dict(family="customer_consideration", et="equity_or_warrants_to_customer", ik="w",
+                  nature="consideration_payable_to_customer", unit="shares")
+        live = edge("a", "NF:SOFTBANK", "LAB:OPENAI", "2026-09-01", "3991809", **kw)
+        gone = {**edge("z", "NF:SOFTBANK", "LAB:OPENAI", "2026-09-01", "4562791", **kw), "stage": "terminated"}
+        out = L.ledger_cells([gone, live], "2026-10-07")
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0]["value"], Decimal("3991809"))
+        self.assertIn('"same_date_other_amounts": 1', out[0]["flags"])
+        later = {**gone, "_date": dt.date(2026, 9, 21), "knowledge_date": "2026-09-21"}
+        self.assertEqual(L.ledger_cells([live, later], "2026-10-07")[0]["value"], Decimal("4562791"))
+
 
 class Markers(unittest.TestCase):
     def test_marker_follows_the_fact_and_hidden_facts_vanish(self):

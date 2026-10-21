@@ -483,7 +483,10 @@ def ledger_cells(edges, as_of):
     out = []
     for key, es in sorted(groups.items(), key=lambda kv: tuple(str(x) for x in kv[0])):
         partner, lab, direction, fam, et, inst, nat, basis, unit = key
-        es = sorted(es, key=lambda e: (str(e["_date"]), str(e.get("knowledge_date") or ""), e["link_key"]))
+        # à date égale, une arête close ne passe pas pour le dernier montant d'une arête en vigueur (bons déchus le
+        # jour où le bon refondu est remis ; D-0067, point 17)
+        es = sorted(es, key=lambda e: (str(e["_date"]), str(e.get("knowledge_date") or ""), e.get("stage") != "terminated",
+                                       e["link_key"]))
         last = es[-1]
         o = last.get("_obs") or {}
         same_day = [e for e in es if str(e["_date"]) == str(last["_date"])

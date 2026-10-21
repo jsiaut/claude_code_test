@@ -367,8 +367,10 @@ def run(as_of, use_cache=True, apercu=False):
     if "labs" in scope:
         from . import lab_terms
         party_terms = {b["content_key"]: b["party_terms"] for b in catalog if b.get("party_terms")}
+        filer_names = {b["content_key"]: b["filer_name"] for b in catalog
+                       if str(b.get("group_id") or "").startswith("CP:") and b.get("filer_name")}
         lt = lab_terms.cells(valid, reg, [c for c in cells if isinstance(c, dict) and c.get("measure") == "nport_equity_mark"],
-                             as_of, party_terms)
+                             as_of, party_terms, filer_names)
         cells += lt
         stats["lab_terms"] = dict(Counter(f"{c['measure']}|{c.get('value_text') or c['status']}"
                                           if c["measure"] == "lab_event" else c["measure"] for c in lt))

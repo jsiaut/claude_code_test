@@ -69,14 +69,16 @@ def _term(o, value):
             "tier": o.get("tier"), "knowledge_date": o.get("knowledge_date"), "is_tagged": False}
 
 
-def _flags(o, date_basis):
+def _flags(o, date_basis, filer_names=None):
     fl = {k: _txt(o.get(k)) for k in FIELDS}
     fl["date_basis"] = date_basis
     fl["filer"] = o.get("group_id")
+    if str(o.get("group_id") or "").startswith("CP:"):     # déposant hors des groupes : le nom que porte son dépôt
+        fl["filer_name"] = (filer_names or {}).get(o.get("content_key"))
     return {k: (str(v) if isinstance(v, (dt.date, Decimal)) else v) for k, v in fl.items() if v not in (None, "")}
 
 
-def clause_cells(obs, reg, as_of, party_terms=None):
+def clause_cells(obs, reg, as_of, party_terms=None, filer_names=None):
     """lab_contract_clause : une cellule par ligne de clause qui concerne un laboratoire ; valeur : le montant écrit,
     sinon la capacité écrite, sinon aucune (le genre de clause en texte)."""
     out = []
@@ -96,11 +98,11 @@ def clause_cells(obs, reg, as_of, party_terms=None):
             out.append(cell("lab_contract_clause", o.get("group_id") or NONE, _d(o.get("period_start")), d, "as_known",
                             as_of, breakdown=bk, value=value, unit=unit, value_text=None if value is not None else ck,
                             counterparty=lab, terms=[_term(o, value)], knowledge_date=o.get("knowledge_date"),
-                            flags=_flags(o, basis)))
+                            flags=_flags(o, basis, filer_names)))
     return out
 
 
-def capacity_cells(obs, reg, as_of, party_terms=None):
+def capacity_cells(obs, reg, as_of, party_terms=None, filer_names=None):
     """lab_capacity : une cellule par ligne de capacité qui concerne un laboratoire, telle qu'écrite."""
     out = []
     for o in obs:
@@ -112,7 +114,7 @@ def capacity_cells(obs, reg, as_of, party_terms=None):
             bk = "|".join((_txt(o.get("capacity_kind")) or NONE, _txt(o.get("instrument_key")) or NONE, o["obs_key"]))
             out.append(cell("lab_capacity", o.get("group_id") or NONE, _d(o.get("period_start")), d, "as_known", as_of,
                             breakdown=bk, value=v, unit=o.get("capacity_unit"), counterparty=lab, terms=[_term(o, v)],
-                            knowledge_date=o.get("knowledge_date"), flags=_flags(o, basis)))
+                            knowledge_date=o.get("knowledge_date"), flags=_flags(o, basis, filer_names)))
     return out
 
 
@@ -220,7 +222,7 @@ def event_cells(obs, reg, marks, as_of, party_terms=None):
     return out
 
 
-def cells(obs, reg, marks, as_of, party_terms=None):
+def cells(obs, reg, marks, as_of, party_terms=None, filer_names=None):
     """Les trois mesures de D-0067 (volets 8 et 9)."""
-    return (clause_cells(obs, reg, as_of, party_terms) + capacity_cells(obs, reg, as_of, party_terms)
+    return (clause_cells(obs, reg, as_of, party_terms, filer_names) + capacity_cells(obs, reg, as_of, party_terms, filer_names)
             + event_cells(obs, reg, marks, as_of, party_terms))

@@ -130,6 +130,23 @@ class Cells(unittest.TestCase):
         self.assertEqual((cap[0]["value"], cap[0]["unit"], cap[0]["counterparty"]), (Decimal("1"), "GW", "LAB:OPENAI"))
         self.assertIn('"capacity_kind": "compute"', cap[0]["flags"])
 
+    def test_filer_name_of_an_outside_filer(self):
+        """Un déposant hors des groupes (groupe CP:) porte le nom de son dépôt dans ses drapeaux ; un groupe du
+        périmètre n'en porte pas."""
+        reg = _reg()
+        o = obs(9, group_id="CP:wec energy group inc", content_key="ckwec", capacity_value="1.3", capacity_unit="GW",
+                capacity_kind="power", capacity_qualifier="exact", quote="1.3 GW of power for OpenAI", counterparty_name=None)
+        c = LT.capacity_cells([o], reg, self.AS_OF, filer_names={"ckwec": "WEC ENERGY GROUP, INC."})[0]
+        self.assertIn('"filer_name": "WEC ENERGY GROUP, INC."', c["flags"])
+        c = LT.capacity_cells([{**o, "group_id": "AMD"}], reg, self.AS_OF, filer_names={"ckwec": "x"})[0]
+        self.assertNotIn("filer_name", c["flags"])
+
+    def test_visible_decimals(self):
+        from pipeline import render as R
+        self.assertEqual(R.visible_dec("30.0045", "30"), 3)
+        self.assertEqual(R.visible_dec("140.97", "140.96"), 2)
+        self.assertEqual(R.visible_dec("1", "1"), 6)
+
     def test_party_terms(self):
         """D-0067, point 15 : une clause qui ne nomme pas le laboratoire (« the Warrantholder ») le concerne quand le
         préambule de sa pièce le nomme ; sans préambule, elle ne concerne aucun laboratoire."""

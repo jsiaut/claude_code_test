@@ -1961,7 +1961,45 @@ def lab_when(c):
 
 
 def lab_piece(fl):
-    return f"{fl.get('form') or '?'}{' ' + fl['exhibit_type'] if fl.get('exhibit_type') else ''} {fl.get('accession') or '?'}"
+    ex = fl.get("exhibit_type") if fl.get("exhibit_type") not in (None, fl.get("form")) else None
+    return f"{fl.get('form') or '?'}{' ' + ex if ex else ''} {fl.get('accession') or '?'}"
+
+
+def lab_declarant(r):
+    """Déclarant d'une cellule de D-0067 ; un déposant hors des groupes, sans entité au registre, prend le nom que porte
+    son dépôt (drapeau `filer_name`), jamais la clé normalisée de son groupe."""
+    s = r["subject"]
+    if s.startswith("CP:") and s not in CP_NAMES and r["fl"].get("filer_name"):
+        return r["fl"]["filer_name"]
+    return group_label(s)
+
+
+def visible_dec(a, b, dec=2, most=6):
+    """Décimales qu'il faut pour que deux valeurs arrondies diffèrent, de `dec` à `most` (30,0045 puis 30,0000)."""
+    a, b = Decimal(str(a)), Decimal(str(b))
+    while dec < most and round(a, dec) == round(b, dec):
+        dec += 1
+    return dec
+
+
+def lab_mark_facts(con, T, marks):
+    """Baisses de marque d'une cellule L3, de la plus forte à la plus faible en part de la valeur précédente, chacune
+    avec autant de décimales qu'il en faut pour que la baisse se voie, et ses pièces."""
+    out = []
+    for m in marks:
+        sel = """SELECT * FROM measures WHERE measure = 'nport_equity_mark' AND view = 'as_known' AND subject = ?
+                 AND counterparty = ? AND breakdown_key = ? AND period_end = ?"""
+        cur, prv = q(con, sel, m["lab"], m["fund"], m["title"], m["date"]), q(con, sel, m["lab"], m["fund"], m["title"], m["previous_date"])
+        if not (cur and prv):
+            continue
+        a, b = Decimal(str(prv[0]["value"])), Decimal(str(cur[0]["value"]))
+        dec = visible_dec(a, b)
+        title = m["title"].split("TITLE:", 1)[-1]
+        text = (f"{m['fund']}, « {title} » : {T.m(prv[0], fmt='n', dec=dec)} au {m['previous_date']}, "
+                f"{T.m(cur[0], fmt='n', dec=dec)} au {m['date']} (valeur par action, USD)")
+        acc = (json.loads(cur[0]["flags"]) if cur[0]["flags"] else {}).get("accessions") or []
+        out.append(((b - a) / a if a else Decimal(0), text, acc))
+    return [(t, acc) for _, t, acc in sorted(out, key=lambda x: (x[0], x[1]))]
 
 
 def lab_clauses_section(con, T):
@@ -1986,12 +2024,12 @@ def lab_clauses_section(con, T):
         L.append("")
         L.append("| Déclarant | Contrat | Clause | Date | Quantité | Condition | Pièce |")
         L.append("| --- | --- | --- | --- | ---: | --- | --- |")
-        for r in sorted(rs, key=lambda r: (group_label(r["subject"]), r["fl"].get("instrument_key") or "", str(r["period_end"]),
+        for r in sorted(rs, key=lambda r: (lab_declarant(r), r["fl"].get("instrument_key") or "", str(r["period_end"]),
                                            r["breakdown_key"])):
             fl = r["fl"]
             cond = " ; ".join(x for x in (COND_FR.get(fl.get("conditionality")), _clean(fl.get("trigger_description"), 140),
                                           "caviardée" if fl.get("redacted") else None) if x) or "—"
-            L.append(f"| {group_label(r['subject'])} | {fl.get('instrument_key') or '—'} | "
+            L.append(f"| {lab_declarant(r)} | {fl.get('instrument_key') or '—'} | "
                      f"{CLAUSE_FR.get(fl.get('clause_kind'), fl.get('clause_kind'))} | {lab_when(r)} | {lab_quantity(T, r)} | "
                      f"{cond} | {lab_piece(fl)} |")
         L.append("")
@@ -2023,9 +2061,9 @@ def lab_capacity_section(con, T):
             L.append("")
             L.append("| Déclarant | Contrepartie écrite | Genre | Capacité | Statut | Calendrier | Pièce |")
             L.append("| --- | --- | --- | ---: | --- | --- | --- |")
-            for r in sorted(ks, key=lambda r: (str(r["period_end"]), group_label(r["subject"]), r["breakdown_key"])):
+            for r in sorted(ks, key=lambda r: (str(r["period_end"]), lab_declarant(r), r["breakdown_key"])):
                 fl = r["fl"]
-                L.append(f"| {group_label(r['subject'])} | {_clean(fl.get('counterparty_name'), 60) or '—'} | "
+                L.append(f"| {lab_declarant(r)} | {_clean(fl.get('counterparty_name'), 60) or '—'} | "
                          f"{CAPKIND_FR.get(fl.get('capacity_kind'), fl.get('capacity_kind'))} | "
                          f"{LAB_QUAL_FR.get(fl.get('capacity_qualifier'), '')}{lab_quantity(T, r)} | "
                          f"{LAB_STAGE_FR.get(fl.get('stage'), fl.get('stage') or '—')} | {lab_when(r)} | {lab_piece(fl)} |")
@@ -2066,25 +2104,19 @@ def lab_events_section(con, T):
         L.append("| --- | --- | --- | --- | --- |")
         for r in sorted(ev, key=lambda r: (r["subject"], r["breakdown_key"], str(r["period_end"]))):
             fl = r["fl"]
-            facts = []
-            for m in fl.get("marks") or []:
-                cur = q(con, """SELECT * FROM measures WHERE measure = 'nport_equity_mark' AND view = 'as_known' AND subject = ?
-                                AND counterparty = ? AND breakdown_key = ? AND period_end = ?""",
-                        m["lab"], m["fund"], m["title"], m["date"])
-                prv = q(con, """SELECT * FROM measures WHERE measure = 'nport_equity_mark' AND view = 'as_known' AND subject = ?
-                                AND counterparty = ? AND breakdown_key = ? AND period_end = ?""",
-                        m["lab"], m["fund"], m["title"], m["previous_date"])
-                if cur and prv:
-                    title = m["title"].split("TITLE:", 1)[-1]
-                    facts.append(f"{m['fund']}, « {title} » : {T.m(prv[0], fmt='n', dec=2)} au {m['previous_date']}, "
-                                 f"{T.m(cur[0], fmt='n', dec=2)} au {m['date']} (valeur par action, USD)")
+            marks = lab_mark_facts(con, T, fl.get("marks") or [])
+            facts = [t for t, _ in marks[:3]]       # les trois plus fortes baisses ; toutes dans series.md
+            if len(marks) > 3:
+                facts.append(f"{T.n('measures', {'lab_event_marks': [r['subject'], r['breakdown_key'], str(r['period_end'])]}, len(marks) - 3)} "
+                             f"autres baisses (détail dans `series.md`)")
             for ok in fl.get("observations") or []:
                 o = q(con, "SELECT note, accession, form FROM observations WHERE obs_key = ?", ok)
                 if o:
                     facts.append(_clean(o[0]["note"], 220))
+            accs = list(dict.fromkeys((fl.get("accessions") or []) + [a for _, acc in marks[:3] for a in acc]))
             L.append(f"| {dict(LAB_NAMES).get(r['subject'], r['subject'])} | {r['breakdown_key']} "
                      f"{LAB_EVENT_ID_FR.get(r['breakdown_key'])} | {r['period_start']} → {r['period_end']} | "
-                     f"{' ; '.join(facts) or '—'} | {', '.join(fl.get('accessions') or []) or '—'} |")
+                     f"{' ; '.join(facts) or '—'} | {', '.join(accs) or '—'} |")
         L.append("")
     return L
 
@@ -2100,12 +2132,25 @@ def lab_terms_series(con, T):
                 continue
             L.append(f"## {name} : {title} (D-0067, volet 8)")
             L.append("")
-            for r in sorted(rs, key=lambda r: (group_label(r["subject"]), r["fl"].get("instrument_key") or "", str(r["period_end"]))):
+            for r in sorted(rs, key=lambda r: (lab_declarant(r), r["fl"].get("instrument_key") or "", str(r["period_end"]))):
                 fl = r["fl"]
                 kind = (CLAUSE_FR.get(fl.get("clause_kind"), fl.get("clause_kind")) if measure == "lab_contract_clause"
                         else CAPKIND_FR.get(fl.get("capacity_kind"), fl.get("capacity_kind")))
-                L.append(f"- {group_label(r['subject'])}, {fl.get('instrument_key') or 'sans clé'} — {kind}, {lab_when(r)}, "
+                L.append(f"- {lab_declarant(r)}, {fl.get('instrument_key') or 'sans clé'} — {kind}, {lab_when(r)}, "
                          f"{lab_quantity(T, r)} ({lab_piece(fl)}) : {_clean(fl.get('note'), 400) or '—'}")
+            L.append("")
+    ev = [r for r in _cell_rows(con, "lab_event") if r["value_text"] == "event" and r["fl"].get("marks")]
+    for lab, name in LAB_NAMES:
+        rs = sorted((r for r in ev if r["subject"] == lab), key=lambda r: str(r["period_end"]))
+        if not rs:
+            continue
+        L.append(f"## {name} : marques en baisse chez un actionnaire, L3 (D-0067, volet 9)")
+        L.append("")
+        for r in rs:
+            L.append(f"**{r['period_start']} → {r['period_end']}**")
+            L.append("")
+            for t, acc in lab_mark_facts(con, T, r["fl"]["marks"]):
+                L.append(f"- {t} ({', '.join(acc) or 'pièce non notée'})")
             L.append("")
     return L
 
