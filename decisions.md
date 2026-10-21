@@ -2739,3 +2739,43 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - L1 : le retrait d'OpenAI de Stargate UK en avril 2026 (S-1 de Nscale) est une ligne descriptive d'une lecture antérieure (bloc 96831d93), sans signal. Le corpus de `labs_events` ne l'a pas servi : « withdrew » n'est pas un terme du point 4. L1 d'OpenAI pour 2026 T2 reste `not_determinable` ;
     - L2 : entre le 10-K de Microsoft de 2023 (« As OpenAI's exclusive cloud provider », bloc e0769154) et celui de juillet 2025 (API exclusive à Azure et droit de premier refus, bloc 99b35d57), aucune fenêtre servie n'écrit la fin de l'exclusivité de nuage. Ces deux extraits sont des lignes de clause, sans événement. Le seul événement L2 est la fin du droit de premier refus, en 2025 T4 ;
     - calendriers : l'annexe E du bon refondu de SB Energy n'est servie que jusqu'à sa ligne 3, réservée ; les lignes 4 à 8 manquent. L'annexe A du bon de Cerebras ne montre que sa première tranche, sans la colonne de MW cumulés des suivantes. Le calendrier de livraison du contrat de Cerebras (annexe A) et celui du bon d'AMD (annexe E) sont caviardés en entier.
+
+  (17) Intégration et résultats (2026-10-21) :
+  - entités : l'alias de SB Energy (point 16) rattache au groupe SoftBank le payeur des lignes du bon refondu. OpenAI, Inc. prend son entité et son groupe propres (D-0022) :
+    - les 4 positions N-PORT d'un fonds déclarées sous « OpenAI, Inc. » (2023-12-31 au 2024-09-30), en attente jusque-là, s'y rattachent. Elles sont hors du laboratoire : 4 cellules `nport_equity_held` et 4 `nport_equity_mark` vont à ce groupe propre. Leurs titres sont « openai inc » puis « empros technologies », publiés tels que déclarés ;
+    - les 28 archives N-PORT des non-cotés (2019 T4 à 2026 T3) passent `not_processed` : scannées avec le lexique d'avant, elles n'ont pas cherché les deux dénominations légales nouvelles (D-0065, point 14). Pour OpenAI, Inc., le terme « OpenAI » gardait déjà ses positions ; pour SE Global Holdings, aucun terme ne la gardait. Lever ces marques demande de retirer et de rescanner les 28 archives, ce qui n'est pas fait ;
+  - corrections après le premier réassemblage, avant le second :
+    - grand livre (D-0060, point 6) : à date égale, la clé de l'arête départageait les montants. Les 4 562 791 bons déchus le jour de la remise du bon refondu passaient pour le dernier montant du bon de SB Energy envers OpenAI. Une arête close (`terminated`) ne l'emporte plus sur une arête en vigueur de même date : la cellule porte les 3 991 809 bons du bon refondu. Une clôture datée plus tard reste le dernier état connu. C'est la seule cellule touchée ; test ajouté ;
+    - rendus des volets 8 et 9. Un déclarant hors des groupes, sans entité au registre, porte le nom de son dépôt (WEC Energy Group, GraniteShares ETF Trust, ERock) au lieu de la clé de son groupe. Une pièce ne répète plus son type quand il vaut le formulaire. Une baisse de marque s'affiche avec les décimales qui la montrent (30,0045 puis 30,0000, et non 30,00 et 30,00). La synthèse donne les trois plus fortes baisses de chaque trimestre et leurs pièces ; toutes vont dans `series.md`. Tests ajoutés ;
+  - réassemblages : le premier, à froid, en 1 287 s, après un lancement arrêté pour retirer les lignes périmées ; le second en 1 004 s, le mémo ne reprenant rien, le code ayant changé ; rendu en 42 s ;
+  - tables, contre le dépôt d'avant D-0067 (commit 2abc3b1) :
+    - documents 25 296 → 25 310 : les 14 pièces tirées ;
+    - observations 29 544 → 29 933 : 128 lignes et 261 abstentions ;
+    - arêtes 8 358 → 8 365. Les 7 arêtes nouvelles viennent des lignes de famille :
+      - les trois arêtes du bon de SB Energy envers OpenAI Infra Holdings : 3 991 809 actions, 4 562 791 actions déchues, le bon d'origine ;
+      - la garantie de valeur résiduelle de 105 Md$ de NVIDIA au S-1 de SB Energy ;
+      - les actions remises par CoreWeave en contrepartie au client ;
+      - l'engagement d'achat et le prêt de fonds de roulement d'OpenAI envers Cerebras ;
+    - entités 3 581 → 3 584 : l'alias et OpenAI, Inc. (entité et appartenance) ;
+    - exclusions 32 789 → 32 832. `out_of_scope` + 16 : les deux pièces sans paragraphe qualifiant et 14 fenêtres de facteurs de risque. `not_processed` + 28 : les archives N-PORT. `pending_entity` − 1 : OpenAI, Inc. ;
+    - mesures 179 108 → 179 464 : `lab_event` 230, `lab_contract_clause` 89, `lab_capacity` 27, `lab_ledger` 2, `nport_equity_held` et `nport_equity_mark` 4 chacune ; contrôles 69 960, inchangés ;
+  - cellules existantes qui changent : 352, toutes par la règle de §3.2 qu'applique `circularity` : une clause caviardée d'un contrat de la paire empêche d'établir « jamais ». Les lignes de clause caviardées touchent quatre instruments déjà liés aux paires : le bon d'AMD (annexe E, calendrier d'acquisition), le bon d'Akamai (délai de régularisation), l'engagement d'Amazon envers OpenAI (date butoir), et les deux contrats-cadres de CoreWeave avec OpenAI :
+    - `financed_status` : 316 cellules passent de « jamais » à « non déterminé (caviardé) » : Akamai → Anthropic 108, AMD → OpenAI 108, Amazon → OpenAI 100. D'où les cellules de rang 1 calculées 48 643 → 48 327 ;
+    - `documented_revenue_dependency` : 30 cellules, motif « précondition non remplie » → « caviardé » ; annexe E, E2 d'Amazon et OpenAI aux trois seuils : même changement de motif. Le résultat de E.7 reste à 56 % d'issues indéterminées sur 170 ; une issue change de motif ;
+    - `contract_coverage` : AMD et OpenAI 50 % → 0 %, Amazon et OpenAI 80 % → 60 %, CoreWeave et OpenAI 60 % → 20 % ;
+    - les conclusions des paires ne changent pas ; Akamai et Anthropic passent en recherche incomplète (« une clause de la paire est caviardée »), et le cycle Akamai → Anthropic → Akamai de même ;
+  - clauses : 89 cellules, OpenAI 59 sur 19 contrats ou instruments, Anthropic 30 sur 6. 15 portent une quantité écrite (actions 5, pourcentages 4, dollars 3, GW 2, MW 1) ; les autres le genre de clause. 82 sont datées par leur pièce, faute de date écrite ;
+  - capacités : 27 cellules, OpenAI 18 et Anthropic 9, jamais additionnées. Calcul : OpenAI 8, Anthropic 4. Hébergement : 8 et 4. Électricité : 2 et 1. Statuts : signées 13, intentions 11, statut non écrit 3 (OpenAI) ;
+  - événements : 230 cellules :
+    - L2 d'OpenAI en 2025 T4 : fin du droit de premier refus de Microsoft, 10-Q du 29 octobre 2025 ;
+    - L3 : Anthropic 4 trimestres (2024 T2, 2024 T3, 2025 T2, 2025 T4), OpenAI 3 (2026 T1, T2 et T3). Six trimestres sans baisse pour chacun. Les autres sont non déterminés : 13 et 14, dont un `prior_period_missing` chacun ;
+    - L1, L4 et L5 : aucun fait daté ; 23 trimestres non déterminés par laboratoire ;
+  - tests : 279, tous passés.
+
+  (18) Limites constatées après calcul, sans changer les règles fixées d'avance :
+  - L3 compte toute baisse, même d'un cent :
+    - Anthropic, 2024 T2 et 2024 T3 : 30,0045 → 30,0000. En 2025 T4, la plupart des baisses vont de 140,97 à 140,96 ; les plus fortes vont de 147,49 à 140,97 et de 154,15 à 148,29 ;
+    - les baisses nettes sont les suivantes. Anthropic 2025 T2 : 56,09 → 50,53 et 58,50 → 52,74. OpenAI 2026 T1 : 651,79 → 483,12, un fonds, titre « openai global llc ». Ensuite 693,90 → 687,69 (2026 T2) et 687,69 → 678,11 (2026 T3) ;
+    - un seuil de baisse serait une décision nouvelle ;
+  - les effets de §3.2 ci-dessus suivent la règle existante. Garder les lignes des volets 8 et 9 hors des mesures des paires serait une décision nouvelle : la caviardure d'une clause de ces contrats est un fait de leurs pièces ;
+  - « OpenAI, Inc. » chez un fonds, au titre « empros technologies », reste rattachée à son groupe propre : rien n'établit qu'il s'agit du laboratoire.
