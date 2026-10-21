@@ -40,11 +40,13 @@ class Schema(unittest.TestCase):
     def test_capacity_in_quote(self):
         ok = [("contracted 200 MW of critical IT load", "200", "MW"), ("a 1.2GW campus", "1.2", "GW"),
               ("six gigawatts of AMD GPUs", "6", "GW"), ("deploy a gigawatt", "1", "GW"), ("a 1,000-megawatt site", "1000", "MW"),
-              ("approximately 3.8 additional gigawatts", "3.8", "GW")]
+              ("approximately 3.8 additional gigawatts", "3.8", "GW"), ("the initial one (1) gigawatt of GPUs", "1", "GW"),
+              ("purchasing six (6) gigawatts", "6", "GW")]
         for q, v, u in ok:
             self.assertTrue(load.capacity_in_quote(q, v, u), q)
         for q, v, u in [("1,000 MW", "100", "MW"), ("200 MW", "200", "GW"), ("v2.5 GW", "5", "GW"), ("Section 200 MW", "20", "MW"),
-                        ("3.8 billion gigawatts", "3.8", "GW"), ("3.8 additional new gigawatts", "3.8", "GW")]:
+                        ("3.8 billion gigawatts", "3.8", "GW"), ("3.8 additional new gigawatts", "3.8", "GW"),
+                        ("six (5) gigawatts", "6", "GW"), ("six (5) gigawatts", "5", "GW")]:
             self.assertFalse(load.capacity_in_quote(q, v, u), q)
         blk = {"text": "We have contracted 200 MW of critical IT load with Fluidstack.", "candidate_facts": []}
         line = {"kind": "observation", "quote": "We have contracted 200 MW of critical IT load",
