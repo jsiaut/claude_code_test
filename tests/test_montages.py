@@ -319,8 +319,12 @@ class AnthropicChain(unittest.TestCase):
         self.assertEqual(ev(d("8-K", "7.01,9.01"), sp), ("E", "unaudited", "furnished"))
         self.assertEqual(ev(d("8-K", "1.01,2.03,9.01"), sp), ("C", "unaudited", "filed"))
         self.assertEqual(ev(d("8-K/A", "2.02", "8-K/A"), sp)[0], "E")
-        # D-0066, point 5 : tous les montages ; une pièce d'un autre formulaire garde le niveau de son formulaire
-        self.assertTrue(all(v.get("evidence") == "triplet" for v in S.values()))
+        # D-0066, point 5 : tous les montages ; une pièce d'un autre formulaire garde le niveau de son formulaire. Les
+        # montages de D-0067 suivent le registre des documents pour tous les formulaires, triplet compris pour les 8-K
+        self.assertTrue(all(v.get("evidence") in ("triplet", "registry") for v in S.values()))
+        self.assertEqual({m for m, v in S.items() if v.get("evidence") == "registry"}, {"labs_contracts", "labs_events"})
+        for ft, items in (("EX-10.1", "1.01,9.01"), ("EX-99.1", "7.01"), (None, "7.01,9.01"), (None, "1.01,2.03,9.01")):
+            self.assertEqual(ev(d(ft, items), S["labs_contracts"]), ev(d(ft, items), sp))
         self.assertEqual(ev(d("EX-99.1", "7.01"), S["stargate"]), ("E", "unaudited", "furnished"))
         self.assertEqual(ev(d("EX-4.1", "1.01,2.03,9.01"), S["galaxy_helios"])[0], "D")
         self.assertEqual(ev(d(None, None, "424B4"), S["spacex_anthropic"])[0], "C")

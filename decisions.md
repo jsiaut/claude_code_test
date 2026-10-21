@@ -2561,3 +2561,139 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - 54 cellules de marque de crédit dépassent 1,5. 52 sont des titres de dette de banques : des titres structurés, dont le nominal déclaré n'est pas celui d'une dette ordinaire. Le plus haut est à 25 750 fois le nominal (JPMorgan Chase Bank, N.A., 2025-12-31). Les deux autres sont Berkshire Hathaway (2,7, 2021-09-30) et Micron (8,5, 2021-06-30) ;
   - 75 cellules sont sous 0,5 : General Motors 32 et T-Mobile 9, proches de zéro ; JPMorgan Chase & Co 14 ; WeWork 9 ; Core Scientific 5 (25 à 30 %, d'octobre 2022 à octobre 2023) ; AP Grange 2 ; JPMorgan Chase Bank en livres turques 2 ; iRobot (46,9 %) et QVC (44,5 %), une chacune ;
   - ces cellules sont publiées telles que déclarées, et aucune n'est dans le tableau des trois derniers mois de la synthèse. Écarter les titres structurés des banques serait une décision nouvelle.
+
+- **D-0067 — OpenAI et Anthropic : contrats déposés et calendrier des capacités (volet 8), événements propres aux laboratoires (volet 9). Règles fixées avant tout traitement.** (1) Décision de l'utilisateur, le 2026-10-21 : « Fais plutôt les volets 8 et 9 pour Anthropic et OpenAI ». Elle passe avant les deux propositions du rapport de D-0066 (titres structurés des banques, niveau 2), qui restent des propositions. Les deux volets viennent du remue-méninges de D-0059 (point 1) :
+  - volet 8, « Contrats déposés et calendrier des capacités » : « Les pièces EX-10 et EX-4 des contreparties (bons AMD, contrats CoreWeave et Cerebras) donnent les tranches d'acquisition, les échéances et les clauses de sortie. Les GW annoncés pour chaque laboratoire, mis face aux GW que les hébergeurs déclarent avoir contractés » ;
+  - volet 9, « Événements propres aux laboratoires, faute de comptes » : « un engagement réduit ; la fin d'une exclusivité ; une marque en baisse chez un actionnaire ; une garantie appelée ; un site retardé. Les règles seraient fixées avant toute lecture ».
+
+  Lecture séquentielle par l'exécutant, sans sous-agent. L'as_of reste le 2026-10-07.
+
+  (2) Constat, compté sans lecture et sans aucune valeur, sur les tables du commit 2abc3b1 et le cache :
+  - contrats. Les pages de la recherche plein texte de la découverte (D-0036) sont en cache pour « OpenAI » (1 198 résultats) et « Anthropic » (463). Elles couvrent les formulaires racines 8-K, 10-K, 10-Q, S-1, S-4, S-11, F-1, F-4, 10-12B, 10-12G, 20-F et 40-F, du 2017-01-01 à l'as_of. La découverte n'en gardait que les EX-10. Relues depuis le cache, sans requête, elles donnent 47 pièces contractuelles distinctes (EX-10, EX-4, EX-2) qui nomment un laboratoire, déposées de 2024 à 2026 :
+    - 12 où le laboratoire est partie, nommé dans les 3 000 premiers caractères :
+      - OpenAI : le contrat-cadre de CoreWeave avec OpenAI OpCo (2025-09-25), le bon de souscription d'AMD et son accord de droits d'enregistrement (2025-10-06), la lettre d'OpenAI Group PBC à Amazon (2026-02-27), quatre pièces du S-1 de Cerebras (contrat-cadre, billet garanti, bon de souscription, accord de droits d'enregistrement ; 2026-04-17) et le contrat-cadre repris au S-1/A, l'accord de droits d'enregistrement de SB Energy, qui lie OpenAI Infra Holdings et NVIDIA (2026-09-21) ;
+      - Anthropic : une pièce du S-1 de Nscale (2026-09-18) et le bon d'Akamai au profit d'Anthropic, PBC (2026-09-24).
+
+      Sept de ces pièces ont été lues en entier, en phase 2 ou par la découverte. Les cinq de Cerebras ne l'ont été que par leur en-tête ;
+    - 21 autres en cache, qui ne nomment le laboratoire qu'ensuite : actes et contrats de crédit de CoreWeave, contrats de déposants hors du modèle (fusions, licences) ;
+    - 14 hors du cache, dont quatre de CoreWeave (S-1/A du 2025-03-12, EX-10.24 et EX-10.25 ; S-4/A, EX-10.32 ; 10-Q du 2025-11-13, EX-10.7 ; 10-K du 2026-03-02, EX-10.31) et l'EX-4.1 du S-1 de SB Energy ;
+  - lignes des laboratoires. 305 observations nomment un laboratoire, et aucune ne porte de capacité structurée : MW et GW ne sont que dans les notes. Leurs citations nomment un MW ou un GW 17 fois, une exclusivité 5, une réduction ou une résiliation 9, un appel ou un défaut 4, un retard aucune. Aucun signal n'est propre aux laboratoires. Des 11 lignes du modèle à `trigger_occurred = yes`, aucune ne concerne un laboratoire ;
+  - cache. Hors facteurs de risque, des paragraphes nomment un laboratoire et, dans le même paragraphe :
+    - une capacité : 58 dans les pièces des montages, 2 dans les blocs de la découverte ;
+    - un terme d'événement : retard 13, exclusivité 14, réduction ou résiliation 61 dans les pièces des montages, et 19 dans les blocs de la découverte.
+
+    Presque tous ont déjà été lus, par `labs_corpus`, la chaîne d'Anthropic et Stargate, qui n'ont aucune fenêtre au-delà de leur plafond ;
+  - marques : `nport_equity_mark` compte 330 cellules pour OpenAI (140 couples fonds et titre, dont 106 à au moins deux dates) et 620 pour Anthropic (246, dont 142), du 2024-03-31 au 2026-07-31 ;
+  - l'annexe F est une liste fermée (« La liste est fermée ») : les événements du volet 9 ne s'y ajoutent pas.
+
+  (3) Volet 8, contrats : montage `labs_contracts` :
+  - pièces : les 47 pièces du constat, tirées des pages en cache de la découverte, sans recherche nouvelle (même période, mêmes formulaires racines). Les 14 absentes se tirent par le client SEC (point 9). Le type de pièce commence par EX-10, EX-4 ou EX-2 : contrats et instruments, de niveau D (§2.3) ;
+  - pièce dont le laboratoire est partie : l'un de ses noms (« OpenAI », « Anthropic », jamais « Anthropic Capital ») figure dans les 3 000 premiers caractères du texte, préambule et parties compris. Dans ces pièces, un paragraphe qualifie s'il nomme un laboratoire ou une clause :
+    - acquisition : vest, tranche, milestone, exercisable ;
+    - durée : term of this agreement, initial term, renewal term, expiration ;
+    - échéance : maturity date ;
+    - sortie : terminate, termination, for convenience, change of control ;
+    - capacité : MW, GW, megawatt, gigawatt ;
+    - livraison : delivery date, delivery schedule, commencement date, ready for service ;
+    - engagement minimal : minimum commitment, minimum purchase, take-or-pay ;
+    - exclusivité : exclusive, first refusal.
+
+    Dans les autres pièces, seul un paragraphe qui nomme un laboratoire qualifie ;
+  - fenêtres : un paragraphe de part et d'autre, fondues quand elles se chevauchent. Un texte distinct se lit une fois. Aucun plafond. Les pièces dont le laboratoire est partie passent d'abord, puis du plus récent au plus ancien ;
+  - fenêtre déjà lue (chaque paragraphe qualifiant figure dans un bloc lu du même dépôt) : dans une pièce dont le laboratoire est partie, elle se lit en lecture complémentaire (point 6) ; dans une autre, elle n'est pas servie.
+
+  (4) Volets 8 et 9, corpus : montage `labs_events` :
+  - documents, de 2017-01-29 à l'as_of, s'ils nomment un laboratoire :
+    - les documents des groupes en cache (registre des documents) ;
+    - les pièces des autres montages, hors celles de `labs_contracts` ;
+    - les notes lues de la découverte (blocs des Notes Data Sets, sans document HTML), dont le texte du bloc tient lieu de document ;
+  - un paragraphe qualifie s'il nomme un laboratoire et, dans le même paragraphe, une capacité (MW, GW, megawatt, gigawatt) ou un terme d'événement :
+    - retard : delay, postpone, pushed back, behind schedule, later than expected ;
+    - exclusivité : exclusiv-, first refusal ;
+    - réduction ou fin : reduced, reduction, terminated, cancelled, not to renew, scaled back, wound down ;
+    - appel de garantie : called, drew on, draw down, demanded payment, payment under a guarantee or backstop ;
+    - baisse de valeur : impairment, unrealized loss, decrease in fair value or carrying value, downward revaluation.
+
+    Un paragraphe de la section des facteurs de risque ne qualifie jamais (§14) ;
+  - fenêtres comme au point 3. Une fenêtre déjà lue se lit en lecture complémentaire, une fenêtre jamais lue en lecture complète.
+
+  (5) Champs nouveaux des lignes (registre, lecteur, chargement, `schema.sql`) :
+  - `clause_kind` :
+    - `vesting_tranche` : tranche d'acquisition ou d'exercice ;
+    - `term` : durée, fin, renouvellement ;
+    - `maturity` : échéance d'un prêt ou d'un billet ;
+    - `termination_right` : clause de sortie ;
+    - `exclusivity` : exclusivité, premier refus ;
+    - `minimum_commitment` : engagement minimal, take-or-pay ;
+    - `delivery_schedule` : livraison, mise en service ;
+    - `none` ;
+  - capacité :
+    - `capacity_value` et `capacity_unit` (`MW` ou `GW`, tels qu'écrits, jamais convertis) ;
+    - `capacity_kind` : `compute` (puces, serveurs, nuage), `hosting` (centre de données, charge IT), `power` (alimentation électrique), `unspecified` ;
+    - `capacity_qualifier`, sur l'énumération des qualificatifs de montant ;
+  - signaux nouveaux, avec `signal_present` : `commitment_reduction`, `exclusivity_end`, `guarantee_call`, `site_delay`, `mark_down`.
+
+  Le chargement vérifie que la capacité figure dans la citation avec son unité, en chiffres ou en lettres jusqu'à vingt.
+
+  (6) Conventions de lecture des deux montages, en plus de celles de D-0058 (point 22), D-0059 (point 4) et D-0064 (points 5 et 6) :
+  - lecture complète : comme d'habitude (familles, montants, arêtes), plus les lignes de clause, de capacité et d'événement ;
+  - lecture complémentaire : seules s'écrivent des lignes de clause, de capacité ou d'événement, toutes descriptives (sans famille). Le reste est déjà codé dans le bloc qui l'a lu, ce que la note dit. Sans rien de cela, c'est une abstention `duplicate_of_other_block` ;
+  - ligne de clause :
+    - `clause_kind`, la citation de la clause et sa date telle qu'écrite (`event_date`, `period_start`, `period_end`, ou `period_label` pour un délai relatif) ;
+    - `conditionality` : `conditional` pour une tranche ou une sortie soumise à condition, `optional` pour une sortie de convenance ;
+    - `trigger_description` ; `redacted` quand la clause est caviardée ; l'`instrument_key` du contrat ;
+    - une quantité écrite (actions d'une tranche, minimum en dollars) va dans le montant, sans famille ;
+  - ligne de capacité :
+    - la capacité telle qu'écrite, son unité, son genre, `stage` (`signed`, `intent_non_binding`, `delivered`), le calendrier tel qu'écrit et la contrepartie ;
+    - jamais d'addition, jamais de conversion entre MW et GW ;
+    - une capacité en GPU ou en puces, sans MW ni GW, reste dans la note ;
+  - ligne d'événement : le signal, `signal_present` et la date telle qu'écrite ; un jour non écrit laisse `event_date` vide. Elle dit ce que le texte écrit, sans inférence :
+    - un retard est un « delay » écrit, ou un report par rapport à une date écrite plus tôt ;
+    - une exclusivité finie est écrite comme finie ou restreinte ;
+    - un engagement réduit l'est par le texte, jamais par la baisse d'un solde restant ;
+    - un appel de garantie est un paiement ou une demande au titre d'une garantie ou d'un backstop ;
+    - une marque en baisse est une perte de valeur, une dépréciation ou une baisse de juste valeur qu'un actionnaire comptabilise sur ses titres d'un laboratoire ;
+  - données personnelles : aucun nom de personne physique n'est cité, ni signataire, ni destinataire d'une notification, ni dirigeant.
+
+  (7) Mesures nouvelles (rang 2, §14), sans total ni score. Une ligne concerne un laboratoire si sa contrepartie, son payeur ou son bénéficiaire se résout en laboratoire, ou si sa citation le nomme :
+  - `lab_contract_clause` : une cellule par ligne de clause qui concerne un laboratoire. Valeur : la quantité écrite s'il y en a une (montant, ou capacité), sinon le genre de clause. Drapeaux : dates, condition, caviardage, pièce ;
+  - `lab_capacity` : une cellule par ligne de capacité qui concerne un laboratoire, valeur et unité telles qu'écrites. Jamais additionnées, ni entre elles, ni aux dollars ;
+  - `lab_event` : par laboratoire, événement et trimestre civil, de 2021 T1 à 2026 T3 (fenêtre du modèle) :
+    - L1, engagement réduit : signal `commitment_reduction` ;
+    - L2, fin d'une exclusivité : `exclusivity_end` ;
+    - L3, marque en baisse chez un actionnaire : une valeur par action `nport_equity_mark` inférieure à celle de la date précédente du même fonds et du même titre, ou une ligne `mark_down` ;
+    - L4, garantie appelée : `guarantee_call`, ou une ligne de soutien de crédit qui concerne le laboratoire, à `trigger_occurred = yes` ;
+    - L5, site retardé : `site_delay`.
+
+    Une cellule porte `event` quand un tel fait est daté dans le trimestre (date d'événement, sinon fin de période, sinon date de la pièce, notée), avec ses pièces. L3 porte `no_event` quand au moins une marque du trimestre a une date précédente et qu'aucune ne baisse, et sinon `not_determinable` (`prior_period_missing` ou `not_disclosed`). L1, L2, L4 et L5, sans fait daté dans le trimestre, portent `not_determinable` (`not_processed`) : seules les pièces en cache sont lues, et une source non lue ne passe jamais pour un trimestre sans événement ;
+  - ces cellules n'entrent ni dans l'annexe F, ni dans les mesures de financement, l'exposition, les paires, les cycles ou les conclusions.
+
+  (8) Rendus, dans la synthèse après le grand livre ; le détail par ligne va dans `series.md` :
+  - « Contrats des laboratoires » : par laboratoire et par contrat, les tranches, échéances, sorties, exclusivités et minimums, avec leurs dates et leurs pièces ;
+  - « Calendrier des capacités » : par laboratoire, les capacités de calcul (`compute`) face aux capacités d'hébergement et d'électricité (`hosting`, `power`), chacune telle qu'écrite, avec son statut, son calendrier et sa pièce. Jamais de total ;
+  - « Événements propres aux laboratoires » : les cellules `event`, le compte des cellules par statut, et la mention que cette liste n'est pas l'annexe F.
+
+  (9) Réseau : seules les 14 pièces absentes se tirent, par le client SEC unique et journalisé : au plus 4 requêtes par seconde, jamais deux processus réseau en parallèle, une pause d'au moins 10 minutes après tout 403. Aucune recherche plein texte nouvelle.
+
+  (10) Données personnelles (D-0051 ; D-0058, point 10) : aucune personne physique n'est un nœud ni n'est citée.
+
+  (11) Code, avant tout traitement :
+  - `pipeline/montages.py` :
+    - source `hits` : pages de recherche en cache, sans requête, filtrées par type de pièce ;
+    - test de partie, termes de clause, `window`, `require`, lecture complémentaire ;
+    - corpus élargi (`source: lab_corpus`), où les notes de la découverte comptent par le texte de leur bloc ;
+  - registre, lecteur et chargement : champs et signaux nouveaux, vérification de la capacité dans la citation ; `schema.sql` ;
+  - `pipeline/lab_terms.py` : cellules `lab_contract_clause`, `lab_capacity` et `lab_event` ; assemblage ; rendus ; tests.
+
+  (12) Ordre et commits :
+  - la décision, la configuration et le code, avec leurs tests ; commit ;
+  - le tirage des pièces absentes et la préparation des deux montages, leur volume consigné ici avant lecture ; commit ;
+  - la lecture de `labs_contracts`, puis de `labs_events`, avec des commits par lot et le rendement consigné ;
+  - l'intégration : entités par extrait, réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (13) Limites connues avant lecture :
+  - les contrats non déposés n'ont aucune pièce : Microsoft, Google et Amazon avec Anthropic ; Oracle, Broadcom et NVIDIA avec OpenAI. Leurs clauses ne se lisent que dans les résumés des déposants ;
+  - les calendriers caviardés restent caviardés (bon d'AMD : pièces E et F) ;
+  - la recherche de la découverte s'arrête à ses formulaires racines : un contrat déposé avec un 6-K, un 424B ou un N-2 n'y figure pas ;
+  - une capacité écrite sans le laboratoire n'est pas une capacité du laboratoire, par exemple le bail d'un hébergeur avec Fluidstack sans « Anthropic » dans le texte ;
+  - L1, L2, L4 et L5 ne voient que les pièces en cache.

@@ -533,6 +533,9 @@ def synthesis(con, as_of, stats):
     L += credit_section(con, T)
     L += labs_tagged_section(con, T)
     L += labs_ledger_section(con, T)
+    L += lab_clauses_section(con, T)
+    L += lab_capacity_section(con, T)
+    L += lab_events_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
     L.append("")
@@ -1910,6 +1913,201 @@ def labs_ledger_section(con, T):
     return L
 
 
+# D-0067 : clauses des contrats, capacités et événements propres aux laboratoires
+CLAUSE_FR = {"vesting_tranche": "tranche d'acquisition", "term": "durée", "maturity": "échéance",
+             "termination_right": "clause de sortie", "exclusivity": "exclusivité", "minimum_commitment": "engagement minimal",
+             "delivery_schedule": "calendrier de livraison"}
+CAPKIND_FR = {"compute": "calcul", "hosting": "hébergement", "power": "électricité", "unspecified": "non précisé"}
+COND_FR = {"conditional": "sous condition", "optional": "au choix d'une partie", "firm": "ferme"}
+LAB_EVENT_ID_FR = {"L1": "engagement réduit", "L2": "fin d'une exclusivité", "L3": "marque en baisse chez un actionnaire",
+                   "L4": "garantie appelée", "L5": "site retardé"}
+LAB_NAMES = (("LAB:OPENAI", "OpenAI"), ("LAB:ANTHROPIC", "Anthropic"))
+
+
+def _cell_rows(con, measure):
+    rows = q(con, f"SELECT * FROM measures WHERE measure = '{measure}' AND view = 'as_known' "
+                  "ORDER BY counterparty, subject, breakdown_key, period_end")
+    for r in rows:
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+    return rows
+
+
+def _clean(x, n=None):
+    s = re.sub(r"\s+", " ", str(x or "")).strip().replace("|", "/")
+    return (s[:n - 1] + "…") if n and len(s) > n else s
+
+
+def lab_quantity(T, c):
+    """Quantité écrite d'une clause ou d'une capacité, dans son unité, jamais convertie."""
+    if c["value"] is None:
+        return "—"
+    v = Decimal(str(c["value"]))
+    dec = 0 if v == v.to_integral_value() else 2
+    u = c.get("unit") or ""
+    if u == "USD":
+        return T.m(c)
+    txt = T.m(c, fmt="n", dec=dec)
+    return txt + (" actions" if u == "shares" else f" {u}" if u else "")
+
+
+def lab_when(c):
+    """Date d'une clause ou d'une capacité telle qu'écrite : la date retenue et sa base, le délai écrit."""
+    fl = c["fl"]
+    base = {"event": "", "period": " (fin de période)", "knowledge": " (date de la pièce)"}.get(fl.get("date_basis"), "")
+    span = f"{c['period_start']} → {c['period_end']}" if c["period_start"] not in (None, NONE) else str(c["period_end"])
+    return span + base + (f" ; « {_clean(fl['period_label'], 80)} »" if fl.get("period_label") else "")
+
+
+def lab_piece(fl):
+    return f"{fl.get('form') or '?'}{' ' + fl['exhibit_type'] if fl.get('exhibit_type') else ''} {fl.get('accession') or '?'}"
+
+
+def lab_clauses_section(con, T):
+    """D-0067, volet 8 : clauses des contrats qui concernent un laboratoire, une ligne par clause, sans total."""
+    rows = _cell_rows(con, "lab_contract_clause")
+    if not rows:
+        return []
+    L = ["## Contrats des laboratoires : tranches, échéances, sorties (D-0067, volet 8)", ""]
+    L.append("Clauses lues dans les pièces contractuelles déposées (EX-10, EX-4, EX-2) et dans les résumés des déposants, "
+             "telles qu'écrites : tranches d'acquisition, durées et échéances, clauses de sortie, exclusivités, engagements "
+             "minimaux et calendriers de livraison (`lab_contract_clause`). Une clause caviardée le reste ; une quantité est "
+             "celle du texte, jamais un total. Le déclarant est le déposant de la pièce.")
+    L.append("")
+    for lab, name in LAB_NAMES:
+        rs = [r for r in rows if r["counterparty"] == lab]
+        if not rs:
+            continue
+        L.append(f"### {name}")
+        L.append("")
+        L.append(f"Clauses : {T.n('measures', {'measure': 'lab_contract_clause', 'counterparty': lab}, len(rs))}, de "
+                 f"{T.n('measures', {'measure': 'lab_contract_clause', 'counterparty': lab, 'instruments': True}, len({(r['subject'], r['fl'].get('instrument_key') or r['breakdown_key']) for r in rs}))} contrats ou instruments.")
+        L.append("")
+        L.append("| Déclarant | Contrat | Clause | Date | Quantité | Condition | Pièce |")
+        L.append("| --- | --- | --- | --- | ---: | --- | --- |")
+        for r in sorted(rs, key=lambda r: (group_label(r["subject"]), r["fl"].get("instrument_key") or "", str(r["period_end"]),
+                                           r["breakdown_key"])):
+            fl = r["fl"]
+            cond = " ; ".join(x for x in (COND_FR.get(fl.get("conditionality")), _clean(fl.get("trigger_description"), 140),
+                                          "caviardée" if fl.get("redacted") else None) if x) or "—"
+            L.append(f"| {group_label(r['subject'])} | {fl.get('instrument_key') or '—'} | "
+                     f"{CLAUSE_FR.get(fl.get('clause_kind'), fl.get('clause_kind'))} | {lab_when(r)} | {lab_quantity(T, r)} | "
+                     f"{cond} | {lab_piece(fl)} |")
+        L.append("")
+    return L
+
+
+def lab_capacity_section(con, T):
+    """D-0067, volet 8 : capacités écrites pour chaque laboratoire, calcul face à hébergement et électricité."""
+    rows = _cell_rows(con, "lab_capacity")
+    if not rows:
+        return []
+    L = ["## Calendrier des capacités des laboratoires (D-0067, volet 8)", ""]
+    L.append("Capacités en MW ou en GW écrites dans les pièces pour un laboratoire nommé (`lab_capacity`), telles qu'écrites : "
+             "jamais additionnées, ni entre elles, ni aux dollars, jamais converties de MW en GW. Les capacités de calcul "
+             "(puces, serveurs, nuage) sont mises face aux capacités d'hébergement (centres de données, charge IT) et "
+             "d'électricité que les déclarants disent avoir contractées ; une capacité écrite sans le laboratoire n'y figure pas.")
+    L.append("")
+    for lab, name in LAB_NAMES:
+        rs = [r for r in rows if r["counterparty"] == lab]
+        if not rs:
+            continue
+        L.append(f"### {name}")
+        L.append("")
+        for title, kinds in (("Calcul", ("compute",)), ("Hébergement, électricité et non précisé", ("hosting", "power", "unspecified"))):
+            ks = [r for r in rs if r["fl"].get("capacity_kind") in kinds]
+            if not ks:
+                continue
+            L.append(f"**{title}** : {T.n('measures', {'measure': 'lab_capacity', 'counterparty': lab, 'kinds': list(kinds)}, len(ks))} lignes.")
+            L.append("")
+            L.append("| Déclarant | Contrepartie écrite | Genre | Capacité | Statut | Calendrier | Pièce |")
+            L.append("| --- | --- | --- | ---: | --- | --- | --- |")
+            for r in sorted(ks, key=lambda r: (str(r["period_end"]), group_label(r["subject"]), r["breakdown_key"])):
+                fl = r["fl"]
+                L.append(f"| {group_label(r['subject'])} | {_clean(fl.get('counterparty_name'), 60) or '—'} | "
+                         f"{CAPKIND_FR.get(fl.get('capacity_kind'), fl.get('capacity_kind'))} | "
+                         f"{LAB_QUAL_FR.get(fl.get('capacity_qualifier'), '')}{lab_quantity(T, r)} | "
+                         f"{LAB_STAGE_FR.get(fl.get('stage'), fl.get('stage') or '—')} | {lab_when(r)} | {lab_piece(fl)} |")
+            L.append("")
+    return L
+
+
+def lab_events_section(con, T):
+    """D-0067, volet 9 : événements propres aux laboratoires, par trimestre, hors annexe F (liste fermée)."""
+    rows = _cell_rows(con, "lab_event")
+    if not rows:
+        return []
+    L = ["## Événements propres aux laboratoires (D-0067, volet 9 ; hors annexe F)", ""]
+    L.append("Cinq observables datés, fixés avant toute lecture (D-0067, point 7), par laboratoire et trimestre civil, de "
+             "2021 T1 au dernier trimestre clos : L1 engagement réduit, L2 fin d'une exclusivité, L3 marque en baisse chez un "
+             "actionnaire (valeur par action déclarée par un fonds, sous celle de sa date précédente pour le même titre, ou "
+             "perte de valeur écrite), L4 garantie appelée, L5 site retardé. Ce n'est pas l'annexe F, liste fermée ; aucune "
+             "somme, aucun score. L1, L2, L4 et L5 ne voient que les pièces en cache : un trimestre sans fait lu est "
+             "« non déterminé », jamais « sans événement ».")
+    L.append("")
+    L.append("| Laboratoire | Événement | Événement daté | Sans événement | Non déterminé |")
+    L.append("| --- | --- | ---: | ---: | ---: |")
+    for lab, name in LAB_NAMES:
+        for lid, lab_fr in LAB_EVENT_ID_FR.items():
+            rs = [r for r in rows if r["subject"] == lab and r["breakdown_key"] == lid]
+            n_ev = sum(1 for r in rs if r["value_text"] == "event")
+            n_no = sum(1 for r in rs if r["value_text"] == "no_event")
+            n_nd = sum(1 for r in rs if r["status"] == "not_determinable")
+            k = {"measure": "lab_event", "subject": lab, "breakdown_key": lid}
+            L.append(f"| {name} | {lid} {lab_fr} | {T.n('measures', {**k, 'value_text': 'event'}, n_ev)} | "
+                     f"{T.n('measures', {**k, 'value_text': 'no_event'}, n_no)} | {T.n('measures', {**k, 'status': 'not_determinable'}, n_nd)} |")
+    L.append("")
+    ev = [r for r in rows if r["value_text"] == "event"]
+    if ev:
+        L.append("Trimestres à événement :")
+        L.append("")
+        L.append("| Laboratoire | Événement | Trimestre | Fait | Pièces |")
+        L.append("| --- | --- | --- | --- | --- |")
+        for r in sorted(ev, key=lambda r: (r["subject"], r["breakdown_key"], str(r["period_end"]))):
+            fl = r["fl"]
+            facts = []
+            for m in fl.get("marks") or []:
+                cur = q(con, """SELECT * FROM measures WHERE measure = 'nport_equity_mark' AND view = 'as_known' AND subject = ?
+                                AND counterparty = ? AND breakdown_key = ? AND period_end = ?""",
+                        m["lab"], m["fund"], m["title"], m["date"])
+                prv = q(con, """SELECT * FROM measures WHERE measure = 'nport_equity_mark' AND view = 'as_known' AND subject = ?
+                                AND counterparty = ? AND breakdown_key = ? AND period_end = ?""",
+                        m["lab"], m["fund"], m["title"], m["previous_date"])
+                if cur and prv:
+                    title = m["title"].split("TITLE:", 1)[-1]
+                    facts.append(f"{m['fund']}, « {title} » : {T.m(prv[0], fmt='n', dec=2)} au {m['previous_date']}, "
+                                 f"{T.m(cur[0], fmt='n', dec=2)} au {m['date']} (valeur par action, USD)")
+            for ok in fl.get("observations") or []:
+                o = q(con, "SELECT note, accession, form FROM observations WHERE obs_key = ?", ok)
+                if o:
+                    facts.append(_clean(o[0]["note"], 220))
+            L.append(f"| {dict(LAB_NAMES).get(r['subject'], r['subject'])} | {r['breakdown_key']} "
+                     f"{LAB_EVENT_ID_FR.get(r['breakdown_key'])} | {r['period_start']} → {r['period_end']} | "
+                     f"{' ; '.join(facts) or '—'} | {', '.join(fl.get('accessions') or []) or '—'} |")
+        L.append("")
+    return L
+
+
+def lab_terms_series(con, T):
+    """D-0067 : détail par ligne des clauses et des capacités, avec la note de lecture."""
+    L = []
+    for measure, title in (("lab_contract_clause", "clauses des contrats"), ("lab_capacity", "capacités écrites")):
+        rows = _cell_rows(con, measure)
+        for lab, name in LAB_NAMES:
+            rs = [r for r in rows if r["counterparty"] == lab]
+            if not rs:
+                continue
+            L.append(f"## {name} : {title} (D-0067, volet 8)")
+            L.append("")
+            for r in sorted(rs, key=lambda r: (group_label(r["subject"]), r["fl"].get("instrument_key") or "", str(r["period_end"]))):
+                fl = r["fl"]
+                kind = (CLAUSE_FR.get(fl.get("clause_kind"), fl.get("clause_kind")) if measure == "lab_contract_clause"
+                        else CAPKIND_FR.get(fl.get("capacity_kind"), fl.get("capacity_kind")))
+                L.append(f"- {group_label(r['subject'])}, {fl.get('instrument_key') or 'sans clé'} — {kind}, {lab_when(r)}, "
+                         f"{lab_quantity(T, r)} ({lab_piece(fl)}) : {_clean(fl.get('note'), 400) or '—'}")
+            L.append("")
+    return L
+
+
 LAB_EXPO_FR = {"exposed_assets/cost/equity_investment": "au coût (participation)", "exposed_assets/cost/loan_receivable": "au coût (prêt)",
                "exposed_assets/carrying_amount/equity_investment": "au bilan (participation)",
                "exposed_assets/carrying_amount/loan_receivable": "au bilan (prêt)",
@@ -2321,6 +2519,7 @@ def series(con, as_of, stats):
         L += credit_series(con, T)
     if "labs" in (config.load().get("scope") or []):
         L += labs_tagged_series(con, T)
+        L += lab_terms_series(con, T)
     if "lender_portfolio" in (config.load().get("scope") or []):
         # véhicules BDC des plateformes de présentation (D-0045 ; D-0055, point 7) : série complète, vue as_known
         lp = config.load().get("lender_portfolio") or {}

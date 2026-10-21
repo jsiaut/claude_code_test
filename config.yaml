@@ -1980,6 +1980,56 @@ montages:
          start: 'For example, in May 2026, we entered into Cloud Services Agreements with Anthropic',
          end: "upon 90 days' notice\\."}
     noted_terms: ['\bAnthropic\b', '\bCOLOSSUS\b', '\bNVIDIA\b']
+  labs_contracts:                     # D-0067, volet 8 : pièces contractuelles (EX-10, EX-4, EX-2) qui nomment un laboratoire
+    decision: D-0067
+    source: hits                      # pages de la recherche de la découverte déjà en cache, relues sans requête (point 3)
+    replay: {terms: [OpenAI, Anthropic], start: "2017-01-01", end: "2026-10-07"}   # formulaires racines de la découverte
+    file_type_rx: '^EX-(?:10|4|2)(?:\.|$|[A-Z])'
+    period: ["2017-01-01", "2026-10-07"]
+    terms:
+      - {rx: '\bOpenAI\b|\bOPENAI\b'}
+      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)'}   # « Anthropic Capital » : gérant homonyme (D-0041)
+    party_chars: 3000                 # le laboratoire est partie s'il est nommé dans les 3 000 premiers caractères
+    clause_terms: ['\bvest(?:s|ed|ing)?\b', '\btranches?\b', '\bmilestones?\b', '\bexercisab', '\bterm of (?:this|the) (?:agreement|warrant|note)\b',
+                   '\binitial term\b', '\brenewal term\b', '\bexpir(?:e|es|ed|ation)\b', '\bmaturity date\b', '\bterminat(?:e|es|ed|ion)\b',
+                   '\bfor convenience\b', '\bchange (?:of|in) control\b', '\b(?:MW|GW)\b', '\bmegawatts?\b', '\bgigawatts?\b',
+                   '\bdelivery (?:date|schedule)s?\b', '\bcommencement date\b', '\bready for service\b', '\bminimum (?:commitment|purchase)s?\b',
+                   '\btake[- ]or[- ]pay\b', '\bexclusiv', '\bfirst refusal\b']
+    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\b(?:MW|GW)\b', '\b[Mm]egawatts?\b', '\b[Gg]igawatts?\b',
+                  '\b[Vv]est(?:s|ed|ing)?\b', '\b[Tt]ranches?\b', '\b[Tt]erminat(?:e|es|ed|ion)\b', '\b[Ee]xclusiv\w*\b']
+    window: 1                         # un paragraphe de part et d'autre (point 3)
+    complement: party                 # fenêtre déjà lue d'une pièce dont le laboratoire est partie : lecture complémentaire
+    skip_read: true
+    dedupe: true
+    order: party_first
+    evidence: registry                # contrats et instruments : niveau D, comme le registre des documents (§2.3)
+    cap: 100000                       # aucun plafond (point 3)
+  labs_events:                        # D-0067, volets 8 et 9 : capacités et événements des laboratoires dans le corpus en cache
+    decision: D-0067
+    source: lab_corpus                # documents des groupes, pièces des autres montages, notes lues de la découverte (point 4)
+    period: ["2017-01-29", "2026-10-07"]
+    exclude_montages: [labs_contracts]
+    terms:
+      - {rx: '\bOpenAI\b|\bOPENAI\b'}
+      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)'}
+    require: ['\b(?:MW|GW)\b', '\bmegawatts?\b', '\bgigawatts?\b',
+              '\bdelay(?:s|ed)?\b', '\bpostpon', '\bpushed back\b', '\bbehind schedule\b', '\blater than (?:expected|anticipated|planned)\b',
+              '\bexclusiv', '\bfirst refusal\b',
+              '\breduc(?:ed|tion)\b', '\bterminated\b', '\bcancel(?:led|ed|lation)\b', '\bnot (?:to )?renew', '\bscaled back\b', '\bwound down\b',
+              '\b(?:called|drew on|draw(?:n|ing)? (?:on|down)|demanded payment)\b[^.]{0,120}\b(?:guarant|backstop)',
+              '\b(?:guarant|backstop)\w*\b[^.]{0,120}\b(?:called|drew on|draw(?:n|ing)? (?:on|down)|demanded payment)\b',
+              '\bpayments? under (?:the|its|a|any|such) (?:guarantee|backstop)',
+              '\bimpair', '\bunrealized loss', '\bdecrease in (?:the )?(?:fair|carrying) value\b', '\bdownward (?:revaluation|adjustment|revision)\b']
+    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\b(?:MW|GW)\b', '\b[Mm]egawatts?\b', '\b[Gg]igawatts?\b',
+                  '\b[Dd]elay(?:s|ed)?\b', '\b[Ee]xclusiv\w*\b', '\b[Tt]erminated\b', '\b[Ii]mpair\w*\b']
+    window: 1
+    complement: all                   # une fenêtre déjà lue se lit en lecture complémentaire (point 4)
+    skip_read: true
+    skip_risk_factors: true
+    dedupe: true
+    order: recent_first
+    evidence: registry
+    cap: 100000
 
 nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
   decision: D-0058

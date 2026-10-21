@@ -363,6 +363,14 @@ def run(as_of, use_cache=True, apercu=False):
         nport_excl += uexcl
         stats["nport_unlisted"] = {m: sum(1 for c in ucells if (c["measure"] if isinstance(c, dict) else c.measure) == m)
                                    for m in ("nport_equity_mark", "nport_equity_held", "nport_credit_mark")}
+    # D-0067 : clauses des contrats, capacités et événements propres aux laboratoires (hors annexe F)
+    if "labs" in scope:
+        from . import lab_terms
+        lt = lab_terms.cells(valid, reg, [c for c in cells if isinstance(c, dict) and c.get("measure") == "nport_equity_mark"],
+                             as_of)
+        cells += lt
+        stats["lab_terms"] = dict(Counter(f"{c['measure']}|{c.get('value_text') or c['status']}"
+                                          if c["measure"] == "lab_event" else c["measure"] for c in lt))
     stats["pairs"] = {f"{s}->{c}": {"structure": e["structure"], "linkage": e["linkage"], "conclusion": e["conclusion"],
                                     "edges": len(e["pair"].edges),
                                     "active_quarters": sum(1 for v in e["F"]["as_known"]["exposure_outstanding"].values()

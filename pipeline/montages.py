@@ -31,6 +31,16 @@ D-0066 : `evidence: triplet` posé sur tous les montages, les items manquants lu
 `source: span` lit un passage fixé (motifs de début et de fin), les lignes du document jointes.
 
     python -m pipeline.montages retier              # niveau des blocs préparés, par le triplet
+
+D-0067 (volets 8 et 9) : source `hits` (pages de la recherche de la découverte déjà en cache, relues sans requête,
+filtrées par type de pièce), source `lab_corpus` (documents des groupes, pièces des autres montages et blocs lus de la
+découverte qui nomment un terme), test de partie (`party_chars`) et termes de clause (`clause_terms`), condition
+`require` (un paragraphe qualifie s'il nomme aussi l'un des termes requis), largeur `window`, lecture complémentaire
+(`complement` : une fenêtre déjà lue se sert pour les seules clauses, capacités et événements), ordre `party_first`,
+niveau `evidence: registry` (comme le registre des documents, tous formulaires).
+
+    python -m pipeline.montages replay <montage>    # source `hits` : pages en cache -> work/tmp, aucune requête
+    python -m pipeline.montages lab_corpus <montage> # source `lab_corpus` : documents en cache, aucune requête
 """
 import json
 import re
@@ -235,6 +245,107 @@ def corpus(mid):
     print(mid, ":", len(d), "documents dans la période ;", scanned, "en cache ;", len(rows), "nomment un terme")
 
 
+def replay(mid):
+    """Source `hits` (D-0067, point 3) : pages de la recherche plein texte de la découverte déjà en cache, relues par
+    un client sans réseau (une page absente arrête tout, aucune requête) ; un résultat se garde si son type de pièce
+    vérifie `file_type_rx`. Même format que `search`, pour `fetch`."""
+    spec = specs()[mid]
+    r = spec["replay"]
+
+    class _NoNet:
+        stats = {"requests": 0}
+        min_interval = 0
+
+        def get(self, url):
+            raise RuntimeError(f"{mid} : page de recherche absente du cache, aucune requête (D-0067, point 3) : {url}")
+    keep = re.compile(spec["file_type_rx"])
+    log = config.WORK / "montages" / f"replay_{mid}.jsonl"
+    out = []
+    for term in r["terms"]:
+        for h in D.harvest(_NoNet(), term, r.get("forms") or D.EX10_FORMS, start=r.get("start", D.START),
+                           end=r.get("end", D.AS_OF), keep=lambda x: bool(keep.search(str(x.get("file_type") or "").upper())),
+                           log=log):
+            out.append({"query": term, "cik_filter": None, "id": h["id"], "adsh": h["adsh"], "file": h["file"],
+                        "file_type": h["file_type"], "form": h["form"], "file_date": h["file_date"],
+                        "names": h["display_names"], "ciks": h["ciks"], "items": h["items"], "file_description": None})
+    hits_path = _paths(mid)[0]
+    hits_path.parent.mkdir(parents=True, exist_ok=True)
+    hits_path.write_text(json.dumps(out, ensure_ascii=False))
+    print(mid, ":", len(out), "résultats ;", len({(h["adsh"], h["file"]) for h in out}), "pièces distinctes")
+    return out
+
+
+def lab_corpus(mid):
+    """Source `lab_corpus` (D-0067, point 4) : documents des groupes en cache (registre des documents), pièces des
+    autres montages (sauf ceux de `exclude_montages`) et blocs lus de la découverte qui nomment un terme, déposés dans
+    la période ; aucune requête. Un bloc de la découverte dont le document est en cache le donne ; sinon (note des Notes
+    Data Sets), le texte du bloc tient lieu de document (`source: block`)."""
+    from . import reader
+    spec = specs()[mid]
+    _, docs_path, info_path = _paths(mid)
+    start, end = spec["period"]
+    meta = json.loads((config.DB_DIR / "phase0.json").read_text())["meta"]
+    pre = re.compile("|".join(t["rx"] for t in spec["terms"]).encode(), re.I)
+    skip = set()
+    for other in spec.get("exclude_montages") or []:
+        op = _paths(other)[1]
+        if op.exists():
+            skip |= {(a, f) for a, f in pd.read_parquet(op, columns=["adsh", "file"]).itertuples(index=False)}
+    rows, seen, counts = [], set(), {"groups": 0, "montages": 0, "discovery": 0, "blocks": 0}
+
+    def add(r, src):
+        k = (r["adsh"], r["file"])
+        if k in seen or k in skip or not (start <= str(r["file_date"])[:10] <= end):
+            return
+        seen.add(k)
+        rows.append({**r, "source": src, "queries": "", "state": "cached"})
+        counts[src] += 1
+    d = pd.read_parquet(config.ROOT / "tables" / "documents.parquet",
+                        columns=["cik", "group_id", "accession", "document", "form", "sgml_type", "filing_date",
+                                 "resource_kind", "items"])
+    d = d[d["resource_kind"].isin(["primary_document", "exhibit"]) & d["document"].str.lower().str.endswith((".htm", ".html", ".txt"))]
+    for x in d.drop_duplicates(["accession", "document"]).sort_values(["filing_date", "accession", "document"]).itertuples(index=False):
+        path = cache.archive_path(x.cik, x.accession, x.document)
+        if path.exists() and pre.search(cache.read(path)):
+            add({"adsh": x.accession, "file": x.document, "form": x.form, "file_type": x.sgml_type or x.form,
+                 "file_date": str(x.filing_date)[:10], "cik": x.cik, "items": x.items,
+                 "filer": (meta.get(x.cik) or {}).get("name") or x.group_id}, "groups")
+    for other, ospec in specs().items():
+        op = _paths(other)[1]
+        if other == mid or other in (spec.get("exclude_montages") or []) or not op.exists():
+            continue
+        for x in pd.read_parquet(op).to_dict("records"):
+            if not str(x.get("state") or "").startswith(("cached", "fetched")) or x.get("source") == "block":
+                continue
+            path = cache.archive_path(str(x["cik"]).zfill(10), x["adsh"], x["file"])
+            if path.exists() and pre.search(cache.read(path)):
+                add({"adsh": x["adsh"], "file": x["file"], "form": x["form"], "file_type": x.get("file_type"),
+                     "file_date": str(x["file_date"])[:10], "cik": str(x["cik"]).zfill(10), "items": x.get("items"),
+                     "filer": x.get("filer")}, "montages")
+    rx = re.compile("|".join(t["rx"] for t in spec["terms"]))
+    for b in reader.load_catalog():
+        if b.get("block_kind") == "montage_text" or not str(b.get("block_kind") or "").startswith("discovery_"):
+            continue
+        if not (config.OBS_DIR / f"{b['content_key']}.jsonl").exists():
+            continue
+        t = b["text"] if isinstance(b["text"], str) else "\n".join(b["text"])
+        if not rx.search(t):
+            continue
+        base = {"adsh": b["accession"], "form": b.get("form"), "file_date": str(b.get("filing_date"))[:10],
+                "cik": str(b["cik"]).zfill(10), "items": b.get("item"), "filer": b.get("filer_name")}
+        doc = b.get("document") or ""
+        if doc.lower().endswith((".htm", ".html", ".txt")) and cache.archive_path(base["cik"], b["accession"], doc).exists():
+            add({**base, "file": doc, "file_type": b.get("exhibit_type") or b.get("form")}, "discovery")
+        else:
+            add({**base, "file": f"block:{b['content_key']}", "file_type": b.get("exhibit_type"),
+                 "block_key": b["content_key"], "tier": b.get("tier"), "assurance_level": b.get("assurance_level"),
+                 "filing_status": b.get("filing_status")}, "blocks")
+    pd.DataFrame(rows).to_parquet(docs_path, index=False)
+    info_path.write_text(json.dumps({"source": "lab_corpus", "documents_named": len(rows), "by_source": counts,
+                                     "excluded_pieces": len(skip)}))
+    print(mid, ":", len(rows), "documents nomment un terme ;", counts)
+
+
 # section des facteurs de risque (§14 : une mention n'y fait jamais une unité ; D-0058, point 3)
 RF_HEAD = re.compile(r"^\W{0,3}(?:(?:item\s*)?1a\b\.?|(?:item\s*)?3\.?\s*d\b\.?|d\.)?\s*[:.\-–—]?\s*risk\s+factors\.?\s*$", re.I)
 RF_END = re.compile(r"^\W{0,3}(?:item\s*(?:1b|1c|2|3|4|5|6|7|7a|8|9|9a|10)\b|part\s+ii\b|unresolved staff comments\b|"
@@ -335,13 +446,41 @@ def paragraphs(text):
     return [p for p in (x.strip() for x in text.split("\n")) if p]
 
 
-def windows(paras, rx):
+def _test(rx):
+    """Un paragraphe qualifie-t-il ? `rx` : expression compilée, prédicat (D-0067) ou None."""
+    if rx is None:
+        return lambda p: False
+    return rx if callable(rx) else (lambda p: bool(rx.search(p)))
+
+
+def qualifier(d, spec, text):
+    """Prédicat des paragraphes qualifiants d'une pièce, et si le laboratoire y est partie (D-0067, points 3 et 4) :
+    termes du montage (qualify_rx) ; dans une pièce dont un terme figure dans ses `party_chars` premiers caractères,
+    les termes de clause (`clause_terms`) qualifient aussi ; avec `require`, un paragraphe ne qualifie que s'il nomme
+    aussi l'un des termes requis, dans le même paragraphe."""
+    rx = qualify_rx(d["filer"], spec)
+    if rx is None:
+        return None, False
+    party = bool(spec.get("party_chars")) and bool(rx.search(text[:spec["party_chars"]]))
+    clause = re.compile("|".join(spec["clause_terms"]), re.I) if party and spec.get("clause_terms") else None
+    req = re.compile("|".join(spec["require"]), re.I) if spec.get("require") else None
+
+    def q(p):
+        if not (rx.search(p) or (clause is not None and clause.search(p))):
+            return False
+        return req is None or bool(req.search(p))
+    return q, party
+
+
+def windows(paras, rx, width=WINDOW):
     """Fenêtres de lecture : paragraphes qui nomment un terme qualifiant, deux avant, deux après,
-    fondues quand elles se chevauchent (D-0046, points 4, 8 et 9)."""
-    hits = [i for i, p in enumerate(paras) if rx is not None and rx.search(p)]
+    fondues quand elles se chevauchent (D-0046, points 4, 8 et 9) ; `width` paragraphes de part et
+    d'autre pour un montage à `window` (D-0067)."""
+    test = _test(rx)
+    hits = [i for i, p in enumerate(paras) if test(p)]
     spans = []
     for i in hits:
-        a, b = max(0, i - WINDOW), min(len(paras), i + WINDOW + 1)
+        a, b = max(0, i - width), min(len(paras), i + width + 1)
         if spans and a <= spans[-1][1]:
             spans[-1][1] = max(spans[-1][1], b)
         else:
@@ -389,6 +528,15 @@ def evidence(d, spec):
     documents (§2.1, §2.3) : le type de pièce vient du montage, les items de la recherche plein texte, à défaut
     des dépôts de la phase 0 ; contrat (EX-10, EX-4, EX-2) D, EX-99 furnished E, document principal dont les
     items sont tous 2.02, 7.01 ou 9.01 furnished E, le reste C."""
+    if d.get("source") == "block" and d.get("tier"):     # bloc de la découverte (D-0067) : son niveau, tel quel
+        return d["tier"], d.get("assurance_level"), d.get("filing_status")
+    if spec.get("evidence") == "registry":                # D-0067 : comme le registre des documents, tous formulaires
+        from . import documents
+        ft = (_text_or_none(d.get("file_type")) or "").upper()
+        items = _text_or_none(d.get("items")) or filing_items().get(d.get("adsh"))
+        status, _, assurance, tier = documents._classify("exhibit" if ft.startswith("EX-") else "primary_document",
+                                                        d["form"], ft, items)
+        return tier, assurance, status
     if spec.get("evidence") == "triplet" and d["form"] in ("8-K", "8-K/A"):
         from . import documents
         ft = (_text_or_none(d.get("file_type")) or "").upper()
@@ -492,6 +640,8 @@ def _order_key(d, k, spec, text=None):
         return (priority_class(text or "", spec), neg, d["adsh"], d["file"], k)
     if spec.get("order") == "recent_first":                         # D-0058, point 3
         return (neg, d["adsh"], d["file"], k)
+    if spec.get("order") == "party_first":                          # D-0067, point 3
+        return (0 if d.get("party") else 1, neg, d["adsh"], d["file"], k)
     focus = spec.get("focus")
     if not focus:
         return (d["file_date"], d["adsh"], d["file"], k)
@@ -514,6 +664,12 @@ def _prepare_one(mid, spec, groups_by_cik):
     docs = pd.read_parquet(docs_path)
     units, no_window, excluded, risk, already = [], [], [], [], []
     read_by_acc = read_texts(mid) if spec.get("skip_read") else {}
+    comp = spec.get("complement")                 # lecture complémentaire (D-0067, point 6) : "party" ou "all"
+    block_text = {}
+    if "source" in docs.columns and (docs["source"] == "block").any():
+        from . import reader
+        block_text = {b["content_key"]: (b["text"] if isinstance(b["text"], str) else "\n".join(b["text"]))
+                      for b in reader.load_catalog()}
     for d in docs.to_dict("records"):
         if not d["state"].startswith(("cached", "fetched")):
             continue
@@ -522,11 +678,18 @@ def _prepare_one(mid, spec, groups_by_cik):
             excluded.append({"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"],
                              "reason": rule["reason"]})
             continue
-        raw = cache.read(cache.archive_path(d["cik"], d["adsh"], d["file"]))
-        text, how = document_text(raw, spec)
+        if d.get("source") == "block":            # note lue de la découverte : le texte du bloc (D-0067, point 4)
+            text, how = block_text.get(d["block_key"]) or "", "block"
+        else:
+            raw = cache.read(cache.archive_path(d["cik"], d["adsh"], d["file"]))
+            text, how = document_text(raw, spec)
         paras = paragraphs(text)
-        rx = qualify_rx(d["filer"], spec)
-        sp = windows(paras, rx)
+        if spec.get("party_chars") or spec.get("require"):
+            rx, d["party"] = qualifier(d, spec, text)
+        else:
+            rx = qualify_rx(d["filer"], spec)
+        test = _test(rx)
+        sp = windows(paras, rx, spec.get("window", WINDOW))
         if not sp:
             no_window.append({"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"],
                               **({"text_extraction": how} if how in ("pdf_unreadable", "pdf_no_text") else {})})
@@ -534,22 +697,33 @@ def _prepare_one(mid, spec, groups_by_cik):
         rf = risk_factor_span(paras) if spec.get("skip_risk_factors") else None
         texts = read_by_acc.get(d["adsh"]) or []
         for k, (a, b) in enumerate(sp):
-            hits = [i for i in range(a, b) if rx.search(paras[i])]
+            hits = [i for i in range(a, b) if test(paras[i])]
             ref = {"adsh": d["adsh"], "file": d["file"], "form": d["form"], "filer": d["filer"], "window": k}
             if rf and all(rf[0] <= i < rf[1] for i in hits):        # facteur de risque (§14 ; D-0058, point 3)
                 risk.append(ref)
                 continue
             if texts and all(covered(paras[i], texts) for i in hits):   # déjà dans un bloc lu du même dépôt
+                if comp == "all" or (comp == "party" and d.get("party")):
+                    units.append((d, k, "\n".join(paras[a:b]), how, "complement"))
+                    continue
                 already.append(ref)
                 continue
-            units.append((d, k, "\n".join(paras[a:b]), how))
+            units.append((d, k, "\n".join(paras[a:b]), how, "complete" if comp else None))
     units.sort(key=lambda u: _order_key(u[0], u[1], spec, u[2]))
     if spec.get("dedupe"):           # un texte distinct se lit une fois (D-0049, point 11)
         seen, kept, dup = set(), [], []
+        # D-0067 : une fenêtre dont le texte est déjà un bloc d'un autre catalogue ou montage n'est pas servie ; ses
+        # lignes sont celles de ce bloc, que le chargement rattache à un seul bloc par clé
+        if comp:
+            from . import reader
+            elsewhere = {b["content_key"] for b in reader.load_catalog() if b.get("montage") != mid}
+        else:
+            elsewhere = set()
         for u in units:
             ck = blocks.content_key(u[2], [])
-            if ck in seen:
-                dup.append({"adsh": u[0]["adsh"], "file": u[0]["file"], "window": u[1]})
+            if ck in seen or ck in elsewhere:
+                dup.append({"adsh": u[0]["adsh"], "file": u[0]["file"], "window": u[1],
+                            **({"elsewhere": True} if ck in elsewhere else {})})
                 continue
             seen.add(ck)
             kept.append(u)
@@ -558,7 +732,7 @@ def _prepare_one(mid, spec, groups_by_cik):
         dup = []
     noted = noted_rx(spec)
     out, over = [], []
-    for n, (d, k, text, how) in enumerate(units):
+    for n, (d, k, text, how, reading) in enumerate(units):
         if n >= spec["cap"]:
             over.append({"adsh": d["adsh"], "file": d["file"], "window": k})
             continue
@@ -575,7 +749,8 @@ def _prepare_one(mid, spec, groups_by_cik):
                     "normalizer_version": config.NORMALIZER_VERSION, "delimiter_version": config.DELIMITER_VERSION,
                     "filing_status": status, "assurance_level": assurance, "tier": tier, "filer_name": d["filer"],
                     "exhibit_type": d["file_type"], "window": k, "text_extraction": how,
-                    "terms": sorted(set(noted.findall(text))), "queries": d["queries"], "montage": mid})
+                    "terms": sorted(set(noted.findall(text))), "queries": d["queries"], "montage": mid,
+                    **({"reading": reading, "party": bool(d.get("party"))} if reading else {})})
     info = json.loads(info_path.read_text())
     info.update({"no_window": no_window, "over_cap": over, "units": len(units) + len(dup), "excluded": excluded,
                  "duplicates": dup, "risk_factors": risk, "already_read": already})
@@ -583,7 +758,9 @@ def _prepare_one(mid, spec, groups_by_cik):
     print(mid, ":", len(units) + len(dup), "fenêtres ;", len(units), "textes distincts ;", len(out), "blocs ;",
           len(no_window), "pièces sans fenêtre ;", len(excluded), "pièces écartées ;", len(over), "au-delà du plafond",
           *([f"; {len(risk)} dans un facteur de risque ; {len(already)} déjà lues"]
-            if spec.get("source") == "corpus" or spec.get("skip_risk_factors") or spec.get("skip_read") else []))
+            if spec.get("source") == "corpus" or spec.get("skip_risk_factors") or spec.get("skip_read") else []),
+          *([f"; lecture complète {sum(1 for b in out if b.get('reading') == 'complete')}, complémentaire "
+             f"{sum(1 for b in out if b.get('reading') == 'complement')}"] if comp else []))
     return out
 
 
@@ -628,11 +805,11 @@ def exclusions(as_of):
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
         terms = " », « ".join(t.get("label") or re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
-        if spec.get("source") in ("corpus", "tagged"):
+        if spec.get("source") in ("corpus", "tagged", "lab_corpus"):
             # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
             # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
             # plafond, une fenêtre reste à lire
-            pt = 4 if spec.get("source") == "tagged" else 3       # D-0060, point 4 ; D-0058, point 3
+            pt = 4 if spec.get("source") in ("tagged", "lab_corpus") else 3   # D-0060, point 4 ; D-0058, point 3 ; D-0067, point 4
             for d in info.get("risk_factors") or []:
                 ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
                    f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point {pt})", d["adsh"])
@@ -689,6 +866,10 @@ if __name__ == "__main__":
         fetch(sys.argv[2])
     elif cmd == "corpus":
         corpus(sys.argv[2])
+    elif cmd == "replay":
+        replay(sys.argv[2])
+    elif cmd == "lab_corpus":
+        lab_corpus(sys.argv[2])
     elif cmd == "prepare":
         prepare(sys.argv[2] if len(sys.argv) > 2 else None)
     elif cmd == "retier":

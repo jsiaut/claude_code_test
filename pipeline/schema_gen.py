@@ -147,6 +147,12 @@ TABLES = {
         ("party_is_financial_institution", "BOOLEAN"),
         ("exhibit_title", "VARCHAR"),
         ("note", "VARCHAR"),
+        # D-0067 : clause d'un contrat et capacité telles qu'écrites
+        ("clause_kind", "clause_kind"),
+        ("capacity_value", "DECIMAL(38,6)"),
+        ("capacity_unit", "capacity_unit"),
+        ("capacity_kind", "capacity_kind"),
+        ("capacity_qualifier", "amount_qualifier"),
         ("validation_state", "validation_state NOT NULL"),
         ("validation_error", "VARCHAR"),
     ],

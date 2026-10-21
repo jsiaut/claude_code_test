@@ -162,7 +162,14 @@ ENUMS = {
                    "ownership_schedule", "ownership_exhibit_header", "ownership_form", "holdings_13f"],
     "signal": ["material_weakness", "going_concern", "covenant_amendment", "covenant_waiver",
                "covenant_breach", "capacity_contract_termination", "auditor_change",
-               "nonreliance", "pledged_assets", "contract_termination_other", NONE],
+               "nonreliance", "pledged_assets", "contract_termination_other",
+               # D-0067, volet 9 : événements propres aux laboratoires, tels qu'écrits
+               "commitment_reduction", "exclusivity_end", "guarantee_call", "site_delay", "mark_down", NONE],
+    # D-0067, volet 8 : clauses des contrats et capacités, telles qu'écrites (jamais converties ni additionnées)
+    "clause_kind": ["vesting_tranche", "term", "maturity", "termination_right", "exclusivity",
+                    "minimum_commitment", "delivery_schedule", NONE],
+    "capacity_unit": ["MW", "GW", NONE],
+    "capacity_kind": ["compute", "hosting", "power", "unspecified", NONE],
     "validation_state": ["valid", "rejected_schema", "rejected_semantic"],
     "price_setting_participation": ["yes", "no", "unknown", NONE],
     # §2.6, §7.6, §11 exclusions
@@ -286,6 +293,10 @@ MEASURES = {
     # D-0060 : OpenAI et Anthropic vus par les déposants (bloc labs) : faits balisés, grand livre par laboratoire
     "lab_tagged_value": (2, [NONE], "window", "14"),
     "lab_ledger": (2, [NONE], "window", "14"),
+    # D-0067 : clauses des contrats, capacités et événements propres aux laboratoires (hors annexe F)
+    "lab_contract_clause": (2, [NONE], "event", "14"),
+    "lab_capacity": (2, [NONE], "event", "14"),
+    "lab_event": (2, [NONE], "quarter", "14"),
     # annexes
     "annex_e_outcome": (1, [NONE], "fiscal_year", "E"),
     "fragility_event": (1, [NONE], "quarter", "F"),

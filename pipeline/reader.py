@@ -78,6 +78,10 @@ LINE_FIELDS = {
     "party_is_financial_institution": "bool",
     "exhibit_title": "str",
     "note": "str",
+    # D-0067 : clause d'un contrat et capacité telles qu'écrites
+    "clause_kind": "enum:clause_kind",
+    "capacity_value": "decimal", "capacity_unit": "enum:capacity_unit", "capacity_kind": "enum:capacity_kind",
+    "capacity_qualifier": "enum:amount_qualifier",
 }
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _ISO_CCY = re.compile(r"^[A-Z]{3}$")
@@ -140,6 +144,17 @@ def schema_errors(line):
             errs.append("derivable exige derivation_method (§2.4)")
         if line.get("signal") not in (None, "none") and line.get("signal_present") is None:
             errs.append("un signal porte signal_present")
+        if line.get("capacity_value") is not None:
+            if line.get("capacity_unit") in (None, "none"):
+                errs.append("une capacité porte son unité (MW ou GW, telle qu'écrite)")
+            if line.get("capacity_kind") in (None, "none"):
+                errs.append("une capacité porte son genre (compute, hosting, power, unspecified)")
+            if line.get("capacity_qualifier") in (None, "none"):
+                errs.append("une capacité porte son qualificatif (exact, approximately, ...)")
+            if line.get("family") not in (None, "none"):
+                errs.append("une ligne de capacité est descriptive : sans famille (D-0067, point 6)")
+        elif line.get("capacity_unit") not in (None, "none") or line.get("capacity_kind") not in (None, "none"):
+            errs.append("unité ou genre de capacité sans capacity_value")
     return errs
 
 
@@ -365,7 +380,8 @@ def render_block(b, cap):
     head = {k: b.get(k) for k in ("content_key", "block_kind", "group_id", "cik", "accession",
                                   "form", "filing_date", "item", "exhibit_type", "document",
                                   "note_label", "period_start", "period_end", "knowledge_date",
-                                  "filer_name", "groups_named", "terms") if k in b or k in (
+                                  "filer_name", "groups_named", "terms", "montage", "reading", "party")
+            if k in b or k in (
                                       "content_key", "block_kind", "group_id", "cik", "accession", "form")}
     cands, n_all = visible_candidates(b)
     cand_lines = [f"  {c['fact_key']} | {c['concept']} | {c['value']} {c.get('unit') or ''} | "

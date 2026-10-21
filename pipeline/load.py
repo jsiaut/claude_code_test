@@ -1,7 +1,8 @@
 """Construction de la base : les huit tables recalculées intégralement à chaque exécution
 depuis le cache et les fichiers d'observations (§7, §9.6)."""
 import json
-from decimal import Decimal
+import re
+from decimal import Decimal, InvalidOperation
 
 import duckdb
 import pandas as pd
@@ -224,6 +225,31 @@ def load_observations(con, catalog, as_of, use_memo=True):
     return rows, excl
 
 
+# D-0067, point 5 : une capacité se lit dans sa citation, avec son unité, en chiffres ou en lettres jusqu'à vingt
+_CAP_WORDS = {w: i for i, w in enumerate(("zero one two three four five six seven eight nine ten eleven twelve thirteen "
+                                          "fourteen fifteen sixteen seventeen eighteen nineteen twenty").split())}
+_CAP_UNITS = {"MW": r"(?:MWs?|mega-?watts?)", "GW": r"(?:GWs?|giga-?watts?)"}
+_CAP_NUM = r"(\d[\d,]*(?:\.\d+)?|" + "|".join(sorted(_CAP_WORDS, key=len, reverse=True)) + r"|an?)"
+
+
+def capacity_in_quote(quote, value, unit):
+    """La capacité `value` (MW ou GW, telle qu'écrite) figure dans la citation, accolée à son unité :
+    « 200 MW », « 1.2GW », « six gigawatts », « a gigawatt », « 1,000-megawatt »."""
+    if not quote or value is None or unit not in _CAP_UNITS:
+        return False
+    rx = re.compile(r"(?<![\w.])" + _CAP_NUM + r"\s*-?\s*" + _CAP_UNITS[unit] + r"\b", re.I)
+    want = Decimal(str(value))
+    for m in rx.finditer(textnorm.norm_for_match(quote)):
+        g = m.group(1).lower()
+        try:
+            got = Decimal(1) if g in ("a", "an") else Decimal(_CAP_WORDS[g]) if g in _CAP_WORDS else Decimal(g.replace(",", ""))
+        except InvalidOperation:
+            continue
+        if got == want:
+            return True
+    return False
+
+
 def semantic_errors(line, block, text_norm=None, locate=None):
     """Citation retrouvée mot pour mot, contrepartie présente dans le bloc, montant égal
     au fait candidat quand l'origine est tagged_reference (§7.4). `text_norm` : texte du bloc
@@ -279,6 +305,8 @@ def semantic_errors(line, block, text_norm=None, locate=None):
     if line.get("amount") is not None and line.get("unit") in ("USD", "EUR", "GBP", "JPY") and \
             line.get("currency") not in (None, line.get("unit")):
         errs.append("unité et devise incohérentes")
+    if line.get("capacity_value") is not None and not capacity_in_quote(q, line["capacity_value"], line.get("capacity_unit")):
+        errs.append("capacité introuvable dans la citation avec son unité (D-0067, point 5)")
     return errs, locator
 
 
