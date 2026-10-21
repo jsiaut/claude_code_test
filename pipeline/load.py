@@ -230,14 +230,16 @@ _CAP_WORDS = {w: i for i, w in enumerate(("zero one two three four five six seve
                                           "fourteen fifteen sixteen seventeen eighteen nineteen twenty").split())}
 _CAP_UNITS = {"MW": r"(?:MWs?|mega-?watts?)", "GW": r"(?:GWs?|giga-?watts?)"}
 _CAP_NUM = r"(\d[\d,]*(?:\.\d+)?|" + "|".join(sorted(_CAP_WORDS, key=len, reverse=True)) + r"|an?)"
+_CAP_QUAL = r"(?:(?:additional|more|new|incremental|further|total|aggregate)\s+)?"   # « 3.8 additional gigawatts » (point 16)
 
 
 def capacity_in_quote(quote, value, unit):
     """La capacité `value` (MW ou GW, telle qu'écrite) figure dans la citation, accolée à son unité :
-    « 200 MW », « 1.2GW », « six gigawatts », « a gigawatt », « 1,000-megawatt »."""
+    « 200 MW », « 1.2GW », « six gigawatts », « a gigawatt », « 1,000-megawatt », ou séparée d'elle par un seul
+    qualificatif d'une liste fermée (« 3.8 additional gigawatts »)."""
     if not quote or value is None or unit not in _CAP_UNITS:
         return False
-    rx = re.compile(r"(?<![\w.])" + _CAP_NUM + r"\s*-?\s*" + _CAP_UNITS[unit] + r"\b", re.I)
+    rx = re.compile(r"(?<![\w.])" + _CAP_NUM + r"\s*-?\s*" + _CAP_QUAL + _CAP_UNITS[unit] + r"\b", re.I)
     want = Decimal(str(value))
     for m in rx.finditer(textnorm.norm_for_match(quote)):
         g = m.group(1).lower()
