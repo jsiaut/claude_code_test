@@ -75,7 +75,7 @@ def _paths(mid):
 def qualify_rx(filer, spec):
     """Termes qualifiants d'une pièce : jamais le nom de son déposant (D-0046, point 9) ; un terme
     `only_in` ne qualifie que les pièces des déposants nommés (D-0049, point 4)."""
-    own = (filer or "").lower()
+    own = (filer if isinstance(filer, str) else "").lower()     # nom absent (NaN d'un relevé, D-0067) : aucun
     t = []
     for term in spec["terms"]:
         if any(o in own for o in term.get("owner") or []):
@@ -292,6 +292,14 @@ def lab_corpus(mid):
         if op.exists():
             skip |= {(a, f) for a, f in pd.read_parquet(op, columns=["adsh", "file"]).itertuples(index=False)}
     rows, seen, counts = [], set(), {"groups": 0, "montages": 0, "discovery": 0, "blocks": 0}
+    catalog = reader.load_catalog()
+    # déposant hors des groupes (Cerebras, SB Energy, Nscale…) : le nom que portent ses blocs déjà au catalogue
+    from collections import Counter
+    by_cik = {}
+    for b in catalog:
+        if isinstance(b.get("filer_name"), str) and b["filer_name"]:
+            by_cik.setdefault(str(b.get("cik") or "").zfill(10), Counter())[b["filer_name"]] += 1
+    cat_name = {c: n.most_common(1)[0][0] for c, n in by_cik.items()}
 
     def add(r, src):
         k = (r["adsh"], r["file"])
@@ -309,7 +317,8 @@ def lab_corpus(mid):
         if path.exists() and pre.search(cache.read(path)):
             add({"adsh": x.accession, "file": x.document, "form": x.form, "file_type": x.sgml_type or x.form,
                  "file_date": str(x.filing_date)[:10], "cik": x.cik, "items": x.items,
-                 "filer": (meta.get(x.cik) or {}).get("name") or x.group_id}, "groups")
+                 "filer": (meta.get(x.cik) or {}).get("name") or cat_name.get(str(x.cik).zfill(10))
+                 or _text_or_none(x.group_id) or ""}, "groups")
     for other, ospec in specs().items():
         op = _paths(other)[1]
         if other == mid or other in (spec.get("exclude_montages") or []) or not op.exists():
@@ -317,13 +326,18 @@ def lab_corpus(mid):
         for x in pd.read_parquet(op).to_dict("records"):
             if not str(x.get("state") or "").startswith(("cached", "fetched")) or x.get("source") == "block":
                 continue
+            # D-0067, point 14 : un document en texte seulement (un PDF se lit par le montage qui en a l'option) ; une
+            # pièce que la règle d'un montage écarte le reste (texte extrait d'une lettre lue en PDF, D-0064, point 12)
+            if not str(x["file"]).lower().endswith((".htm", ".html", ".txt")) or \
+                    _excluded({**x, "filer": _text_or_none(x.get("filer")) or ""}, ospec):
+                continue
             path = cache.archive_path(str(x["cik"]).zfill(10), x["adsh"], x["file"])
             if path.exists() and pre.search(cache.read(path)):
                 add({"adsh": x["adsh"], "file": x["file"], "form": x["form"], "file_type": x.get("file_type"),
                      "file_date": str(x["file_date"])[:10], "cik": str(x["cik"]).zfill(10), "items": x.get("items"),
-                     "filer": x.get("filer")}, "montages")
+                     "filer": _text_or_none(x.get("filer")) or ""}, "montages")
     rx = re.compile("|".join(t["rx"] for t in spec["terms"]))
-    for b in reader.load_catalog():
+    for b in catalog:
         if b.get("block_kind") == "montage_text" or not str(b.get("block_kind") or "").startswith("discovery_"):
             continue
         if not (config.OBS_DIR / f"{b['content_key']}.jsonl").exists():
