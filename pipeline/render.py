@@ -1946,6 +1946,8 @@ def lab_quantity(T, c):
     u = c.get("unit") or ""
     if u == "USD":
         return T.m(c)
+    if u == "pure":                     # part écrite (« 40 % of the Warrant Shares »)
+        return T.m(c, fmt="pct", dec=0 if (v * 100) == (v * 100).to_integral_value() else 1)
     txt = T.m(c, fmt="n", dec=dec)
     return txt + (" actions" if u == "shares" else f" {u}" if u else "")
 
