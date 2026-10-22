@@ -3097,3 +3097,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Règle : une suite d'au moins cinq fois le même signe de ponctuation se cherche d'un seul groupe ; les autres mots gardent leur motif.
   - Vérifié avant tout dépôt : le motif est identique pour les 25 741 citations déjà lues. Huit portent des suites de « _ », caractère de mot que la classe de ponctuation ne reconnaît pas : elles gardent leur motif. Test : `tests/test_d0070.py`.
   - Les citations restent mot pour mot, points compris : l'audit (annexe C) veut une citation qui nomme la contrepartie et le montant, et une ligne de tableau ne relie les deux que par ses points.
+
+  (13) Piste des non-déposants pour Fluidstack, avant toute lecture (2026-10-22) :
+  - Archives : les 47 archives des Notes Data Sets, retirées sous le lexique d'ensemble lx-71f9d8460b25, scannées puis effacées. 47 requêtes, 18,56 Go, toutes réussies, en 45 minutes. Hors des groupes, deux lignes de notes nomment Fluidstack, toutes deux chez Boost Run Inc. (CIK 2090646) : la note des événements postérieurs de deux dépôts de janvier et février 2026 (exercice clos le 30 septembre 2025).
+  - Recherche plein texte du seul terme nouveau sur les formulaires racines des EX-10 : 1 requête, 4 pièces, toutes de TeraWulf et de Cipher, groupes déjà présents. La vérification les écarte, sans requête.
+  - Statut (point 2) : FLUIDSTACK LTD (CIK 2104151, Royaume-Uni) n'a déposé que trois Form D (2026-01-23, D/A du 2026-05-12, 2026-06-30). Ni document d'enregistrement, ni rapport périodique, ni titre coté : Fluidstack reste non déposant et n'a pas d'unités de dépôts propres (D-0054, point 13), comme Lambda. 1 requête (submissions). La recherche ne fait apparaître aucun autre CIK d'une entité de Fluidstack ; les véhicules de fonds restent hors du groupe (point 2).
+  - Candidats et file (point 8) : 4 075 unités, contre 4 073 avant. Les 2 unités nouvelles sont celles de Boost Run. La plus récente (0001493152-26-006791, du 2026-02-13) entre dans la file de D-0070 par la règle R2 ; l'autre reste hors règle, R2 ne prenant que les notes du dépôt le plus récent. Aucune unité existante ne change d'état ; pas de co-mention (R1).
+  - À lire : 1 unité, 2 784 caractères.
+  - Réseau de la piste : 49 requêtes en tout.
