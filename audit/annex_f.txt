@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..52d9281 100644
+index 1378604..3294f5d 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,191 @@ user_agent:
@@ -1398,7 +1398,7 @@ index 1378604..52d9281 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1673,398 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1673,431 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1761,6 +1761,39 @@ index 1378604..52d9281 100644
 +    dedupe: true
 +    order: recent_first
 +    evidence: registry
++    cap: 100000
++  backlog:                            # D-0068, point 6 : paragraphes d'un vendeur qui nomment l'un de ses clients et un terme de carnet
++    decision: D-0068
++    source: backlog                   # documents des vendeurs en cache (registre des documents), aucune requête ; EX-99 écartées
++    period: ["2019-01-01", "2026-10-07"]
++    forms: ["10-K", "10-K/A", "10-KT", "10-KT/A", "10-Q", "10-Q/A", "8-K", "8-K/A", "S-1", "S-1/A", "424B3", "424B4",
++            "20-F", "20-F/A", "40-F", "40-F/A"]
++    vocabulary: 'remaining performance obligations?|\bRPOs?\b|unsatisfied performance obligations?|contract(?:ed|ual)? (?:revenue|value)|total contract|aggregate (?:contract )?value|(?:future|minimum|remaining) (?:minimum )?(?:lease|rental) (?:payments|receipts)|lease payments to be received|\bbacklog\b|revenue backlog'
++    terms:                            # libellé des exclusions ; la qualification passe par les clients du vendeur et `vocabulary`
++      - {rx: '\bbacklog\b', label: "un client du vendeur et un terme de carnet"}
++    noted_terms: ['\b[Rr]emaining performance obligations?\b', '\bRPOs?\b', '\b[Uu]nsatisfied performance obligations?\b',
++                  '\b[Cc]ontract(?:ed|ual)? (?:revenue|value)\b', '\b[Tt]otal contract\b', '\b[Aa]ggregate (?:contract )?value\b',
++                  '\b[Ll]ease payments\b', '\b[Bb]acklog\b']
++    window: 1                         # un paragraphe de part et d'autre, fenêtres fondues
++    complement: all                   # une fenêtre déjà dans un bloc lu du même dépôt : lecture complémentaire (lignes de carnet)
++    skip_read: true
++    skip_risk_factors: true
++    dedupe: true                      # un texte distinct se lit une fois ; servies des plus anciennes aux plus récentes
++    evidence: registry
++    cap: 100000
++  backlog_values:                     # D-0068, point 15 : paragraphes déjà lus qui portent une arête de valeur d'un vendeur
++    decision: D-0068
++    source: edge_values               # blocs lus (texte du bloc), citations des lignes du vendeur ; aucune requête
++    period: ["2019-01-01", "2026-10-07"]
++    terms:                            # libellé des exclusions ; la qualification passe par les citations des arêtes de valeur
++      - {rx: '\bcommitted to pay\b', label: "paragraphe qui porte une arête de valeur du vendeur"}
++    noted_terms: ['\b[Tt]otal contract value\b', '\b[Cc]ommitted to pay\b', '\b[Cc]ontract value\b', '\bRPOs?\b',
++                  '\b[Rr]emaining performance obligations?\b', '\b[Bb]acklog\b', '\b[Ll]ease\b']
++    window: 1                         # un paragraphe de part et d'autre, dans le bloc lu
++    complement: all                   # tout est déjà lu : lecture complémentaire, lignes de carnet seulement
++    skip_read: true
++    dedupe: true
++    evidence: registry                # niveau du bloc lu, tel quel
 +    cap: 100000
 +
 +nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)

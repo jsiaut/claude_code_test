@@ -2146,6 +2146,21 @@ def backlog_section(con, T):
                  f"{backlog_value(T, r)} | {_clean(backlog_basis(r), 120)} | {backlog_pieces(con, r)} | "
                  f"{T.n('measures', {'contracted_backlog_share': [g, cp, tm]}, len(rs))} |")
     L.append("")
+    # lignes de carnet d'un vendeur sans aucune date où son carnet du même terme est publié : aucune cellule
+    seen = {(g, cp, tm) for g, cp, tm in by}
+    lone = defaultdict(int)
+    for o in q(con, """SELECT o.group_id, o.backlog_basis, m.ref FROM observations o JOIN entities m
+                         ON m.entity_id = o.counterparty_entity_id AND m.record_kind = 'membership'
+                         WHERE o.backlog_basis IN ('rpo', 'lease') AND o.validation_state = 'valid'
+                         AND o.kind = 'observation' AND coalesce(o.tier, '') <> 'E'"""):
+        if (o["group_id"], o["ref"], o["backlog_basis"]) not in seen and o["ref"] != o["group_id"]:
+            lone[(o["group_id"], o["ref"], o["backlog_basis"])] += 1
+    if lone:
+        L.append("Lignes de carnet sans aucune date où le carnet du vendeur, du même terme, est publié (aucune cellule) : "
+                 + " ; ".join(f"{group_label(g)} → {group_label(cp)}, {BACKLOG_TERM_FR.get(tm, tm)} "
+                              f"({T.n('observations', {'backlog_lines_without_cell': [g, cp, tm]}, n)} "
+                              f"{plural(n, 'ligne')})" for (g, cp, tm), n in sorted(lone.items())) + ".")
+        L.append("")
     un = q(con, """SELECT group_id, counterparty_name, count(*) AS n FROM observations WHERE backlog_basis = 'unspecified'
                     AND validation_state = 'valid' GROUP BY 1, 2 ORDER BY 1, 2""")
     if un:

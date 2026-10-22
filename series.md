@@ -64,28 +64,28 @@
 
 | Trimestre clos le | Croissance du revenu (glissement annuel) | Croissance du revenu (douze mois glissants) | Capex décaissé ÷ CFO | Capex ÷ CFO, additions non monétaires comprises | Flux disponible (CFO − capex) | Flux disponible après locations-financement | Flux après financement des contreparties | Délai de recouvrement (créances) | Obligations de prestation restantes (RPO) | Dette ÷ (résultat opérationnel + dotations) | Passifs locatifs ÷ (résultat opérationnel + dotations) | Événements (annexe F) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| 2021-03-31 | 43,8 % | 41,5 % | 2,87 x | n.d. (terme manquant) | -7 869 M$ | -11 275 M$ | -7 869 M$ | 20 j | n.d. (non publié) | 0,60 x | 1,23 x | F2 |
-| 2021-06-30 | 27,2 % | 37,8 % | 1,12 x | n.d. (terme manquant) | -1 573 M$ | -4 377 M$ | -1 573 M$ | 22 j | n.d. (non publié) | 0,87 x | 1,20 x | F1, F2 |
-| 2021-09-30 | 15,3 % | 31,6 % | 2,15 x | n.d. (terme manquant) | -8 435 M$ | -11 128 M$ | -8 435 M$ | 24 j | n.d. (non publié) | 0,85 x | 1,30 x | F1, F2 |
-| 2021-12-31 | 9,4 % | 21,7 % | 0,86 x | n.d. (terme manquant) | 3 151 M$ | 891 M$ | 3 151 M$ | 22 j | n.d. (non publié) | 0,85 x | 1,39 x |  |
-| 2022-03-31 | 7,3 % | 14,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -17 741 M$ | -20 518 M$ | -17 741 M$ | 25 j | n.d. (non publié) | 0,91 x | 1,43 x | F2 |
-| 2022-06-30 | 7,2 % | 9,6 % | 1,75 x | n.d. (terme manquant) | -6 759 M$ | -8 818 M$ | -6 759 M$ | 26 j | n.d. (non publié) | 1,20 x | 1,50 x | F2 |
-| 2022-09-30 | 14,7 % | 9,7 % | 1,44 x | n.d. (terme manquant) | -4 974 M$ | -6 439 M$ | -4 974 M$ | 26 j | n.d. (non publié) | 1,25 x | 1,58 x | F1, F2 |
-| 2022-12-31 | 8,6 % | 9,4 % | 0,57 x | n.d. (terme manquant) | 12 581 M$ | 10 941 M$ | 12 581 M$ | 26 j | n.d. (non publié) | 1,30 x | 1,57 x |  |
-| 2023-03-31 | 9,4 % | 9,9 % | 2,97 x | n.d. (terme manquant) | -9 419 M$ | -10 799 M$ | -9 419 M$ | 27 j | n.d. (non publié) | 1,22 x | 1,49 x | F2 |
-| 2023-06-30 | 10,8 % | 10,7 % | 0,70 x | n.d. (terme manquant) | 5 021 M$ | 3 801 M$ | 5 021 M$ | 27 j | n.d. (non publié) | 1,07 x | 1,36 x |  |
-| 2023-09-30 | 12,6 % | 10,3 % | 0,59 x | n.d. (terme manquant) | 8 738 M$ | 7 733 M$ | 7 488 M$ | 28 j | n.d. (non publié) | ↯ | ↯ |  |
-| 2023-12-31 | 13,9 % | 11,8 % | 0,34 x | n.d. (terme manquant) | 27 877 M$ | 27 098 M$ | 27 877 M$ | 28 j | n.d. (non publié) | 0,78 x | 1,03 x |  |
-| 2024-03-31 | 12,5 % | 12,5 % | 0,79 x | n.d. (terme manquant) | 4 064 M$ | 3 294 M$ | 1 314 M$ | 30 j | n.d. (non publié) | 0,69 x | 0,90 x |  |
-| 2024-06-30 | 10,1 % | 12,3 % | 0,70 x | n.d. (terme manquant) | 7 661 M$ | 7 123 M$ | 7 661 M$ | 31 j | n.d. (non publié) | 0,60 x | 0,85 x |  |
-| 2024-09-30 | 11,0 % | 11,9 % | 0,87 x | n.d. (terme manquant) | 3 351 M$ | 2 949 M$ | 3 351 M$ | 30 j | n.d. (non publié) | 0,54 x | 0,81 x |  |
-| 2024-12-31 | 10,5 % | 11,0 % | 0,61 x | n.d. (terme manquant) | 17 802 M$ | 17 469 M$ | 16 502 M$ | 27 j | n.d. (non publié) | 0,48 x | 0,74 x |  |
-| 2025-03-31 | 8,6 % | 10,1 % | 1,47 x | n.d. (terme manquant) | -8 004 M$ | -8 414 M$ | -8 004 M$ | 31 j | n.d. (non publié) | 0,46 x | 0,72 x | F2 |
-| 2025-06-30 | 13,3 % | 10,9 % | 0,99 x | n.d. (terme manquant) | 332 M$ | -79 M$ | -968 M$ | 31 j | n.d. (non publié) | 0,41 x | 0,71 x | F2 |
-| 2025-09-30 | 13,4 % | 11,5 % | 0,99 x | n.d. (terme manquant) | 430 M$ | 79 M$ | 430 M$ | 31 j | n.d. (non publié) | 0,40 x | 0,71 x |  |
-| 2025-12-31 | 13,6 % | 12,4 % | 0,73 x | n.d. (terme manquant) | 14 937 M$ | 14 552 M$ | 13 537 M$ | 29 j | n.d. (non publié) | 0,47 x | 0,70 x |  |
-| 2026-03-31 | 16,6 % | 14,2 % | 1,70 x | n.d. (terme manquant) | -18 171 M$ | -18 639 M$ | -33 171 M$ | 37 j | n.d. (non publié) | 0,78 x | 0,67 x | F2 |
-| 2026-06-30 | 19,6 % | 15,8 % | 1,19 x | n.d. (terme manquant) | -8 821 M$ | -9 216 M$ | -32 521 M$ | 40 j | n.d. (non publié) | 0,78 x | 0,65 x | F1, F2 |
+| 2021-03-31 | 43,8 % | 41,5 % | 2,87 x | n.d. (terme manquant) | -7 869 M$ | -11 275 M$ | -7 869 M$ | 20 j | 52 900 M$ | 0,60 x | 1,23 x | F2 |
+| 2021-06-30 | 27,2 % | 37,8 % | 1,12 x | n.d. (terme manquant) | -1 573 M$ | -4 377 M$ | -1 573 M$ | 22 j | 60 700 M$ | 0,87 x | 1,20 x | F1, F2 |
+| 2021-09-30 | 15,3 % | 31,6 % | 2,15 x | n.d. (terme manquant) | -8 435 M$ | -11 128 M$ | -8 435 M$ | 24 j | 66 300 M$ | 0,85 x | 1,30 x | F1, F2 |
+| 2021-12-31 | 9,4 % | 21,7 % | 0,86 x | n.d. (terme manquant) | 3 151 M$ | 891 M$ | 3 151 M$ | 22 j | 80 400 M$ | 0,85 x | 1,39 x |  |
+| 2022-03-31 | 7,3 % | 14,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -17 741 M$ | -20 518 M$ | -17 741 M$ | 25 j | 88 900 M$ | 0,91 x | 1,43 x | F2 |
+| 2022-06-30 | 7,2 % | 9,6 % | 1,75 x | n.d. (terme manquant) | -6 759 M$ | -8 818 M$ | -6 759 M$ | 26 j | 100 100 M$ | 1,20 x | 1,50 x | F2 |
+| 2022-09-30 | 14,7 % | 9,7 % | 1,44 x | n.d. (terme manquant) | -4 974 M$ | -6 439 M$ | -4 974 M$ | 26 j | 104 300 M$ | 1,25 x | 1,58 x | F1, F2 |
+| 2022-12-31 | 8,6 % | 9,4 % | 0,57 x | n.d. (terme manquant) | 12 581 M$ | 10 941 M$ | 12 581 M$ | 26 j | 110 400 M$ | 1,30 x | 1,57 x |  |
+| 2023-03-31 | 9,4 % | 9,9 % | 2,97 x | n.d. (terme manquant) | -9 419 M$ | -10 799 M$ | -9 419 M$ | 27 j | 122 000 M$ | 1,22 x | 1,49 x | F2 |
+| 2023-06-30 | 10,8 % | 10,7 % | 0,70 x | n.d. (terme manquant) | 5 021 M$ | 3 801 M$ | 5 021 M$ | 27 j | 132 100 M$ | 1,07 x | 1,36 x |  |
+| 2023-09-30 | 12,6 % | 10,3 % | 0,59 x | n.d. (terme manquant) | 8 738 M$ | 7 733 M$ | 7 488 M$ | 28 j | 133 000 M$ | ↯ | ↯ |  |
+| 2023-12-31 | 13,9 % | 11,8 % | 0,34 x | n.d. (terme manquant) | 27 877 M$ | 27 098 M$ | 27 877 M$ | 28 j | 155 700 M$ | 0,78 x | 1,03 x |  |
+| 2024-03-31 | 12,5 % | 12,5 % | 0,79 x | n.d. (terme manquant) | 4 064 M$ | 3 294 M$ | 1 314 M$ | 30 j | 157 700 M$ | 0,69 x | 0,90 x |  |
+| 2024-06-30 | 10,1 % | 12,3 % | 0,70 x | n.d. (terme manquant) | 7 661 M$ | 7 123 M$ | 7 661 M$ | 31 j | 156 600 M$ | 0,60 x | 0,85 x |  |
+| 2024-09-30 | 11,0 % | 11,9 % | 0,87 x | n.d. (terme manquant) | 3 351 M$ | 2 949 M$ | 3 351 M$ | 30 j | 164 000 M$ | 0,54 x | 0,81 x |  |
+| 2024-12-31 | 10,5 % | 11,0 % | 0,61 x | n.d. (terme manquant) | 17 802 M$ | 17 469 M$ | 16 502 M$ | 27 j | 177 000 M$ | 0,48 x | 0,74 x |  |
+| 2025-03-31 | 8,6 % | 10,1 % | 1,47 x | n.d. (terme manquant) | -8 004 M$ | -8 414 M$ | -8 004 M$ | 31 j | 189 000 M$ | 0,46 x | 0,72 x | F2 |
+| 2025-06-30 | 13,3 % | 10,9 % | 0,99 x | n.d. (terme manquant) | 332 M$ | -79 M$ | -968 M$ | 31 j | 195 000 M$ | 0,41 x | 0,71 x | F2 |
+| 2025-09-30 | 13,4 % | 11,5 % | 0,99 x | n.d. (terme manquant) | 430 M$ | 79 M$ | 430 M$ | 31 j | 200 000 M$ | 0,40 x | 0,71 x |  |
+| 2025-12-31 | 13,6 % | 12,4 % | 0,73 x | n.d. (terme manquant) | 14 937 M$ | 14 552 M$ | 13 537 M$ | 29 j | 244 000 M$ | 0,47 x | 0,70 x |  |
+| 2026-03-31 | 16,6 % | 14,2 % | 1,70 x | n.d. (terme manquant) | -18 171 M$ | -18 639 M$ | -33 171 M$ | 37 j | 364 000 M$ | 0,78 x | 0,67 x | F2 |
+| 2026-06-30 | 19,6 % | 15,8 % | 1,19 x | n.d. (terme manquant) | -8 821 M$ | -9 216 M$ | -32 521 M$ | 40 j | 496 000 M$ | 0,78 x | 0,65 x | F1, F2 |
 
 ## Meta (META)
 
@@ -464,8 +464,8 @@
 | 2022-11-30 | n.d. (non publié) | n.d. (terme manquant) | 3,62 x | n.d. (terme manquant) | -28 M$ | -29 M$ | -28 M$ | 2 j | 29 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
 | 2023-02-28 | n.d. (terme manquant) | n.d. (terme manquant) | 0,99 x | n.d. (terme manquant) | 256 000 $ | -601 000 $ | 256 000 $ | 1 j | 48 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F5 |
 | 2023-05-31 | n.d. (terme manquant) | n.d. (terme manquant) | 7,08 x | n.d. (terme manquant) | -28 M$ | -30 M$ | -28 M$ | 0 j | 49 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
-| 2023-08-31 | n.d. (terme manquant) | n.d. (non publié) | 7,22 x | n.d. (terme manquant) | -28 M$ | -33 M$ | -28 M$ | 0 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
-| 2023-11-30 | 242,0 % | n.d. (terme manquant) | 2,92 x | n.d. (terme manquant) | -9 M$ | -17 M$ | -9 M$ | 1 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2023-08-31 | n.d. (terme manquant) | n.d. (non publié) | 7,22 x | n.d. (terme manquant) | -28 M$ | -33 M$ | -28 M$ | 0 j | 52 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2023-11-30 | 242,0 % | n.d. (terme manquant) | 2,92 x | n.d. (terme manquant) | -9 M$ | -17 M$ | -9 M$ | 1 j | 52 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
 | 2024-02-29 | 207,7 % | n.d. (terme manquant) | 1,06 x | n.d. (terme manquant) | -2 M$ | -17 M$ | -2 M$ | 0 j | n.d. (non publié) | ↯ | ↯ | F1, F2, F5 |
 | 2024-05-31 | 98,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -89 M$ | -121 M$ | -89 M$ | 8 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
 | 2024-08-31 | 67,1 % | 124,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -131 M$ | -157 M$ | -131 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
@@ -790,7 +790,7 @@
 | 2020-12-03 | 12,2 % | 6,9 % | 1,39 x | n.d. (terme manquant) | -771 M$ | -792 M$ | -771 M$ | 58 j | 413 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
 | 2021-03-04 | 30,0 % | 19,9 % | 0,99 x | n.d. (terme manquant) | 39 M$ | 19 M$ | 39 M$ | 49 j | 291 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2021-06-03 | 36,5 % | 25,9 % | 0,63 x | n.d. (terme manquant) | 1 301 M$ | 1 281 M$ | 1 301 M$ | 52 j | 229 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2021-09-02 | 36,6 % | 29,3 % | 0,52 x | n.d. (terme manquant) | 1 869 M$ | 1 845 M$ | 1 869 M$ | 58 j | n.d. (non publié) | 0,48 x | 0,11 x |  |
+| 2021-09-02 | 36,6 % | 29,3 % | 0,52 x | n.d. (terme manquant) | 1 869 M$ | 1 845 M$ | 1 869 M$ | 58 j | 117 M$ | 0,48 x | 0,11 x |  |
 | 2021-12-02 | 33,2 % | 34,2 % | 0,83 x | n.d. (terme manquant) | 673 M$ | 653 M$ | 673 M$ | 62 j | n.d. (non publié) | 0,42 x | 0,10 x |  |
 | 2022-03-03 | 24,9 % | 32,6 % | 0,72 x | n.d. (terme manquant) | 1 017 M$ | 985 M$ | 1 017 M$ | 63 j | n.d. (non publié) | 0,37 x | 0,10 x |  |
 | 2022-06-02 | 16,4 % | 27,1 % | 0,67 x | n.d. (terme manquant) | 1 260 M$ | 1 233 M$ | 1 260 M$ | 66 j | n.d. (non publié) | 0,34 x | 0,09 x |  |
@@ -5701,6 +5701,97 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - series:S000081601, « anthropic pbc series f pc pp » : 140,97 au 2025-08-31, 140,96 au 2025-11-30 (valeur par action, USD) (0000035402-26-000442)
 - series:S000007733, « anthropic pbc series d pc pp » : 148,29 au 2025-09-30, 148,28 au 2025-12-31 (valeur par action, USD) (0000035402-26-001320)
 - series:S000007755, « anthropic pbc series d pc pp » : 148,29 au 2025-09-30, 148,28 au 2025-12-31 (valeur par action, USD) (0000035402-26-001344)
+
+## Amazon → Anthropic : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+
+## Amazon → OpenAI : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-03-31 | 10,4 % | 38 000 M$ | 364 000 M$ | RPO balisé par client | 10-Q 0001018724-26-000014 |
+| 2026-06-30 | [0 ; 27,8 %] | 138 000 M$ | 496 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001018724-26-000014 |
+
+## Applied Digital → CoreWeave : carnet contracté, loyers à recevoir (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2025-05-31 | [0 ; 100,0 %] (plafonnée) | 7 000 M$ | 6 764 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001641172-25-013199 |
+| 2025-08-31 | [0 ; 100,0 %] (plafonnée) | 11 000 M$ | 10 852 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001641172-25-013199, 8-K 0001493152-25-012458 |
+| 2025-11-30 | [0 ; 70,7 %] | 11 000 M$ | 15 551 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001641172-25-013199, 8-K 0001493152-25-012458 |
+| 2026-02-28 | [0 ; 70,9 %] | 11 000 M$ | 15 515 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001641172-25-013199, 8-K 0001493152-25-012458 |
+| 2026-05-31 | [0 ; 30,7 %] | 11 000 M$ | 35 845 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001641172-25-013199, 8-K 0001493152-25-012458 |
+| 2026-08-31 | [0 ; 30,8 %] | 11 000 M$ | 35 731 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001641172-25-013199, 8-K 0001493152-25-012458 |
+
+## Backblaze → CoreWeave : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-06-30 | [0 ; 84,6 %] | 335 M$ | 396 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001628280-26-044804 |
+
+## CoreWeave → Meta : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2025-09-30 | [0 ; 28,4 %] | 14 200 M$ | 50 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050 |
+| 2025-12-31 | [0 ; 23,4 %] | 14 200 M$ | 60 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050 |
+| 2026-03-31 | [0 ; 35,6 %] | 35 200 M$ | 98 800 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050, 8-K 0001769628-26-000154 |
+| 2026-06-30 | [0 ; 33,9 %] | 35 200 M$ | 103 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050, 8-K 0001769628-26-000154 |
+
+## CoreWeave → OpenAI : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2025-03-31 | 0,0 % | 0 $ | 14 700 M$ | contrat exclu du RPO par le vendeur (zéro) | 10-Q 0001769628-25-000014 |
+| 2025-06-30 | [0 ; 52,8 %] | 15 900 M$ | 30 100 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 10-Q 0001769628-25-000014 |
+| 2025-09-30 | [0 ; 44,8 %] | 22 400 M$ | 50 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
+| 2025-12-31 | [0 ; 36,9 %] | 22 400 M$ | 60 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
+| 2026-03-31 | [0 ; 22,7 %] | 22 400 M$ | 98 800 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
+| 2026-06-30 | [0 ; 21,6 %] | 22 400 M$ | 103 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
+
+## IREN → Microsoft : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2025-12-31 | [0 ; 100,0 %] (plafonnée) | 9 700 M$ | 289 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 |
+| 2026-03-31 | [0 ; 100,0 %] (plafonnée) | 9 700 M$ | 710 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 |
+| 2026-06-30 | [0 ; 100,0 %] (plafonnée) | 9 700 M$ | 5 100 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 |
+
+## IREN → NVIDIA : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-06-30 | [0 ; 66,7 %] | 3 400 M$ | 5 100 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001878848-26-000026 |
+
+## Microsoft → OpenAI : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2025-12-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+
+## Nebius → Meta : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2025-12-31 | [0 ; 13,6 %] | 2 900 M$ | 21 333 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 20-F 0001104659-26-052948 |
+
+## Nebius → Microsoft : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2025-12-31 | [0 ; 81,6 %] | 17 400 M$ | 21 333 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 20-F 0001104659-26-052948 |
+
+## Riot → AMD : carnet contracté, loyers à recevoir (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-03-31 | [0 ; 100,0 %] (plafonnée) | 311 M$ | 310 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 |
+| 2026-06-30 | [0 ; 49,1 %] | 311 M$ | 633 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 |
 
 ## BLUE OWL CAPITAL CORP II (véhicule BDC, cik:0001655887)
 
