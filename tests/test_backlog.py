@@ -227,6 +227,52 @@ class Share(unittest.TestCase):
         self.assertEqual(c["nd_reason"], "mixed_currency")
 
 
+class Guard(unittest.TestCase):
+    """Point 15 : un contrat que les tables connaissent par une arête de valeur, sans ligne de carnet, interdit la somme ;
+    une valeur totale ne vaut que si aucun contrat connu n'est daté après elle."""
+    q = {"S": [dt.date(2025, 3, 31), dt.date(2025, 6, 30), dt.date(2025, 9, 30)]}
+
+    def edge(self, ik, date, key="e1", **kw):
+        o = {"group_id": "S", "event_date": date, "knowledge_date": date}
+        l = {"family": "commercial", "edge_type": "capacity_lease", "amount": Decimal(5), "unit": "USD", "tier": "C",
+             "stage": "signed", "elimination_status": "not_applicable", "from_group": "C1", "to_group": "S",
+             "instrument_key": ik, "link_key": key, "_obs": o}
+        l.update(kw)
+        return l
+
+    def test_known_values(self):
+        ks = B.known_values([self.edge("b2", "2025-05-28"), self.edge(None, "2025-05-28", key="e2"),
+                             self.edge("x", "2025-05-28", key="e3", _obs={"group_id": "C1"}),       # ligne du client
+                             self.edge("y", "2025-05-28", key="e4", stage="settled"),
+                             self.edge("z", "2025-05-28", key="e5", tier="E")])
+        self.assertEqual([(k["instrument_key"], k["link_key"]) for k in ks], [("b2", "e1"), ("link:e2", "e2")])
+
+    def test_uncovered_contract_blocks_the_sum(self):
+        lines = [line(1, "contract_value", basis="lease", amount="400", ev="2025-08-28", ik="b4")]
+        known = B.known_values([self.edge("b2", "2025-05-28"), self.edge("b4", "2025-08-28", key="e4")])
+        I = B.Inputs((), lines, (), (), [rpo("S", "2025-09-30", 1000, measure="lessor_lease_receipts")], known)
+        c = B.share_cells(I, self.q, "2026-10-07")[0]
+        self.assertEqual((c["status"], c["nd_reason"]), ("not_determinable", "not_disclosed"))
+        self.assertEqual(json.loads(c["flags"])["uncovered_edges"], ["e1"])
+        lines.append(line(2, "contract_value", basis="lease", amount="300", ev="2025-05-28", ik="b2"))
+        I = B.Inputs((), lines, (), (), [rpo("S", "2025-09-30", 1000, measure="lessor_lease_receipts")], known)
+        c = B.share_cells(I, self.q, "2026-10-07")[0]
+        self.assertEqual((c["status"], c["value_upper"]), ("bounded", Decimal("0.7")))
+
+    def test_total_value_only_if_no_later_contract(self):
+        lines = [line(1, "total_contract_value", amount="500", pe="2025-04-15"),
+                 line(2, "contract_value", amount="200", ev="2025-02-01", ik="a"),
+                 line(3, "contract_value", amount="100", ev="2025-05-10", ik="b")]
+        self.assertEqual(B.upper_value(lines, dt.date(2025, 4, 30))[0], Decimal(500))
+        self.assertEqual(B.upper_value(lines, dt.date(2025, 6, 30))[0], Decimal(300))      # contrat b après la valeur totale
+
+    def test_known_contract_prevents_zero(self):
+        exc = line(1, "excluded", pe="2025-03-31", ik="msa")
+        known = [{"instrument_key": "order-2", "date": dt.date(2025, 2, 1), "link_key": "e9"}]
+        self.assertEqual(B.other_contracts([exc], dt.date(2025, 3, 31), [exc], known), {"order-2"})
+        self.assertEqual(B.other_contracts([exc], dt.date(2025, 3, 31), [exc], [dict(known[0], instrument_key="msa")]), set())
+
+
 class Lessor(unittest.TestCase):
     def test_lessor_receipts_sum_of_two_published(self):
         import duckdb
@@ -257,6 +303,21 @@ class Montage(unittest.TestCase):
         self.assertIsNone(B.qualifier(set()))
         self.assertEqual(B.sellers([("C", "S", "commercial", ""), ("S", "S", "commercial", ""), ("D", "S", "financing", ""),
                                     ("E", "S", "commercial", "eliminated"), ("C", "X", "commercial", "")], {"S"}), {"S": {"C"}})
+
+    def test_quote_test(self):
+        from pipeline import montages as M
+        t = M.quote_test(["The total contract value is approximately $9.7 billion through 2031."])
+        self.assertTrue(t("Highlights. The total contract value is approximately $9.7 billion through 2031. More."))
+        self.assertTrue(t("The total contract value is approximately"))                # paragraphe dans une citation longue
+        self.assertFalse(t("The Company signed a new agreement."))
+        sp = config.load()["montages"]["backlog_values"]
+        self.assertEqual((sp["source"], sp["complement"], sp["window"], sp["decision"]), ("edge_values", "all", 1, "D-0068"))
+
+    def test_ex99_file_names(self):
+        import re
+        for f in ("tm2523008d2_ex99-2.htm", "hut-20251217xex99d1.htm", "dp240991_ex9901.htm", "launch8-kexhibit99172226.htm"):
+            self.assertTrue(re.search(B.EX99_FILE, f, re.I), f)
+        self.assertFalse(re.search(B.EX99_FILE, "crwv-20250630.htm", re.I))
 
     def test_spec(self):
         sp = config.load()["montages"]["backlog"]

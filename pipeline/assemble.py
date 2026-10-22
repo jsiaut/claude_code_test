@@ -334,9 +334,12 @@ def run(as_of, use_cache=True, apercu=False):
         lambda s: {g: names_of(g) for g in (clients_of.get(s, set()) | lab_groups) if g != s}) if f["group_id"] in groups]
     carnet = [o for o in backlog.carnet_lines(obs_rows, lambda n, d: entities.resolve(reg, n, d)[1]
                                                or entities.resolve(reg, n, d, "revised")[1]) if o["group_id"] in groups]
+    known = backlog.known_values(edges)
     bl = backlog.Inputs(tagged_rpo, carnet, *([c for c in cells if c["measure"] == m]
-                                              for m in ("rpo_total", "rpo_beyond_12m", "lessor_lease_receipts")))
-    stats["backlog"] = {"tagged_customer_rpo": len(tagged_rpo), "carnet_lines": len(carnet), "pairs": len(bl.pairs())}
+                                              for m in ("rpo_total", "rpo_beyond_12m", "lessor_lease_receipts")),
+                        known=known)
+    stats["backlog"] = {"tagged_customer_rpo": len(tagged_rpo), "carnet_lines": len(carnet), "pairs": len(bl.pairs()),
+                        "known_value_edges": len(known)}
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
                                        rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,

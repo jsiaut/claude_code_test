@@ -46,6 +46,7 @@ D-0068 (point 6) : source `backlog`, documents en cache des vendeurs (groupes ve
 client nommé) ; un paragraphe qualifie s'il nomme l'un des clients de son vendeur et un terme de carnet (`vocabulary`).
 
     python -m pipeline.montages backlog_corpus <montage>   # source `backlog` : documents en cache, aucune requête
+    python -m pipeline.montages values_corpus <montage>    # source `edge_values` : blocs lus qui portent une arête de valeur
 """
 import json
 import re
@@ -407,10 +408,12 @@ def backlog_corpus(mid):
     d = pd.read_parquet(config.ROOT / "tables" / "documents.parquet",
                         columns=["cik", "group_id", "accession", "document", "form", "sgml_type", "filing_date",
                                  "resource_kind", "items"])
+    # une pièce EX-99 que le registre ne type pas se reconnaît à son nom de fichier (D-0068, point 15)
     d = d[d["group_id"].isin(list(names)) & d["resource_kind"].isin(["primary_document", "exhibit"])
           & d["form"].isin(spec.get("forms") or backlog.FORMS)
           & d["document"].str.lower().str.endswith((".htm", ".html", ".txt"))
-          & ~d["sgml_type"].fillna("").str.upper().str.startswith("EX-99")]
+          & ~d["sgml_type"].fillna("").str.upper().str.startswith("EX-99")
+          & ~(d["sgml_type"].isna() & d["document"].str.contains(backlog.EX99_FILE, case=False, regex=True))]
     d = d.assign(file_date=d["filing_date"].astype(str).str[:10])
     d = d[(d["file_date"] >= start) & (d["file_date"] <= end)].drop_duplicates(["accession", "document"])
     pre = re.compile(backlog.PREFILTER)
@@ -431,6 +434,65 @@ def backlog_corpus(mid):
                                      "documents_scanned": scanned, "documents_named": len(rows)}))
     print(mid, ":", len(names), "vendeurs ;", len(d), "documents dans la période ;", scanned, "en cache ;", len(rows),
           "nomment un terme de carnet")
+
+
+def values_corpus(mid):
+    """Source `edge_values` (D-0068, point 15) : les blocs lus qui portent une arête de valeur, arête commerciale du
+    client vers le vendeur (engagement d'achat ou bail de capacité), montant en USD, niveau A à D, au stade `signed` ou
+    `available`, tirée d'une ligne déposée par le vendeur lui-même (tables du dernier assemblage). Le texte du bloc tient
+    lieu de document (`source: block`) ; les citations de ses lignes font les paragraphes qualifiants. Aucune requête."""
+    from . import reader
+    spec = specs()[mid]
+    _, docs_path, info_path = _paths(mid)
+    groups = set(config.load()["groups"])
+    ln = pd.read_parquet(config.ROOT / "tables" / "links.parquet",
+                         columns=["link_key", "link_kind", "family", "edge_type", "from_group", "to_group", "amount", "unit",
+                                  "stage", "tier", "elimination_status", "evidence_keys"])
+    e = ln[(ln["link_kind"] == "edge") & (ln["family"] == "commercial")
+           & ln["edge_type"].isin(["purchase_commitment", "capacity_lease"]) & ln["amount"].notna() & (ln["unit"] == "USD")
+           & ln["tier"].isin(["A", "B", "C", "D"]) & ln["stage"].isin(["signed", "available"])
+           & (ln["elimination_status"] != "eliminated") & ln["to_group"].isin(groups) & ln["from_group"].notna()
+           & (ln["from_group"] != ln["to_group"])]
+    ob = pd.read_parquet(config.ROOT / "tables" / "observations.parquet",
+                         columns=["obs_key", "content_key", "group_id", "quote"]).set_index("obs_key")
+    quotes, edges = {}, {}
+    for r in e.itertuples(index=False):
+        for k in json.loads(r.evidence_keys or "[]"):
+            if k not in ob.index or ob.at[k, "group_id"] != r.to_group:     # ligne déposée par le vendeur lui-même
+                continue
+            ck = ob.at[k, "content_key"]
+            quotes.setdefault(ck, set()).add(ob.at[k, "quote"])
+            edges.setdefault(ck, set()).add(r.link_key)
+    catalog = {b["content_key"]: b for b in reader.load_catalog()}
+    rows = []
+    for ck in sorted(quotes):
+        b = catalog.get(ck)
+        if b is None:
+            continue
+        rows.append({"adsh": b["accession"], "file": f"block:{ck}", "block_key": ck, "form": b.get("form"),
+                     "file_type": b.get("exhibit_type"), "file_date": str(b.get("filing_date"))[:10],
+                     "cik": str(b["cik"]).zfill(10), "items": b.get("item"), "group_id": b["group_id"],
+                     "filer": b.get("filer_name") if isinstance(b.get("filer_name"), str) else b["group_id"],
+                     "tier": b.get("tier"), "assurance_level": b.get("assurance_level"),
+                     "filing_status": b.get("filing_status"), "quotes": json.dumps(sorted(quotes[ck]), ensure_ascii=False),
+                     "edges": json.dumps(sorted(edges[ck])), "source": "block", "queries": "", "state": "cached"})
+    pd.DataFrame(rows).to_parquet(docs_path, index=False)
+    info_path.write_text(json.dumps({"source": "edge_values", "value_edges": int(len(e)),
+                                     "edges_filed_by_seller": sum(len(v) for v in edges.values()), "blocks": len(rows)}))
+    print(mid, ":", len(e), "arêtes de valeur ;", sum(len(v) for v in edges.values()), "tirées d'une ligne du vendeur ;",
+          len(rows), "blocs lus")
+
+
+def quote_test(quotes):
+    """Un paragraphe qualifie s'il contient l'une des citations, ou s'il est contenu dans une citation qui court sur
+    plusieurs paragraphes (même normalisation que la validation des citations)."""
+    from . import textnorm
+    qs = [textnorm.norm_for_match(q).lower() for q in quotes if isinstance(q, str) and q.strip()]
+
+    def t(p):
+        n = textnorm.norm_for_match(p).lower()
+        return any(q in n or (len(n) > 40 and n in q) for q in qs)
+    return t
 
 
 # section des facteurs de risque (§14 : une mention n'y fait jamais une unité ; D-0058, point 3)
@@ -778,6 +840,8 @@ def _prepare_one(mid, spec, groups_by_cik):
         paras = paragraphs(text)
         if spec.get("source") == "backlog":      # un client du vendeur et un terme de carnet (D-0068, point 6)
             rx = backlog.qualifier(client_names.get(d["group_id"], ()), spec.get("vocabulary") or backlog.VOCAB)
+        elif spec.get("source") == "edge_values":  # paragraphes qui portent une arête de valeur (D-0068, point 15)
+            rx = quote_test(json.loads(d.get("quotes") or "[]"))
         elif spec.get("party_chars") or spec.get("require"):
             rx, d["party"] = qualifier(d, spec, text)
         else:
@@ -804,6 +868,13 @@ def _prepare_one(mid, spec, groups_by_cik):
                 continue
             units.append((d, k, "\n".join(paras[a:b]), how, "complete" if comp else None))
     units.sort(key=lambda u: _order_key(u[0], u[1], spec, u[2]))
+    if spec.get("source") == "edge_values":
+        # une fenêtre qui reprend tout son bloc lu en aurait la clé : une ligne en tête la nomme (D-0068, point 15)
+        from . import reader
+        known_keys = {b["content_key"] for b in reader.load_catalog() if b.get("montage") != mid}
+        units = [(d, k, (f"[D-0068, point 15 : paragraphes du bloc {d['block_key'][:12]}]\n" + text)
+                  if blocks.content_key(text, []) in known_keys else text, how, reading)
+                 for d, k, text, how, reading in units]
     if spec.get("dedupe"):           # un texte distinct se lit une fois (D-0049, point 11)
         seen, kept, dup = set(), [], []
         # D-0067 : une fenêtre dont le texte est déjà un bloc d'un autre catalogue ou montage n'est pas servie ; ses
@@ -900,11 +971,11 @@ def exclusions(as_of):
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
         terms = " », « ".join(t.get("label") or re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
-        if spec.get("source") in ("corpus", "tagged", "lab_corpus", "backlog"):
+        if spec.get("source") in ("corpus", "tagged", "lab_corpus", "backlog", "edge_values"):
             # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
             # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
             # plafond, une fenêtre reste à lire
-            pt = {"tagged": 4, "lab_corpus": 4, "backlog": 6}.get(spec.get("source"), 3)   # D-0060, D-0058, D-0067, D-0068
+            pt = {"tagged": 4, "lab_corpus": 4, "backlog": 6, "edge_values": 15}.get(spec.get("source"), 3)   # D-0060, D-0058, D-0067, D-0068
             for d in info.get("risk_factors") or []:
                 ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
                    f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point {pt})", d["adsh"])
@@ -967,6 +1038,8 @@ if __name__ == "__main__":
         lab_corpus(sys.argv[2])
     elif cmd == "backlog_corpus":
         backlog_corpus(sys.argv[2])
+    elif cmd == "values_corpus":
+        values_corpus(sys.argv[2])
     elif cmd == "prepare":
         prepare(sys.argv[2] if len(sys.argv) > 2 else None)
     elif cmd == "retier":

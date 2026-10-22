@@ -128,15 +128,40 @@ def carnet_lines(obs, resolve):
     return out
 
 
-class Inputs:
-    """Faits balisés et lignes de carnet, par (vendeur, client) ; dénominateurs publiés, par (groupe, date, vue)."""
+def known_values(edges):
+    """Contrats qu'une arête de valeur fait connaître (point 15) : arête commerciale du client vers le vendeur,
+    engagement d'achat ou bail de capacité, montant en USD, niveau A à D, au stade `signed` ou `available`, tirée d'une
+    ligne déposée par le vendeur lui-même. Renvoie des dictionnaires (vendeur, client, clé de contrat, date, arête) ;
+    une arête sans clé de contrat garde la sienne (`link:`), qu'aucune ligne de carnet ne peut couvrir."""
+    out = []
+    for l in edges:
+        o = l.get("_obs") or {}
+        if l.get("family") != "commercial" or l.get("edge_type") not in ("purchase_commitment", "capacity_lease"):
+            continue
+        if l.get("amount") is None or l.get("unit") != "USD" or l.get("tier") not in ("A", "B", "C", "D"):
+            continue
+        if l.get("stage") not in ("signed", "available") or l.get("elimination_status") == "eliminated":
+            continue
+        if not l.get("to_group") or o.get("group_id") != l["to_group"] or l.get("from_group") in (None, l["to_group"]):
+            continue
+        out.append({"group_id": l["to_group"], "counterparty": l["from_group"],
+                    "instrument_key": l.get("instrument_key") or "link:" + l["link_key"],
+                    "date": contract_date(o), "link_key": l["link_key"], "knowledge_date": o.get("knowledge_date")})
+    return out
 
-    def __init__(self, tagged=(), lines=(), rpo_cells=(), rpo12_cells=(), lease_cells=()):
-        self.tagged, self.lines = defaultdict(list), defaultdict(list)
+
+class Inputs:
+    """Faits balisés, lignes de carnet et contrats connus par une arête de valeur, par (vendeur, client) ;
+    dénominateurs publiés, par (groupe, date, vue)."""
+
+    def __init__(self, tagged=(), lines=(), rpo_cells=(), rpo12_cells=(), lease_cells=(), known=()):
+        self.tagged, self.lines, self.known = defaultdict(list), defaultdict(list), defaultdict(list)
         for f in tagged:
             self.tagged[(f["group_id"], f["counterparty"])].append(f)
         for o in lines:
             self.lines[(o["group_id"], o["_client"])].append(o)
+        for k in known:
+            self.known[(k["group_id"], k["counterparty"])].append(k)
 
         def by(cs):
             return {(c["subject"], c["period_end"], c["view"]): c for c in cs}
@@ -165,10 +190,10 @@ def _computed(c):
     return c is not None and c.get("status") == "computed" and c.get("value") is not None
 
 
-def other_contracts(lines, t, excluded):
-    """Contrats de S avec C, signés à t au plus tard, que les lignes de carnet font paraître, hors de ceux que les
-    exclusions visent (par leur clé de contrat). Une valeur de contrat, une hausse ou une inclusion sans clé compte
-    pour un contrat ; un reste sans clé ne nomme aucun contrat."""
+def other_contracts(lines, t, excluded, known=()):
+    """Contrats de S avec C, signés à t au plus tard, que les lignes de carnet ou les arêtes de valeur (point 15) font
+    paraître, hors de ceux que les exclusions visent (par leur clé de contrat). Une valeur de contrat, une hausse ou une
+    inclusion sans clé compte pour un contrat ; un reste sans clé ne nomme aucun contrat."""
     keys = {o.get("instrument_key") for o in excluded if o.get("instrument_key")}
     out = set()
     for o in lines:
@@ -178,7 +203,14 @@ def other_contracts(lines, t, excluded):
         if (contract_date(o) or t) > t or (k and k in keys):
             continue
         out.add(k or "obs:" + o["obs_key"])
+    out |= {k["instrument_key"] for k in known if (k["date"] or t) <= t and k["instrument_key"] not in keys}
     return out
+
+
+def uncovered(lines, known, t):
+    """Arêtes de valeur datées de t au plus tard dont le contrat n'a aucune ligne de carnet (point 15)."""
+    keys = {o.get("instrument_key") for o in lines if o.get("instrument_key")}
+    return sorted({k["link_key"] for k in known if (k["date"] or t) <= t and k["instrument_key"] not in keys})
 
 
 def _term(o, value):
@@ -216,7 +248,7 @@ def dependency_cells(I, s, c, t, view, as_of, cut, buys, at="fiscal_year_end"):
         num, term, src = bal["value"], _term(bal, bal["value"]), "tagged_customer_rpo"
     elif rem is not None:
         num, term, src = Decimal(str(rem["amount"])), _term(rem, rem["amount"]), "line_remaining"
-    elif exc and not other_contracts(lines, t, exc):
+    elif exc and not other_contracts(lines, t, exc, _known(I.known.get((s, c), []), cut)):
         num, term, src = Decimal(0), _term(exc[0], 0), "line_excluded"
     den_total = I.rpo.get((s, pe, view))
     out = []
@@ -247,15 +279,20 @@ def dependency_cells(I, s, c, t, view, as_of, cut, buys, at="fiscal_year_end"):
 
 # -- volet 3 : contracted_backlog_share (point 5) ---------------------------------------------------------------
 
-def upper_value(lines, t):
+def upper_value(lines, t, known=()):
     """Valeur publiée qui majore ce que C doit encore à S à t (point 5) : la dernière valeur totale des contrats de S
-    avec C datée de t au plus tard ; à défaut, la somme, sur les contrats signés à t au plus tard, de la dernière valeur
-    de chaque contrat et des hausses qui la suivent, si chaque contrat que les lignes font paraître à t a une valeur.
-    Une hausse sans clé de contrat ne s'attache à aucune valeur et ne majore rien. Renvoie (valeur, lignes) ou None."""
+    avec C datée de t au plus tard, si aucun contrat connu (lignes ou arêtes de valeur, point 15) n'est daté après elle ;
+    à défaut, la somme, sur les contrats signés à t au plus tard, de la dernière valeur de chaque contrat et des hausses
+    qui la suivent, si chaque contrat que les lignes font paraître à t a une valeur. Une hausse sans clé de contrat ne
+    s'attache à aucune valeur et ne majore rien. Renvoie (valeur, lignes) ou None."""
     tot = [o for o in lines if o["backlog_statement"] == "total_contract_value" and (line_date(o) or t) <= t]
     if tot:
         o = max(tot, key=lambda o: (line_date(o) or t, str(o.get("knowledge_date")), o["obs_key"]))
-        return Decimal(str(o["amount"])), [o]
+        td = line_date(o) or t
+        dates = [contract_date(x) for x in lines if x["backlog_statement"] in ("contract_value", "change")] + \
+                [k["date"] for k in known]
+        if not any(d and td < d <= t for d in dates):
+            return Decimal(str(o["amount"])), [o]
     by = defaultdict(list)
     for o in lines:
         k = o.get("instrument_key")
@@ -310,10 +347,10 @@ def share_cells(I, quarter_ends, as_of):
                              if o["backlog_statement"] == "included_no_amount" and ds(o.get("period_end")) == pe)
                 fl = dict(base, **({"included_no_amount": inc} if inc else {}))
 
-                def nd(reason, basis=None):
+                def nd(reason, basis=None, **extra):
                     return cell("contracted_backlog_share", s, None, t, "as_known", as_of, counterparty=c, term=tm,
                                 status="not_determinable", nd_reason=reason,
-                                flags=dict(fl, **({"basis": basis} if basis else {})))
+                                flags=dict(fl, **({"basis": basis} if basis else {}), **extra))
                 den = dens.get((s, pe, "as_known"))
                 if not _computed(den) or Decimal(str(den["value"])) <= 0:
                     out.append(nd((den or {}).get("nd_reason") or "not_disclosed", "dénominateur non publié à cette date"))
@@ -333,12 +370,19 @@ def share_cells(I, quarter_ends, as_of):
                                     value=num / dv, numerator=num, denominator=dv, unit="pure", terms=[_term(src, num)],
                                     flags=dict(fl, source="tagged_customer_rpo" if bal is not None else "line_remaining")))
                     continue
-                if exc and not other_contracts(ls, t, exc):
+                known = I.known.get((s, c), [])
+                if exc and not other_contracts(ls, t, exc, known):
                     out.append(cell("contracted_backlog_share", s, None, t, "as_known", as_of, counterparty=c, term=tm,
                                     value=Decimal(0), numerator=Decimal(0), denominator=dv, unit="pure",
                                     terms=[_term(exc[0], 0)], flags=dict(fl, source="line_excluded")))
                     continue
-                ub = upper_value(ls, t)
+                # garde du point 15 : un contrat connu par une arête de valeur, sans ligne de carnet, interdit la somme
+                miss = uncovered(lines, known, t)
+                if miss:
+                    out.append(nd("not_disclosed", "contrat connu par une arête de valeur, sans ligne de carnet",
+                                  uncovered_edges=miss))
+                    continue
+                ub = upper_value(ls, t, known)
                 if ub is None:
                     out.append(nd("not_disclosed", "aucun reste ni aucune valeur de contrat qui le majore"))
                     continue
@@ -363,6 +407,7 @@ VOCAB = (r"remaining performance obligations?|\bRPOs?\b|unsatisfied performance 
 PREFILTER = rb"(?i)performance obligation|\bRPO|contract(?:ed|ual)? (?:revenue|value)|total contract|aggregate|lease payments|backlog"
 FORMS = ("10-K", "10-K/A", "10-KT", "10-KT/A", "10-Q", "10-Q/A", "8-K", "8-K/A", "S-1", "S-1/A", "424B3", "424B4",
          "20-F", "20-F/A", "40-F", "40-F/A")
+EX99_FILE = r"ex-?99|exhibit-?99"      # pièce EX-99 sans type au registre des documents (point 15)
 
 
 def sellers(links, groups):

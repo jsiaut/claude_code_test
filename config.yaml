@@ -2051,6 +2051,20 @@ montages:
     dedupe: true                      # un texte distinct se lit une fois ; servies des plus anciennes aux plus récentes
     evidence: registry
     cap: 100000
+  backlog_values:                     # D-0068, point 15 : paragraphes déjà lus qui portent une arête de valeur d'un vendeur
+    decision: D-0068
+    source: edge_values               # blocs lus (texte du bloc), citations des lignes du vendeur ; aucune requête
+    period: ["2019-01-01", "2026-10-07"]
+    terms:                            # libellé des exclusions ; la qualification passe par les citations des arêtes de valeur
+      - {rx: '\bcommitted to pay\b', label: "paragraphe qui porte une arête de valeur du vendeur"}
+    noted_terms: ['\b[Tt]otal contract value\b', '\b[Cc]ommitted to pay\b', '\b[Cc]ontract value\b', '\bRPOs?\b',
+                  '\b[Rr]emaining performance obligations?\b', '\b[Bb]acklog\b', '\b[Ll]ease\b']
+    window: 1                         # un paragraphe de part et d'autre, dans le bloc lu
+    complement: all                   # tout est déjà lu : lecture complémentaire, lignes de carnet seulement
+    skip_read: true
+    dedupe: true
+    evidence: registry                # niveau du bloc lu, tel quel
+    cap: 100000
 
 nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
   decision: D-0058
