@@ -3129,3 +3129,56 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - E.7 : « discrimination possible », inchangé ; 166 issues au lieu de 162, dont 93 indéterminées (91), soit 56,0 %. E.1 : 5 « étayé » (3), 68 « non étayé », 10 indéterminées.
   - Contrôles : règle d'arrêt non atteinte (Apollo seul, 22 périodes en échec sur 909) ; doublons de clé primaire de `measures` : 688 lignes écartées (668), dont 239 clés en collision (229), toutes de `lease_not_commenced_bridge`, comme au point 12 de D-0069. Taille des huit tables : 62,6 Mo.
   - Tests : 324, tous réussis, dont `tests/test_d0070.py` (points de conduite, entités de Fluidstack) ; deux tests de D-0059 et de D-0064 suivent le rattachement des entités de Fluidstack.
+
+- **D-0071 — Deux pistes : déclarations de détention (13F, 13D, 13G) et prix des obligations tirés de N-PORT (Oracle, CoreWeave, Beignet). Règles fixées avant tout tirage.**
+  (1) Proposition de l'utilisateur, le 2026-10-22 : « Deux pistes qui coûtent peu, restent dans les dépôts SEC et comblent un vrai manque ». Première piste, les déclarations de détention d'actions (13F, 13D, 13G) : « Elles diraient quand un groupe entre dans le capital d'une société cotée et quand il en sort, donc quand le statut « financé » se ferme. » Elles ne couvrent rien avant l'introduction en bourse : pour NVIDIA → CoreWeave, « il faudrait lire le tableau des principaux actionnaires dans le prospectus de CoreWeave ». Seconde piste, le prix des obligations tiré de N-PORT, étendu « avec le code existant, aux obligations d'Oracle, de CoreWeave et du véhicule qui finance le centre de données Hyperion de Meta (Beignet) ». Le constat qui suit est fait sans calcul, sur les tables de 1d248f6 et le cache. Les décisions laissées en attente par D-0069 et D-0070 (dont les 83 notes hors du catalogue) le restent.
+
+  (2) Constat :
+  - Aucune déclaration 13F, 13D ou 13G n'est lue. Les submissions en cache en portent :
+    - 13F-HR : NVIDIA 11 (depuis le 2024-02-14), Alphabet 51 (depuis le 2022-11-15), Amazon 23 (depuis le 2021-02-11), AMD 3, Galaxy 2, Blackstone 75 et Intel 113, plus des amendements ;
+    - 13D et 13G : chez tous les groupes, qu'ils les déposent ou qu'elles portent sur eux, sans que les submissions disent lequel.
+  - NVIDIA → CoreWeave vaut `never` à chaque trimestre jusqu'au 2025-01-26, puis `active`.
+    - Le tableau des principaux actionnaires du 424B4 de CoreWeave (2025-03-31) donne à NVIDIA 17 932 460 actions de classe A au 15 mars 2025, soit 5,96 % du capital. Le tableau de la série B de l'Item 404 ne nomme que Magnetar, et aucune pièce en cache ne date l'entrée d'avril 2023.
+    - Le 15 mars 2025 tombe dans le trimestre de NVIDIA clos le 2025-04-27, déjà `active` : lire ce tableau ne change aucun trimestre.
+    - Pour les deux autres introductions récentes, le tableau de SpaceX (au 1er mai 2026) ne nomme pas Alphabet, et Alphabet → SpaceX reste `never` jusqu'au 2026-03-31. Celui de Cerebras (au 31 mars 2026) ne nomme aucun groupe.
+    - Ces tableaux ne sont donc pas lus.
+  - La condition (a) de §3.2 veut un instrument « acquis par une opération primaire ». Une position de 13F, un 13D ou un 13G, ou une ligne de tableau d'actionnaires, prouvent une détention à une date, pas son origine.
+  - Prix au nominal : `nport_price_to_par` compte 1 092 cellules, toutes de SoftBank. `nport_credit_mark` (D-0066) ne prend que le niveau 3 : 29 cellules de CoreWeave (prêts des véhicules CCAC, notes privées de 2023-2024) et 1 de Beignet. Les extraits de D-0065 portent 94 positions en titres de dette de Beignet Investor LLC, aucune obligation d'Oracle ni de CoreWeave, Inc.
+
+  (3) Volet A, déclarations de détention, sans lecture de texte :
+  - Paires : celles du statut « financé » dont S est un groupe et C un déclarant (un groupe, ou une contrepartie qui porte un CIK), hors intragroupe, avec au moins une arête de financement en titres (`equity_primary`, `convertible_or_safe`, `noncash_investment`). Il y en a 18 :
+    - Amazon → Rivian ; Alphabet → Cipher, ADT, Planet Labs, SpaceX et TeraWulf ;
+    - Intel → ASML et Micron ; Microsoft → General Motors ; Micron → Intel ;
+    - NVIDIA → CoreWeave, Intel, IREN et Nebius ;
+    - Blue Owl → Blue Owl Real Estate Net Lease Trust ; Supermicro → Applied Digital ; TSMC → Intel et SoftBank (Arm Holdings plc).
+  - 13F : les 13F-HR et 13F-HR/A des financeurs qui en déposent (Amazon, Alphabet, Intel, NVIDIA), déposés du 2019-01-01 à l'as_of. Pour chacun, l'index, la page de couverture et la table d'information XML.
+    - Une ligne de C : l'émetteur commence par une dénomination légale d'une entité de C (règle des BDC, D-0022), puis toute ligne au même préfixe CUSIP de six caractères, si ce préfixe ne désigne que C. Options exclues, actions seulement (`SH`).
+    - Valeurs en dollars, en milliers avant le 2023-01-03 (règle de la SEC). Un amendement `RESTATEMENT` remplace le dépôt ; un amendement `NEW HOLDINGS` ajoute ses lignes.
+  - 13D et 13G : les formulaires SC 13D, SC 13G, SCHEDULE 13D et SCHEDULE 13G, amendements compris, dont l'accession figure à la fois dans les submissions de S (déclarant) et de C (émetteur).
+    - Submissions en cache à l'as_of pour les groupes ; tirées une fois pour les six contreparties.
+    - Se lisent sur la page de couverture : les actions détenues, la part de la catégorie et la date de l'événement. La forme XML (depuis le 2024-12-18) se lit par ses champs, la forme HTML antérieure par le gabarit de la page de couverture. Ce qui ne se lit pas est exclu et compté.
+  - Mesures, descriptives, à la perspective du déclarant :
+    - `ownership_position` : actions de C que S déclare au 13F, par date de portefeuille, avec la valeur déclarée ;
+    - `ownership_stake` : part de la catégorie et actions déclarées au 13D ou au 13G, à la date de l'événement.
+    - Ni l'une ni l'autre n'entre dans le revenu, l'exposition, les paires ni l'annexe F.
+  - Effet sur le statut « financé » :
+    - une position ne fait jamais naître la condition (a), faute d'opération primaire attestée (§3.2) ;
+    - une sortie publiée la clôt. Une sortie, c'est un 13F de S sans ligne de C après un 13F qui en portait, aucun des deux ne déclarant de traitement confidentiel et aucun amendement ne rétablissant la ligne ; ou un 13D ou un 13G de S sur C à zéro action.
+    - La sortie ferme les détentions en actions de la paire (`equity_primary`), à la date de portefeuille du 13F ou à la date de l'événement, connue à la date de dépôt. Les obligations convertibles, les bons et les prêts n'en sont pas fermés : un 13F ne porte que des titres cotés.
+
+  (4) Volet B, prix des obligations, sans changement de définition (D-0058, points 8 et 28) :
+  - Nœuds : Oracle (`ORCL`), CoreWeave (`CRWV`) et Beignet Investor LLC (`CP:beignet investor llc`).
+  - Émetteur : la forme normalisée du nom commence par « oracle corp », « coreweave » ou « beignet investor ». À défaut, un LEI relevé avec un tel nom et accepté par la majorité, comme pour SoftBank. Par titre, la majorité des positions porte un tel nom et une au moins un intitulé qui contient « ORACLE », « COREWEAVE » ou « BEIGNET ».
+    - Cette règle écarte « VANTAGE ORACLE TX » et « ORACLE VISION HOLDCO ». Elle garde les titres des filiales de CoreWeave (CCAC IV et suivantes), qui sont des dettes de son groupe.
+  - Positions : titres de dette en nominal (DBT, PA), longues, identifiées par ISIN ou CUSIP, au dernier dépôt de chaque série pour la date, tous niveaux de juste valeur confondus. La mesure de niveau 3 de D-0066 reste telle quelle.
+  - Source : les 28 archives des Form N-PORT Data Sets (2019q4 à 2026q3, 11,9 Go), tirées une troisième fois, scannées pour ces trois émetteurs (extraits sous `bonds/`), puis effacées. Une archive publiée après l'as_of est écartée.
+  - Publié avec chaque valeur : le nominal, le nombre de séries, la monnaie, l'intitulé, l'échéance et le coupon. Perspective `counterparty` : une tension de marché déclarée par des tiers, jamais une probabilité de défaut, hors du financement, de l'exposition, des paires, des cycles et de l'annexe F.
+  - Le code de SoftBank ne change pas : ses 1 092 cellules doivent ressortir à l'octet près.
+
+  (5) Ordre et commits :
+  - la décision ;
+  - le code et les tests des deux volets ;
+  - le tirage de N-PORT, puis son volume consigné ici avant calcul ;
+  - les tirages du volet A (submissions, 13F, 13D et 13G), puis leur volume consigné ici avant calcul ;
+  - l'intégration : réassemblage, rendus, résultats, tests, commit, push, rapport.
+  - Réseau : un seul processus à la fois, environ 28 archives et quelques centaines de requêtes.
