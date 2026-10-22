@@ -208,13 +208,22 @@ _GAP = r"(?:\s|" + _ENT + r"|<[^>]*>)+"
 _TAGS = r"(?:<[^>]*>)*"
 
 
+_RUN = 5          # suite d'au moins cinq fois le même signe : points de conduite d'un tableau (D-0070)
+
+
 def _word_pattern(word):
     parts = []
-    for ch in word:
-        if ch.isalnum():
-            parts.append(re.escape(ch))
-        else:
-            parts.append(r"(?:" + _ENT + r"|<[^>]*>|[^\w\s<>]){1,3}")
+    for m in re.finditer(r"(.)\1*", word, re.S):
+        run = m.group(0)
+        if len(run) >= _RUN and re.match(r"[^\w\s<>]", run[0]):
+            # un groupe par signe ferait exploser le retour arrière : la suite se cherche d'un bloc
+            parts.append(r"(?:" + _ENT + r"|<[^>]*>|[^\w\s<>])+")
+            continue
+        for ch in run:
+            if ch.isalnum():
+                parts.append(re.escape(ch))
+            else:
+                parts.append(r"(?:" + _ENT + r"|<[^>]*>|[^\w\s<>]){1,3}")
     # un nom peut être coupé par une balise (§9.2)
     return _TAGS.join(parts)
 

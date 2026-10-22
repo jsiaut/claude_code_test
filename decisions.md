@@ -3091,3 +3091,9 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Règle : un bloc du catalogue d'un groupe ajouté dont la note (même dépôt, même élément) a déjà été lue par la découverte ne se relit pas.
   - À lire : 14 blocs, 45 933 caractères, liste `grp_cbrs`. Ce sont l'Item 4 des deux 10-Q, l'item 8.01 du 8-K de clôture et l'Item 404 du 424B4, puis 10 notes : 4 du 10-Q du 2026-08-12 et 6 de celui du 2026-06-24.
   - Découverte d'origine (point 6) : 59 blocs déjà lus, 13 par la découverte et 46 par le montage des laboratoires. Les 19 unités encore en file en sortent au réassemblage.
+
+  (12) Localisation des citations, amendement pendant la lecture (2026-10-22) :
+  - L'Item 404 du 424B4 donne les achats des actionnaires de plus de 5 % en lignes de tableau, le libellé suivi de points de conduite (« Entities affiliated with Fidelity(4) ...... | 19,319,724 | $699,999,968 »). Le motif de localisation (`textnorm._word_pattern`) faisait un groupe par signe : sur une suite de 68 points, le retour arrière explosait et le dépôt des lignes du bloc ne finissait pas.
+  - Règle : une suite d'au moins cinq fois le même signe de ponctuation se cherche d'un seul groupe ; les autres mots gardent leur motif.
+  - Vérifié avant tout dépôt : le motif est identique pour les 25 741 citations déjà lues. Huit portent des suites de « _ », caractère de mot que la classe de ponctuation ne reconnaît pas : elles gardent leur motif. Test : `tests/test_d0070.py`.
+  - Les citations restent mot pour mot, points compris : l'audit (annexe C) veut une citation qui nomme la contrepartie et le montant, et une ligne de tableau ne relie les deux que par ses points.
