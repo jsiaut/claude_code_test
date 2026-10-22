@@ -3012,3 +3012,56 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Règle d'arrêt : aucun refus 403 au journal. Apollo est le seul groupe dont plus de la moitié des périodes testées sont en échec, avec 22 périodes en échec sur 904 au total ; il n'y a donc pas d'arrêt.
   - Taille : les huit tables passent de 123,3 à 62,6 Mo, dont `facts.parquet` de 100,0 à 50,7 Mo.
   - Tests : 321, tous réussis.
+- **D-0070 — Ajout de groupes : Cerebras Systems (CBRS) ; Fluidstack, groupe économique non déposant (§10.4). Règles fixées avant tout tirage.**
+  (1) Décision de l'utilisateur, le 2026-10-22 : « On verra plus tard, pour l'instant ajoute Cerebras et Fluidstack au modèle ». Elle suit le rapport de D-0069 (commit 9747107) ; les décisions que D-0069 (point 10) laisse à l'utilisateur restent en attente. Lecture séquentielle par l'exécutant, sans sous-agent.
+
+  (2) Statut lu avant tout tirage, sans aucune requête, dans `company_tickers.json` du 2026-10-07 et dans la liste des noms d'EDGAR du 2026-10-09, déjà en cache :
+  - Cerebras : CBRS résout le CIK 2021728 (Cerebras Systems Inc.). Cerebras entre comme groupe complet (`groups`, `group_entry` au 2026-10-22).
+    - La découverte (§14) connaît déjà ses dépôts : le S-1 du 2024-09-30 (0001628280-24-041596, première tentative), le S-1 du 2026-04-17 (0001628280-26-025762), le S-1/A du 2026-05-04 (0001628280-26-029503) et deux 10-Q, déposés le 2026-06-24 (0001628280-26-044981) et le 2026-08-12 (0001628280-26-056357).
+    - La phase 0 lit tous ses dépôts. La prise d'effet, le 424B4, le premier 10-Q et les exercices présentés par le document d'enregistrement fixent `reporting_start` (Reg S-X 3-01 et 3-02), comme pour CoreWeave et SpaceX. Cerebras reçoit `history_left_censored` si son premier dépôt suit le début de lecture.
+    - L'exécution garde l'as_of du 2026-10-07 (D-0048, point 2).
+  - Fluidstack n'a aucune entrée dans `company_tickers.json`, donc aucun titre coté à l'as_of. La liste des noms d'EDGAR donne FLUIDSTACK LTD (CIK 2104151), un CIK de 2026 comme celui de NSCALE Ltd (2110365).
+    - Fluidstack entre comme groupe économique non déposant `NF:FLUIDSTACK` (§10.4), sur le modèle de Lambda et de Nscale (D-0054) : Fluidstack Ltd et ses filiales consolidées. Ce n'est pas un laboratoire.
+    - Le statut se vérifie sur les submissions de FLUIDSTACK LTD et des CIK que la recherche fait apparaître. Un document d'enregistrement public déposé avant l'as_of entre dans la piste comme texte propre du groupe et se lit en entier (D-0054, point 13). Un rapport périodique déposé avant l'as_of fait revoir la règle ici, avant toute lecture.
+    - Comme pour un laboratoire, la recherche est alors complète du côté de Fluidstack, pour une paire (E.0) comme pour un cycle (bloc `paths`).
+  - La liste des noms donne aussi une trentaine de véhicules de fonds qui portent le nom de l'une des deux sociétés : séries « Hiive Cerebras » et « HII Cerebras », séries de CGF2021 LLC (dont « Thesiger Fluidstack Fund » 1 et 2), « Fluidstack SPV Jan 2026 II » de SC2025 AI LLC, « ZDN VC LLC - Series Fluidstack », « 7GC & Co. Opportunity Partners, Fluidstack LLC », et d'autres. Ce sont des actionnaires, pas des entités des groupes : ils n'y entrent pas. Leurs Form D ne se lisent pas, car le bloc `form_d` ne prend ni Cerebras ni Fluidstack pour sous-jacent (D-0054, point 8).
+
+  (3) Cerebras : mêmes phases et mêmes règles de lecture que les groupes présents (D-0043, D-0048, D-0052 à D-0057).
+  - Inventaire, archives XBRL, catalogue des notes, des items et des pièces, puis lecture complète du texte. Les clôtures se lisent en phase 0 sur `period_end`.
+  - Introduction récente : les états annuels et l'Item 404 se lisent dans le 424B4 (phase 2), comme pour SpaceX et CoreWeave.
+  - Les pièces d'un document d'enregistrement ne sont pas au catalogue d'un groupe ; les en-têtes d'EX-10 des S-1 que la découverte a déjà lus restent tels quels. Le catalogue prend les pièces des 8-K, comme pour tout groupe.
+
+  (4) Ruptures d'historique : règle de D-0052, point 5, vérifiée en phase 0 sur la liste des dépôts et, en cas de doute, par un extrait cité. Aucune n'est attendue : le CIK porte le même déclarant depuis 2024.
+
+  (5) Filiales : la règle de D-0050 (points 3 à 7) s'applique aux véhicules des deux groupes nommés dans les lignes, y compris dans celles des autres groupes et dans les positions des BDC. Elle s'applique à l'intégration, après la lecture.
+
+  (6) Découverte d'origine (D-0043, point 6) :
+  - les lignes déjà lues pour Cerebras vont à son groupe. Ce sont celles de la découverte (notes du 10-Q du 2026-08-12, en-têtes d'EX-10 du S-1 de 2024 et des S-1 et S-1/A de 2026) et celles du montage des laboratoires (D-0059 : paragraphes du S-1, du S-1/A et du 10-Q). Les en-têtes de pièces de même clé de contenu ne se relisent pas ;
+  - ses 19 unités encore en file en sortent (`out_of_scope`), car ses dépôts se lisent par le catalogue du groupe ;
+  - côté client, la recherche reste incomplète pour un fournisseur que le lexique de la découverte ne nommait pas (`search_incomplete`). Le lexique, le classement, la file et l'état de lecture de la découverte d'origine ne changent pas (D-0036).
+
+  (7) Fluidstack, niveau 1 : entités réunies par extraits (§10.2, D-0021), comme pour SoftBank (D-0044, points 3 et 7).
+  - La tête du groupe (Fluidstack Ltd) et ses filiales n'y entrent que sur un extrait qui l'affirme, avec sa date (règles A et B de D-0044, point 7).
+  - Les lignes déjà lues qui nomment ces entités vont au groupe par ces extraits, à l'intégration. Il y en a chez TeraWulf (34), Cipher (24), Hut 8 (7) et IREN (2), et chez deux déposants de la découverte (Soluna Holdings, Willow Lane Acquisition Corp.).
+  - D'ici là, les entités déjà confirmées (Fluidstack Ltd., Fluidstack USA I à IV Inc., Fluidstack CS I Inc.) restent des contreparties propres.
+
+  (8) Fluidstack, niveau 2 : la piste des non-déposants (D-0044, points 4 et 5 ; D-0058, point 24) reçoit son terme, sans autre changement.
+  - Lexique de la piste : « Fluidstack », en mot entier, insensible à la casse (il prend aussi « FluidStack »), cible `NF:FLUIDSTACK`. Jamais « FS », ni « FS AB LLC » ou « FS CS I LLC » : ces sigles n'entrent au groupe que par extrait (point 7).
+  - Sources : les 47 archives des Notes Data Sets, retirées, scannées sous le lexique d'ensemble enrichi, puis effacées ; recherche plein texte du seul terme nouveau sur les formulaires racines des EX-10 (`search new`) ; vérification de chaque pièce sous le lexique d'ensemble. Pas de Form D.
+  - Candidats, classement et règle de lecture (R1, R2) : ceux de D-0044, point 5. Comme au point 24 de D-0058 :
+    - l'état des unités d'avant l'enrichissement est gardé une fois (`snapshot`) ; une unité connue garde sa règle, son rang et son état ;
+    - les unités que nul terme antérieur ne faisait naître forment une file à part, R1 puis R2, plafonnée à 300 ;
+    - une unité tirée d'un dépôt propre du groupe ne se lit pas (état `own_group`).
+  - Co-mentions : celles du lexique d'ensemble (groupes du lexique de la découverte, laboratoires, Stargate, non-déposants). Cerebras n'y figure pas (point 6).
+  - Au-delà du plafond, la lecture s'arrête à la 300e unité, et le rendement est présenté avant d'aller plus loin.
+
+  (9) Les lexiques déjà fixés ne changent pas : unités 6-K de D-0048 (point 9) et noms qualifiants de D-0057 (point 3), termes des montages, lexique de la découverte d'origine.
+
+  (10) Ordre et commits :
+  - la décision ;
+  - la configuration, la phase 0 et l'univers attendu ;
+  - l'index, les archives XBRL et les pièces (phases 0, 1 et 2, réseau en série) ;
+  - le catalogue et les listes de lecture, avec leur volume consigné ici avant toute lecture ;
+  - la piste des non-déposants (archives, recherche plein texte, pièces, statut de FLUIDSTACK LTD, candidats, unités retenues), avec son volume consigné ici avant toute lecture ;
+  - la lecture de Cerebras, puis celle des unités de Fluidstack, un commit par partie ;
+  - l'intégration : entités et filiales par extrait, noms au rendu, premier réassemblage, extraction refaite des BDC Data Sets (D-0043, point 14), second réassemblage, rendus, résultats ici, tests, commit, push, rapport.
