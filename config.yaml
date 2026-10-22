@@ -201,6 +201,17 @@ scope_history:               # décisions suivantes de l'utilisateur, dans l'ord
       annex_e_e7: {outcomes: 170, indeterminate: 96, result: discrimination_possible}
       fragility_events: 399
     execution: "sans sous-agent (consigne de l'utilisateur)"
+  - date: 2026-10-22
+    decision: "On verra plus tard, pour l'instant ajoute Cerebras et Fluidstack au modèle"
+    groups_added: [CBRS]         # puces et calcul d'IA, introduit en Bourse en 2026 ; date d'entrée : group_entry (D-0070)
+    non_filers_added: ["NF:FLUIDSTACK"]   # sans titre coté à l'as_of : piste des non-déposants (D-0044, D-0070)
+    page: "rapport de D-0069 dans la conversation (D-0070)"
+    yield_presented:             # état publié au commit 9747107, avant l'ajout
+      relationship_conclusions: {pairs: 250, documented_dependency: 10, commercial_with_financing: 26, reciprocal_commercial_only: 44, causality_not_established: 170}
+      documented_paths: {cycles: 108}
+      annex_e_e7: {outcomes: 162, indeterminate: 91, result: discrimination_possible}
+      fragility_events: 477
+    execution: "sans sous-agent (consigne de l'utilisateur)"
 window:
   start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
   include_interim: true
@@ -241,6 +252,7 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   TSM: "0001046179"          # émetteur privé étranger, 20-F et 6-K en IFRS (D-0056, point 5)
   ASML: "0000937966"         # ajouts du 2026-10-18 (D-0057) : équipements et mémoire, émetteurs privés étrangers
   SKHY: "0002120882"         # déclarant de 2026 (D-0057, point 2)
+  CBRS: "0002021728"         # ajout du 2026-10-22 (D-0070) : puces et calcul d'IA, introduit en Bourse en 2026
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -254,6 +266,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-17, groups: [OWL, APO, BX], basis: "D-0055, ajout de groupes de §14"}
   - {date: 2026-10-18, groups: [INTC, MU, TSM], basis: "D-0056, ajout de groupes de §14"}
   - {date: 2026-10-18, groups: [ASML, SKHY], basis: "D-0057, ajout de groupes de §14"}
+  - {date: 2026-10-22, groups: [CBRS], basis: "D-0070, ajout de groupes de §14"}
 
 group_frameworks:            # cadre comptable des états d'un groupe, s'il n'est pas US GAAP (invariant f, D-0056,
                              # point 5) : ses notes portent ce cadre, ses grandeurs se résolvent par concept_anchors_ifrs
@@ -371,6 +384,8 @@ reporting_start:             # début de l'obligation de publier, par fréquence
   SKHY:
     quarter: ["9999-12-31", "émetteur privé étranger : aucun rapport trimestriel déposé (Exchange Act, règle 13a-13 non applicable ; Form 6-K furnished) (D-0057)"]
     fiscal_year: ["2023-01-01", "424B4 0001193125-26-299963 du 2026-07-10 : exercices 2023 à 2025 présentés, états consolidés audités en IFRS publiées par l'IASB (Form 20-F, Item 8.A, par la Form F-1) ; aucun 20-F déposé avant l'as_of (D-0057, point 14)"]
+  CBRS:
+    quarter: ["2026-01-01", "EFFECT 9999999995-26-001616 du 2026-05-13, 424B4 0001628280-26-035214 du 2026-05-14 ; premier 10-Q 0001628280-26-044981 (trimestre clos le 2026-03-31) (D-0070)"]
 
 registration_text:           # document d'enregistrement qui tient lieu de rapports périodiques, sans instance XBRL
                              # financière : jeux de notes découpés en HTML, notes lues par familles de titres
@@ -401,6 +416,7 @@ non_filers:                  # autres groupes économiques non déposants (§10.
   - {name: Lambda, ref: "NF:LAMBDA"}     # D-0054 : sans titre coté à l'as_of
   - {name: Nscale, ref: "NF:NSCALE"}
   - {name: Samsung, ref: "NF:SAMSUNG"}  # D-0057 : sans titre coté à l'as_of ; Samsung Electronics Co., Ltd. et ses filiales consolidées
+  - {name: Fluidstack, ref: "NF:FLUIDSTACK"}  # D-0070 : sans titre coté à l'as_of ; Fluidstack Ltd et ses filiales consolidées
 
 lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
@@ -451,6 +467,7 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
       - {term: "Lambda Inc.", ref: "NF:LAMBDA", case_sensitive: true}
       - {term: "Lambda Labs", ref: "NF:LAMBDA", case_sensitive: true}
       - {term: Samsung, ref: "NF:SAMSUNG"}                         # D-0057, point 7
+      - {term: Fluidstack, ref: "NF:FLUIDSTACK"}                   # D-0070, point 8 ; jamais « FS » ni ses sigles
       # D-0058, point 24 : noms distinctifs des entités rattachées à NF:SOFTBANK (point 23), casse exacte,
       # mots entiers, avec leur date d'entrée ; jamais « Arm », « Ampere », « SVF », « Vision Fund », « SBG »
       - {term: "SVF II", ref: "NF:SOFTBANK", case_sensitive: true}
@@ -518,9 +535,10 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
       r1_co_mention: true    # unité qui nomme SoftBank et un groupe, un laboratoire ou Stargate : toutes
       r2_documented_amount: latest   # montant documenté : notes du dépôt le plus récent
       cap_units: 300         # au-delà, arrêt et rendement présenté
-      new_file:              # D-0058, point 24 : unités que nul terme antérieur ne faisait naître, file propre
-        decision: D-0058
-        prior: nf_discovery_units_before_d0058.parquet     # état des unités avant l'enrichissement (db/)
+      new_file:              # D-0070, point 8 (règle de D-0058, point 24) : unités que nul terme antérieur ne faisait
+                             # naître, file propre ; les unités de la file de D-0058 gardent leur étiquette
+        decision: D-0070
+        prior: nf_discovery_units_before_d0070.parquet     # état des unités avant l'enrichissement (db/)
         cap_units: 300
     own_filings:             # document d'enregistrement public de la tête d'un groupe non déposant (D-0054, point 13)
       - {ref: "NF:NSCALE", cik: "2110365", filer: "NSCALE Ltd", accession: "0001193125-26-395475", form: S-1,

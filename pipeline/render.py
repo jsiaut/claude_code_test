@@ -50,11 +50,11 @@ GROUP_NAMES = {"NVDA": "NVIDIA", "GOOGL": "Alphabet", "AMZN": "Amazon", "META": 
                "NBIS": "Nebius", "IREN": "IREN", "APLD": "Applied Digital", "DELL": "Dell", "SMCI": "Supermicro",
                "HUT": "Hut 8", "GLXY": "Galaxy", "AKAM": "Akamai", "BLZE": "Backblaze", "RIOT": "Riot",
                "OWL": "Blue Owl", "APO": "Apollo", "BX": "Blackstone", "INTC": "Intel", "MU": "Micron", "TSM": "TSMC",
-               "ASML": "ASML", "SKHY": "SK hynix"}
+               "ASML": "ASML", "SKHY": "SK hynix", "CBRS": "Cerebras"}
 NUM_FR = {11: "onze", 12: "douze", 13: "treize", 14: "quatorze", 15: "quinze", 16: "seize", 17: "dix-sept", 18: "dix-huit",
           19: "dix-neuf", 20: "vingt", 21: "vingt et un", 22: "vingt-deux", 23: "vingt-trois", 24: "vingt-quatre",
           25: "vingt-cinq", 26: "vingt-six", 27: "vingt-sept", 28: "vingt-huit", 29: "vingt-neuf", 30: "trente",
-          31: "trente et un", 32: "trente-deux"}
+          31: "trente et un", 32: "trente-deux", 33: "trente-trois"}
 
 
 def n_groups(cfg):
