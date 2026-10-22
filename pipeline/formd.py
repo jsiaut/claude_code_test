@@ -26,7 +26,7 @@ from decimal import Decimal, InvalidOperation
 
 import pandas as pd
 
-from . import cache, config, discovery, edgar, net
+from . import config, discovery, edgar, net
 from .graph import normalize_name
 from .links import relation
 from .measures import cell

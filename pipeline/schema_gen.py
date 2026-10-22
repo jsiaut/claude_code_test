@@ -66,7 +66,6 @@ TABLES = {
         ("precision_known", "BOOLEAN"),
         ("is_nil", "BOOLEAN"),
         ("is_fixed_zero", "BOOLEAN"),
-        ("fact_id", "VARCHAR"),
         ("locator", "VARCHAR"),
         ("is_tagged", "BOOLEAN NOT NULL"),
         ("tier", "tier"),

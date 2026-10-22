@@ -7,7 +7,6 @@ import datetime as dt
 import json
 from decimal import Decimal
 
-import duckdb
 import numpy as np
 import pandas as pd
 

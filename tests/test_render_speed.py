@@ -30,9 +30,9 @@ def base():
     con.execute((config.ROOT / "schema.sql").read_text(encoding="utf-8"))
 
     def m(subject, ps, pe, value, lineage=None, flags=None, measure="fcf_basic"):
-        con.execute(f"INSERT INTO measures (measure, subject, counterparty, period_start, period_end, view, as_of, term, "
-                    f"breakdown_key, financing_policy, constant_perimeter, variant, status, value, lineage, flags) VALUES "
-                    f"(?, ?, 'none', ?, ?, 'as_known', '2026-10-07', 'none', 'none', 'none', 'none', 'none', 'computed', ?, ?, ?)",
+        con.execute("INSERT INTO measures (measure, subject, counterparty, period_start, period_end, view, as_of, term, "
+                    "breakdown_key, financing_policy, constant_perimeter, variant, status, value, lineage, flags) VALUES "
+                    "(?, ?, 'none', ?, ?, 'as_known', '2026-10-07', 'none', 'none', 'none', 'none', 'none', 'computed', ?, ?, ?)",
                     [measure, subject, ps, pe, value, lineage, flags])
     # deux cellules sous la même clé de one() (débuts de période différents) : la première dans l'ordre de la table
     m("AAA", "2025-01-02", "2025-03-31", 2, json.dumps(["f2", "obs:" + CK + f"/{P1}/1"]), json.dumps({"links": ["edge:e1"]}))

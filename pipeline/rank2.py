@@ -444,7 +444,7 @@ def segments(con, groups, as_of):
     rev_concepts = {}
     for g, c in cmap:
         rev_concepts.setdefault(g, set()).add(c)
-    df = _facts(con, f"dims LIKE '%StatementBusinessSegmentsAxis%' AND period_type = 'duration' AND value IS NOT NULL")
+    df = _facts(con, "dims LIKE '%StatementBusinessSegmentsAxis%' AND period_type = 'duration' AND value IS NOT NULL")
     df = df[df["group_id"].isin(groups)]
     df["member"] = df["dims"].map(_segment_member)
     df = df[df["member"].notna()]

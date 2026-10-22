@@ -713,7 +713,7 @@ def note_family(ren_f, report, shortname):
 def note_block(client, m, sub_row, report, shortname, num, dims, sort_key):
     """Bloc d'une note : page R du dépôt, en cache comme toute pièce d'archive, linéarisée par
     le normaliseur des autres blocs ; faits candidats tirés de num."""
-    from . import blocks, textnorm
+    from . import blocks
     cik10 = str(sub_row["cik"]).zfill(10)
     acc = m["adsh"]
     doc = f"R{report}.htm"
@@ -784,7 +784,6 @@ def _valid_terms_only(h, lex):
 def verify_exhibits(rate=4.0):
     """EX-10 de déposants hors des groupes : pièce tirée, texte normalisé, termes du lexique
     en mots entiers, hors du nom du déposant ; un terme daté ne nomme le groupe qu'à sa date."""
-    from . import sections
     cfg = config.load()
     lex = lexicon(cfg)
     rx, low = compile_lexicon(lex)

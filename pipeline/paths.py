@@ -22,7 +22,6 @@ import datetime as dt
 from itertools import product
 
 from . import circularity as C
-from .graph import normalize_name
 from .measures import cell
 
 NONE = "none"

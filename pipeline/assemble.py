@@ -287,7 +287,6 @@ def run(as_of, use_cache=True, apercu=False):
         err.setdefault(g, []).append((acc, d))
     fl = filings.rename(columns={})
     sig_cells = [] if apercu else events.structural_signals(groups, quarters_by_group, fl, as_of, err, valid)
-    blocks = {b["content_key"]: b for b in catalog}
     # un même texte revient parfois à l'identique dans plusieurs dépôts (Item 4 d'Amazon d'un
     # trimestre à l'autre, doute sur la continuité de Core Scientific) : lu une fois, il reste
     # rattaché à chacun de ses dépôts (D-0043)
@@ -513,7 +512,7 @@ def run(as_of, use_cache=True, apercu=False):
     # 11. univers attendu : chaque cellule attendue a un état (§7.5)
     cells, missing = fill_expected(cells, as_of)
     stats["expected_missing_filled"] = missing
-    n_meas = insert(con, "measures", cells)
+    insert(con, "measures", cells)
 
     # 12. contrôles (ceux qui ne lisent que les faits : repris du mémo, faits ajoutés compris dans la clé)
     ctrl = M.value("controls", lambda: controls.run(con, as_of), key=added_key)
@@ -521,15 +520,15 @@ def run(as_of, use_cache=True, apercu=False):
     ctrl += M.value("controls_more", lambda: controls_more.debt_rollforward(con, as_of) +
                     controls_more.segments_and_disaggregation(con, as_of), key=added_key)
     ctrl = control_views(ctrl, filings)
-    n_ctrl = insert(con, "controls", ctrl)
+    insert(con, "controls", ctrl)
 
     # 13. paires non additives : lignes de montant et relations candidates
     amount_rows = amount_rows_for_pairs(edges, valid, con)
     cand, counts = links.pair_candidates(cfg["non_additive_pairs"], amount_rows)
     stats["non_additive_candidates"] = counts
     link_rows = [{k: v for k, v in l.items() if not k.startswith("_")} for l in edges] + rels + cand + formd_rels
-    n_links = insert(con, "links", link_rows)
-    n_ent = insert(con, "entities", ent_rows)
+    insert(con, "links", link_rows)
+    insert(con, "entities", ent_rows)
 
     # 14. documents
     failed = {f["accession"] for f in phase1_failures()}
@@ -541,7 +540,7 @@ def run(as_of, use_cache=True, apercu=False):
             used |= set(fd.loc[fd["parse_state"] == "parsed", "adsh"])
     docs = M.value("documents", lambda: documents.build(as_of, used, failed),
                    key=memo.digest([as_of, sorted(map(str, used)), sorted(failed)]))
-    n_docs = insert(con, "documents", docs)
+    insert(con, "documents", docs)
 
     # 15. exclusions
     # bloc montages (D-0046) : relevés de portefeuille non lus, pièces sans fenêtre, fenêtres au-delà du plafond
@@ -552,7 +551,7 @@ def run(as_of, use_cache=True, apercu=False):
     mt_excl += sb_own.exclusions(as_of)
     excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + nport_excl + own_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
-    n_excl = load.insert_exclusions(con, excl)
+    load.insert_exclusions(con, excl)
 
     # 16. export
     out = config.ROOT / "tables"

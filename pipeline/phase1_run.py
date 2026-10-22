@@ -9,7 +9,7 @@ import duckdb
 import pandas as pd
 
 from . import config, phase1
-from .edgar import Edgar, cik10
+from .edgar import Edgar
 from .net import NotCollected, SecClient
 
 PERIODIC = ("10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A",

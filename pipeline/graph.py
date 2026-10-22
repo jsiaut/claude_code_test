@@ -7,7 +7,6 @@ links.py ; l'ancien constructeur d'ici, qui n'était plus appelé, a été retir
 """
 import re
 
-from . import config
 
 SUFFIX = [(r"\bincorporated\b|\binc\b", "inc"), (r"\bcorporation\b|\bcorp\b", "corp"),
           (r"\blimited liability company\b|\bl\.?l\.?c\b", "llc"), (r"\blimited partnership\b|\bl\.?p\b", "lp"),

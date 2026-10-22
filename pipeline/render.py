@@ -15,7 +15,6 @@ import sys
 from collections import Counter, defaultdict
 from decimal import Decimal
 
-import duckdb
 import yaml
 
 from . import config
@@ -2826,7 +2825,7 @@ def delta(con, as_of, stats):
     L.append(f"- Blocs lus : {T.n('observations', {'blocks_read': True}, bl.get('read', 0))} sur "
              f"{T.n('observations', {'blocks_catalog': True}, bl.get('catalog', 0))} clés de contenu ; par item de 8-K : "
              + ", ".join(f"{k} {T.n('observations', {'item': k}, v)}" for k, v in sorted(bl.get("by_item", {}).items()))
-             + f" ; pièces arrêtées à leur en-tête : " + ", ".join(f"{k} {T.n('exclusions', {'header_only': k}, v)}"
+             + " ; pièces arrêtées à leur en-tête : " + ", ".join(f"{k} {T.n('exclusions', {'header_only': k}, v)}"
                                                                   for k, v in sorted(bl.get("header_only", {}).items())) + ".")
     L.append(f"- Lignes rejetées par la validation : {T.n('exclusions', {'validation_failed': True}, stats['observations']['rejected_semantic'])}.")
     dup = {t: v for t, v in (stats.get("pk_duplicates") or {}).items() if v.get("dropped")}
@@ -2848,7 +2847,6 @@ def delta(con, as_of, stats):
             f"{T.n('measures', {'bdc': [r['measure'], r['status'], r['nd']]}, r['n'])}" for r in lend) + ".")
         grp = q(con, """SELECT DISTINCT subject FROM measures WHERE measure = 'bdc_fv_to_cost' AND counterparty = 'none'
                         ORDER BY 1""")
-        sub_n = q(con, "SELECT count(*) AS n FROM exclusions WHERE item_key LIKE 'lender:subtotal:%'")[0]["n"]
         L.append("- Groupes d'émetteurs couverts : " + ", ".join(group_label(r["subject"]) for r in grp) + ".")
         L.append("")
     L += text_yield_section(con, T, stats)
@@ -3336,7 +3334,7 @@ def text_yield_section(con, T, stats):
                  for k in order) + (". Le reste est exclu bloc par bloc, motif « non traité » (`not_processed`), "
                                     "du plus ancien au plus récent dans chaque type, et ouvre l'exécution suivante."
                                     if tot[1] < tot[0] else ". Aucun bloc du catalogue ne reste à lire."))
-    lines = q(con, f"""SELECT kind, validation_state, count(*) AS n FROM observations WHERE pass_id >= ?
+    lines = q(con, """SELECT kind, validation_state, count(*) AS n FROM observations WHERE pass_id >= ?
                        AND CAST(block_kind AS VARCHAR) NOT LIKE 'discovery_%' GROUP BY 1, 2 ORDER BY 1, 2""", first)
     obs = sum(r["n"] for r in lines if r["kind"] == "observation" and r["validation_state"] == "valid")
     abst = sum(r["n"] for r in lines if r["kind"] == "abstention" and r["validation_state"] == "valid")
@@ -3346,7 +3344,7 @@ def text_yield_section(con, T, stats):
              f"{T.n('observations', {'text_rejected': True}, rej)} rejetées par la validation.")
     hit = edges_citing(con, first)
     if hit is None:
-        ed = q(con, f"""SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
+        ed = q(con, """SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
                         WHERE l.link_kind = 'edge' AND EXISTS (SELECT 1 FROM observations o WHERE o.pass_id >= ?
                               AND CAST(o.block_kind AS VARCHAR) NOT LIKE 'discovery_%'
                               AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""", first)
@@ -3410,7 +3408,7 @@ def text_yield_section(con, T, stats):
                                        (cfg.get("scope") or []) else "la découverte (§14)") +
             " ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.")
     for meas, label in (("sig_covenant_events", "Clauses financières"), ("sig_pledged_assets", "Actifs nantis")):
-        rows = q(con, f"""SELECT status, coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n
+        rows = q(con, """SELECT status, coalesce(value_text, '') AS v, coalesce(nd_reason, '') AS nd, count(*) AS n
                           FROM measures WHERE measure = ? AND view = 'as_known' GROUP BY 1, 2, 3 ORDER BY 1, 2, 3""", meas)
         if rows:
             def lab(r):
@@ -3639,7 +3637,7 @@ def _block_stats(read):
 
 
 def main(as_of):
-    con = duckdb.connect()
+    con = config.duckdb_connect()
     load(con, as_of)
     stats = json.loads((config.ROOT / "work" / "tmp" / "assemble_stats.json").read_text())
     stats["blocks"] = block_stats()

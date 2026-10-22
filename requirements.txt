@@ -1,5 +1,6 @@
-# Versions de l'environnement qui écrit les tables (Python 3.13), épinglées par D-0069 (point 9).
-# pyarrow sert à pandas pour lire et écrire le Parquet ; lxml 5 ou plus ne résout pas les entités externes.
+# Versions de l'environnement qui écrit les tables (Python 3.13), épinglées par D-0069 (point 9) ; dépendances
+# transitives épinglées par D-0072 (point 3 d). pyarrow sert à pandas pour lire et écrire le Parquet ; lxml 5 ou plus
+# ne résout pas les entités externes. La vérification des tables à l'octet près suppose ces versions, DuckDB d'abord.
 duckdb==1.5.6
 lxml==6.1.3
 numpy==2.5.3
@@ -9,3 +10,10 @@ pypdf==6.17.0
 PyYAML==6.0.1
 requests==2.34.2
 zstandard==0.25.0
+# dépendances transitives (pandas, requests)
+certifi==2026.7.22
+charset-normalizer==3.5.1
+idna==3.20
+python-dateutil==2.9.0.post0
+six==1.17.0
+urllib3==2.8.0

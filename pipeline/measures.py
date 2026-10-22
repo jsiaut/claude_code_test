@@ -222,7 +222,6 @@ def group_measures(con, groups, as_of, observations=None):
 def quarter_measures(S, g, q, cutoff, view, as_of):
     ps, pe = q["start"], q["end"]
     out = []
-    flags = {}
     capex, t_capex, r_capex = S.quarter("capex_cash", q, cutoff)
     cfo, t_cfo, r_cfo = S.quarter("cfo", q, cutoff)
     capex_fl = {"capex_definition": "productive_assets_incl_intangibles"} \

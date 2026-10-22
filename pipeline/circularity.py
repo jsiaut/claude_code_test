@@ -10,7 +10,6 @@ texte du fournisseur et, s'il dépose, du client (recherche complète au sens de
 L'absence n'est jamais un zéro ; aucun seuil de ratio ne déclenche seul une conclusion.
 """
 import datetime as dt
-import json
 from decimal import Decimal
 
 from . import backlog as B

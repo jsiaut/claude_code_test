@@ -3,7 +3,6 @@ plafond du volet B.
 
 Lancement : python3 -m unittest discover -s tests -t .
 """
-import re
 import unittest
 
 from pipeline import sb_own as S

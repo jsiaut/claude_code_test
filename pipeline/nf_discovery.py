@@ -756,7 +756,7 @@ def own_filing_units(cfg=None, fetch=True):
     pièces EX-10 (en-tête), Item 404 et notes des états financiers du document principal, toutes lues
     comme le texte d'un groupe ; la liste des filiales (EX-21) au niveau 1. Les co-mentions du lexique
     d'ensemble sont gardées pour information."""
-    from . import edgar, sections
+    from . import edgar
     cfg = cfg or config.load()
     lex = union_lexicon(cfg)
     rx, _ = D.compile_lexicon(lex)

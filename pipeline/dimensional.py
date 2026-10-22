@@ -58,7 +58,6 @@ def useful_lives(con, groups, fiscal_years, as_of):
         if p is not None and p[1] < str(r.period_end) and y < p[0]:
             flags["decrease"] = {"class": label, "term": term, "from": float(p[0]), "to": float(y)}
         prev[key] = (y, str(r.period_end))
-        fs = str(r.period_end)
         out.append(cell("depreciation_life_published", r.group_id, None, r.period_end, "as_known", as_of,
                         term=term, breakdown=cls, value=y, unit="years", flags=flags,
                         terms=[{"value": y, "fact_key": r.fact_key, "knowledge_date": str(r.knowledge_date),

@@ -20,13 +20,11 @@ def _lines(raw):
 
 def _longest_section(lines, start_rx, end_rx, min_chars=200, start_filter=None):
     starts = [i for i, (t, _) in enumerate(lines) if start_rx.search(t) and len(t) < 400]
-    merged = False
     if not starts:
         # titre fondu dans son paragraphe (mise en page sans blocs) : la ligne qui commence
         # par le titre ouvre la section, et la ligne qui commence par un titre majeur la ferme (d3)
         starts = [i for i, (t, h) in enumerate(lines) if len(t) >= 160 and ITEM_404_HEAD.search(t)
                   and not TOC_ROW.search(t)]
-        merged = True
     best = None
     for s in starts:
         if start_filter and not start_filter(lines, s):

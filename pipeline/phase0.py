@@ -6,7 +6,6 @@ société, formulaire et item.
 """
 import datetime as dt
 import json
-import re
 
 import duckdb
 

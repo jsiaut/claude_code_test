@@ -111,14 +111,13 @@ class Memo:
     def database(self, name, db_path, build, key=""):
         """Base DuckDB construite par build() (qui renvoie (connexion, info)), reprise d'une copie du
         fichier quand l'étape est déjà dans le mémo pour ces entrées."""
-        import duckdb
         p, info_p = self._path(name, key, ".duckdb"), self._path(name, key, ".json")
         if self.use and p.exists() and info_p.exists():
             for f in (db_path, db_path.with_name(db_path.name + ".wal")):
                 f.unlink(missing_ok=True)
             shutil.copyfile(p, db_path)
             self.hits.append(name)
-            return duckdb.connect(str(db_path)), json.loads(info_p.read_text(encoding="utf-8"))
+            return config.duckdb_connect(db_path), json.loads(info_p.read_text(encoding="utf-8"))
         con, info = build()
         con.execute("CHECKPOINT")
         con.close()
@@ -129,4 +128,4 @@ class Memo:
         for ext in (".duckdb", ".json"):
             self._prune(name, ext, p if ext == ".duckdb" else info_p)
         self.misses.append(name)
-        return duckdb.connect(str(db_path)), info
+        return config.duckdb_connect(db_path), info

@@ -2,7 +2,6 @@
 
 Lancement : python3 -m unittest discover -s tests -t .
 """
-import io
 import json
 import tempfile
 import unittest

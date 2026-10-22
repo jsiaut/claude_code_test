@@ -344,7 +344,7 @@ def positions(c=None, archives=None):
             continue
         d = BASE / name / SUBDIR
         t = {k: pd.read_parquet(d / f"{k}.parquet") for k in ("holding", "identifiers", "debt", "submission", "registrant", "fund")}
-        h, s, f, g, i, b = c["holding"], c["submission"], c["fund"], c["registrant"], c["identifiers"], c["debt"]
+        h = c["holding"]
         x = t["holding"].rename(columns={v: k for k, v in h.items()})
         lei = x["issuer_lei"].fillna("").astype(str).str.strip()
         x = x[x["issuer_name"].fillna("").str.contains(NAME_RX) | lei.isin(leis)]

@@ -4,12 +4,10 @@ import json
 import re
 from decimal import Decimal, InvalidOperation
 
-import duckdb
 import pandas as pd
 
 from . import config, reader, textnorm
 from .foreign import block_framework
-from .registry import ENUMS
 
 DB_PATH = config.DB_DIR / "model.duckdb"
 
@@ -17,7 +15,7 @@ FACT_COLS = ["fact_key", "source", "cik", "entity_id", "group_id", "accession", 
              "acceptance_datetime", "doc_rank", "occ_rank", "concept", "concept_ns", "taxonomy_version",
              "period_type", "period_start", "period_end", "unit", "currency", "dims", "n_dims", "framework",
              "reporting_scope", "value", "value_text", "value_rounded", "decimals", "decimals_inf",
-             "precision_known", "is_nil", "is_fixed_zero", "fact_id", "locator", "is_tagged", "tier",
+             "precision_known", "is_nil", "is_fixed_zero", "locator", "is_tagged", "tier",
              "filing_status", "assurance_level", "knowledge_date", "fy", "fp", "model_quantity", "conflict"]
 
 
@@ -26,7 +24,7 @@ def connect(fresh=False, path=None):
     config.DB_DIR.mkdir(exist_ok=True)
     if fresh and path.exists():
         path.unlink()
-    con = duckdb.connect(str(path))
+    con = config.duckdb_connect(path)
     if fresh:
         con.execute((config.ROOT / "schema.sql").read_text(encoding="utf-8"))
     return con
@@ -39,6 +37,20 @@ def _rounded(v):
     return d != d.quantize(Decimal("0.000001"))
 
 
+def compact_locator(df):
+    """Emplacement d'un fait (§7 ; D-0072, point 3 a). Fait d'instance : l'`id` du fait dans l'instance, ou « # » suivi
+    du rang d'occurrence s'il n'en a pas. Fait `companyfacts` : la ressource de l'API ; le concept, l'unité et la période
+    sont dans la clé et les colonnes. Les autres sources gardent le leur (plage d'octets et citation d'un texte)."""
+    inst = df["source"] == "instance"
+    if inst.any():
+        df.loc[inst, "locator"] = [f if isinstance(f, str) and f else f"#{int(r)}"
+                                   for f, r in zip(df.loc[inst, "fact_id"], df.loc[inst, "occ_rank"])]
+    cf = df["source"] == "companyfacts"
+    if cf.any():
+        df.loc[cf, "locator"] = ["companyfacts/CIK" + str(c) for c in df.loc[cf, "cik"]]
+    return df
+
+
 def load_facts(con):
     frames = []
     for name in ("facts_companyfacts.parquet", "facts_instances.parquet", "facts_html.parquet"):
@@ -49,18 +61,19 @@ def load_facts(con):
     df["value_rounded"] = df["value"].map(_rounded)
     df["model_quantity"] = None
     df["conflict"] = False
+    df = compact_locator(df)
     for c in FACT_COLS:
         if c not in df.columns:
             df[c] = None
     df = df[FACT_COLS]
     df["acceptance_datetime"] = pd.to_datetime(df["acceptance_datetime"], utc=True, errors="coerce").dt.tz_localize(None)
     con.register("df_facts", df)
-    con.execute(f"""INSERT INTO facts SELECT
+    con.execute("""INSERT INTO facts SELECT
         fact_key, source, cik, entity_id, group_id, accession, form, CAST(filing_date AS DATE),
         acceptance_datetime, doc_rank, occ_rank, concept, concept_ns, taxonomy_version,
         period_type, CAST(period_start AS DATE), CAST(period_end AS DATE), unit, currency, dims, n_dims,
         framework, reporting_scope, CAST(value AS DECIMAL(38,6)), value_text, value_rounded, decimals,
-        decimals_inf, precision_known, is_nil, is_fixed_zero, fact_id, locator, is_tagged, tier,
+        decimals_inf, precision_known, is_nil, is_fixed_zero, locator, is_tagged, tier,
         filing_status, assurance_level, CAST(knowledge_date AS DATE), fy, fp, model_quantity, conflict
         FROM df_facts""")
     con.unregister("df_facts")
@@ -333,7 +346,6 @@ def semantic_errors(line, block, text_norm=None, locate=None):
 
 
 def _locate(block, quote):
-    from .config import CACHE
     from . import cache as cachemod
     loc = dict(block.get("locator") or {})
     loc["quote"] = quote
@@ -351,13 +363,39 @@ def _locate(block, quote):
 
 QUOTE_RANGES = config.DB_DIR / "memo" / "quote_ranges.json"
 _PENDING, _FAILED = object(), object()
+PARALLEL_MIN_DOCS = 8        # au-delà, la recherche se répartit sur un pool de processus (D-0072, point 3 b)
+FAILED = "failed"            # plage d'un document illisible ou d'une recherche en erreur, entre processus
+
+
+def ranges_of_document(job):
+    """Plages des citations d'un document en cache : ([(clé, plage, None ou FAILED)], citations cherchées). Le document
+    est décompressé et décodé une fois ; une erreur de lecture vaut FAILED pour toutes ses citations, une erreur de
+    recherche pour la seule citation (comme la recherche en série d'avant)."""
+    from pathlib import Path
+    from . import cache as cachemod
+    path, items = job
+    try:
+        raw = cachemod.read(Path(path))
+        text, enc = textnorm.decode(raw), textnorm.raw_encoding(raw)
+    except Exception:
+        return [(k, FAILED) for k, _, _ in items], 0
+    out, n = [], 0
+    for k, start, quote in items:
+        try:
+            start_char = len(textnorm.decode(raw[:start])) if start else 0
+            r = textnorm.locate_in_text(text, enc, quote, start_char)
+            out.append((k, list(r) if r else None))
+            n += 1
+        except Exception:
+            out.append((k, FAILED))
+    return out, n
 
 
 class QuoteRanges:
     """Plages d'octets des citations dans leur document en cache (§9.2), gardées d'un réassemblage
     à l'autre dans db/memo : une plage ne dépend que du document, du début du bloc, de la citation et
     du code qui la cherche. La clé porte la taille et la date de modification du document, et le mémo
-    l'empreinte de ce code (textnorm.py, cache.py, cette classe) : un document ou un code modifié se
+    l'empreinte de ce code (textnorm.py, cache.py, cette classe, ranges_of_document) : un document ou un code modifié se
     recherche. Les citations à chercher le sont document par document, chacun décompressé et décodé
     une fois. Le mémo ne garde que les clés de la dernière exécution ; le supprimer ne change rien
     aux tables, seulement à la durée (même calcul que _locate)."""
@@ -383,6 +421,7 @@ class QuoteRanges:
         for name in ("textnorm.py", "cache.py"):
             h.update((config.ROOT / "pipeline" / name).read_bytes())
         h.update(inspect.getsource(cls).encode("utf-8"))
+        h.update(inspect.getsource(ranges_of_document).encode("utf-8"))   # la recherche d'un document (D-0072)
         return h.hexdigest()
 
     def request(self, block, quote):
@@ -409,25 +448,23 @@ class QuoteRanges:
         return k
 
     def resolve(self):
-        """Cherche les citations en attente, un document à la fois."""
-        from . import cache as cachemod
-        for p in sorted(self.todo, key=str):
-            items = self.todo[p]
-            try:
-                raw = cachemod.read(p)
-                text, enc = textnorm.decode(raw), textnorm.raw_encoding(raw)
-            except Exception:
-                for k, _, _ in items:
-                    self.used[k] = _FAILED
-                continue
-            for k, start, quote in items:
-                try:
-                    start_char = len(textnorm.decode(raw[:start])) if start else 0
-                    r = textnorm.locate_in_text(text, enc, quote, start_char)
-                    self.used[k] = list(r) if r else None
-                    self.searched += 1
-                except Exception:
-                    self.used[k] = _FAILED
+        """Cherche les citations en attente, un document à la fois. Au-delà de PARALLEL_MIN_DOCS documents, les documents
+        se répartissent sur un pool de processus (D-0072, point 3 b) ; chacun est cherché d'un bloc, par le même calcul,
+        et les plages se rangent par clé, dans le même ordre."""
+        import os
+        jobs = [(str(p), self.todo[p]) for p in sorted(self.todo, key=str)]
+        if len(jobs) > PARALLEL_MIN_DOCS:
+            import multiprocessing
+            from concurrent.futures import ProcessPoolExecutor
+            with ProcessPoolExecutor(max_workers=os.cpu_count() or 1,
+                                     mp_context=multiprocessing.get_context("spawn")) as pp:
+                results = list(pp.map(ranges_of_document, jobs, chunksize=4))
+        else:
+            results = [ranges_of_document(j) for j in jobs]
+        for found, n in results:
+            for k, r in found:
+                self.used[k] = _FAILED if r == FAILED else r
+            self.searched += n
         self.todo = {}
 
     def locator(self, block, quote, key):

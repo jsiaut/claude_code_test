@@ -10,11 +10,8 @@ import io
 import json
 import re
 import zipfile
-from concurrent.futures import ThreadPoolExecutor
 
-from . import cache, config
-from .edgar import Edgar, archive_url, cik10
-from .net import NotCollected
+from .edgar import Edgar
 from . import xbrl
 
 ANNUAL_TIER_A = {"10-K", "10-K/A", "10-KT", "10-KT/A", "20-F", "20-F/A", "40-F", "40-F/A"}

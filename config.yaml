@@ -2160,3 +2160,6 @@ ownership:                   # D-0071, volet A : déclarations de détention (13
     - {s: SMCI, c: APLD, cik: "1144879"}
     - {s: TSM, c: INTC, cik: "50863"}
     - {s: TSM, c: "NF:SOFTBANK", cik: "1973239"}     # Arm Holdings plc
+duckdb:                      # D-0072 (point 3 d) : réglages explicites des connexions de l'assemblage, du mémo, du rendu et de l'aperçu
+  threads: 4                 # cœurs de cet environnement, le défaut de DuckDB
+  memory_limit: "10GB"       # sur 15 Go ; l'ordre d'insertion reste préservé (défaut)

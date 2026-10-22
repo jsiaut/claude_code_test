@@ -1,0 +1,36 @@
+# D-0072 (point 3 d). Les versions exactes, transitives comprises, sont dans requirements.txt ; `uv lock` interroge
+# l'index PyPI et se lance hors d'une exécution du pipeline (règles réseau du README).
+[project]
+name = "fragilite-ia-sec"
+version = "0.72.0"
+description = "Fragilité financière de la chaîne de l'IA, tirée des seuls dépôts SEC"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "duckdb==1.5.6",
+    "lxml==6.1.3",
+    "numpy==2.5.3",
+    "pandas==3.0.5",
+    "pyarrow==25.0.1",
+    "pypdf==6.17.0",
+    "PyYAML==6.0.1",
+    "requests==2.34.2",
+    "zstandard==0.25.0",
+]
+
+[dependency-groups]
+dev = ["ruff==0.16.8"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py313"
+line-length = 125
+extend-exclude = ["cache", "db", "work", "tables", "audit"]
+
+[tool.ruff.lint]
+select = ["F", "E9"]      # pyflakes et erreurs de syntaxe : noms indéfinis, imports et variables inutilisés
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

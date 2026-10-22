@@ -8,7 +8,7 @@ from collections import defaultdict
 
 import pandas as pd
 
-from . import blocks, cache, config, sections, textnorm, xbrl
+from . import blocks, cache, config, sections, textnorm
 from .edgar import cik10
 
 EX10 = re.compile(r"^EX-10(\.\d+[A-Z]?)?$", re.I)
@@ -105,7 +105,7 @@ def build(as_of):
         tbc = tb_by.get(acc) or None
         try:
             bl = blocks.instance_blocks(f, files, inst, tbc, frows, labs)
-        except Exception as exc:  # parse_failed : l'élément est écarté avec son motif
+        except Exception:  # parse_failed : l'élément est écarté avec son motif
             stats["instance_blocks_failed"] += 1
             bl = []
         if not any(b["block_kind"] == "going_concern" for b in bl):

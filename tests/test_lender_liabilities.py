@@ -2,7 +2,6 @@
 
 Lancement : python3 -m unittest discover -s tests -t .
 """
-import json
 import unittest
 from decimal import Decimal
 

@@ -34,6 +34,19 @@ def load():
     return copy.deepcopy(_PARSED["cfg"])
 
 
+def duckdb_connect(path=None):
+    """Connexion DuckDB aux réglages explicites de config.yaml (D-0072, point 3 d) : nombre de fils et mémoire. L'ordre
+    d'insertion reste préservé, comme par défaut : des requêtes intermédiaires sans ORDER BY en dépendent."""
+    import duckdb
+    con = duckdb.connect() if path is None else duckdb.connect(str(path))
+    d = load().get("duckdb") or {}
+    if d.get("threads"):
+        con.execute(f"SET threads = {int(d['threads'])}")
+    if d.get("memory_limit"):
+        con.execute(f"SET memory_limit = '{d['memory_limit']}'")
+    return con
+
+
 def user_agent(cfg=None):
     """Valeur exacte du User-Agent fourni par l'utilisateur (§9.5), jamais inventée."""
     cfg = cfg or load()

@@ -13,7 +13,6 @@ l'aperçu ne remplace pas le réassemblage complet, qui seul écrit les tables.
 import json
 import time
 
-import duckdb
 
 from . import assemble, config
 
@@ -35,7 +34,7 @@ def _rows(con, table, rows):
 
 def _table(table, where):
     pk = assemble.TABLES[table]
-    con = duckdb.connect()
+    con = config.duckdb_connect()
     rel = con.execute(f"SELECT * FROM '{config.ROOT / 'tables' / (table + '.parquet')}' WHERE {where} "
                       f"ORDER BY {', '.join(pk)}")
     cols = [d[0] for d in rel.description]
@@ -63,7 +62,7 @@ def main(as_of, use_cache=True):
     t0 = time.time()
     res = assemble.run(as_of, use_cache=use_cache, apercu=True)
     computed = sorted({c["measure"] for c in res["computed"]})
-    con = duckdb.connect()
+    con = config.duckdb_connect()
     con.execute((config.ROOT / "schema.sql").read_text(encoding="utf-8"))
     new_edges = _rows(con, "links", [{k: v for k, v in l.items() if not k.startswith("_")} for l in res["edges"]])
     old_edges = _table("links", "link_kind = 'edge'")

@@ -17,8 +17,7 @@ import re
 
 import pandas as pd
 
-from . import cache, config, discovery as D, edgar, net
-from .graph import normalize_name
+from . import config, discovery as D, edgar, net
 
 INVENTORY = config.DB_DIR / "foreign_inventory.parquet"
 INCORP = re.compile(r"incorporated\s+by\s+reference\s+(?:in|into)\b[^.]{0,120}?registration\s+statements?", re.I)

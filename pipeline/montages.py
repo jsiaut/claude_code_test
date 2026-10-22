@@ -442,7 +442,7 @@ def values_corpus(mid):
     `available`, tirée d'une ligne déposée par le vendeur lui-même (tables du dernier assemblage). Le texte du bloc tient
     lieu de document (`source: block`) ; les citations de ses lignes font les paragraphes qualifiants. Aucune requête."""
     from . import reader
-    spec = specs()[mid]
+    specs()[mid]                        # identifiant de montage inconnu : KeyError, comme avant
     _, docs_path, info_path = _paths(mid)
     groups = set(config.load()["groups"])
     ln = pd.read_parquet(config.ROOT / "tables" / "links.parquet",

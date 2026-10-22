@@ -1,0 +1,4 @@
+#!/bin/sh
+# Contrôles avant chaque commit (D-0072, point 3 d) : ruff, puis les tests. Non activé par défaut ;
+# pour l'activer dans un clone : git config core.hooksPath .githooks
+exec make check
