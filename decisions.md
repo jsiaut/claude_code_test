@@ -3255,3 +3255,52 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - NVIDIA → CoreWeave : les déclarations datent la détention du 2025-03-31 au plus tôt, dans un trimestre déjà `active`. Elles ne changent rien, comme prévu au point 2.
   - Bug n° 4 de l'audit : ces déclarations ne ferment un statut que si le financeur sort. Aucun des dix-huit ne l'a fait dans la période. Le bug reste ouvert pour les participations non cotées et pour les sorties d'avant 2019.
   - Question laissée à l'utilisateur. NVIDIA → CoreWeave vaut `never` jusqu'au 2025-01-26 alors que NVIDIA détenait des actions avant l'introduction. Aucune pièce en cache ne date son entrée. Faut-il qu'une détention documentée plus tard, d'origine inconnue, fasse passer les trimestres antérieurs de `never` à `unknown` ?
+
+- **D-0072 — Observations d'architecture de l'audit : ce qui est déjà fait, ce qui se fait, ce qui ne se fait pas. Règles fixées avant tout changement.**
+  (1) Origine : observations remises par l'utilisateur le 2026-10-22 (« Voilà d'autres observations de l'audit à éventuellement considérer si c'est pertinent (ne refais pas ce qui est déjà fait) »). Chaque observation est vérifiée sur le code, sur `SPEC.md` et sur les tables de 580e8e9 avant toute modification. Aucune règle de mesure ne change, aucune requête réseau n'est faite, l'as_of reste le 2026-10-07.
+
+  (2) Déjà fait :
+  - Export des huit tables en Parquet ZSTD (D-0069, point 9) : `facts.parquet` pèse 48,3 Mio, contre 95,4 Mio avant.
+  - Versions épinglées dans `requirements.txt`, ordre des commandes dans `README.md` (D-0069, point 9).
+  - Mémo propre aux plages de citations (D-0062, point 5). La recherche d'environ 9 minutes ne se refait que si un document, `textnorm.py`, `cache.py` ou la classe `QuoteRanges` change, et non à chaque changement de code.
+  - Tables committées aux étapes clés : elles ne le sont qu'à l'intégration d'une décision.
+
+  (3) Ce qui se fait :
+  - a. Emplacement des faits.
+    - Constat. Dans `facts`, `locator` est un texte JSON qui répète des colonnes :
+      - pour les 1 077 903 faits d'instance, l'accession, `fact_id` et `occ_rank` sont égaux aux colonnes, et le fichier est dans `fact_key` ;
+      - pour les 501 772 faits `companyfacts`, le CIK, l'accession, le concept, l'unité et la période sont dans la clé et les colonnes.
+      - Aucune accession n'a deux fichiers d'instance, et aucun `id` n'y revient deux fois. `locator` fait 41,9 % du fichier, `fact_id` 27,5 %.
+    - Règle, conforme à §7 (« l'emplacement de chaque nombre est une colonne, `locator` : l'`id` du fait dans l'instance… ») :
+      - pour un fait d'instance, `locator` vaut l'`id` du fait, ou `#` suivi du rang d'occurrence pour les 51 816 faits qui n'en ont pas ;
+      - la colonne `fact_id`, désormais en double, quitte le schéma ;
+      - pour un fait `companyfacts`, `locator` nomme la ressource de l'API (`companyfacts/CIK…`) ; le concept, l'unité et la période restent dans la clé et les colonnes ;
+      - les autres sources ne changent pas (plage d'octets et citation pour un texte).
+    - La transformation se fait au chargement des faits dans la base ; les fichiers de `db/` ne changent pas. L'ordre physique actuel, par dépôt, est gardé.
+    - Effet mesuré sur une copie : 48,3 → 28,2 Mio, autant que sans la colonne. Seules changent les colonnes `locator` et `fact_id` de `facts`, et, dans `audit/numbers.csv`, la colonne `locator` des termes de ces deux sources.
+  - b. Recherche des citations en parallèle. Au-delà de huit documents à chercher, les documents se répartissent sur un pool de processus (démarrage `spawn`, un par cœur). Chaque document reste cherché d'un bloc, et les plages se rangent par clé, comme avant. Elles doivent ressortir identiques : `observations` à l'octet près.
+  - c. Profil. Un échantillonneur (100 Hz, `pipeline/profiling.py`) profile le réassemblage à froid avant toute autre optimisation. Ses postes sont consignés aux résultats ; aucune optimisation ne suit dans cette décision.
+  - d. Outils :
+    - `pyproject.toml` : métadonnées, Python 3.13, dépendances épinglées, réglages de ruff et de pytest. `requirements.txt` épingle aussi les dépendances transitives de l'environnement.
+    - Le fichier `uv.lock` n'est pas produit : `uv lock` interroge l'index PyPI, hors du client unique et du journal. Il se produit hors de cette exécution.
+    - `Makefile` : mode d'emploi exécutable (`make help`), de la collecte au rendu, avec les cibles réseau signalées. `make check` lance ruff, puis les tests.
+    - ruff, règles F (pyflakes) et E9 : 51 constats, tous corrigés. Ce sont 24 imports inutilisés, 9 f-strings sans champ et 18 variables jamais lues. Toutes ces variables sont des restes (comptes jamais affichés, requête morte, dictionnaire inutilisé) ; aucun nom n'est indéfini, aucun calcul n'est oublié.
+    - Crochet `.githooks/pre-commit` (`make check`), fourni mais non activé ici. Il s'active par `git config core.hooksPath .githooks`.
+    - DuckDB : `threads` et `memory_limit` explicites dans `config.yaml`, appliqués aux connexions de l'assemblage, du mémo, du rendu et de l'aperçu. Les valeurs sont celles du défaut de cet environnement pour les cœurs (4), et 10 Go de mémoire.
+  - e. Déterminisme. Un second réassemblage à froid (`--sans-cache`), lancé sous `PYTHONHASHSEED=1` sans relance, puis son rendu, doivent redonner les huit tables et les rendus à l'octet près. Si c'est le cas, la relance par `PYTHONHASHSEED=0` est retirée d'`assemble` et de `render`. Sinon, chaque écart est tracé jusqu'à l'ensemble non trié qui le cause.
+
+  (4) Ce qui ne se fait pas, et pourquoi :
+  - JSON de `flags`, `lineage` et `evidence` en vraies colonnes. Les tables sont petites (`measures` 2,9 Mo, `controls` 1,4 Mo). Les drapeaux varient d'une mesure à l'autre et n'ont pas de schéma commun. Le changement toucherait le schéma de §7 et la plupart des lecteurs, pour un gain que le profil doit d'abord montrer.
+  - Dates de `measures` en DATE. §7 donne `none` aux composantes sans objet d'une clé primaire ; une colonne DATE ne peut ni le porter ni être nulle dans une clé.
+  - Mémo par étape. Plusieurs étapes lisent la base DuckDB construite pendant l'exécution, et des valeurs calculées en amont qui ne sont pas dans leur clé. Une clé par étape qui ne les verrait pas rendrait des tables périmées sans le dire. La version sûre doit hacher toutes les entrées de chaque étape. Son gain porte sur les itérations de développement, et le poste le plus lourd, les citations, a déjà son mémo fin. Laissé à la décision de l'utilisateur, profil à l'appui.
+  - Conversion des archives en Parquet complet. Il faudrait environ 40 Go, pour 19 Go libres dans cet environnement, et le cache, non versionné, ne survit pas à l'environnement. `keep_zip` reste faux (D-0069).
+  - Réécriture en SQL des calculs des défauts. Ils sont corrigés depuis D-0069, avec un test chacun ; les réécrire ne corrige plus rien et risque de changer des valeurs.
+  - `preserve_insertion_order=false`. Des requêtes intermédiaires sans ORDER BY alimentent des « premier trouvé » ; l'ordre deviendrait variable d'une exécution à l'autre.
+  - `audit/` généré à la demande. §12.2 en fait le livrable de l'auditeur, écrit et commité. Ses copies (`measures.parquet`, `controls.parquet`, `synthesis.md`) sont les mêmes objets git que les originaux et ne coûtent rien en stockage.
+
+  (5) Ordre :
+  - la décision ;
+  - le code et les tests ;
+  - un réassemblage à froid profilé, et la comparaison de ses tables avec celles de 580e8e9 ;
+  - le réassemblage sous `PYTHONHASHSEED=1` et les rendus des deux ;
+  - les résultats ; commit, push, rapport.
