@@ -2909,3 +2909,76 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - deux valeurs d'un même contrat : la dernière par date de contrat l'emporte (Backblaze : 335 M$ du 8-K, daté de sa pièce, plutôt que 335,1 M$ du 10-Q, daté de la signature) ;
   - les valeurs écrites seulement dans des pièces EX-99 (TeraWulf, Cipher, Galaxy, les communiqués de Hut 8) restent hors mesure ; le locataire du bail de Riot d'août 2026 n'est pas nommé dans la fenêtre lue, et le contrat de SpaceX avec Anthropic n'a qu'un tarif mensuel : ces paires n'ont aucune ligne de carnet ;
   - Amazon est le seul vendeur qui balise son RPO par client ; aucune paire de E.3 n'a d'attribution de fin d'exercice.
+- **D-0069 — Audit du dépôt du 22 octobre 2026 : chaque constat revérifié, six défauts de calcul corrigés, garde-fous des rendus calculés. Règles fixées avant tout recalcul.**
+  (1) Origine : un audit du dépôt au commit eadc0f4, remis par l'utilisateur le 2026-10-22 (« Voilà un audit que j'ai fait faire sur le repo à prendre en compte »). Chaque constat est revérifié sur le code et sur les tables versionnées avant toute modification. Les verdicts et les règles corrigées ci-dessous sont fixés avant le réassemblage, et les résultats vont au point 12. Rien n'est relu ni retéléchargé, et aucune requête réseau n'est faite.
+
+  (2) F1 (annexe F) — confirmé.
+  - Défaut : `fsignals.py` ne comparait capex et CFO que si `capex_to_cfo` était `computed`, ce qui exige un CFO strictement positif. Un trimestre à CFO négatif sortait donc `not_determinable` (`denominator_nonpositive`), et le trimestre suivant perdait son prédécesseur. Or l'annexe F pose la condition sur les termes (`capex_cash > cfo`), pas sur le ratio.
+  - Règle : la condition se lit sur les deux termes de `capex_to_cfo` (`term = without`) dès qu'ils sont connus, quels que soient le signe du CFO et le statut du ratio. Sans l'un d'eux, la cellule reste `not_determinable` avec le motif du ratio, comme avant.
+  - Effet attendu, recalculé sur les tables en vue `as_known` : 121 événements au lieu de 43, dans 13 groupes. Riot passe de 1 à 19, TeraWulf de 3 à 15, Cipher de 0 à 11, Applied Digital de 6 à 13, Backblaze de 1 à 8, Supermicro de 0 à 7, Core Scientific, CoreWeave et Intel à 8, Galaxy de 0 à 3 ; Amazon, Dell et IREN gagnent un événement.
+
+  (3) Variation du nombre moyen dilué d'actions (`eq_diluted_share_count_change`, §4.6) — confirmé, avec un second défaut trouvé pendant la vérification.
+  - Premier défaut : un trimestre sans fait direct se calculait comme un flux (exercice moins neuf mois), ce qui n'a pas de sens pour une moyenne pondérée. Cela touche 67 cellules de la vue `revised` et 71 de la vue `as_known`. 52 d'entre elles dépassent 50 %, dont Intel à +638,5 % dans `synthesis.md`. 28 autres sortent `denominator_nonpositive`, motif impossible pour un nombre d'actions.
+  - Second défaut : en vue `revised`, un fractionnement mêle deux bases. Le trimestre vient du dépôt de l'année suivante, retraité ; son comparatif vient d'un dépôt antérieur au fractionnement, non retraité. Exemples : Amazon en 2021-2022, vers +1 900 % ; Broadcom, NVIDIA et Supermicro, de +306 % à +1 024 %.
+  - Règle : la variation compare deux faits directs de trois mois, le trimestre et le même trimestre de l'exercice précédent, pris dans un même dépôt. C'est le dernier dépôt connu à la date de coupure qui publie les deux, car un dépôt présente un trimestre et son comparatif sur la même base. Jamais de différence de cumuls. Sans fait direct pour l'un des deux trimestres, le motif est `not_disclosed`. Si les deux faits directs existent mais qu'aucun dépôt ne les publie ensemble, le motif est `recast_boundary`.
+
+  (4) Dette du levier (`lev_debt_and_leases_to_operating_income_plus_da`, `term = debt`) — confirmé et élargi.
+  - Défaut : les emprunts à court terme (`ShortTermBorrowings`, `CommercialPaper`) s'ajoutaient à toute dette courante. Or `DebtCurrent` les contient déjà (Intel, NVIDIA : 11 cellules), de même que `DebtLongtermAndShorttermCombinedAmount` (Broadcom : 7 cellules, trouvées pendant la vérification).
+  - Règle : ils ne s'ajoutent qu'à une dette qui les exclut par définition : `LongTermDebtCurrent`, ou `CurrentPortionOfLongtermBorrowings` en IFRS, pour la part courante, et `LongTermDebt` pour le total. Ils ne s'ajoutent jamais à `DebtCurrent`, `DebtLongtermAndShorttermCombinedAmount`, `CurrentBorrowingsAndCurrentPortionOfNoncurrentBorrowings` ni `Borrowings`.
+  - Effet : Intel au 2024-06-30 passe de 56 229 à 53 029 M$, et son levier de 6,98 à 6,58.
+
+  (5) Statut « financé », condition (a) de §3.2 — confirmé.
+  - Défaut : la liste des fins de détention rangeait (date, clé d'instrument), mais la boucle la lisait comme (date, date de connaissance), avec un test toujours vrai. La clôture de n'importe quel instrument fermait donc toutes les détentions de la paire, et comptait avant d'être publique.
+  - Second défaut : seules les clôtures du sens fournisseur → client étaient lues. Or une clôture suit le sens de la trésorerie : la cession de la part d'Intel dans IMFT à Micron va de Micron à Intel.
+  - Relevé : 509 détentions (a) dans 80 paires. 29 clôtures vont du fournisseur S au client C, et 38 vont de C à S, jamais lues. L'instrument est confondu dans 4 paires : Amazon → Anthropic, ASML → Carl Zeiss SMT, Backblaze → AFCO et Intel → Micron.
+  - Troisième constat, fait en vérifiant la règle : 12 instruments ont leur clôture enregistrée hors de la paire. C'est le cas de la cession à un tiers (Coinsquare, payée par Mogo), de l'acheteur non résolu (McAfee) et de l'arête d'Intel vers Intel pour sa part dans ASML.
+  - Règle : une détention (a) datée d est close à la fin du trimestre q par une cession, une conversion, un remboursement ou une résiliation qui remplit quatre conditions : portant la même clé d'instrument, sur n'importe quelle arête, dans la paire ou non ; datée entre d et la fin de q ; connue à la date de coupure de q ; et à un stade accompli (ni `intent_non_binding`, ni `signed`, ni `available`).
+  - Une détention sans clé se ferme par une clôture de la paire, dans l'un ou l'autre sens, du même type d'arête. Il y en a 191 sur 509, et toutes sont dans des paires sans clôture, sauf Apollo → AP Grange : ses soldes trimestriels et son remboursement anticipé portent sur la même dette ABS.
+
+  (6) Sauts d'un facteur 100 (§7.3) — confirmé en partie.
+  - Défaut : §7.3 rend un saut `conflicting` tant que `num` des Notes Data Sets ne l'a pas confirmé. Le code ne cherchait aucune confirmation et ne marquait que les faits d'instance, si bien que le fait `companyfacts` du même dépôt revenait dans les sommes.
+  - Relevé : 1 377 faits sont marqués, tous par cette règle. 1 125 ont ce doublon, égal à la tolérance d'arrondi près : 1 120 exactement, 5 à l'arrondi près (une même valeur présentée en millions et en milliers). Les 225 faits qui alimentent une mesure reviennent tous ainsi. Les 252 sans doublon n'alimentent aucune mesure.
+  - Règle : `companyfacts` est l'extraction par la SEC du même dépôt, le rôle que §7.3 donne à `num`, que le pipeline ne conserve pas pour ces dépôts. Un saut est confirmé, et n'est pas `conflicting`, quand le fait `companyfacts` du même dépôt lui est égal à la tolérance d'arrondi de leurs deux précisions près : même concept, mêmes bornes de période, même unité, sans dimension. Un saut non confirmé reste `conflicting`, et son doublon `companyfacts` éventuel aussi, pour que le fait reste hors des sommes quelle que soit sa source.
+  - Non retenu : ne garder qu'un saut qui s'inverse à la période suivante, comme le propose l'audit. Ce critère changerait la règle de détection de §7.3, et une fois la confirmation faite il ne toucherait plus aucun fait d'une mesure.
+
+  (7) Délai du rapport annuel (E.0) — confirmé.
+  - Défaut : `deadline_fn` appliquait 60, 75 ou 90 jours selon la catégorie du déposant. Or E.0 évalue chaque exercice « à la date limite de dépôt de son rapport annuel (10-K, 20-F ou 40-F) », et un 20-F dispose de quatre mois.
+  - Règle : la date limite suit le formulaire du rapport annuel original de l'exercice, lu dans l'inventaire des dépôts ; pour un exercice sans rapport, c'est le dernier formulaire annuel antérieur. Pour un 20-F, c'est la fin d'exercice plus quatre mois ; pour un 10-K, la catégorie, comme avant.
+  - Concernés : TSMC, ASML et Nebius, ainsi qu'IREN jusqu'à l'exercice clos le 2024-06-30.
+
+  (8) Garde-fous des rendus, calculés au lieu d'être écrits :
+  - Règle d'arrêt (§11.4) : la ligne « Arrêt » de `synthesis.md` et la section de `delta.md` se déduisent du journal et des contrôles.
+    - Refus durable de la SEC : la dernière requête du journal est un refus 403, malgré les pauses.
+    - Échec général des contrôles : on retient les contrôles non provisoires (`tolerance_basis = declared`) de la vue `as_known`. Une période est en échec quand ses `mismatch` dépassent ses `ok`. L'échec est général quand plus de la moitié des groupes ont plus de la moitié de leurs périodes testées en échec : c'est la lecture retenue de « la plupart des groupes et des périodes ».
+  - `delta.md` devient un différentiel. L'assemblage note le commit dont il remplace les tables, et le rendu compare les tables courantes à celles de ce commit. Il liste les événements de l'annexe F apparus et disparus, les exclusions nouvelles par motif, les dépôts nouveaux, les valeurs changées pour des périodes déjà publiées, les arêtes nouvelles, les contrôles qui ont basculé et les décisions nouvelles. Les lignes écrites en dur (« premier passage », les 13 lignes corrigées de D-0020) disparaissent.
+  - E.7 : la ligne de tête dit aussi la part d'issues indéterminées de E.2 seule.
+  - « Recherche complète » (E.0) : la note précise qu'elle porte sur les blocs du catalogue (notes, items de 8-K, pièces annexées), non sur le rapport de gestion ni sur les autres sections. Une pièce L5 qui ne se trouverait que là échapperait donc à la recherche.
+
+  (9) Hygiène :
+  - Les huit tables s'exportent en Parquet compressé ZSTD, sans changement de contenu. `facts.parquet` pèse 95,4 Mio pour une limite GitHub de 100 Mio, et doit descendre vers 48 Mio.
+  - `assemble.insert` compte les doublons de clé primaire par table, identiques ou en collision, dans les statistiques d'assemblage, et la note publie ce compte. En cas de collision, la dernière ligne est toujours gardée.
+  - `requirements.txt` épingle les versions de cet environnement. Un `README.md` court donne les prérequis, l'ordre des commandes et ce qui fonctionne sans `db/`.
+  - `user_brief_2.md` reçoit un erratum : depuis D-0039, NVIDIA et CoreWeave ne sont plus reliés par un document.
+  - Code mort retiré : `events.fragility_events` (l'ancienne règle F1), `events.observed_signal`, ainsi que `graph.edges_from_observations` et ses deux auxiliaires.
+
+  (10) Laissé à la décision de l'utilisateur, sans changement ici :
+  - L'audit indépendant de l'annexe C, par un tiers, en commençant par les dix « dépendances documentées » et les 71 issues « non étayé ». Les trois pièces de lien que l'audit juge fragiles (NVIDIA → OpenAI, L5 ; AMD → Meta, L2 ; NVIDIA → IREN, L1 et L3) relèvent de ce jugement : le lecteur qui les a classées ne les reclasse pas.
+  - Un seuil de matérialité pour F11 à F16, à fixer avant tout recalcul.
+  - La seconde moitié de C6, la cause des retraitements de C4, les membres qui se recoupent dans C12 et la trésorerie restreinte de C3.
+  - La forme de `decisions.md`, et une page courte à jour.
+  - Restent en l'état :
+    - le verrou de session, qui sert la session planifiée de §11.5, laquelle n'existe pas ;
+    - `keep_zip`, faux par défaut à cause du disque de l'environnement ; le README dit comment garder les archives ;
+    - `PYTHONHASHSEED` ;
+    - les plages d'octets des citations dans le HTML échappé ;
+    - les nombres des notes du lecteur.
+
+  (11) Tests de régression, un par défaut :
+  - F1 avec un CFO négatif deux trimestres de suite ;
+  - actions diluées sans fait direct au quatrième trimestre, et à travers un fractionnement ;
+  - `DebtCurrent` accompagné de `CommercialPaper` ;
+  - paire à deux instruments dont un seul est cédé, avec une clôture dans le sens client → fournisseur, une clôture connue après la coupure et une vente à un tiers ;
+  - saut ×100 confirmé par son doublon `companyfacts`, et saut non confirmé ;
+  - date limite d'un 20-F.
+
+  (12) Résultats : après le réassemblage.

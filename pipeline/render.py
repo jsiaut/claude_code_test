@@ -440,10 +440,16 @@ def synthesis(con, as_of, stats):
                 # issues déterminées, par énoncé : ce qui permet de discriminer, et ce que « non étayé » veut dire
                 det = [(st, k, v) for st in ("E1", "E2") for k, v in sorted((fl.get(f"outcomes_{st}") or {}).items())
                        if k != "indeterminate"]
+                e2 = fl.get("outcomes_E2") or {}
                 caveat = ("Issues déterminées : " + ", ".join(
                     f"{st[0]}.{st[1:]} {VALUE_FR.get(k, k)} {T.n('measures', {'E7_outcomes': [st, k]}, v)}" for st, k, v in det) +
+                    (f". E.2 seule (dépendance de revenu) : {T.n('measures', {'E7_outcomes': ['E2', 'indeterminate']}, e2.get('indeterminate', 0))} "
+                     f"issues indéterminées sur {T.n('measures', {'E7_outcomes_total': 'E2'}, sum(e2.values()))}" if e2 else "") +
                     ". Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche "
-                    "complète au sens de E.0, non que le financement soit sans rapport avec les achats. "
+                    "complète au sens de E.0, non que le financement soit sans rapport avec les achats. Complète veut dire que "
+                    "tous les blocs du catalogue de lecture des dépôts de la paire sont lus (notes, items de 8-K, pièces annexées, "
+                    "Items 404, 9A et 4) ; le rapport de gestion et la description de l'activité n'en font pas partie, si bien "
+                    "qu'une pièce L5 qui ne serait que là échapperait à la recherche (D-0069, point 8). "
                     + ("La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le "
                        "client a encore des dépôts à lire restent indéterminées." if "discovery" in blocks_open else ""))
             elif not blocks_open:
@@ -475,7 +481,13 @@ def synthesis(con, as_of, stats):
     ex = q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC, 1")
     L.append("- **Exclusions principales** : " + ", ".join(f"`{r['reason']}` {T.n('exclusions', {'reason': r['reason']}, r['n'])}"
                                                            for r in ex) + ".")
-    L.append("- **Arrêt** : aucun ; ni refus durable de la SEC, ni échec général des contrôles.")
+    dup = {t: v for t, v in (stats.get("pk_duplicates") or {}).items() if v.get("dropped")}
+    L.append("- **Doublons de clé primaire écartés à l'assemblage** (une ligne gardée par clé, la dernière ; D-0069, point 9) : "
+             + (", ".join(f"`{t}` {T.n(t, {'pk_duplicates': t}, v['dropped'])}, dont "
+                          f"{T.n(t, {'pk_collisions': t}, v['collision_keys'])} clé(s) en collision" for t, v in sorted(dup.items()))
+                if dup else "aucun") + ".")
+    stopped, sec, ctl = stop_text(con, T)
+    L.append(f"- **Arrêt (§11.4)** : {'oui' if stopped else 'aucun'} ; {sec} ; {ctl}.")
     L.append("")
     # Événements
     L.append("## Événements (annexe F)")
@@ -2454,6 +2466,79 @@ def journal_stats():
     return n, ok, by, first, last
 
 
+def stop_rule(con):
+    """Règle d'arrêt de §11.4, calculée (D-0069, point 8). Refus durable de la SEC : la dernière requête du
+    journal est un refus 403. Échec général des contrôles : sur les contrôles non provisoires
+    (`tolerance_basis = declared`) de la vue as_known, plus de la moitié des groupes ont plus de la moitié de
+    leurs périodes testées en échec, une période l'étant quand ses mismatch dépassent ses ok."""
+    n403, last = 0, None
+    for line in open(config.ROOT / "journal.jsonl", encoding="utf-8"):
+        o = json.loads(line)
+        if o.get("url"):
+            n403 += o.get("status") == 403
+            last = o
+    groups = set(config.load()["groups"])
+    per = {}
+    for r in q(con, """SELECT subject, period_end, count(*) FILTER (WHERE status = 'mismatch') AS m,
+                              count(*) FILTER (WHERE status = 'ok') AS ok FROM controls
+                       WHERE view = 'as_known' AND tolerance_basis = 'declared' AND status IN ('ok', 'mismatch')
+                       GROUP BY 1, 2"""):
+        if r["subject"] in groups:
+            t = per.setdefault(r["subject"], [0, 0])
+            t[0] += 1
+            t[1] += r["m"] > r["ok"]
+    failing = sorted(g for g, (n, f) in per.items() if 2 * f > n)
+    return {"n403": n403, "refused": bool(last and last.get("status") == 403), "groups": len(per), "failing": failing,
+            "general": 2 * len(failing) > len(per), "periods": sum(n for n, _ in per.values()),
+            "failing_periods": sum(f for _, f in per.values())}
+
+
+def stop_text(con, T):
+    """(arrêt, phrase sur la SEC, phrase sur les contrôles), nombres en jetons."""
+    s = stop_rule(con)
+    sec = (f"refus 403 de la SEC au journal : {T.n('journal', {'http_403': True}, s['n403'])}, et la dernière requête "
+           + ("est un refus" if s["refused"] else "a abouti"))
+    ctl = ("groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, "
+           f"`mismatch` plus nombreux que `ok`) : {T.n('controls', {'stop_failing_groups': True}, len(s['failing']))} sur "
+           f"{T.n('controls', {'stop_groups': True}, s['groups'])}"
+           + (f" ({', '.join(GROUP_NAMES.get(g, g) for g in s['failing'])})" if s["failing"] else "")
+           + f" ; périodes en échec : {T.n('controls', {'stop_failing_periods': True}, s['failing_periods'])} sur "
+             f"{T.n('controls', {'stop_periods': True}, s['periods'])}")
+    return s["refused"] or s["general"], sec, ctl
+
+
+PREVIOUS = ("measures", "exclusions", "links", "controls", "documents", "observations")
+
+
+def previous_run(con, stats):
+    """Tables de l'exécution précédente, celles du commit que l'assemblage a remplacées (D-0069, point 8),
+    en vues prev_<table>, et les décisions de ce commit. Sans commit lisible, les vues sont vides et tout
+    est nouveau."""
+    prev = stats.get("previous_tables") or {}
+    d = config.ROOT / "work" / "tmp" / "previous_tables"
+    ok = bool(prev)
+    if ok:
+        d.mkdir(parents=True, exist_ok=True)
+        for t in PREVIOUS:
+            r = subprocess.run(["git", "show", f"{prev['commit']}:tables/{t}.parquet"], capture_output=True, cwd=config.ROOT)
+            if r.returncode != 0:
+                ok = False
+                break
+            (d / f"{t}.parquet").write_bytes(r.stdout)
+    for t in PREVIOUS:
+        src = f"'{(d / (t + '.parquet')).as_posix()}'" if ok else f"(SELECT * FROM {t} WHERE false)"
+        con.execute(f"CREATE OR REPLACE VIEW prev_{t} AS SELECT * FROM {src}")
+    dec = set()
+    if ok:
+        r = subprocess.run(["git", "show", f"{prev['commit']}:decisions.md"], capture_output=True, text=True, cwd=config.ROOT)
+        dec = set(re.findall(r"^- \*\*(D-\d{4}) — ", r.stdout, re.M))
+    return dict(prev, decisions=dec) if ok else None
+
+
+def _same(cols, a="c", b="p"):
+    return " AND ".join(f"{a}.{k} IS NOT DISTINCT FROM {b}.{k}" for k in cols)
+
+
 def decisions_list():
     out = []
     for line in (config.ROOT / "decisions.md").read_text(encoding="utf-8").splitlines():
@@ -2465,34 +2550,42 @@ def decisions_list():
 
 def delta(con, as_of, stats):
     T = Tokens(con, "delta.md")
-    L = ["# delta.md — à lire en premier", "", f"*Exécution du {as_of} (premier passage). Généré depuis les tables.*", ""]
+    P = previous_run(con, stats)
+    since = (f"comparée à l'exécution précédente, dont les tables sont celles du commit {P['commit'][:12]} ({P['date'][:10]})"
+             if P else "sans exécution précédente lisible : tout y est nouveau")
+    L = ["# delta.md — à lire en premier", "", f"*Exécution du {as_of}, {since}. Généré depuis les tables (D-0069, point 8).*", ""]
     L.append("## Arrêt")
     L.append("")
-    L.append("Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'échouent pas de façon générale.")
+    stopped, sec, ctl = stop_text(con, T)
+    L.append(("Arrêt (§11.4) : " if stopped else "Aucun arrêt (§11.4) : ") + sec + " ; " + ctl + ".")
     L.append("")
     L.append("## Événements nouveaux de l'annexe F")
     L.append("")
-    evs = q(con, """SELECT subject, breakdown_key, count(*) AS n FROM measures WHERE measure = 'fragility_event'
-                    AND value_text = 'event' AND subject NOT LIKE 'cik:%' GROUP BY 1, 2 ORDER BY 1, 2""")
-    if evs:
-        for r in evs:
+    ev_key = ("subject", "period_start", "period_end", "view", "breakdown_key")
+
+    def ev_diff(cur, prev, vehicles):
+        return q(con, f"""SELECT c.subject, c.breakdown_key, count(*) AS n FROM {cur} c
+                          WHERE c.measure = 'fragility_event' AND c.value_text = 'event'
+                            AND c.subject {'' if vehicles else 'NOT '}LIKE 'cik:%'
+                            AND NOT EXISTS (SELECT 1 FROM {prev} p WHERE p.measure = 'fragility_event'
+                                            AND p.value_text = 'event' AND {_same(ev_key)})
+                          GROUP BY 1, 2 ORDER BY 1, 2""")
+    for title, rows, key in (("Apparus", ev_diff("measures", "prev_measures", False), "F_new"),
+                             ("Disparus", ev_diff("prev_measures", "measures", False), "F_gone")):
+        L.append(f"**{title}** (trimestres des groupes) :" if rows else f"**{title}** : aucun.")
+        for r in rows:
             L.append(f"- {GROUP_NAMES.get(r['subject'], r['subject'])} : {r['breakdown_key']} ({F_FR[r['breakdown_key']]}) — "
-                     f"{T.n('measures', {'F_event': [r['subject'], r['breakdown_key']]}, r['n'])} trimestre(s)")
-    else:
-        L.append("- Aucun.")
-    if "lender_portfolio" in (config.load().get("scope") or []):
-        lp = config.load().get("lender_portfolio") or {}
-        by, names, evd = lp_data(con)
-        shown = list(dict.fromkeys([s for _, vs in lp_platforms(names, lp) for s in vs] +
-                                   [f"cik:{p['cik']}" for p in lp.get("peers") or [] if f"cik:{p['cik']}" in by]))
-        for sj in shown:
-            for f, ds in sorted(evd[sj].items()):
-                last = sorted(names[sj])[-1] if names[sj] else None
-                unit = {"F15": "offre(s)", "F16": "interruption(s)"}.get(f, "date(s) de bilan")
-                L.append(f"- {names[sj].get(last, sj) if last else sj} (véhicule BDC) : {f} ({F_FR[f]}) — "
-                         f"{T.n('measures', {'F_event_vehicle': [sj, f]}, len(ds))} {unit}")
-        L.append("- Les autres véhicules BDC de l'univers (D-0045, D-0047) ne sont pas listés ici : leurs cellules sont dans `measures`.")
-    L.append("")
+                     f"{T.n('measures', {key: [r['subject'], r['breakdown_key']]}, r['n'])} trimestre(s)")
+        L.append("")
+    vn, vg = Counter(), Counter()
+    for c_, rows in ((vn, ev_diff("measures", "prev_measures", True)), (vg, ev_diff("prev_measures", "measures", True))):
+        for r in rows:
+            c_[r["breakdown_key"]] += r["n"]
+    if vn or vg:
+        L.append("Véhicules BDC de l'univers (D-0045, D-0047), événements apparus et disparus : " + " ; ".join(
+            f"{f} +{T.n('measures', {'F_vehicle_new': f}, vn[f])} / −{T.n('measures', {'F_vehicle_gone': f}, vg[f])}"
+            for f in sorted(set(vn) | set(vg))) + ".")
+        L.append("")
     L.append("## Rendement du passage (§11.1)")
     L.append("")
     tiers = [m for m, v in __import__("pipeline.registry", fromlist=["MEASURES"]).MEASURES.items() if v[0] == 1]
@@ -2547,8 +2640,11 @@ def delta(con, as_of, stats):
              + ", ".join(f"{k} {T.n('observations', {'item': k}, v)}" for k, v in sorted(bl.get("by_item", {}).items()))
              + f" ; pièces arrêtées à leur en-tête : " + ", ".join(f"{k} {T.n('exclusions', {'header_only': k}, v)}"
                                                                   for k, v in sorted(bl.get("header_only", {}).items())) + ".")
-    L.append(f"- Lignes rejetées par la validation : {T.n('exclusions', {'validation_failed': True}, stats['observations']['rejected_semantic'])} ; "
-             "13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).")
+    L.append(f"- Lignes rejetées par la validation : {T.n('exclusions', {'validation_failed': True}, stats['observations']['rejected_semantic'])}.")
+    dup = {t: v for t, v in (stats.get("pk_duplicates") or {}).items() if v.get("dropped")}
+    L.append("- Doublons de clé primaire écartés à l'assemblage : " + (", ".join(
+        f"`{t}` {T.n(t, {'pk_duplicates': t}, v['dropped'])} (collisions : {T.n(t, {'pk_collisions': t}, v['collision_keys'])})"
+        for t, v in sorted(dup.items())) if dup else "aucun") + ".")
     L.append(f"- Durée de l'assemblage : {stats.get('seconds', 0)} s ; lecture : voir le journal ci-dessus.")
     L.append("")
     lend = q(con, """SELECT measure, status, coalesce(nd_reason, '') AS nd, count(*) AS n FROM measures
@@ -2572,13 +2668,25 @@ def delta(con, as_of, stats):
     L += paths_formd_yield_section(con, T)
     L.append("## Exclusions nouvelles, par motif")
     L.append("")
-    for r in q(con, "SELECT reason, count(*) AS n FROM exclusions GROUP BY 1 ORDER BY 2 DESC, 1"):
-        L.append(f"- `{r['reason']}` : {T.n('exclusions', {'reason': r['reason']}, r['n'])}")
+    ex_new = {r["reason"]: r["n"] for r in q(con, """SELECT reason, count(*) AS n FROM exclusions c WHERE NOT EXISTS
+                                                     (SELECT 1 FROM prev_exclusions p WHERE p.exclusion_key = c.exclusion_key)
+                                                     GROUP BY 1""")}
+    ex_gone = {r["reason"]: r["n"] for r in q(con, """SELECT reason, count(*) AS n FROM prev_exclusions c WHERE NOT EXISTS
+                                                      (SELECT 1 FROM exclusions p WHERE p.exclusion_key = c.exclusion_key)
+                                                      GROUP BY 1""")}
+    for r in sorted(set(ex_new) | set(ex_gone), key=lambda k: (-ex_new.get(k, 0), k)):
+        L.append(f"- `{r}` : +{T.n('exclusions', {'reason_new': r}, ex_new.get(r, 0))}, "
+                 f"−{T.n('exclusions', {'reason_gone': r}, ex_gone.get(r, 0))}")
+    if not ex_new and not ex_gone:
+        L.append("- Aucune.")
     L.append("")
     L.append("## Décisions et variantes nouvelles")
     L.append("")
-    for d, t in decisions_list():
+    new_dec = [(d, t) for d, t in decisions_list() if not P or d not in P["decisions"]]
+    for d, t in new_dec:
         L.append(f"- {d} — {t}.")
+    if not new_dec:
+        L.append("- Aucune.")
     L.append("")
     L.append("## Critères des annexes E et F")
     L.append("")
@@ -2593,11 +2701,40 @@ def delta(con, as_of, stats):
     L.append("")
     L.append("## Dépôts nouveaux")
     L.append("")
-    fd = q(con, """SELECT form, count(DISTINCT accession) AS n FROM documents WHERE accession IS NOT NULL GROUP BY 1 ORDER BY 2 DESC, 1""")
-    L.append("Premier passage : tous les dépôts lus sont nouveaux — " + ", ".join(f"{r['form']} {T.n('documents', {'form': r['form']}, r['n'])}" for r in fd if r["form"]) + ".")
+    fd = q(con, """SELECT form, count(DISTINCT accession) AS n FROM documents WHERE accession IS NOT NULL AND accession NOT IN
+                   (SELECT accession FROM prev_documents WHERE accession IS NOT NULL) GROUP BY 1 ORDER BY 2 DESC, 1""")
+    L.append(("Dépôts lus pour la première fois : " + ", ".join(f"{r['form']} {T.n('documents', {'form_new': r['form']}, r['n'])}"
+                                                              for r in fd if r["form"]) + ".") if fd else "Aucun.")
     L.append("")
     L.append("## Valeurs changées pour des périodes déjà publiées")
     L.append("")
+    pk = ("measure", "subject", "counterparty", "period_start", "period_end", "view", "as_of", "term", "breakdown_key",
+          "financing_policy", "constant_perimeter", "variant")
+    ch = q(con, f"""SELECT c.measure, count(*) FILTER (WHERE c.value IS DISTINCT FROM p.value
+                                                   OR c.value_text IS DISTINCT FROM p.value_text) AS v,
+                           count(*) FILTER (WHERE c.status IS DISTINCT FROM p.status
+                                                   OR c.nd_reason IS DISTINCT FROM p.nd_reason) AS s
+                    FROM measures c JOIN prev_measures p ON {_same(pk)} GROUP BY 1 HAVING v > 0 OR s > 0
+                    ORDER BY 2 DESC, 1""")
+    nw = {r["measure"]: r["n"] for r in q(con, f"""SELECT measure, count(*) AS n FROM measures c WHERE NOT EXISTS
+                                                    (SELECT 1 FROM prev_measures p WHERE {_same(pk)}) GROUP BY 1""")}
+    gn = {r["measure"]: r["n"] for r in q(con, f"""SELECT measure, count(*) AS n FROM prev_measures c WHERE NOT EXISTS
+                                                    (SELECT 1 FROM measures p WHERE {_same(pk)}) GROUP BY 1""")}
+    if ch or nw or gn:
+        L.append("Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cellules apparues et disparues, "
+                 "par mesure :")
+        L.append("")
+        L.append("| Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |")
+        L.append("| --- | ---: | ---: | ---: | ---: |")
+        chd = {r["measure"]: r for r in ch}
+        for m in sorted(set(chd) | set(nw) | set(gn), key=lambda m: (-(chd[m]["v"] if m in chd else 0), m)):
+            r = chd.get(m, {"v": 0, "s": 0})
+            L.append(f"| `{m}` | {T.n('measures', {'changed_value': m}, r['v'])} | {T.n('measures', {'changed_status': m}, r['s'])} | "
+                     f"{T.n('measures', {'cells_new': m}, nw.get(m, 0))} | {T.n('measures', {'cells_gone': m}, gn.get(m, 0))} |")
+        L.append("")
+    else:
+        L.append("Aucune cellule changée, apparue ni disparue.")
+        L.append("")
     c4 = q(con, """SELECT subject, count(*) AS n FROM controls WHERE control = 'c4_restatement_detection' AND status = 'mismatch'
                    GROUP BY 1 ORDER BY 1""")
     L.append("Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de "
@@ -2606,13 +2743,26 @@ def delta(con, as_of, stats):
     L.append("")
     L.append("## Arêtes nouvelles")
     L.append("")
-    ae = q(con, """SELECT family, edge_evidence, count(*) AS n FROM links WHERE link_kind = 'edge' GROUP BY 1, 2 ORDER BY 1, 2""")
-    L.append("Premier passage : toutes les arêtes sont nouvelles — " + ", ".join(
-        f"{r['family']}/{r['edge_evidence']} {T.n('links', {'edges': [r['family'], r['edge_evidence']]}, r['n'])}" for r in ae) + ".")
+    def edge_diff(cur, prev):
+        return q(con, f"""SELECT family, edge_evidence, count(*) AS n FROM {cur} c WHERE link_kind = 'edge' AND NOT EXISTS
+                          (SELECT 1 FROM {prev} p WHERE p.link_kind = 'edge' AND p.link_key = c.link_key)
+                          GROUP BY 1, 2 ORDER BY 1, 2""")
+    for title, rows, key in (("Apparues", edge_diff("links", "prev_links"), "edges_new"),
+                             ("Disparues", edge_diff("prev_links", "links"), "edges_gone")):
+        L.append(f"- {title} : " + (", ".join(f"{r['family']}/{r['edge_evidence']} {T.n('links', {key: [r['family'], r['edge_evidence']]}, r['n'])}"
+                                              for r in rows) if rows else "aucune") + ".")
     L.append("")
     L.append("## Contrôles qui ont basculé")
     L.append("")
-    L.append("Sans objet au premier passage.")
+    cpk = ("control", "subject", "period_start", "period_end", "view", "as_of", "breakdown_key", "mapping_variant")
+    fl = q(con, f"""SELECT c.control, p.status AS before, c.status AS after, count(*) AS n FROM controls c
+                    JOIN prev_controls p ON {_same(cpk)} WHERE c.status IS DISTINCT FROM p.status
+                    GROUP BY 1, 2, 3 ORDER BY 1, 2, 3""")
+    for r in fl:
+        L.append(f"- {r['control'].split('_')[0].upper()} : `{r['before']}` → `{r['after']}` "
+                 f"{T.n('controls', {'flipped': [r['control'], r['before'], r['after']]}, r['n'])}")
+    if not fl:
+        L.append("- Aucun.")
     L.append("")
     L.append("## Entités pending")
     L.append("")
@@ -2622,22 +2772,29 @@ def delta(con, as_of, stats):
     L.append("")
     L.append("## Travail not_processed")
     L.append("")
-    L.append("Hors tranche du premier passage, pour chaque groupe : notes d'investissements, de dette, de baux et "
-             "d'engagements ; texte autour des faits de concentration ; 8-K items 2.01 et 2.03 ; corps des EX-10 "
-             "arrêtés à leur en-tête. C'est ce que l'extension `text` de §14 lirait.")
+    npr = q(con, "SELECT item_kind, count(*) AS n FROM exclusions WHERE reason = 'not_processed' GROUP BY 1 ORDER BY 2 DESC, 1")
+    L.append("Exclusions `not_processed`, par nature d'élément : " + (", ".join(
+        f"{r['item_kind']} {T.n('exclusions', {'not_processed': r['item_kind']}, r['n'])}" for r in npr) if npr else "aucune") + ".")
     L.append("")
     L.append("## Paires non additives")
     L.append("")
     cnt = stats.get("non_additive_candidates", {})
     mute = [k for k, v in sorted(cnt.items()) if v == 0]
     L.append("Relations candidates par paire du registre : " + ", ".join(f"{k} {T.n('links', {'pair_candidates': k}, v)}" for k, v in sorted(cnt.items()))
-             + f". Paires muettes : {', '.join(mute) if mute else 'aucune'} — la plupart portent sur des lignes de notes que le premier passage ne lit pas.")
+             + f". Paires muettes : {', '.join(mute) if mute else 'aucune'}.")
     L.append("")
     L.append("## Changements dus à une nouvelle passe de lecture ou au code")
     L.append("")
-    L.append("Une seule passe de lecture (`2026-10-07T10:54:00Z`) ; 13 lignes corrigées dans cette passe, avant l'assemblage, "
-             "après la validation sémantique (D-0020). Code de la phase 3 ajouté : entités et arêtes, statut « financé », "
-             "mesures de la question 4, annexes E et F, rendus.")
+    ob = q(con, """SELECT (SELECT count(*) FROM observations c WHERE NOT EXISTS
+                            (SELECT 1 FROM prev_observations p WHERE p.obs_key = c.obs_key)) AS new_rows,
+                          (SELECT count(DISTINCT content_key) FROM observations c WHERE NOT EXISTS
+                            (SELECT 1 FROM prev_observations p WHERE p.obs_key = c.obs_key)) AS new_blocks,
+                          (SELECT count(*) FROM prev_observations c WHERE NOT EXISTS
+                            (SELECT 1 FROM observations p WHERE p.obs_key = c.obs_key)) AS gone_rows""")[0]
+    L.append(f"Lecture : {T.n('observations', {'obs_new': True}, ob['new_rows'])} lignes d'observation nouvelles, dans "
+             f"{T.n('observations', {'obs_new_blocks': True}, ob['new_blocks'])} blocs, et "
+             f"{T.n('observations', {'obs_gone': True}, ob['gone_rows'])} disparues. Code : les décisions nouvelles ci-dessus "
+             "disent ce qui a changé.")
     L.append("")
     return "\n".join(L) + "\n", T.rows
 

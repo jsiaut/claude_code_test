@@ -117,6 +117,7 @@ def build_pairs(edges, groups):
 
 
 CLOSING_EVENTS = ("repayment", "termination", "conversion", "disposal")
+OPEN_STAGES = ("intent_non_binding", "signed", "available")    # une fin annoncée n'est pas accomplie
 
 
 def _opening(l):
@@ -151,13 +152,33 @@ def financed_events(pair):
     return sorted(ev)
 
 
-def financed_status(pair, quarters, cutoff_of, lookback, censored):
-    """Statut par trimestre de S : {fin de trimestre: (statut, preuves)} sous les deux politiques."""
+def _closings(edges):
+    """Fins de détention publiées et accomplies (cession, conversion, remboursement, radiation) : une
+    clôture seulement signée ne ferme rien."""
+    return [l for l in edges if l["_obs"].get("event_type") in CLOSING_EVENTS and l["_date"]
+            and l["stage"] not in OPEN_STAGES]
+
+
+def closing_index(edges):
+    """Fins d'instrument par clé d'instrument, sur toutes les arêtes : une clôture suit le sens de la trésorerie,
+    et la vente d'une participation à un tiers n'est pas dans la paire (D-0069, point 5)."""
+    out = {}
+    for l in _closings(edges):
+        if l.get("instrument_key"):
+            out.setdefault(l["instrument_key"], []).append((l["_date"], _kd(l)))
+    return out
+
+
+def financed_status(pair, quarters, cutoff_of, lookback, censored, closings=None):
+    """Statut par trimestre de S : {fin de trimestre: (statut, preuves)} sous les deux politiques. `closings` :
+    closing_index de toutes les arêtes ; sans lui, les seules arêtes de la paire, dans les deux sens."""
     ev = financed_events(pair)
-    ends_a = []      # fins de détention publiées (cession, conversion, remboursement, radiation)
-    for l in pair.fin:
-        if l["_obs"].get("event_type") in ("disposal", "conversion", "repayment", "termination") and l["_date"]:
-            ends_a.append((l["_date"], l.get("instrument_key")))
+    held = {l["link_key"]: l for l in pair.fin}
+    own = _closings(pair.fin + pair.mirror_fin)
+    by_ik = closings if closings is not None else closing_index(own)
+    by_et = {}
+    for l in own:
+        by_et.setdefault(l["edge_type"], []).append((l["_date"], _kd(l)))
     out = {"exposure_outstanding": {}, "ever_financed": {}}
     ever = False
     seen_active = False
@@ -173,7 +194,11 @@ def financed_status(pair, quarters, cutoff_of, lookback, censored):
             if cond in ("b", "c") and d >= lo:
                 active.append(key)
             if cond == "a":
-                closed = any(ed <= q["end"] and ed >= d and (ed_kd is None or True) for ed, ed_kd in ends_a)
+                # close par une fin du même instrument, connue à la date de coupure ; une détention sans
+                # clé, par une fin de la paire du même type d'arête (D-0069, point 5)
+                ik = held[key].get("instrument_key")
+                ends = by_ik.get(ik, []) if ik else by_et.get(held[key]["edge_type"], [])
+                closed = any(d <= ed <= q["end"] and (ed_kd is None or ed_kd <= cut) for ed, ed_kd in ends)
                 if not closed:
                     active.append(key)
         if active:
@@ -350,9 +375,10 @@ def fiscal_years(quarters, ws, as_of_d):
 
 def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
                   report_dates, lookback, censored_groups, rev_notes_read=frozenset(), text_done=frozenset(),
-                  failed_until=None, client_state=None, backlog=None):
+                  failed_until=None, client_state=None, backlog=None, closings=None):
     """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part). `backlog` : faits balisés, lignes
-    de carnet et RPO publiés (backlog.Inputs, D-0068) ; sans lui, aucun RPO n'est publié."""
+    de carnet et RPO publiés (backlog.Inputs, D-0068) ; sans lui, aucun RPO n'est publié. `closings` : fins
+    d'instrument de toutes les arêtes (closing_index, D-0069)."""
     as_of_d = dt.date.fromisoformat(as_of)
     backlog = backlog if backlog is not None else B.Inputs()
     out, ev = [], {}
@@ -374,7 +400,7 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
             return report_dates.get((s, q["end"])) or as_of_d
         F = {}
         for view, cutf in (("as_known", cut_known), ("revised", lambda q: as_of_d)):
-            st = financed_status(p, qs_all, cutf, lookback, censored)
+            st = financed_status(p, qs_all, cutf, lookback, censored, closings)
             # rien n'a jamais tenu et toutes les pièces qui pourraient l'établir sont lues : never (§3.2)
             if not censored:
                 for policy in ("exposure_outstanding", "ever_financed"):

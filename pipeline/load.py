@@ -84,8 +84,11 @@ def mark_conflicts(con, scale_jump_factor):
          AND a.reporting_scope = b.reporting_scope AND a.fact_key <> b.fact_key
         WHERE a.source = 'instance' AND b.source = 'instance' AND a.value IS NOT NULL AND b.value IS NOT NULL
           AND abs(a.value - b.value) > coalesce({tol.format(d='a.decimals')}, 0) + coalesce({tol.format(d='b.decimals')}, 0))""")
+    # saut d'échelle : confirmé, donc pas conflicting, quand le fait companyfacts du même dépôt (extraction
+    # de la SEC, le rôle que §7.3 donne à num) lui est égal à la tolérance d'arrondi près ; non confirmé,
+    # il reste hors des sommes avec son doublon companyfacts éventuel (D-0069, point 6)
     con.execute(f"""
-      UPDATE facts SET conflict = true WHERE fact_key IN (
+      CREATE OR REPLACE TEMP TABLE scale_jumps AS
         SELECT fact_key FROM (
           SELECT fact_key, value, lag(value) OVER (
                    PARTITION BY group_id, concept, unit, dims, period_type,
@@ -94,7 +97,20 @@ def mark_conflicts(con, scale_jump_factor):
           FROM facts WHERE value IS NOT NULL AND source = 'instance' AND n_dims = 0 AND unit = 'USD'
             AND NOT coalesce(conflict, false))
         WHERE prev IS NOT NULL AND prev <> 0 AND value <> 0
-          AND (abs(value / prev) >= {scale_jump_factor} OR abs(prev / value) >= {scale_jump_factor}))""")
+          AND (abs(value / prev) >= {scale_jump_factor} OR abs(prev / value) >= {scale_jump_factor})""")
+    same = """b.source = 'companyfacts' AND b.accession = a.accession AND b.concept = a.concept
+              AND b.period_type = a.period_type AND b.period_start IS NOT DISTINCT FROM a.period_start
+              AND b.period_end = a.period_end AND b.unit IS NOT DISTINCT FROM a.unit AND b.n_dims = 0"""
+    con.execute(f"""
+      CREATE OR REPLACE TEMP TABLE scale_unconfirmed AS
+        SELECT a.fact_key FROM facts a JOIN scale_jumps j USING (fact_key)
+        WHERE NOT EXISTS (SELECT 1 FROM facts b WHERE {same} AND b.value IS NOT NULL
+                          AND abs(b.value - a.value) <= coalesce({tol.format(d='a.decimals')}, 0)
+                                                        + coalesce({tol.format(d='b.decimals')}, 0))""")
+    con.execute(f"""
+      UPDATE facts SET conflict = true WHERE fact_key IN (
+        SELECT fact_key FROM scale_unconfirmed
+        UNION SELECT b.fact_key FROM facts a JOIN scale_unconfirmed u USING (fact_key) JOIN facts b ON {same})""")
     return con.execute("SELECT count(*) FROM facts WHERE conflict").fetchone()[0]
 
 
@@ -461,10 +477,22 @@ def _excl(item_kind, item_key, reason, detail, b, as_of, raw=None):
             "invariant": None, "raw": raw, "as_of": as_of}
 
 
+EXCL_DUPLICATES = {"dropped": 0, "collision_keys": 0, "examples": []}   # D-0069, point 9
+
+
 def insert_exclusions(con, rows):
+    """Une exclusion par clé, la première ; les doublons écartés sont comptés dans EXCL_DUPLICATES."""
     if not rows:
         return 0
-    df = pd.DataFrame(rows).drop_duplicates("exclusion_key")
+    df = pd.DataFrame(rows)
+    dup = df.duplicated("exclusion_key", keep=False)
+    if dup.any():
+        sub = df[dup].astype(str)
+        distinct = sub.groupby("exclusion_key", sort=False).apply(lambda x: len(x.drop_duplicates()), include_groups=False)
+        EXCL_DUPLICATES["dropped"] += len(sub) - len(distinct)
+        EXCL_DUPLICATES["collision_keys"] += int((distinct > 1).sum())
+        EXCL_DUPLICATES["examples"] = (EXCL_DUPLICATES["examples"] + list(distinct[distinct > 1].index[:10]))[:10]
+    df = df.drop_duplicates("exclusion_key")
     for c in ("exclusion_key", "item_kind", "item_key", "reason", "detail", "group_id", "accession",
               "content_key", "invariant", "raw", "as_of"):
         if c not in df.columns:

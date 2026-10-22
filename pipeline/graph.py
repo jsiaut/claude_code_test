@@ -1,15 +1,11 @@
-"""Entités, arêtes et statut « financé » (§3, §10).
+"""Entités et noms normalisés (§10).
 
 Une entité par personne morale, reliée à ses groupes par des appartenances datées. On ne
 fusionne que sur CIK ou identité affirmée par une pièce ; une contrepartie non confirmée
-reste pending, visible dans les tables, absente des agrégats. Une arête est orientée de
-la partie qui fournit la ressource vers celle qui la reçoit.
+reste pending, visible dans les tables, absente des agrégats. Les arêtes se construisent dans
+links.py ; l'ancien constructeur d'ici, qui n'était plus appelé, a été retiré (D-0069, point 9).
 """
-import datetime as dt
-import json
 import re
-
-import pandas as pd
 
 from . import config
 
@@ -121,83 +117,3 @@ def seed_entities(p0, cfg):
         for a in c.get("aliases") or []:
             alias(eid, a, None, None, c.get("evidence"))
     return rows
-
-
-def resolver(entity_rows):
-    """Nom normalisé -> (entity_id, groupe) pour les entités confirmées et leurs alias."""
-    names = {}
-    groups = {}
-    for r in entity_rows:
-        if r["record_kind"] == "membership" and r["status"] == "confirmed":
-            groups.setdefault(r["entity_id"], r["ref"])
-    for r in entity_rows:
-        if r["record_kind"] in ("entity", "alias") and r["status"] == "confirmed":
-            names[r["normalized_name"]] = r["entity_id"]
-    return names, groups
-
-
-def group_of_name(name, names, groups, filer_group=None):
-    if not name:
-        return None, None
-    n = normalize_name(name)
-    eid = names.get(n)
-    if eid:
-        return eid, groups.get(eid)
-    return f"name:{n}", None
-
-
-def edges_from_observations(obs, entity_rows):
-    """Arêtes du graphe : une observation valide avec famille, type et contrepartie nommée
-    ou dérivable. Arête `amount` si un montant admissible et une période ; sinon `relation`.
-    Les contreparties non confirmées restent pending et hors des agrégats."""
-    names, groups = resolver(entity_rows)
-    pend = {}
-    links = []
-    for o in obs:
-        if o["kind"] != "observation" or o["validation_state"] != "valid":
-            continue
-        if not o.get("family") or o.get("family") == "none" or not o.get("edge_type") or o.get("edge_type") == "none":
-            continue
-        if o.get("counterparty_evidence") not in ("named", "derivable"):
-            continue
-        filer_group = o["group_id"]
-        payer_e, payer_g = group_of_name(o.get("payer"), names, groups)
-        payee_e, payee_g = group_of_name(o.get("payee"), names, groups)
-        # le déposant est l'une des parties : ses noms se rattachent à son groupe
-        for side in ("payer", "payee"):
-            nm = o.get(side)
-            # « we » du texte, ou l'identifiant du groupe déposant écrit à sa place par le lecteur
-            if nm and (normalize_name(nm) in {normalize_name(w) for w in ("we", "us", "the company", "our company")}
-                       or nm.strip().upper() == filer_group):
-                if side == "payer":
-                    payer_e, payer_g = f"group:{filer_group}", filer_group
-                else:
-                    payee_e, payee_g = f"group:{filer_group}", filer_group
-        for e, g, nm in ((payer_e, payer_g, o.get("payer")), (payee_e, payee_g, o.get("payee"))):
-            if e and g is None and nm:
-                pend[e] = nm
-        amount_ok = o.get("amount") is not None and o.get("amount_nature") != "management_estimate" \
-            and o.get("stage") not in (None, "none", "intent_non_binding") and o.get("period_end")
-        links.append({
-            "link_key": "obs:" + o["obs_key"], "link_kind": "edge", "family": o["family"],
-            "edge_type": o["edge_type"], "edge_evidence": "amount" if amount_ok else "relation",
-            "advance": o.get("edge_type") == "prepayment", "reciprocal_purchase": None,
-            "from_entity": payer_e, "to_entity": payee_e, "from_group": payer_g, "to_group": payee_g,
-            "amount": o.get("amount") if amount_ok else None, "unit": o.get("unit"), "currency": o.get("currency"),
-            "amount_nature": o.get("amount_nature"), "stage": o.get("stage"),
-            "period_start": o.get("period_start"), "period_end": o.get("period_end"),
-            "event_date": o.get("event_date"), "relation_type": None, "a_key": None, "b_key": None,
-            "allocation": None, "pair_id": None, "resolution": None, "resolution_ref": None,
-            "instrument_key": o.get("instrument_key"), "evidence_keys": json.dumps([o["obs_key"]]),
-            "tier": o.get("tier"), "filing_status": o.get("filing_status"),
-            "source_perspective": "reporting_entity", "knowledge_date": o.get("knowledge_date"),
-            "elimination_status": "not_applicable" if payer_g != payee_g else "eliminated",
-        })
-    pending = [{"entity_id": e, "record_kind": "entity", "ref": "none", "valid_from": "none", "valid_to": None,
-                "name": n, "normalized_name": normalize_name(n), "cik": None, "jurisdiction": None,
-                "is_filer": False, "is_financial_institution": None, "status": "pending",
-                "group_kind": "counterparty_group", "consolidation_treatment": None, "combination_method": None,
-                "common_control_start": None, "legal_date": None, "resolution_rule": None,
-                "evidence": "nommée dans une observation, identité non affirmée par une pièce"}
-               for e, n in pend.items()]
-    return links, pending

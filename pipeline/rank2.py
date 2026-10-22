@@ -16,7 +16,7 @@ from .measures import NONE, Series, _ratio, cell
 
 QUARTER_FLOWS = {"gross_profit", "cost_of_revenue", "operating_income", "revenue_total", "capex_cash", "cfo",
                  "sbc_expense", "net_income", "depreciation_expense", "rou_obtained_operating_lease",
-                 "capitalized_interest", "pik_interest", "interest_expense", "diluted_shares_weighted"}
+                 "capitalized_interest", "pik_interest", "interest_expense"}
 
 
 def _nd(S, qn, r):
@@ -172,21 +172,23 @@ def quarter_rank2(S, g, q, cutoff, view, as_of):
         out.append(cell("eq_equity_and_accumulated_deficit", g, None, pe, view, as_of, term=term,
                         value=t["value"] if t else None, unit="USD", terms=[t] if t else [],
                         status="computed" if t else "not_determinable", nd_reason=None if t else _nd(S, qn, None)))
-    sh, t_sh, r_sh = S.quarter("diluted_shares_weighted", q, cutoff)
+    # deux faits directs de trois mois d'un même dépôt, jamais une différence de cumuls (D-0069, point 3)
     p4 = S.prior(q, 4)
-    if sh is not None and p4:
-        sh0, t_sh0, r_sh0 = S.quarter("diluted_shares_weighted", p4, cutoff)
-        if sh0:
+    if p4:
+        t1, t0, r_sh = S.same_filing_pair("diluted_shares_weighted", q, p4, cutoff)
+        if t1 and t0:
+            sh, sh0 = t1["value"], t0["value"]
             v, r = _ratio(sh - sh0, sh0)
             out.append(cell("eq_diluted_share_count_change", g, ps, pe, view, as_of, value=v, numerator=sh - sh0,
-                            denominator=sh0, unit="pure", terms=t_sh + t_sh0,
+                            denominator=sh0, unit="pure", terms=[t1, t0],
                             status="computed" if v is not None else "not_determinable", nd_reason=r))
         else:
             out.append(cell("eq_diluted_share_count_change", g, ps, pe, view, as_of, status="not_determinable",
-                            nd_reason=_nd(S, "diluted_shares_weighted", r_sh0)))
+                            nd_reason=_nd(S, "diluted_shares_weighted", r_sh)))
     else:
         out.append(cell("eq_diluted_share_count_change", g, ps, pe, view, as_of, status="not_determinable",
-                        nd_reason=_nd(S, "diluted_shares_weighted", r_sh) if sh is None else "prior_period_missing"))
+                        nd_reason=_nd(S, "diluted_shares_weighted", None)
+                        if S.duration("diluted_shares_weighted", ps, pe, cutoff) is None else "prior_period_missing"))
     # facilités confirmées non tirées ; acomptes clients ; part des en-cours
     t = S.instant("undrawn_committed_facilities", pe, cutoff)
     out.append(cell("liq_undrawn_committed_facilities", g, None, pe, view, as_of, value=t["value"] if t else None,

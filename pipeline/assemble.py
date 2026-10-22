@@ -10,6 +10,7 @@ citations : seules les observations peuvent changer pour qu'une étape soit repr
 """
 import datetime as dt
 import json
+import subprocess
 import sys
 import time
 from collections import Counter
@@ -43,7 +44,12 @@ def _d(x):
     return dt.date.fromisoformat(str(x)[:10])
 
 
+PK_DUPLICATES = {}      # doublons de clé primaire écartés par insert, par table (D-0069, point 9)
+
+
 def insert(con, table, rows, cols=None):
+    """Insère des lignes ; deux lignes de même clé primaire n'en font qu'une, la dernière, et le doublon est
+    compté dans PK_DUPLICATES : identique, ou en collision quand les deux lignes diffèrent."""
     if not rows:
         return 0
     df = pd.DataFrame(rows)
@@ -53,6 +59,14 @@ def insert(con, table, rows, cols=None):
             df[c] = None
     df = df[cols]
     pk = TABLES[table]
+    dup = df.duplicated(pk, keep=False)
+    if dup.any():
+        sub = df[dup].astype(str)
+        distinct = sub.groupby(pk, sort=False).apply(lambda x: len(x.drop_duplicates()), include_groups=False)
+        rec = PK_DUPLICATES.setdefault(table, {"dropped": 0, "collision_keys": 0, "examples": []})
+        rec["dropped"] += len(sub) - len(distinct)
+        rec["collision_keys"] += int((distinct > 1).sum())
+        rec["examples"] = (rec["examples"] + [list(k) if isinstance(k, tuple) else [k] for k in distinct[distinct > 1].index[:10]])[:10]
     df = df.drop_duplicates(pk, keep="last")
     types = {c[0]: c[1] for c in con.execute(f"DESCRIBE {table}").fetchall()}
     sel = []
@@ -93,13 +107,32 @@ def windows(p0):
     return out
 
 
-def deadline_fn(p0, groups):
+def plus_months(d, n):
+    """d plus n mois ; une fin de mois donne la fin du mois d'arrivée."""
+    y, m = divmod(d.month - 1 + n, 12)
+    y, m = d.year + y, m + 1
+    last = ((dt.date(y + 1, 1, 1) if m == 12 else dt.date(y, m + 1, 1)) - dt.timedelta(days=1)).day
+    return dt.date(y, m, last if (d + dt.timedelta(days=1)).day == 1 else min(d.day, last))
+
+
+def deadline_fn(p0, groups, filings=None):
+    """Date limite de dépôt du rapport annuel de chaque exercice (E.0) : quatre mois après la fin
+    d'exercice pour un 20-F, sinon 60, 75 ou 90 jours selon la catégorie du déposant. Le formulaire est
+    celui du rapport annuel original de l'exercice, à défaut celui du dernier antérieur (D-0069, point 7)."""
     days = {"Large accelerated filer": 60, "Accelerated filer": 75}
+    fil = filings if filings is not None else pd.read_parquet(config.DB_DIR / "filings.parquet")
+    ann = fil[fil["form"].isin(("10-K", "10-KT", "20-F", "40-F")) & fil["reportDate"].notna()]
     out = {}
     for g in groups:
         cat = next((m.get("category") for c, m in p0["meta"].items() if m["group"] == g and not m["is_predecessor"]), None)
-        n = days.get(cat, 90)
-        out[g] = (lambda n: (lambda fe: fe + dt.timedelta(days=n)))(n)
+        reps = sorted({(_d(r), f) for r, f in ann.loc[ann["group_id"] == g, ["reportDate", "form"]].itertuples(index=False)})
+
+        def fn(fe, n=days.get(cat, 90), reps=reps):
+            near = [f for r, f in reps if abs((r - fe).days) <= 7]
+            before = [f for r, f in reps if r < fe]
+            form = near[-1] if near else (before[-1] if before else None)
+            return plus_months(fe, 4) if form == "20-F" else fe + dt.timedelta(days=n)
+        out[g] = fn
     return out
 
 
@@ -113,6 +146,13 @@ def run(as_of, use_cache=True, apercu=False):
     groups = [g for g in cfg["groups"] if g in p0["calendars"]]
     as_of_d = dt.date.fromisoformat(as_of)
     stats = {"as_of": as_of, "groups": groups}
+    # exécution précédente : le dernier commit des tables que cet assemblage remplace ; delta.md s'y compare
+    # (D-0069, point 8)
+    prev = subprocess.run(["git", "log", "-1", "--format=%H %cI", "--", "tables/measures.parquet"],
+                          capture_output=True, text=True, cwd=config.ROOT).stdout.split()
+    stats["previous_tables"] = {"commit": prev[0], "date": prev[1]} if len(prev) == 2 else None
+    PK_DUPLICATES.clear()
+    load.EXCL_DUPLICATES.update(dropped=0, collision_keys=0, examples=[])
     # étapes qui ne lisent pas les observations : reprises du mémo si rien d'autre n'a changé (D-0062)
     M = memo.Memo(memo.inputs_fingerprint(), use=use_cache)
 
@@ -343,7 +383,8 @@ def run(as_of, use_cache=True, apercu=False):
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
                                        rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
-                                       client_state=client_state, backlog=bl)
+                                       client_state=client_state, backlog=bl,
+                                       closings=circularity.closing_index(edges))
     cells += pc
     # D-0068, volet 3 : part du carnet contracté d'un vendeur attribuée à un client nommé (rang 2, §14)
     cells += backlog.share_cells(bl, {g: [q["end"] for q in cals[g]["quarters"] if q["end"] <= as_of_d] for g in groups},
@@ -497,8 +538,10 @@ def run(as_of, use_cache=True, apercu=False):
     out = config.ROOT / "tables"
     out.mkdir(exist_ok=True)
     for t, pk in TABLES.items():
-        con.execute(f"COPY (SELECT * FROM {t} ORDER BY {', '.join(pk)}) TO '{out / (t + '.parquet')}' (FORMAT PARQUET)")
+        con.execute(f"COPY (SELECT * FROM {t} ORDER BY {', '.join(pk)}) TO '{out / (t + '.parquet')}' "
+                    "(FORMAT PARQUET, COMPRESSION ZSTD)")
     stats["rows"] = {t: con.execute(f"SELECT count(*) FROM {t}").fetchone()[0] for t in TABLES}
+    stats["pk_duplicates"] = dict(PK_DUPLICATES, exclusions=load.EXCL_DUPLICATES)
     stats["memo"] = {"hits": M.hits, "misses": M.misses}
     stats["seconds"] = round(time.time() - t0)
     (config.ROOT / "work" / "tmp" / "assemble_stats.json").write_text(json.dumps(stats, indent=1, default=str))

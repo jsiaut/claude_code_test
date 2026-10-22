@@ -288,10 +288,12 @@ def fragility_events(groups, quarters_by_group, measures_df, sig_cells, obs_by_g
                 out.append(cell("fragility_event", g, ps, pe, "as_known", as_of, breakdown=fid, status=status,
                                 value_text=value_text, nd_reason=nd, flags=flags, knowledge_date=kd,
                                 coverage=coverage))
-            # F1 : capex décaissé > CFO deux trimestres de suite
+            # F1 : capex décaissé > CFO deux trimestres de suite, lu sur les termes du ratio : un CFO
+            # négatif ou nul rend le ratio not_determinable, pas la condition (D-0069, point 2)
             c = get("capex_to_cfo", pe, "without")
             cur = None
-            if c is not None and c["status"] == "computed" and c["numerator"] is not None and not pd.isna(c["numerator"]):
+            if c is not None and c["numerator"] is not None and not pd.isna(c["numerator"]) \
+                    and c["denominator"] is not None and not pd.isna(c["denominator"]):
                 cur = Decimal(str(c["numerator"])) > Decimal(str(c["denominator"]))
             if cur is None:
                 ev("F1", "not_determinable", nd=(c["nd_reason"] if c is not None and c["nd_reason"] else "term_missing"))

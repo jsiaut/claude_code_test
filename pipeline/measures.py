@@ -129,6 +129,32 @@ class Series:
             return cur["value"] - prev["value"], [cur, prev], None
         return None, [x for x in (cur, prev) if x], "term_missing"
 
+    def same_filing_pair(self, qn, q, p, cutoff):
+        """Valeurs directes des trimestres q et p prises dans un même dépôt, le dernier connu à la date
+        de coupure qui publie les deux : un dépôt présente un trimestre et son comparatif sur une même
+        base, qu'un fractionnement d'actions ne retraite que dans les dépôts suivants. Jamais de
+        différence de cumuls (une moyenne pondérée ne s'additionne pas, D-0069, point 3). Renvoie
+        (terme de q, terme de p, motif)."""
+        if qn not in self.by_q:
+            return None, None, "concept_unresolved"
+        o = self.by_q[qn]
+        rows = []
+        for x in (q, p):
+            m = model._match(o, x["start"], x["end"], False)
+            rows.append(m[m["knowledge_date"] <= cutoff])
+        if rows[0].empty or rows[1].empty:
+            return None, None, "not_disclosed"
+        common = set(rows[0]["accession"]) & set(rows[1]["accession"])
+        if not common:
+            return None, None, "recast_boundary"
+        cur = rows[0][rows[0]["accession"].isin(common)]
+        acc = cur.loc[cur["order_key"].idxmax()]["accession"]
+        out = []
+        for m in rows:
+            sub = m[m["accession"] == acc]
+            out.append(model._term_dict(sub.loc[sub["order_key"].idxmax()], m["value"].nunique() > 1))
+        return out[0], out[1], None
+
     def ttm(self, qn, q, cutoff):
         idx = next((k for k, x in enumerate(self.quarters) if x["end"] == q["end"]), None)
         if idx is None or idx < 3:
@@ -147,6 +173,13 @@ class Series:
         if idx is None or idx < n:
             return None
         return self.quarters[idx - n]
+
+
+# dettes qui excluent par définition les emprunts à court terme : eux seuls les reçoivent en plus ;
+# DebtCurrent, DebtLongtermAndShorttermCombinedAmount, CurrentBorrowingsAndCurrentPortionOfNoncurrentBorrowings
+# et Borrowings les contiennent déjà (D-0069, point 4)
+STB_EXCLUDED_CURRENT = {"us-gaap:LongTermDebtCurrent", "ifrs-full:CurrentPortionOfLongtermBorrowings"}
+STB_EXCLUDED_TOTAL = {"us-gaap:LongTermDebt"}
 
 
 def _ratio(num, den):
@@ -300,9 +333,11 @@ def quarter_measures(S, g, q, cutoff, view, as_of):
     debt_alt = S.instant("debt_carrying_amount", pe, cutoff)
     stb = S.instant("short_term_borrowings", pe, cutoff)
     if all(debt_terms):
+        stb = stb if debt_terms[0]["concept"] in STB_EXCLUDED_CURRENT else None
         debt = sum(t["value"] for t in debt_terms) + (stb["value"] if stb else 0)
         dts = debt_terms + ([stb] if stb else [])
     elif debt_alt:
+        stb = stb if debt_alt["concept"] in STB_EXCLUDED_TOTAL else None
         debt = debt_alt["value"] + (stb["value"] if stb else 0)
         dts = [debt_alt] + ([stb] if stb else [])
     else:

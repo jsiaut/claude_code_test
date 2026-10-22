@@ -4,6 +4,13 @@
 n'affirme pas, ce qui a été laissé de côté, et pose la seule question de l'exécution : faut-il aller
 plus loin ?*
 
+> **Erratum du 22 octobre 2026 (D-0069).** NVIDIA et CoreWeave ne sont plus « reliés par un document » :
+> la décision D-0039 a établi que la pièce retenue ne nommait pas CoreWeave. La relation est aujourd'hui
+> « relation commerciale doublée d'un financement », sans lien documenté entre les deux. Cette page décrit
+> l'état du premier passage, au 7 octobre. Les décisions qui ont suivi, de D-0027 à D-0069, changent
+> d'autres lignes : AMD et Meta, par exemple, relèvent aujourd'hui d'une dépendance documentée.
+> `synthesis.md` donne l'état courant.
+
 ## Ce qui a été fait
 
 - **843 dépôts officiels** des onze groupes ont été lus : les chiffres balisés de leurs comptes, puis
