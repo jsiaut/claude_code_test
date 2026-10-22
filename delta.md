@@ -1,154 +1,44 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-10-07 (premier passage). Généré depuis les tables.*
+*Exécution du 2026-10-07, comparée à l'exécution précédente, dont les tables sont celles du commit eadc0f4ec87f (2026-10-22). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
-Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'échouent pas de façon générale.
+Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 1 sur 31 (Apollo) ; périodes en échec : 22 sur 904.
 
 ## Événements nouveaux de l'annexe F
 
-- Akamai : F4 (amendement ou dérogation de clause financière) — 1 trimestre(s)
-- Akamai : F5 (faiblesse significative du contrôle interne) — 4 trimestre(s)
-- AMD : F6 (dépréciation d'investissement) — 1 trimestre(s)
-- AMD : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- Amazon : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 4 trimestre(s)
-- Amazon : F2 (flux après financement des contreparties négatif) — 11 trimestre(s)
-- Applied Digital : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 6 trimestre(s)
-- Applied Digital : F2 (flux après financement des contreparties négatif) — 17 trimestre(s)
-- Applied Digital : F5 (faiblesse significative du contrôle interne) — 14 trimestre(s)
-- Apollo : F2 (flux après financement des contreparties négatif) — 2 trimestre(s)
-- Apollo : F8 (croissance annuelle passée sous zéro) — 5 trimestre(s)
-- Backblaze : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
-- Backblaze : F2 (flux après financement des contreparties négatif) — 10 trimestre(s)
-- Backblaze : F4 (amendement ou dérogation de clause financière) — 3 trimestre(s)
-- Backblaze : F5 (faiblesse significative du contrôle interne) — 13 trimestre(s)
-- Blackstone : F2 (flux après financement des contreparties négatif) — 1 trimestre(s)
-- Blackstone : F8 (croissance annuelle passée sous zéro) — 5 trimestre(s)
-- Cipher : F10 (doute sur la continuité d'exploitation) — 1 trimestre(s)
-- Cipher : F2 (flux après financement des contreparties négatif) — 14 trimestre(s)
-- Cipher : F5 (faiblesse significative du contrôle interne) — 12 trimestre(s)
-- Cipher : F7 (baisse d'une durée d'amortissement publiée) — 1 trimestre(s)
-- Cipher : F8 (croissance annuelle passée sous zéro) — 2 trimestre(s)
+**Apparus** (trimestres des groupes) :
+- Amazon : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
+- Applied Digital : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 7 trimestre(s)
+- Backblaze : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 7 trimestre(s)
+- Cipher : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 11 trimestre(s)
 - Core Scientific : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 4 trimestre(s)
-- Core Scientific : F10 (doute sur la continuité d'exploitation) — 5 trimestre(s)
-- Core Scientific : F2 (flux après financement des contreparties négatif) — 13 trimestre(s)
-- Core Scientific : F5 (faiblesse significative du contrôle interne) — 18 trimestre(s)
-- Core Scientific : F7 (baisse d'une durée d'amortissement publiée) — 1 trimestre(s)
-- Core Scientific : F8 (croissance annuelle passée sous zéro) — 2 trimestre(s)
-- CoreWeave : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 5 trimestre(s)
-- CoreWeave : F2 (flux après financement des contreparties négatif) — 9 trimestre(s)
-- CoreWeave : F4 (amendement ou dérogation de clause financière) — 5 trimestre(s)
-- CoreWeave : F5 (faiblesse significative du contrôle interne) — 6 trimestre(s)
+- CoreWeave : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 3 trimestre(s)
 - Dell : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
-- Dell : F2 (flux après financement des contreparties négatif) — 5 trimestre(s)
-- Dell : F5 (faiblesse significative du contrôle interne) — 2 trimestre(s)
-- Dell : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- Galaxy : F2 (flux après financement des contreparties négatif) — 5 trimestre(s)
-- Galaxy : F6 (dépréciation d'investissement) — 2 trimestre(s)
-- Galaxy : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- Alphabet : F2 (flux après financement des contreparties négatif) — 1 trimestre(s)
-- Hut 8 : F5 (faiblesse significative du contrôle interne) — 4 trimestre(s)
-- Intel : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 5 trimestre(s)
-- Intel : F2 (flux après financement des contreparties négatif) — 13 trimestre(s)
-- Intel : F4 (amendement ou dérogation de clause financière) — 1 trimestre(s)
-- Intel : F8 (croissance annuelle passée sous zéro) — 3 trimestre(s)
-- IREN : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 3 trimestre(s)
-- IREN : F2 (flux après financement des contreparties négatif) — 6 trimestre(s)
-- IREN : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- Meta : F2 (flux après financement des contreparties négatif) — 1 trimestre(s)
-- Meta : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- Marvell : F2 (flux après financement des contreparties négatif) — 1 trimestre(s)
-- Marvell : F4 (amendement ou dérogation de clause financière) — 3 trimestre(s)
-- Marvell : F8 (croissance annuelle passée sous zéro) — 2 trimestre(s)
-- Microsoft : F7 (baisse d'une durée d'amortissement publiée) — 1 trimestre(s)
-- Micron : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 5 trimestre(s)
-- Micron : F2 (flux après financement des contreparties négatif) — 8 trimestre(s)
-- Micron : F6 (dépréciation d'investissement) — 3 trimestre(s)
-- Micron : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- Nebius : F5 (faiblesse significative du contrôle interne) — 2 trimestre(s)
-- Nebius : F6 (dépréciation d'investissement) — 2 trimestre(s)
-- NVIDIA : F7 (baisse d'une durée d'amortissement publiée) — 1 trimestre(s)
-- NVIDIA : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- Oracle : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 5 trimestre(s)
-- Oracle : F2 (flux après financement des contreparties négatif) — 10 trimestre(s)
-- Blue Owl : F4 (amendement ou dérogation de clause financière) — 2 trimestre(s)
-- Riot : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
-- Riot : F2 (flux après financement des contreparties négatif) — 21 trimestre(s)
-- Riot : F4 (amendement ou dérogation de clause financière) — 3 trimestre(s)
-- Riot : F5 (faiblesse significative du contrôle interne) — 8 trimestre(s)
-- Riot : F8 (croissance annuelle passée sous zéro) — 2 trimestre(s)
-- Supermicro : F2 (flux après financement des contreparties négatif) — 13 trimestre(s)
-- Supermicro : F4 (amendement ou dérogation de clause financière) — 8 trimestre(s)
-- Supermicro : F5 (faiblesse significative du contrôle interne) — 12 trimestre(s)
-- Supermicro : F7 (baisse d'une durée d'amortissement publiée) — 1 trimestre(s)
-- Supermicro : F8 (croissance annuelle passée sous zéro) — 2 trimestre(s)
-- SpaceX : F4 (amendement ou dérogation de clause financière) — 1 trimestre(s)
-- TeraWulf : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 3 trimestre(s)
-- TeraWulf : F10 (doute sur la continuité d'exploitation) — 4 trimestre(s)
-- TeraWulf : F2 (flux après financement des contreparties négatif) — 17 trimestre(s)
-- TeraWulf : F5 (faiblesse significative du contrôle interne) — 2 trimestre(s)
-- TeraWulf : F8 (croissance annuelle passée sous zéro) — 1 trimestre(s)
-- BLUE OWL CAPITAL CORP II (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
-- BLUE OWL CAPITAL CORP II (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- BLUE OWL CAPITAL CORP II (véhicule BDC) : F16 (interruption d'un programme régulier d'offres de rachat d'une BDC) — 1 interruption(s)
-- BLUE OWL CAPITAL CORP (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
-- BLUE OWL CAPITAL CORP (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- BLUE OWL TECHNOLOGY FINANCE CORP. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
-- BLUE OWL TECHNOLOGY FINANCE CORP. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- BLUE OWL CAPITAL CORP III (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
-- BLUE OWL CAPITAL CORP III (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- BLUE OWL CREDIT INCOME CORP. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 7 date(s) de bilan
-- BLUE OWL CREDIT INCOME CORP. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- BLUE OWL CREDIT INCOME CORP. (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 2 offre(s)
-- BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
-- BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 2 offre(s)
-- MIDCAP FINANCIAL INVESTMENT CORP (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 5 date(s) de bilan
-- MIDCAP FINANCIAL INVESTMENT CORP (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- APOLLO DEBT SOLUTIONS BDC (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- APOLLO DEBT SOLUTIONS BDC (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- APOLLO DEBT SOLUTIONS BDC (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 2 offre(s)
-- MIDCAP APOLLO INSTITUTIONAL PRIVATE LENDING (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 5 date(s) de bilan
-- MIDCAP APOLLO INSTITUTIONAL PRIVATE LENDING (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- APOLLO ORIGINATION II (LEVERED) CAPITAL TRUST (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
-- APOLLO ORIGINATION II (LEVERED) CAPITAL TRUST (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- APOLLO ORIGINATION II (UL) CAPITAL TRUST (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
-- BLACKSTONE SECURED LENDING FUND (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 6 date(s) de bilan
-- BLACKSTONE SECURED LENDING FUND (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 5 date(s) de bilan
-- BLACKSTONE SECURED LENDING FUND (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
-- BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
-- BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 6 date(s) de bilan
-- BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- BLACKSTONE PRIVATE CREDIT FUND (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 1 offre(s)
-- BLACKSTONE PRIVATE REAL ESTATE CREDIT & INCOME FUND (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 2 date(s) de bilan
-- BLACKSTONE PRIVATE REAL ESTATE CREDIT & INCOME FUND (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
-- ARES CAPITAL CORP (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- ARES CAPITAL CORP (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- GOLUB CAPITAL BDC, INC. (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
-- GOLUB CAPITAL BDC, INC. (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 9 date(s) de bilan
-- GOLUB CAPITAL BDC, INC. (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 4 date(s) de bilan
-- FS KKR CAPITAL CORP (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- FS KKR CAPITAL CORP (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 3 date(s) de bilan
-- HPS CORPORATE LENDING FUND (véhicule BDC) : F11 (juste valeur ÷ coût du portefeuille de prêts d'une BDC en baisse deux trimestres de suite) — 1 date(s) de bilan
-- HPS CORPORATE LENDING FUND (véhicule BDC) : F12 (intérêts capitalisés d'une BDC (borne basse) en hausse deux trimestres de suite) — 3 date(s) de bilan
-- HPS CORPORATE LENDING FUND (véhicule BDC) : F14 (ratio de couverture des dettes d'une BDC en baisse deux trimestres de suite) — 5 date(s) de bilan
-- HPS CORPORATE LENDING FUND (véhicule BDC) : F15 (offre de rachat d'une BDC réduite au prorata (parts acceptées inférieures aux parts apportées)) — 2 offre(s)
-- Les autres véhicules BDC de l'univers (D-0045, D-0047) ne sont pas listés ici : leurs cellules sont dans `measures`.
+- Galaxy : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 3 trimestre(s)
+- Intel : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 3 trimestre(s)
+- IREN : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
+- Riot : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 18 trimestre(s)
+- Supermicro : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 7 trimestre(s)
+- TeraWulf : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 12 trimestre(s)
+
+**Disparus** : aucun.
 
 ## Rendement du passage (§11.1)
 
-- Cellules de rang 1, par statut et motif : calculée 39 986 ; indéterminée / historique tronqué 8 507 ; indéterminée / terme manquant 7 239 ; indéterminée / concept non résolu 6 545 ; indéterminée / non publié 4 924 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 710 ; indéterminée / précondition non remplie 1 470 ; indéterminée / recherche incomplète 998 ; bornée 799 ; indéterminée / client anonyme 459 ; indéterminée / frontière de retraitement 380 ; indéterminée / caviardé 346 ; indéterminée / dénominateur négatif ou nul 300 ; partielle / non publié 210 ; indéterminée / non collecté 101 ; partielle / terme manquant 34 ; indéterminée / entité non confirmée 4.
-- Cellules de l'annexe F des groupes, par statut et motif : calculée 4 263 ; indéterminée / annuel seulement 1 116 ; indéterminée / non publié 530 ; indéterminée / terme manquant 430 ; partielle / non publié 384 ; indéterminée / concept non résolu 294 ; indéterminée / dénominateur négatif ou nul 92 ; indéterminée / période antérieure absente 91 ; indéterminée / non collecté 51 ; indéterminée / frontière de retraitement 19.
+- Cellules de rang 1, par statut et motif : calculée 39 936 ; indéterminée / historique tronqué 8 507 ; indéterminée / terme manquant 7 209 ; indéterminée / concept non résolu 6 521 ; indéterminée / non publié 4 464 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 710 ; indéterminée / précondition non remplie 1 481 ; indéterminée / recherche incomplète 1 065 ; bornée 782 ; indéterminée / client anonyme 459 ; indéterminée / frontière de retraitement 380 ; indéterminée / caviardé 346 ; indéterminée / dénominateur négatif ou nul 300 ; partielle / non publié 210 ; indéterminée / non collecté 101 ; partielle / terme manquant 34 ; indéterminée / entité non confirmée 4.
+- Cellules de l'annexe F des groupes, par statut et motif : calculée 4 374 ; indéterminée / annuel seulement 1 116 ; indéterminée / non publié 530 ; indéterminée / terme manquant 430 ; partielle / non publié 384 ; indéterminée / concept non résolu 294 ; indéterminée / période antérieure absente 70 ; indéterminée / non collecté 51 ; indéterminée / frontière de retraitement 19 ; indéterminée / dénominateur négatif ou nul 2.
 - Cellules de F11 à F16 des véhicules BDC (D-0045, D-0047), par statut et motif : indéterminée / non balisé 4 072 ; calculée 3 987 ; indéterminée / période antérieure absente 1 576 ; indéterminée / période non écoulée à la date de coupure 67 ; indéterminée / non publié 37.
-- Paires à financement documenté (F active au moins un trimestre) : 86 — Amazon → Anthropic, Amazon → OpenAI, Applied Digital → AI Bridge Funding LLC, Applied Digital → Base Electron Corp., Applied Digital → Base Electron, Inc., Apollo → AMAPS 1, LLC, Apollo → AMAPS 2, LLC, Apollo → AMAPS 3, LLC, Apollo → AMAPS 4, LLC, Apollo → AMAPS 5, LLC, Apollo → AP Alkaios (Luxembourg) S.à.r.l., Apollo → AP Aristotle Holdings LLC, Apollo → AP Grange Holdings, LLC, Apollo → AP Tundra Holdings LLC, Apollo → Apollo Rose II (B), L.P., Apollo → AT&T Inc., Apollo → Athene Holding Ltd., Apollo → Atlas Securitized Products Holdings L.P., Apollo → Bank of America, N.A., Apollo → Catalina Holdings (Bermuda) Ltd., Apollo → Fox Hedge L.P., Apollo → LeasePlan USA, Inc., Apollo → MORGAN STANLEY, Apollo → PK AirFinance, Apollo → Skylign Aviation Holdings, LP, Apollo → SVF II Finco Cayman L.P., Apollo → VA Capital Company LLC, Apollo → Venerable Holdings, Inc., Apollo → Wheels Inc., ASML → Carl Zeiss SMT GmbH, ASML → Carl Zeiss SMT Holding GmbH & Co. KG, ASML → Mistral AI, Broadcom → Silicon Manufacturing Partners Pte. Ltd., Backblaze → AFCO Premium Credit LLC, Backblaze → City National Bank, Backblaze → CoreWeave, Blackstone → American International Group, Inc., Blackstone → Corebridge Financial, Inc., Blackstone → Pátria Investimentos Ltda, Blackstone → Pátria Investments Limited, CoreWeave → MAIV, CoreWeave → OpenAI, Galaxy → Candy Digital Inc., Alphabet → SpaceX, Intel → ASML, Intel → Altera Corporation, Intel → Beijing Unisoc Technology Ltd., Intel → Beijing UniSpreadtrum Technology Ltd, Intel → Cloudera, Inc., Intel → McAfee Corp., Intel → Micron, Meta → Jio Platforms Limited, Microsoft → GENERAL MOTORS CO, Microsoft → OpenAI, NVIDIA → CoreWeave, NVIDIA → Intel, NVIDIA → Nebius, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc., Oracle → TikTok USDS Joint Venture LLC, Blue Owl → Blue Owl Real Estate Net Lease Trust, Riot → Bitfarms Ltd., Riot → COINBASE CREDIT, INC., Riot → Coinsquare Ltd., Riot → goNumerical Ltd., Riot → Mogo Inc., Riot → TessPay Inc., Riot → Verady, Inc., Riot → Verady, LLC, SK hynix → BCPE Pangea Cayman2 Limited, SK hynix → BCPE Pangea Intermediate Holdings Cayman, L.P., SK hynix → HITECH Semiconductor (Wuxi) Co., Ltd., SK hynix → SiFive, Inc., SK hynix → SK China Company Limited, SK hynix → SK hynix system ic (Wuxi) Co., Ltd., SK hynix → SK South East Asia Investment Pte. Ltd., SK hynix → Specialized Investment-type Private Equity Investment Trust For Growth Of Semiconductor, SK hynix → Specialized Investment-type Private Equity Investment Trust For Win-win System Semiconductor, SK hynix → Wuxi xinfa IC industry park., Ltd, Supermicro → Ampera Inc., TSMC → Global Unichip Corporation, TSMC → Mutual-Pak Technology Co., Ltd., TSMC → Systems on Silicon Manufacturing Company Pte Ltd., TSMC → Vanguard International Semiconductor Corporation, TSMC → Xintec Inc..
+- Paires à financement documenté (F active au moins un trimestre) : 82 — Amazon → Anthropic, Amazon → OpenAI, Applied Digital → Base Electron Corp., Applied Digital → Base Electron, Inc., Apollo → AMAPS 1, LLC, Apollo → AMAPS 2, LLC, Apollo → AMAPS 3, LLC, Apollo → AMAPS 4, LLC, Apollo → AMAPS 5, LLC, Apollo → AP Alkaios (Luxembourg) S.à.r.l., Apollo → AP Aristotle Holdings LLC, Apollo → AP Grange Holdings, LLC, Apollo → AP Tundra Holdings LLC, Apollo → Apollo Rose II (B), L.P., Apollo → AT&T Inc., Apollo → Athene Holding Ltd., Apollo → Atlas Securitized Products Holdings L.P., Apollo → Bank of America, N.A., Apollo → Catalina Holdings (Bermuda) Ltd., Apollo → Fox Hedge L.P., Apollo → LeasePlan USA, Inc., Apollo → MORGAN STANLEY, Apollo → PK AirFinance, Apollo → Skylign Aviation Holdings, LP, Apollo → SVF II Finco Cayman L.P., Apollo → VA Capital Company LLC, Apollo → Venerable Holdings, Inc., Apollo → Wheels Inc., ASML → Carl Zeiss SMT GmbH, ASML → Carl Zeiss SMT Holding GmbH & Co. KG, ASML → Mistral AI, Broadcom → Silicon Manufacturing Partners Pte. Ltd., Backblaze → AFCO Premium Credit LLC, Backblaze → City National Bank, Backblaze → CoreWeave, Blackstone → American International Group, Inc., Blackstone → Corebridge Financial, Inc., Blackstone → Pátria Investimentos Ltda, Blackstone → Pátria Investments Limited, CoreWeave → MAIV, CoreWeave → OpenAI, Galaxy → Candy Digital Inc., Alphabet → SpaceX, Intel → Altera Corporation, Intel → Beijing Unisoc Technology Ltd., Intel → McAfee Corp., Intel → Micron, Meta → Jio Platforms Limited, Microsoft → GENERAL MOTORS CO, Microsoft → OpenAI, NVIDIA → CoreWeave, NVIDIA → Intel, NVIDIA → Nebius, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc., Oracle → TikTok USDS Joint Venture LLC, Blue Owl → Blue Owl Real Estate Net Lease Trust, Riot → Bitfarms Ltd., Riot → COINBASE CREDIT, INC., Riot → Coinsquare Ltd., Riot → goNumerical Ltd., Riot → Mogo Inc., Riot → TessPay Inc., Riot → Verady, Inc., Riot → Verady, LLC, SK hynix → BCPE Pangea Cayman2 Limited, SK hynix → BCPE Pangea Intermediate Holdings Cayman, L.P., SK hynix → HITECH Semiconductor (Wuxi) Co., Ltd., SK hynix → SiFive, Inc., SK hynix → SK China Company Limited, SK hynix → SK hynix system ic (Wuxi) Co., Ltd., SK hynix → SK South East Asia Investment Pte. Ltd., SK hynix → Specialized Investment-type Private Equity Investment Trust For Growth Of Semiconductor, SK hynix → Specialized Investment-type Private Equity Investment Trust For Win-win System Semiconductor, SK hynix → Wuxi xinfa IC industry park., Ltd, Supermicro → Ampera Inc., TSMC → Global Unichip Corporation, TSMC → Mutual-Pak Technology Co., Ltd., TSMC → Systems on Silicon Manufacturing Company Pte Ltd., TSMC → Vanguard International Semiconductor Corporation, TSMC → Xintec Inc..
 - Arêtes de montant : commercial 3 158, credit_support 104, customer_consideration 96, financing 1 859 ; arêtes de relation : 3 154.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : Akamai (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Applied Digital (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 96,0 % [94,0 % ; 98,0 %] ; Apollo (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; ASML (exercice clos le 2025-12-31) : nommés 61,2 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; Backblaze (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blackstone (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Cipher (exercice clos le 2025-12-31) : nommés 70,0 %, anonymes d'au moins 10 % 0,0 % ; Core Scientific (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Dell (exercice clos le 2026-01-30) : nommés 0,0 %, anonymes d'au moins 10 % 12,0 % [11,5 % ; 12,5 %] ; Galaxy (exercice clos le 2025-12-31) : nommés 38,0 %, anonymes d'au moins 10 % 0,0 % ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Hut 8 (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Intel (exercice clos le 2025-12-27) : nommés 43,0 %, anonymes d'au moins 10 % 43,0 % [42,5 % ; 43,5 %] ; IREN (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 7,3 %, anonymes d'au moins 10 % 0,0 % ; Micron (exercice clos le 2025-08-28) : nommés 17,0 %, anonymes d'au moins 10 % 0,0 % ; Nebius (exercice clos le 2025-12-31) : nommés 40,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blue Owl (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Riot (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SK hynix (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Supermicro (exercice clos le 2026-06-30) : nommés 0,2 %, anonymes d'au moins 10 % 28,1 % [28,0 % ; 28,2 %] ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TSMC (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TeraWulf (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
-- Cellules de la question 4, par statut et motif : calculée 18 270 ; indéterminée / historique tronqué 8 507 ; indéterminée / concept non résolu 2 422 ; indéterminée / non publié 1 786 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 710 ; indéterminée / précondition non remplie 1 468 ; indéterminée / recherche incomplète 998 ; bornée 799 ; indéterminée / client anonyme 459 ; indéterminée / caviardé 346 ; indéterminée / terme manquant 176.
+- Cellules de la question 4, par statut et motif : calculée 18 220 ; indéterminée / historique tronqué 8 507 ; indéterminée / concept non résolu 2 398 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 710 ; indéterminée / précondition non remplie 1 479 ; indéterminée / non publié 1 326 ; indéterminée / recherche incomplète 1 065 ; bornée 782 ; indéterminée / client anonyme 459 ; indéterminée / caviardé 346 ; indéterminée / terme manquant 146.
 - Requêtes : 25 347 au journal, dont 25 056 réussies, 128 307 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-21T07:03:56.252+00:00.
 - Blocs lus : 11 177 sur 11 533 clés de contenu ; par item de 8-K : 1.01 469, 1.02 49, 2.01 38, 2.03 142, 3.03 35, 8.01 824 ; pièces arrêtées à leur en-tête : EX-4 356.
-- Lignes rejetées par la validation : 0 ; 13 lignes corrigées dans la passe avant l'assemblage (décision D-0020).
-- Durée de l'assemblage : 831 s ; lecture : voir le journal ci-dessus.
+- Lignes rejetées par la validation : 0.
+- Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 668 (collisions : 229).
+- Durée de l'assemblage : 741 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -161,10 +51,10 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 - Blocs lus : 4 577 sur 4 577 (54,1 sur 54,1 millions de caractères) ; par type : paragraphes sur les clients 99/99 ; notes d'investissements 670/670 ; 8-K item 2.01 38/38 ; 8-K item 2.03 142/142 ; notes de dette 746/746 ; notes de baux 470/470 ; notes d'engagements 738/738 ; immobilisations et estimations 1 035/1 035 ; notes de revenu 455/455 ; corps d'EX-10 184/184. Aucun bloc du catalogue ne reste à lire.
 - Lignes rendues dans les passes du bloc : 21 379 observations, 5 151 abstentions motivées, 0 rejetées par la validation.
 - Arêtes établies par une ligne du bloc : commercial (montant) 2 918, commercial (relation) 374, credit_support (montant) 89, credit_support (relation) 302, customer_consideration (montant) 32, customer_consideration (relation) 4, financing (montant) 1 704, financing (relation) 2 119.
-- Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 74 012 ; calculée 6 322 → 39 986 ; bornée 161 → 799 ; partielle 794 → 244 ; indéterminée 8 489 → 32 983 ; motif « non traité » 3 394 → 1 710. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
-- Événements de l'annexe F : 33 → 399 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 96 sur 170.
-- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 3 114, inconnu / historique tronqué 1 951, actif 1 060, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 393, inconnu / recherche incomplète 235, échu 133, inconnu / caviardé 79. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
-- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : historique tronqué 8 540 ; terme manquant 7 718 ; concept non résolu 6 965 ; non publié 6 368 ; non balisé 4 072 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 711 ; période antérieure absente 1 667 ; précondition non remplie 1 593 ; annuel seulement 1 116 ; recherche incomplète 1 008 ; client anonyme 486 ; frontière de retraitement 399 ; dénominateur négatif ou nul 392 ; caviardé 349 ; non collecté 152 ; intervalle à cheval sur le seuil 89 ; période non écoulée à la date de coupure 67 ; date manquante 20 ; entité non confirmée 4. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
+- Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 73 509 ; calculée 6 322 → 39 936 ; bornée 161 → 782 ; partielle 794 → 244 ; indéterminée 8 489 → 32 547 ; motif « non traité » 3 394 → 1 710. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
+- Événements de l'annexe F : 33 → 477 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 91 sur 162.
+- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 3 124, inconnu / historique tronqué 1 951, actif 932, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 393, inconnu / recherche incomplète 258, échu 228, inconnu / caviardé 79. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
+- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : historique tronqué 8 540 ; terme manquant 7 673 ; concept non résolu 6 941 ; non publié 5 896 ; non balisé 4 072 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 711 ; période antérieure absente 1 646 ; précondition non remplie 1 601 ; annuel seulement 1 116 ; recherche incomplète 1 074 ; client anonyme 486 ; frontière de retraitement 399 ; caviardé 349 ; dénominateur négatif ou nul 302 ; non collecté 152 ; intervalle à cheval sur le seuil 89 ; période non écoulée à la date de coupure 67 ; date manquante 20 ; entité non confirmée 4. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
 - Clauses financières (`sig_covenant_events`, trimestres-groupes, vue `as_known`) : événement 27, sans événement 490, partielle (sans événement sur la part lue) / non publié 210.
 - Actifs nantis (`sig_pledged_assets`, trimestres-groupes, vue `as_known`) : événement 85, sans événement 434, indéterminée / non publié 208.
 - Pont des baux non commencés (`lease_not_commenced_bridge`) : calculée 193, indéterminée 1 156, partielle 14.
@@ -186,8 +76,8 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
   Arêtes de Nscale : 67, dont 12 avec un groupe ou un laboratoire ; les autres vont à des contreparties propres (§10.2).
   Arêtes de Samsung : 21, dont 0 avec un groupe ou un laboratoire ; les autres vont à des contreparties propres (§10.2).
   Arêtes de SoftBank : 241, dont 71 avec un groupe ou un laboratoire ; les autres vont à des contreparties propres (§10.2).
-- Paires à financement documenté (F active au moins un trimestre) : 12 → 86.
-- Annexe E, issues de E.1 et E.2 au point de tête (10 %), avant l'ouverture → maintenant : indéterminées 13 sur 24 → 96 sur 170 ; E.7 : discrimination possible → discrimination possible. Issues de E.1 (lien documenté, paires où F est active) : indéterminé 11, non étayé 71, étayé 3. Une issue « non étayé » suppose la recherche complète des deux côtés (E.0) : la découverte la rend possible quand le client ne dépose pas, n'a aucun rapport périodique dans la fenêtre allongée, ou que toutes ses unités qui nomment le fournisseur sont lues (D-0037).
+- Paires à financement documenté (F active au moins un trimestre) : 12 → 82.
+- Annexe E, issues de E.1 et E.2 au point de tête (10 %), avant l'ouverture → maintenant : indéterminées 13 sur 24 → 91 sur 162 ; E.7 : discrimination possible → discrimination possible. Issues de E.1 (lien documenté, paires où F est active) : indéterminé 10, non étayé 68, étayé 3. Une issue « non étayé » suppose la recherche complète des deux côtés (E.0) : la découverte la rend possible quand le client ne dépose pas, n'a aucun rapport périodique dans la fenêtre allongée, ou que toutes ses unités qui nomment le fournisseur sont lues (D-0037).
 
 ## Rendement du bloc paths (§14)
 
@@ -208,87 +98,11 @@ Aucun arrêt : la SEC n'a pas refusé l'accès durablement et les contrôles n'�
 
 ## Exclusions nouvelles, par motif
 
-- `not_processed` : 27 927
-- `pending_entity` : 1 926
-- `conflicting` : 1 382
-- `out_of_scope` : 1 129
-- `financial_parties_only` : 356
-- `invalid_aggregate` : 52
-- `parse_failed` : 32
-- `submitted_draft` : 19
-- `history_left_censored` : 10
-- `not_public` : 2
+- `conflicting` : +0, −1 125
 
 ## Décisions et variantes nouvelles
 
-- D-0001 — User-Agent masqué dans le dépôt.
-- D-0002 — Réseau refusé par l'environnement.
-- D-0003 — Verrou de session.
-- D-0004 — Annexe F, lecture de F7 et F8.
-- D-0005 — Candidats des grandeurs non ancrées.
-- D-0006 — Ancres vérifiées.
-- D-0007 — Baux non commencés.
-- D-0008 — Ordre de la file de lecture.
-- D-0009 — Doublons cohérents.
-- D-0010 — D1 retenue.
-- D-0011 — Appartenances SpaceX (D2).
-- D-0012 — Second candidat de `capex_cash`.
-- D-0013 — Rôles « - Unaudited ».
-- D-0014 — Lots de petits blocs.
-- D-0015 — Payeur et receveur d'une ligne.
-- D-0016 — Délimitation `d3` de l'Item 404.
-- D-0017 — Affichage des faits candidats.
-- D-0018 — Dates d'appartenance de CTC Property, LLC à SpaceX.
-- D-0019 — Le fonds MAIV est consolidé par CoreWeave.
-- D-0020 — Corrections dans la passe, avant l'assemblage.
-- D-0021 — Entités confirmées par un extrait.
-- D-0022 — Dénomination légale complète.
-- D-0023 — Contrôles par vue.
-- D-0024 — C8, C11 et C12.
-- D-0025 — Concentration : un seul dépôt par période.
-- D-0026 — Trimestres d'un exercice en cours et dates des clés.
-- D-0027 — Blocs ouverts : `lender` et `text`.
-- D-0028 — Bloc `lender` : sources et règles.
-- D-0029 — Lecture du bloc `text`.
-- D-0030 — Bloc `text` : corrections du validateur, relecture ciblée, VMware.
-- D-0031 — Bloc `text` : corps de pièces, leviers et notes de revenu.
-- D-0032 — Bloc `text` : corrections nées de la lecture, corps d'EX-10, Maui HoldCo.
-- D-0033 — Bloc `text` lu en entier : motifs de couverture, statut `never`, exposition par contrepartie.
-- D-0034 — Audit de la lecture du bloc `text` après les interruptions.
-- D-0035 — Tests unitaires de §8.4 et trois mesures de rang 2.
-- D-0036 — Bloc `discovery` : ouverture, sources, lexique, candidats, classement et file de lecture, fixés avant de voir les candidats.
-- D-0037 — Recherche complète côté client (E.0) une fois la découverte ouverte.
-- D-0038 — Première tranche de la découverte lue : alias de marque, désignation du déclarant, doubles comptes.
-- D-0039 — Pièces de lien d'une paire : les parties de la ligne sont S et C ; alias « AMD » ; « the Group ».
-- D-0040 — Deuxième tranche de la découverte lue (rangs 26 à 50) : bons passés en charges, mentions fausses, litiges, filiale d'Amazon.
-- D-0041 — Lecture de la découverte arrêtée ; blocs `paths` et `form_d` ouverts.
-- D-0042 — Bloc `foreign` ouvert : émetteurs étrangers, cadre comptable et invariant (f).
-- D-0043 — Ajout de groupes : TeraWulf (WULF), Cipher (CIFR) et Core Scientific (CORZ).
-- D-0044 — SoftBank, groupe économique non déposant (§10.4) : entités confirmées et découverte dédiée, règles fixées avant de voir les candidats.
-- D-0045 — Fragilité du financement : Blue Owl, niveau 1. Signaux de portefeuille de toutes les BDC et événements F11 à F13 de l'annexe F, règles fixées avant tout calcul.
-- D-0046 — Blue Owl, niveau 3 : nommer le financeur de la coentreprise de Meta en Louisiane, règles fixées avant la recherche.
-- D-0047 — Blue Owl, niveau 2 : le passif des BDC (couverture, levier, rachats demandés et acceptés, interruptions), règles fixées avant tout calcul et toute lecture.
-- D-0048 — Ajout de groupes : Nebius (NBIS) et IREN (IREN), règles fixées avant tout calcul.
-- D-0049 — Trois ajouts : le montage Apollo–Athene–Broadcom (WHCO), le groupe Applied Digital (APLD) et une lecture ciblée de Galaxy Digital (Helios). Règles fixées avant toute recherche et toute lecture.
-- D-0050 — Filiales des hébergeurs : véhicules rattachés à leur groupe par extrait. Règles fixées avant tout inventaire.
-- D-0051 — Noms de personnes déjà présents dans les lignes : conservés.
-- D-0052 — Ajout de groupes : Dell Technologies (DELL) et Super Micro Computer (SMCI). Règles fixées avant tout tirage.
-- D-0053 — Ajout de groupes : Hut 8 (HUT) et Galaxy Digital (GLXY). Règles fixées avant tout tirage.
-- D-0054 — Ajout de groupes : Akamai (AKAM), Backblaze (BLZE) et Riot Platforms (RIOT) ; Lambda et Nscale, groupes économiques non déposants (§10.4). Règles fixées avant tout tirage.
-- D-0055 — Ajout de groupes : Blue Owl (OWL), Apollo (APO) et Blackstone (BX), gestionnaires d'actifs. Règles fixées avant tout tirage.
-- D-0056 — Ajout de groupes : Intel (INTC), Micron (MU) et TSMC (TSM), fabricants. Règles fixées avant tout tirage.
-- D-0057 — Ajout de groupes : ASML (ASML) et SK hynix (SKHY), émetteurs privés étrangers ; Samsung, groupe économique non déposant (§10.4). Règles fixées avant tout tirage.
-- D-0058 — SoftBank approfondi : six volets, tous sur EDGAR. Règles fixées avant tout tirage.
-- D-0059 — OpenAI et Anthropic : montage de corpus et entités par extrait (volets 1 et 2). Règles fixées avant tout traitement.
-- D-0060 — OpenAI et Anthropic : faits balisés qui nomment un laboratoire (volet 3) et grand livre par laboratoire (volet 4). Règles fixées avant tout traitement.
-- D-0061 — Lignes de financement sans type d'arête : la règle de D-0060 (point 5) appliquée aux 278 autres lignes. Règles fixées avant tout traitement.
-- D-0062 — Réassemblage plus rapide, mêmes tables à l'octet près : travail répété supprimé, mémo des citations, mémo des étapes qui ne lisent pas les observations, mode aperçu.
-- D-0063 — Rendu plus rapide, mêmes fichiers : tables lues en mémoire, requêtes répétées regroupées, ordre fixé de deux requêtes qui n'en avaient pas.
-- D-0064 — OpenAI et Anthropic : la chaîne de calcul d'Anthropic dans les 8-K (volet 7) et les lettres de commentaires de la SEC (volet 6). Règles fixées avant tout tirage.
-- D-0065 — Volet 5 : marques de tiers des non-cotés du modèle dans les Form N-PORT Data Sets (parts d'OpenAI, d'Anthropic et des autres, en un seul passage). Règles fixées avant tout tirage.
-- D-0066 — Rattachement étendu des positions N-PORT, marques de crédit des prêts et de la dette, et les trois propositions de D-0064 (chaîne d'Anthropic au-delà du plafond, niveau des pièces des montages d'avant, montant d'Anthropic dans le 424B4 de SpaceX). Règles fixées avant tout traitement.
-- D-0067 — OpenAI et Anthropic : contrats déposés et calendrier des capacités (volet 8), événements propres aux laboratoires (volet 9). Règles fixées avant tout traitement.
-- D-0068 — Carnet de commandes : RPO total dérivé de l'axe d'horizon, dépendance du carnet (E.3) calculée selon §3.3, carnet contracté par client nommé (rang 2, §14). Règles fixées avant tout calcul et toute lecture.
+- D-0069 — Audit du dépôt du 22 octobre 2026 : chaque constat revérifié, six défauts de calcul corrigés, garde-fous des rendus calculés. Règles fixées avant tout recalcul.
 
 ## Critères des annexes E et F
 
@@ -300,19 +114,50 @@ Modifiés : annex_f
 
 ## Dépôts nouveaux
 
-Premier passage : tous les dépôts lus sont nouveaux — 8-K 3 096, 10-Q 1 596, 10-K 859, 6-K 661, D 565, D/A 318, S-1 278, S-1/A 205, DEF 14A 188, F-1 105, 8-K/A 80, S-4/A 75, F-1/A 54, 10-K/A 44, 20-F 41, 10-12G 40, S-4 32, 10-Q/A 31, 10-12G/A 30, F-4/A 16, 10-12B/A 14, F-4 13, 424B3 12, 11-K 8, 10-12B 7, 6-K/A 7, 424B4 6, S-11 5, S-11/A 4, 20-F/A 3, CORRESP 3, UPLOAD 3, 8-K12B 2, DRS 2, 10-KT 1, 40-F 1, 425 1, ARS 1.
+Aucun.
 
 ## Valeurs changées pour des périodes déjà publiées
+
+Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cellules apparues et disparues, par mesure :
+
+| Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
+| --- | ---: | ---: | ---: | ---: |
+| `financed_status` | 313 | 46 | 0 | 0 |
+| `eq_diluted_share_count_change` | 163 | 509 | 0 | 0 |
+| `fragility_event` | 111 | 122 | 0 | 0 |
+| `documented_pair_coverage` | 12 | 0 | 0 | 4 |
+| `lev_debt_and_leases_to_operating_income_plus_da` | 12 | 0 | 0 | 0 |
+| `annex_e_outcome` | 2 | 3 | 48 | 76 |
+| `capex_cash` | 1 | 0 | 0 | 0 |
+| `capex_to_cfo` | 1 | 0 | 0 | 0 |
+| `capex_to_revenue` | 1 | 0 | 0 | 0 |
+| `fcf_after_counterparty_financing` | 1 | 0 | 0 | 0 |
+| `fcf_after_finance_leases` | 1 | 0 | 0 | 0 |
+| `fcf_after_sbc` | 1 | 0 | 0 | 0 |
+| `fcf_basic` | 1 | 0 | 0 | 0 |
+| `documented_backlog_dependency` | 0 | 0 | 84 | 536 |
+| `documented_revenue_dependency` | 0 | 49 | 86 | 86 |
+| `investor_customer_revenue_share` | 0 | 0 | 8 | 8 |
+| `noncash_revenue_from_investees` | 0 | 0 | 37 | 84 |
 
 Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 107, Apollo 84, ASML 7, Broadcom 22, Backblaze 10, Blackstone 1, Cipher 45, Core Scientific 96, CoreWeave 3, Dell 277, Alphabet 20, Hut 8 7, Intel 44, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 32, Oracle 52, Blue Owl 7, Riot 112, Supermicro 162, TSMC 17, TeraWulf 20.
 
 ## Arêtes nouvelles
 
-Premier passage : toutes les arêtes sont nouvelles — commercial/amount 3 158, commercial/relation 499, credit_support/amount 104, credit_support/relation 333, customer_consideration/amount 96, customer_consideration/relation 22, financing/amount 1 859, financing/relation 2 300.
+- Apparues : aucune.
+- Disparues : aucune.
 
 ## Contrôles qui ont basculé
 
-Sans objet au premier passage.
+- C10 : `not_testable` → `mismatch` 2
+- C10 : `not_testable` → `ok` 16
+- C1 : `not_testable` → `mismatch` 1
+- C1 : `not_testable` → `ok` 63
+- C2 : `not_testable` → `mismatch` 10
+- C2 : `not_testable` → `ok` 234
+- C2 : `ok` → `mismatch` 1
+- C2 : `ok` → `not_testable` 2
+- C3 : `mismatch` → `ok` 6
 
 ## Entités pending
 
@@ -320,13 +165,13 @@ Sans objet au premier passage.
 
 ## Travail not_processed
 
-Hors tranche du premier passage, pour chaque groupe : notes d'investissements, de dette, de baux et d'engagements ; texte autour des faits de concentration ; 8-K items 2.01 et 2.03 ; corps des EX-10 arrêtés à leur en-tête. C'est ce que l'extension `text` de §14 lirait.
+Exclusions `not_processed`, par nature d'élément : document 27 899, period 28.
 
 ## Paires non additives
 
-Relations candidates par paire du registre : na01 0, na02 0, na03 233, na04 0, na05 0, na06 78, na07 2, na08 0, na09 239, na10 0, na11 0, na12 291, na13 869, na14 1, na15 0. Paires muettes : na01, na02, na04, na05, na08, na10, na11, na15 — la plupart portent sur des lignes de notes que le premier passage ne lit pas.
+Relations candidates par paire du registre : na01 0, na02 0, na03 233, na04 0, na05 0, na06 78, na07 2, na08 0, na09 239, na10 0, na11 0, na12 291, na13 869, na14 1, na15 0. Paires muettes : na01, na02, na04, na05, na08, na10, na11, na15.
 
 ## Changements dus à une nouvelle passe de lecture ou au code
 
-Une seule passe de lecture (`2026-10-07T10:54:00Z`) ; 13 lignes corrigées dans cette passe, avant l'assemblage, après la validation sémantique (D-0020). Code de la phase 3 ajouté : entités et arêtes, statut « financé », mesures de la question 4, annexes E et F, rendus.
+Lecture : 0 lignes d'observation nouvelles, dans 0 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
 

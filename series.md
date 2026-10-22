@@ -69,7 +69,7 @@
 | 2021-09-30 | 15,3 % | 31,6 % | 2,15 x | n.d. (terme manquant) | -8 435 M$ | -11 128 M$ | -8 435 M$ | 24 j | 66 300 M$ | 0,85 x | 1,30 x | F1, F2 |
 | 2021-12-31 | 9,4 % | 21,7 % | 0,86 x | n.d. (terme manquant) | 3 151 M$ | 891 M$ | 3 151 M$ | 22 j | 80 400 M$ | 0,85 x | 1,39 x |  |
 | 2022-03-31 | 7,3 % | 14,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -17 741 M$ | -20 518 M$ | -17 741 M$ | 25 j | 88 900 M$ | 0,91 x | 1,43 x | F2 |
-| 2022-06-30 | 7,2 % | 9,6 % | 1,75 x | n.d. (terme manquant) | -6 759 M$ | -8 818 M$ | -6 759 M$ | 26 j | 100 100 M$ | 1,20 x | 1,50 x | F2 |
+| 2022-06-30 | 7,2 % | 9,6 % | 1,75 x | n.d. (terme manquant) | -6 759 M$ | -8 818 M$ | -6 759 M$ | 26 j | 100 100 M$ | 1,20 x | 1,50 x | F1, F2 |
 | 2022-09-30 | 14,7 % | 9,7 % | 1,44 x | n.d. (terme manquant) | -4 974 M$ | -6 439 M$ | -4 974 M$ | 26 j | 104 300 M$ | 1,25 x | 1,58 x | F1, F2 |
 | 2022-12-31 | 8,6 % | 9,4 % | 0,57 x | n.d. (terme manquant) | 12 581 M$ | 10 941 M$ | 12 581 M$ | 26 j | 110 400 M$ | 1,30 x | 1,57 x |  |
 | 2023-03-31 | 9,4 % | 9,9 % | 2,97 x | n.d. (terme manquant) | -9 419 M$ | -10 799 M$ | -9 419 M$ | 27 j | 122 000 M$ | 1,22 x | 1,49 x | F2 |
@@ -191,11 +191,11 @@
 | 2023-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2024-03-31 | n.d. (non publié) | n.d. (terme manquant) | 0,85 x | n.d. (non publié) | 297 M$ | n.d. (terme manquant) | 297 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -2 365 M$ | n.d. (terme manquant) | -2 415 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2024-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 1,90 x | n.d. (terme manquant) | -574 M$ | n.d. (terme manquant) | -574 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2024-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 1,90 x | n.d. (terme manquant) | -574 M$ | n.d. (terme manquant) | -574 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | 18,75 x | n.d. (terme manquant) | -3 311 M$ | n.d. (terme manquant) | -3 311 M$ | 51 j | n.d. (non publié) | 6,68 x | 2,27 x | F1, F2, F4 |
 | 2025-03-31 | 420,3 % | n.d. (terme manquant) | 23,01 x | n.d. (non publié) | -1 346 M$ | n.d. (terme manquant) | -1 346 M$ | 97 j | 14 700 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
-| 2025-06-30 | 206,7 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -2 704 M$ | n.d. (terme manquant) | -2 704 M$ | 145 j | 30 100 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F4, F5 |
-| 2025-09-30 | 133,7 % | n.d. (terme manquant) | 1,41 x | n.d. (terme manquant) | -700 M$ | n.d. (terme manquant) | -700 M$ | 112 j | 50 000 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F4, F5 |
+| 2025-06-30 | 206,7 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -2 704 M$ | n.d. (terme manquant) | -2 704 M$ | 145 j | 30 100 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F4, F5 |
+| 2025-09-30 | 133,7 % | n.d. (terme manquant) | 1,41 x | n.d. (terme manquant) | -700 M$ | n.d. (terme manquant) | -700 M$ | 112 j | 50 000 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F4, F5 |
 | 2025-12-31 | 110,4 % | 167,9 % | 2,60 x | n.d. (terme manquant) | -2 501 M$ | n.d. (terme manquant) | -2 501 M$ | 185 j | 60 700 M$ | 8,88 x | 3,51 x | F1, F2, F4, F5 |
 | 2026-03-31 | 111,6 % | 129,9 % | 2,58 x | n.d. (non publié) | -4 711 M$ | -4 726 M$ | -4 711 M$ | 92 j | 98 800 M$ | ↯ | ↯ | F1, F2, F4, F5 |
 | 2026-06-30 | 112,5 % | 115,3 % | 9,46 x | n.d. (terme manquant) | -5 743 M$ | -5 761 M$ | -5 743 M$ | 90 j | 103 700 M$ | ↯ | ↯ | F1, F2, F5 |
@@ -274,9 +274,9 @@
 | 2024-05-05 | 43,0 % | 21,6 % | 0,03 x | n.d. (terme manquant) | 4 448 M$ | n.d. (concept non résolu) | 4 448 M$ | 40 j | 22 900 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-08-04 | 47,3 % | 32,0 % | 0,03 x | n.d. (terme manquant) | 4 791 M$ | n.d. (concept non résolu) | 4 791 M$ | 32 j | 21 200 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-11-03 | 51,2 % | 44,0 % | 0,02 x | n.d. (terme manquant) | 5 482 M$ | n.d. (concept non résolu) | 5 482 M$ | 29 j | 20 500 M$ | n.d. (terme manquant) | 0,10 x |  |
-| 2025-02-02 | 24,7 % | 40,3 % | 0,02 x | n.d. (non publié) | 6 013 M$ | n.d. (concept non résolu) | 6 013 M$ | 30 j | 22 400 M$ | 3,99 x | n.d. (terme manquant) |  |
-| 2025-05-04 | 20,2 % | 33,9 % | 0,02 x | n.d. (terme manquant) | 6 411 M$ | n.d. (concept non résolu) | 6 411 M$ | 34 j | 24 700 M$ | 3,47 x | n.d. (terme manquant) |  |
-| 2025-08-03 | 22,0 % | 28,0 % | 0,02 x | n.d. (terme manquant) | 7 024 M$ | n.d. (concept non résolu) | 7 024 M$ | 37 j | 27 500 M$ | 2,88 x | n.d. (terme manquant) |  |
+| 2025-02-02 | 24,7 % | 40,3 % | 0,02 x | n.d. (non publié) | 6 013 M$ | n.d. (concept non résolu) | 6 013 M$ | 30 j | 22 400 M$ | 3,77 x | n.d. (terme manquant) |  |
+| 2025-05-04 | 20,2 % | 33,9 % | 0,02 x | n.d. (terme manquant) | 6 411 M$ | n.d. (concept non résolu) | 6 411 M$ | 34 j | 24 700 M$ | 3,29 x | n.d. (terme manquant) |  |
+| 2025-08-03 | 22,0 % | 28,0 % | 0,02 x | n.d. (terme manquant) | 7 024 M$ | n.d. (concept non résolu) | 7 024 M$ | 37 j | 27 500 M$ | 2,86 x | n.d. (terme manquant) |  |
 | 2025-11-02 | 28,2 % | 23,9 % | 0,03 x | n.d. (terme manquant) | 7 466 M$ | n.d. (concept non résolu) | 7 466 M$ | 36 j | 33 300 M$ | 2,58 x | n.d. (terme manquant) |  |
 | 2026-02-01 | 29,5 % | 25,2 % | 0,03 x | n.d. (non publié) | 8 010 M$ | n.d. (concept non résolu) | 8 010 M$ | 40 j | 45 000 M$ | 2,33 x | n.d. (terme manquant) |  |
 | 2026-05-03 | 47,9 % | 32,3 % | 0,02 x | n.d. (terme manquant) | 10 262 M$ | n.d. (concept non résolu) | 10 262 M$ | 44 j | 164 600 M$ | 1,95 x | n.d. (terme manquant) |  |
@@ -322,23 +322,23 @@
 | 2021-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2021-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (non publié) | n.d. (terme manquant) | F10 |
 | 2022-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -43 M$ | n.d. (terme manquant) | -43 M$ | n.d. (non publié) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F10, F2 |
-| 2022-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -26 M$ | n.d. (terme manquant) | -26 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F10, F2 |
-| 2022-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F10, F2 |
+| 2022-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -26 M$ | n.d. (terme manquant) | -26 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F10, F2 |
+| 2022-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F10, F2 |
 | 2022-12-31 | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | ↯ | ↯ | ↯ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F5 |
 | 2023-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -19 M$ | n.d. (terme manquant) | -19 M$ | n.d. (non publié) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F2 |
-| 2023-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -6 M$ | n.d. (terme manquant) | -6 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F2 |
-| 2023-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 10,68 x | n.d. (terme manquant) | -23 M$ | n.d. (terme manquant) | -23 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F2, F5 |
+| 2023-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -6 M$ | n.d. (terme manquant) | -6 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F1, F2 |
+| 2023-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 10,68 x | n.d. (terme manquant) | -23 M$ | n.d. (terme manquant) | -23 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F1, F2, F5 |
 | 2023-12-31 | n.d. (terme manquant) | n.d. (non publié) | 3,10 x | n.d. (terme manquant) | -23 M$ | n.d. (terme manquant) | -23 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F1, F2 |
 | 2024-03-31 | n.d. (non publié) | n.d. (terme manquant) | 2,06 x | n.d. (terme manquant) | -24 M$ | n.d. (terme manquant) | -24 M$ | n.d. (non publié) | n.d. (concept non résolu) | 6,42 x | n.d. (terme manquant) | F1, F2 |
 | 2024-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | 2,84 x | n.d. (terme manquant) | -30 M$ | n.d. (terme manquant) | -30 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | 3,25 x | n.d. (terme manquant) | F1, F2 |
-| 2024-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -42 M$ | n.d. (terme manquant) | -42 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | 0,00 x | n.d. (terme manquant) | F2 |
-| 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -196 M$ | n.d. (terme manquant) | -196 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2025-03-31 | n.d. (non publié) | n.d. (terme manquant) | 1,66 x | n.d. (terme manquant) | -37 M$ | -37 M$ | -37 M$ | n.d. (non publié) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2025-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -175 M$ | -175 M$ | -175 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2025-09-30 | 86,9 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -268 M$ | -277 M$ | -268 M$ | 6 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2025-12-31 | 2,4 % | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -703 M$ | -703 M$ | -703 M$ | 3 j | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2026-03-31 | -1,1 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -541 M$ | -541 M$ | -541 M$ | 15 j | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2, F8 |
-| 2026-06-30 | -6,0 % | 14,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -992 M$ | -992 M$ | -992 M$ | 27 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2 |
+| 2024-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -42 M$ | n.d. (terme manquant) | -42 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | 0,00 x | n.d. (terme manquant) | F1, F2 |
+| 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -196 M$ | n.d. (terme manquant) | -196 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2025-03-31 | n.d. (non publié) | n.d. (terme manquant) | 1,66 x | n.d. (terme manquant) | -37 M$ | -37 M$ | -37 M$ | n.d. (non publié) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2025-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -175 M$ | -175 M$ | -175 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2025-09-30 | 86,9 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -268 M$ | -277 M$ | -268 M$ | 6 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2025-12-31 | 2,4 % | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -703 M$ | -703 M$ | -703 M$ | 3 j | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2026-03-31 | -1,1 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -541 M$ | -541 M$ | -541 M$ | 15 j | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2, F8 |
+| 2026-06-30 | -6,0 % | 14,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -992 M$ | -992 M$ | -992 M$ | 27 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 
 ## Cipher (CIFR)
 
@@ -349,23 +349,23 @@
 | 2021-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F10 |
 | 2021-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2022-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -10 M$ | n.d. (terme manquant) | -10 M$ | n.d. (non publié) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2022-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -13 M$ | n.d. (terme manquant) | -13 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2022-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 15,26 x | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2022-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -13 M$ | n.d. (terme manquant) | -13 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
+| 2022-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 15,26 x | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | -15 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2022-12-31 | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | ↯ | ↯ | ↯ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F5 |
 | 2023-03-31 | n.d. (non publié) | n.d. (terme manquant) | 1,66 x | n.d. (non publié) | -7 M$ | n.d. (terme manquant) | -7 M$ | 1 j | n.d. (concept non résolu) | ↯ | ↯ | F2, F5 |
 | 2023-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | 0,76 x | n.d. (terme manquant) | 3 M$ | n.d. (terme manquant) | 3 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F5 |
 | 2023-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 0,57 x | n.d. (terme manquant) | 3 M$ | -3 M$ | 3 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F5 |
 | 2023-12-31 | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | ↯ | ↯ | ↯ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | 0,57 x | F5 |
 | 2024-03-31 | 119,9 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -35 M$ | -36 M$ | -35 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | 0,22 x | F2, F5 |
-| 2024-06-30 | 17,9 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -33 M$ | -34 M$ | -33 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | 0,25 x | F2, F5 |
-| 2024-09-30 | -20,5 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -83 M$ | -84 M$ | -83 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F2, F5, F8 |
-| 2024-12-31 | -2,8 % | 19,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -76 M$ | -78 M$ | -76 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | 0,46 x | F2, F5, F7 |
-| 2025-03-31 | 1,7 % | -0,6 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -72 M$ | -73 M$ | -72 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2025-06-30 | 18,4 % | 0,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -88 M$ | -89 M$ | -88 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2025-09-30 | 197,5 % | 35,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -256 M$ | -257 M$ | -256 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | 12,99 x | 0,27 x | F2, F5 |
-| 2025-12-31 | 41,4 % | 48,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -280 M$ | -282 M$ | -280 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F2 |
-| 2026-03-31 | -28,8 % | 38,0 % | 6,05 x | n.d. (non publié) | -462 M$ | -464 M$ | -462 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F2, F8 |
-| 2026-06-30 | -43,0 % | 20,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -654 M$ | -655 M$ | -654 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F2 |
+| 2024-06-30 | 17,9 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -33 M$ | -34 M$ | -33 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | 0,25 x | F1, F2, F5 |
+| 2024-09-30 | -20,5 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -83 M$ | -84 M$ | -83 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F1, F2, F5, F8 |
+| 2024-12-31 | -2,8 % | 19,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -76 M$ | -78 M$ | -76 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | 0,46 x | F1, F2, F5, F7 |
+| 2025-03-31 | 1,7 % | -0,6 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -72 M$ | -73 M$ | -72 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2025-06-30 | 18,4 % | 0,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -88 M$ | -89 M$ | -88 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2025-09-30 | 197,5 % | 35,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -256 M$ | -257 M$ | -256 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | 12,99 x | 0,27 x | F1, F2, F5 |
+| 2025-12-31 | 41,4 % | 48,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -280 M$ | -282 M$ | -280 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F1, F2 |
+| 2026-03-31 | -28,8 % | 38,0 % | 6,05 x | n.d. (non publié) | -462 M$ | -464 M$ | -462 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F1, F2, F8 |
+| 2026-06-30 | -43,0 % | 20,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -654 M$ | -655 M$ | -654 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | ↯ | ↯ | F1, F2 |
 
 ## Core Scientific (CORZ)
 
@@ -373,7 +373,7 @@
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | 2021-03-31 | n.d. (non publié) | n.d. (terme manquant) | 0,70 x | n.d. (non publié) | 5 M$ | 5 M$ | 5 M$ | n.d. (terme manquant) | 333 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2021-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -165 M$ | -165 M$ | -165 M$ | n.d. (terme manquant) | 428 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2021-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -122 M$ | -122 M$ | -122 M$ | n.d. (terme manquant) | 719 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2021-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -122 M$ | -122 M$ | -122 M$ | n.d. (terme manquant) | 719 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2021-12-31 | n.d. (terme manquant) | n.d. (non publié) | -1,06 x | n.d. (terme manquant) | 226 M$ | 218 M$ | 226 M$ | 0 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2022-03-31 | 254,9 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -137 M$ | -147 M$ | -137 M$ | 0 j | 989 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
 | 2022-06-30 | 117,7 % | n.d. (terme manquant) | 0,73 x | n.d. (terme manquant) | 40 M$ | 27 M$ | 40 M$ | 2 j | 901 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F5 |
@@ -387,12 +387,12 @@
 | 2024-06-30 | 11,2 % | 8,2 % | 2,60 x | n.d. (terme manquant) | -2 M$ | -3 M$ | -2 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | 0,45 x | F1, F2, F5 |
 | 2024-09-30 | -15,5 % | 15,8 % | 5,46 x | n.d. (terme manquant) | -25 M$ | -26 M$ | -25 M$ | 6 j | n.d. (non publié) | n.d. (terme manquant) | 0,53 x | F1, F2, F5, F8 |
 | 2024-12-31 | -33,1 % | 1,6 % | 2,08 x | n.d. (terme manquant) | -15 M$ | -16 M$ | -15 M$ | 1 j | n.d. (non publié) | n.d. (terme manquant) | 1,16 x | F1, F2, F5 |
-| 2025-03-31 | -55,6 % | -26,8 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -129 M$ | -130 M$ | -129 M$ | 1 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2025-06-30 | -44,3 % | -39,4 % | 3,57 x | n.d. (terme manquant) | -87 M$ | -88 M$ | -87 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
+| 2025-03-31 | -55,6 % | -26,8 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -129 M$ | -130 M$ | -129 M$ | 1 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2025-06-30 | -44,3 % | -39,4 % | 3,57 x | n.d. (terme manquant) | -87 M$ | -88 M$ | -87 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
 | 2025-09-30 | -14,9 % | -40,1 % | 1,86 x | n.d. (terme manquant) | -113 M$ | -113 M$ | -113 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
 | 2025-12-31 | -16,0 % | -37,5 % | ↯ | n.d. (terme manquant) | ↯ | ↯ | ↯ | n.d. (terme manquant) | n.d. (non publié) | ↯ | ↯ | F5, F7 |
 | 2026-03-31 | 44,9 % | -13,7 % | 1,56 x | n.d. (non publié) | -139 M$ | -140 M$ | -139 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | ↯ | F2, F5 |
-| 2026-06-30 | 108,8 % | 26,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -584 M$ | -584 M$ | -584 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | F2, F5 |
+| 2026-06-30 | 108,8 % | 26,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -584 M$ | -584 M$ | -584 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | F1, F2, F5 |
 
 ## Nebius (NBIS)
 
@@ -440,7 +440,7 @@
 | 2024-03-31 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-06-30 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2024-09-30 | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -110 M$ | n.d. (terme manquant) | -110 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2024-12-31 | n.d. (terme manquant) | n.d. (terme manquant) | 2,60 x | n.d. (terme manquant) | -86 M$ | n.d. (terme manquant) | -86 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2024-12-31 | n.d. (terme manquant) | n.d. (terme manquant) | 2,60 x | n.d. (terme manquant) | -86 M$ | n.d. (terme manquant) | -86 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2025-03-31 | n.d. (terme manquant) | n.d. (terme manquant) | 1,55 x | n.d. (terme manquant) | -51 M$ | -51 M$ | -51 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2025-06-30 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2025-09-30 | 355,4 % | n.d. (terme manquant) | 1,27 x | n.d. (non publié) | -38 M$ | n.d. (terme manquant) | -38 M$ | 9 j | 195 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
@@ -467,14 +467,14 @@
 | 2023-08-31 | n.d. (terme manquant) | n.d. (non publié) | 7,22 x | n.d. (terme manquant) | -28 M$ | -33 M$ | -28 M$ | 0 j | 52 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
 | 2023-11-30 | 242,0 % | n.d. (terme manquant) | 2,92 x | n.d. (terme manquant) | -9 M$ | -17 M$ | -9 M$ | 1 j | 52 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
 | 2024-02-29 | 207,7 % | n.d. (terme manquant) | 1,06 x | n.d. (terme manquant) | -2 M$ | -17 M$ | -2 M$ | 0 j | n.d. (non publié) | ↯ | ↯ | F1, F2, F5 |
-| 2024-05-31 | 98,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -89 M$ | -121 M$ | -89 M$ | 8 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
-| 2024-08-31 | 67,1 % | 124,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -131 M$ | -157 M$ | -131 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
-| 2024-11-30 | 51,3 % | 84,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -223 M$ | -259 M$ | -223 M$ | 18 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
-| 2025-02-28 | 22,1 % | 53,7 % | 43,67 x | n.d. (terme manquant) | -252 M$ | -283 M$ | -252 M$ | 25 j | n.d. (non publié) | ↯ | ↯ | F2, F5 |
+| 2024-05-31 | 98,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -89 M$ | -121 M$ | -89 M$ | 8 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
+| 2024-08-31 | 67,1 % | 124,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -131 M$ | -157 M$ | -131 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
+| 2024-11-30 | 51,3 % | 84,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -223 M$ | -259 M$ | -223 M$ | 18 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
+| 2025-02-28 | 22,1 % | 53,7 % | 43,67 x | n.d. (terme manquant) | -252 M$ | -283 M$ | -252 M$ | 25 j | n.d. (non publié) | ↯ | ↯ | F1, F2, F5 |
 | 2025-05-31 | ↯ | ↯ | 28,92 x | n.d. (terme manquant) | -191 M$ | -222 M$ | -191 M$ | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | F1, F2, F5 |
-| 2025-08-31 | 84,3 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -331 M$ | -361 M$ | -331 M$ | 42 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2025-11-30 | 250,1 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -568 M$ | -608 M$ | -568 M$ | 10 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2026-02-28 | 139,3 % | ↯ | 14,09 x | n.d. (terme manquant) | -720 M$ | -745 M$ | -720 M$ | 15 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2025-08-31 | 84,3 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -331 M$ | -361 M$ | -331 M$ | 42 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
+| 2025-11-30 | 250,1 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -568 M$ | -608 M$ | -568 M$ | 10 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
+| 2026-02-28 | 139,3 % | ↯ | 14,09 x | n.d. (terme manquant) | -720 M$ | -745 M$ | -720 M$ | 15 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2026-05-31 | ↯ | ↯ | 9,73 x | n.d. (terme manquant) | -1 157 M$ | -1 162 M$ | -1 252 M$ | 20 j | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | F1, F2 |
 | 2026-08-31 | 322,4 % | ↯ | 32,46 x | n.d. (terme manquant) | -2 011 M$ | -2 025 M$ | -2 069 M$ | 31 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 
@@ -491,7 +491,7 @@
 | 2021-10-29 | 20,9 % | 14,1 % | 0,25 x | n.d. (terme manquant) | 2 452 M$ | n.d. (concept non résolu) | 2 452 M$ | 45 j | 47 000 M$ | 4,22 x | 0,18 x |  |
 | 2022-01-28 | 15,9 % | 16,8 % | 0,24 x | n.d. (terme manquant) | 2 353 M$ | n.d. (concept non résolu) | 2 353 M$ | 42 j | 42 000 M$ | 2,93 x | 0,11 x |  |
 | 2022-04-29 | 15,6 % | 17,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -959 M$ | n.d. (concept non résolu) | -959 M$ | 41 j | 42 000 M$ | 3,06 x | 0,11 x | F2 |
-| 2022-07-29 | 9,2 % | 15,6 % | 1,11 x | n.d. (terme manquant) | -83 M$ | n.d. (concept non résolu) | -83 M$ | 46 j | 41 000 M$ | 3,26 x | 0,11 x | F2 |
+| 2022-07-29 | 9,2 % | 15,6 % | 1,11 x | n.d. (terme manquant) | -83 M$ | n.d. (concept non résolu) | -83 M$ | 46 j | 41 000 M$ | 3,26 x | 0,11 x | F1, F2 |
 | 2022-10-28 | -6,4 % | 8,1 % | 1,89 x | n.d. (terme manquant) | -351 M$ | n.d. (concept non résolu) | -351 M$ | 42 j | 39 000 M$ | ↯ | ↯ | F1, F2, F8 |
 | 2023-02-03 | -10,5 % | 1,1 % | 0,28 x | n.d. (terme manquant) | 1 955 M$ | n.d. (concept non résolu) | 1 955 M$ | 49 j | 40 000 M$ | 3,31 x | 0,10 x |  |
 | 2023-05-05 | -19,9 % | -7,3 % | 0,39 x | n.d. (terme manquant) | 1 076 M$ | n.d. (concept non résolu) | 1 076 M$ | 41 j | 39 000 M$ | 3,33 x | 0,10 x |  |
@@ -518,24 +518,24 @@
 | 2021-03-31 | 16,0 % | 2,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -143 M$ | -143 M$ | -143 M$ | 41 j | 190 M$ | 0,69 x | 0,18 x | F2, F5 |
 | 2021-06-30 | 19,3 % | 6,5 % | 0,21 x | n.d. (terme manquant) | 50 M$ | n.d. (terme manquant) | 50 M$ | 39 j | 202 M$ | 0,65 x | 0,14 x | F4 |
 | 2021-09-30 | 35,5 % | 15,9 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -145 M$ | -145 M$ | -145 M$ | 41 j | 215 M$ | 1,85 x | 0,16 x | F2 |
-| 2021-12-31 | 41,2 % | 27,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -66 M$ | -66 M$ | -66 M$ | 39 j | 253 M$ | 1,91 x | 0,15 x | F2 |
-| 2022-03-31 | 51,3 % | 36,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -239 M$ | -239 M$ | -239 M$ | 45 j | 230 M$ | 2,28 x | 0,11 x | F2, F4 |
-| 2022-06-30 | 53,0 % | 46,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -36 M$ | n.d. (terme manquant) | -36 M$ | 46 j | 234 M$ | 1,62 x | 0,06 x | F2 |
+| 2021-12-31 | 41,2 % | 27,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -66 M$ | -66 M$ | -66 M$ | 39 j | 253 M$ | 1,91 x | 0,15 x | F1, F2 |
+| 2022-03-31 | 51,3 % | 36,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -239 M$ | -239 M$ | -239 M$ | 45 j | 230 M$ | 2,28 x | 0,11 x | F1, F2, F4 |
+| 2022-06-30 | 53,0 % | 46,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -36 M$ | n.d. (terme manquant) | -36 M$ | 46 j | 234 M$ | 1,62 x | 0,06 x | F1, F2 |
 | 2022-09-30 | 79,3 % | 57,1 % | 0,03 x | n.d. (non publié) | 303 M$ | n.d. (terme manquant) | 303 M$ | 37 j | 320 M$ | 0,45 x | 0,04 x |  |
 | 2022-12-31 | 53,8 % | 59,4 % | 0,06 x | n.d. (terme manquant) | 151 M$ | n.d. (terme manquant) | 151 M$ | 39 j | 280 M$ | n.d. (terme manquant) | 0,03 x |  |
 | 2023-03-31 | -5,3 % | 42,0 % | 0,04 x | n.d. (terme manquant) | 190 M$ | n.d. (terme manquant) | 190 M$ | 47 j | 310 M$ | n.d. (terme manquant) | 0,03 x | F8 |
 | 2023-06-30 | 33,6 % | 37,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -18 M$ | n.d. (terme manquant) | -18 M$ | 48 j | 304 M$ | 0,36 x | n.d. (terme manquant) | F2 |
 | 2023-09-30 | 14,4 % | 22,9 % | 0,01 x | n.d. (non publié) | 268 M$ | n.d. (terme manquant) | 268 M$ | 37 j | 340 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2023-12-31 | 103,2 % | 39,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -610 M$ | n.d. (terme manquant) | -610 M$ | 38 j | 384 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
-| 2024-03-31 | 200,0 % | 79,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -1 612 M$ | n.d. (terme manquant) | -1 612 M$ | 39 j | 436 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F4 |
-| 2024-06-30 | 145,1 % | 110,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -656 M$ | n.d. (terme manquant) | -656 M$ | 47 j | 416 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
+| 2024-03-31 | 200,0 % | 79,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -1 612 M$ | n.d. (terme manquant) | -1 612 M$ | 39 j | 436 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F4 |
+| 2024-06-30 | 145,1 % | 110,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -656 M$ | n.d. (terme manquant) | -656 M$ | 47 j | 416 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
 | 2024-09-30 | 180,1 % | 154,5 % | 0,11 x | n.d. (non publié) | 365 M$ | n.d. (terme manquant) | 365 M$ | 42 j | 558 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F4, F5 |
 | 2024-12-31 | 54,9 % | 125,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -267 M$ | n.d. (terme manquant) | -267 M$ | 50 j | 599 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F4, F5 |
 | 2025-03-31 | 19,5 % | 82,5 % | 0,05 x | n.d. (terme manquant) | 594 M$ | n.d. (terme manquant) | 594 M$ | 52 j | 666 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F4, F5 |
 | 2025-06-30 | 7,5 % | 46,6 % | 0,03 x | n.d. (terme manquant) | 841 M$ | n.d. (terme manquant) | 835 M$ | 35 j | 731 M$ | n.d. (non publié) | n.d. (non publié) | F4, F5, F7 |
 | 2025-09-30 | -15,5 % | 11,9 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -950 M$ | n.d. (terme manquant) | -950 M$ | 46 j | 1 028 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5, F8 |
-| 2025-12-31 | 123,4 % | 34,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -45 M$ | n.d. (terme manquant) | -45 M$ | 80 j | 1 303 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
-| 2026-03-31 | 122,7 % | 56,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -6 696 M$ | n.d. (terme manquant) | -6 696 M$ | 74 j | 2 136 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
+| 2025-12-31 | 123,4 % | 34,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -45 M$ | n.d. (terme manquant) | -45 M$ | 80 j | 1 303 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
+| 2026-03-31 | 122,7 % | 56,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -6 696 M$ | n.d. (terme manquant) | -6 696 M$ | 74 j | 2 136 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
 | 2026-06-30 | 93,2 % | 77,8 % | 0,04 x | n.d. (terme manquant) | 719 M$ | n.d. (terme manquant) | 714 M$ | 50 j | 2 612 M$ | n.d. (non publié) | n.d. (non publié) | F4, F5 |
 
 ## Hut 8 (HUT)
@@ -586,13 +586,13 @@
 | 2024-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2024-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2024-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -52 M$ | n.d. (concept non résolu) | -52 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F2 |
-| 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -404 M$ | n.d. (concept non résolu) | -404 M$ | 0 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | F2, F6 |
+| 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -404 M$ | n.d. (concept non résolu) | -404 M$ | 0 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | F1, F2, F6 |
 | 2025-03-31 | n.d. (non publié) | n.d. (terme manquant) | 0,57 x | n.d. (terme manquant) | 68 M$ | n.d. (concept non résolu) | 68 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2025-06-30 | -2,5 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 0 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2025-09-30 | 231,4 % | n.d. (terme manquant) | 0,56 x | n.d. (terme manquant) | 190 M$ | n.d. (concept non résolu) | 190 M$ | 0 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2025-12-31 | -34,4 % | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -1 632 M$ | n.d. (concept non résolu) | -1 632 M$ | 0 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | F2, F6, F8 |
-| 2026-03-31 | -22,6 % | 24,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -421 M$ | n.d. (concept non résolu) | -421 M$ | 1 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F2 |
-| 2026-06-30 | -1,2 % | 24,7 % | 1,07 x | n.d. (terme manquant) | -27 M$ | n.d. (concept non résolu) | -27 M$ | 1 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F2 |
+| 2026-03-31 | -22,6 % | 24,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -421 M$ | n.d. (concept non résolu) | -421 M$ | 1 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F1, F2 |
+| 2026-06-30 | -1,2 % | 24,7 % | 1,07 x | n.d. (terme manquant) | -27 M$ | n.d. (concept non résolu) | -27 M$ | 1 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F1, F2 |
 
 ## Akamai (AKAM)
 
@@ -629,13 +629,13 @@
 | 2021-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | 27,16 x | n.d. (terme manquant) | -2 M$ | n.d. (concept non résolu) | -2 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2021-09-30 | 25,4 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 1 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F5 |
 | 2021-12-31 | 28,2 % | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -3 M$ | n.d. (concept non résolu) | -3 M$ | 2 j | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | F2, F4, F5 |
-| 2022-03-31 | 27,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -1 M$ | n.d. (concept non résolu) | -1 M$ | 1 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
-| 2022-06-30 | 28,1 % | 27,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -8 M$ | n.d. (concept non résolu) | -8 M$ | 2 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2022-09-30 | 27,3 % | 27,7 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -5 M$ | n.d. (concept non résolu) | -5 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2022-12-31 | 22,6 % | 26,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -6 M$ | n.d. (concept non résolu) | -6 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2023-03-31 | 20,0 % | 24,3 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -8 M$ | n.d. (concept non résolu) | -8 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2023-06-30 | 18,9 % | 22,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -7 M$ | n.d. (concept non résolu) | -7 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
-| 2023-09-30 | 14,7 % | 18,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -517 000 $ | n.d. (concept non résolu) | -517 000 $ | 7 j | 30 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
+| 2022-03-31 | 27,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -1 M$ | n.d. (concept non résolu) | -1 M$ | 1 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
+| 2022-06-30 | 28,1 % | 27,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -8 M$ | n.d. (concept non résolu) | -8 M$ | 2 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2022-09-30 | 27,3 % | 27,7 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -5 M$ | n.d. (concept non résolu) | -5 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2022-12-31 | 22,6 % | 26,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -6 M$ | n.d. (concept non résolu) | -6 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2023-03-31 | 20,0 % | 24,3 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -8 M$ | n.d. (concept non résolu) | -8 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2023-06-30 | 18,9 % | 22,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -7 M$ | n.d. (concept non résolu) | -7 M$ | 3 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
+| 2023-09-30 | 14,7 % | 18,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -517 000 $ | n.d. (concept non résolu) | -517 000 $ | 7 j | 30 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
 | 2023-12-31 | 25,3 % | 19,8 % | 0,14 x | n.d. (terme manquant) | 3 M$ | n.d. (concept non résolu) | 3 M$ | 3 j | 33 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F5 |
 | 2024-03-31 | 28,1 % | 21,9 % | 0,12 x | n.d. (non publié) | 3 M$ | n.d. (concept non résolu) | 3 M$ | 5 j | 36 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F5 |
 | 2024-06-30 | 27,2 % | 24,0 % | 0,12 x | n.d. (terme manquant) | 2 M$ | n.d. (concept non résolu) | 2 M$ | 5 j | 38 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F5 |
@@ -653,27 +653,27 @@
 | Trimestre clos le | Croissance du revenu (glissement annuel) | Croissance du revenu (douze mois glissants) | Capex décaissé ÷ CFO | Capex ÷ CFO, additions non monétaires comprises | Flux disponible (CFO − capex) | Flux disponible après locations-financement | Flux après financement des contreparties | Délai de recouvrement (créances) | Obligations de prestation restantes (RPO) | Dette ÷ (résultat opérationnel + dotations) | Passifs locatifs ÷ (résultat opérationnel + dotations) | Événements (annexe F) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | 2021-03-31 | 872,2 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -8 M$ | n.d. (concept non résolu) | -8 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
-| 2021-06-30 | 1 668,7 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -26 M$ | n.d. (concept non résolu) | -26 M$ | 0 j | n.d. (non publié) | n.d. (terme manquant) | 0,76 x | F2, F5 |
-| 2021-09-30 | 2 532,3 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -106 M$ | n.d. (concept non résolu) | -106 M$ | 5 j | n.d. (non publié) | n.d. (terme manquant) | 0,43 x | F2, F5 |
-| 2021-12-31 | 1 617,8 % | 1 665,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -94 M$ | n.d. (concept non résolu) | -94 M$ | 16 j | 27 M$ | n.d. (terme manquant) | 3,39 x | F2, F5 |
-| 2022-03-31 | 244,0 % | 720,4 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -82 M$ | n.d. (concept non résolu) | -82 M$ | 18 j | n.d. (non publié) | n.d. (terme manquant) | 0,48 x | F2, F5 |
-| 2022-06-30 | 112,4 % | 372,3 % | 1,30 x | n.d. (terme manquant) | -9 M$ | n.d. (concept non résolu) | -9 M$ | 20 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F2, F5 |
+| 2021-06-30 | 1 668,7 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -26 M$ | n.d. (concept non résolu) | -26 M$ | 0 j | n.d. (non publié) | n.d. (terme manquant) | 0,76 x | F1, F2, F5 |
+| 2021-09-30 | 2 532,3 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -106 M$ | n.d. (concept non résolu) | -106 M$ | 5 j | n.d. (non publié) | n.d. (terme manquant) | 0,43 x | F1, F2, F5 |
+| 2021-12-31 | 1 617,8 % | 1 665,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -94 M$ | n.d. (concept non résolu) | -94 M$ | 16 j | 27 M$ | n.d. (terme manquant) | 3,39 x | F1, F2, F5 |
+| 2022-03-31 | 244,0 % | 720,4 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -82 M$ | n.d. (concept non résolu) | -82 M$ | 18 j | n.d. (non publié) | n.d. (terme manquant) | 0,48 x | F1, F2, F5 |
+| 2022-06-30 | 112,4 % | 372,3 % | 1,30 x | n.d. (terme manquant) | -9 M$ | n.d. (concept non résolu) | -9 M$ | 20 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F5 |
 | 2022-09-30 | -28,6 % | 127,1 % | 3,83 x | n.d. (terme manquant) | -39 M$ | n.d. (concept non résolu) | -39 M$ | 35 j | n.d. (non publié) | ↯ | ↯ | F1, F2, F5, F8 |
 | 2022-12-31 | -33,8 % | 21,5 % | ↯ | n.d. (terme manquant) | ↯ | ↯ | ↯ | 41 j | 29 M$ | ↯ | ↯ | F5 |
 | 2023-03-31 | -8,2 % | -6,4 % | 1,57 x | n.d. (non publié) | -19 M$ | n.d. (concept non résolu) | -19 M$ | 24 j | 25 M$ | ↯ | ↯ | F2 |
-| 2023-06-30 | 5,2 % | -16,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -95 M$ | n.d. (concept non résolu) | -95 M$ | 16 j | 23 M$ | ↯ | ↯ | F2 |
-| 2023-09-30 | 12,1 % | -9,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -47 M$ | n.d. (concept non résolu) | -47 M$ | 22 j | 25 M$ | ↯ | ↯ | F2 |
-| 2023-12-31 | 31,0 % | 8,3 % | 1,01 x | n.d. (terme manquant) | -460 000 $ | n.d. (concept non résolu) | -460 000 $ | 29 j | 22 M$ | n.d. (terme manquant) | 0,11 x | F2 |
-| 2024-03-31 | 8,3 % | 13,5 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -115 M$ | n.d. (concept non résolu) | -115 M$ | 16 j | 21 M$ | n.d. (terme manquant) | 0,06 x | F2 |
-| 2024-06-30 | -8,8 % | 9,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -96 M$ | n.d. (concept non résolu) | -96 M$ | 18 j | 24 M$ | n.d. (terme manquant) | 0,07 x | F2, F4, F8 |
-| 2024-09-30 | 63,4 % | 19,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -128 M$ | n.d. (concept non résolu) | -128 M$ | 17 j | 25 M$ | ↯ | ↯ | F2, F4 |
-| 2024-12-31 | 80,9 % | 34,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -157 M$ | n.d. (concept non résolu) | -157 M$ | 18 j | 86 M$ | 1,60 x | 0,08 x | F2, F4 |
-| 2025-03-31 | 103,5 % | 60,0 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -155 M$ | n.d. (concept non résolu) | -155 M$ | 11 j | 132 M$ | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2025-06-30 | 118,5 % | 93,5 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -292 M$ | n.d. (concept non résolu) | -292 M$ | 15 j | 120 M$ | 2,38 x | 0,09 x | F2 |
-| 2025-09-30 | 112,6 % | 103,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -140 M$ | n.d. (concept non résolu) | -140 M$ | 14 j | n.d. (non publié) | 1,46 x | 0,06 x | F2 |
-| 2025-12-31 | 7,2 % | 71,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -188 M$ | n.d. (concept non résolu) | -188 M$ | 18 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2026-03-31 | 3,6 % | 42,4 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -298 M$ | n.d. (concept non résolu) | -298 M$ | 36 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
-| 2026-06-30 | 13,9 % | 24,5 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -151 M$ | n.d. (concept non résolu) | -151 M$ | 22 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
+| 2023-06-30 | 5,2 % | -16,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -95 M$ | n.d. (concept non résolu) | -95 M$ | 16 j | 23 M$ | ↯ | ↯ | F1, F2 |
+| 2023-09-30 | 12,1 % | -9,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -47 M$ | n.d. (concept non résolu) | -47 M$ | 22 j | 25 M$ | ↯ | ↯ | F1, F2 |
+| 2023-12-31 | 31,0 % | 8,3 % | 1,01 x | n.d. (terme manquant) | -460 000 $ | n.d. (concept non résolu) | -460 000 $ | 29 j | 22 M$ | n.d. (terme manquant) | 0,11 x | F1, F2 |
+| 2024-03-31 | 8,3 % | 13,5 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -115 M$ | n.d. (concept non résolu) | -115 M$ | 16 j | 21 M$ | n.d. (terme manquant) | 0,06 x | F1, F2 |
+| 2024-06-30 | -8,8 % | 9,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -96 M$ | n.d. (concept non résolu) | -96 M$ | 18 j | 24 M$ | n.d. (terme manquant) | 0,07 x | F1, F2, F4, F8 |
+| 2024-09-30 | 63,4 % | 19,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -128 M$ | n.d. (concept non résolu) | -128 M$ | 17 j | 25 M$ | ↯ | ↯ | F1, F2, F4 |
+| 2024-12-31 | 80,9 % | 34,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -157 M$ | n.d. (concept non résolu) | -157 M$ | 18 j | 86 M$ | 1,60 x | 0,08 x | F1, F2, F4 |
+| 2025-03-31 | 103,5 % | 60,0 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -155 M$ | n.d. (concept non résolu) | -155 M$ | 11 j | 132 M$ | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2025-06-30 | 118,5 % | 93,5 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -292 M$ | n.d. (concept non résolu) | -292 M$ | 15 j | 120 M$ | 2,38 x | 0,09 x | F1, F2 |
+| 2025-09-30 | 112,6 % | 103,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -140 M$ | n.d. (concept non résolu) | -140 M$ | 14 j | n.d. (non publié) | 1,46 x | 0,06 x | F1, F2 |
+| 2025-12-31 | 7,2 % | 71,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -188 M$ | n.d. (concept non résolu) | -188 M$ | 18 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2026-03-31 | 3,6 % | 42,4 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -298 M$ | n.d. (concept non résolu) | -298 M$ | 36 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2026-06-30 | 13,9 % | 24,5 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -151 M$ | n.d. (concept non résolu) | -151 M$ | 22 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 
 ## Blue Owl (OWL)
 
@@ -768,12 +768,12 @@
 | 2022-07-02 | -22,0 % | -5,4 % | 8,95 x | n.d. (terme manquant) | -6 433 M$ | -6 433 M$ | -6 433 M$ | 36 j | n.d. (non publié) | 1,45 x | n.d. (terme manquant) | F2 |
 | 2022-10-01 | -20,1 % | -11,4 % | 7,09 x | n.d. (terme manquant) | -6 269 M$ | -6 311 M$ | -6 269 M$ | 44 j | n.d. (non publié) | 2,04 x | n.d. (terme manquant) | F1, F2 |
 | 2022-12-31 | -31,6 % | -20,2 % | 0,74 x | n.d. (terme manquant) | 2 004 M$ | 2 000 M$ | 2 004 M$ | 27 j | n.d. (non publié) | 3,12 x | n.d. (terme manquant) |  |
-| 2023-04-01 | -36,2 % | -27,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -9 198 M$ | -9 213 M$ | -9 198 M$ | 30 j | n.d. (non publié) | 7,64 x | n.d. (terme manquant) | F2 |
-| 2023-07-01 | -15,5 % | -26,4 % | 2,10 x | n.d. (terme manquant) | -3 080 M$ | -3 161 M$ | -3 080 M$ | 21 j | n.d. (non publié) | 8,85 x | n.d. (terme manquant) | F2 |
+| 2023-04-01 | -36,2 % | -27,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -9 198 M$ | -9 213 M$ | -9 198 M$ | 30 j | n.d. (non publié) | 7,50 x | n.d. (terme manquant) | F2 |
+| 2023-07-01 | -15,5 % | -26,4 % | 2,10 x | n.d. (terme manquant) | -3 080 M$ | -3 161 M$ | -3 080 M$ | 21 j | n.d. (non publié) | 8,85 x | n.d. (terme manquant) | F1, F2 |
 | 2023-09-30 | -7,7 % | -24,0 % | 0,99 x | n.d. (terme manquant) | 71 M$ | 71 M$ | 71 M$ | 18 j | n.d. (non publié) | 9,88 x | n.d. (terme manquant) |  |
 | 2023-12-30 | 9,7 % | -14,0 % | 1,45 x | n.d. (terme manquant) | -2 072 M$ | -2 072 M$ | -2 072 M$ | 20 j | n.d. (non publié) | 6,20 x | n.d. (terme manquant) | F2 |
-| 2024-03-30 | 8,6 % | -2,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -7 193 M$ | -7 193 M$ | -7 193 M$ | 24 j | n.d. (non publié) | 6,16 x | n.d. (terme manquant) | F2 |
-| 2024-06-29 | -0,9 % | 2,0 % | 2,48 x | n.d. (terme manquant) | -3 390 M$ | -3 390 M$ | -3 390 M$ | 22 j | n.d. (non publié) | 6,98 x | n.d. (terme manquant) | F2, F8 |
+| 2024-03-30 | 8,6 % | -2,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -7 193 M$ | -7 193 M$ | -7 193 M$ | 24 j | n.d. (non publié) | 6,07 x | n.d. (terme manquant) | F1, F2 |
+| 2024-06-29 | -0,9 % | 2,0 % | 2,48 x | n.d. (terme manquant) | -3 390 M$ | -3 390 M$ | -3 390 M$ | 22 j | n.d. (non publié) | 6,58 x | n.d. (terme manquant) | F1, F2, F8 |
 | 2024-09-28 | -6,2 % | 2,6 % | 1,59 x | n.d. (terme manquant) | -2 404 M$ | -2 404 M$ | -2 404 M$ | 21 j | n.d. (non publié) | 209,32 x | n.d. (terme manquant) | F1, F2 |
 | 2024-12-28 | -7,4 % | -2,1 % | 1,84 x | n.d. (terme manquant) | -2 669 M$ | n.d. (terme manquant) | -2 669 M$ | 22 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F1, F2 |
 | 2025-03-29 | -0,4 % | -4,0 % | 6,38 x | n.d. (terme manquant) | -4 370 M$ | n.d. (terme manquant) | -4 370 M$ | 22 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | F1, F2 |

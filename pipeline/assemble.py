@@ -45,6 +45,7 @@ def _d(x):
 
 
 PK_DUPLICATES = {}      # doublons de clé primaire écartés par insert, par table (D-0069, point 9)
+PK_COLLISIONS = {}      # clés en collision, toutes, écrites dans work/tmp/pk_collisions.json
 
 
 def insert(con, table, rows, cols=None):
@@ -63,10 +64,14 @@ def insert(con, table, rows, cols=None):
     if dup.any():
         sub = df[dup].astype(str)
         distinct = sub.groupby(pk, sort=False).apply(lambda x: len(x.drop_duplicates()), include_groups=False)
-        rec = PK_DUPLICATES.setdefault(table, {"dropped": 0, "collision_keys": 0, "examples": []})
+        rec = PK_DUPLICATES.setdefault(table, {"dropped": 0, "collision_keys": 0, "by_first_key": {}, "examples": []})
         rec["dropped"] += len(sub) - len(distinct)
-        rec["collision_keys"] += int((distinct > 1).sum())
-        rec["examples"] = (rec["examples"] + [list(k) if isinstance(k, tuple) else [k] for k in distinct[distinct > 1].index[:10]])[:10]
+        coll = [list(k) if isinstance(k, tuple) else [k] for k in distinct[distinct > 1].index]
+        rec["collision_keys"] += len(coll)
+        for k in coll:
+            rec["by_first_key"][k[0]] = rec["by_first_key"].get(k[0], 0) + 1
+        rec["examples"] = (rec["examples"] + coll[:10])[:10]
+        PK_COLLISIONS.setdefault(table, []).extend(coll)
     df = df.drop_duplicates(pk, keep="last")
     types = {c[0]: c[1] for c in con.execute(f"DESCRIBE {table}").fetchall()}
     sel = []
@@ -152,6 +157,7 @@ def run(as_of, use_cache=True, apercu=False):
                           capture_output=True, text=True, cwd=config.ROOT).stdout.split()
     stats["previous_tables"] = {"commit": prev[0], "date": prev[1]} if len(prev) == 2 else None
     PK_DUPLICATES.clear()
+    PK_COLLISIONS.clear()
     load.EXCL_DUPLICATES.update(dropped=0, collision_keys=0, examples=[])
     # étapes qui ne lisent pas les observations : reprises du mémo si rien d'autre n'a changé (D-0062)
     M = memo.Memo(memo.inputs_fingerprint(), use=use_cache)
@@ -542,6 +548,7 @@ def run(as_of, use_cache=True, apercu=False):
                     "(FORMAT PARQUET, COMPRESSION ZSTD)")
     stats["rows"] = {t: con.execute(f"SELECT count(*) FROM {t}").fetchone()[0] for t in TABLES}
     stats["pk_duplicates"] = dict(PK_DUPLICATES, exclusions=load.EXCL_DUPLICATES)
+    (config.ROOT / "work" / "tmp" / "pk_collisions.json").write_text(json.dumps(PK_COLLISIONS, indent=0, default=str))
     stats["memo"] = {"hits": M.hits, "misses": M.misses}
     stats["seconds"] = round(time.time() - t0)
     (config.ROOT / "work" / "tmp" / "assemble_stats.json").write_text(json.dumps(stats, indent=1, default=str))

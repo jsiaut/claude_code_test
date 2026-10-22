@@ -2981,4 +2981,34 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - saut ×100 confirmé par son doublon `companyfacts`, et saut non confirmé ;
   - date limite d'un 20-F.
 
-  (12) Résultats : après le réassemblage.
+  (12) Résultats, après réassemblage (1 055 s), comparés aux tables d'eadc0f4. Un second assemblage, qui n'ajoute que le relevé complet des collisions, redonne `measures` à l'octet près.
+  - F1 : 121 événements au lieu de 43, groupe par groupe comme prévu au point 2.
+  - Actions diluées :
+    - vue `revised` : 389 cellules calculées au lieu de 456, dont 41 au-delà de 50 % au lieu de 107 ; plus aucune `denominator_nonpositive` (il y en avait 28) ;
+    - les deux vues donnent désormais les mêmes valeurs ;
+    - Intel au 2025-12-27 passe de +638,5 % à « non publié » : le 10-K ne donne pas le quatrième trimestre ;
+    - les fractionnements ne faussent plus rien : Amazon en 2021-2022 donne de −0,8 % à +1,0 % ; Broadcom, NVIDIA et Supermicro de −0,7 % à +12,4 % ;
+    - les 41 variations restantes viennent d'émetteurs qui ont fortement émis des actions : Riot 7, TeraWulf 6, Blue Owl 5, Core Scientific 4, puis Backblaze, Apollo, Applied Digital, CoreWeave, Hut 8, IREN, Galaxy et SpaceX. Elles vont de −65,8 % à +317,1 %.
+  - Levier : 12 cellules changent, toutes chez Intel et Broadcom, là où les emprunts à court terme ne sont pas nuls ; le papier commercial de NVIDIA est nul. Intel au 2024-06-29 passe de 6,98 à 6,58, Broadcom au 2025-02-02 de 3,99 à 3,77.
+  - Statut « financé » : 313 cellules changent dans 12 paires. En vue `as_known`, politique `exposure_outstanding` :
+    - ASML → Carl Zeiss SMT redevient active au 2024-09-30 (c'est le cas de l'audit), et Backblaze → AFCO sur quatre trimestres ;
+    - les clôtures hors paire, désormais lues, closent des détentions restées actives :
+      - Intel → ASML, Unisoc et McAfee passent à `lapsed` (27, 27 et 17 trimestres), et Intel → Cloudera à `unknown` (23 trimestres) ;
+      - Riot → Coinsquare et Mogo passent à `lapsed` (10 et 7 trimestres) ;
+      - SK hynix → ses deux fonds coréens passent à `lapsed` (4 trimestres chacun) ;
+    - Applied Digital → AI Bridge Funding devient `never` (10 trimestres) et Backblaze → City National Bank `lapsed` (4 trimestres). Ces deux paires ne tenaient qu'à des charges d'intérêts du fournisseur, enregistrées du fournisseur vers son prêteur : elles s'éteignent au remboursement ou à la résiliation du prêt. La question de leur sens reste à l'audit de l'annexe C ;
+    - paires à financement établi au moins un trimestre : 82 au lieu de 86.
+  - E.7 : le résultat ne change pas (« discrimination possible »).
+    - 162 issues au lieu de 170, dont 91 indéterminées au lieu de 96, soit 56,2 % au lieu de 56,5 %.
+    - E.1 compte 81 issues : 68 « non étayé » au lieu de 71, 3 « étayé », 10 indéterminées. E.2 compte 81 issues, toutes indéterminées.
+    - Les conclusions de paire ne changent pas : 10 dépendances documentées, 26 relations commerciales doublées d'un financement, 44 achats réciproques seuls et 170 causalités non établies.
+  - Sauts ×100 : 252 conflits au lieu de 1 377, aucun dans une mesure ; les exclusions `conflicting` diminuent de 1 125.
+    - Une seule valeur change : le capex de Core Scientific au deuxième trimestre 2023, en vue `as_known`, passe de 261 000 à 235 000 $. Le fait précis (1 774 000 $ sur six mois) était marqué, et l'arrondi de 1,8 M$ servait à sa place.
+    - 335 contrôles basculent, presque tous de `not_testable` vers `ok` (C1 63, C2 234, C10 16) ou vers `mismatch` (C1 1, C2 10, C10 2). C3 compte 6 `mismatch` → `ok`, C2 1 `ok` → `mismatch` et 2 `ok` → `not_testable`.
+  - Date limite des 20-F : les cellules de l'annexe E de TSMC, d'ASML, de Nebius et d'IREN (exercices jusqu'à 2024) sont redatées, car l'`as_of` fait partie de la clé : 48 apparaissent, 76 disparaissent. Il en va de même pour `documented_revenue_dependency` (86), `investor_customer_revenue_share` (8), `noncash_revenue_from_investees` (37 apparues, 84 disparues) et `documented_backlog_dependency` (84 apparues, 536 disparues, dont les fins de trimestre des paires qui ne sont plus financées).
+  - Doublons de clé primaire :
+    - `measures` : 668 lignes écartées, dont 229 clés en collision, toutes de `lease_not_commenced_bridge`. Deux producteurs écrivent la même cellule indéterminée avec des motifs différents (`annual_measures` et `leases_not_commenced`), et la ligne gardée est celle de `leases_not_commenced`, la plus précise. Aucune valeur calculée n'est perdue : c'est vérifié, et le remplacement de rang 2 s'applique aux deux copies.
+    - `entities` : 1, l'appartenance de VMware. `exclusions` : 2 doublons identiques.
+  - Règle d'arrêt : aucun refus 403 au journal. Apollo est le seul groupe dont plus de la moitié des périodes testées sont en échec, avec 22 périodes en échec sur 904 au total ; il n'y a donc pas d'arrêt.
+  - Taille : les huit tables passent de 123,3 à 62,6 Mo, dont `facts.parquet` de 100,0 à 50,7 Mo.
+  - Tests : 321, tous réussis.
