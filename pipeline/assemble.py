@@ -386,11 +386,20 @@ def run(as_of, use_cache=True, apercu=False):
                         known=known)
     stats["backlog"] = {"tagged_customer_rpo": len(tagged_rpo), "carnet_lines": len(carnet), "pairs": len(bl.pairs()),
                         "known_value_edges": len(known)}
+    # D-0071, volet A : déclarations de détention (13F, 13D, 13G) ; une sortie publiée ferme les détentions en actions
+    own_exits, own_excl = {}, []
+    if "ownership" in scope:
+        from . import ownership
+        ocells, oexits, own_excl, ost = M.value("ownership", lambda: ownership.build(ent_rows, reg, as_of),
+                                                key=memo.digest([ent_rows, as_of]))
+        cells += ocells
+        own_exits = ownership.closing_ends(oexits)
+        stats["ownership"] = dict(ost, exits_by_pair={f"{s}->{c}": [e["date"] for e in v] for (s, c), v in sorted(oexits.items())})
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
                                        rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
                                        client_state=client_state, backlog=bl,
-                                       closings=circularity.closing_index(edges))
+                                       closings=circularity.closing_index(edges), exits=own_exits)
     cells += pc
     # D-0068, volet 3 : part du carnet contracté d'un vendeur attribuée à un client nommé (rang 2, §14)
     cells += backlog.share_cells(bl, {g: [q["end"] for q in cals[g]["quarters"] if q["end"] <= as_of_d] for g in groups},
@@ -541,7 +550,7 @@ def run(as_of, use_cache=True, apercu=False):
     mt_excl += sixk.exclusions(as_of)
     # dépôts propres de SoftBank et déposants contrôlés (D-0058, volets B et C) : plafonds et formulaires non lus
     mt_excl += sb_own.exclusions(as_of)
-    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + nport_excl + \
+    excl = list(obs_excl) + inv_excl + lender_excl + lp_excl + ll_excl + mt_excl + formd_excl + nport_excl + own_excl + \
         exclusions(con, catalog, read_cks, ent_rows, filings, failed, as_of, p0)
     n_excl = load.insert_exclusions(con, excl)
 

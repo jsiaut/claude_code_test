@@ -294,6 +294,9 @@ MEASURES = {
     "nport_equity_held": (2, [NONE], "instant", "14"),
     # D-0066 : prêts et titres de dette des nœuds évalués par les fonds (valeur ÷ nominal, par catégorie et monnaie)
     "nport_credit_mark": (2, [NONE], "instant", "14"),
+    # D-0071, volet A : déclarations de détention (13F ; 13D et 13G), descriptives, à la perspective du déclarant
+    "ownership_position": (2, [NONE], "instant", "14"),
+    "ownership_stake": (2, [NONE], "event", "14"),
     # D-0060 : OpenAI et Anthropic vus par les déposants (bloc labs) : faits balisés, grand livre par laboratoire
     "lab_tagged_value": (2, [NONE], "window", "14"),
     "lab_ledger": (2, [NONE], "window", "14"),

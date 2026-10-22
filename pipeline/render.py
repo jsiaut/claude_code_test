@@ -541,6 +541,7 @@ def synthesis(con, as_of, stats):
     L += lender_portfolio_section(con, T)
     L += lender_liabilities_section(con, T)
     L += montages_section(con, T)
+    L += ownership_section(con, T)
     L += nport_section(con, T)
     L += bonds_section(con, T)
     L += unlisted_section(con, T)
@@ -1301,6 +1302,97 @@ def bonds_series(con, T):
                 L.append(f"| {r['period_end']} | {T.m(r, fmt='pct')} | "
                          f"{T.n('measures', {'nport_series': [g, sec, r['period_end']]}, r['fl'].get('n_series'))} |")
             L.append("")
+    return L
+
+
+def ownership_cells(con):
+    """Cellules de D-0071, volet A, par paire (financeur, société) : positions au 13F et parts aux annexes 13D et 13G."""
+    pos, stake = defaultdict(list), defaultdict(list)
+    for r in q(con, """SELECT * FROM measures WHERE measure IN ('ownership_position', 'ownership_stake') AND view = 'as_known'
+                       ORDER BY subject, counterparty, period_end, breakdown_key"""):
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+        (pos if r["measure"] == "ownership_position" else stake)[(r["subject"], r["counterparty"])].append(r)
+    return pos, stake
+
+
+def ownership_exits(pos, stake):
+    """Sorties publiées d'une paire : date de portefeuille du 13F sans ligne, ou date de l'événement d'une annexe à
+    zéro action."""
+    out = [r["fl"]["exit_next"]["date"] for r in pos if r["fl"].get("exit_next")]
+    out += [r["period_end"] for r in stake if r["value"] is not None and Decimal(str(r["value"])) == 0]
+    return sorted(set(out))
+
+
+def ownership_section(con, T):
+    """D-0071, volet A : déclarations de détention des paires du statut « financé » (13F, 13D, 13G)."""
+    pos, stake = ownership_cells(con)
+    if not pos and not stake:
+        return []
+    L = ["## Déclarations de détention (13F, 13D, 13G)", ""]
+    L.append("Actions qu'un financeur déclare détenir dans une société de ses paires : au 13F (table d'information, par "
+             "date de portefeuille) et aux annexes 13D et 13G (page de couverture, à la date de l'événement), lues par "
+             "leurs champs, sans lecture de texte (D-0071, point 3). Ces déclarations prouvent une détention à une date, "
+             "jamais son origine : elles n'ouvrent jamais la condition (a) du statut « financé », faute d'opération "
+             "primaire attestée (§3.2). Une sortie publiée la ferme : un 13F complet sans ligne de la société après un 13F "
+             "qui en portait, aucun des deux ne déclarant de traitement confidentiel, ou une annexe à zéro action. Elle ne "
+             "ferme que les détentions en actions (`equity_primary`) de la paire ; obligations convertibles, bons et prêts "
+             "restent ouverts. Les valeurs sont celles que le financeur déclare (en milliers de dollars avant 2023, "
+             "converties). Ni position ni part n'entre dans le revenu, l'exposition, les paires ou l'annexe F ; la série "
+             "complète est dans `series.md`.")
+    L.append("")
+    L.append(f"Cellules : {T.n('measures', {'measure': 'ownership_position'}, sum(len(v) for v in pos.values()))} positions "
+             f"au 13F et {T.n('measures', {'measure': 'ownership_stake'}, sum(len(v) for v in stake.values()))} parts aux "
+             "annexes 13D et 13G.")
+    L.append("")
+    L.append("| Paire | Positions au 13F | Dernière position (date de portefeuille) | Valeur déclarée | Dernière annexe "
+             "(date de l'événement) | Sorties publiées | Statut « financé » au dernier trimestre |")
+    L.append("| --- | ---: | --- | ---: | --- | --- | --- |")
+    for k in sorted(set(pos) | set(stake), key=lambda k: (group_label(k[0]), group_label(k[1]))):
+        ps, ss = pos.get(k, []), stake.get(k, [])
+        last, ls = (ps[-1] if ps else None), (ss[-1] if ss else None)
+        v = Decimal(last["fl"]["value_usd"]) if last else None
+        st = q(con, """SELECT value_text, period_end FROM measures WHERE measure = 'financed_status' AND subject = ?
+                       AND counterparty = ? AND view = 'as_known' AND financing_policy = 'exposure_outstanding'
+                       ORDER BY period_end DESC LIMIT 1""", k[0], k[1])
+        ex = ownership_exits(ps, ss)
+        L.append(f"| {group_label(k[0])} → {group_label(k[1])} | "
+                 f"{T.n('measures', {'measure': 'ownership_position', 'pair': list(k)}, len(ps))} | "
+                 + (f"{T.m(last, fmt='count')} actions ({last['period_end']})" if last else "—") + " | "
+                 + (T.n('measures', {'ownership_value_usd': [k[0], k[1], last['period_end']]}, v,
+                        text=fr_num(v / Decimal(10**6), 0) + " M$") if last else "—") + " | "
+                 + (f"{T.m(ls, fmt='pct')} ({ls['period_end']}, {ls['fl'].get('form')})" if ls else "—") + " | "
+                 + (", ".join(ex) or "aucune") + " | "
+                 + (f"{st[0]['value_text']} ({st[0]['period_end']})" if st else "—") + " |")
+    L.append("")
+    return L
+
+
+def ownership_series(con, T):
+    """D-0071, volet A : par paire, chaque position au 13F et chaque annexe 13D ou 13G."""
+    pos, stake = ownership_cells(con)
+    L = []
+    for k in sorted(set(pos) | set(stake), key=lambda k: (group_label(k[0]), group_label(k[1]))):
+        L.append(f"## {group_label(k[0])} ({k[0]}) → {group_label(k[1])} ({k[1]}) : déclarations de détention")
+        L.append("")
+        L.append("Actions déclarées par le financeur au 13F (date de portefeuille) ou à une annexe 13D ou 13G (date de "
+                 "l'événement) ; perspective du déclarant, descriptive (D-0071, point 3).")
+        L.append("")
+        L.append("| Date | Déclaration | Actions | Valeur déclarée | Part de la catégorie | Sortie publiée ensuite |")
+        L.append("| --- | --- | ---: | ---: | ---: | --- |")
+        rows = [("13F", r) for r in pos.get(k, [])] + [(r["fl"].get("form") or "13D/G", r) for r in stake.get(k, [])]
+        for src, r in sorted(rows, key=lambda x: (x[1]["period_end"], x[0], x[1]["breakdown_key"])):
+            fl = r["fl"]
+            if src == "13F":
+                v = Decimal(fl["value_usd"])
+                L.append(f"| {r['period_end']} | 13F | {T.m(r, fmt='count')} | "
+                         f"{T.n('measures', {'ownership_value_usd': [k[0], k[1], r['period_end']]}, v, text=fr_num(v / Decimal(10**6), 1) + ' M$')}"
+                         f" | — | {(fl.get('exit_next') or {}).get('date') or ''} |")
+            else:
+                sh = Decimal(fl.get("shares") or 0)
+                L.append(f"| {r['period_end']} | {src} | "
+                         f"{T.n('measures', {'ownership_stake_shares': [k[0], k[1], r['breakdown_key']]}, sh)} | — | "
+                         f"{T.m(r, fmt='pct')} | {'zéro action : sortie' if r['value'] is not None and Decimal(str(r['value'])) == 0 else ''} |")
+        L.append("")
     return L
 
 
@@ -2936,6 +3028,8 @@ def series(con, as_of, stats):
                 L.append(f"| {r['period_end']} | {T.m(r, fmt='pct')} | "
                          f"{T.n('measures', {'nport_series': [sec, r['period_end']]}, r['fl'].get('n_series'))} |")
             L.append("")
+    if "ownership" in (config.load().get("scope") or []):
+        L += ownership_series(con, T)
     if "nport" in (config.load().get("scope") or []):
         L += bonds_series(con, T)
         L += unlisted_series(con, T)

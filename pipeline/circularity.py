@@ -169,9 +169,11 @@ def closing_index(edges):
     return out
 
 
-def financed_status(pair, quarters, cutoff_of, lookback, censored, closings=None):
+def financed_status(pair, quarters, cutoff_of, lookback, censored, closings=None, exits=None):
     """Statut par trimestre de S : {fin de trimestre: (statut, preuves)} sous les deux politiques. `closings` :
-    closing_index de toutes les arêtes ; sans lui, les seules arêtes de la paire, dans les deux sens."""
+    closing_index de toutes les arêtes ; sans lui, les seules arêtes de la paire, dans les deux sens. `exits` : sorties
+    publiées de la paire, (date, date de connaissance), tirées des déclarations de détention ; elles ne ferment que
+    les détentions en actions (equity_primary, D-0071, point 3)."""
     ev = financed_events(pair)
     held = {l["link_key"]: l for l in pair.fin}
     own = _closings(pair.fin + pair.mirror_fin)
@@ -198,6 +200,8 @@ def financed_status(pair, quarters, cutoff_of, lookback, censored, closings=None
                 # clé, par une fin de la paire du même type d'arête (D-0069, point 5)
                 ik = held[key].get("instrument_key")
                 ends = by_ik.get(ik, []) if ik else by_et.get(held[key]["edge_type"], [])
+                if exits and held[key]["edge_type"] == "equity_primary":
+                    ends = list(ends) + list(exits)
                 closed = any(d <= ed <= q["end"] and (ed_kd is None or ed_kd <= cut) for ed, ed_kd in ends)
                 if not closed:
                     active.append(key)
@@ -375,10 +379,11 @@ def fiscal_years(quarters, ws, as_of_d):
 
 def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
                   report_dates, lookback, censored_groups, rev_notes_read=frozenset(), text_done=frozenset(),
-                  failed_until=None, client_state=None, backlog=None, closings=None):
+                  failed_until=None, client_state=None, backlog=None, closings=None, exits=None):
     """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part). `backlog` : faits balisés, lignes
     de carnet et RPO publiés (backlog.Inputs, D-0068) ; sans lui, aucun RPO n'est publié. `closings` : fins
-    d'instrument de toutes les arêtes (closing_index, D-0069)."""
+    d'instrument de toutes les arêtes (closing_index, D-0069). `exits` : sorties publiées par paire, tirées des
+    déclarations de détention (D-0071, point 3)."""
     as_of_d = dt.date.fromisoformat(as_of)
     backlog = backlog if backlog is not None else B.Inputs()
     out, ev = [], {}
@@ -400,7 +405,7 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
             return report_dates.get((s, q["end"])) or as_of_d
         F = {}
         for view, cutf in (("as_known", cut_known), ("revised", lambda q: as_of_d)):
-            st = financed_status(p, qs_all, cutf, lookback, censored, closings)
+            st = financed_status(p, qs_all, cutf, lookback, censored, closings, (exits or {}).get((s, c)))
             # rien n'a jamais tenu et toutes les pièces qui pourraient l'établir sont lues : never (§3.2)
             if not censored:
                 for policy in ("exposure_outstanding", "ever_financed"):
