@@ -889,6 +889,33 @@
 | 2026-06-30 | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2026-09-30 | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 
+## Cerebras (CBRS)
+
+| Trimestre clos le | Croissance du revenu (glissement annuel) | Croissance du revenu (douze mois glissants) | Capex décaissé ÷ CFO | Capex ÷ CFO, additions non monétaires comprises | Flux disponible (CFO − capex) | Flux disponible après locations-financement | Flux après financement des contreparties | Délai de recouvrement (créances) | Obligations de prestation restantes (RPO) | Dette ÷ (résultat opérationnel + dotations) | Passifs locatifs ÷ (résultat opérationnel + dotations) | Événements (annexe F) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 2021-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2021-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2021-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2021-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
+| 2022-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2022-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2022-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2022-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
+| 2023-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2023-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2023-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2023-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
+| 2024-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2024-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2024-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
+| 2025-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -153 M$ | n.d. (concept non résolu) | -153 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2025-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -156 M$ | n.d. (concept non résolu) | -156 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
+| 2025-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2025-12-31 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2026-03-31 | 94,4 % | n.d. (terme manquant) | 10,70 x | n.d. (terme manquant) | -120 M$ | n.d. (concept non résolu) | -120 M$ | 29 j | 25 000 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
+| 2026-06-30 | 74,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -477 M$ | n.d. (concept non résolu) | -477 M$ | 62 j | 25 400 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
+
 ## SoftBank (NF:SOFTBANK) : obligations valorisées par les fonds (Form N-PORT)
 
 Valeur déclarée ÷ nominal, dans la monnaie du titre, au dernier dépôt de chaque série pour la date de portefeuille ; nombre de séries (un fonds fermé sans série compte pour une). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de SoftBank (D-0058, points 8 et 28).
@@ -2578,7 +2605,7 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | --- | --- | --- | --- | ---: |
 | AMG TimesSquare Small Cap Growth Fund | CURIOSITYSTREAM INC PVD CNV A 144A (EP) | 2019-09-30 (10,00 USD) | 2019-09-30 (10,00 USD) | 1 |
 
-## Cerebras Systems Inc. (CP:cerebras systems inc) : actions valorisées par les fonds (Form N-PORT)
+## Cerebras (CBRS) : actions valorisées par les fonds (Form N-PORT)
 
 Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
 
@@ -2838,7 +2865,7 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | Fidelity Series Growth Company Fund | EQRX INC SER B PC PP (EP) | 2020-11-30 (2,74 USD) | 2021-05-31 (3,32 USD) | 3 |
 | Select Biotechnology Portfolio | EQRX INC SER B PC PP (EP) | 2020-11-30 (2,74 USD) | 2021-05-31 (3,32 USD) | 3 |
 
-## Fluidstack Ltd. (CP:fluidstack ltd) : actions valorisées par les fonds (Form N-PORT)
+## Fluidstack (NF:FLUIDSTACK) : actions valorisées par les fonds (Form N-PORT)
 
 Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
 
@@ -5344,51 +5371,54 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000014 |
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000026 |
 
-**OpenAI — Cerebras Systems Inc.**
+**OpenAI — Cerebras**
 
 | Fait balisé | Membre | Période | Valeur | Pièce |
 | --- | --- | --- | ---: | --- |
-| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | OpenAIWarrant | au 2026-03-31 | 82 $ | 10-Q 0001628280-26-044981 |
-| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | OpenAIWarrant | au 2026-06-30 | 82 $ | 10-Q 0001628280-26-056357 |
-| `ClassOfWarrantOrRightVestedAndExercisable` | OpenAIWarrant | au 2026-01-31 | 4 459 337 actions | 10-Q 0001628280-26-056357 |
-| `ClassOfWarrantOrRightVestedAndExercisable` | OpenAIWarrant | au 2026-03-31 | 4 459 337 actions | 10-Q 0001628280-26-044981 |
-| `ClassOfWarrantOrRightVestedAndExercisable` | OpenAIWarrant | au 2026-06-30 | 5 574 171 actions | 10-Q 0001628280-26-056357 |
-| `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` | OpenAI | au 2026-03-31 | 250 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
-| `CommittedComputeCapacityUnderMasterRelationshipAgreement` | OpenAI | au 2025-12-31 | 750 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
-| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-03-31 | 800 000 $ | 10-Q 0001628280-26-044981 |
-| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-06-30 | 2 M$ | 10-Q 0001628280-26-056357 |
-| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-06-30 | 3 M$ | 10-Q 0001628280-26-056357 |
-| `LongTermDebtOffsettingAmount` | OpenAI | au 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
-| `LongTermDebtOffsettingAmount` | OpenAI | au 2026-06-30 | -86 M$ | 10-Q 0001628280-26-056357 |
-| `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` | OpenAI | au 2025-12-31 | 2 GW | 10-Q 0001628280-26-044981 |
-| `NoncashInterestExpense` | OpenAI | au 2026-03-31 | 19 M$ | 10-Q 0001628280-26-044981 |
-| `NoncashInterestExpense` | OpenAI | au 2026-06-30 | 20 M$ | 10-Q 0001628280-26-056357 |
-| `NoncashInterestExpense` | OpenAI | au 2026-06-30 | 39 M$ | 10-Q 0001628280-26-056357 |
-| `NoncashRepaymentOfDebt` | OpenAI | au 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
-| `NoncashRepaymentOfDebt` | OpenAI | au 2026-06-30 | 86 M$ | 10-Q 0001628280-26-056357 |
-| `OptionToPurchaseAdditionalComputeCapacity` | OpenAI | au 2025-12-31 | 1,25 GW | 10-Q 0001628280-26-044981 |
-| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | OpenAIWarrant | au 2025-12-31 | 0 $ | 10-Q 0001628280-26-044981 |
-| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | OpenAIWarrant | au 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 |
-| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2025-12-31 | 33 445 026 actions | 10-Q 0001628280-26-044981 |
-| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2026-06-30 | 33 445 026 actions | 10-Q 0001628280-26-056357 |
-| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2026-07-31 | 10 033 508 actions | 10-Q 0001628280-26-056357 |
-| `DebtInstrumentCarryingAmount` | OpenAI | au 2026-03-31 | 983 M$ | 10-Q 0001628280-26-044981 |
-| `DebtInstrumentCarryingAmount` | OpenAI | au 2026-06-30 | 918 M$ | 10-Q 0001628280-26-056357 |
-| `DebtInstrumentFaceAmount` | OpenAI | au 2025-12-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
-| `DebtInstrumentInterestRateStatedPercentage` | OpenAI | au 2026-03-31 | 6,0 % | 10-Q 0001628280-26-044981 |
-| `DebtInstrumentInterestRateStatedPercentage` | OpenAI | au 2026-06-30 | 6,0 % | 10-Q 0001628280-26-056357 |
-| `LongTermDebtCurrent` | OpenAI | au 2026-03-31 | 621 M$ | 10-Q 0001628280-26-044981 |
-| `LongTermDebtCurrent` | OpenAI | au 2026-06-30 | 736 M$ | 10-Q 0001628280-26-056357 |
-| `LongTermDebtNoncurrent` | OpenAI | au 2026-03-31 | 362 M$ | 10-Q 0001628280-26-044981 |
-| `LongTermDebtNoncurrent` | OpenAI | au 2026-06-30 | 182 M$ | 10-Q 0001628280-26-056357 |
-| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-01-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
-| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-03-31 | 1 005 M$ | 10-Q 0001628280-26-044981 |
-| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-06-30 | 1 005 M$ | 10-Q 0001628280-26-056357 |
-| `RepaymentsOfLongTermDebt` | OpenAI | au 2026-03-31 | 0 $ | 10-Q 0001628280-26-044981 |
-| `RepaymentsOfLongTermDebt` | OpenAI | au 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 |
-| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-03-31 | 17 M$ | 10-Q 0001628280-26-044981 |
-| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-06-30 | 57 M$ | 10-Q 0001628280-26-056357 |
-| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-06-30 | 74 M$ | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | Open AI | au 2026-03-31 | 82,02 USD/shares | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | Open AI | au 2026-06-30 | 82,02 USD/shares | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | Open AI | au 2026-01-31 | 4 459 337 actions | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | Open AI | au 2026-03-31 | 4 459 337 actions | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | Open AI | au 2026-06-30 | 5 574 171 actions | 10-Q 0001628280-26-056357 |
+| `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` | Open AI | au 2026-03-31 | 250 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
+| `CommittedComputeCapacityUnderMasterRelationshipAgreement` | Open AI | au 2025-12-31 | 750 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-01-01 → 2026-03-31 | 800 000 $ | 10-Q 0001628280-26-044981 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-01-01 → 2026-06-30 | 3 M$ | 10-Q 0001628280-26-056357 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-04-01 → 2026-06-30 | 2 M$ | 10-Q 0001628280-26-056357 |
+| `LongTermDebtOffsettingAmount` | Open AI | 2026-01-01 → 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
+| `LongTermDebtOffsettingAmount` | Open AI | 2026-01-01 → 2026-06-30 | -86 M$ | 10-Q 0001628280-26-056357 |
+| `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` | Open AI | au 2025-12-31 | 2 GW | 10-Q 0001628280-26-044981 |
+| `NoncashInterestExpense` | Open AI | 2026-01-01 → 2026-03-31 | 19 M$ | 10-Q 0001628280-26-044981 |
+| `NoncashInterestExpense` | Open AI | 2026-01-01 → 2026-06-30 | 39 M$ | 10-Q 0001628280-26-056357 |
+| `NoncashInterestExpense` | Open AI | 2026-04-01 → 2026-06-30 | 20 M$ | 10-Q 0001628280-26-056357 |
+| `NoncashRepaymentOfDebt` | Open AI | 2026-01-01 → 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
+| `NoncashRepaymentOfDebt` | Open AI | 2026-01-01 → 2026-06-30 | 86 M$ | 10-Q 0001628280-26-056357 |
+| `OptionToPurchaseAdditionalComputeCapacity` | Open AI | au 2025-12-31 | 1,25 GW | 10-Q 0001628280-26-044981 |
+| `RevenueContractInitialTerm` | Open AI | au 2025-12-31 | 4 ans | 10-Q 0001628280-26-044981 |
+| `RevenueContractInitialTerm` | Open AI | au 2025-12-31 | 3 ans | 10-Q 0001628280-26-044981 |
+| `RevenueContractMaximumExtendedTerm` | Open AI | au 2025-12-31 | 5 ans | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | Open AI | au 2025-12-31 | 0,00 USD/shares | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | Open AI | au 2026-06-30 | 0,00 USD/shares | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2025-12-31 | 33 445 026 actions | 10-Q 0001628280-26-044981 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2026-06-30 | 33 445 026 actions | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2026-07-31 | 10 033 508 actions | 10-Q 0001628280-26-056357 |
+| `DebtInstrumentCarryingAmount` | Open AI | au 2026-03-31 | 983 M$ | 10-Q 0001628280-26-044981 |
+| `DebtInstrumentCarryingAmount` | Open AI | au 2026-06-30 | 918 M$ | 10-Q 0001628280-26-056357 |
+| `DebtInstrumentFaceAmount` | Open AI | au 2025-12-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
+| `DebtInstrumentInterestRateStatedPercentage` | Open AI | au 2026-03-31 | 6,0 % | 10-Q 0001628280-26-044981 |
+| `DebtInstrumentInterestRateStatedPercentage` | Open AI | au 2026-06-30 | 6,0 % | 10-Q 0001628280-26-056357 |
+| `LongTermDebtCurrent` | Open AI | au 2026-03-31 | 621 M$ | 10-Q 0001628280-26-044981 |
+| `LongTermDebtCurrent` | Open AI | au 2026-06-30 | 736 M$ | 10-Q 0001628280-26-056357 |
+| `LongTermDebtNoncurrent` | Open AI | au 2026-03-31 | 362 M$ | 10-Q 0001628280-26-044981 |
+| `LongTermDebtNoncurrent` | Open AI | au 2026-06-30 | 182 M$ | 10-Q 0001628280-26-056357 |
+| `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-01-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
+| `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-03-31 | 1 005 M$ | 10-Q 0001628280-26-044981 |
+| `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-06-30 | 1 005 M$ | 10-Q 0001628280-26-056357 |
+| `RepaymentsOfLongTermDebt` | Open AI | 2026-01-01 → 2026-03-31 | 0 $ | 10-Q 0001628280-26-044981 |
+| `RepaymentsOfLongTermDebt` | Open AI | 2026-01-01 → 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-01-01 → 2026-03-31 | 17 M$ | 10-Q 0001628280-26-044981 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-01-01 → 2026-06-30 | 74 M$ | 10-Q 0001628280-26-056357 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-04-01 → 2026-06-30 | 57 M$ | 10-Q 0001628280-26-056357 |
 
 **OpenAI — CoreWeave**
 
@@ -5477,28 +5507,28 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - Amazon, amzn:openai_commitment_guarantee_2026 — durée, 2026-02-27 (date de la pièce) ; « Outside Date », — (8-K EX-10.1 0001104659-26-021050) : lettre d'engagement en capital d'Amazon : la garantie d'Amazon.com, Inc. expire à la date butoir de l'engagement (au plus tard le 31 décembre 2028, bloc c07d276a), sauf pour les obligations nées avant ; cession de la garantie soumise à l'accord d'OpenAI ; ligne de clause (D-0067)
 - Amazon, amzn:openai_series_c_commitment_2026 — engagement minimal, 2026-04-30 (date de la pièce), — (10-Q 0001018724-26-000014) : 10-Q d'Amazon au 31 mars 2026 : déclencheurs de l'obligation d'acheter le solde des actions de l'engagement de 35,0 Md$ ; après une introduction, achat en actions ordinaires cotées au même prix effectif ; fin de l'engagement au 31 décembre 2028 codée sur la lettre (bloc c07d276a) ; ligne de clause (D-0067)
 - Amazon, amzn:openai_series_c_commitment_2026 — durée, 2028-12-31 (fin de période) ; « December 31, 2028 (such earliest date, the "Outside Date") », — (8-K EX-10.1 0001104659-26-021050) : lettre d'engagement en capital d'Amazon : date butoir de l'engagement de 35,0 Md$ ; aucune partie n'est libérée d'un manquement volontaire et grave antérieur ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_class_n_warrant — durée, 2026-04-17 (date de la pièce) ; « ten (10) year anniversary of the Issue Date », — (S-1 EX-10.13 0001628280-26-025762) : bon de Cerebras au profit d'OpenAI OpCo, LLC, émis le 24 décembre 2025 : expiration au dixième anniversaire de l'émission, ou plus tôt quand le MRA ne porte plus d'engagement ni de paiement ; exercice net réputé des parts exerçables à l'expiration ; nombre d'actions, prix et incitation déjà codés au bloc ba75843b ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_class_n_warrant — tranche d'acquisition, 2026-04-17 (date de la pièce), 4 459 337 actions (S-1 EX-10.13 0001628280-26-025762) : annexe A du bon de Cerebras : première tranche, 4 459 337 actions de classe N acquises au dépôt du prêt sur le compte séquestre, part du capital entièrement dilué caviardée ; le tableau compte une colonne de MW cumulés pour les tranches suivantes, hors de la fenêtre servie ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — engagement minimal, 2026-02-15 (fin de période) ; « by February 15, 2026 », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : les systèmes achetés au titre d'un éventuel contrat d'achat de matériel s'imputent sur les engagements d'achat de capacité d'OpenAI ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — calendrier de livraison, 2026-05-04 (date de la pièce) ; « by [***] 2029 ; by [***] 2030 », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : deux options de capacité additionnelle, quantités et dates caviardées, aux conditions au moins aussi favorables que la capacité initiale ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — calendrier de livraison, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : annexe A (calendrier de livraison des segments de capacité et dates engagées) entièrement caviardée dans la pièce déposée ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — exclusivité, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : exclusivité d'OpenAI envers des concurrents nommés de Cerebras, objet caviardé ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — exclusivité, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : exclusivité de Cerebras envers des concurrents nommés d'OpenAI, objet caviardé ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — engagement minimal, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : obligations de paiement d'OpenAI non résiliables, redevances non remboursables ni compensables, sous une réserve caviardée ; factures non contestées payables dans un délai caviardé ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : sortie de Cerebras pour faute d'OpenAI ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : sortie d'OpenAI pour faute de Cerebras ; un alinéa 7.c entièrement caviardé suit ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : la durée du segment retardé est réduite à proportion du retard ; compensation caviardée au-delà d'un délai caviardé ; puis résiliation de la part non livrée ouverte aux deux parties ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : clause intitulée « Termination Due to Change of Control », presque entièrement caviardée ; les exclusivités envers les concurrents nommés subsistent ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : sortie sur simple avis écrit ; cession libre à une société affiliée ou lors d'un changement de contrôle, sinon accord écrit requis ; la force majeure n'excuse pas les paiements d'OpenAI ; un manquement aux contrôles des échanges est un manquement grave sans délai de régularisation ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — durée, 2026-05-04 (date de la pièce) ; « 3 years thereafter ; four years thereafter », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : chaque segment de capacité court de sa livraison, trois ans pour une première part caviardée de l'engagement cumulé, quatre ans pour l'autre part caviardée ; contrat en vigueur jusqu'à la fin du dernier segment ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — durée, 2026-05-04 (date de la pièce) ; « maximum 5 year term », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : durée de segment portée au plus à cinq ans par renouvellement ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — calendrier de livraison, 2026-12-31 (fin de période) ; « by the end of calendar year 2026 », 250 MW (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : premier segment de la capacité initiale, 250 MW avant la fin de 2026, répartis dans un nombre caviardé de centres de données ; ligne de clause et de capacité (D-0067)
-- Cerebras Systems Inc., cerebras:openai_registration_rights — durée, 2026-04-17 (date de la pièce) ; « the later of (x) the three-year anniversary of expiration of the Warrant and (y… », — (S-1 EX-10.14 0001628280-26-025762) : accord de droits d'enregistrement de Cerebras avec OpenAI OpCo, LLC du 24 décembre 2025 : fin au plus tard des deux termes (trois ans après l'expiration du bon, sept ans après l'accord), ou plus tôt pour un porteur qui ne détient plus de titres enregistrables ; titres qui cessent de l'être sous 1 % du capital après l'exercice complet ou l'expiration du bon ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_working_capital_loan — échéance, 2026-04-17 (date de la pièce), — (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras : déchéance du terme au choix d'OpenAI ; OpenAI peut aussi prendre le contrôle exclusif du compte séquestre et en affecter les fonds au billet ; cession du billet à une personne non américaine soumise à l'accord d'OpenAI ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_working_capital_loan — échéance, 2026-04-17 (date de la pièce), — (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras : exigibilité immédiate du principal et des intérêts, et au choix d'OpenAI cession des actifs payés par le compte séquestre, dans la limite de ce qui est dû ; même mécanisme que la section 7.h.ii du MRA (bloc b6704097) ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_working_capital_loan — échéance, 2026-04-17 (date de la pièce), — (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras : à l'échéance, remboursement en numéraire, par la fourniture de services à OpenAI ou par cession d'actifs selon le MRA ; intérêts réputés payés selon l'annexe B du MRA ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_working_capital_loan — échéance, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : la trésorerie du compte séquestre non engagée revient à OpenAI en réduction du prêt ; contrôle du compte transféré à OpenAI sur un événement déclencheur ou une résiliation qui ne lui est pas imputable ; période de transition de durée caviardée, services et redevances maintenus ; ligne de clause (D-0067)
-- Cerebras Systems Inc., cerebras:openai_working_capital_loan — échéance, 2032-12-31 (fin de période), 1 005 M$ (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras au profit d'OpenAI OpCo, LLC, du 5 janvier 2026 : principal et intérêts dus le 31 décembre 2032, ou plus tôt selon les sections 3 et 8 ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_class_n_warrant — durée, 2026-04-17 (date de la pièce) ; « ten (10) year anniversary of the Issue Date », — (S-1 EX-10.13 0001628280-26-025762) : bon de Cerebras au profit d'OpenAI OpCo, LLC, émis le 24 décembre 2025 : expiration au dixième anniversaire de l'émission, ou plus tôt quand le MRA ne porte plus d'engagement ni de paiement ; exercice net réputé des parts exerçables à l'expiration ; nombre d'actions, prix et incitation déjà codés au bloc ba75843b ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_class_n_warrant — tranche d'acquisition, 2026-04-17 (date de la pièce), 4 459 337 actions (S-1 EX-10.13 0001628280-26-025762) : annexe A du bon de Cerebras : première tranche, 4 459 337 actions de classe N acquises au dépôt du prêt sur le compte séquestre, part du capital entièrement dilué caviardée ; le tableau compte une colonne de MW cumulés pour les tranches suivantes, hors de la fenêtre servie ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — engagement minimal, 2026-02-15 (fin de période) ; « by February 15, 2026 », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : les systèmes achetés au titre d'un éventuel contrat d'achat de matériel s'imputent sur les engagements d'achat de capacité d'OpenAI ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — calendrier de livraison, 2026-05-04 (date de la pièce) ; « by [***] 2029 ; by [***] 2030 », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : deux options de capacité additionnelle, quantités et dates caviardées, aux conditions au moins aussi favorables que la capacité initiale ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — calendrier de livraison, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : annexe A (calendrier de livraison des segments de capacité et dates engagées) entièrement caviardée dans la pièce déposée ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — exclusivité, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : exclusivité d'OpenAI envers des concurrents nommés de Cerebras, objet caviardé ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — exclusivité, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : exclusivité de Cerebras envers des concurrents nommés d'OpenAI, objet caviardé ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — engagement minimal, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : obligations de paiement d'OpenAI non résiliables, redevances non remboursables ni compensables, sous une réserve caviardée ; factures non contestées payables dans un délai caviardé ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : sortie de Cerebras pour faute d'OpenAI ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : sortie d'OpenAI pour faute de Cerebras ; un alinéa 7.c entièrement caviardé suit ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : la durée du segment retardé est réduite à proportion du retard ; compensation caviardée au-delà d'un délai caviardé ; puis résiliation de la part non livrée ouverte aux deux parties ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : clause intitulée « Termination Due to Change of Control », presque entièrement caviardée ; les exclusivités envers les concurrents nommés subsistent ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — clause de sortie, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : sortie sur simple avis écrit ; cession libre à une société affiliée ou lors d'un changement de contrôle, sinon accord écrit requis ; la force majeure n'excuse pas les paiements d'OpenAI ; un manquement aux contrôles des échanges est un manquement grave sans délai de régularisation ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — durée, 2026-05-04 (date de la pièce) ; « 3 years thereafter ; four years thereafter », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : chaque segment de capacité court de sa livraison, trois ans pour une première part caviardée de l'engagement cumulé, quatre ans pour l'autre part caviardée ; contrat en vigueur jusqu'à la fin du dernier segment ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — durée, 2026-05-04 (date de la pièce) ; « maximum 5 year term », — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : durée de segment portée au plus à cinq ans par renouvellement ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_mra — calendrier de livraison, 2026-12-31 (fin de période) ; « by the end of calendar year 2026 », 250 MW (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : premier segment de la capacité initiale, 250 MW avant la fin de 2026, répartis dans un nombre caviardé de centres de données ; ligne de clause et de capacité (D-0067)
+- Cerebras, cerebras:openai_registration_rights — durée, 2026-04-17 (date de la pièce) ; « the later of (x) the three-year anniversary of expiration of the Warrant and (y… », — (S-1 EX-10.14 0001628280-26-025762) : accord de droits d'enregistrement de Cerebras avec OpenAI OpCo, LLC du 24 décembre 2025 : fin au plus tard des deux termes (trois ans après l'expiration du bon, sept ans après l'accord), ou plus tôt pour un porteur qui ne détient plus de titres enregistrables ; titres qui cessent de l'être sous 1 % du capital après l'exercice complet ou l'expiration du bon ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_working_capital_loan — échéance, 2026-04-17 (date de la pièce), — (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras : déchéance du terme au choix d'OpenAI ; OpenAI peut aussi prendre le contrôle exclusif du compte séquestre et en affecter les fonds au billet ; cession du billet à une personne non américaine soumise à l'accord d'OpenAI ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_working_capital_loan — échéance, 2026-04-17 (date de la pièce), — (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras : exigibilité immédiate du principal et des intérêts, et au choix d'OpenAI cession des actifs payés par le compte séquestre, dans la limite de ce qui est dû ; même mécanisme que la section 7.h.ii du MRA (bloc b6704097) ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_working_capital_loan — échéance, 2026-04-17 (date de la pièce), — (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras : à l'échéance, remboursement en numéraire, par la fourniture de services à OpenAI ou par cession d'actifs selon le MRA ; intérêts réputés payés selon l'annexe B du MRA ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_working_capital_loan — échéance, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : la trésorerie du compte séquestre non engagée revient à OpenAI en réduction du prêt ; contrôle du compte transféré à OpenAI sur un événement déclencheur ou une résiliation qui ne lui est pas imputable ; période de transition de durée caviardée, services et redevances maintenus ; ligne de clause (D-0067)
+- Cerebras, cerebras:openai_working_capital_loan — échéance, 2032-12-31 (fin de période), 1 005 M$ (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras au profit d'OpenAI OpCo, LLC, du 5 janvier 2026 : principal et intérêts dus le 31 décembre 2032, ou plus tôt selon les sections 3 et 8 ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_commercial_agreement — durée, 2025-03-12 (date de la pièce) ; « through October 2030 », 11 900 M$ (S-1/A 0001193125-25-052207) : S-1/A de CoreWeave du 12 mars 2025 : horizon de l'engagement d'OpenAI au contrat-cadre de mars 2025 ; montant déjà codé en ligne de famille ; durée et résiliation pour faute codées sur la pièce (bloc b3ea1b55) ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_msa — engagement minimal, 2025-03-12 (date de la pièce), — (S-1/A EX-10.24 0001193125-25-052207) : contrat-cadre de CoreWeave de mars 2025 : paiement dû par le client après une résiliation pour faute, CoreWeave revendant au mieux les serveurs de sa capacité réservée ; période de transition aux durées caviardées, payée en numéraire ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_msa — clause de sortie, 2025-03-12 (date de la pièce) ; « thirty (30) consecutive days or longer », — (S-1/A EX-10.24 0001193125-25-052207) : contrat-cadre de CoreWeave de mars 2025 : la force majeure n'excuse pas les paiements des services rendus ; cession libre à une société affiliée ou lors d'une fusion ou cession d'actifs ; sous-traitance des aspects essentiels soumise à l'accord du client ; ligne de clause (D-0067)
@@ -5565,10 +5595,10 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - AMD, amd:openai_supply_2025 — calcul, 2025-10-06 (date de la pièce), 1 GW (8-K 0001193125-25-230895) : 8-K d'AMD du 6 octobre 2025 : engagement ferme d'OpenAI, à la signature du contrat d'approvisionnement, d'acheter le premier gigawatt de GPU MI450 ; ligne de clause et de capacité (D-0067)
 - AMD, amd:openai_supply_2025 — calcul, 2025-10-06 (date de la pièce), 6 GW (8-K 0001193125-25-230895) : 8-K d'AMD : six gigawatts de GPU, seuil d'acquisition complète du bon ; seul le premier gigawatt fait l'objet d'un engagement ferme ; les dépôts suivants écrivent « deploy 6 gigawatts » puis « intends to deploy up to 6 gigawatts » ; ligne de capacité (D-0067)
 - Amazon, amzn:openai_aws_2026 — calcul, 2026-04-29 (date de la pièce) ; « begins ramping in 2027 », 2 GW (8-K 0001018724-26-000012) : communiqué d'Amazon du 29 avril 2026 (pièce 99.1) : engagement d'OpenAI à consommer environ 2 GW de capacité Trainium par AWS, montée en charge dès 2027 ; ligne de capacité (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — calcul, 2026-08-12 (date de la pièce) ; « multi-year term », 750 MW (10-Q 0001628280-26-056357) : 10-Q de Cerebras au 30 juin 2026 (page de note R10) : capacité de calcul d'inférence engagée par OpenAI au MRA de décembre 2025, sur trois ou quatre ans extensibles à cinq ; même texte que la note lue au bloc 150c8de9 ; ligne de capacité (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — calcul, 2026-12-31 (fin de période) ; « by the end of calendar year 2026 », 250 MW (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : premier segment de la capacité initiale, 250 MW avant la fin de 2026, répartis dans un nombre caviardé de centres de données ; ligne de clause et de capacité (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 1,25 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : option d'OpenAI sur une capacité additionnelle déployée par tranches d'ici fin 2030 ; ligne de capacité (D-0067)
-- Cerebras Systems Inc., cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 2 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : total écrit par Cerebras, capacité engagée et option comprises ; non additionné ici ; ligne de capacité (D-0067)
+- Cerebras, cerebras:openai_mra — calcul, 2026-08-12 (date de la pièce) ; « multi-year term », 750 MW (10-Q 0001628280-26-056357) : 10-Q de Cerebras au 30 juin 2026 (page de note R10) : capacité de calcul d'inférence engagée par OpenAI au MRA de décembre 2025, sur trois ou quatre ans extensibles à cinq ; même texte que la note lue au bloc 150c8de9 ; ligne de capacité (D-0067)
+- Cerebras, cerebras:openai_mra — calcul, 2026-12-31 (fin de période) ; « by the end of calendar year 2026 », 250 MW (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : premier segment de la capacité initiale, 250 MW avant la fin de 2026, répartis dans un nombre caviardé de centres de données ; ligne de clause et de capacité (D-0067)
+- Cerebras, cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 1,25 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : option d'OpenAI sur une capacité additionnelle déployée par tranches d'ici fin 2030 ; ligne de capacité (D-0067)
+- Cerebras, cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 2 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : total écrit par Cerebras, capacité engagée et option comprises ; non additionné ici ; ligne de capacité (D-0067)
 - DigitalBridge Group, Inc., stargate:vantage_frontier_lighthouse — hébergement, 2025-10-30 (date de la pièce), 1,40 GW (8-K EX-99.1 0001679688-25-000096) : présentation de DigitalBridge du 30 octobre 2025 (pièce 99.1) : campus Frontier de Vantage (comté de Shackelford, Texas), « GPU compute capacity » de 1,4 GW pour une infrastructure destinée à Oracle et OpenAI ; chantier en cours, statut contractuel non écrit ici ; ligne de capacité (D-0067)
 - DigitalBridge Group, Inc., stargate:vantage_frontier_lighthouse — hébergement, 2025-10-30 (date de la pièce), 1 GW (8-K EX-99.1 0001679688-25-000096) : présentation de DigitalBridge : campus Lighthouse de Vantage (Port Washington, Wisconsin), environ 1,0 GW, pour Oracle et OpenAI ; le fournisseur d'électricité WEC Energy écrit 1,3 GW de demande et 3,5 GW de potentiel pour ce site (bloc 029f351b) ; ligne de capacité (D-0067)
 - GraniteShares ETF Trust, stargate:crusoe_abilene — hébergement, 2026-05-18 (date de la pièce), 1,20 GW (485APOS 0001493152-26-024144) : prospectus de fonds indiciels de GraniteShares (485APOS du 18 mai 2026) sur l'action de Crusoe Energy Systems : campus phare de 1,2 GW à Abilene (Texas), élément clé du programme Stargate d'OpenAI ; statut contractuel non écrit ; ligne de capacité (D-0067)
@@ -5731,6 +5761,13 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-06-30 | [0 ; 84,6 %] | 335 M$ | 396 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001628280-26-044804 |
+
+## Cerebras → OpenAI : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 
 ## CoreWeave → Meta : carnet contracté, RPO (D-0068)
 

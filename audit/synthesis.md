@@ -12,15 +12,15 @@
   - annexe F, ajout de F15 (D-0047) : « offre de rachat d'une BDC dont les parts acceptées sont inférieures aux parts apportées (réduction au prorata) » ; règle {"measure": "bdc_tender_acceptance_ratio", "condition": "acceptées < apportées, ou réduction au prorata annoncée", "dated_at": "expiration de l'offre"} ; sujets : bdc_vehicles
   - annexe F, ajout de F16 (D-0047) : « interruption d'un programme régulier d'offres de rachat d'une BDC » ; règle {"condition": "au moins quatre offres déposées à 120 jours au plus d'intervalle, puis aucune offre dans les 120 jours ; ni 8-A12B ni N-54C ou formulaire 15 dans l'intervalle", "dated_at": "dépôt de la dernière offre + 120 jours"} ; sujets : bdc_vehicles
   - annexe F, inchangés : F1, F2, F3, F4, F5, F6, F7, F8, F9, F10 (mêmes observables, mêmes règles)
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10 ; `nport` le 2026-10-19 ; `labs` le 2026-10-20, chaque fois après le rendement présenté). Premier passage : faits balisés des trente-deux groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
-- **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17; Intel, Micron, TSMC depuis le 2026-10-18; ASML, SK hynix depuis le 2026-10-18. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
-- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 56 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 162 issues ; motifs : intervalle à cheval sur le seuil : 42, précondition non remplie : 27, historique tronqué : 11, recherche incomplète : 9, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, caviardé : 1. Issues déterminées : E.1 non étayé 68, E.1 étayé 3. E.2 seule (dépendance de revenu) : 81 issues indéterminées sur 81. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. Complète veut dire que tous les blocs du catalogue de lecture des dépôts de la paire sont lus (notes, items de 8-K, pièces annexées, Items 404, 9A et 4) ; le rapport de gestion et la description de l'activité n'en font pas partie, si bien qu'une pièce L5 qui ne serait que là échapperait à la recherche (D-0069, point 8). La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 1 843, `not_testable` 1 098, `ok` 30 142, `tautological` 1 393 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
-- **Contrôles comptables, vue `revised`** : `mismatch` 3 011, `not_testable` 1 537, `ok` 29 571, `tautological` 1 393.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 193/872, C11 99/835, C12 425/2 026, C13 0/357, C14 85/1 182, C15 133/835, C16 2/496, C1 422/15 285, C2 180/8 972, C3 212/636, C5 0/250, C6 0/1 393, C7 9/529, C8 77/208, C9 6/600.
-- **Exclusions principales** : `not_processed` 27 927, `pending_entity` 1 926, `out_of_scope` 1 129, `financial_parties_only` 356, `conflicting` 257, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 19, `history_left_censored` 10, `not_public` 2.
-- **Doublons de clé primaire écartés à l'assemblage** (une ligne gardée par clé, la dernière ; D-0069, point 9) : `entities` 1, dont 1 clé(s) en collision, `exclusions` 2, dont 0 clé(s) en collision, `measures` 668, dont 229 clé(s) en collision.
-- **Arrêt (§11.4)** : aucun ; refus 403 de la SEC au journal : 0, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 1 sur 31 (Apollo) ; périodes en échec : 22 sur 904.
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10 ; `nport` le 2026-10-19 ; `labs` le 2026-10-20, chaque fois après le rendement présenté). Premier passage : faits balisés des trente-trois groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
+- **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17; Intel, Micron, TSMC depuis le 2026-10-18; ASML, SK hynix depuis le 2026-10-18; Cerebras depuis le 2026-10-22. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
+- **Résultat principal (E.7) : discrimination possible au sens de E.7.** 56 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 166 issues ; motifs : intervalle à cheval sur le seuil : 42, précondition non remplie : 27, historique tronqué : 13, recherche incomplète : 9, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, caviardé : 1. Issues déterminées : E.1 non étayé 68, E.1 étayé 5. E.2 seule (dépendance de revenu) : 83 issues indéterminées sur 83. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. Complète veut dire que tous les blocs du catalogue de lecture des dépôts de la paire sont lus (notes, items de 8-K, pièces annexées, Items 404, 9A et 4) ; le rapport de gestion et la description de l'activité n'en font pas partie, si bien qu'une pièce L5 qui ne serait que là échapperait à la recherche (D-0069, point 8). La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
+- **Contrôles comptables, vue `as_known`** : `mismatch` 1 860, `not_testable` 1 102, `ok` 30 255, `tautological` 1 399 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Contrôles comptables, vue `revised`** : `mismatch` 3 028, `not_testable` 1 543, `ok` 29 683, `tautological` 1 399.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 195/874, C11 99/835, C12 431/2 044, C13 0/359, C14 85/1 188, C15 139/841, C16 2/506, C1 422/15 343, C2 180/9 000, C3 215/639, C5 0/249, C6 0/1 399, C7 9/529, C8 77/208, C9 6/602.
+- **Exclusions principales** : `not_processed` 27 922, `pending_entity` 1 930, `out_of_scope` 1 130, `financial_parties_only` 356, `conflicting` 257, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 24, `history_left_censored` 11, `not_public` 2.
+- **Doublons de clé primaire écartés à l'assemblage** (une ligne gardée par clé, la dernière ; D-0069, point 9) : `entities` 1, dont 1 clé(s) en collision, `exclusions` 2, dont 0 clé(s) en collision, `measures` 688, dont 239 clé(s) en collision.
+- **Arrêt (§11.4)** : aucun ; refus 403 de la SEC au journal : 0, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 1 sur 32 (Apollo) ; périodes en échec : 22 sur 909.
 
 ## Événements (annexe F)
 
@@ -587,18 +587,29 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F2 (flux après financement des contreparties négatif) — rendu public le 2025-03-21, rattaché au trimestre clos le 2025-02-27 ; pièce : faits balisés.
 - F6 (dépréciation d'investissement) — rendu public le 2025-10-03, rattaché au trimestre clos le 2025-08-28 ; pièce : 10-K 0000723125-25-000028.
 
+**Cerebras**
+
+- F2 (flux après financement des contreparties négatif) — rendu public le 2026-06-24, rattaché au trimestre clos le 2025-03-31 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-08-12, rattaché au trimestre clos le 2025-06-30 ; pièce : 10-Q 0001628280-26-044981, 10-Q 0001628280-26-056357.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2026-08-12, rattaché au trimestre clos le 2025-06-30 ; pièce : faits balisés.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2026-06-24, rattaché au trimestre clos le 2026-03-31 ; pièce : faits balisés.
+- F5 (faiblesse significative du contrôle interne) — rendu public le 2026-06-24, rattaché au trimestre clos le 2026-03-31 ; pièce : 10-Q 0001628280-26-044981.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001628280-26-044981, 10-Q 0001628280-26-056357.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : faits balisés.
+- F5 (faiblesse significative du contrôle interne) — rendu public le 2026-08-12, rattaché au trimestre clos le 2026-06-30 ; pièce : 10-Q 0001628280-26-056357.
+
 États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F14 : véhicule BDC × date de bilan, D-0045 et D-0047 ; F15 : véhicule × offre de rachat ; F16 : véhicule × offre qui clôt une série), pour lire ce qui n'a pas été observé :
 
-- F1 : calculée / événement 121 ; calculée / sans événement 340 ; indéterminée 266
-- F2 : calculée / événement 178 ; calculée / sans événement 324 ; indéterminée 225
-- F3 : calculée / sans événement 553 ; partielle / sans événement 174
-- F4 : calculée / événement 27 ; calculée / sans événement 490 ; partielle / sans événement 210
-- F5 : calculée / événement 97 ; calculée / sans événement 456 ; indéterminée 174
-- F6 : calculée / événement 8 ; indéterminée 719
-- F7 : calculée / événement 5 ; calculée / sans événement 104 ; indéterminée 618
-- F8 : calculée / événement 31 ; calculée / sans événement 411 ; indéterminée 285
-- F9 : calculée / sans événement 676 ; indéterminée 51
-- F10 : calculée / événement 10 ; calculée / sans événement 543 ; indéterminée 174
+- F1 : calculée / événement 123 ; calculée / sans événement 340 ; indéterminée 286
+- F2 : calculée / événement 182 ; calculée / sans événement 324 ; indéterminée 243
+- F3 : calculée / sans événement 555 ; partielle / sans événement 194
+- F4 : calculée / événement 27 ; calculée / sans événement 491 ; partielle / sans événement 231
+- F5 : calculée / événement 99 ; calculée / sans événement 456 ; indéterminée 194
+- F6 : calculée / événement 8 ; indéterminée 741
+- F7 : calculée / événement 5 ; calculée / sans événement 104 ; indéterminée 640
+- F8 : calculée / événement 31 ; calculée / sans événement 412 ; indéterminée 306
+- F9 : calculée / sans événement 698 ; indéterminée 51
+- F10 : calculée / événement 10 ; calculée / sans événement 545 ; indéterminée 194
 - F11 : calculée / événement 500 ; calculée / sans événement 1 009 ; indéterminée 579
 - F12 : calculée / événement 222 ; calculée / sans événement 562 ; indéterminée 1 304
 - F13 : indéterminée 2 088
@@ -2132,6 +2143,52 @@ Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = cl
 
 Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22, indéterminée 1 ; clauses financières — sans événement 23 ; items de détresse (8-K) — sans événement 22, indéterminée 1 ; continuité d'exploitation — indéterminée 23 ; dépôt tardif — sans événement 23 ; faiblesse du contrôle interne — indéterminée 23 ; actifs nantis — événement 2, indéterminée 21.
 
+### Cerebras (CBRS)
+
+Dernière information balisée utilisée : 2026-08-12.
+
+| Mesure (trimestre clos le) | 2025-09-30 | 2025-12-31 | 2026-03-31 | 2026-06-30 |
+| --- | ---: | ---: | ---: | ---: |
+| Croissance du revenu (glissement annuel) | n.d. (terme manquant) | n.d. (terme manquant) | 94,4 % | 74,3 % |
+| Croissance du revenu (douze mois glissants) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Capex décaissé ÷ CFO | n.d. (terme manquant) | n.d. (terme manquant) | 10,70 x | n.d. (dénominateur négatif ou nul) |
+| Capex ÷ CFO, additions non monétaires comprises | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Flux disponible (CFO − capex) | n.d. (terme manquant) | n.d. (terme manquant) | -120 M$ | -477 M$ |
+| Flux disponible après locations-financement | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Flux après financement des contreparties | n.d. (terme manquant) | n.d. (terme manquant) | -120 M$ | -477 M$ |
+| Délai de recouvrement (créances) | n.d. (terme manquant) | n.d. (terme manquant) | 29 j | 62 j |
+| Obligations de prestation restantes (RPO) | n.d. (non publié) | n.d. (non publié) | 25 000 M$ | 25 400 M$ |
+| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
+| Marge brute | n.d. (terme manquant) | n.d. (terme manquant) | 44,6 % | 14,2 % |
+| Marge opérationnelle | n.d. (terme manquant) | n.d. (terme manquant) | -7,8 % | -265,0 % |
+| Capex décaissé ÷ revenu | n.d. (terme manquant) | n.d. (terme manquant) | 0,68 x | 2,31 x |
+| Flux disponible après rémunération en actions | n.d. (terme manquant) | n.d. (terme manquant) | -129 M$ | -854 M$ |
+| Rémunération en actions ÷ CFO | n.d. (terme manquant) | n.d. (terme manquant) | 0,78 x | n.d. (dénominateur négatif ou nul) |
+| Écart CFO − résultat net | n.d. (terme manquant) | n.d. (terme manquant) | 26 M$ | 391 M$ |
+| Résultat opérationnel ÷ charge d'intérêts (12 mois) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | n.d. (terme manquant) | -66 M$ | -49 M$ | -106 M$ |
+| Capitaux propres | n.d. (non publié) | -579 M$ | -195 M$ | 9 155 M$ |
+| Résultats non distribués (déficit si négatif) | n.d. (non publié) | -905 M$ | -919 M$ | -1 370 M$ |
+| Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | n.d. (non publié) | 20,8 % | -6,7 % |
+| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+| Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
+| --- | ---: | ---: |
+| Principal dû à 12 mois ÷ trésorerie | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Principal dû à 24 mois ÷ trésorerie | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Gains et pertes sur participations | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions en location-financement | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
+
+Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (concept non résolu).
+Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (non publié) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (non publié).
+
+Signaux sur la fenêtre (trimestres) : auditeur ou correction d'erreur — sans événement 22 ; clauses financières — sans événement 1, sans événement 21 ; items de détresse (8-K) — sans événement 22 ; continuité d'exploitation — sans événement 2, indéterminée 20 ; dépôt tardif — sans événement 22 ; faiblesse du contrôle interne — événement 2, indéterminée 20 ; actifs nantis — événement 1, indéterminée 21.
+
 ## Circularité, par paire
 
 Une paire réunit un groupe du périmètre et une contrepartie que ses pièces nomment, avec au moins une arête entre eux : client, financé, financeur ou prêteur (une paire seulement financière, comme un prêt bancaire, n'a pas de revenu à rapprocher). Aucune de ces mesures ne prouve une circularité ; la conclusion s'en tient aux valeurs de `relationship_conclusion`, et un numérateur vide se publie indéterminé, à côté des sorties de couverture (E.9).
@@ -2767,6 +2824,27 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E1 : non étayé ; E2 à 5 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 10 % : indéterminé — intervalle à cheval sur le seuil ; E2 à 20 % : réfuté ; E3 à 5 % : indéterminé — concept non résolu ; E3 à 10 % : indéterminé — concept non résolu ; E3 à 20 % : indéterminé — concept non résolu ; E5 : indéterminé — non publié.
 
+### Cerebras → Amazon
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien documenté (L1) ; 4 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 1 trimestre, inconnu 26 trimestres ; sensibilité `ever_financed` : actif 1 trimestre, inconnu 26 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Contrepartie payable au client : 5 cellules indéterminées (non publié).
+- Dépendance du carnet (RPO) : 1 cellule indéterminée (non publié), 1 cellule indéterminée (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E1 : étayé ; E2 à 5 % : indéterminé — historique tronqué ; E2 à 10 % : indéterminé — historique tronqué ; E2 à 20 % : indéterminé — historique tronqué ; E5 : indéterminé — non publié.
+
+### Cerebras → OpenAI
+
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L1) ; 30 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 2 trimestres, inconnu 25 trimestres ; sensibilité `ever_financed` : actif 2 trimestres, inconnu 25 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Contrepartie payable au client : 5 cellules indéterminées (non publié).
+- Dépendance du carnet (RPO) : 2 cellules indéterminées (non publié), 2 cellules indéterminées (client anonyme).
+- Part du revenu venant de clients qui financent le fournisseur : 5 cellules indéterminées (client anonyme).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 3).
+- Annexe E : E1 : étayé ; E2 à 5 % : indéterminé — historique tronqué ; E2 à 10 % : indéterminé — historique tronqué ; E2 à 20 % : indéterminé — historique tronqué ; E4 (engagement) : indéterminé — date manquante ; E4 (paiement) : indéterminé — date manquante ; E5 : indéterminé — non publié.
+
 ### Cipher → Amazon
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
@@ -2775,17 +2853,9 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
-### Cipher → Fluidstack Ltd.
+### Cipher → Fluidstack
 
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non publié.
-
-### Cipher → Fluidstack USA II Inc.
-
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 11 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
@@ -2984,14 +3054,6 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
-### Alphabet → Fluidstack Ltd.
-
-- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 10 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 67 % (2 sur 3).
-- Annexe E : E5 : indéterminé — non publié.
-
 ### Alphabet → Kitty Hawk Corporation
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 5 arêtes.
@@ -3040,6 +3102,14 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : n.d. (non publié).
 - Annexe E : E5 : indéterminé — non publié.
 
+### Alphabet → Fluidstack
+
+- Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 22 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 33 % (2 sur 6).
+- Annexe E : E5 : indéterminé — non publié.
+
 ### Alphabet → SpaceX
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
@@ -3057,28 +3127,20 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 75 % (3 sur 4).
 - Annexe E : E5 : indéterminé — non publié.
 
-### Hut 8 → Fluidstack Ltd.
-
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 29 trimestres ; sensibilité `ever_financed` : inconnu 29 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (historique tronqué) ; 2022-06-30 : n.d. (historique tronqué) ; 2023-06-30 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
-- Annexe E : E5 : indéterminé — non publié.
-
-### Hut 8 → Fluidstack USA IV Inc.
-
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 29 trimestres ; sensibilité `ever_financed` : inconnu 29 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (historique tronqué) ; 2022-06-30 : n.d. (historique tronqué) ; 2023-06-30 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non publié.
-
 ### Hut 8 → TZRC LLC
 
 - Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 13 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 29 trimestres ; sensibilité `ever_financed` : inconnu 29 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (historique tronqué) ; 2022-06-30 : n.d. (historique tronqué) ; 2023-06-30 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
+- Annexe E : E5 : indéterminé — non publié.
+
+### Hut 8 → Fluidstack
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 29 trimestres ; sensibilité `ever_financed` : inconnu 29 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-06-30 : n.d. (historique tronqué) ; 2022-06-30 : n.d. (historique tronqué) ; 2023-06-30 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Intel → ASML
@@ -4191,22 +4253,6 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
-### TeraWulf → Fluidstack Ltd.
-
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 3 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non publié.
-
-### TeraWulf → Fluidstack USA I Inc.
-
-- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 4 arêtes.
-- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
-- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
-- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
-- Annexe E : E5 : indéterminé — non publié.
-
 ### TeraWulf → FS CS I LLC
 
 - Conclusion : **causalité non établie** ; structure financière seulement ; lien non trouvé, recherche complète au sens de E.0 ; 1 arête.
@@ -4237,6 +4283,14 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 2).
+- Annexe E : E5 : indéterminé — non publié.
+
+### TeraWulf → Fluidstack
+
+- Conclusion : **causalité non établie** ; structure commerciale seulement ; lien non trouvé, recherche complète au sens de E.0 ; 7 arêtes.
+- Statut « financé » F, politique de tête (`exposure_outstanding`) : inconnu 27 trimestres ; sensibilité `ever_financed` : inconnu 27 trimestres.
+- Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (historique tronqué) ; 2022-12-31 : n.d. (historique tronqué) ; 2023-12-31 : n.d. (historique tronqué) ; 2024-12-31 : n.d. (historique tronqué) ; 2025-12-31 : n.d. (historique tronqué).
+- Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 1).
 - Annexe E : E5 : indéterminé — non publié.
 
 ### Sorties de couverture par fournisseur (§3.6)
@@ -4275,6 +4329,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 | TSMC | 2025-12-31 | 0,0 % | 0,0 % [0,0 % ; 0,0 %] | 100,0 % | 1 |
 | ASML | 2025-12-31 | 61,2 % | 0,0 % [0,0 % ; 0,0 %] | 38,8 % | 1 |
 | SK hynix | 2025-12-31 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) |
+| Cerebras | 2025-12-31 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) |
 
 Le texte qui entoure les faits de concentration est lu (bloc text de §14) : un client qui reste anonyme l'est dans les pièces elles-mêmes. Un client nommé ailleurs peut être l'un des anonymes (`overlap_possible`).
 
@@ -4294,7 +4349,7 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | Amazon → RIVIAN AUTOMOTIVE, INC. / DE → Amazon | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
 | Amazon → Anthropic → Amazon | 2 | oui (0) | commerciale et financière | documenté (L2) | **dépendance documentée** |
 | Amazon → OpenAI → Amazon | 2 | oui (0) | commerciale et financière | documenté (L5) | **dépendance documentée** |
-| Amazon → OpenAI → Cerebras Systems Inc. → Amazon | 3 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
+| Amazon → OpenAI → Cerebras → Amazon | 3 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
 | Applied Digital → AI Bridge Funding LLC → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
 | Applied Digital → B. RILEY COMMERCIAL CAPITAL, LLC → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
 | Applied Digital → B. Riley Financial, Inc. → Applied Digital | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
@@ -4312,6 +4367,7 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | Backblaze → AFCO Premium Credit LLC → Backblaze | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
 | Backblaze → City National Bank → Backblaze | 2 | oui (0) | financière seulement | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **causalité non établie** |
 | Backblaze → CoreWeave → Backblaze | 2 | oui (0) | commerciale et financière | non trouvé, recherche complète au sens de E.0 | **relation commerciale doublée d'un financement** |
+| Cerebras → OpenAI → Cerebras | 2 | oui (0) | commerciale et financière | documenté (L1) | **dépendance documentée** |
 | Cipher → BITFURY TOP HOLDCO B.V. → Cipher | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Cipher → LUMINANT ET SERVICES COMPANY LLC → Cipher | 2 | non (4) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | Core Scientific → BITMAIN TECHNOLOGIES DELAWARE LIMITED → Core Scientific | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
@@ -4393,7 +4449,7 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 | TSMC → Xintec Inc. → TSMC | 2 | oui (0) | commerciale et financière | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **relation commerciale doublée d'un financement** |
 | TeraWulf → Heorot Power Holdings LLC → TeraWulf | 2 | non (16) | commerciale réciproque | non trouvé, recherche incomplète (un nœud dépose hors du périmètre ou une paire du cycle reste à lire) | **achats réciproques seulement** |
 
-Décompte de E.6 (descriptif, hors de E.7) : 108 cycles ; concomitance non : causalité non établie 1, relation commerciale doublée d'un financement 3, achats réciproques seulement 1 ; concomitance oui : causalité non établie 22, relation commerciale doublée d'un financement 39, dépendance documentée 12, achats réciproques seulement 30.
+Décompte de E.6 (descriptif, hors de E.7) : 109 cycles ; concomitance non : causalité non établie 1, relation commerciale doublée d'un financement 3, achats réciproques seulement 1 ; concomitance oui : causalité non établie 22, relation commerciale doublée d'un financement 39, dépendance documentée 13, achats réciproques seulement 30.
 
 ## Form D (bloc form_d, §14)
 
@@ -5163,9 +5219,9 @@ Le dernier trimestre est le dernier trimestre civil complet : un N-PORT se dépo
 | X.AI Holdings Corp. | 2026-03-31 | 751 M$ | 7 | 75,46 USD – 75,46 USD (2026-01-31) | 2025-03-31 (29 M$) |
 | CoreWeave | 2025-03-31 | 520 M$ | 14 | 939,94 USD – 1 062,92 USD (2025-02-28) | 2023-12-31 (162 M$) |
 | X Holdings Corp. | 2025-03-31 | 209 M$ | 19 | 101,50 USD – 101,50 USD (2025-03-31) | 2023-03-31 (32 M$) |
-| Cerebras Systems Inc. | 2026-06-30 | 168 M$ | 5 | 100,26 USD – 100,26 USD (2026-04-30) | 2022-06-30 (7 M$) |
+| Cerebras | 2026-06-30 | 168 M$ | 5 | 100,26 USD – 100,26 USD (2026-04-30) | 2022-06-30 (7 M$) |
 | SiFive, Inc. | 2026-06-30 | 132 M$ | 8 | 9,51 USD – 11,22 USD (2026-06-30) | 2022-03-31 (25 M$) |
-| Fluidstack Ltd. | 2026-06-30 | 109 M$ | 3 | 144,11 USD – 162,22 USD (2026-06-30) | 2026-03-31 (54 M$) |
+| Fluidstack | 2026-06-30 | 109 M$ | 3 | 144,11 USD – 162,22 USD (2026-06-30) | 2026-03-31 (54 M$) |
 | Coinbase, Inc. | 2021-03-31 | 90 M$ | 15 | 373,00 USD – 373,00 USD (2021-03-31) | 2021-03-31 (90 M$) |
 | Compass, Inc. | 2021-03-31 | 85 M$ | 7 | 178,61 USD – 182,90 USD (2021-01-31) | 2019-12-31 (74 M$) |
 | DoorDash, Inc. | 2020-09-30 | 67 M$ | 14 | 229,53 USD – 229,53 USD (2020-09-30) | 2020-06-30 (67 M$) |
@@ -5232,7 +5288,7 @@ Prêts de plateforme écartés et comptés, par émetteur déclaré : 2 (`out_of
 
 Faits des instances XBRL des groupes et des extraits des Notes Data Sets déjà en cache dont un membre de dimension nomme un laboratoire (`lab_tagged_value`). Valeur et unité telles que balisées, du point de vue du déposant (actionnaire, fournisseur, bailleur, prêteur) : jamais un fait comptable du laboratoire, jamais une valorisation, aucun ratio. Un trimestre sans fait balisé n'est pas un zéro. Un déposant hors du graphe n'entre dans aucune paire ni aucun agrégat. Une ligne par série (fait et membres), au dernier fait connu ; la série complète est dans `series.md`.
 
-Cellules : Anthropic 25 (7 déposants), OpenAI 102 (6 déposants).
+Cellules : Anthropic 25 (7 déposants), OpenAI 105 (6 déposants).
 
 ### Anthropic
 
@@ -5309,39 +5365,34 @@ Cellules : Anthropic 25 (7 déposants), OpenAI 102 (6 déposants).
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000014 | 1 |
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000026 | 1 |
 
-**Cerebras Systems Inc.** : 41 faits balisés, du 2025-12-31 au 2026-07-31.
+**Cerebras** : 44 faits balisés, du 2025-12-31 au 2026-07-31.
 
 | Fait balisé | Membre | Dernière période | Valeur | Pièce | Faits de la série |
 | --- | --- | --- | ---: | --- | ---: |
-| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | OpenAIWarrant | au 2026-06-30 | 82 $ | 10-Q 0001628280-26-056357 | 2 |
-| `ClassOfWarrantOrRightVestedAndExercisable` | OpenAIWarrant | au 2026-06-30 | 5 574 171 actions | 10-Q 0001628280-26-056357 | 3 |
-| `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` | OpenAI | au 2026-03-31 | 250 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 | 1 |
-| `CommittedComputeCapacityUnderMasterRelationshipAgreement` | OpenAI | au 2025-12-31 | 750 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 | 1 |
-| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-06-30 | 2 M$ | 10-Q 0001628280-26-056357 | 2 |
-| `CustomerWarrantAssetAmortizationReductionOfRevenue` | OpenAI | au 2026-06-30 | 3 M$ | 10-Q 0001628280-26-056357 | 1 |
-| `LongTermDebtOffsettingAmount` | OpenAI | au 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 | 1 |
-| `LongTermDebtOffsettingAmount` | OpenAI | au 2026-06-30 | -86 M$ | 10-Q 0001628280-26-056357 | 1 |
-| `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` | OpenAI | au 2025-12-31 | 2 GW | 10-Q 0001628280-26-044981 | 1 |
-| `NoncashInterestExpense` | OpenAI | au 2026-06-30 | 20 M$ | 10-Q 0001628280-26-056357 | 2 |
-| `NoncashInterestExpense` | OpenAI | au 2026-06-30 | 39 M$ | 10-Q 0001628280-26-056357 | 1 |
-| `NoncashRepaymentOfDebt` | OpenAI | au 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 | 1 |
-| `NoncashRepaymentOfDebt` | OpenAI | au 2026-06-30 | 86 M$ | 10-Q 0001628280-26-056357 | 1 |
-| `OptionToPurchaseAdditionalComputeCapacity` | OpenAI | au 2025-12-31 | 1,25 GW | 10-Q 0001628280-26-044981 | 1 |
-| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | OpenAIWarrant | au 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 | 2 |
-| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2026-06-30 | 33 445 026 actions | 10-Q 0001628280-26-056357 | 2 |
-| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | OpenAIWarrant | au 2026-07-31 | 10 033 508 actions | 10-Q 0001628280-26-056357 | 1 |
-| `DebtInstrumentCarryingAmount` | OpenAI | au 2026-06-30 | 918 M$ | 10-Q 0001628280-26-056357 | 2 |
-| `DebtInstrumentFaceAmount` | OpenAI | au 2025-12-31 | 1 000 M$ | 10-Q 0001628280-26-044981 | 1 |
-| `DebtInstrumentInterestRateStatedPercentage` | OpenAI | au 2026-06-30 | 6,0 % | 10-Q 0001628280-26-056357 | 2 |
-| `LongTermDebtCurrent` | OpenAI | au 2026-06-30 | 736 M$ | 10-Q 0001628280-26-056357 | 2 |
-| `LongTermDebtNoncurrent` | OpenAI | au 2026-06-30 | 182 M$ | 10-Q 0001628280-26-056357 | 2 |
-| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-01-31 | 1 000 M$ | 10-Q 0001628280-26-044981 | 1 |
-| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-03-31 | 1 005 M$ | 10-Q 0001628280-26-044981 | 1 |
-| `ProceedsFromIssuanceOfLongTermDebt` | OpenAI | au 2026-06-30 | 1 005 M$ | 10-Q 0001628280-26-056357 | 1 |
-| `RepaymentsOfLongTermDebt` | OpenAI | au 2026-03-31 | 0 $ | 10-Q 0001628280-26-044981 | 1 |
-| `RepaymentsOfLongTermDebt` | OpenAI | au 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 | 1 |
-| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-06-30 | 57 M$ | 10-Q 0001628280-26-056357 | 2 |
-| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI | au 2026-06-30 | 74 M$ | 10-Q 0001628280-26-056357 | 1 |
+| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | Open AI | au 2026-06-30 | 82,02 USD/shares | 10-Q 0001628280-26-056357 | 2 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | Open AI | au 2026-06-30 | 5 574 171 actions | 10-Q 0001628280-26-056357 | 3 |
+| `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` | Open AI | au 2026-03-31 | 250 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 | 1 |
+| `CommittedComputeCapacityUnderMasterRelationshipAgreement` | Open AI | au 2025-12-31 | 750 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 | 1 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-04-01 → 2026-06-30 | 2 M$ | 10-Q 0001628280-26-056357 | 3 |
+| `LongTermDebtOffsettingAmount` | Open AI | 2026-01-01 → 2026-06-30 | -86 M$ | 10-Q 0001628280-26-056357 | 2 |
+| `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` | Open AI | au 2025-12-31 | 2 GW | 10-Q 0001628280-26-044981 | 1 |
+| `NoncashInterestExpense` | Open AI | 2026-04-01 → 2026-06-30 | 20 M$ | 10-Q 0001628280-26-056357 | 3 |
+| `NoncashRepaymentOfDebt` | Open AI | 2026-01-01 → 2026-06-30 | 86 M$ | 10-Q 0001628280-26-056357 | 2 |
+| `OptionToPurchaseAdditionalComputeCapacity` | Open AI | au 2025-12-31 | 1,25 GW | 10-Q 0001628280-26-044981 | 1 |
+| `RevenueContractInitialTerm` | Open AI | au 2025-12-31 | 4 ans | 10-Q 0001628280-26-044981 | 1 |
+| `RevenueContractInitialTerm` | Open AI | au 2025-12-31 | 3 ans | 10-Q 0001628280-26-044981 | 1 |
+| `RevenueContractMaximumExtendedTerm` | Open AI | au 2025-12-31 | 5 ans | 10-Q 0001628280-26-044981 | 1 |
+| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | Open AI | au 2026-06-30 | 0,00 USD/shares | 10-Q 0001628280-26-056357 | 2 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2026-06-30 | 33 445 026 actions | 10-Q 0001628280-26-056357 | 2 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2026-07-31 | 10 033 508 actions | 10-Q 0001628280-26-056357 | 1 |
+| `DebtInstrumentCarryingAmount` | Open AI | au 2026-06-30 | 918 M$ | 10-Q 0001628280-26-056357 | 2 |
+| `DebtInstrumentFaceAmount` | Open AI | au 2025-12-31 | 1 000 M$ | 10-Q 0001628280-26-044981 | 1 |
+| `DebtInstrumentInterestRateStatedPercentage` | Open AI | au 2026-06-30 | 6,0 % | 10-Q 0001628280-26-056357 | 2 |
+| `LongTermDebtCurrent` | Open AI | au 2026-06-30 | 736 M$ | 10-Q 0001628280-26-056357 | 2 |
+| `LongTermDebtNoncurrent` | Open AI | au 2026-06-30 | 182 M$ | 10-Q 0001628280-26-056357 | 2 |
+| `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-06-30 | 1 005 M$ | 10-Q 0001628280-26-056357 | 3 |
+| `RepaymentsOfLongTermDebt` | Open AI | 2026-01-01 → 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 | 2 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-04-01 → 2026-06-30 | 57 M$ | 10-Q 0001628280-26-056357 | 3 |
 
 **CoreWeave** : 10 faits balisés, du 2025-03-31 au 2025-09-30.
 
@@ -5489,7 +5540,21 @@ Sans montant admissible : erock:anthropic_power_order (engagement d'achat, sign�
 
 ### OpenAI
 
-Partenaires : 7 ; arêtes : 126.
+Partenaires : 7 ; arêtes : 135.
+
+#### Cerebras
+
+30 arêtes, dont 18 à montant.
+- Capacités balisées (jamais additionnées) : 250 MW (unité balisée : megawatt), `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` (au 2026-03-31) ; 750 MW (unité balisée : megawatt), `CommittedComputeCapacityUnderMasterRelationshipAgreement` (au 2025-12-31) ; 2 GW, `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` (au 2025-12-31) ; 1,25 GW, `OptionToPurchaseAdditionalComputeCapacity` (au 2025-12-31).
+
+| Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Montants publiés |
+| --- | --- | --- | --- | ---: | --- | --- | ---: |
+| laboratoire → partenaire | cerebras:openai_mra | revenu comptabilisé | revenu (net) | 74 M$ | 2026-06-30 | 10-Q 0001628280-26-056357 | 3 |
+| laboratoire → partenaire | cerebras:openai_working_capital_loan | prêt ou facilité | versement | environ 1 000 M$ | 2026-01-31 | 10-Q 0001628280-26-056357 | 1 |
+| laboratoire → partenaire | cerebras:openai_working_capital_loan | prêt ou facilité | versement, encours | 918 M$ | 2026-06-30 | 10-Q 0001628280-26-056357 | 1 |
+| laboratoire → partenaire | cerebras:openai_working_capital_loan | prêt ou facilité | versement, principal | 1 000 M$ | 2026-01-31 | 424B4 0001628280-26-035214 | 1 |
+| partenaire → laboratoire | cerebras:openai_class_n_warrant | titres ou bons remis au client | contrepartie payable au client | 3 M$ | 2026-06-30 | 10-Q 0001628280-26-056357 | 3 |
+| partenaire → laboratoire | cerebras:openai_class_n_warrant | titres ou bons remis au client | contrepartie payable au client | jusqu'à 33 445 026 actions | 2026-08-12 | 10-Q 0001628280-26-056357 | 9 |
 
 #### Microsoft
 
@@ -5534,19 +5599,6 @@ Sans montant admissible : crwv:openai_msa (engagement d'achat, signé, 8-K 00017
 | partenaire → laboratoire | amzn:openai_series_c_commitment_2026 | fonds propres | versement | 21 300 M$ | 2026-07-31 | 10-Q 0001018724-26-000026 | 2 |
 
 Sans montant admissible : amzn:openai_collaboration_2026 (achat, signé, 8-K 0001104659-26-021050).
-
-#### Cerebras Systems Inc.
-
-21 arêtes, dont 11 à montant.
-- Capacités balisées (jamais additionnées) : 250 MW (unité balisée : megawatt), `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` (au 2026-03-31) ; 750 MW (unité balisée : megawatt), `CommittedComputeCapacityUnderMasterRelationshipAgreement` (au 2025-12-31) ; 2 GW, `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` (au 2025-12-31) ; 1,25 GW, `OptionToPurchaseAdditionalComputeCapacity` (au 2025-12-31).
-
-| Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Montants publiés |
-| --- | --- | --- | --- | ---: | --- | --- | ---: |
-| laboratoire → partenaire | cerebras:openai_mra | revenu comptabilisé | revenu (net) | 74 M$ | 2026-06-30 | 10-Q 0001628280-26-056357 | 2 |
-| laboratoire → partenaire | cerebras:openai_working_capital_loan | prêt ou facilité | versement | environ 1 000 M$ | 2026-01-31 | 10-Q 0001628280-26-056357 | 1 |
-| laboratoire → partenaire | cerebras:openai_working_capital_loan | prêt ou facilité | versement, encours | 918 M$ | 2026-06-30 | 10-Q 0001628280-26-056357 | 1 |
-| partenaire → laboratoire | cerebras:openai_class_n_warrant | titres ou bons remis au client | contrepartie payable au client | 3 M$ | 2026-06-30 | 10-Q 0001628280-26-056357 | 2 |
-| partenaire → laboratoire | cerebras:openai_class_n_warrant | titres ou bons remis au client | contrepartie payable au client | jusqu'à 33 445 026 actions | 2026-08-12 | 10-Q 0001628280-26-056357 | 5 |
 
 #### AMD
 
@@ -5602,28 +5654,28 @@ Clauses : 59, de 19 contrats ou instruments.
 | Amazon | amzn:openai_commitment_guarantee_2026 | durée | 2026-02-27 (date de la pièce) ; « Outside Date » | — | — | 8-K EX-10.1 0001104659-26-021050 |
 | Amazon | amzn:openai_series_c_commitment_2026 | engagement minimal | 2026-04-30 (date de la pièce) | — | sous condition ; jalons précisés atteints par OpenAI, ou introduction en bourse ou cotation directe d'OpenAI aux États-Unis ; achats au choix d'Amazon avant… | 10-Q 0001018724-26-000014 |
 | Amazon | amzn:openai_series_c_commitment_2026 | durée | 2028-12-31 (fin de période) ; « December 31, 2028 (such earliest date, the "Outside Date") » | — | sous condition ; fin de l'engagement à la première de ces dates : financement complet, résiliation valable de l'accord de collaboration conjointe, douze moi… ; caviardée | 8-K EX-10.1 0001104659-26-021050 |
-| Cerebras Systems Inc. | cerebras:openai_class_n_warrant | durée | 2026-04-17 (date de la pièce) ; « ten (10) year anniversary of the Issue Date » | — | sous condition ; expiration anticipée cinq jours ouvrés après la première date sans engagement ferme d'achat de capacité ni paiement dû au titre du MRA | S-1 EX-10.13 0001628280-26-025762 |
-| Cerebras Systems Inc. | cerebras:openai_class_n_warrant | tranche d'acquisition | 2026-04-17 (date de la pièce) | 4 459 337 actions | sous condition ; dépôt du prêt de fonds de roulement d'OpenAI sur le compte séquestre ; caviardée | S-1 EX-10.13 0001628280-26-025762 |
-| Cerebras Systems Inc. | cerebras:openai_mra | engagement minimal | 2026-02-15 (fin de période) ; « by February 15, 2026 » | — | sous condition ; contrat d'achat de matériel Cerebras à négocier d'ici le 15 février 2026, en plus ou à la place des services | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | calendrier de livraison | 2026-05-04 (date de la pièce) ; « by [***] 2029 ; by [***] 2030 » | — | au choix d'une partie ; option d'OpenAI sur une capacité additionnelle, en MW caviardés, livrable en 2029 puis en 2030, exerçable sur préavis caviardé ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | calendrier de livraison | 2026-05-04 (date de la pièce) | — | caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | exclusivité | 2026-05-04 (date de la pièce) | — | sous condition ; tant que Cerebras n'est pas en manquement grave, jusqu'à une date caviardée ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | exclusivité | 2026-05-04 (date de la pièce) | — | sous condition ; tant qu'OpenAI n'est pas en manquement grave, pendant la période d'exclusivité ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | engagement minimal | 2026-05-04 (date de la pièce) | — | ferme ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; manquement grave d'OpenAI, défaut de paiement compris, non réparé dans un délai caviardé après escalade ; cessation d'activité sans success… ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; manquement grave de Cerebras non réparé dans un délai caviardé après escalade ; cessation d'activité sans successeur ; procédure collective… ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; segment de capacité non livré à la date engagée de l'annexe A, retard prolongé au-delà d'un délai caviardé ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; changement de contrôle de Cerebras au profit d'un acquéreur d'une catégorie caviardée : avenant à signer avec OpenAI, contenu caviardé ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; cession du contrat à un concurrent nommé de l'autre partie, ou acquisition par un tel concurrent, pendant la période d'exclusivité | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | durée | 2026-05-04 (date de la pièce) ; « 3 years thereafter ; four years thereafter » | — | caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | durée | 2026-05-04 (date de la pièce) ; « maximum 5 year term » | — | au choix d'une partie ; renouvellement d'un an, deux fois pour les segments de trois ans, une fois pour ceux de quatre ans, sur avis écrit à Cerebras dans un délai… | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_mra | calendrier de livraison | 2026-12-31 (fin de période) ; « by the end of calendar year 2026 » | 250 MW | ferme ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_registration_rights | durée | 2026-04-17 (date de la pièce) ; « the later of (x) the three-year anniversary of expiration of the Warrant and (y… » | — | — | S-1 EX-10.14 0001628280-26-025762 |
-| Cerebras Systems Inc. | cerebras:openai_working_capital_loan | échéance | 2026-04-17 (date de la pièce) | — | sous condition ; cas de défaut : défaut de paiement en numéraire, manquement à des engagements non régularisé en trente jours, liquidation ou insolvabilité,… ; caviardée | S-1 EX-10.12 0001628280-26-025762 |
-| Cerebras Systems Inc. | cerebras:openai_working_capital_loan | échéance | 2026-04-17 (date de la pièce) | — | sous condition ; résiliation du MRA pour une autre raison qu'un manquement grave non réparé d'OpenAI, ou cas caviardé ; caviardée | S-1 EX-10.12 0001628280-26-025762 |
-| Cerebras Systems Inc. | cerebras:openai_working_capital_loan | échéance | 2026-04-17 (date de la pièce) | — | caviardée | S-1 EX-10.12 0001628280-26-025762 |
-| Cerebras Systems Inc. | cerebras:openai_working_capital_loan | échéance | 2026-05-04 (date de la pièce) | — | sous condition ; résiliation du MRA pour une autre raison qu'un manquement grave non réparé d'OpenAI (ou un cas caviardé) : au choix d'OpenAI, remboursement… ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | cerebras:openai_working_capital_loan | échéance | 2032-12-31 (fin de période) | 1 005 M$ | — | S-1 EX-10.12 0001628280-26-025762 |
+| Cerebras | cerebras:openai_class_n_warrant | durée | 2026-04-17 (date de la pièce) ; « ten (10) year anniversary of the Issue Date » | — | sous condition ; expiration anticipée cinq jours ouvrés après la première date sans engagement ferme d'achat de capacité ni paiement dû au titre du MRA | S-1 EX-10.13 0001628280-26-025762 |
+| Cerebras | cerebras:openai_class_n_warrant | tranche d'acquisition | 2026-04-17 (date de la pièce) | 4 459 337 actions | sous condition ; dépôt du prêt de fonds de roulement d'OpenAI sur le compte séquestre ; caviardée | S-1 EX-10.13 0001628280-26-025762 |
+| Cerebras | cerebras:openai_mra | engagement minimal | 2026-02-15 (fin de période) ; « by February 15, 2026 » | — | sous condition ; contrat d'achat de matériel Cerebras à négocier d'ici le 15 février 2026, en plus ou à la place des services | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | calendrier de livraison | 2026-05-04 (date de la pièce) ; « by [***] 2029 ; by [***] 2030 » | — | au choix d'une partie ; option d'OpenAI sur une capacité additionnelle, en MW caviardés, livrable en 2029 puis en 2030, exerçable sur préavis caviardé ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | calendrier de livraison | 2026-05-04 (date de la pièce) | — | caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | exclusivité | 2026-05-04 (date de la pièce) | — | sous condition ; tant que Cerebras n'est pas en manquement grave, jusqu'à une date caviardée ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | exclusivité | 2026-05-04 (date de la pièce) | — | sous condition ; tant qu'OpenAI n'est pas en manquement grave, pendant la période d'exclusivité ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | engagement minimal | 2026-05-04 (date de la pièce) | — | ferme ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; manquement grave d'OpenAI, défaut de paiement compris, non réparé dans un délai caviardé après escalade ; cessation d'activité sans success… ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; manquement grave de Cerebras non réparé dans un délai caviardé après escalade ; cessation d'activité sans successeur ; procédure collective… ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; segment de capacité non livré à la date engagée de l'annexe A, retard prolongé au-delà d'un délai caviardé ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; changement de contrôle de Cerebras au profit d'un acquéreur d'une catégorie caviardée : avenant à signer avec OpenAI, contenu caviardé ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | clause de sortie | 2026-05-04 (date de la pièce) | — | sous condition ; cession du contrat à un concurrent nommé de l'autre partie, ou acquisition par un tel concurrent, pendant la période d'exclusivité | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | durée | 2026-05-04 (date de la pièce) ; « 3 years thereafter ; four years thereafter » | — | caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | durée | 2026-05-04 (date de la pièce) ; « maximum 5 year term » | — | au choix d'une partie ; renouvellement d'un an, deux fois pour les segments de trois ans, une fois pour ceux de quatre ans, sur avis écrit à Cerebras dans un délai… | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_mra | calendrier de livraison | 2026-12-31 (fin de période) ; « by the end of calendar year 2026 » | 250 MW | ferme ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_registration_rights | durée | 2026-04-17 (date de la pièce) ; « the later of (x) the three-year anniversary of expiration of the Warrant and (y… » | — | — | S-1 EX-10.14 0001628280-26-025762 |
+| Cerebras | cerebras:openai_working_capital_loan | échéance | 2026-04-17 (date de la pièce) | — | sous condition ; cas de défaut : défaut de paiement en numéraire, manquement à des engagements non régularisé en trente jours, liquidation ou insolvabilité,… ; caviardée | S-1 EX-10.12 0001628280-26-025762 |
+| Cerebras | cerebras:openai_working_capital_loan | échéance | 2026-04-17 (date de la pièce) | — | sous condition ; résiliation du MRA pour une autre raison qu'un manquement grave non réparé d'OpenAI, ou cas caviardé ; caviardée | S-1 EX-10.12 0001628280-26-025762 |
+| Cerebras | cerebras:openai_working_capital_loan | échéance | 2026-04-17 (date de la pièce) | — | caviardée | S-1 EX-10.12 0001628280-26-025762 |
+| Cerebras | cerebras:openai_working_capital_loan | échéance | 2026-05-04 (date de la pièce) | — | sous condition ; résiliation du MRA pour une autre raison qu'un manquement grave non réparé d'OpenAI (ou un cas caviardé) : au choix d'OpenAI, remboursement… ; caviardée | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | cerebras:openai_working_capital_loan | échéance | 2032-12-31 (fin de période) | 1 005 M$ | — | S-1 EX-10.12 0001628280-26-025762 |
 | CoreWeave | crwv:openai_commercial_agreement | durée | 2025-03-12 (date de la pièce) ; « through October 2030 » | 11 900 M$ | sous condition ; sous réserve des cas de résiliation et du respect des exigences de livraison et de disponibilité du service ; obligations d'OpenAI subordon… | S-1/A 0001193125-25-052207 |
 | CoreWeave | crwv:openai_msa | engagement minimal | 2025-03-12 (date de la pièce) | — | sous condition ; résiliation par CoreWeave pour faute du client, dont le non-paiement : montant caviardé dû par le client, diminué du produit de la revente … ; caviardée | S-1/A EX-10.24 0001193125-25-052207 |
 | CoreWeave | crwv:openai_msa | clause de sortie | 2025-03-12 (date de la pièce) ; « thirty (30) consecutive days or longer » | — | sous condition ; force majeure prolongée trente jours consécutifs ou plus : résiliation du bon touché par le client et remboursement des avances non consomm… | S-1/A EX-10.24 0001193125-25-052207 |
@@ -5703,10 +5755,10 @@ Capacités en MW ou en GW écrites dans les pièces pour un laboratoire nommé (
 | AMD | OpenAI OpCo, LLC | calcul | 6 GW | intention sans engagement | 2025-10-06 (date de la pièce) | 8-K 0001193125-25-230895 |
 | NVIDIA | OpenAI | calcul | au moins 10 GW | intention sans engagement | 2025-11-19 (date de la pièce) | 8-K 0001045810-25-000228 |
 | Amazon | OpenAI | calcul | environ 2 GW | signé | 2026-04-29 (date de la pièce) ; « begins ramping in 2027 » | 8-K 0001018724-26-000012 |
-| Cerebras Systems Inc. | OpenAI OpCo, LLC | calcul | 750 MW | signé | 2026-08-12 (date de la pièce) ; « multi-year term » | 10-Q 0001628280-26-056357 |
-| Cerebras Systems Inc. | OpenAI | calcul | 250 MW | signé | 2026-12-31 (fin de période) ; « by the end of calendar year 2026 » | S-1/A EX-10.11 0001628280-26-029503 |
-| Cerebras Systems Inc. | OpenAI OpCo, LLC | calcul | 1,25 GW | intention sans engagement | 2030-12-31 (fin de période) ; « by the end of 2030 » | 10-Q 0001628280-26-056357 |
-| Cerebras Systems Inc. | OpenAI OpCo, LLC | calcul | jusqu'à 2 GW | intention sans engagement | 2030-12-31 (fin de période) ; « by the end of 2030 » | 10-Q 0001628280-26-056357 |
+| Cerebras | OpenAI OpCo, LLC | calcul | 750 MW | signé | 2026-08-12 (date de la pièce) ; « multi-year term » | 10-Q 0001628280-26-056357 |
+| Cerebras | OpenAI | calcul | 250 MW | signé | 2026-12-31 (fin de période) ; « by the end of calendar year 2026 » | S-1/A EX-10.11 0001628280-26-029503 |
+| Cerebras | OpenAI OpCo, LLC | calcul | 1,25 GW | intention sans engagement | 2030-12-31 (fin de période) ; « by the end of 2030 » | 10-Q 0001628280-26-056357 |
+| Cerebras | OpenAI OpCo, LLC | calcul | jusqu'à 2 GW | intention sans engagement | 2030-12-31 (fin de période) ; « by the end of 2030 » | 10-Q 0001628280-26-056357 |
 
 **Hébergement, électricité et non précisé** : 10 lignes.
 
@@ -5753,6 +5805,7 @@ Part du carnet contracté d'un vendeur que le vendeur attribue lui-même à un c
 | Amazon | 496 000 M$ au 2026-06-30 | — |
 | Applied Digital | 52 M$ au 2023-11-30 | 35 731 M$ au 2026-08-31 |
 | Backblaze | 396 M$ au 2026-06-30 | — |
+| Cerebras | 25 400 M$ au 2026-06-30 | — |
 | CoreWeave | 103 700 M$ au 2026-06-30 | — |
 | IREN | 5 100 M$ au 2026-06-30 | 11 400 M$ au 2026-06-30 |
 | Microsoft | 684 000 M$ au 2026-06-30 | — |
@@ -5765,6 +5818,7 @@ Part du carnet contracté d'un vendeur que le vendeur attribue lui-même à un c
 | Amazon | OpenAI | RPO | 2026-06-30 | [0 ; 27,8 %] | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001018724-26-000014 | 2 |
 | Applied Digital | CoreWeave | loyers à recevoir | 2026-08-31 | [0 ; 30,8 %] | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001641172-25-013199, 8-K 0001493152-25-012458 | 6 |
 | Backblaze | CoreWeave | RPO | 2026-06-30 | [0 ; 84,6 %] | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001628280-26-044804 | 1 |
+| Cerebras | OpenAI | RPO | 2026-06-30 | n.d. (non publié) | aucun reste ni aucune valeur de contrat qui le majore | — | 2 |
 | CoreWeave | Meta | RPO | 2026-06-30 | [0 ; 33,9 %] | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050, 8-K 0001769628-26-000154 | 4 |
 | CoreWeave | OpenAI | RPO | 2026-06-30 | [0 ; 21,6 %] | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 | 6 |
 | IREN | Microsoft | RPO | 2026-06-30 | [0 ; 100,0 %] (plafonnée) | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 | 3 |
@@ -5774,7 +5828,7 @@ Part du carnet contracté d'un vendeur que le vendeur attribue lui-même à un c
 | Nebius | Microsoft | RPO | 2025-12-31 | [0 ; 81,6 %] | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 20-F 0001104659-26-052948 | 1 |
 | Riot | AMD | loyers à recevoir | 2026-06-30 | [0 ; 49,1 %] | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 | 2 |
 
-Lignes de carnet sans aucune date où le carnet du vendeur, du même terme, est publié (aucune cellule) : Akamai → Anthropic, RPO (1 ligne) ; Hut 8 → Fluidstack Ltd., loyers à recevoir (1 ligne).
+Lignes de carnet sans aucune date où le carnet du vendeur, du même terme, est publié (aucune cellule) : Akamai → Anthropic, RPO (1 ligne) ; Hut 8 → Fluidstack, loyers à recevoir (1 ligne).
 
 ## Événements propres aux laboratoires (D-0067, volet 9 ; hors annexe F)
 
@@ -5812,5 +5866,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 15 920, concept non résolu 8 367, non publié 6 414, terme manquant 6 201, historique tronqué 4 291, période antérieure absente 1 719, annuel seulement 1 116, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 042, précondition non remplie 915, recherche incomplète 576, dénominateur négatif ou nul 444, client anonyme 253, frontière de retraitement 192, caviardé 176, non collecté 152, période non écoulée à la date de coupure 113, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 20, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 15 927, concept non résolu 8 572, non publié 6 810, terme manquant 6 615, historique tronqué 4 227, période antérieure absente 1 724, annuel seulement 1 150, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 042, précondition non remplie 916, recherche incomplète 576, dénominateur négatif ou nul 450, client anonyme 260, frontière de retraitement 192, caviardé 176, non collecté 152, période non écoulée à la date de coupure 113, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 22, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
 

@@ -264,7 +264,8 @@ class CorpusLabs(unittest.TestCase):
 
     def test_names_resolved_at_integration(self):
         """D-0059, intégration : noms encore en attente après le premier réassemblage, rattachés par extrait ; sans extrait
-        qui le définit, « Uber » reste en attente."""
+        qui le définit, « Uber » reste en attente. Depuis D-0070 (point 7), Fluidstack Ltd. est la tête du groupe non
+        déposant NF:FLUIDSTACK."""
         from pipeline import config
         from pipeline import entities as E
         cfg = config.load()
@@ -272,7 +273,7 @@ class CorpusLabs(unittest.TestCase):
         _, reg = E.build({"meta": {}}, cfg, {n: False for n in names})
         g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
         self.assertEqual(g("Fluidstack"), g("Fluidstack Ltd."))
-        self.assertEqual(g("Fluidstack"), "CP:fluidstack ltd")
+        self.assertEqual(g("Fluidstack"), "NF:FLUIDSTACK")
         self.assertEqual(g("Sanmina"), "CP:sanmina corp")
         self.assertIsNone(g("Uber"))
 
@@ -334,16 +335,18 @@ class AnthropicChain(unittest.TestCase):
 
     def test_fluidstack_entities_by_extract(self):
         """D-0064, point 6 : Fluidstack CS I Inc. rejoint Fluidstack Ltd. par l'extrait qui la dit filiale indirecte à
-        100 % ; Fluidstack USA I à IV restent des contreparties propres ; deux alias nés d'un extrait qui les définit."""
+        100 % ; deux alias nés d'un extrait qui les définit. Depuis D-0070 (point 7), Fluidstack Ltd. et ses filiales
+        forment le groupe non déposant NF:FLUIDSTACK, Fluidstack USA I à IV comprises (règle B de D-0044) ; la
+        coentreprise d'Abernathy reste une contrepartie propre."""
         from pipeline import config
         from pipeline import entities as E
         names = ["Fluidstack CS I Inc.", "Fluidstack USA I Inc.", "Abernathy Joint Venture", "Fluidstack USA III"]
         _, reg = E.build({"meta": {}}, config.load(), {n: False for n in names})
         g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
-        self.assertEqual(g("Fluidstack CS I Inc."), "CP:fluidstack ltd")
-        self.assertEqual(g("Fluidstack USA I Inc."), "CP:fluidstack usa i inc")
+        self.assertEqual(g("Fluidstack CS I Inc."), "NF:FLUIDSTACK")
+        self.assertEqual(g("Fluidstack USA I Inc."), "NF:FLUIDSTACK")
         self.assertEqual(g("Abernathy Joint Venture"), "CP:fs cs i llc")
-        self.assertEqual(g("Fluidstack USA III"), "CP:fluidstack usa iii inc")
+        self.assertEqual(g("Fluidstack USA III"), "NF:FLUIDSTACK")
 
     def test_chain_aliases_by_extract(self):
         """D-0066 : « AWS » (8-K d'Amazon) et « Cerebras » (S-1 de Cerebras), alias nés d'un extrait qui les définit ;

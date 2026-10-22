@@ -1,5 +1,5 @@
 """D-0070 : localisation d'une citation qui porte des points de conduite (ligne de tableau d'un
-prospectus).
+prospectus) ; entités du groupe non déposant Fluidstack, chacune par son extrait (point 7).
 
 Lancement : python3 -m unittest discover -s tests -t .
 """
@@ -50,6 +50,33 @@ class DotLeaders(unittest.TestCase):
         for w in ("[****]", "Inc.", "(“Microsoft”)", "[___________]", "USD", "$1,000.00", "...."):
             self.assertEqual(textnorm._word_pattern(w), word_pattern_before(w), w)
         self.assertNotEqual(textnorm._word_pattern("....."), word_pattern_before("....."))
+
+
+class FluidstackGroup(unittest.TestCase):
+
+    def test_entities_by_extract(self):
+        """Tête, filiales et nom abrégé vont à NF:FLUIDSTACK ; chaque entrée porte son extrait ; les véhicules de
+        fonds qui portent le nom restent hors du groupe (point 2)."""
+        from pipeline import config
+        from pipeline import entities as E
+        cfg = config.load()
+        fs = [c for c in cfg["confirmed_entities"] if c.get("group") == "NF:FLUIDSTACK"]
+        self.assertEqual(sorted(c["name"] for c in fs),
+                         ["Fluidstack CS I Inc.", "Fluidstack Infrastructure 1 Ltd.", "Fluidstack Ltd.",
+                          "Fluidstack USA I Inc.", "Fluidstack USA II Inc.", "Fluidstack USA III Inc.",
+                          "Fluidstack USA IV Inc."])
+        for c in fs:
+            self.assertRegex(c["block"], r"^[0-9a-f]{64}$")
+            self.assertRegex(c["accession"], r"^\d{10}-\d{2}-\d{6}$")
+            self.assertIn("Fluidstack", c["quote"])
+        self.assertEqual([c["treatment"] for c in fs if c["name"] == "Fluidstack Ltd."], ["parent"])
+        names = [c["name"] for c in fs] + ["Fluidstack", "Fluidstack USA II", "Fluidstack USA III",
+                                           "Thesiger Fluidstack Fund 1, a series of CGF2021 LLC"]
+        _, reg = E.build({"meta": {}}, cfg, {n: False for n in names})
+        g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
+        for n in names[:-1]:
+            self.assertEqual(g(n), "NF:FLUIDSTACK", n)
+        self.assertNotEqual(g(names[-1]), "NF:FLUIDSTACK")
 
 
 if __name__ == "__main__":
