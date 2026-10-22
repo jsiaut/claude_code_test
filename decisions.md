@@ -2876,3 +2876,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - l'échéancier des loyers à recevoir est souvent annuel : beaucoup de trimestres n'auront pas de dénominateur ;
   - les grands baux dont la valeur n'est écrite qu'en EX-99 restent sans montant ;
   - Microsoft n'attribue aucun RPO à OpenAI dans ses dépôts ; Amazon ne balise son RPO par client que depuis 2026. Aucune paire de E.3 n'a d'attribution de fin d'exercice : E.3 restera indéterminé.
+
+  (14) Volume du montage `backlog`, consigné le 2026-10-22 avant toute lecture :
+  - corpus : 30 vendeurs ; 2 558 documents dans la période, tous en cache ; 1 812 nomment un terme de carnet (pré-filtre sur les octets) ;
+  - fenêtres : 103, dont 83 textes distincts (20 doublons, 9 d'entre eux déjà blocs d'un autre catalogue) ; 1 737 pièces sans fenêtre ; 3 fenêtres dans un facteur de risque ; aucune au-delà du plafond ;
+  - 83 blocs, 307 790 caractères : lecture complète 33 (134 130 caractères), complémentaire 50 (173 660) ;
+  - par niveau : A 20, B 18, C 29, D 6, E 10. Les dix blocs de niveau E sont des 8-K dont tous les items sont furnished (2.02, 7.01, 9.01) : ils se lisent, leurs lignes n'entrent dans aucune mesure (points 4 et 5) ;
+  - par vendeur (complète / complémentaire) : Akamai 0/1, Applied Digital 2/3, Apollo 9/0, Broadcom 0/4, Backblaze 1/2, Cipher 0/10, CoreWeave 2/14, Galaxy 6/1, Hut 8 0/3, IREN 6/1, Nebius 2/3, TeraWulf 5/8 ; douze vendeurs, comme au constat ;
+  - file de lecture : `work/lists/backlog.txt`, des plus anciens aux plus récents ; lecture par lots, sans sous-agent.
