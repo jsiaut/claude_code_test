@@ -2129,3 +2129,10 @@ nport:                       # D-0058, volet F : obligations de SoftBank valoris
       level: "3"
       pool_max_positions: 100          # au-delà, dans un même dépôt et pour un même émetteur : prêts de plateforme
       platform_title_rx: '\bmarketplace loans?\b'   # intitulé d'un prêt de plateforme (casse ignorée)
+  bonds:                     # D-0071, volet B : obligations d'Oracle, de CoreWeave et de Beignet (mesure de D-0058, points 8 et 28)
+    decision: D-0071
+    issuers:                 # nom normalisé (§10.2) qui commence par l'un des débuts de nom ; mot de l'intitulé d'un titre
+      - {node: ORCL, names: ["oracle corp"], title: ORACLE}
+      - {node: CRWV, names: ["coreweave"], title: COREWEAVE}
+      - {node: "CP:beignet investor llc", names: ["beignet investor"], title: BEIGNET}
+    convertible_columns: [IS_CONVTIBLE_MANDATORY, IS_CONVTIBLE_CONTINGENT]   # Item C.9.f.i et ii (description, section 5.12)

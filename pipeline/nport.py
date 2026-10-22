@@ -20,6 +20,7 @@ SoftBank : elle n'entre dans aucune mesure de financement ni dans l'annexe F.
     python -m pipeline.nport stamp      # date de publication (HEAD) des archives scannées sans elle
     python -m pipeline.nport volume     # décompte des extraits et de la sélection, sans valeur de la mesure
     python -m pipeline.nport status
+    python -m pipeline.nport bonds-fetch|bonds-volume|bonds-status   # D-0071, volet B : Oracle, CoreWeave, Beignet
 """
 import csv
 import datetime as dt
@@ -347,25 +348,32 @@ def positions(c=None, archives=None):
         x = t["holding"].rename(columns={v: k for k, v in h.items()})
         lei = x["issuer_lei"].fillna("").astype(str).str.strip()
         x = x[x["issuer_name"].fillna("").str.contains(NAME_RX) | lei.isin(leis)]
-        x = x.merge(t["submission"].rename(columns={v: k for k, v in s.items()}), on="accession", how="left")
-        x = x.merge(t["fund"].rename(columns={v: k for k, v in f.items()}), on="accession", how="left", suffixes=("", "_fund"))
-        x = x.merge(t["registrant"].rename(columns={v: k for k, v in g.items()}), on="accession", how="left", suffixes=("", "_reg"))
-        ids = t["identifiers"].rename(columns={v: k for k, v in i.items()})
-        if len(ids):
-            ids = ids.groupby("holding_id", as_index=False).agg({"isin": lambda v: next((y for y in v if isinstance(y, str) and y), None)})
-            x = x.merge(ids, on="holding_id", how="left")
-        else:
-            x["isin"] = None
-        debt = t["debt"].rename(columns={v: k for k, v in b.items()})
-        x = x.merge(debt, on="holding_id", how="left", suffixes=("", "_debt"))
-        x["archive"] = name
-        for col in ("filing_date", "report_date", "maturity"):
-            if col in x:
-                x[col] = [_iso(v) for v in x[col]]
-        conv = cfg_nport().get("exchange_rate_convention", "currency_per_usd")
-        x["value_local"] = [_local_value(v, r, cur, conv) for v, r, cur in zip(x["value_usd"], x["exchange_rate"], x["currency"])]
-        rows.append(x)
+        rows.append(_joined(x, t, c, name))
     return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
+
+
+def _joined(x, t, c, name):
+    """Positions gardées d'une archive, jointes à leur dépôt, leur série, leur déclarant, leurs identifiants et leurs
+    caractéristiques de dette ; valeur dans la monnaie du titre."""
+    s, f, g, i, b = c["submission"], c["fund"], c["registrant"], c["identifiers"], c["debt"]
+    x = x.merge(t["submission"].rename(columns={v: k for k, v in s.items()}), on="accession", how="left")
+    x = x.merge(t["fund"].rename(columns={v: k for k, v in f.items()}), on="accession", how="left", suffixes=("", "_fund"))
+    x = x.merge(t["registrant"].rename(columns={v: k for k, v in g.items()}), on="accession", how="left", suffixes=("", "_reg"))
+    ids = t["identifiers"].rename(columns={v: k for k, v in i.items()})
+    if len(ids):
+        ids = ids.groupby("holding_id", as_index=False).agg({"isin": lambda v: next((y for y in v if isinstance(y, str) and y), None)})
+        x = x.merge(ids, on="holding_id", how="left")
+    else:
+        x["isin"] = None
+    debt = t["debt"].rename(columns={v: k for k, v in b.items()})
+    x = x.merge(debt, on="holding_id", how="left", suffixes=("", "_debt"))
+    x["archive"] = name
+    for col in ("filing_date", "report_date", "maturity"):
+        if col in x:
+            x[col] = [_iso(v) for v in x[col]]
+    conv = cfg_nport().get("exchange_rate_convention", "currency_per_usd")
+    x["value_local"] = [_local_value(v, r, cur, conv) for v, r, cur in zip(x["value_usd"], x["exchange_rate"], x["currency"])]
+    return x
 
 
 def _local_value(value_usd, rate, currency, conv="currency_per_usd"):
@@ -449,7 +457,12 @@ def price_to_par(p):
     """Une ligne par (titre, date de portefeuille) : somme des valeurs dans la monnaie du titre, somme
     des nominaux (unité PA), séries distinctes ; positions retenues par `selection`."""
     p, _ = selection(p)
-    p = latest_by_fund(p)
+    return par_rows(latest_by_fund(p))
+
+
+def par_rows(p):
+    """Une ligne par (titre, date de portefeuille) sur des positions déjà retenues et au dernier dépôt de chaque
+    série : la mesure de D-0058 (points 8 et 28), reprise telle quelle par le volet B de D-0071."""
     ident = {sec: {"issuer": _mode(re.sub(r"[\s.,]+$", "", str(n).upper().strip()) for n in g["issuer_name"].dropna()),
                    "coupon": _mode(g["coupon"].dropna()) if "coupon" in g else None,
                    "maturity": _mode(g["maturity"].dropna()) if "maturity" in g else None}
@@ -1505,6 +1518,394 @@ def u_volume(as_of=None):
             "by_node": by_node, "matched_levels_by_node": lvl}
 
 
+# -- D-0071, volet B : obligations d'Oracle, de CoreWeave et de Beignet --------------------------------------
+#
+# La mesure de SoftBank (nport_price_to_par, D-0058, points 8 et 28) sur trois autres nœuds. L'émetteur se reconnaît
+# au début de son nom normalisé, à défaut à un LEI relevé avec un tel nom et accepté par la majorité ; par titre, la
+# majorité des positions porte le nom d'un même nœud et l'une au moins un intitulé qui contient le mot de ce nœud.
+# Les 28 archives sont tirées une troisième fois, scannées pour ces émetteurs (extraits sous `bonds/`), puis effacées.
+
+B_SUBDIR = "bonds"
+B_MANIFEST = BASE / "bonds_manifest.jsonl"
+
+
+def cfg_bonds(cfg=None):
+    return cfg_nport(cfg).get("bonds") or {}
+
+
+def bond_issuers(cfg=None):
+    """Émetteurs du volet B (D-0071, point 4) : nœud, débuts de nom normalisé, mot de l'intitulé."""
+    return [dict(i) for i in cfg_bonds(cfg).get("issuers") or []]
+
+
+def bond_prefilter(issuers):
+    """Préfiltre du scan : le nom d'émetteur contient le mot d'intitulé de l'un des émetteurs (casse ignorée)."""
+    return re.compile("|".join(re.escape(i["title"]) for i in issuers), re.I)
+
+
+def bond_namer(issuers):
+    """Nœud d'un nom d'émetteur, ou None : sa forme normalisée (§10.2) commence par un début de nom configuré, que suit
+    la fin du nom ou un signe autre qu'une lettre ou un chiffre (« oracle corp/de », jamais « oracle corporate »)."""
+    from .graph import normalize_name
+    rx = [(re.compile("^" + re.escape(n) + r"(?![a-z0-9])"), i["node"]) for i in issuers for n in i["names"]]
+    memo = {}
+
+    def node(name):
+        if not isinstance(name, str) or not name:
+            return None
+        if name not in memo:
+            f = normalize_name(name)
+            memo[name] = next((nd for r, nd in rx if r.match(f)), None)
+        return memo[name]
+    return node
+
+
+def scan_bonds(zpath, issuers, leis=(), c=None, chunk=500_000):
+    """Positions des émetteurs du volet B d'une archive (nom reconnu, ou LEI déjà relevé avec un tel nom) et leurs tables
+    liées ; les noms du préfiltre que la règle écarte sont comptés. Retourne (tables, statistiques, LEI relevés dans
+    cette archive avec un nom reconnu, décomptes des noms écartés)."""
+    c = c or cols()
+    h = c["holding"]
+    pre, node = bond_prefilter(issuers), bond_namer(issuers)
+    with zipfile.ZipFile(zpath) as z:
+        m = _member(z, c["tables"]["holding"])
+
+        def read(leis):
+            kept, other, columns = [], [], None
+            with z.open(m) as fh:
+                for df in pd.read_csv(io.TextIOWrapper(fh, encoding="utf-8", errors="replace"), sep="\t", dtype=str,
+                                      chunksize=chunk, quoting=csv.QUOTE_NONE, keep_default_na=False, na_values=[""],
+                                      on_bad_lines="warn"):
+                    columns = columns or list(df.columns)
+                    name = df[h["issuer_name"]].fillna("")
+                    hit = name.str.contains(pre)
+                    named = pd.Series(False, index=df.index)
+                    if hit.any():
+                        named[hit] = [node(v) is not None for v in name[hit]]
+                    k = named | df[h["issuer_lei"]].fillna("").str.strip().isin(leis)
+                    if k.any():
+                        kept.append(df[k])
+                    o = hit & ~k
+                    if o.any():
+                        other.append(df.loc[o, [h["issuer_name"], h["asset_cat"]]])
+            return (pd.concat(kept, ignore_index=True) if kept else pd.DataFrame(columns=columns or []),
+                    pd.concat(other, ignore_index=True) if other else pd.DataFrame(columns=[h["issuer_name"], h["asset_cat"]]))
+        leis = set(leis)
+        hold, oth = read(leis)
+        named = hold[h["issuer_name"]].map(node).notna()
+        found = set(hold.loc[named, h["issuer_lei"]].dropna().astype(str).str.strip()) - NOT_LEI
+        if found - leis:                 # LEI relevé dans cette archive même : second passage, une fois
+            leis |= found
+            hold, oth = read(leis)
+        ids, acc = set(hold[h["holding_id"]]), set(hold[h["accession"]])
+        out = {"holding": hold}
+        for t in ("identifiers", "debt"):
+            out[t] = _read(z, c["tables"][t], key=(c[t]["holding_id"], ids))
+        for t in ("submission", "registrant", "fund"):
+            out[t] = _read(z, c["tables"][t], key=(c[t]["accession"], acc))
+    nodes = hold[h["issuer_name"]].map(node)
+    cnt = (oth.rename(columns={h["issuer_name"]: "issuer_name", h["asset_cat"]: "asset_cat"})
+           .groupby(["issuer_name", "asset_cat"], dropna=False).size().reset_index(name="n"))
+    stats = {k: len(v) for k, v in out.items()}
+    stats["by_name"] = {nd: int(n) for nd, n in nodes.value_counts().sort_index().items()}
+    stats["by_lei_only"] = int(nodes.isna().sum())
+    stats["other_names"] = int(cnt["n"].sum()) if len(cnt) else 0
+    return out, stats, sorted(found), cnt
+
+
+def _bond_job(name, zpath, issuers, leis, meta):
+    import hashlib
+    sha = hashlib.sha256()
+    with open(zpath, "rb") as fh:
+        for b in iter(lambda: fh.read(1 << 22), b""):
+            sha.update(b)
+    out, stats, found, cnt = scan_bonds(zpath, issuers, leis)
+    d = BASE / name / B_SUBDIR
+    d.mkdir(parents=True, exist_ok=True)
+    for k, df in out.items():
+        df.to_parquet(d / f"{k}.parquet", index=False, compression="zstd")
+    cnt.to_parquet(d / "other_names.parquet", index=False, compression="zstd")
+    return dict(meta, status="scanned", bytes=zpath.stat().st_size, sha256=sha.hexdigest(), stats=stats,
+                leis_found=found, leis_applied=sorted(leis))
+
+
+def b_manifest():
+    if not B_MANIFEST.exists():
+        return {}
+    return {r["name"]: r for r in (json.loads(l) for l in B_MANIFEST.read_text(encoding="utf-8").splitlines() if l)}
+
+
+def _b_append(rec):
+    with open(B_MANIFEST, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+
+def _b_holdings(m, c=None):
+    h = (c or cols())["holding"]
+    use = [h["issuer_name"], h["issuer_lei"]]
+    out = [pd.read_parquet(BASE / k / B_SUBDIR / "holding.parquet", columns=use) for k, r in sorted(m.items())
+           if r.get("status") == "scanned" and (BASE / k / B_SUBDIR / "holding.parquet").exists()]
+    return pd.concat(out, ignore_index=True) if out else pd.DataFrame(columns=use)
+
+
+def bond_lei_evidence(hold, issuers, c=None):
+    """Par LEI relevé avec un nom reconnu : positions gardées qui le portent et, par nœud, celles qui portent son nom."""
+    h = (c or cols())["holding"]
+    node = bond_namer(issuers)
+    df = pd.DataFrame({"lei": hold[h["issuer_lei"]].fillna("").astype(str).str.strip().values,
+                       "node": hold[h["issuer_name"]].map(node).values})
+    pos = df.groupby("lei").size()
+    named = df.dropna(subset=["node"]).groupby(["lei", "node"]).size()
+    return {l: {"positions": int(pos[l]), "named": {nd: int(n) for nd, n in named[l].items()}}
+            for l in sorted(set(df.loc[df["node"].notna(), "lei"]) - NOT_LEI)}
+
+
+def bond_accepted(evidence):
+    """LEI -> nœud : la majorité des positions gardées qui portent le LEI, toutes archives scannées confondues, ont un
+    nom de ce nœud (la règle de SoftBank, D-0058, point 28)."""
+    return {l: nd for l, e in evidence.items() for nd, n in e["named"].items() if 2 * n > e["positions"]}
+
+
+def bond_leis(m=None, issuers=None):
+    """LEI acceptés, tirés des extraits des archives scannées."""
+    m = b_manifest() if m is None else m
+    return bond_accepted(bond_lei_evidence(_b_holdings(m), issuers or bond_issuers()))
+
+
+def fetch_bonds(only=None):
+    """De la plus récente archive à la plus ancienne : tirée par le client unique, scannée dans un processus à part pour
+    les émetteurs du volet B, puis effacée (D-0071, point 4). Une archive publiée après l'as_of n'est ni gardée ni
+    scannée. Les LEI acceptés s'appliquent aux archives scannées ensuite ; une archive scannée avant qu'un LEI ne soit
+    accepté est signalée, et un nouvel appel la rescanne. L'empreinte de chaque archive se compare à celle de D-0065."""
+    from concurrent.futures import ProcessPoolExecutor
+    from .discovery import AS_OF
+    cfg = config.load()
+    n = cfg_nport(cfg)
+    issuers = bond_issuers(cfg)
+    client = net.SecClient(AS_OF, cfg)
+    done, d65 = b_manifest(), u_manifest()
+    leis = set(bond_leis(done, issuers))
+    BASE.mkdir(parents=True, exist_ok=True)
+    with ProcessPoolExecutor(max_workers=1) as pp:
+        for a in in_period(archive_list(), n["period"][0], n["period"][1]):
+            if only and a["name"] not in only:
+                continue
+            prev = done.get(a["name"], {})
+            if prev.get("status") == "after_as_of" or (prev.get("status") == "scanned" and applied(prev) >= leis):
+                continue
+            zpath = BASE / f"{a['name']}.zip"
+            t0 = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+            try:
+                _, headers = client.get(a["url"], timeout=900, dest=zpath)
+            except net.NotCollected as exc:
+                rec = dict(a, status="not_collected", reason=str(exc))
+            else:
+                lm, published = _published(headers)
+                meta = dict(a, retrieved=t0, last_modified=lm, sha256_d65=(d65.get(a["name"]) or {}).get("sha256"))
+                if published and published > AS_OF:
+                    zpath.unlink()     # publiée après l'as_of : connaissance postérieure, ni gardée ni scannée
+                    d = BASE / a["name"] / B_SUBDIR
+                    for f in (sorted(d.glob("*.parquet")) if d.exists() else []):
+                        f.unlink()
+                    rec = dict(meta, status="after_as_of")
+                else:
+                    try:
+                        rec = pp.submit(_bond_job, a["name"], zpath, issuers, sorted(leis), meta).result()
+                    except Exception as exc:          # scan échoué : l'archive reste à reprendre
+                        rec = dict(meta, status="parse_failed", reason=repr(exc)[:300])
+                    zpath.unlink()
+            _b_append(rec)
+            if rec.get("status") == "scanned":
+                leis = set(bond_leis(issuers=issuers))   # un LEI relevé ne vaut pour les archives suivantes qu'accepté
+            print(a["name"], rec.get("status"), json.dumps(rec.get("stats") or {}), flush=True)
+    m = b_manifest()
+    late = [k for k, r in sorted(m.items(), reverse=True) if r.get("status") == "scanned" and applied(r) < leis]
+    print("LEI acceptés :", json.dumps(bond_leis(m, issuers), sort_keys=True), "; archives à rescanner :", late)
+
+
+def bond_positions(c=None, archives=None, issuers=None):
+    """Positions du volet B des archives scannées (nom reconnu, ou LEI accepté), jointes comme celles de SoftBank ;
+    `name_node` est le nœud du nom, `lei_node` celui du LEI accepté."""
+    c = c or cols()
+    issuers = issuers or bond_issuers()
+    node = bond_namer(issuers)
+    m = b_manifest()
+    leis = bond_leis(m, issuers)
+    rows = []
+    for name, r in sorted(m.items()):
+        if r.get("status") != "scanned" or (archives and name not in archives):
+            continue
+        d = BASE / name / B_SUBDIR
+        t = {k: pd.read_parquet(d / f"{k}.parquet") for k in U_TABLES}
+        x = t["holding"].rename(columns={v: k for k, v in c["holding"].items()})
+        lei = x["issuer_lei"].fillna("").astype(str).str.strip()
+        nn = x["issuer_name"].map(node)
+        keep = nn.notna() | lei.isin(set(leis))
+        if not keep.any():
+            continue
+        x = x[keep].assign(name_node=nn[keep], lei_node=lei[keep].map(leis))
+        rows.append(_joined(x, t, c, name))
+    return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
+
+
+def bond_selection(p, issuers=None):
+    """Positions de la mesure (D-0071, point 4) et positions écartées à chaque étape : titres de dette en nominal (DBT,
+    PA), longues, titre identifié, puis émetteur du volet B (la majorité des positions du titre sous le nom d'un même
+    nœud, et l'une au moins sous un intitulé qui contient le mot de ce nœud). Le nœud d'une position est celui de son
+    titre."""
+    word = {i["node"]: re.compile(re.escape(i["title"]), re.I) for i in (issuers or bond_issuers())}
+    steps = {}
+
+    def keep(q, step, mask):
+        steps[step] = int((~mask).sum())
+        return q[mask].copy()
+    p = keep(p, "not_debt_in_principal", (p["unit"] == "PA") & (p["asset_cat"] == "DBT"))
+    p = keep(p, "not_long", p["payoff"] == "Long")
+    p["security"] = security_keys(p)
+    p = keep(p, "no_identifier", p["security"].notna())
+    node_of, seen = {}, set()
+    for sec, g in p.groupby("security", sort=True):
+        seen.add(sec)
+        nd = next((k for k, n in g["name_node"].value_counts().items() if 2 * n > len(g)), None)
+        if nd and g["title"].fillna("").str.contains(word[nd]).any():
+            node_of[sec] = nd
+    p = keep(p, "not_bond_issuer", p["security"].isin(set(node_of)))
+    p["node"] = p["security"].map(node_of)
+    steps["securities_kept"] = {nd: sorted(s for s, x in node_of.items() if x == nd) for nd in sorted(set(node_of.values()))}
+    steps["securities_out"] = sorted(seen - set(node_of))
+    return p, steps
+
+
+B_BASIS = ("valorisation déclarée par des fonds (Form N-PORT Data Sets), perspective counterparty : somme des valeurs dans la "
+           "monnaie du titre sur la somme des nominaux, au dernier dépôt de chaque série (un fonds fermé sans série compte "
+           "pour une) pour la date de portefeuille, tous niveaux de juste valeur ; une tension de marché déclarée par des "
+           "tiers, jamais une probabilité de défaut ni un fait comptable de l'émetteur, hors du financement, de l'exposition, "
+           "des paires, des cycles et de l'annexe F (D-0071, point 4)")
+
+
+def convertibles(p, cfg=None):
+    """Titres déclarés convertibles : une position au moins remplit l'Item C.9.f (rubriques de la description, section
+    5.12, que seuls les titres convertibles remplissent)."""
+    cols_ = [k for k in cfg_bonds(cfg).get("convertible_columns") or [] if k in p]
+    if not cols_ or p.empty:
+        return set()
+    m = p[cols_].notna().any(axis=1)
+    return set(p.loc[m, "security"])
+
+
+def bond_cells(as_of, issuers=None, p=None):
+    """Cellules nport_price_to_par du volet B : une par titre et par date de portefeuille ; sujet, le nœud du titre."""
+    from .measures import cell
+    if p is None:
+        if not b_manifest():
+            return []
+        p = bond_positions(issuers=issuers)
+    if p.empty:
+        return []
+    sel, _ = bond_selection(p, issuers)
+    last = latest_by_fund(sel)
+    r = par_rows(last)
+    node_of = dict(zip(sel["security"], sel["node"]))
+    conv = convertibles(last)
+    kd = p.groupby("accession")["filing_date"].max().to_dict()
+    out = []
+    for x in r.itertuples(index=False):
+        out.append(cell("nport_price_to_par", node_of[x.security], None, x.report_date, "as_known", as_of,
+                        breakdown=x.security, value=x.ratio, numerator=x.value_local, denominator=x.principal, unit="pure",
+                        knowledge_date=max(str(kd.get(a) or "") for a in x.accessions)[:10] or None,
+                        flags={"perspective": "counterparty", "n_series": int(x.n_series),
+                               "n_positions": int(x.n_positions), "principal": str(x.principal),
+                               "currency": x.currency, "title": x.title, "maturity": x.maturity,
+                               "issuer": x.issuer, "coupon": x.coupon, "convertible": x.security in conv,
+                               "issuer_names": ";".join(x.issuer_names.split(";")[:10]),
+                               "filings": len(x.accessions), "accessions": list(x.accessions)[:20], "basis": B_BASIS}))
+    return out
+
+
+def bond_exclusions(as_of):
+    """Archives de la période non tirées, non scannées ou publiées après l'as_of, et archives scannées avant qu'un LEI
+    ne soit accepté (positions possiblement manquées) : visibles dans les exclusions (§11)."""
+    cfg = config.load()
+    n = cfg_nport(cfg)
+    if not cfg_bonds(cfg) or not cache.other_path(*PAGE).exists():
+        return []
+    m = b_manifest()
+    leis = set(bond_leis(m))
+    who = ", ".join(i["node"] for i in bond_issuers(cfg))
+    out = []
+
+    def ex(key, reason, detail):
+        out.append({"exclusion_key": f"{reason}:nport_bonds:{key}", "item_kind": "period", "item_key": f"nport_bonds:{key}",
+                    "reason": reason, "detail": f"{detail} (obligations de {who}, D-0071)", "group_id": None,
+                    "accession": None, "content_key": None, "as_of": as_of})
+    for a in in_period(archive_list(), n["period"][0], n["period"][1]):
+        r = m.get(a["name"])
+        if r is None:
+            ex(a["name"], "not_processed", f"archive des Form N-PORT Data Sets non tirée ({a['filed_from']} au {a['filed_to']})")
+        elif r.get("status") == "not_collected":
+            ex(a["name"], "not_collected", f"archive des Form N-PORT Data Sets non tirée : {r.get('reason')}")
+        elif r.get("status") == "parse_failed":
+            ex(a["name"], "parse_failed", f"archive des Form N-PORT Data Sets non scannée : {r.get('reason')}")
+        elif r.get("status") == "after_as_of":
+            ex(a["name"], "not_public", f"archive des Form N-PORT Data Sets publiée après l'as_of (Last-Modified "
+               f"{r.get('last_modified')}) : connaissance postérieure, ni gardée ni lue")
+        elif applied(r) < leis:
+            ex(a["name"], "not_processed", "archive scannée avant que tous les LEI des émetteurs ne soient acceptés : "
+               "positions sous un autre nom possiblement manquées")
+    return out
+
+
+def bond_volume():
+    """Décompte des extraits et de la sélection du volet B, sans aucune valeur de la mesure (consigné avant calcul)."""
+    from collections import Counter
+    c = cols()
+    issuers = bond_issuers()
+    m = b_manifest()
+    raw = _b_holdings(m, c)
+    ev = bond_lei_evidence(raw, issuers, c)
+    ok = bond_accepted(ev)
+    p = bond_positions(c, issuers=issuers)
+    kept, steps = bond_selection(p, issuers)
+    last = latest_by_fund(kept)
+    conv = convertibles(last)
+    other = [pd.read_parquet(BASE / k / B_SUBDIR / "other_names.parquet") for k, r in sorted(m.items())
+             if r.get("status") == "scanned" and (BASE / k / B_SUBDIR / "other_names.parquet").exists()]
+    other = pd.concat(other, ignore_index=True) if other else pd.DataFrame(columns=["issuer_name", "asset_cat", "n"])
+    on = other.groupby("issuer_name")["n"].sum().sort_values(ascending=False) if len(other) else pd.Series(dtype=int)
+    refused = {l: e for l, e in ev.items() if l not in ok}
+    q = p[(p["unit"] == "PA") & (p["asset_cat"] == "DBT") & (p["payoff"] == "Long")].copy() if len(p) else p
+    if len(q):
+        q["security"] = security_keys(q)
+        q = q[q["security"].isin(set(steps.get("securities_out", [])))]
+    out_top = ([[s, int(len(g)), _mode(g["issuer_name"].dropna()), _mode(g["title"].dropna()),
+                 dict(Counter(g["name_node"].fillna("lei_only")))] for s, g in q.groupby("security")] if len(q) else [])
+    out_top = sorted(out_top, key=lambda r: (-r[1], r[0]))[:15]
+    by_node = {}
+    for nd, g in last.groupby("node"):
+        by_node[nd] = {"positions": int(len(g)), "series": int(g["fund"].nunique()), "securities": int(g["security"].nunique()),
+                       "convertible_securities": int(len(set(g["security"]) & conv)),
+                       "report_dates": int(g["report_date"].nunique()),
+                       "first_last": [min(g["report_date"]), max(g["report_date"])],
+                       "currencies": dict(Counter(g["currency"].fillna("")).most_common()),
+                       "levels": dict(Counter(g["fair_value_level"].fillna("")).most_common()),
+                       "cells": int(g.groupby(["security", "report_date"]).ngroups)}
+    nn = p["name_node"].fillna("lei_only") if len(p) else pd.Series(dtype=object)
+    return {"archives": {s: sum(1 for r in m.values() if r.get("status") == s) for s in sorted({r.get("status") for r in m.values()})},
+            "bytes": sum(int(r.get("bytes") or 0) for r in m.values() if r.get("status") == "scanned"),
+            "same_file_as_d0065": sum(1 for r in m.values() if r.get("sha256") and r.get("sha256") == r.get("sha256_d65")),
+            "extract_rows": len(raw), "leis_accepted": {l: dict(ev[l], node=nd) for l, nd in sorted(ok.items())},
+            "leis_refused": len(refused),
+            "leis_refused_top": sorted(refused.items(), key=lambda kv: -kv[1]["positions"])[:10],
+            "positions": len(p), "by_name_node": dict(Counter(nn).most_common()),
+            "asset_unit": {f"{a}/{u}": int(n) for (a, u), n in p.groupby(["asset_cat", "unit"]).size().items()} if len(p) else {},
+            "steps": {k: v for k, v in steps.items() if not k.startswith("securities")},
+            "securities_kept": {nd: len(v) for nd, v in steps.get("securities_kept", {}).items()},
+            "securities_out": len(steps.get("securities_out", [])), "securities_out_top": out_top,
+            "selected": len(kept), "after_latest_filing": len(last), "by_node": by_node,
+            "other_names": int(other["n"].sum()) if len(other) else 0,
+            "other_names_top": [[k, int(v)] for k, v in on.head(25).items()]}
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "page":
@@ -1533,6 +1934,17 @@ if __name__ == "__main__":
         um = u_manifest()
         print(len(um), "archives au manifeste des non-cotés ;",
               {s: sum(1 for r in um.values() if r.get("status") == s) for s in sorted({r.get("status") for r in um.values()})})
+    elif cmd == "bonds-fetch":
+        fetch_bonds(only=set(sys.argv[2:]) or None)
+    elif cmd == "bonds-volume":
+        print(json.dumps(bond_volume(), ensure_ascii=False, indent=1, default=str))
+    elif cmd == "bonds-status":
+        bm = b_manifest()
+        leis = set(bond_leis(bm))
+        print(len(bm), "archives au manifeste des obligations ;",
+              {s: sum(1 for r in bm.values() if r.get("status") == s) for s in sorted({r.get("status") for r in bm.values()})},
+              "; LEI acceptés :", json.dumps(bond_leis(bm), sort_keys=True), "; à rescanner :",
+              [k for k, r in sorted(bm.items(), reverse=True) if r.get("status") == "scanned" and applied(r) < leis])
     else:
         m = manifest()
         leis = softbank_leis(m)

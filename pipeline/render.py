@@ -542,6 +542,7 @@ def synthesis(con, as_of, stats):
     L += lender_liabilities_section(con, T)
     L += montages_section(con, T)
     L += nport_section(con, T)
+    L += bonds_section(con, T)
     L += unlisted_section(con, T)
     L += credit_section(con, T)
     L += labs_tagged_section(con, T)
@@ -1152,11 +1153,12 @@ def montages_section(con, T):
         L.append("")
     return L
 
-def nport_cells(con):
-    """Cellules nport_price_to_par (D-0058, volet F), par titre, dans l'ordre des dates de portefeuille."""
+def nport_cells(con, subject="NF:SOFTBANK"):
+    """Cellules nport_price_to_par d'un nœud (D-0058, volet F ; D-0071, volet B), par titre, dans l'ordre des dates de
+    portefeuille."""
     by = defaultdict(list)
-    for r in q(con, """SELECT * FROM measures WHERE measure = 'nport_price_to_par' AND view = 'as_known'
-                       ORDER BY breakdown_key, period_end"""):
+    for r in q(con, """SELECT * FROM measures WHERE measure = 'nport_price_to_par' AND view = 'as_known' AND subject = ?
+                       ORDER BY breakdown_key, period_end""", subject):
         r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
         by[r["breakdown_key"]].append(r)
     return by
@@ -1188,8 +1190,8 @@ def nport_section(con, T):
              "est dans `series.md`.")
     L.append("")
     n = sum(len(v) for v in by.values())
-    L.append(f"Cellules : {T.n('measures', {'measure': 'nport_price_to_par'}, n)}, sur "
-             f"{T.n('measures', {'measure': 'nport_price_to_par', 'securities': True}, len(by))} titres, du "
+    L.append(f"Cellules : {T.n('measures', {'measure': 'nport_price_to_par', 'subject': 'NF:SOFTBANK'}, n)}, sur "
+             f"{T.n('measures', {'measure': 'nport_price_to_par', 'subject': 'NF:SOFTBANK', 'securities': True}, len(by))} titres, du "
              f"{min(r['period_end'] for rs in by.values() for r in rs)} au {last_date}.")
     L.append("")
     L.append(f"Titres détenus par au moins un fonds dans les trois mois qui précèdent la dernière date de portefeuille ({last_date}) :")
@@ -1210,8 +1212,95 @@ def nport_section(con, T):
                  f"{rs[0]['period_end']} ({T.m(rs[0], fmt='pct')}) |")
     L.append("")
     L.append(f"Titres sans position déclarée dans ces trois mois (remboursés, rachetés ou cédés par les fonds) : "
-             f"{T.n('measures', {'measure': 'nport_price_to_par', 'securities_without_recent_position': True}, len(gone))}.")
+             f"{T.n('measures', {'measure': 'nport_price_to_par', 'subject': 'NF:SOFTBANK', 'securities_without_recent_position': True}, len(gone))}.")
     L.append("")
+    return L
+
+
+def bond_nodes():
+    """Nœuds du volet B de D-0071, dans l'ordre de la configuration."""
+    return [i["node"] for i in ((config.load().get("nport") or {}).get("bonds") or {}).get("issuers") or []]
+
+
+def bond_title(sec, fl):
+    """Émetteur, coupon, échéance et monnaie d'un titre du volet B de D-0071, tels que les fonds les déclarent le plus
+    souvent ; « convertible » si une position au moins remplit l'Item C.9.f."""
+    cp = fl.get("coupon")
+    cp = fr_num(Decimal(str(cp)), 3).rstrip("0").rstrip(",") + " %" if cp not in (None, "") else "coupon n.d."
+    conv = ", convertible" if fl.get("convertible") else ""
+    return f"{fl.get('issuer') or '?'} {cp}{conv}, échéance {fl.get('maturity') or 'n.d.'} ({fl.get('currency')}, {sec})"
+
+
+def bonds_section(con, T):
+    """Volet B de D-0071 : obligations d'Oracle, de CoreWeave et de Beignet valorisées par les fonds (Form N-PORT)."""
+    nodes = [(g, nport_cells(con, g)) for g in bond_nodes()]
+    nodes = [(g, by) for g, by in nodes if by]
+    if not nodes:
+        return []
+    L = ["## Obligations d'Oracle, de CoreWeave et de Beignet valorisées par les fonds (Form N-PORT)", ""]
+    L.append("Valeur que les fonds déclarent pour les obligations qu'ils détiennent, rapportée au nominal, dans la monnaie du "
+             "titre : la mesure des obligations de SoftBank, sur trois autres nœuds (Form N-PORT Data Sets ; D-0058, points 8 "
+             "et 28 ; D-0071, point 4). Une cellule par titre (ISIN) et par date de portefeuille, au dernier dépôt de chaque "
+             "série, tous niveaux de juste valeur confondus ; chaque fonds déclare à la fin de son propre trimestre. L'émetteur "
+             "se reconnaît au début de son nom (« Oracle Corp », « CoreWeave », « Beignet Investor ») : les titres des filiales "
+             "de CoreWeave qui portent son nom en sont, ceux de « Vantage Oracle TX » ou d'« Oracle Vision Holdco » non. C'est "
+             "une tension de marché déclarée par des tiers (perspective `counterparty`), jamais une probabilité de défaut ni un "
+             "fait comptable de l'émetteur : elle n'entre ni dans le financement, ni dans l'exposition, les paires, les cycles "
+             "ou l'annexe F. La série complète est dans `series.md`.")
+    L.append("")
+    for g, by in nodes:
+        last_date = max(r["period_end"] for rs in by.values() for r in rs)
+        recent = (dt.date.fromisoformat(last_date) - dt.timedelta(days=92)).isoformat()
+        n = sum(len(v) for v in by.values())
+        L.append(f"**{group_label(g)} ({g})** : {T.n('measures', {'measure': 'nport_price_to_par', 'subject': g}, n)} cellules, "
+                 f"sur {T.n('measures', {'measure': 'nport_price_to_par', 'subject': g, 'securities': True}, len(by))} titres, "
+                 f"du {min(r['period_end'] for rs in by.values() for r in rs)} au {last_date}. Titres détenus par au moins un "
+                 f"fonds dans les trois mois qui précèdent la dernière date de portefeuille :")
+        L.append("")
+        L.append("| Titre | Dernière date | Valeur ÷ nominal | Séries | Nominal détenu | Plus bas (date) | Première date (valeur ÷ nominal) |")
+        L.append("| --- | --- | ---: | ---: | ---: | --- | --- |")
+        gone = []
+        for sec, rs in sorted(by.items(), key=lambda kv: (kv[1][-1]["fl"].get("maturity") or "", kv[0])):
+            last = rs[-1]
+            if last["period_end"] < recent:
+                gone.append(sec)
+                continue
+            lo = min(rs, key=lambda r: (Decimal(str(r["value"])), r["period_end"]))
+            fl = last["fl"]
+            L.append(f"| {bond_title(sec, fl)} | {last['period_end']} | {T.m(last, fmt='pct')} | "
+                     f"{T.n('measures', {'nport_series': [g, sec, last['period_end']]}, fl.get('n_series'))} | "
+                     f"{T.m(last, 'denominator', fmt='mn')} {fl.get('currency')} | {T.m(lo, fmt='pct')} ({lo['period_end']}) | "
+                     f"{rs[0]['period_end']} ({T.m(rs[0], fmt='pct')}) |")
+        L.append("")
+        L.append(f"Titres sans position déclarée dans ces trois mois (échus, remboursés, rachetés ou cédés par les fonds) : "
+                 f"{T.n('measures', {'measure': 'nport_price_to_par', 'subject': g, 'securities_without_recent_position': True}, len(gone))}.")
+        L.append("")
+    return L
+
+
+def bonds_series(con, T):
+    """Volet B de D-0071 : série complète, une table par titre et par nœud."""
+    L = []
+    for g in bond_nodes():
+        by = nport_cells(con, g)
+        if not by:
+            continue
+        L.append(f"## {group_label(g)} ({g}) : obligations valorisées par les fonds (Form N-PORT)")
+        L.append("")
+        L.append("Valeur déclarée ÷ nominal, dans la monnaie du titre, au dernier dépôt de chaque série pour la date de "
+                 "portefeuille, tous niveaux de juste valeur ; nombre de séries (un fonds fermé sans série compte pour une). "
+                 "Perspective `counterparty` : une tension de marché déclarée par des tiers, jamais une probabilité de défaut "
+                 "ni un fait comptable de l'émetteur (D-0071, point 4).")
+        L.append("")
+        for sec, rs in sorted(by.items(), key=lambda kv: (kv[1][-1]["fl"].get("maturity") or "", kv[0])):
+            L.append(f"**{bond_title(sec, rs[-1]['fl'])}**")
+            L.append("")
+            L.append("| Date de portefeuille | Valeur ÷ nominal | Séries |")
+            L.append("| --- | ---: | ---: |")
+            for r in rs:
+                L.append(f"| {r['period_end']} | {T.m(r, fmt='pct')} | "
+                         f"{T.n('measures', {'nport_series': [g, sec, r['period_end']]}, r['fl'].get('n_series'))} |")
+            L.append("")
     return L
 
 
@@ -2848,6 +2937,7 @@ def series(con, as_of, stats):
                          f"{T.n('measures', {'nport_series': [sec, r['period_end']]}, r['fl'].get('n_series'))} |")
             L.append("")
     if "nport" in (config.load().get("scope") or []):
+        L += bonds_series(con, T)
         L += unlisted_series(con, T)
         L += credit_series(con, T)
     if "labs" in (config.load().get("scope") or []):

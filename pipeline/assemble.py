@@ -446,6 +446,11 @@ def run(as_of, use_cache=True, apercu=False):
         nport_excl += uexcl
         stats["nport_unlisted"] = {m: sum(1 for c in ucells if (c["measure"] if isinstance(c, dict) else c.measure) == m)
                                    for m in ("nport_equity_mark", "nport_equity_held", "nport_credit_mark")}
+        # D-0071, volet B : obligations d'Oracle, de CoreWeave et de Beignet, même mesure que celles de SoftBank
+        bcells = M.value("nport_bonds", lambda: nport.bond_cells(as_of), key=as_of)
+        cells += bcells
+        nport_excl += nport.bond_exclusions(as_of)
+        stats["nport_bonds"] = dict(Counter(c["subject"] if isinstance(c, dict) else c.subject for c in bcells))
     # D-0067 : clauses des contrats, capacités et événements propres aux laboratoires (hors annexe F)
     if "labs" in scope:
         from . import lab_terms
