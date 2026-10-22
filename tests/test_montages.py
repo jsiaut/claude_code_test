@@ -324,7 +324,7 @@ class AnthropicChain(unittest.TestCase):
         # pour les 8-K
         self.assertTrue(all(v.get("evidence") in ("triplet", "registry") for v in S.values()))
         self.assertEqual({m for m, v in S.items() if v.get("evidence") == "registry"},
-                         {"labs_contracts", "labs_events", "backlog"})
+                         {"labs_contracts", "labs_events", "backlog", "backlog_values"})
         for ft, items in (("EX-10.1", "1.01,9.01"), ("EX-99.1", "7.01"), (None, "7.01,9.01"), (None, "1.01,2.03,9.01")):
             self.assertEqual(ev(d(ft, items), S["labs_contracts"]), ev(d(ft, items), sp))
         self.assertEqual(ev(d("EX-99.1", "7.01"), S["stargate"]), ("E", "unaudited", "furnished"))
