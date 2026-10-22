@@ -3182,3 +3182,29 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - les tirages du volet A (submissions, 13F, 13D et 13G), puis leur volume consigné ici avant calcul ;
   - l'intégration : réassemblage, rendus, résultats, tests, commit, push, rapport.
   - Réseau : un seul processus à la fois, environ 28 archives et quelques centaines de requêtes.
+
+  (6) Tirage de N-PORT et volume du volet B, consignés avant tout calcul de la mesure :
+  - Le tirage a commencé après le commit du code du volet B (9966307), pendant l'écriture du code du volet A, qui ne tire rien. Aucune donnée du volet A n'est tirée avant son code (9fec093).
+  - 28 archives tirées une troisième fois (11,94 Go, 28 requêtes), toutes scannées, aucune publiée après l'as_of. Chacune a la même empreinte SHA-256 qu'en D-0065. Extraits gardés sous `bonds/` : 160 682 positions ; archives effacées.
+  - LEI : cinq acceptés à la majorité, aucune archive à rescanner.
+    - Deux d'Oracle : 137 828 et 6 083 positions, dont 137 805 et 6 070 sous un nom d'Oracle.
+    - Trois de CoreWeave : 4 553, 48 et 27 positions.
+    - Trois refusés : un LEI porté par 8 623 positions dont 2 sous le nom d'Oracle, et deux autres de 157 et 99 positions.
+  - Positions retenues par le nom ou par un LEI accepté : 151 809. Oracle 144 508 par le nom, CoreWeave 6 202, Beignet 1 059, et 40 par le seul LEI.
+  - Étapes de la sélection :
+    - 45 533 hors titres de dette en nominal, dont 41 182 actions ;
+    - 38 courtes, 101 sans identifiant ;
+    - 4 hors émetteur : trois titres Reg S de CoreWeave dont l'intitulé (« CRWV 9 02/01/31 ») ne contient pas « COREWEAVE ».
+  - Retenues : 106 133 positions, 104 524 au dernier dépôt de chaque série.
+    - Oracle : 96 titres, 1 771 séries, 108 dates de portefeuille du 2019-09-30 au 2026-07-31, 3 944 cellules. Niveaux 2 (99 856 positions) et 1 (10) ; 115 positions en euros.
+    - CoreWeave : 8 titres dont 2 convertibles, 623 séries, 21 dates du 2025-05-30 au 2026-07-31, 66 cellules. Niveau 2 ; 52 positions en euros.
+    - Beignet : 2 titres, 390 séries, 14 dates du 2025-09-30 au 2026-07-31, 14 cellules. Niveaux 2 (957) et 3 (94).
+    - En tout, 4 024 cellules attendues.
+  - Noms du préfiltre que la règle écarte : 2 231 positions.
+    - Oracle Financial Services Software, société indienne, au moins 1 822 positions sous huit graphies ; des contrats sur écart (« CFD ») ; des produits structurés d'autres émetteurs (« UBS AG into Oracle Corp. ») ; « Oracle » seul (52) ; « Vantage Oracle TX » (24) et « Oracle Vision Holdco » (23).
+    - Le nom abrégé écarte aussi 82 positions de l'obligation de Beignet : « BEIGNET INV LLC » (32), « BEIGNET INVEST 6.581% 05/30/49 » (17), « Beignet Investments, LLC » (14), « BEIGNET INVSTR. LL 6.581% » (11), « Beignet » (8). La règle reste telle que fixée au point 4 ; ce manque se publie avec la mesure.
+  - Précisions du code, fixées avant le tirage :
+    - le début de nom s'arrête à une fin de mot : « oracle corp/de » oui, « oracle corporate » non ;
+    - l'intitulé doit contenir le mot du nœud du titre ;
+    - un titre est dit convertible si une position remplit l'Item C.9.f (rubriques IS_CONVTIBLE_MANDATORY et IS_CONVTIBLE_CONTINGENT, section 5.12 de la description) ;
+    - une cellule garde au plus 20 accessions, avec leur nombre.
