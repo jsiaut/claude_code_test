@@ -1,6 +1,6 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-10-07, comparée à l'exécution précédente, dont les tables sont celles du commit 97471075ad02 (2026-10-22). Généré depuis les tables (D-0069, point 8).*
+*Exécution du 2026-10-07, comparée à l'exécution précédente, dont les tables sont celles du commit 1d248f689f57 (2026-10-22). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
@@ -8,10 +8,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 
 ## Événements nouveaux de l'annexe F
 
-**Apparus** (trimestres des groupes) :
-- Cerebras : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 2 trimestre(s)
-- Cerebras : F2 (flux après financement des contreparties négatif) — 4 trimestre(s)
-- Cerebras : F5 (faiblesse significative du contrôle interne) — 2 trimestre(s)
+**Apparus** : aucun.
 
 **Disparus** : aucun.
 
@@ -24,11 +21,11 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 - Arêtes de montant : commercial 3 159, credit_support 104, customer_consideration 101, financing 1 867 ; arêtes de relation : 3 159.
 - Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : Akamai (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Applied Digital (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 96,0 % [94,0 % ; 98,0 %] ; Apollo (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; ASML (exercice clos le 2025-12-31) : nommés 61,2 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; Backblaze (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blackstone (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Cerebras (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Cipher (exercice clos le 2025-12-31) : nommés 70,0 %, anonymes d'au moins 10 % 0,0 % ; Core Scientific (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Dell (exercice clos le 2026-01-30) : nommés 0,0 %, anonymes d'au moins 10 % 12,0 % [11,5 % ; 12,5 %] ; Galaxy (exercice clos le 2025-12-31) : nommés 38,0 %, anonymes d'au moins 10 % 0,0 % ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Hut 8 (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Intel (exercice clos le 2025-12-27) : nommés 43,0 %, anonymes d'au moins 10 % 43,0 % [42,5 % ; 43,5 %] ; IREN (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 7,3 %, anonymes d'au moins 10 % 0,0 % ; Micron (exercice clos le 2025-08-28) : nommés 17,0 %, anonymes d'au moins 10 % 0,0 % ; Nebius (exercice clos le 2025-12-31) : nommés 40,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blue Owl (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Riot (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SK hynix (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Supermicro (exercice clos le 2026-06-30) : nommés 0,2 %, anonymes d'au moins 10 % 28,1 % [28,0 % ; 28,2 %] ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TSMC (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TeraWulf (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
 - Cellules de la question 4, par statut et motif : calculée 18 235 ; indéterminée / historique tronqué 8 367 ; indéterminée / concept non résolu 2 408 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 710 ; indéterminée / précondition non remplie 1 481 ; indéterminée / non publié 1 352 ; indéterminée / recherche incomplète 1 065 ; bornée 796 ; indéterminée / client anonyme 473 ; indéterminée / caviardé 346 ; indéterminée / terme manquant 161.
-- Requêtes : 25 424 au journal, dont 25 133 réussies, 146 884 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-22T15:29:04.106+00:00.
+- Requêtes : 25 582 au journal, dont 25 291 réussies, 158 821 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-10-22T18:10:15.943+00:00.
 - Blocs lus : 11 195 sur 11 551 clés de contenu ; par item de 8-K : 1.01 469, 1.02 49, 2.01 38, 2.03 142, 3.03 35, 8.01 825 ; pièces arrêtées à leur en-tête : EX-4 356.
 - Lignes rejetées par la validation : 0.
 - Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 688 (collisions : 239).
-- Durée de l'assemblage : 757 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 830 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -89,16 +86,11 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 
 ## Exclusions nouvelles, par motif
 
-- `pending_entity` : +5, −1
-- `submitted_draft` : +5, −0
-- `history_left_censored` : +1, −0
-- `invalid_aggregate` : +1, −1
-- `not_processed` : +1, −6
-- `out_of_scope` : +1, −0
+- Aucune.
 
 ## Décisions et variantes nouvelles
 
-- D-0070 — Ajout de groupes : Cerebras Systems (CBRS) ; Fluidstack, groupe économique non déposant (§10.4). Règles fixées avant tout tirage.
+- D-0071 — Deux pistes : déclarations de détention (13F, 13D, 13G) et prix des obligations tirés de N-PORT (Oracle, CoreWeave, Beignet). Règles fixées avant tout tirage.
 
 ## Critères des annexes E et F
 
@@ -110,7 +102,7 @@ Modifiés : annex_f
 
 ## Dépôts nouveaux
 
-Dépôts lus pour la première fois : 10-Q 1, 424B4 1, 8-K 1, S-1/A 1, S-4/A 1.
+Dépôts lus pour la première fois : 13F-HR 116, 13F-HR/A 4, SCHEDULE 13G 2, SC 13G 1, SC 13G/A 1, SCHEDULE 13G/A 1.
 
 ## Valeurs changées pour des périodes déjà publiées
 
@@ -118,81 +110,15 @@ Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cel
 
 | Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
 | --- | ---: | ---: | ---: | ---: |
-| `annex_e_outcome` | 2 | 0 | 17 | 7 |
-| `capex_accrual` | 0 | 0 | 10 | 0 |
-| `capex_cash` | 0 | 0 | 44 | 0 |
-| `capex_to_cfo` | 0 | 0 | 88 | 0 |
-| `capex_to_revenue` | 0 | 0 | 44 | 0 |
-| `capitalized_interest` | 0 | 0 | 44 | 0 |
-| `cfo_net_income_gap` | 0 | 0 | 44 | 0 |
-| `cip_share` | 0 | 0 | 44 | 0 |
-| `consideration_to_customer` | 0 | 0 | 20 | 0 |
-| `contract_coverage` | 0 | 0 | 6 | 7 |
-| `contracted_backlog_share` | 0 | 0 | 2 | 0 |
-| `counterparty_exposure` | 0 | 0 | 7 | 7 |
-| `cov_interest_coverage` | 0 | 0 | 88 | 0 |
-| `cov_pik_interest` | 0 | 0 | 44 | 0 |
-| `customer_advances` | 0 | 0 | 44 | 0 |
-| `customer_concentration_anonymous` | 0 | 0 | 24 | 0 |
-| `depreciation_life_published` | 0 | 0 | 30 | 0 |
-| `documented_backlog_dependency` | 0 | 0 | 12 | 0 |
-| `documented_pair_coverage` | 0 | 0 | 5 | 0 |
-| `documented_path` | 0 | 0 | 2 | 1 |
-| `documented_revenue_dependency` | 0 | 0 | 62 | 74 |
-| `earnings_bridge_pretax` | 0 | 0 | 20 | 0 |
-| `earnings_bridge_share` | 0 | 0 | 10 | 0 |
-| `eq_diluted_share_count_change` | 0 | 0 | 44 | 0 |
-| `eq_equity_and_accumulated_deficit` | 0 | 0 | 88 | 0 |
-| `exposure_matrix` | 0 | 0 | 15 | 1 |
-| `fcf_after_counterparty_financing` | 0 | 0 | 44 | 0 |
-| `fcf_after_finance_leases` | 0 | 0 | 44 | 0 |
-| `fcf_after_sbc` | 0 | 0 | 44 | 0 |
-| `fcf_basic` | 0 | 0 | 44 | 0 |
-| `finance_lease_additions` | 0 | 0 | 10 | 0 |
-| `financed_status` | 0 | 0 | 656 | 772 |
-| `fragility_event` | 0 | 0 | 220 | 0 |
-| `gross_margin` | 0 | 0 | 44 | 0 |
-| `implied_useful_life` | 0 | 0 | 10 | 0 |
-| `investor_customer_revenue_share` | 0 | 0 | 10 | 0 |
-| `lab_capacity` | 0 | 0 | 4 | 4 |
-| `lab_contract_clause` | 0 | 0 | 22 | 22 |
-| `lab_ledger` | 0 | 0 | 6 | 5 |
-| `lab_tagged_value` | 0 | 0 | 44 | 41 |
-| `lease_not_commenced_bridge` | 0 | 0 | 40 | 0 |
-| `lev_debt_and_leases_to_operating_income_plus_da` | 0 | 0 | 88 | 0 |
-| `liq_cash_to_12m_outflows` | 0 | 0 | 20 | 0 |
-| `liq_principal_due_to_cash` | 0 | 0 | 20 | 0 |
-| `liq_undrawn_committed_facilities` | 0 | 0 | 44 | 0 |
-| `named_edge_coverage` | 0 | 0 | 15 | 0 |
-| `nport_equity_held` | 0 | 0 | 19 | 19 |
-| `nport_equity_mark` | 0 | 0 | 88 | 88 |
-| `operating_lease_rou_additions` | 0 | 0 | 44 | 0 |
-| `operating_margin` | 0 | 0 | 44 | 0 |
-| `receivables_collection_period` | 0 | 0 | 88 | 0 |
-| `relationship_conclusion` | 0 | 0 | 6 | 7 |
-| `revenue_growth` | 0 | 0 | 88 | 0 |
-| `rpo_beyond_12m` | 0 | 0 | 4 | 0 |
-| `rpo_total` | 0 | 0 | 44 | 0 |
-| `sbc_to_cfo` | 0 | 0 | 44 | 0 |
-| `segment_significant_expenses` | 0 | 0 | 4 | 0 |
-| `sig_auditor_change_or_nonreliance` | 0 | 0 | 22 | 0 |
-| `sig_covenant_events` | 0 | 0 | 22 | 0 |
-| `sig_distress_8k_items` | 0 | 0 | 22 | 0 |
-| `sig_going_concern` | 0 | 0 | 22 | 0 |
-| `sig_late_filing` | 0 | 0 | 22 | 0 |
-| `sig_material_weakness` | 0 | 0 | 22 | 0 |
-| `sig_pledged_assets` | 0 | 0 | 22 | 0 |
-| `stock_paid_additions` | 0 | 0 | 10 | 0 |
-| `supplier_concentration` | 0 | 0 | 30 | 0 |
-| `vendor_financed_additions` | 0 | 0 | 10 | 0 |
-| `visible_pairs_count` | 0 | 0 | 5 | 0 |
-| `working_capital` | 0 | 0 | 264 | 0 |
+| `nport_price_to_par` | 0 | 0 | 4 024 | 0 |
+| `ownership_position` | 0 | 0 | 54 | 0 |
+| `ownership_stake` | 0 | 0 | 5 | 0 |
 
 Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 107, Apollo 84, ASML 7, Broadcom 22, Backblaze 10, Blackstone 1, Cipher 45, Core Scientific 96, CoreWeave 3, Dell 277, Alphabet 20, Hut 8 7, Intel 44, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 32, Oracle 52, Blue Owl 7, Riot 112, Supermicro 162, TSMC 17, TeraWulf 20.
 
 ## Arêtes nouvelles
 
-- Apparues : commercial/amount 1, commercial/relation 3, customer_consideration/amount 5, financing/amount 8, financing/relation 2.
+- Apparues : aucune.
 - Disparues : aucune.
 
 ## Contrôles qui ont basculé
@@ -213,5 +139,5 @@ Relations candidates par paire du registre : na01 0, na02 0, na03 233, na04 0, n
 
 ## Changements dus à une nouvelle passe de lecture ou au code
 
-Lecture : 39 lignes d'observation nouvelles, dans 18 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
+Lecture : 0 lignes d'observation nouvelles, dans 0 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
 

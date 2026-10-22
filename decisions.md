@@ -3222,3 +3222,36 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Le sens d'une annexe se lit dans l'en-tête SGML : société visée et déposant, par leur CIK.
     - Une sortie compare deux 13F consécutifs de S. Le second doit être un rapport complet (13F HOLDINGS REPORT) : un rapport combiné laisse des lignes à un autre gestionnaire et ne prouve aucune absence.
     - Les dénominations légales valent aussi sans le suffixe d'État du nom conforme d'EDGAR (« rivian automotive inc / de »). Cela ajoute quatre formes : dave inc, jefferson capital inc, qualcomm inc, rivian automotive inc.
+
+  (8) Intégration et résultats :
+  - Réassemblage (830 s) :
+    - `measures` gagne 4 083 cellules : 4 024 `nport_price_to_par` pour les trois nœuds, 54 `ownership_position` et 5 `ownership_stake` ;
+    - `documents` gagne 130 lignes, les ressources tirées ;
+    - aucune autre ligne des huit tables ne change ;
+    - les 1 092 cellules de SoftBank ressortent à l'octet près (même empreinte de leur export).
+  - Volet B, à la dernière date de portefeuille (2026-07-31) :
+    - Oracle : 3 944 cellules sur 96 titres depuis le 2019-09-30. 58 titres sont détenus dans les trois derniers mois, de 56,1 % (3,85 % 2060) à 101,2 % (6,15 % 2029).
+      - Les six émissions de septembre 2025, entre 99,7 % et 100,6 % au 2025-09-30, valent 94,4 % (2030), 92,1 % (2032), 89,8 % (2035), 82,1 % (2045), 79,5 % (2055) et 78,6 % (2065), chacune à son plus bas.
+      - Celles de février 2026 sont passées de 95,9 %–100,4 % à 88,0 %–97,5 %.
+    - CoreWeave : 66 cellules sur 8 titres depuis le 2025-05-30.
+      - Valeurs de 88,2 % (convertible 1,75 % 2032, à 120,5 % à sa première date, le 2026-04-30) à 94,2 % (convertible 1,75 % 2031).
+      - Les obligations à haut rendement, entre 89,5 % et 93,6 %, sont toutes à leur plus bas, sauf celle de 2030 (92,3 % au 2025-11-30).
+    - Beignet : 14 cellules. L'obligation 6,581 % 2049, à 106,7 % au 2025-10-31, vaut 96,9 %, son plus bas, chez 76 séries.
+    - Une obligation à coupon fixe perd de sa valeur quand les taux montent comme quand l'écart de crédit s'élargit, et la mesure ne sépare pas les deux. Les titres de 2020-2021, à coupon bas, sont sous le pair par le seul effet des taux.
+    - Rendu : un taux annuel déclaré en fraction (sous 0,25) s'affiche en pourcentage, signalé. C'est le cas d'un titre à taux variable d'Oracle (2029).
+  - Volet A :
+    - 54 positions au 13F :
+      - Amazon → Rivian 19 et Alphabet → Planet Labs 19, du 2021-12-31 au 2026-06-30 ;
+      - NVIDIA → CoreWeave 6 : 24 182 460 actions au 2025-03-31, 47 213 353 depuis le 2026-03-31 ;
+      - NVIDIA → Intel 3 : 214 776 632 actions depuis le 2025-12-31 ;
+      - NVIDIA → Nebius 7 : 1 190 476 actions depuis le 2024-12-31.
+    - 5 parts aux annexes :
+      - Amazon → Rivian 18,1 % au 2021-12-31 ;
+      - Intel → ASML 1,6 % au 2018-12-31 ;
+      - NVIDIA → CoreWeave 7,0 % au 2025-03-31 et 11,5 % au 2026-01-23, avec les mêmes nombres d'actions qu'au 13F ;
+      - NVIDIA → Nebius 9,3 % au 2026-07-13 (22 256 412 actions, après le dernier 13F).
+    - Aucune sortie. La série de 13F de chaque paire est continue de sa première ligne au 2026-06-30, et aucune annexe n'est à zéro action. Les 27 744 cellules du statut « financé » sont inchangées.
+    - Intel ne déclare aucune ligne d'ASML à ses 13F de la période : rien à comparer, donc aucune sortie, et la paire est déjà `lapsed`.
+    - NVIDIA → CoreWeave : les déclarations datent la détention du 2025-03-31 au plus tôt, dans un trimestre déjà `active`. Elles ne changent rien, comme prévu au point 2.
+  - Bug n° 4 de l'audit : ces déclarations ne ferment un statut que si le financeur sort. Aucun des dix-huit ne l'a fait dans la période. Le bug reste ouvert pour les participations non cotées et pour les sorties d'avant 2019.
+  - Question laissée à l'utilisateur. NVIDIA → CoreWeave vaut `never` jusqu'au 2025-01-26 alors que NVIDIA détenait des actions avant l'introduction. Aucune pièce en cache ne date son entrée. Faut-il qu'une détention documentée plus tard, d'origine inconnue, fasse passer les trimestres antérieurs de `never` à `unknown` ?

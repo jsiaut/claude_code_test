@@ -154,6 +154,10 @@ class Render(unittest.TestCase):
         fl = dict(fl, issuer="COREWEAVE INC", coupon="1.75", maturity="2031-12-01", convertible=True)
         self.assertEqual(bond_title("US21873SAB83", fl),
                          "COREWEAVE INC 1,75 %, convertible, échéance 2031-12-01 (USD, US21873SAB83)")
+        fl = dict(fl, issuer="ORACLE CORP", coupon=".04698559", maturity="2029-02-04", convertible=False)
+        self.assertEqual(bond_title("US68389XDV47", fl),
+                         "ORACLE CORP 4,699 % (déclaré en fraction), échéance 2029-02-04 (USD, US68389XDV47)")
+        self.assertTrue(bond_title("X", dict(fl, coupon="0")).startswith("ORACLE CORP 0 %,"))
 
 
 if __name__ == "__main__":

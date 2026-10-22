@@ -1225,9 +1225,15 @@ def bond_nodes():
 
 def bond_title(sec, fl):
     """Émetteur, coupon, échéance et monnaie d'un titre du volet B de D-0071, tels que les fonds les déclarent le plus
-    souvent ; « convertible » si une position au moins remplit l'Item C.9.f."""
+    souvent ; « convertible » si une position au moins remplit l'Item C.9.f. Un taux annuel déclaré en fraction (sous
+    0,25, « 0,047 » pour 4,7 %) s'affiche en pourcentage, signalé."""
     cp = fl.get("coupon")
-    cp = fr_num(Decimal(str(cp)), 3).rstrip("0").rstrip(",") + " %" if cp not in (None, "") else "coupon n.d."
+    if cp in (None, ""):
+        cp = "coupon n.d."
+    else:
+        c = Decimal(str(cp))
+        frac = 0 < c < Decimal("0.25")
+        cp = fr_num(c * 100 if frac else c, 3).rstrip("0").rstrip(",") + " %" + (" (déclaré en fraction)" if frac else "")
     conv = ", convertible" if fl.get("convertible") else ""
     return f"{fl.get('issuer') or '?'} {cp}{conv}, échéance {fl.get('maturity') or 'n.d.'} ({fl.get('currency')}, {sec})"
 

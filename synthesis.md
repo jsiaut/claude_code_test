@@ -1,6 +1,6 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-10-07 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs`, `ownership` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
@@ -12,7 +12,7 @@
   - annexe F, ajout de F15 (D-0047) : « offre de rachat d'une BDC dont les parts acceptées sont inférieures aux parts apportées (réduction au prorata) » ; règle {"measure": "bdc_tender_acceptance_ratio", "condition": "acceptées < apportées, ou réduction au prorata annoncée", "dated_at": "expiration de l'offre"} ; sujets : bdc_vehicles
   - annexe F, ajout de F16 (D-0047) : « interruption d'un programme régulier d'offres de rachat d'une BDC » ; règle {"condition": "au moins quatre offres déposées à 120 jours au plus d'intervalle, puis aucune offre dans les 120 jours ; ni 8-A12B ni N-54C ou formulaire 15 dans l'intervalle", "dated_at": "dépôt de la dernière offre + 120 jours"} ; sujets : bdc_vehicles
   - annexe F, inchangés : F1, F2, F3, F4, F5, F6, F7, F8, F9, F10 (mêmes observables, mêmes règles)
-- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10 ; `nport` le 2026-10-19 ; `labs` le 2026-10-20, chaque fois après le rendement présenté). Premier passage : faits balisés des trente-trois groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
+- **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs`, `ownership` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10 ; `nport` le 2026-10-19 ; `labs` le 2026-10-20, chaque fois après le rendement présenté). Premier passage : faits balisés des trente-trois groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17; Intel, Micron, TSMC depuis le 2026-10-18; ASML, SK hynix depuis le 2026-10-18; Cerebras depuis le 2026-10-22. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 56 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 166 issues ; motifs : intervalle à cheval sur le seuil : 42, précondition non remplie : 27, historique tronqué : 13, recherche incomplète : 9, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, caviardé : 1. Issues déterminées : E.1 non étayé 68, E.1 étayé 5. E.2 seule (dépendance de revenu) : 83 issues indéterminées sur 83. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. Complète veut dire que tous les blocs du catalogue de lecture des dépôts de la paire sont lus (notes, items de 8-K, pièces annexées, Items 404, 9A et 4) ; le rapport de gestion et la description de l'activité n'en font pas partie, si bien qu'une pièce L5 qui ne serait que là échapperait à la recherche (D-0069, point 8). La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
 - **Contrôles comptables, vue `as_known`** : `mismatch` 1 860, `not_testable` 1 102, `ok` 30 255, `tautological` 1 399 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
@@ -5154,6 +5154,21 @@ Un montage que les notes d'un groupe décrivent sans nommer son financeur, ident
 
 Exclusions du bloc : `out_of_scope` 316 (relevés de portefeuille non lus, pièces écartées par la règle d'un montage ou sans paragraphe qualifiant, textes au-delà du plafond ; D-0046, D-0049).
 
+## Déclarations de détention (13F, 13D, 13G)
+
+Actions qu'un financeur déclare détenir dans une société de ses paires : au 13F (table d'information, par date de portefeuille) et aux annexes 13D et 13G (page de couverture, à la date de l'événement), lues par leurs champs, sans lecture de texte (D-0071, point 3). Ces déclarations prouvent une détention à une date, jamais son origine : elles n'ouvrent jamais la condition (a) du statut « financé », faute d'opération primaire attestée (§3.2). Une sortie publiée la ferme : un 13F complet sans ligne de la société après un 13F qui en portait, aucun des deux ne déclarant de traitement confidentiel, ou une annexe à zéro action. Elle ne ferme que les détentions en actions (`equity_primary`) de la paire ; obligations convertibles, bons et prêts restent ouverts. Les valeurs sont celles que le financeur déclare (en milliers de dollars avant 2023, converties). Ni position ni part n'entre dans le revenu, l'exposition, les paires ou l'annexe F ; la série complète est dans `series.md`.
+
+Cellules : 54 positions au 13F et 5 parts aux annexes 13D et 13G.
+
+| Paire | Positions au 13F | Dernière position (date de portefeuille) | Valeur déclarée | Dernière annexe (date de l'événement) | Sorties publiées | Statut « financé » au dernier trimestre |
+| --- | ---: | --- | ---: | --- | --- | --- |
+| Alphabet → PLANET LABS PBC | 19 | 35 248 893 actions (2026-06-30) | 1 168 M$ | — | aucune | unknown (2026-06-30) |
+| Amazon → RIVIAN AUTOMOTIVE, INC. / DE | 19 | 158 363 834 actions (2026-06-30) | 2 748 M$ | 18,1 % (2021-12-31, SC 13G) | aucune | unknown (2026-06-30) |
+| Intel → ASML | 0 | — | — | 1,6 % (2018-12-31, SC 13G/A) | aucune | lapsed (2026-06-27) |
+| NVIDIA → CoreWeave | 6 | 47 213 353 actions (2026-06-30) | 4 700 M$ | 11,5 % (2026-01-23, SCHEDULE 13G/A) | aucune | active (2026-07-26) |
+| NVIDIA → Intel | 3 | 214 776 632 actions (2026-06-30) | 29 989 M$ | — | aucune | active (2026-07-26) |
+| NVIDIA → Nebius | 7 | 1 190 476 actions (2026-06-30) | 329 M$ | 9,3 % (2026-07-13, SCHEDULE 13G) | aucune | active (2026-07-26) |
+
 ## Obligations de SoftBank valorisées par les fonds (Form N-PORT)
 
 Valeur que les fonds déclarent pour les obligations de SoftBank Group et de SoftBank Corp. qu'ils détiennent, rapportée au nominal, dans la monnaie du titre (Form N-PORT Data Sets ; D-0058, points 8, 27 et 28). Une cellule par titre (ISIN) et par date de portefeuille, au dernier dépôt de chaque série ; chaque fonds déclare à la fin de son propre trimestre. C'est une valorisation déclarée par des tiers, jamais une probabilité de défaut ni un fait comptable de SoftBank : elle n'entre dans aucune mesure de financement ni dans l'annexe F. Les positions d'autres émetteurs déclarées sous le nom ou le LEI de SoftBank Group (Sprint, Fortress) en sont écartées. La série complète est dans `series.md`.
@@ -5203,6 +5218,98 @@ Titres détenus par au moins un fonds dans les trois mois qui précèdent la der
 | SoftBank Group 8,25 %, échéance 2065-10-29 (USD, XS3203997427) | 2026-07-31 | 96,8 % | 4 | 6,4 M USD | 89,7 % (2026-03-31) | 2025-12-31 (93,7 %) |
 
 Titres sans position déclarée dans ces trois mois (remboursés, rachetés ou cédés par les fonds) : 13.
+
+## Obligations d'Oracle, de CoreWeave et de Beignet valorisées par les fonds (Form N-PORT)
+
+Valeur que les fonds déclarent pour les obligations qu'ils détiennent, rapportée au nominal, dans la monnaie du titre : la mesure des obligations de SoftBank, sur trois autres nœuds (Form N-PORT Data Sets ; D-0058, points 8 et 28 ; D-0071, point 4). Une cellule par titre (ISIN) et par date de portefeuille, au dernier dépôt de chaque série, tous niveaux de juste valeur confondus ; chaque fonds déclare à la fin de son propre trimestre. L'émetteur se reconnaît au début de son nom (« Oracle Corp », « CoreWeave », « Beignet Investor ») : les titres des filiales de CoreWeave qui portent son nom en sont, ceux de « Vantage Oracle TX » ou d'« Oracle Vision Holdco » non. C'est une tension de marché déclarée par des tiers (perspective `counterparty`), jamais une probabilité de défaut ni un fait comptable de l'émetteur : elle n'entre ni dans le financement, ni dans l'exposition, les paires, les cycles ou l'annexe F. La série complète est dans `series.md`.
+
+**Oracle (ORCL)** : 3 944 cellules, sur 96 titres, du 2019-09-30 au 2026-07-31. Titres détenus par au moins un fonds dans les trois mois qui précèdent la dernière date de portefeuille :
+
+| Titre | Dernière date | Valeur ÷ nominal | Séries | Nominal détenu | Plus bas (date) | Première date (valeur ÷ nominal) |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| ORACLE CORP 2,65 %, échéance 2026-07-15 (USD, US68389XBM65) | 2026-06-30 | 99,9 % | 38 | 282,5 M USD | 89,9 % (2022-10-31) | 2019-09-30 (101,9 %) |
+| ORACLE CORP 0 %, échéance 2026-07-22 (USD, CUSIP:6840C3GN7) | 2026-05-31 | 99,4 % | 1 | 3,7 M USD | 98,4 % (2026-02-28) | 2026-02-28 (98,4 %) |
+| ORACLE CORP 0 %, échéance 2026-07-23 (USD, US6840C3GP22) | 2026-05-31 | 99,3 % | 1 | 9,0 M USD | 98,0 % (2026-01-31) | 2026-01-31 (98,0 %) |
+| ORACLE CORP 2,8 %, échéance 2027-04-01 (USD, US68389XBU81) | 2026-07-31 | 98,7 % | 8 | 51,0 M USD | 88,3 % (2022-09-30) | 2020-03-31 (101,8 %) |
+| ORACLE CORP 3,25 %, échéance 2027-11-15 (USD, US68389XBN49) | 2026-07-31 | 97,7 % | 20 | 90,4 M USD | 88,8 % (2022-10-31) | 2019-09-30 (105,7 %) |
+| ORACLE CORP 2,3 %, échéance 2028-03-25 (USD, US68389XCD57) | 2026-07-31 | 95,3 % | 24 | 87,3 M USD | 83,6 % (2022-09-30) | 2021-03-31 (101,2 %) |
+| ORACLE CORP 4,5 %, échéance 2028-05-06 (USD, US68389XCM56) | 2026-07-31 | 98,8 % | 15 | 54,8 M USD | 94,7 % (2023-10-31) | 2023-02-28 (96,2 %) |
+| ORACLE CORP 4,43 %, échéance 2028-08-03 (USD, US68389XCX12) | 2026-07-31 | 98,7 % | 13 | 90,1 M USD | 98,2 % (2026-04-30) | 2025-01-31 (100,4 %) |
+| ORACLE CORP 4,8 %, échéance 2028-08-03 (USD, US68389XCY94) | 2026-07-31 | 99,1 % | 22 | 134,1 M USD | 99,1 % (2026-07-31) | 2025-01-31 (100,1 %) |
+| ORACLE CORP 4,699 % (déclaré en fraction), échéance 2029-02-04 (USD, US68389XDV47) | 2026-07-31 | 99,1 % | 12 | 63,6 M USD | 99,1 % (2026-07-31) | 2026-02-28 (99,9 %) |
+| ORACLE CORP 4,55 %, échéance 2029-02-04 (USD, US68389XDW20) | 2026-07-31 | 97,5 % | 32 | 174,6 M USD | 97,5 % (2026-07-31) | 2026-02-27 (100,2 %) |
+| ORACLE CORP 4,2 %, échéance 2029-09-27 (USD, US68389XCS27) | 2026-07-31 | 95,8 % | 17 | 187,1 M USD | 95,8 % (2026-07-31) | 2024-09-30 (99,8 %) |
+| ORACLE CORP 6,15 %, échéance 2029-11-09 (USD, US68389XCH61) | 2026-07-31 | 101,2 % | 20 | 41,4 M USD | 100,3 % (2023-10-31) | 2022-11-30 (104,4 %) |
+| ORACLE CORP 2,95 %, échéance 2030-04-01 (USD, US68389XBV64) | 2026-07-31 | 90,0 % | 27 | 64,4 M USD | 80,6 % (2022-09-30) | 2020-03-31 (100,7 %) |
+| ORACLE CORP 4,65 %, échéance 2030-05-06 (USD, US68389XCN30) | 2026-07-31 | 96,1 % | 12 | 10,0 M USD | 91,6 % (2023-10-31) | 2023-02-28 (94,9 %) |
+| ORACLE CORP 3,25 %, échéance 2030-05-15 (USD, US68389XBD66) | 2026-07-31 | 90,8 % | 7 | 5,7 M USD | 82,7 % (2022-09-30) | 2019-09-30 (106,1 %) |
+| ORACLE CORP 4,45 %, échéance 2030-09-26 (USD, US68389XDH52) | 2026-07-31 | 94,4 % | 41 | 122,1 M USD | 94,4 % (2026-07-31) | 2025-09-30 (100,0 %) |
+| ORACLE CORP 4,95 %, échéance 2031-02-04 (USD, US68389XDX03) | 2026-07-31 | 95,5 % | 57 | 321,0 M USD | 95,5 % (2026-07-31) | 2026-02-27 (99,8 %) |
+| ORACLE CORP 2,875 %, échéance 2031-03-25 (USD, US68389XCE31) | 2026-07-31 | 87,2 % | 23 | 42,3 M USD | 78,9 % (2022-10-31) | 2021-03-31 (101,8 %) |
+| ORACLE CORP 5,25 %, échéance 2032-02-03 (USD, US68389XCZ69) | 2026-07-31 | 95,7 % | 15 | 94,0 M USD | 95,7 % (2026-07-31) | 2025-01-31 (99,9 %) |
+| ORACLE CORP 4,8 %, échéance 2032-09-26 (USD, US68389XDK81) | 2026-07-31 | 92,1 % | 54 | 240,1 M USD | 92,1 % (2026-07-31) | 2025-09-30 (100,1 %) |
+| ORACLE CORP 6,25 %, échéance 2032-11-09 (USD, US68389XCJ28) | 2026-07-31 | 99,3 % | 27 | 75,2 M USD | 99,0 % (2023-10-31) | 2022-11-30 (105,5 %) |
+| ORACLE CORP 4,9 %, échéance 2033-02-06 (USD, US68389XCP87) | 2026-07-31 | 91,9 % | 18 | 36,6 M USD | 89,8 % (2023-10-31) | 2023-02-28 (94,5 %) |
+| ORACLE CORP 5,35 %, échéance 2033-05-04 (USD, US68389XDY85) | 2026-07-31 | 94,1 % | 53 | 225,0 M USD | 94,1 % (2026-07-31) | 2026-02-27 (100,4 %) |
+| ORACLE CORP 4,3 %, échéance 2034-07-08 (USD, US68389XAV73) | 2026-07-31 | 85,8 % | 20 | 25,5 M USD | 81,7 % (2022-09-30) | 2019-09-30 (116,2 %) |
+| ORACLE CORP 4,7 %, échéance 2034-09-27 (USD, US68389XCT00) | 2026-07-31 | 87,8 % | 27 | 114,5 M USD | 87,8 % (2026-07-31) | 2024-09-30 (99,8 %) |
+| ORACLE CORP 3,9 %, échéance 2035-05-15 (USD, US68389XBE40) | 2026-07-31 | 81,8 % | 23 | 53,8 M USD | 76,7 % (2022-09-30) | 2019-09-30 (110,8 %) |
+| ORACLE CORP 5,5 %, échéance 2035-08-03 (USD, US68389XDA00) | 2026-07-31 | 91,8 % | 19 | 79,6 M USD | 91,8 % (2026-07-31) | 2025-01-31 (99,9 %) |
+| ORACLE CORP 5,2 %, échéance 2035-09-26 (USD, US68389XDM48) | 2026-07-31 | 89,8 % | 48 | 190,0 M USD | 89,8 % (2026-07-31) | 2025-09-30 (100,6 %) |
+| ORACLE CORP 5,7 %, échéance 2036-02-04 (USD, US68389XDZ50) | 2026-07-31 | 92,6 % | 89 | 286,0 M USD | 92,6 % (2026-07-31) | 2026-02-27 (100,0 %) |
+| ORACLE CORP 3,85 %, échéance 2036-07-15 (USD, US68389XBH70) | 2026-07-31 | 79,2 % | 12 | 21,1 M USD | 74,9 % (2022-10-31) | 2019-09-30 (110,6 %) |
+| ORACLE CORP 3,8 %, échéance 2037-11-15 (USD, US68389XBP96) | 2026-07-31 | 75,4 % | 27 | 53,4 M USD | 72,7 % (2022-09-30) | 2019-09-30 (109,4 %) |
+| ORACLE CORP 6,5 %, échéance 2038-04-15 (USD, US68389XAE58) | 2026-07-31 | 95,5 % | 8 | 8,2 M USD | 95,3 % (2022-09-30) | 2019-09-30 (144,3 %) |
+| ORACLE CORP 6,125 %, échéance 2039-07-08 (USD, US68389XAH89) | 2026-07-31 | 91,3 % | 9 | 6,6 M USD | 91,1 % (2022-09-30) | 2019-09-30 (141,3 %) |
+| ORACLE CORP 3,6 %, échéance 2040-04-01 (USD, US68389XBW48) | 2026-07-31 | 69,2 % | 43 | 114,6 M USD | 67,6 % (2022-10-31) | 2020-03-31 (99,9 %) |
+| ORACLE CORP 5,375 %, échéance 2040-07-15 (USD, US68389XAM74) | 2026-07-31 | 83,5 % | 23 | 38,9 M USD | 83,3 % (2022-09-30) | 2019-09-30 (130,1 %) |
+| ORACLE CORP 3,65 %, échéance 2041-03-25 (USD, US68389XBZ78) | 2026-07-31 | 67,8 % | 26 | 47,6 M USD | 67,8 % (2022-10-31) | 2021-03-31 (101,3 %) |
+| ORACLE CORP 4,5 %, échéance 2044-07-08 (USD, US68389XAW56) | 2026-07-31 | 69,9 % | 10 | 3,5 M USD | 69,9 % (2026-07-31) | 2019-09-30 (118,8 %) |
+| ORACLE CORP 4,125 %, échéance 2045-05-15 (USD, US68389XBF15) | 2026-07-31 | 65,8 % | 12 | 7,4 M USD | 65,8 % (2026-07-31) | 2019-09-30 (112,4 %) |
+| ORACLE CORP 5,875 %, échéance 2045-09-26 (USD, US68389XDP78) | 2026-07-31 | 82,1 % | 38 | 92,1 M USD | 82,1 % (2026-07-31) | 2025-09-30 (100,3 %) |
+| ORACLE CORP 6,55 %, échéance 2046-02-04 (USD, US68389XEA90) | 2026-07-31 | 88,6 % | 38 | 58,3 M USD | 88,6 % (2026-07-31) | 2026-02-27 (97,6 %) |
+| ORACLE CORP 4 %, échéance 2046-07-15 (USD, US68389XBJ37) | 2026-07-31 | 63,5 % | 24 | 30,9 M USD | 63,5 % (2026-07-31) | 2019-09-30 (111,5 %) |
+| ORACLE CORP 4 %, échéance 2047-11-15 (USD, US68389XBQ79) | 2026-07-31 | 62,8 % | 11 | 9,8 M USD | 62,8 % (2026-07-31) | 2019-09-30 (112,4 %) |
+| ORACLE CORP 3,6 %, échéance 2050-04-01 (USD, US68389XBX21) | 2026-07-31 | 57,3 % | 30 | 201,4 M USD | 57,3 % (2026-07-31) | 2020-03-31 (99,9 %) |
+| ORACLE CORP 3,95 %, échéance 2051-03-25 (USD, US68389XCA19) | 2026-07-31 | 60,9 % | 32 | 139,7 M USD | 60,9 % (2026-07-31) | 2021-03-31 (103,3 %) |
+| ORACLE CORP 6,9 %, échéance 2052-11-09 (USD, US68389XCK90) | 2026-07-31 | 90,1 % | 25 | 23,3 M USD | 90,1 % (2026-07-31) | 2022-11-30 (110,8 %) |
+| ORACLE CORP 5,55 %, échéance 2053-02-06 (USD, US68389XCQ60) | 2026-07-31 | 75,1 % | 25 | 31,6 M USD | 75,1 % (2026-07-31) | 2023-02-28 (91,6 %) |
+| ORACLE CORP 5,375 %, échéance 2054-09-27 (USD, US68389XCU72) | 2026-07-31 | 72,9 % | 27 | 20,9 M USD | 72,9 % (2026-07-31) | 2024-09-30 (100,0 %) |
+| ORACLE CORP 4,375 %, échéance 2055-05-15 (USD, US68389XBG97) | 2026-07-31 | 62,7 % | 12 | 4,7 M USD | 62,7 % (2026-07-31) | 2019-09-30 (117,7 %) |
+| ORACLE CORP 6 %, échéance 2055-08-03 (USD, US68389XDB82) | 2026-07-31 | 80,3 % | 29 | 43,5 M USD | 80,3 % (2026-07-31) | 2025-01-31 (99,8 %) |
+| ORACLE CORP 5,95 %, échéance 2055-09-26 (USD, US68389XDR35) | 2026-07-31 | 79,5 % | 49 | 163,8 M USD | 79,5 % (2026-07-31) | 2025-09-30 (99,7 %) |
+| ORACLE CORP 6,7 %, échéance 2056-02-04 (USD, US68389XEB73) | 2026-07-31 | 88,2 % | 77 | 285,3 M USD | 88,2 % (2026-07-31) | 2026-02-27 (97,0 %) |
+| ORACLE CORP 3,85 %, échéance 2060-04-01 (USD, US68389XBY04) | 2026-07-31 | 56,1 % | 18 | 113,4 M USD | 56,1 % (2026-07-31) | 2020-03-31 (100,9 %) |
+| ORACLE CORP 4,1 %, échéance 2061-03-25 (USD, US68389XCB91) | 2026-07-31 | 58,4 % | 12 | 121,3 M USD | 58,4 % (2026-07-31) | 2021-03-31 (103,6 %) |
+| ORACLE CORP 5,5 %, échéance 2064-09-27 (USD, US68389XCV55) | 2026-07-31 | 72,1 % | 15 | 6,4 M USD | 72,1 % (2026-07-31) | 2024-09-30 (99,6 %) |
+| ORACLE CORP 6,125 %, échéance 2065-08-03 (USD, US68389XDC65) | 2026-07-31 | 79,1 % | 21 | 41,9 M USD | 79,1 % (2026-07-31) | 2025-01-31 (99,7 %) |
+| ORACLE CORP 6,1 %, échéance 2065-09-26 (USD, US68389XDT90) | 2026-07-31 | 78,6 % | 25 | 113,9 M USD | 78,6 % (2026-07-31) | 2025-09-30 (99,9 %) |
+| ORACLE CORP 6,85 %, échéance 2066-02-04 (USD, US68389XEC56) | 2026-07-31 | 88,0 % | 43 | 148,6 M USD | 88,0 % (2026-07-31) | 2026-02-27 (95,9 %) |
+
+Titres sans position déclarée dans ces trois mois (échus, remboursés, rachetés ou cédés par les fonds) : 38.
+
+**CoreWeave (CRWV)** : 66 cellules, sur 8 titres, du 2025-05-30 au 2026-07-31. Titres détenus par au moins un fonds dans les trois mois qui précèdent la dernière date de portefeuille :
+
+| Titre | Dernière date | Valeur ÷ nominal | Séries | Nominal détenu | Plus bas (date) | Première date (valeur ÷ nominal) |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| COREWEAVE INC 9,25 %, échéance 2030-06-01 (USD, US21873SAB43) | 2026-07-31 | 93,6 % | 88 | 355,0 M USD | 92,3 % (2025-11-30) | 2025-05-30 (99,9 %) |
+| COREWEAVE INC 9 %, échéance 2031-02-01 (USD, US21873SAC26) | 2026-07-31 | 90,3 % | 83 | 214,4 M USD | 90,3 % (2026-07-31) | 2025-07-31 (99,6 %) |
+| COREWEAVE INC 9,75 %, échéance 2031-10-01 (USD, US21873SAG30) | 2026-07-31 | 90,8 % | 91 | 283,2 M USD | 90,8 % (2026-07-31) | 2026-04-30 (100,6 %) |
+| COREWEAVE INC 1,75 %, convertible, échéance 2031-12-01 (USD, US21873SAD09) | 2026-07-31 | 94,2 % | 18 | 127,4 M USD | 94,2 % (2026-07-31) | 2025-12-31 (94,8 %) |
+| COREWEAVE INC 9,625 %, échéance 2032-07-15 (USD, US21873SAK42) | 2026-07-31 | 89,5 % | 62 | 133,8 M USD | 89,5 % (2026-07-31) | 2026-06-30 (98,6 %) |
+| COREWEAVE, INC 8,5 %, échéance 2032-07-15 (EUR, XS3333139288) | 2026-07-31 | 89,6 % | 8 | 33,9 M EUR | 89,6 % (2026-07-31) | 2026-06-30 (98,4 %) |
+| COREWEAVE INC 8,5 %, échéance 2032-07-15 (EUR, XS3333139528) | 2026-07-31 | 89,7 % | 3 | 3,7 M EUR | 89,7 % (2026-07-31) | 2026-06-30 (98,6 %) |
+| COREWEAVE INC 1,75 %, convertible, échéance 2032-10-01 (USD, US21873SAH13) | 2026-07-31 | 88,2 % | 19 | 178,4 M USD | 88,2 % (2026-07-31) | 2026-04-30 (120,5 %) |
+
+Titres sans position déclarée dans ces trois mois (échus, remboursés, rachetés ou cédés par les fonds) : 0.
+
+**Beignet Investor LLC (CP:beignet investor llc)** : 14 cellules, sur 2 titres, du 2025-09-30 au 2026-07-31. Titres détenus par au moins un fonds dans les trois mois qui précèdent la dernière date de portefeuille :
+
+| Titre | Dernière date | Valeur ÷ nominal | Séries | Nominal détenu | Plus bas (date) | Première date (valeur ÷ nominal) |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| BEIGNET INVESTOR LLC 6,581 %, échéance 2049-05-30 (USD, US076912AA21) | 2026-07-31 | 96,9 % | 76 | 581,9 M USD | 96,9 % (2026-07-31) | 2025-10-31 (106,7 %) |
+
+Titres sans position déclarée dans ces trois mois (échus, remboursés, rachetés ou cédés par les fonds) : 1.
 
 ## Non-cotés du modèle valorisés par les fonds (Form N-PORT)
 

@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..c98bb02 100644
+index 1378604..07609e0 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,202 @@ user_agent:
@@ -98,7 +98,7 @@ index 1378604..c98bb02 100644
  
 -scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
 -scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
-+scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
++scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs, ownership]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 +scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
 +  date: 2026-10-07
 +  decision: "prêteurs et texte"
@@ -1426,7 +1426,7 @@ index 1378604..c98bb02 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1701,431 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1701,462 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1859,3 +1859,34 @@ index 1378604..c98bb02 100644
 +      level: "3"
 +      pool_max_positions: 100          # au-delà, dans un même dépôt et pour un même émetteur : prêts de plateforme
 +      platform_title_rx: '\bmarketplace loans?\b'   # intitulé d'un prêt de plateforme (casse ignorée)
++  bonds:                     # D-0071, volet B : obligations d'Oracle, de CoreWeave et de Beignet (mesure de D-0058, points 8 et 28)
++    decision: D-0071
++    issuers:                 # nom normalisé (§10.2) qui commence par l'un des débuts de nom ; mot de l'intitulé d'un titre
++      - {node: ORCL, names: ["oracle corp"], title: ORACLE}
++      - {node: CRWV, names: ["coreweave"], title: COREWEAVE}
++      - {node: "CP:beignet investor llc", names: ["beignet investor"], title: BEIGNET}
++    convertible_columns: [IS_CONVTIBLE_MANDATORY, IS_CONVTIBLE_CONTINGENT]   # Item C.9.f.i et ii (description, section 5.12)
++ownership:                   # D-0071, volet A : déclarations de détention (13F, 13D, 13G), sans lecture de texte
++  decision: D-0071
++  period: ["2019-01-01", "2026-10-07"]        # dépôts de la période (13F, 13D et 13G)
++  thirteen_f_filers: [AMZN, GOOGL, INTC, NVDA]   # financeurs des paires qui déposent des 13F-HR
++  dollars_from: "2023-01-03"   # valeurs des 13F en dollars à partir de ce dépôt, en milliers avant (règle de la SEC)
++  pairs:                     # point 3 : S groupe, C déclarant (groupe, ou entité qui porte un CIK), arête de financement en titres
++    - {s: AMZN, c: "CP:rivian automotive inc / de", cik: "1874178"}
++    - {s: GOOGL, c: CIFR, cik: "1819989"}
++    - {s: GOOGL, c: "CP:adt inc", cik: "1703056"}
++    - {s: GOOGL, c: "CP:planet labs pbc", cik: "1836833"}
++    - {s: GOOGL, c: SPCX, cik: "1181412"}
++    - {s: GOOGL, c: WULF, cik: "1083301"}
++    - {s: INTC, c: ASML, cik: "937966"}
++    - {s: INTC, c: MU, cik: "723125"}
++    - {s: MSFT, c: "CP:general motors co", cik: "1467858"}
++    - {s: MU, c: INTC, cik: "50863"}
++    - {s: NVDA, c: CRWV, cik: "1769628"}
++    - {s: NVDA, c: INTC, cik: "50863"}
++    - {s: NVDA, c: IREN, cik: "1878848"}
++    - {s: NVDA, c: NBIS, cik: "1513845"}
++    - {s: OWL, c: "CP:blue owl real estate net lease trust", cik: "1944366"}
++    - {s: SMCI, c: APLD, cik: "1144879"}
++    - {s: TSM, c: INTC, cik: "50863"}
++    - {s: TSM, c: "NF:SOFTBANK", cik: "1973239"}     # Arm Holdings plc
