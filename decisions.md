@@ -3208,3 +3208,17 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - l'intitulé doit contenir le mot du nœud du titre ;
     - un titre est dit convertible si une position remplit l'Item C.9.f (rubriques IS_CONVTIBLE_MANDATORY et IS_CONVTIBLE_CONTINGENT, section 5.12 de la description) ;
     - une cellule garde au plus 20 accessions, avec leur nombre.
+
+  (7) Tirages et volume du volet A, consignés avant tout calcul :
+  - Les submissions de General Motors et d'Arm étaient déjà en cache. Ont été tirées celles des quatre autres contreparties (Rivian, ADT, Planet Labs, Blue Owl Real Estate Net Lease Trust), 5 requêtes avec une page de plus pour ADT. Puis 125 dépôts complets ; 130 requêtes en tout, toutes en 200, en 32 secondes.
+  - 13F : 120 dépôts, tous lus par leurs champs (116 initiaux et 4 amendements RESTATEMENT, tous des rapports complets, aucun traitement confidentiel).
+    - Amazon 23 dates de portefeuille (2020-12-31 au 2026-06-30), Alphabet 51 (2013-12-31 au 2026-06-30, dont 36 déposés en novembre 2022 pour des périodes passées), Intel 34 (2018-03-31 au 2026-06-30), NVIDIA 11 (2023-12-31 au 2026-06-30).
+    - Lignes rattachées à une paire, toutes en actions (SH), aucune option : Amazon → Rivian 19 ; Alphabet → Planet Labs 19, dont une par le préfixe CUSIP (« Planet Labs Inc. ») ; NVIDIA → CoreWeave 6, → Intel 3, → Nebius 7. Aucune ligne d'ADT, de Cipher, de TeraWulf ni d'IREN ; aucune d'ASML ni de Micron chez Intel.
+    - Ligne non rattachée : « SPACE EXPLORATION TECHN CORP », nom abrégé du 13F (Alphabet, 2026-06-30 ; aussi chez NVIDIA, hors paire). Il ne commence pas par la dénomination légale « space exploration technologies corp », et son préfixe CUSIP n'est porté par aucune ligne rattachée. La règle reste telle que fixée.
+  - 13D et 13G : 5 annexes de la période dont l'en-tête fait de S le déclarant et de C la société visée, toutes lues (3 en XML, 2 sur le gabarit de la page de couverture) : Amazon → Rivian 1, Intel → ASML 1, NVIDIA → CoreWeave 2, NVIDIA → Nebius 1. Aucune à zéro action.
+  - Limite : seules se cherchent les annexes présentes dans les submissions du CIK du groupe. Une annexe déposée par une filiale sous son propre CIK (par exemple Google LLC pour ADT ou Planet Labs) n'est pas vue.
+  - Précisions du code, fixées avant ces tirages (9fec093) :
+    - Les annexes 13D et 13G suivent la même période que les 13F (dépôts du 2019-01-01 à l'as_of). Celles d'avant ne se lisent pas : Intel → ASML 4 (2012 à 2018) ; Intel et Micron 7 (1998 à 2010).
+    - Le sens d'une annexe se lit dans l'en-tête SGML : société visée et déposant, par leur CIK.
+    - Une sortie compare deux 13F consécutifs de S. Le second doit être un rapport complet (13F HOLDINGS REPORT) : un rapport combiné laisse des lignes à un autre gestionnaire et ne prouve aucune absence.
+    - Les dénominations légales valent aussi sans le suffixe d'État du nom conforme d'EDGAR (« rivian automotive inc / de »). Cela ajoute quatre formes : dave inc, jefferson capital inc, qualcomm inc, rivian automotive inc.
