@@ -17,7 +17,7 @@ from decimal import Decimal
 
 import pandas as pd
 
-from . import (annex_e, circularity, config, controls, controls_more, dimensional, documents, entities, events,
+from . import (annex_e, backlog, circularity, config, controls, controls_more, dimensional, documents, entities, events,
                fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, memo, model, montages, rank2,
                sb_own, sixk, reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
@@ -170,7 +170,14 @@ def run(as_of, use_cache=True, apercu=False):
     cells = M.value("facts_measures", lambda: (
         measures.group_measures(con, groups, as_of) + rank2.group_rank2(con, groups, as_of) +
         rank2.rpo_beyond(con, groups, as_of) + rank2.segments(con, groups, as_of) +
-        rank2.segment_expenses(con, groups, as_of) + rank2.supplier_concentration(con, groups, as_of)), key=as_of)
+        rank2.segment_expenses(con, groups, as_of) + rank2.supplier_concentration(con, groups, as_of) +
+        rank2.lessor_lease_receipts(con, groups, as_of)), key=as_of)
+    # D-0068, volet 1 : un RPO total tiré du fait « à partir du lendemain de la clôture » le dit en drapeau
+    next_day = {r[0] for r in con.execute("SELECT fact_key FROM rpo_next_day").fetchall()}
+    for c in cells:
+        if c["measure"] == "rpo_total" and c.get("lineage") and next_day & set(json.loads(c["lineage"])):
+            fl = json.loads(c["flags"]) if c.get("flags") else {}
+            c["flags"] = json.dumps(dict(fl, derived_from="timing_axis_next_day"), sort_keys=True, default=str)
     # l'aperçu ne compare pas ces cellules, mais une mesure qu'il compare peut en avoir (exposure_matrix)
     facts_ids = {id(c) for c in cells}
     scope = cfg.get("scope") if isinstance(cfg.get("scope"), list) else []
@@ -307,11 +314,37 @@ def run(as_of, use_cache=True, apercu=False):
         # dénominations d'EDGAR : ne dépendent que du cache, reprises du mémo
         client_state = discovery.client_states(read_cks, min(w["extended_start"] for w in gw.values()),
                                                names=M.value("edgar_names", discovery.edgar_names))
+    # D-0068 : carnet attribué par le vendeur (faits balisés par client, lignes de carnet) et ses dénominateurs publiés
+    lex_terms = {}
+    for k in ("seed", "confirmed"):
+        for x in ((cfg.get("discovery") or {}).get("lexicon") or {}).get(k) or []:
+            lex_terms.setdefault(x["ref"], set()).add(x["term"])
+    clients_of = backlog.sellers([(l["from_group"], l["to_group"], l["family"], l["elimination_status"]) for l in edges],
+                                 set(groups))
+    lab_groups = {r["ref"] for r in ent_rows if r["record_kind"] == "membership" and str(r["ref"]).startswith("LAB:")}
+    group_names = {}
+
+    def names_of(g):
+        if g not in group_names:
+            group_names[g] = circularity.names_of_group(reg, g) | lex_terms.get(g, set())
+        return group_names[g]
+    tagged_rpo = [f for f in backlog.tagged_customer_rpo(
+        rank2._facts(con, "dims LIKE '%srt:MajorCustomersAxis%' AND concept LIKE '%RemainingPerformanceObligation%' "
+                          "AND value IS NOT NULL").to_dict("records"),
+        lambda s: {g: names_of(g) for g in (clients_of.get(s, set()) | lab_groups) if g != s}) if f["group_id"] in groups]
+    carnet = [o for o in backlog.carnet_lines(obs_rows, lambda n, d: entities.resolve(reg, n, d)[1]
+                                               or entities.resolve(reg, n, d, "revised")[1]) if o["group_id"] in groups]
+    bl = backlog.Inputs(tagged_rpo, carnet, *([c for c in cells if c["measure"] == m]
+                                              for m in ("rpo_total", "rpo_beyond_12m", "lessor_lease_receipts")))
+    stats["backlog"] = {"tagged_customer_rpo": len(tagged_rpo), "carnet_lines": len(carnet), "pairs": len(bl.pairs())}
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
                                        rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
-                                       client_state=client_state)
+                                       client_state=client_state, backlog=bl)
     cells += pc
+    # D-0068, volet 3 : part du carnet contracté d'un vendeur attribuée à un client nommé (rang 2, §14)
+    cells += backlog.share_cells(bl, {g: [q["end"] for q in cals[g]["quarters"] if q["end"] <= as_of_d] for g in groups},
+                                 as_of)
     cells += circularity.coverage_cells(groups, cals, gw, revenue, conc_cells, named_conc, pairs, edges, as_of, ev,
                                         text_done)
     cells += circularity.counterparty_exposure(pairs, ev, cals, as_of, text_done)

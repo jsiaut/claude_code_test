@@ -2032,6 +2032,25 @@ montages:
     order: recent_first
     evidence: registry
     cap: 100000
+  backlog:                            # D-0068, point 6 : paragraphes d'un vendeur qui nomment l'un de ses clients et un terme de carnet
+    decision: D-0068
+    source: backlog                   # documents des vendeurs en cache (registre des documents), aucune requête ; EX-99 écartées
+    period: ["2019-01-01", "2026-10-07"]
+    forms: ["10-K", "10-K/A", "10-KT", "10-KT/A", "10-Q", "10-Q/A", "8-K", "8-K/A", "S-1", "S-1/A", "424B3", "424B4",
+            "20-F", "20-F/A", "40-F", "40-F/A"]
+    vocabulary: 'remaining performance obligations?|\bRPOs?\b|unsatisfied performance obligations?|contract(?:ed|ual)? (?:revenue|value)|total contract|aggregate (?:contract )?value|(?:future|minimum|remaining) (?:minimum )?(?:lease|rental) (?:payments|receipts)|lease payments to be received|\bbacklog\b|revenue backlog'
+    terms:                            # libellé des exclusions ; la qualification passe par les clients du vendeur et `vocabulary`
+      - {rx: '\bbacklog\b', label: "un client du vendeur et un terme de carnet"}
+    noted_terms: ['\b[Rr]emaining performance obligations?\b', '\bRPOs?\b', '\b[Uu]nsatisfied performance obligations?\b',
+                  '\b[Cc]ontract(?:ed|ual)? (?:revenue|value)\b', '\b[Tt]otal contract\b', '\b[Aa]ggregate (?:contract )?value\b',
+                  '\b[Ll]ease payments\b', '\b[Bb]acklog\b']
+    window: 1                         # un paragraphe de part et d'autre, fenêtres fondues
+    complement: all                   # une fenêtre déjà dans un bloc lu du même dépôt : lecture complémentaire (lignes de carnet)
+    skip_read: true
+    skip_risk_factors: true
+    dedupe: true                      # un texte distinct se lit une fois ; servies des plus anciennes aux plus récentes
+    evidence: registry
+    cap: 100000
 
 nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
   decision: D-0058

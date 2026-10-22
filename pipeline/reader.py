@@ -82,6 +82,8 @@ LINE_FIELDS = {
     "clause_kind": "enum:clause_kind",
     "capacity_value": "decimal", "capacity_unit": "enum:capacity_unit", "capacity_kind": "enum:capacity_kind",
     "capacity_qualifier": "enum:amount_qualifier",
+    # D-0068 : ligne de carnet, telle qu'écrite par le vendeur
+    "backlog_basis": "enum:backlog_basis", "backlog_statement": "enum:backlog_statement",
 }
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _ISO_CCY = re.compile(r"^[A-Z]{3}$")
@@ -155,6 +157,20 @@ def schema_errors(line):
                 errs.append("une ligne de capacité est descriptive : sans famille (D-0067, point 6)")
         elif line.get("capacity_unit") not in (None, "none") or line.get("capacity_kind") not in (None, "none"):
             errs.append("unité ou genre de capacité sans capacity_value")
+        bb, bs = line.get("backlog_basis"), line.get("backlog_statement")
+        if bb not in (None, "none") or bs not in (None, "none"):          # ligne de carnet (D-0068, point 7)
+            if bb in (None, "none") or bs in (None, "none"):
+                errs.append("une ligne de carnet porte sa base et son énoncé (D-0068, point 7)")
+            if line.get("family") not in (None, "none"):
+                errs.append("une ligne de carnet est descriptive : sans famille (D-0068, point 7)")
+            if bs in ("remaining", "contract_value", "total_contract_value", "change") and line.get("amount") is None:
+                errs.append("un énoncé chiffré de carnet porte son montant")
+            if bs in ("excluded", "included_no_amount") and line.get("amount") is not None:
+                errs.append("une exclusion ou une inclusion sans montant ne porte aucun montant")
+            if bs in ("remaining", "excluded", "included_no_amount") and not line.get("period_end"):
+                errs.append("un reste, une exclusion ou une inclusion porte sa date (period_end)")
+            if not line.get("counterparty_name") or line.get("counterparty_evidence") != "named":
+                errs.append("une ligne de carnet nomme le client (counterparty_name, counterparty_evidence named)")
     return errs
 
 

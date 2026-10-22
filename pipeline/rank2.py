@@ -397,6 +397,28 @@ def rpo_beyond(con, groups, as_of):
     return out
 
 
+LESSOR_CONCEPTS = ("us-gaap:LessorOperatingLeasePaymentsToBeReceived",
+                   "us-gaap:SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceived")
+
+
+def lessor_lease_receipts(con, groups, as_of):
+    """lessor_lease_receipts (D-0068, volet 3) : loyers futurs non actualisés à recevoir d'un bailleur à une date,
+    tels que publiés (location simple et, s'il est publié, location-financement), faits non dimensionnés. Une
+    cellule seulement aux dates où l'un des deux est publié ; leur somme est la seule addition, notée."""
+    df = _facts(con, "concept IN (" + ", ".join(f"'{c}'" for c in LESSOR_CONCEPTS) + ") AND n_dims = 0 AND value IS NOT NULL")
+    df = df[df["group_id"].isin(groups) & (df["period_type"] == "instant")]
+    by = {}
+    for (g, pe, c), view, r in _by_view(df, ["group_id", "period_end", "concept"]):
+        by.setdefault((g, pe, view), {})[c] = r
+    out = []
+    for (g, pe, view), rs in sorted(by.items()):
+        terms = [_term(rs[c]) for c in LESSOR_CONCEPTS if c in rs]
+        parts = {c.split(":", 1)[1]: str(rs[c].value) for c in LESSOR_CONCEPTS if c in rs}
+        out.append(cell("lessor_lease_receipts", g, None, pe, view, as_of, value=sum(t["value"] for t in terms),
+                        unit="USD", terms=terms, flags={"parts": parts, "sum_of_two": len(terms) == 2}))
+    return out
+
+
 SEG = "us-gaap:StatementBusinessSegmentsAxis"
 OPSEG = ["srt:ConsolidationItemsAxis", "us-gaap:OperatingSegmentsMember"]
 

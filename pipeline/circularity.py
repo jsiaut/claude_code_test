@@ -13,6 +13,7 @@ import datetime as dt
 import json
 from decimal import Decimal
 
+from . import backlog as B
 from . import entities as E
 from .graph import normalize_name
 from .links import edge_date
@@ -349,9 +350,11 @@ def fiscal_years(quarters, ws, as_of_d):
 
 def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
                   report_dates, lookback, censored_groups, rev_notes_read=frozenset(), text_done=frozenset(),
-                  failed_until=None, client_state=None):
-    """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part)."""
+                  failed_until=None, client_state=None, backlog=None):
+    """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part). `backlog` : faits balisés, lignes
+    de carnet et RPO publiés (backlog.Inputs, D-0068) ; sans lui, aucun RPO n'est publié."""
     as_of_d = dt.date.fromisoformat(as_of)
+    backlog = backlog if backlog is not None else B.Inputs()
     out, ev = [], {}
     obs_by_instrument = {}
     for o in obs:
@@ -434,10 +437,23 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
                 cells = dependency_cells(p, s, c, fs, fe, view, cell_as_of, cut, stq, active, rev, rterms,
                                          conc_cells, named_conc, censored, rev_notes_read,
                                          next((search(e)[1] for e in stq if not search(e)[0]), None),
-                                         s in text_done)
+                                         s in text_done, backlog)
                 out += cells
                 if view == "as_known":
-                    ev[(s, c)]["years"][fe] = {c_["measure"]: c_ for c_ in cells}
+                    # E.3 porte sur le RPO de fin d'exercice : le terme `total` (D-0068, point 4)
+                    ev[(s, c)]["years"][fe] = {c_["measure"]: c_ for c_ in cells if c_["term"] != "beyond_12m"}
+        # dépendance du carnet aux autres fins de trimestre où F est active : série publiée, jamais dans E.3
+        # (D-0068, point 4), à la coupure du statut financé
+        fy_ends = {fe for _, fe, _ in fiscal_years(cal["quarters"], groups_window[s]["window_start"], as_of_d)}
+        for q in qs_all:
+            if q["end"] < groups_window[s]["window_start"] or q["end"] in fy_ends:
+                continue
+            for view in ("as_known", "revised"):
+                if F[view]["exposure_outstanding"].get(q["end"], ("unknown", []))[0] != "active":
+                    continue
+                cut = min(cut_known(q), as_of_d) if view == "as_known" else as_of_d
+                out += B.dependency_cells(backlog, s, c, q["end"], view, cut.isoformat() if view == "as_known" else as_of,
+                                          cut, bool(p.com), at="quarter_end")
     return out, ev
 
 
@@ -447,7 +463,7 @@ def _rev_note_read(rev_notes_read, s, fe):
 
 
 def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms, conc_cells, named_conc,
-                     censored, rev_notes_read=frozenset(), search_reason=None, s_done=False):
+                     censored, rev_notes_read=frozenset(), search_reason=None, s_done=False, backlog=None):
     out = []
     flags_q = {"quarters": {str(k): v for k, v in sorted(stq.items())}}
     # motif des trimestres où F n'est pas active : rien à lire de plus si F y vaut never ou lapsed
@@ -537,10 +553,8 @@ def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms
                                             "revenu contre titres reçus (ASC 606-10-32-21) : aucune note de revenu de 10-K "
                                             "pour cet exercice dans les dépôts lus" if s_done else
                                             "revenu contre titres reçus (ASC 606-10-32-21) : note de revenu de l'exercice non lue"}))
-        for term in ("total", "beyond_12m"):
-            out.append(cell("documented_backlog_dependency", s, None, fe, view, as_of, counterparty=c, term=term,
-                            policy="exposure_outstanding", status="not_determinable", nd_reason="anonymous",
-                            flags={"basis": "aucun RPO attribué par S à ce client au niveau A à C"}))
+        # dépendance du carnet (§3.3, E.3) : RPO que le fournisseur attribue lui-même au client (D-0068, point 4)
+        out += B.dependency_cells(backlog if backlog is not None else B.Inputs(), s, c, fe, view, as_of, cut, bool(p.com))
     return out
 
 

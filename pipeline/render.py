@@ -535,6 +535,7 @@ def synthesis(con, as_of, stats):
     L += labs_ledger_section(con, T)
     L += lab_clauses_section(con, T)
     L += lab_capacity_section(con, T)
+    L += backlog_section(con, T)
     L += lab_events_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
@@ -2071,6 +2072,112 @@ def lab_capacity_section(con, T):
     return L
 
 
+# D-0068 : carnet attribué par le vendeur à un client nommé
+BACKLOG_AT_FR = {"fiscal_year_end": "fin d'exercice, E.3", "quarter_end": "fin de trimestre, hors E.3"}
+BACKLOG_SRC_FR = {"tagged_customer_rpo": "RPO balisé par client", "line_remaining": "reste écrit par le vendeur",
+                  "line_excluded": "contrat exclu du RPO par le vendeur (zéro)"}
+BACKLOG_TERM_FR = {"rpo": "RPO", "lease": "loyers à recevoir"}
+
+
+def backlog_pieces(con, c):
+    """Pièces d'une cellule de D-0068 : formulaire et accession des faits et des lignes qui la font."""
+    out = []
+    for k in json.loads(c["lineage"]) if c.get("lineage") else []:
+        r = (q(con, "SELECT form, accession FROM observations WHERE obs_key = ?", k[4:]) if k.startswith("obs:") else
+             q(con, "SELECT form, accession FROM facts WHERE fact_key = ?", k))
+        if r:
+            out.append(f"{r[0]['form']} {r[0]['accession']}")
+    return ", ".join(dict.fromkeys(out)) or "—"
+
+
+def backlog_value(T, c):
+    """Part exacte, ou intervalle [0 ; borne haute] sous l'hypothèse déclarée, ou motif."""
+    if c["status"] == "bounded":
+        return f"[0 ; {T.m(c, 'value_upper', 'pct')}]" + (" (plafonnée)" if c["fl"].get("capped") else "")
+    return T.m(c, fmt="pct")
+
+
+def backlog_basis(c):
+    fl = c["fl"]
+    if c["status"] == "computed":
+        return BACKLOG_SRC_FR.get(fl.get("source"), fl.get("source") or "—")
+    if c["status"] == "bounded":
+        return "valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée)"
+    return fl.get("basis") or ND_FR.get(c["nd_reason"], c["nd_reason"] or "—")
+
+
+def backlog_section(con, T):
+    """D-0068, volet 3 : part du carnet contracté de chaque vendeur que le vendeur attribue à un client nommé, la
+    dernière cellule de chaque client, jamais de total."""
+    rows = _cell_rows(con, "contracted_backlog_share")
+    if not rows:
+        return []
+    L = ["## Carnet contracté par client (D-0068)", ""]
+    L.append("Part du carnet contracté d'un vendeur que le vendeur attribue lui-même à un client nommé, financé ou non "
+             "(`contracted_backlog_share`) : sur son RPO (contrats de services, ASC 606) ou sur ses loyers à recevoir de "
+             "bailleur (ASC 842), jamais mêlés. La part est exacte quand le vendeur écrit ce que le client lui doit encore, "
+             "ou balise son RPO par client ; sinon elle est majorée par la valeur publiée des contrats, plafonnée à 100 %, "
+             "sous une hypothèse déclarée : le vendeur publie chacun de ses contrats importants avec ce client (Item 1.01 du "
+             "8-K), et la valeur d'un contrat, totale ou maximale, majore ce qu'il en reste. Aucune somme entre clients ni "
+             "entre vendeurs, aucune pièce EX-99 ; ces cellules n'entrent ni dans l'annexe E ni dans l'annexe F. Le détail "
+             "par date est dans `series.md`.")
+    L.append("")
+    sellers = sorted({r["subject"] for r in rows}, key=group_label)
+    L.append("| Vendeur | RPO, dernière date publiée | Loyers à recevoir, dernière date publiée |")
+    L.append("| --- | ---: | ---: |")
+    for g in sellers:
+        last = {}
+        for m in ("rpo_total", "lessor_lease_receipts"):
+            r = q(con, f"""SELECT * FROM measures WHERE measure = '{m}' AND subject = ? AND view = 'as_known'
+                            AND status = 'computed' ORDER BY period_end DESC LIMIT 1""", g)
+            last[m] = f"{T.m(r[0])} au {r[0]['period_end']}" if r else "—"
+        L.append(f"| {group_label(g)} | {last['rpo_total']} | {last['lessor_lease_receipts']} |")
+    L.append("")
+    L.append("| Vendeur | Client | Terme | Date | Part du carnet | Base | Pièces | Cellules |")
+    L.append("| --- | --- | --- | --- | ---: | --- | --- | ---: |")
+    by = defaultdict(list)
+    for r in rows:
+        by[(r["subject"], r["counterparty"], r["term"])].append(r)
+    for (g, cp, tm), rs in sorted(by.items(), key=lambda kv: (group_label(kv[0][0]), group_label(kv[0][1]), kv[0][2])):
+        rs = sorted(rs, key=lambda r: str(r["period_end"]))
+        shown = [r for r in rs if r["status"] in ("computed", "bounded")]
+        r = (shown or rs)[-1]
+        L.append(f"| {group_label(g)} | {group_label(cp)} | {BACKLOG_TERM_FR.get(tm, tm)} | {r['period_end']} | "
+                 f"{backlog_value(T, r)} | {_clean(backlog_basis(r), 120)} | {backlog_pieces(con, r)} | "
+                 f"{T.n('measures', {'contracted_backlog_share': [g, cp, tm]}, len(rs))} |")
+    L.append("")
+    un = q(con, """SELECT group_id, counterparty_name, count(*) AS n FROM observations WHERE backlog_basis = 'unspecified'
+                    AND validation_state = 'valid' GROUP BY 1, 2 ORDER BY 1, 2""")
+    if un:
+        L.append("Lignes de carnet sans base écrite (ni RPO ni loyers), hors des deux termes : " + " ; ".join(
+            f"{group_label(u['group_id'])} → {_clean(u['counterparty_name'], 60)} "
+            f"({T.n('observations', {'backlog_basis': 'unspecified', 'group': u['group_id'], 'client': u['counterparty_name']}, u['n'])})"
+            for u in un) + ".")
+        L.append("")
+    return L
+
+
+def backlog_series(con, T):
+    """D-0068 : carnet contracté par client, toutes les dates, avec les deux termes du rapport."""
+    rows = _cell_rows(con, "contracted_backlog_share")
+    by = defaultdict(list)
+    for r in rows:
+        by[(r["subject"], r["counterparty"], r["term"])].append(r)
+    L = []
+    for (g, cp, tm), rs in sorted(by.items(), key=lambda kv: (group_label(kv[0][0]), group_label(kv[0][1]), kv[0][2])):
+        L.append(f"## {group_label(g)} → {group_label(cp)} : carnet contracté, {BACKLOG_TERM_FR.get(tm, tm)} (D-0068)")
+        L.append("")
+        L.append("| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |")
+        L.append("| --- | ---: | ---: | ---: | --- | --- |")
+        for r in sorted(rs, key=lambda r: str(r["period_end"])):
+            num = T.m(r, "numerator") if r.get("numerator") is not None else "—"
+            den = T.m(r, "denominator") if r.get("denominator") is not None else "—"
+            L.append(f"| {r['period_end']} | {backlog_value(T, r)} | {num} | {den} | {_clean(backlog_basis(r), 120)} | "
+                     f"{backlog_pieces(con, r)} |")
+        L.append("")
+    return L
+
+
 def lab_events_section(con, T):
     """D-0067, volet 9 : événements propres aux laboratoires, par trimestre, hors annexe F (liste fermée)."""
     rows = _cell_rows(con, "lab_event")
@@ -2210,6 +2317,12 @@ def circularity_section(con, T, groups):
                 L.append(f"- {label} : " + ", ".join(f"{T.n('measures', {meas: [s, cp, a, b]}, n)} {plural(n, 'cellule')} "
                                                     f"{fr(a)}{'s' if n > 1 and a in VALUE_FR else ''}"
                                                     f"{(' (' + ND_FR.get(b, b) + ')') if b else ''}" for (a, b), n in st.items()) + ".")
+                done = [r for r in rows if meas == "documented_backlog_dependency" and r["status"] == "computed"]
+                if done:            # D-0068, point 9 : les cellules calculées, avec leur valeur
+                    L.append("  - Calculées : " + " ; ".join(
+                        f"{r['period_end']} ({BACKLOG_AT_FR.get(json.loads(r['flags'] or '{}').get('date_kind'), '?')}, "
+                        f"{'RPO total' if r['term'] == 'total' else 'au-delà de douze mois'}) : {T.m(r, fmt='pct')}, "
+                        f"{BACKLOG_SRC_FR.get(json.loads(r['flags'] or '{}').get('source'), '?')}" for r in done) + ".")
         cc = one(con, "contract_coverage", s, q(con, "SELECT period_end FROM measures WHERE measure = 'contract_coverage' AND subject = ? AND counterparty = ?", s, cp)[0]["period_end"], counterparty=cp) \
             if q(con, "SELECT 1 FROM measures WHERE measure = 'contract_coverage' AND subject = ? AND counterparty = ?", s, cp) else None
         if cc:
@@ -2567,6 +2680,7 @@ def series(con, as_of, stats):
     if "labs" in (config.load().get("scope") or []):
         L += labs_tagged_series(con, T)
         L += lab_terms_series(con, T)
+    L += backlog_series(con, T)
     if "lender_portfolio" in (config.load().get("scope") or []):
         # véhicules BDC des plateformes de présentation (D-0045 ; D-0055, point 7) : série complète, vue as_known
         lp = config.load().get("lender_portfolio") or {}

@@ -188,9 +188,42 @@ def map_concepts(con, cfg=None):
     return len(rows)
 
 
+RPO_CONCEPT = "us-gaap:RevenueRemainingPerformanceObligation"
+TIMING_AXIS = "us-gaap:RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis"
+
+
+def rpo_next_day(rows):
+    """D-0068, volet 1 : faits de RPO qui valent le RPO total d'un dépôt à une date t. Un dépôt sans fait non
+    dimensionné du concept à t, qui porte un seul fait du concept sur le seul axe d'horizon, au membre t + 1 jour,
+    sans autre tranche sur cet axe seul : ce fait est le carnet entier. `rows` : (fact_key, accession, period_end,
+    dims JSON, n_dims) des faits d'instance du concept. Un fait à plusieurs axes (client et horizon) ne compte pas."""
+    by = {}
+    for fk, acc, pe, dims, n in rows:
+        by.setdefault((acc, str(pe)[:10]), []).append((fk, json.loads(dims or "[]"), n))
+    out = set()
+    for (acc, pe), fs in by.items():
+        if any(n == 0 for _, _, n in fs):
+            continue
+        single = [(fk, d[0][1]) for fk, d, n in fs if len(d) == 1 and d[0][0] == TIMING_AXIS]
+        nxt = "typed:" + (dt.date.fromisoformat(pe) + dt.timedelta(days=1)).isoformat()
+        if len(single) == 1 and single[0][1] == nxt:
+            out.add(single[0][0])
+    return out
+
+
 def occurrences(con):
     """Occurrences admissibles des grandeurs : faits non dimensionnés, périmètre publié,
-    rattachés par la correspondance du dépôt qui les porte."""
+    rattachés par la correspondance du dépôt qui les porte ; pour rpo_total, le RPO « à partir du
+    lendemain de la clôture » d'un dépôt qui ne balise pas le total (D-0068, volet 1)."""
+    rows = con.execute(f"""SELECT fact_key, accession, CAST(period_end AS VARCHAR), dims, n_dims FROM facts
+                           WHERE source = 'instance' AND concept = '{RPO_CONCEPT}' AND value IS NOT NULL""").fetchall()
+    nd = sorted(rpo_next_day(rows))
+    con.execute("DROP TABLE IF EXISTS rpo_next_day")
+    con.execute("CREATE TABLE rpo_next_day (fact_key VARCHAR)")
+    if nd:
+        con.register("df_rpo_next_day", pd.DataFrame({"fact_key": nd}, dtype=object))
+        con.execute("INSERT INTO rpo_next_day SELECT CAST(fact_key AS VARCHAR) FROM df_rpo_next_day")
+        con.unregister("df_rpo_next_day")
     con.execute("DROP VIEW IF EXISTS q_occ")
     con.execute("""
       CREATE VIEW q_occ AS
@@ -200,7 +233,8 @@ def occurrences(con):
              f.doc_rank, f.occ_rank, f.tier, f.is_tagged, f.conflict
       FROM facts f JOIN concept_map m
         ON m.accession = f.accession AND m.concept = f.concept AND m.group_id = f.group_id
-      WHERE f.n_dims = 0 AND f.reporting_scope = 'as_reported' AND f.value IS NOT NULL
+      WHERE (f.n_dims = 0 OR (m.quantity = 'rpo_total' AND f.fact_key IN (SELECT fact_key FROM rpo_next_day)))
+        AND f.reporting_scope = 'as_reported' AND f.value IS NOT NULL
         AND NOT coalesce(f.is_nil, false)
     """)
 

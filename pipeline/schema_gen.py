@@ -153,6 +153,9 @@ TABLES = {
         ("capacity_unit", "capacity_unit"),
         ("capacity_kind", "capacity_kind"),
         ("capacity_qualifier", "amount_qualifier"),
+        # D-0068 : ligne de carnet
+        ("backlog_basis", "backlog_basis"),
+        ("backlog_statement", "backlog_statement"),
         ("validation_state", "validation_state NOT NULL"),
         ("validation_error", "VARCHAR"),
     ],

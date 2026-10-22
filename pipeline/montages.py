@@ -41,6 +41,11 @@ niveau `evidence: registry` (comme le registre des documents, tous formulaires).
 
     python -m pipeline.montages replay <montage>    # source `hits` : pages en cache -> work/tmp, aucune requête
     python -m pipeline.montages lab_corpus <montage> # source `lab_corpus` : documents en cache, aucune requête
+
+D-0068 (point 6) : source `backlog`, documents en cache des vendeurs (groupes vers lesquels va une arête commerciale d'un
+client nommé) ; un paragraphe qualifie s'il nomme l'un des clients de son vendeur et un terme de carnet (`vocabulary`).
+
+    python -m pipeline.montages backlog_corpus <montage>   # source `backlog` : documents en cache, aucune requête
 """
 import json
 import re
@@ -358,6 +363,74 @@ def lab_corpus(mid):
     info_path.write_text(json.dumps({"source": "lab_corpus", "documents_named": len(rows), "by_source": counts,
                                      "excluded_pieces": len(skip)}))
     print(mid, ":", len(rows), "documents nomment un terme ;", counts)
+
+
+def backlog_names(cfg=None):
+    """Montage `backlog` (D-0068, point 6) : pour chaque vendeur, les noms de ses clients nommés (arête commerciale du
+    client vers lui, tables du dernier assemblage), tels que le registre (entités et alias) et le lexique les écrivent ;
+    trois caractères au moins."""
+    from . import backlog
+    cfg = cfg or config.load()
+    ln = pd.read_parquet(config.ROOT / "tables" / "links.parquet",
+                         columns=["link_kind", "family", "from_group", "to_group", "elimination_status"])
+    ln = ln[ln["link_kind"] == "edge"]
+    clients = backlog.sellers(zip(ln["from_group"], ln["to_group"], ln["family"], ln["elimination_status"].fillna("")),
+                              set(cfg["groups"]))
+    ent = pd.read_parquet(config.ROOT / "tables" / "entities.parquet", columns=["entity_id", "record_kind", "ref", "name"])
+    members, names = {}, {}
+    for r in ent.itertuples(index=False):
+        if r.record_kind == "membership":
+            members.setdefault(r.ref, set()).add(r.entity_id)
+        elif r.record_kind in ("entity", "alias") and isinstance(r.name, str):
+            names.setdefault(r.entity_id, set()).add(r.name)
+    terms = {}
+    lex = (cfg.get("discovery") or {}).get("lexicon") or {}
+    for k in ("seed", "confirmed"):
+        for x in lex.get(k) or []:
+            terms.setdefault(x["ref"], set()).add(x["term"])
+
+    def of(g):
+        return {n for e in members.get(g, ()) for n in names.get(e, ())} | terms.get(g, set())
+    return {s: {n for c in cs for n in of(c) if len(n) >= 3} for s, cs in clients.items()}
+
+
+def backlog_corpus(mid):
+    """Source `backlog` (D-0068, point 6) : documents en cache des vendeurs (registre des documents), documents
+    principaux et pièces, formulaires de `forms`, déposés dans la période ; pièces EX-99 écartées (furnished, niveau E) ;
+    aucune requête. Un pré-filtre sur les octets écarte les documents sans terme de carnet."""
+    from . import backlog
+    spec = specs()[mid]
+    _, docs_path, info_path = _paths(mid)
+    start, end = spec["period"]
+    meta = json.loads((config.DB_DIR / "phase0.json").read_text())["meta"]
+    names = backlog_names()
+    d = pd.read_parquet(config.ROOT / "tables" / "documents.parquet",
+                        columns=["cik", "group_id", "accession", "document", "form", "sgml_type", "filing_date",
+                                 "resource_kind", "items"])
+    d = d[d["group_id"].isin(list(names)) & d["resource_kind"].isin(["primary_document", "exhibit"])
+          & d["form"].isin(spec.get("forms") or backlog.FORMS)
+          & d["document"].str.lower().str.endswith((".htm", ".html", ".txt"))
+          & ~d["sgml_type"].fillna("").str.upper().str.startswith("EX-99")]
+    d = d.assign(file_date=d["filing_date"].astype(str).str[:10])
+    d = d[(d["file_date"] >= start) & (d["file_date"] <= end)].drop_duplicates(["accession", "document"])
+    pre = re.compile(backlog.PREFILTER)
+    rows, scanned = [], 0
+    for x in d.sort_values(["file_date", "accession", "document"]).itertuples(index=False):
+        path = cache.archive_path(x.cik, x.accession, x.document)
+        if not path.exists():
+            continue
+        scanned += 1
+        if not pre.search(cache.read(path)):
+            continue
+        rows.append({"adsh": x.accession, "file": x.document, "form": x.form, "file_type": x.sgml_type or x.form,
+                     "file_date": x.file_date, "cik": x.cik, "items": x.items, "group_id": x.group_id,
+                     "filer": (meta.get(x.cik) or {}).get("name") or x.group_id,
+                     "source": "backlog", "queries": "", "state": "cached"})
+    pd.DataFrame(rows).to_parquet(docs_path, index=False)
+    info_path.write_text(json.dumps({"source": "backlog", "sellers": len(names), "documents_in_period": int(len(d)),
+                                     "documents_scanned": scanned, "documents_named": len(rows)}))
+    print(mid, ":", len(names), "vendeurs ;", len(d), "documents dans la période ;", scanned, "en cache ;", len(rows),
+          "nomment un terme de carnet")
 
 
 # section des facteurs de risque (§14 : une mention n'y fait jamais une unité ; D-0058, point 3)
@@ -678,6 +751,9 @@ def _prepare_one(mid, spec, groups_by_cik):
     if not docs_path.exists():
         return []
     docs = pd.read_parquet(docs_path)
+    if spec.get("source") == "backlog":          # noms des clients de chaque vendeur (D-0068, point 6)
+        from . import backlog
+        client_names = backlog_names()
     units, no_window, excluded, risk, already = [], [], [], [], []
     read_by_acc = read_texts(mid) if spec.get("skip_read") else {}
     comp = spec.get("complement")                 # lecture complémentaire (D-0067, point 6) : "party" ou "all"
@@ -700,7 +776,9 @@ def _prepare_one(mid, spec, groups_by_cik):
             raw = cache.read(cache.archive_path(d["cik"], d["adsh"], d["file"]))
             text, how = document_text(raw, spec)
         paras = paragraphs(text)
-        if spec.get("party_chars") or spec.get("require"):
+        if spec.get("source") == "backlog":      # un client du vendeur et un terme de carnet (D-0068, point 6)
+            rx = backlog.qualifier(client_names.get(d["group_id"], ()), spec.get("vocabulary") or backlog.VOCAB)
+        elif spec.get("party_chars") or spec.get("require"):
             rx, d["party"] = qualifier(d, spec, text)
         else:
             rx = qualify_rx(d["filer"], spec)
@@ -822,11 +900,11 @@ def exclusions(as_of):
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
         terms = " », « ".join(t.get("label") or re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
-        if spec.get("source") in ("corpus", "tagged", "lab_corpus"):
+        if spec.get("source") in ("corpus", "tagged", "lab_corpus", "backlog"):
             # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
             # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
             # plafond, une fenêtre reste à lire
-            pt = 4 if spec.get("source") in ("tagged", "lab_corpus") else 3   # D-0060, point 4 ; D-0058, point 3 ; D-0067, point 4
+            pt = {"tagged": 4, "lab_corpus": 4, "backlog": 6}.get(spec.get("source"), 3)   # D-0060, D-0058, D-0067, D-0068
             for d in info.get("risk_factors") or []:
                 ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
                    f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point {pt})", d["adsh"])
@@ -887,6 +965,8 @@ if __name__ == "__main__":
         replay(sys.argv[2])
     elif cmd == "lab_corpus":
         lab_corpus(sys.argv[2])
+    elif cmd == "backlog_corpus":
+        backlog_corpus(sys.argv[2])
     elif cmd == "prepare":
         prepare(sys.argv[2] if len(sys.argv) > 2 else None)
     elif cmd == "retier":

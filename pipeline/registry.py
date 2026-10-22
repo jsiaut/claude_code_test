@@ -109,7 +109,7 @@ ENUMS = {
                        "not_collected", "not_processed", "parse_failed", "conflicting",
                        "policy_excluded", "unknown"],
     "bound_basis": ["rounding", "asc280_major_customer_completeness", "publication_rule",
-                    "untagged_counted_as_absent", NONE],
+                    "untagged_counted_as_absent", "published_contract_value", NONE],
     "period_kind": ["quarter", "fiscal_year", "ytd", "ttm", "instant", "event", "window", NONE],
     "nd_reason": ["not_processed", "search_incomplete", "non_filer", "redacted", "anonymous",
                   "channel_indirect", "parse_failed", "denominator_nonpositive",
@@ -170,6 +170,10 @@ ENUMS = {
                     "minimum_commitment", "delivery_schedule", NONE],
     "capacity_unit": ["MW", "GW", NONE],
     "capacity_kind": ["compute", "hosting", "power", "unspecified", NONE],
+    # D-0068, volet 3 : ligne de carnet, telle qu'écrite par le vendeur (descriptive)
+    "backlog_basis": ["rpo", "lease", "unspecified", NONE],
+    "backlog_statement": ["remaining", "contract_value", "total_contract_value", "change", "excluded",
+                          "included_no_amount", NONE],
     "validation_state": ["valid", "rejected_schema", "rejected_semantic"],
     "price_setting_participation": ["yes", "no", "unknown", NONE],
     # §2.6, §7.6, §11 exclusions
@@ -297,6 +301,9 @@ MEASURES = {
     "lab_contract_clause": (2, [NONE], "event", "14"),
     "lab_capacity": (2, [NONE], "event", "14"),
     "lab_event": (2, [NONE], "quarter", "14"),
+    # D-0068, volet 3 : loyers à recevoir d'un bailleur, part du carnet contracté attribuée à un client nommé
+    "lessor_lease_receipts": (2, [NONE], "instant", "14"),
+    "contracted_backlog_share": (2, ["rpo", "lease"], "instant", "14"),
     # annexes
     "annex_e_outcome": (1, [NONE], "fiscal_year", "E"),
     "fragility_event": (1, [NONE], "quarter", "F"),

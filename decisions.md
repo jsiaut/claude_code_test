@@ -2779,3 +2779,100 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - un seuil de baisse serait une décision nouvelle ;
   - les effets de §3.2 ci-dessus suivent la règle existante. Garder les lignes des volets 8 et 9 hors des mesures des paires serait une décision nouvelle : la caviardure d'une clause de ces contrats est un fait de leurs pièces ;
   - « OpenAI, Inc. » chez un fonds, au titre « empros technologies », reste rattachée à son groupe propre : rien n'établit qu'il s'agit du laboratoire.
+
+- **D-0068 — Carnet de commandes : RPO total dérivé de l'axe d'horizon, dépendance du carnet (E.3) calculée selon §3.3, carnet contracté par client nommé (rang 2, §14). Règles fixées avant tout calcul et toute lecture.**
+  (1) Décision de l'utilisateur, le 2026-10-22 : « Fais 1, 2 et 3 », après le constat demandé la veille (« Ok investigue en profondeur la piste 1 »). Les trois volets :
+  - volet 1 : rétablir `rpo_total` quand le seul RPO balisé est celui « à partir du lendemain de la clôture » ;
+  - volet 2 : remplacer la cellule fixe de `documented_backlog_dependency` (toujours « anonyme », sans recherche) par la règle de §3.3, avec ses cellules de fin de trimestre ;
+  - volet 3 : mesure nouvelle, la part du carnet contracté d'un vendeur attribuée par lui à un client nommé, financé ou non.
+
+  (2) Constat, compté sans aucune valeur, sur les tables du commit 5ddb6af. Deux paragraphes de CoreWeave ont été vus, chiffres masqués, pour en connaître la forme :
+  - univers de E.3 : 75 paires financées sur 19 fournisseurs, 231 exercices. Dans 18 paires le client achète au fournisseur (arête commerciale du client vers le fournisseur), dont 8 où le fournisseur publie un RPO ; dans 3 le fournisseur achète au client ; 54 sont de pur financement, sans arête commerciale. 62 des 231 exercices ont un `rpo_total` à la même date ;
+  - attributions nommées de RPO par le fournisseur lui-même :
+    - Amazon balise `RevenueRemainingPerformanceObligation` sur `srt:MajorCustomersAxis` : un solde au membre OpenAI au 2026-03-31, et pour Anthropic une hausse sur le trimestre clos le 2026-06-30, pas un solde ;
+    - Microsoft ne balise son RPO que pour les « commercial customers », une catégorie de clients (37 faits) ;
+    - aucun autre groupe ne balise un RPO par client ; aucun `ConcentrationRiskPercentage1` ne porte sur un repère de carnet ;
+  - textes : dans les rapports des fournisseurs des paires de E.3, seuls deux paragraphes nomment un client avec du vocabulaire de RPO, aux 10-Q de CoreWeave du 2025-03-31 (le RPO exclut le contrat avec OpenAI) et du 2025-06-30 (il l'inclut, sans montant). Les paragraphes de Microsoft qui nomment OpenAI ne parlent jamais de RPO ; ceux d'Amazon parlent d'engagements. Aucune attribution n'existe à une fin d'exercice ;
+  - `rpo_total` : 24 trimestres n'ont pour RPO balisé qu'un fait unique sur `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis`, au membre du lendemain de la clôture (Amazon 21 depuis le 2020-09-30, Applied Digital 2, Micron 1). Ailleurs, aucun fait de RPO (Cipher, Hut 8, TeraWulf, Marvell : leurs contrats d'IA sont des baux) ou des ventilations par produit (Core Scientific, Riot) ;
+  - loyers futurs à recevoir d'un bailleur (`LessorOperatingLeasePaymentsToBeReceived`, location-financement) : balisés chez Applied Digital (7 dates), Core Scientific (9), TeraWulf (4), Galaxy (1), IREN (1), Riot (2), Supermicro (9), Dell (30), Akamai (6), Marvell (7) ; ASML par échéance seulement ; ni Cipher ni Hut 8. Aucune grandeur du modèle ne les reprend ;
+  - valeurs de contrats attribuées à un client nommé, déjà en tables et admissibles (niveaux A à D) : 44 arêtes, 22 paires, 14 vendeurs. Les grands baux des hébergeurs (TeraWulf et Fluidstack, Cipher avec AWS et Fluidstack, Galaxy et CoreWeave) n'ont leurs montants que dans des communiqués EX-99, de niveau E : ce sont des relations sans montant ;
+  - volume des paragraphes candidats (dépôts des vendeurs, niveaux A à D, hors facteurs de risque, qui nomment un client du vendeur et parlent de carnet, de valeur de contrat ou de loyers) : 118 paragraphes, dont 76 déjà dans un bloc lu et 42 non (191 538 caractères), chez 12 vendeurs et pour 19 paires.
+
+  (3) Volet 1, `rpo_total` (§6.2). Un dépôt (instance) sans fait non dimensionné de `RevenueRemainingPerformanceObligation` à une date t peut porter un seul fait de ce concept dont l'unique axe est l'axe d'horizon, au membre t + 1 jour, sans autre fait de ce concept sur ce seul axe à t (aucune autre tranche) :
+  - ce fait est le RPO total à t : un carnet dont la satisfaction commence le lendemain de la clôture, sans autre tranche, est le carnet entier. Il entre dans `rpo_total` comme une occurrence du dépôt, avec le drapeau `derived_from: timing_axis_next_day` ;
+  - un fait à plusieurs axes (client et horizon) n'est ni le total ni une tranche : il n'empêche ni ne fait la règle ;
+  - aucune autre dérivation : ni somme de tranches, ni tranche par produit ou par segment, ni membre de client. `rpo_within_12m` et `rpo_beyond_12m` ne changent pas ; une durée d'horizon (`Period1`) ne se convertit jamais en tranche à douze mois ;
+  - C13 lit les dépôts eux-mêmes et ne change pas.
+
+  (4) Volet 2, `documented_backlog_dependency` (§3.3, E.3) :
+  - cellules :
+    - à chaque fin d'exercice du fournisseur dans la fenêtre, pour les paires financées, comme avant (exercice où F est active au moins un trimestre) : seules celles-ci entrent dans E.3 ;
+    - à chaque autre fin de trimestre du fournisseur où F (`exposure_outstanding`) est active : série publiée, jamais dans E.3 ;
+    - deux vues, `as_known` et `revised`, aux dates de coupure de la dépendance de revenu (exercices) et du statut financé (trimestres) ; termes `total` et `beyond_12m` ;
+  - dénominateur : `rpo_total` du fournisseur à la date (volet 1 compris) ; `rpo_beyond_12m` pour le second terme ;
+  - numérateur, attribué par le fournisseur lui-même, niveau A à C, connu à la coupure :
+    - un fait balisé de RPO à la date sur `srt:MajorCustomersAxis`, dont le membre nomme le client (nom du registre contenu dans le nom local du membre, le plus long l'emporte), sans autre axe que celui d'horizon au lendemain de la date. Une catégorie de clients, un segment ou un marché (« commercial customers ») ne compte jamais ;
+    - une ligne de carnet (point 7) de base `rpo`, d'énoncé `remaining`, datée de la date (`period_end`), pour ce client ;
+    - une ligne d'énoncé `excluded` à la date : le RPO exclut le contrat du client. Le numérateur vaut alors zéro, pourvu qu'aucun autre contrat entre eux, signé à la date au plus tard, ne figure dans les lignes de carnet ; sinon la cellule reste non déterminée ;
+    - `beyond_12m` : seulement si la part du client au-delà de douze mois est elle-même écrite ou balisée ;
+  - jamais au numérateur : une hausse ou une baisse (`change`), une valeur de contrat, l'engagement du client (na01), une estimation de la direction (§3.5) ;
+  - statuts et motifs :
+    - le fournisseur ne publie aucun RPO à la date : `not_determinable`, avec le motif de `rpo_total` (`not_disclosed`, `concept_unresolved`) ;
+    - numérateur trouvé : `computed`, valeur = numérateur ÷ dénominateur ;
+    - le client achète au fournisseur, sans attribution : `not_determinable`, `anonymous`, comme avant. Les drapeaux disent ce qui existe sans entrer dans la valeur : inclusion sans montant, hausses, valeurs de contrats ;
+    - le client n'achète pas au fournisseur (aucune arête commerciale du client vers lui) : `not_determinable`, `precondition_not_met`, drapeau « aucune vente du fournisseur au client documentée » ;
+    - aucune borne : rien n'oblige à publier le RPO par client, à la différence d'ASC 280-10-50-42 pour le revenu ;
+  - E.3 se calcule comme avant, sur les seules cellules de fin d'exercice, terme `total` (le RPO de fin d'exercice). La table des exercices gardait jusqu'ici la dernière des deux cellules, `beyond_12m`, sans effet tant qu'elles étaient identiques ; précision consignée en codant, avant tout calcul. E.7 ne change pas (E.1 et E.2).
+
+  (5) Volet 3, mesures nouvelles (rang 2, §14), hors de l'annexe E :
+  - `lessor_lease_receipts` : loyers futurs non actualisés à recevoir d'un bailleur à une date, tels que publiés (`LessorOperatingLeasePaymentsToBeReceived` et, s'il est publié, `SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceived`, faits non dimensionnés). Une cellule seulement aux dates où l'un est publié ; la somme des deux est la seule addition, notée ;
+  - `contracted_backlog_share` (vendeur S, client nommé C, date t, terme) : part du carnet contracté de S que S attribue lui-même à C :
+    - paires : tout groupe S du modèle et tout client C qu'une ligne de carnet de S nomme, ou qu'un fait balisé de RPO de S nomme ; aucune condition de financement ;
+    - termes, jamais mêlés ni additionnés : `rpo` (contrats de services, ASC 606), sur `rpo_total` ; `lease` (S bailleur, ASC 842), sur `lessor_lease_receipts`. Le terme d'un contrat est la base de ses lignes de carnet ; un contrat de base `unspecified` n'entre dans aucun terme et reste en drapeau ;
+    - dates : chaque fin de trimestre ou d'exercice de S, de la première date d'une ligne sur C à l'as_of, où le dénominateur du terme existe (publié) ; s'y ajoutent les dates d'un reste ou d'une exclusion écrits, où le dénominateur peut manquer (`not_determinable`, son motif). Vue `as_known` à l'as_of. Précision consignée en codant, avant tout calcul : sans elle, le motif « dénominateur absent » ne pouvait naître ;
+    - `computed` : S écrit le reste dû par C à t (ligne `remaining` datée de t, ou fait balisé de RPO par client à t), ou l'exclusion de ses contrats (zéro, aux conditions du point 4) ;
+    - `bounded`, borne basse 0 : borne haute = valeur publiée ÷ dénominateur, plafonnée à 1, avec `bound_basis = published_contract_value`. La valeur publiée est la dernière ligne `total_contract_value` de C datée au plus tard de t. À défaut, c'est la somme, sur les contrats de S avec C signés au plus tard à t, de la dernière valeur de chaque contrat et des hausses (`change`) qui la suivent. Cette somme n'est admise que si chaque contrat de S avec C dans les lignes de carnet a une valeur. Hypothèse déclarée en drapeau : S publie chacun de ses contrats importants avec C (Item 1.01 du 8-K), et la valeur d'un contrat, totale ou maximale (« up to »), majore ce qu'il en reste ;
+    - `not_determinable` : dénominateur absent (son motif) ; aucune valeur ni aucun reste (`not_disclosed`) ; devises différentes (`mixed_currency`) ;
+    - jamais : une somme entre clients, un total entre vendeurs, une conversion entre termes, une part au-delà de 1, une pièce EX-99 (niveau E) ;
+  - ces cellules n'entrent ni dans l'annexe E ni dans l'annexe F, ni dans les mesures de financement, l'exposition, les paires, les cycles ou les conclusions.
+
+  (6) Montage `backlog` (lecture du volet 3, et des deux paragraphes du volet 2) :
+  - corpus : documents en cache (registre des documents) des vendeurs, c'est-à-dire des groupes du modèle vers lesquels va au moins une arête commerciale d'un client nommé. Formulaires 10-K (10-KT compris), 10-Q, 8-K, S-1, 424B3, 424B4, 20-F, 40-F et leurs amendements, du 2019-01-01 à l'as_of ; pièces EX-99 écartées (furnished, niveau E). Niveau de preuve de chaque bloc comme le registre des documents (`evidence: registry`) ; noms des clients tels qu'écrits, casse comprise, et termes de carnet sans égard à la casse, comme au constat du point 2 ;
+  - un paragraphe qualifie s'il nomme un client du vendeur (noms et alias du registre, termes du lexique) et un terme de carnet : RPO, remaining ou unsatisfied performance obligations, contract value, contracted revenue, total contract, aggregate value, future, minimum ou remaining lease payments, lease payments to be received, backlog. Un paragraphe de la section des facteurs de risque ne qualifie jamais ;
+  - fenêtres d'un paragraphe de part et d'autre, fondues ; servies des plus anciennes aux plus récentes ; un texte distinct se lit une fois ;
+  - régimes : lecture complète d'une fenêtre jamais lue (codage habituel, plus les lignes de carnet) ; lecture complémentaire d'une fenêtre déjà dans un bloc lu du même dépôt (seules s'écrivent des lignes de carnet ; sinon `duplicate_of_other_block`).
+
+  (7) Ligne de carnet, descriptive (sans famille ni arête, aucune autre mesure), note finie par « ligne de carnet (D-0068) » :
+  - `backlog_basis` : `rpo` (contrat de services), `lease` (S bailleur), `unspecified` si le texte ne le dit pas ;
+  - `backlog_statement` :
+    - `remaining` : reste dû par C à une date (RPO attribué, loyers restant à recevoir de C, valeur restante de ses contrats) ;
+    - `contract_value` : valeur d'un contrat sur sa durée, à sa signature ou à un avenant ;
+    - `total_contract_value` : valeur de tous les contrats de S avec C ;
+    - `change` : hausse de la valeur d'un contrat, ou du RPO de C, sur une période ;
+    - `excluded` : le RPO ou le carnet de S exclut le contrat de C ;
+    - `included_no_amount` : il l'inclut, sans montant ;
+  - champs de montant habituels (montant, unité, devise, qualificatif, origine) pour `remaining`, `contract_value`, `total_contract_value` et `change` ; aucun pour `excluded` et `included_no_amount` ;
+  - `period_end` : date du reste ou de l'énoncé (exigée pour `remaining`, `excluded`, `included_no_amount`) ; `event_date` : signature du contrat ; `period_label` : durée telle qu'écrite ;
+  - `counterparty_name` : le client tel qu'écrit, présent dans le bloc ; `instrument_key` : le contrat, une clé par contrat, la même dans toutes les lignes ;
+  - doublons : une ligne par fait du vendeur, sur le premier dépôt qui l'écrit ; une reprise est une abstention `duplicate_of_other_block` ; un chiffre ou une date qui change fait une ligne nouvelle ;
+  - données personnelles : aucun nom de personne physique.
+
+  (8) Champs et registre : `backlog_basis` et `backlog_statement` (registre, lecteur, chargement, `schema.sql`) ; `bound_basis` gagne `published_contract_value` ; mesures `lessor_lease_receipts` et `contracted_backlog_share` (rang 2, §14). Les loyers à recevoir se lisent directement dans les faits non dimensionnés, comme `rpo_beyond_12m`, sans grandeur ni ancre nouvelle : une ancre ajouterait des contrôles de correspondance sans rien apporter. Contrôles du lecteur : une ligne de carnet est descriptive ; l'énoncé exige la base et réciproquement ; un montant pour les énoncés chiffrés, aucun pour les autres ; la date du point 7.
+
+  (9) Rendus : dans la section des paires, les cellules calculées de la dépendance du carnet avec leur valeur. Section nouvelle « Carnet contracté par client (D-0068) » après le calendrier des capacités :
+  - par vendeur, son RPO et ses loyers à recevoir à la dernière date ;
+  - par client, la dernière cellule (part, ou intervalle [0 ; borne haute]) avec sa base et ses pièces ;
+  - jamais de total. Le détail par date va dans `series.md`.
+
+  (10) Réseau : aucun, tout est en cache. Données personnelles : aucune personne physique n'est citée.
+
+  (11) Code avant tout traitement : règle du lendemain (occurrences des grandeurs), règle de §3.3 et cellules de trimestre (`circularity`), module `backlog` (mesures du volet 3, source du montage), champs et contrôles, rendus, tests.
+
+  (12) Ordre et commits : règles, configuration, code et tests ; montage préparé et volume consigné avant lecture ; lecture lot par lot, sans sous-agent ; intégration (réassemblage, rendus, résultats, tests), commit, push, rapport.
+
+  (13) Limites connues avant lecture :
+  - une valeur de contrat n'est pas un carnet : elle ne donne qu'une borne haute, sous l'hypothèse du point 5 ; un contrat non publié la rend fausse, et une hausse sans base (« incremental ») n'en donne aucune ;
+  - le RPO exclut les contrats d'un an au plus, la contrepartie variable et les contrats résiliables sans pénalité (ASC 606-10-50-14 à 14B) ; les loyers à recevoir excluent les loyers variables ;
+  - l'échéancier des loyers à recevoir est souvent annuel : beaucoup de trimestres n'auront pas de dénominateur ;
+  - les grands baux dont la valeur n'est écrite qu'en EX-99 restent sans montant ;
+  - Microsoft n'attribue aucun RPO à OpenAI dans ses dépôts ; Amazon ne balise son RPO par client que depuis 2026. Aucune paire de E.3 n'a d'attribution de fin d'exercice : E.3 restera indéterminé.
