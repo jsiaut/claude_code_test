@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..07609e0 100644
+index 1378604..3085ec7 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,202 @@ user_agent:
@@ -1426,7 +1426,7 @@ index 1378604..07609e0 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1701,462 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1701,465 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1890,3 +1890,6 @@ index 1378604..07609e0 100644
 +    - {s: SMCI, c: APLD, cik: "1144879"}
 +    - {s: TSM, c: INTC, cik: "50863"}
 +    - {s: TSM, c: "NF:SOFTBANK", cik: "1973239"}     # Arm Holdings plc
++duckdb:                      # D-0072 (point 3 d) : réglages explicites des connexions de l'assemblage, du mémo, du rendu et de l'aperçu
++  threads: 4                 # cœurs de cet environnement, le défaut de DuckDB
++  memory_limit: "10GB"       # sur 15 Go ; l'ordre d'insertion reste préservé (défaut)

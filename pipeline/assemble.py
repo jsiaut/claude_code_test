@@ -905,10 +905,8 @@ def nf_discovery_exclusions(ex, todo):
 
 
 if __name__ == "__main__":
-    # l'ordre d'itération des ensembles de chaînes ne doit pas dépendre du processus (§9.6)
-    if __import__("os").environ.get("PYTHONHASHSEED") != "0":
-        __import__("os").environ["PYTHONHASHSEED"] = "0"
-        __import__("os").execv(sys.executable, [sys.executable, "-m", "pipeline.assemble", *sys.argv[1:]])
+    # les tables ne dépendent pas de l'ordre d'itération des ensembles de chaînes (§9.6) : mêmes tables à l'octet près
+    # sous PYTHONHASHSEED=0 et 1 (D-0072, point 3 e), d'où la fin de la relance du script
     args = sys.argv[1:]
     as_of_arg = next(a for a in args if not a.startswith("--"))
     if "--apercu" in args:

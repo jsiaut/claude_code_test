@@ -24,7 +24,9 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
 
 ## Prérequis
 
-- Python 3.13 et `pip install -r requirements.txt`.
+- Python 3.13 et `pip install -r requirements.txt` : versions exactes, dépendances transitives comprises. La
+  vérification des tables à l'octet près les suppose, DuckDB 1.5.6 d'abord. `pyproject.toml` décrit le projet
+  pour `uv` (`uv lock`, puis `uv sync`), hors d'une exécution du pipeline puisque `uv lock` interroge PyPI.
 - Un clone complet, sans `--depth 1` : le rendu compare les critères au commit d'origine `3ff3b98`, et
   `delta.md` aux tables du commit précédent.
 - Pour toute phase réseau, un User-Agent déclaré à la SEC, dans `SEC_USER_AGENT` ou dans
@@ -38,9 +40,13 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
 ## Sans `db/`, depuis un clone
 
 - Lire les tables, avec DuckDB (`SELECT * FROM 'tables/measures.parquet'`) ou avec pandas.
-- Lancer les tests : `python3 -m unittest discover -s tests -t .`
+- Lancer les contrôles : `make check` (ruff, puis les tests ; `make test` pour les seuls tests). Le crochet
+  `.githooks/pre-commit` les lance avant chaque commit une fois activé : `git config core.hooksPath .githooks`.
 
 ## Ordre d'une exécution
+
+`make help` liste ces étapes sous forme de cibles (`make phase0`, `make assemble`, `make render`…), les cibles
+réseau signalées.
 
 1. `python3 -m pipeline.phase0 2026-10-07` : inventaire des dépôts, calendriers et fenêtres
    (`db/phase0.json`).
@@ -50,10 +56,12 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
 4. Lecture des blocs, un à un : `python3 -m pipeline.reader status`, puis `show` et `submit`. Chaque
    bloc extensif (`discovery`, `lender`, `nport`, `montages`, `sixk`, `sb_own`…) a ses commandes dans la
    docstring de son module, et la décision qui l'ouvre dans `decisions.md`.
-5. `python3 -m pipeline.assemble 2026-10-07` : les huit tables, en 14 minutes environ sans mémo.
+5. `python3 -m pipeline.assemble 2026-10-07` : les huit tables, en 14 minutes environ sans mémo, 18 si la
+   recherche des citations se refait aussi (après un changement de `textnorm.py` ou de `cache.py`). Profil :
+   `python3 -m pipeline.profiling work/tmp/profil.txt pipeline.assemble 2026-10-07`.
 6. `python3 -m pipeline.render 2026-10-07` : les rendus, en 30 secondes environ.
 
-`assemble` et `render` se relancent avec `PYTHONHASHSEED=0` pour figer l'ordre des ensembles. S'ils sont
-appelés autrement, depuis un test ou un carnet par exemple, il faut fixer cette variable soi-même. Deux
+Les tables et les rendus ne dépendent pas de `PYTHONHASHSEED` : sous les graines 0 et 1, deux réassemblages
+à froid donnent les huit tables à l'octet près, et les rendus aussi, à la durée mesurée près (D-0072). Deux
 commandes qui écrivent les mêmes fichiers ne se lancent jamais en même temps : `assemble` et `render`, ou
 deux `montages prepare`.

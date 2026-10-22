@@ -5,7 +5,7 @@ pour qu'un appel C long qui garde la main ne soit pas sous-compté. Le rapport d
 lourdes, le temps inclusif (la fonction est dans la pile) et le temps propre (elle est au sommet). Les processus fils
 (pools) ne sont pas vus : leur durée revient à la fonction qui les attend.
 
-    PYTHONHASHSEED=0 python -m pipeline.profiling work/tmp/profil.txt pipeline.assemble 2026-10-07 [--sans-cache]
+    python -m pipeline.profiling work/tmp/profil.txt pipeline.assemble 2026-10-07 [--sans-cache]
 """
 import collections
 import runpy

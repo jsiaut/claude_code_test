@@ -3304,3 +3304,21 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - un réassemblage à froid profilé, et la comparaison de ses tables avec celles de 580e8e9 ;
   - le réassemblage sous `PYTHONHASHSEED=1` et les rendus des deux ;
   - les résultats ; commit, push, rapport.
+
+  (6) Résultats :
+  - Réassemblage à froid profilé, graine 0 : 1 078 s. Rien n'est repris du mémo, et les plages de citations se recherchent de nouveau, leur code ayant changé. Comparé aux tables de 580e8e9 :
+    - `measures`, `controls`, `exclusions`, `links`, `observations`, `entities` et `documents` sont identiques à l'octet près. `observations` établit que la recherche répartie donne les mêmes plages ;
+    - `facts` : `fact_id` est retirée, `locator` suit la règle du point 3 a sur chaque ligne, et aucune autre valeur ne change. Le fichier passe de 48,3 à 28,2 Mio ;
+    - rendus : `synthesis.md` et `series.md` sont identiques. `delta.md` ne change que par sa base (580e8e9), sa durée et la décision nouvelle. Hors `delta.md`, `audit/numbers.csv` ne change que dans la colonne `locator` (21 756 lignes ; 24,7 → 22,2 Mo).
+  - Recherche des citations : 218 s sur quatre processus, contre 563 s en série (D-0062, point 5).
+  - Sonde de déterminisme : un réassemblage `--sans-cache` sous `PYTHONHASHSEED=1`, sans relance, prend 1 058 s.
+    - Les huit tables sont identiques à l'octet près à celles de la graine 0, et les statistiques ne diffèrent que par la durée.
+    - Les rendus sous la même graine sont identiques, à la ligne de durée de `delta.md` près.
+    - La relance est donc retirée d'`assemble` et de `render`, comme prévu au point 3 e.
+  - Profil (1 080 s échantillonnées), postes principaux :
+    - filtres par masque booléen sur les colonnes texte Arrow de pandas 3 : 233 s de temps propre dans `pyarrow.take`. Ils sont appelés en boucle par `controls.siblings` (86 s inclusifs), `controls_more.role_children` (60 s), `nport.unlisted` (93 s) et `nport.bond_cells` (75 s, dont 58 s pour `par_rows`) ;
+    - recherche des citations : 218 s, seulement quand son mémo est vide ;
+    - base XBRL (`model.build_base`) : 65 s, dont 56 s de chargement des faits ;
+    - empreintes SHA-256 des documents (`cache.sha256`) : 36 s.
+    - Piste pour une décision suivante : regrouper une fois au lieu de filtrer à chaque tour de boucle, ou confier ces filtres à DuckDB. Rien n'en est fait ici.
+  - Outils : `make check` passe (ruff sans constat, 346 tests).

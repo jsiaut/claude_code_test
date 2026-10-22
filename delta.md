@@ -1,6 +1,6 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-10-07, comparée à l'exécution précédente, dont les tables sont celles du commit 1d248f689f57 (2026-10-22). Généré depuis les tables (D-0069, point 8).*
+*Exécution du 2026-10-07, comparée à l'exécution précédente, dont les tables sont celles du commit 580e8e97ffc5 (2026-10-22). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
@@ -25,7 +25,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 - Blocs lus : 11 195 sur 11 551 clés de contenu ; par item de 8-K : 1.01 469, 1.02 49, 2.01 38, 2.03 142, 3.03 35, 8.01 825 ; pièces arrêtées à leur en-tête : EX-4 356.
 - Lignes rejetées par la validation : 0.
 - Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 688 (collisions : 239).
-- Durée de l'assemblage : 830 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 1058 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -90,7 +90,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 
 ## Décisions et variantes nouvelles
 
-- D-0071 — Deux pistes : déclarations de détention (13F, 13D, 13G) et prix des obligations tirés de N-PORT (Oracle, CoreWeave, Beignet). Règles fixées avant tout tirage.
+- D-0072 — Observations d'architecture de l'audit : ce qui est déjà fait, ce qui se fait, ce qui ne se fait pas. Règles fixées avant tout changement.
 
 ## Critères des annexes E et F
 
@@ -102,17 +102,11 @@ Modifiés : annex_f
 
 ## Dépôts nouveaux
 
-Dépôts lus pour la première fois : 13F-HR 116, 13F-HR/A 4, SCHEDULE 13G 2, SC 13G 1, SC 13G/A 1, SCHEDULE 13G/A 1.
+Aucun.
 
 ## Valeurs changées pour des périodes déjà publiées
 
-Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cellules apparues et disparues, par mesure :
-
-| Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
-| --- | ---: | ---: | ---: | ---: |
-| `nport_price_to_par` | 0 | 0 | 4 024 | 0 |
-| `ownership_position` | 0 | 0 | 54 | 0 |
-| `ownership_stake` | 0 | 0 | 5 | 0 |
+Aucune cellule changée, apparue ni disparue.
 
 Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 107, Apollo 84, ASML 7, Broadcom 22, Backblaze 10, Blackstone 1, Cipher 45, Core Scientific 96, CoreWeave 3, Dell 277, Alphabet 20, Hut 8 7, Intel 44, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 32, Oracle 52, Blue Owl 7, Riot 112, Supermicro 162, TSMC 17, TeraWulf 20.
 

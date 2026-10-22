@@ -3651,8 +3651,5 @@ def main(as_of):
 
 
 if __name__ == "__main__":
-    # l'ordre d'itération des ensembles de chaînes ne doit pas dépendre du processus (§9.6)
-    if __import__("os").environ.get("PYTHONHASHSEED") != "0":
-        __import__("os").environ["PYTHONHASHSEED"] = "0"
-        __import__("os").execv(sys.executable, [sys.executable, "-m", "pipeline.render", *sys.argv[1:]])
+    # mêmes rendus sous PYTHONHASHSEED=0 et 1, à la durée mesurée de l'assemblage près (D-0072, point 3 e)
     main(sys.argv[1])
