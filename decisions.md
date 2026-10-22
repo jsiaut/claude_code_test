@@ -3065,3 +3065,29 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - la piste des non-déposants (archives, recherche plein texte, pièces, statut de FLUIDSTACK LTD, candidats, unités retenues), avec son volume consigné ici avant toute lecture ;
   - la lecture de Cerebras, puis celle des unités de Fluidstack, un commit par partie ;
   - l'intégration : entités et filiales par extrait, noms au rendu, premier réassemblage, extraction refaite des BDC Data Sets (D-0043, point 14), second réassemblage, rendus, résultats ici, tests, commit, push, rapport.
+
+  (11) Phases 0 à 2 et catalogue, avant toute lecture (2026-10-22) :
+  - CIK confirmé par `company_tickers.json` : 2021728 (Cerebras Systems Inc., Nasdaq, CBRS). Exercice clos le 31 décembre ; déclarant non accéléré et émetteur émergent.
+  - Historique (point 4) : aucune rupture, ni 8-K12 ni dénomination antérieure.
+    - Le premier dépôt est un projet confidentiel (DRS) du 2024-06-17, postérieur au début de lecture : Cerebras reçoit `history_left_censored`.
+    - Première tentative : DRS et DRS/A (juin à août 2024), puis S-1 du 2024-09-30, retiré le 2025-10-03 (RW).
+    - Seconde tentative : DRS du 2025-12-22, DRS/A du 2026-03-31, S-1 du 2026-04-17, S-1/A des 2026-05-04 et 2026-05-11, prise d'effet le 2026-05-13 (EFFECT 9999999995-26-001616), 424B4 du 2026-05-14 (0001628280-26-035214) et 8-K de clôture du 2026-05-15 (items 5.03, 8.01 et 9.01).
+  - `reporting_start` :
+    - trimestres à partir du 2026-01-01 : le premier 10-Q porte sur le trimestre clos le 2026-03-31 et a été déposé le 2026-06-24 ;
+    - exercices 2024 et 2025, présentés par le 424B4 (émetteur émergent, Reg S-X 3-02). Chacun est audité par son propre cabinet : le rapport sur 2024 et celui sur 2025 sont distincts.
+  - Inventaire : 125 dépôts.
+    - 2 rapports périodiques (10-Q des trimestres clos les 2026-03-31 et 2026-06-30), 1 8-K de la tranche (item 8.01), 2 8-K de résultats (item 2.02, hors tranche), 1 424B4, aucune circulaire.
+    - Le reste : formulaires 3, 4 et 144, déclarations 13D et 13G, S-8.
+  - Univers attendu : 716 cellules, dont 620 `not_applicable` ; 24 368 au total.
+  - Réseau : 27 requêtes, 5 par seconde au plus, aucun échec.
+    - Index : 2 225 dépôts, 16 requêtes.
+    - Archives XBRL : 785 dépôts lus, 9 requêtes ; les 7 échecs sont ceux déjà connus (amendements sans instance).
+    - Pièces : 2 324 documents, 2 requêtes (le 8-K de clôture et le 424B4, 8,5 Mo).
+  - Catalogue : aucune clé déjà lue ne change.
+    - Catalogue principal : 4 355 → 4 359 blocs (Item 404 du 424B4, Item 4 des deux 10-Q, item 8.01 du 8-K de clôture).
+    - Le 424B4 n'a pas de note de parties liées distincte : G42 et MBZUAI y sont des clients « related parties with respect to each other », dans la note de concentration. Les instances des 10-Q n'ont pas non plus de bloc de parties liées.
+    - Bloc `text` : 13 blocs (notes d'investissements, de dette, de baux, d'engagements, de revenus, et estimations).
+  - Amendement avant lecture (point 6) : trois notes du 10-Q du 2026-08-12 (dette, autres produits, revenus) ont déjà été lues en entier par la découverte, depuis le même élément de bloc de texte. Les textes sont identiques à un rapport de similarité de 0,988 à 0,999. Ces notes ne se relisent pas, et leurs lignes vont au groupe.
+    - Règle : un bloc du catalogue d'un groupe ajouté dont la note (même dépôt, même élément) a déjà été lue par la découverte ne se relit pas.
+  - À lire : 14 blocs, 45 933 caractères, liste `grp_cbrs`. Ce sont l'Item 4 des deux 10-Q, l'item 8.01 du 8-K de clôture et l'Item 404 du 424B4, puis 10 notes : 4 du 10-Q du 2026-08-12 et 6 de celui du 2026-06-24.
+  - Découverte d'origine (point 6) : 59 blocs déjà lus, 13 par la découverte et 46 par le montage des laboratoires. Les 19 unités encore en file en sortent au réassemblage.

@@ -386,6 +386,7 @@ reporting_start:             # début de l'obligation de publier, par fréquence
     fiscal_year: ["2023-01-01", "424B4 0001193125-26-299963 du 2026-07-10 : exercices 2023 à 2025 présentés, états consolidés audités en IFRS publiées par l'IASB (Form 20-F, Item 8.A, par la Form F-1) ; aucun 20-F déposé avant l'as_of (D-0057, point 14)"]
   CBRS:
     quarter: ["2026-01-01", "EFFECT 9999999995-26-001616 du 2026-05-13, 424B4 0001628280-26-035214 du 2026-05-14 ; premier 10-Q 0001628280-26-044981 (trimestre clos le 2026-03-31) (D-0070)"]
+    fiscal_year: ["2024-01-01", "424B4 0001628280-26-035214 du 2026-05-14 : exercices 2024 et 2025 présentés (Reg S-X 3-02, émetteur émergent), chacun audité par son cabinet (D-0070)"]
 
 registration_text:           # document d'enregistrement qui tient lieu de rapports périodiques, sans instance XBRL
                              # financière : jeux de notes découpés en HTML, notes lues par familles de titres
