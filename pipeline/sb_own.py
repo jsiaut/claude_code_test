@@ -19,7 +19,6 @@ import pandas as pd
 from . import config, net
 from .edgar import Edgar, cik10, parse_sgml_header
 
-AS_OF = "2026-10-07"
 INV = config.DB_DIR / "sb_inventory.parquet"
 META = config.DB_DIR / "sb_inventory_meta.json"
 FILINGS = config.DB_DIR / "sb_filings.parquet"
@@ -38,9 +37,9 @@ def inventory(rate=4.0):
     """Submissions de chaque CIK, par le client unique et journalisé (§9.5) ; une page manquante rend le CIK incomplet."""
     cfg = config.load()
     sp = spec(cfg)
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
-    ed = Edgar(client, AS_OF)
+    ed = Edgar(client, config.as_of())
     rows, meta = [], {}
     for e in sp["own_ciks"] + sp["controlled"]:
         c = cik10(e["cik"])
@@ -97,9 +96,9 @@ def headers(rate=4.0):
     df = pd.read_parquet(INV)
     own = df[(df["role"] == "own") & (df["filingDate"] >= start) & (df["filingDate"] <= end)
              & df["form"].isin(SCHEDULES + OWNERSHIP + HOLDINGS)]
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
-    ed = Edgar(client, AS_OF)
+    ed = Edgar(client, config.as_of())
     rows = []
     for x in own.drop_duplicates("accessionNumber").itertuples(index=False):
         r = {"accession": x.accessionNumber, "form": x.form, "filingDate": x.filingDate, "filer_cik": x.cik,
@@ -172,7 +171,7 @@ def _c_filings(inv):
             x = x[x["form"].isin(r["forms"])]
         if "accessions" in r:
             x = x[x["accessionNumber"].isin(r["accessions"])]
-        x = x[(x["filingDate"] >= spec()["period"][0]) & (x["filingDate"] <= AS_OF)]
+        x = x[(x["filingDate"] >= spec()["period"][0]) & (x["filingDate"] <= config.as_of())]
         out += [(c, a, f, d) for a, f, d in zip(x["accessionNumber"], x["form"], x["filingDate"])]
     return out
 
@@ -182,9 +181,9 @@ def fetch(rate=4.0):
     du modèle, tables d'information des 13F ; documents des déposants contrôlés (C_FILINGS). Chaque pièce se
     tire une fois, en cache, par le client unique (§9.5)."""
     cfg = config.load()
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
-    ed = Edgar(client, AS_OF)
+    ed = Edgar(client, config.as_of())
     f = pd.read_parquet(FILINGS)
     todo = []
     for x in f.itertuples(index=False):

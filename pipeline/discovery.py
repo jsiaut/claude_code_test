@@ -26,7 +26,6 @@ import pandas as pd
 
 from . import cache, config, net
 
-AS_OF = "2026-10-07"
 BASE = config.CACHE / "datasets" / "notes"
 MANIFEST = BASE / "manifest.jsonl"
 PAGE = ("notes", "financial-statement-notes-data-sets_2026-10-09.html.zst")
@@ -144,7 +143,8 @@ def period_start(cfg=None):
     return min(starts)
 
 
-def in_period(archives, start, as_of=AS_OF):
+def in_period(archives, start, as_of=None):
+    as_of = as_of or config.as_of()
     return [a for a in archives if a["filed_to"] >= start and a["filed_from"] <= as_of]
 
 
@@ -299,7 +299,7 @@ def fetch(only=None, keep_zip=False, workers=3):
     start = period_start(cfg)
     todo = in_period(archive_list(), start)
     done = manifest()
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     excluded = group_ciks(cfg)
     tmpdir = BASE / "tmp"
     tmpdir.mkdir(parents=True, exist_ok=True)
@@ -413,11 +413,11 @@ def _split(a, b):
     return (a, mid.isoformat()), ((mid + dt.timedelta(days=1)).isoformat(), b)
 
 
-def harvest(client, term, forms, start=START, end=AS_OF, keep=lambda s: True, log=None):
+def harvest(client, term, forms, start=START, end=None, keep=lambda s: True, log=None):
     """Toutes les pages d'une requête ; une requête saturée (10 000 résultats) se resserre
     sur deux périodes plus courtes, jusqu'à passer sous le plafond."""
     out = []
-    stack = [(start, end)]
+    stack = [(start, end or config.as_of())]
     while stack:
         a, b = stack.pop()
         params = {"q": f'"{term}"', "dateRange": "custom", "startdt": a, "enddt": b,
@@ -456,7 +456,7 @@ def harvest(client, term, forms, start=START, end=AS_OF, keep=lambda s: True, lo
 def search(rate=None):
     """EX-10 et Form D qui nomment un terme du lexique, du 2017-01-01 à as_of."""
     cfg = config.load()
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     if rate:
         client.min_interval = 1.0 / rate
     lex = lexicon(cfg)
@@ -788,7 +788,7 @@ def verify_exhibits(rate=4.0):
     lex = lexicon(cfg)
     rx, low = compile_lexicon(lex)
     excluded = group_ciks(cfg)
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
     h = efts_hits()
     h = h[h["file_type"].fillna("").str.upper().str.startswith("EX-10")]
@@ -877,7 +877,7 @@ def verify_form_d(rate=4.0):
     lex = lexicon(cfg)
     rx, low = compile_lexicon(lex)
     excluded = group_ciks(cfg)
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
     h = efts_hits()
     h = h[h["root_forms"].map(lambda x: "D" in list(x) if x is not None else False)]
@@ -1154,7 +1154,7 @@ def prepare(n=50, rate=4.0):
     """Construit les blocs des `n` unités suivantes de la file qui ne le sont pas encore (une
     requête par page R) et les ajoute au catalogue de la découverte."""
     cfg = config.load()
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
     units = pd.read_parquet(UNITS)
     done = built_units()

@@ -1,7 +1,7 @@
 """Aperçu (D-0062) : arêtes, paires et exposition recalculées depuis les observations, comparées aux
 tables du dernier réassemblage complet, sans rien écrire dans tables/.
 
-    python -m pipeline.assemble 2026-10-07 --apercu
+    python -m pipeline.assemble --apercu
 
 L'aperçu suit le même code que l'assemblage (assemble.run, apercu=True) jusqu'aux paires, à
 l'exposition, au grand livre des laboratoires, aux cycles et à l'annexe E, puis applique les

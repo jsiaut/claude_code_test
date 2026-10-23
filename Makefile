@@ -3,7 +3,8 @@
 # Les blocs extensifs (discovery, lender, nport, ownership, montages…) gardent leurs commandes dans la docstring de
 # leur module et la décision qui les ouvre dans decisions.md.
 
-AS_OF ?= 2026-10-07
+# L'as_of est la clé as_of de config.yaml, seule source (D-0073) : aucune date ici. `make assemble AS_OF=AAAA-MM-JJ`
+# ne fait que vérifier que la clé porte cette date.
 PY ?= python3
 
 .DEFAULT_GOAL := help

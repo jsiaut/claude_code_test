@@ -124,9 +124,8 @@ def fetch():
     """Submissions des contreparties qui manquent, puis chaque dépôt du plan, par le client unique ; un dépôt déjà en
     cache ne se tire pas."""
     from . import net
-    from .discovery import AS_OF
     cfg = config.load()
-    E = edgar.Edgar(net.SecClient(AS_OF, cfg), AS_OF)
+    E = edgar.Edgar(net.SecClient(config.as_of(), cfg), config.as_of())
     todo, missing = plan(E, cfg, fetch=True)
     print("dépôts au plan :", len(todo), dict(Counter(f["kind"] for f in todo)), "; paires sans submissions :", missing,
           flush=True)
@@ -522,9 +521,8 @@ def closing_ends(exits):
 
 def volume():
     """Décomptes des dépôts au plan, tirés et lus, sans aucune valeur (consignés avant calcul)."""
-    from .discovery import AS_OF
     cfg = config.load()
-    E = edgar.Edgar(None, AS_OF)
+    E = edgar.Edgar(None, config.as_of())
     todo, missing = plan(E, cfg)
     out = {"pairs": len(pairs(cfg)), "pairs_without_submissions": missing,
            "plan": dict(Counter(f"{f['kind']}|{f['s']}" + (f"->{f['c']}" if f["c"] else "") for f in todo))}
@@ -555,8 +553,7 @@ def volume():
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "plan"
     if cmd == "plan":
-        from .discovery import AS_OF
-        todo, missing = plan(edgar.Edgar(None, AS_OF), config.load())
+        todo, missing = plan(edgar.Edgar(None, config.as_of()), config.load())
         print(len(todo), "dépôts au plan :", dict(Counter(f"{f['kind']}|{f['s']}" + (f"->{f['c']}" if f["c"] else "")
                                                            for f in todo)), "; paires sans submissions :", missing)
     elif cmd == "fetch":

@@ -97,7 +97,7 @@ def noted_rx(spec):
 
 
 def _client(rate=4.0):
-    c = net.SecClient(D.AS_OF, config.load())
+    c = net.SecClient(config.as_of(), config.load())
     c.min_interval = 1.0 / rate
     return c
 
@@ -269,7 +269,7 @@ def replay(mid):
     out = []
     for term in r["terms"]:
         for h in D.harvest(_NoNet(), term, r.get("forms") or D.EX10_FORMS, start=r.get("start", D.START),
-                           end=r.get("end", D.AS_OF), keep=lambda x: bool(keep.search(str(x.get("file_type") or "").upper())),
+                           end=r.get("end"), keep=lambda x: bool(keep.search(str(x.get("file_type") or "").upper())),
                            log=log):
             out.append({"query": term, "cik_filter": None, "id": h["id"], "adsh": h["adsh"], "file": h["file"],
                         "file_type": h["file_type"], "form": h["form"], "file_date": h["file_date"],

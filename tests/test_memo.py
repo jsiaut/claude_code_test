@@ -37,13 +37,13 @@ class ConfigLoad(unittest.TestCase):
     def test_each_call_gets_its_own_copy_and_a_new_version_is_reread(self):
         with tempfile.TemporaryDirectory() as d:
             p = pathlib.Path(d) / "config.yaml"
-            p.write_text("a: {b: 1}\n", encoding="utf-8")
+            p.write_text("as_of: 2026-01-02\na: {b: 1}\n", encoding="utf-8")     # la clé as_of est obligatoire (D-0073)
             with _Paths(CONFIG_PATH=p):
                 c = config.load()
                 c["a"]["b"] = 99
-                self.assertEqual(config.load(), {"a": {"b": 1}})
-                p.write_text("a: {b: 2}\nz: 0\n", encoding="utf-8")
-                self.assertEqual(config.load(), {"a": {"b": 2}, "z": 0})
+                self.assertEqual(config.load(), {"as_of": "2026-01-02", "a": {"b": 1}})
+                p.write_text("as_of: 2026-01-02\na: {b: 2}\nz: 0\n", encoding="utf-8")
+                self.assertEqual(config.load(), {"as_of": "2026-01-02", "a": {"b": 2}, "z": 0})
 
 
 class QuoteRangesMemo(unittest.TestCase):

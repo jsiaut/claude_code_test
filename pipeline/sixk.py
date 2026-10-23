@@ -66,9 +66,9 @@ def fetch(rate=4.0):
     """En-tête SGML de chaque 6-K (types des pièces, §2.3), puis son document principal et ses
     annexes 99 au format texte ; une pièce déjà en cache ne se tire pas."""
     cfg = config.load()
-    client = net.SecClient(D.AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
-    ed = edgar.Edgar(client, D.AS_OF)
+    ed = edgar.Edgar(client, config.as_of())
     rows = []
     for r in filings(cfg).to_dict("records"):
         cik, acc = cik10(r["filer_cik"]), r["accessionNumber"]

@@ -107,7 +107,9 @@ if __name__ == "__main__":
     import pandas as pd
 
     from . import config
+    as_of = config.as_of(sys.argv[1] if len(sys.argv) > 1 else None)
     p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
-    rows = generate(p0["calendars"], sys.argv[1] if len(sys.argv) > 1 else p0["as_of"])
+    config.check_as_of(p0["as_of"], "db/phase0.json", "relancer la phase 0")
+    rows = generate(p0["calendars"], as_of)
     pd.DataFrame(rows).to_parquet(config.DB_DIR / "expected_universe.parquet", index=False)
     print(len(rows), "cellules attendues")

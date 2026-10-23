@@ -3,7 +3,7 @@ livrable d'audit (§12.2). Aucun rendu n'est édité à la main : chaque nombre 
 rempli depuis measures, controls ou exclusions, et se retrouve dans audit/numbers.csv avec
 l'accession et l'emplacement de chacun de ses termes.
 
-    python -m pipeline.render 2026-10-07
+    python -m pipeline.render          # à l'as_of de config.yaml (D-0073)
 """
 import csv
 import datetime as dt
@@ -3636,10 +3636,12 @@ def _block_stats(read):
             "text": text}
 
 
-def main(as_of):
+def main(as_of=None):
+    as_of = config.as_of(as_of)
+    stats = json.loads((config.ROOT / "work" / "tmp" / "assemble_stats.json").read_text())
+    config.check_as_of(stats["as_of"], "work/tmp/assemble_stats.json", "relancer l'assemblage")     # tables au même as_of
     con = config.duckdb_connect()
     load(con, as_of)
-    stats = json.loads((config.ROOT / "work" / "tmp" / "assemble_stats.json").read_text())
     stats["blocks"] = block_stats()
     rows = []
     for name, fn in (("synthesis.md", synthesis), ("delta.md", delta), ("series.md", series)):
@@ -3652,4 +3654,4 @@ def main(as_of):
 
 if __name__ == "__main__":
     # mêmes rendus sous PYTHONHASHSEED=0 et 1, à la durée mesurée de l'assemblage près (D-0072, point 3 e)
-    main(sys.argv[1])
+    main(*sys.argv[1:2])

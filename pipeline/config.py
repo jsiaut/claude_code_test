@@ -21,17 +21,65 @@ DELIMITER_VERSION = "d4"
 
 
 _PARSED = {}
+AS_OF_TOKEN = "as_of"        # borne de config.yaml qui finit à l'as_of de l'exécution (D-0073)
 
 
-def load():
-    """config.yaml analysé une fois par version du fichier (chemin, taille, date de modification) ;
-    chaque appel reçoit sa propre copie, qu'il peut modifier sans toucher aux suivants."""
+def _checked_as_of(v):
+    """La clé as_of de config.yaml : une date AAAA-MM-JJ, seule source de l'as_of (D-0073)."""
+    import datetime as dt
+    if isinstance(v, dt.date):
+        v = v.isoformat()
+    try:
+        dt.date.fromisoformat(v)
+    except (TypeError, ValueError):
+        raise SystemExit(f"config.yaml : la clé as_of doit être une date AAAA-MM-JJ, pas {v!r} (D-0073)") from None
+    return v
+
+
+def resolve_as_of(node, as_of):
+    """Remplace par la date chaque valeur égale à « as_of » : une borne qui finit à l'as_of de l'exécution (D-0073).
+    Les clés ne changent pas."""
+    if isinstance(node, dict):
+        return {k: resolve_as_of(v, as_of) for k, v in node.items()}
+    if isinstance(node, list):
+        return [resolve_as_of(v, as_of) for v in node]
+    return as_of if node == AS_OF_TOKEN else node
+
+
+def _parsed():
     st = CONFIG_PATH.stat()
     key = (str(CONFIG_PATH), st.st_size, st.st_mtime_ns)
     if _PARSED.get("key") != key:
         with open(CONFIG_PATH, encoding="utf-8") as fh:
-            _PARSED.update(key=key, cfg=yaml.safe_load(fh))
-    return copy.deepcopy(_PARSED["cfg"])
+            raw = yaml.safe_load(fh) or {}
+        a = _checked_as_of(raw.get("as_of"))
+        _PARSED.update(key=key, cfg=resolve_as_of(dict(raw, as_of=a), a))
+    return _PARSED["cfg"]
+
+
+def load():
+    """config.yaml analysé une fois par version du fichier (chemin, taille, date de modification), bornes « as_of »
+    remplacées par la date ; chaque appel reçoit sa propre copie, qu'il peut modifier sans toucher aux suivants."""
+    return copy.deepcopy(_parsed())
+
+
+def as_of(cli=None):
+    """As_of de l'exécution : la clé as_of de config.yaml, seule source (D-0073). Un argument de ligne de commande est
+    accepté s'il lui est égal ; sinon la commande s'arrête, plutôt que de mêler deux dates de coupure."""
+    v = _parsed()["as_of"]
+    if cli is not None and str(cli) != v:
+        raise SystemExit(f"as_of {cli} en argument, {v} dans config.yaml : l'as_of n'a qu'une source, la clé as_of de "
+                         "config.yaml (D-0073). Changer la clé, ou retirer l'argument.")
+    return v
+
+
+def check_as_of(found, where, remedy):
+    """Arrête la commande si `where` (un fichier d'une étape antérieure) porte un autre as_of que config.yaml : une
+    exécution n'en mêle jamais deux (D-0073, point 4)."""
+    v = as_of()
+    if found != v:
+        raise SystemExit(f"{where} porte l'as_of {found}, config.yaml {v} : {remedy} (D-0073).")
+    return v
 
 
 def duckdb_connect(path=None):

@@ -46,7 +46,8 @@ def targets(recs=None, pre_ix=None):
     return out
 
 
-def run(as_of, workers=4):
+def run(as_of=None, workers=4):
+    as_of = config.as_of(as_of)
     client = SecClient(as_of)
     e = Edgar(client, as_of)
     tg = targets()
@@ -73,4 +74,4 @@ def run(as_of, workers=4):
 
 
 if __name__ == "__main__":
-    run(sys.argv[1])
+    run(*sys.argv[1:2])

@@ -45,21 +45,30 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
 
 ## Ordre d'une exécution
 
+L'as_of, date de connaissance de l'exécution, a une seule source : la clé `as_of` de `config.yaml`
+(D-0073). Aucune commande ne la prend ailleurs, ni de la date du jour ; une date passée en argument doit
+lui être égale. Les bornes de `config.yaml` qui finissent à l'as_of s'écrivent `as_of`.
+
 `make help` liste ces étapes sous forme de cibles (`make phase0`, `make assemble`, `make render`…), les cibles
 réseau signalées.
 
-1. `python3 -m pipeline.phase0 2026-10-07` : inventaire des dépôts, calendriers et fenêtres
+1. `python3 -m pipeline.phase0` : inventaire des dépôts, calendriers et fenêtres
    (`db/phase0.json`).
-2. `python3 -m pipeline.phase1_run 2026-10-07` : `companyfacts` et instances XBRL des rapports
+2. `python3 -m pipeline.phase1_run` : `companyfacts` et instances XBRL des rapports
    périodiques.
-3. `python3 -m pipeline.phase2_fetch 2026-10-07` : documents de la tranche texte.
+3. `python3 -m pipeline.phase2_fetch` : documents de la tranche texte.
 4. Lecture des blocs, un à un : `python3 -m pipeline.reader status`, puis `show` et `submit`. Chaque
    bloc extensif (`discovery`, `lender`, `nport`, `montages`, `sixk`, `sb_own`…) a ses commandes dans la
    docstring de son module, et la décision qui l'ouvre dans `decisions.md`.
-5. `python3 -m pipeline.assemble 2026-10-07` : les huit tables, en 14 minutes environ sans mémo, 18 si la
+5. `python3 -m pipeline.assemble` : les huit tables, en 14 minutes environ sans mémo, 18 si la
    recherche des citations se refait aussi (après un changement de `textnorm.py` ou de `cache.py`). Profil :
-   `python3 -m pipeline.profiling work/tmp/profil.txt pipeline.assemble 2026-10-07`.
-6. `python3 -m pipeline.render 2026-10-07` : les rendus, en 30 secondes environ.
+   `python3 -m pipeline.profiling work/tmp/profil.txt pipeline.assemble`.
+6. `python3 -m pipeline.render` : les rendus, en 30 secondes environ.
+
+Mettre le modèle à jour : changer `as_of` dans `config.yaml`, puis relancer les étapes ci-dessus dans
+l'ordre. Une commande s'arrête si l'étape précédente porte un autre as_of : l'assemblage et la phase 1
+devant `db/phase0.json` (« relancer la phase 0 »), le rendu devant les tables (« relancer
+l'assemblage »), le lecteur devant une passe ouverte (« ouvrir une passe nouvelle »).
 
 Les tables et les rendus ne dépendent pas de `PYTHONHASHSEED` : sous les graines 0 et 1, deux réassemblages
 à froid donnent les huit tables à l'octet près, et les rendus aussi, à la durée mesurée près (D-0072). Deux

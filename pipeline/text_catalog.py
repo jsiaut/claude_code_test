@@ -186,7 +186,7 @@ def eight_k_blocks(stats, fetch=True):
                 continue
             if client is None:
                 from . import edgar, net
-                client = edgar.Edgar(net.SecClient("2026-10-07"), "2026-10-07")
+                client = edgar.Edgar(net.SecClient(config.as_of()), config.as_of())
             try:
                 client.archive(cik10(cik), acc, doc)
             except Exception:
@@ -274,7 +274,7 @@ def build(as_of, limit=None):
 
 if __name__ == "__main__":
     lim = int(sys.argv[2]) if len(sys.argv) > 2 else None
-    out, stats = build("2026-10-07", lim)
+    out, stats = build(config.as_of(sys.argv[1] if len(sys.argv) > 1 else None), lim)
     by = defaultdict(lambda: [0, 0, set()])
     for b in out:
         x = by[b["block_kind"]]

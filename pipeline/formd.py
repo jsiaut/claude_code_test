@@ -152,10 +152,11 @@ def series_start(p0=None):
 
 # -- collecte ----------------------------------------------------------------------------
 
-def collect(as_of=discovery.AS_OF, rate=4.0):
+def collect(as_of=None, rate=4.0):
     """Form D des deux populations : ceux des entités des groupes (submissions, puis XML ; une
     quarantaine de requêtes) et ceux des véhicules, tirés par la recherche plein texte de la
     découverte et déjà en cache (aucune requête). Écrit FILINGS."""
+    as_of = config.as_of(as_of)
     cfg = config.load()
     client = net.SecClient(as_of, cfg)
     client.min_interval = 1.0 / rate
@@ -367,4 +368,4 @@ def build(reg, as_of, cfg=None, p0=None):
 
 if __name__ == "__main__":
     import sys
-    collect(*(sys.argv[1:2] or [discovery.AS_OF]))
+    collect(*sys.argv[1:2])

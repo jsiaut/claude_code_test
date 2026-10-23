@@ -16,9 +16,11 @@ PERIODIC = ("10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10
             "20-F", "20-F/A")        # 20-F : rapport annuel d'un émetteur privé étranger (D-0048)
 
 
-def run(as_of, workers=4):
+def run(as_of=None, workers=4):
+    as_of = config.as_of(as_of)
     cfg = config.load()
     p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
+    config.check_as_of(p0["as_of"], "db/phase0.json", "relancer la phase 0")
     client = SecClient(as_of, cfg)
     e = Edgar(client, as_of)
     con = duckdb.connect()
@@ -104,4 +106,4 @@ def run(as_of, workers=4):
 
 
 if __name__ == "__main__":
-    run(sys.argv[1])
+    run(*sys.argv[1:2])

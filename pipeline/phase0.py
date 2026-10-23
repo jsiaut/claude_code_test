@@ -249,6 +249,6 @@ def _dump(rows, name):
 
 if __name__ == "__main__":
     import sys
-    as_of = sys.argv[1] if len(sys.argv) > 1 else dt.datetime.now(dt.timezone.utc).date().isoformat()
+    as_of = config.as_of(sys.argv[1] if len(sys.argv) > 1 else None)     # jamais la date du jour (D-0073)
     s = run(as_of)
     print(json.dumps({k: s[k] for k in ("groups", "excluded_groups", "network")}, indent=1, default=str))

@@ -511,10 +511,15 @@ def cmd_next(max_chars):
 
 
 def _run_info():
-    if _run_path().exists():
-        return json.loads(_run_path().read_text())
+    """As_of et pass_id de la passe en cours. Une passe ouverte à un autre as_of que config.yaml arrête la commande ;
+    faute de fichier, l'as_of est celui de la configuration, jamais la date du jour (D-0073)."""
+    p = _run_path()
+    if p.exists():
+        run = json.loads(p.read_text())
+        config.check_as_of(run.get("as_of"), f"work/tmp/{p.name}", "ouvrir une passe nouvelle")
+        return run
     now = dt.datetime.now(dt.timezone.utc)
-    return {"as_of": now.date().isoformat(), "pass_id": now.isoformat(timespec="seconds")}
+    return {"as_of": config.as_of(), "pass_id": now.isoformat(timespec="seconds")}
 
 
 def cmd_submit(content_key, path, final=False):

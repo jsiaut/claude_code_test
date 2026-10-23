@@ -33,7 +33,6 @@ OFFERS = config.DB_DIR / "bdc_tender_offers.parquet"
 WORK = config.ROOT / "work" / "tenders"
 READINGS = WORK / "tender_readings.jsonl"
 ANNOUNCEMENTS = WORK / "announcements.jsonl"
-AS_OF = "2026-10-07"
 CONCEPTS = {"Liabilities": "liabilities", "AssetsNet": "assets_net", "StockholdersEquity": "stockholders_equity",
             "Assets": "assets", "InvestmentCompanySeniorSecurityIndebtednessAssetCoverageRatio": "coverage_raw"}
 OPEN_DAYS = 60                      # offre sans amendement, SC TO-I de moins de 60 jours : réputée ouverte (D-0047, point 9)
@@ -207,7 +206,7 @@ def vehicle_cells(r, as_of, cfg):
 # -- inventaire EDGAR ---------------------------------------------------------------------------
 
 def _client(rate=4.0):
-    c = net.SecClient(AS_OF, config.load())
+    c = net.SecClient(config.as_of(), config.load())
     c.min_interval = 1.0 / rate
     return c
 
@@ -272,7 +271,7 @@ def build_offers(inv, cfg=None):
     (D-0047, point 5). Toutes les offres de l'inventaire ; `in_window` marque celles de la fenêtre."""
     t = (cfg or _cfg()).get("tenders") or {}
     ini, ame = t.get("initial_form", "SC TO-I"), t.get("amendment_form", "SC TO-I/A")
-    lo, hi = t.get("window", ["2022-10-01", AS_OF])
+    lo, hi = t.get("window", ["2022-10-01", config.as_of()])
     sel = inv[inv["form"].isin([ini, ame]) & (inv["filing_date"] <= hi)]      # rien après as_of
     sel = sel.sort_values(["cik", "filing_date", "acceptance", "accession"])
     out, orphans = [], []
@@ -1182,8 +1181,9 @@ def announcement_queue(as_of, cfg=None):
     return queue
 
 
-def announcement_units(as_of=AS_OF, rate=4.0):
+def announcement_units(as_of=None, rate=4.0):
     """Unités de lecture des 8-K de la file, jusqu'au plafond ; les 8-K au-delà ne se tirent pas."""
+    as_of = config.as_of(as_of)
     cfg = _cfg()
     an = cfg.get("announcements") or {}
     cap, win, rx = int(an.get("cap", 40)), int(an.get("window_paragraphs", 2)), _terms_rx(an)

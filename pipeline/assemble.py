@@ -1,9 +1,11 @@
 """Phase 3 : assembler, mesurer (§11.1). Tout se recalcule depuis le cache et les fichiers
 d'observations (§9.6) ; les huit tables sont exportées en Parquet, triées par clé primaire.
 
-    python -m pipeline.assemble 2026-10-07                 # reprend du mémo ce qui n'a pas changé (D-0062)
-    python -m pipeline.assemble 2026-10-07 --sans-cache    # recalcule tout, mêmes tables à l'octet près
-    python -m pipeline.assemble 2026-10-07 --apercu        # arêtes, paires et exposition comparées aux tables
+    python -m pipeline.assemble                 # reprend du mémo ce qui n'a pas changé (D-0062)
+    python -m pipeline.assemble --sans-cache    # recalcule tout, mêmes tables à l'octet près
+    python -m pipeline.assemble --apercu        # arêtes, paires et exposition comparées aux tables
+
+L'as_of est la clé as_of de config.yaml (D-0073) ; un argument daté reste accepté s'il lui est égal.
 
 Le mémo (db/memo, voir memo.py) garde les étapes qui ne lisent pas les observations et les plages des
 citations : seules les observations peuvent changer pour qu'une étape soit reprise.
@@ -146,8 +148,10 @@ def run(as_of, use_cache=True, apercu=False):
     après les paires et l'exposition, sans rien exporter, et renvoie ce qu'il faut pour les comparer
     aux tables (voir apercu)."""
     t0 = time.time()
+    as_of = config.as_of(as_of)
     cfg = config.load()
     p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
+    config.check_as_of(p0["as_of"], "db/phase0.json", "relancer la phase 0")     # inventaire et fenêtres au même as_of
     groups = [g for g in cfg["groups"] if g in p0["calendars"]]
     as_of_d = dt.date.fromisoformat(as_of)
     stats = {"as_of": as_of, "groups": groups}
@@ -908,7 +912,7 @@ if __name__ == "__main__":
     # les tables ne dépendent pas de l'ordre d'itération des ensembles de chaînes (§9.6) : mêmes tables à l'octet près
     # sous PYTHONHASHSEED=0 et 1 (D-0072, point 3 e), d'où la fin de la relance du script
     args = sys.argv[1:]
-    as_of_arg = next(a for a in args if not a.startswith("--"))
+    as_of_arg = config.as_of(next((a for a in args if not a.startswith("--")), None))     # D-0073
     if "--apercu" in args:
         from . import apercu
         apercu.main(as_of_arg, use_cache="--sans-cache" not in args)

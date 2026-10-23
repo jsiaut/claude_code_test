@@ -119,9 +119,9 @@ def prepare(rate=4.0):
     comptable et, pour un 6-K, l'état d'incorporation par référence ; les inscrit au catalogue de
     la découverte (la file reste celle de D-0036, lue ici hors de son ordre au titre de foreign)."""
     cfg = config.load()
-    client = net.SecClient(D.AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
-    ed = edgar.Edgar(client, D.AS_OF)
+    ed = edgar.Edgar(client, config.as_of())
     done = D.built_units()
     todo = [u for u in selected_units(cfg).to_dict("records") if u["order"] not in done]
     nb = 0

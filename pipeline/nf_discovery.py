@@ -118,7 +118,7 @@ def fetch(only=None, workers=3):
     keep = nf_refs(cfg)
     todo = D.in_period(D.archive_list(), D.period_start(cfg))
     done = manifest()
-    client = net.SecClient(D.AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     excluded = D.group_ciks(cfg)
     tmpdir = D.BASE / "tmp"
     tmpdir.mkdir(parents=True, exist_ok=True)
@@ -184,7 +184,7 @@ def search(rate=None, new_only=False):
     des EX-10 (D-0036, point 5) ; pas de Form D. `new_only` : seuls les termes absents des résultats
     déjà gardés sont cherchés, et leurs résultats s'ajoutent aux anciens (D-0058, point 24)."""
     cfg = config.load()
-    client = net.SecClient(D.AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     if rate:
         client.min_interval = 1.0 / rate
     old = pd.read_parquet(EFTS_HITS) if new_only and EFTS_HITS.exists() else None
@@ -213,7 +213,7 @@ def verify(rate=4.0):
     rx, _ = D.compile_lexicon(lex)
     keep = nf_refs(cfg)
     excluded = D.group_ciks(cfg)
-    client = net.SecClient(D.AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
     h = pd.read_parquet(EFTS_HITS)
     h = h[h["file_type"].fillna("").str.upper().str.startswith("EX-10")].drop_duplicates("id")
@@ -608,7 +608,7 @@ def prepare(n=50, rate=4.0):
     """Blocs des `n` unités retenues suivantes de la file (une requête par page R), ajoutés au
     catalogue de la piste."""
     cfg = config.load()
-    client = net.SecClient(D.AS_OF, cfg)
+    client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
     units = pd.read_parquet(UNITS)
     units = units[units["status"] == "queued"]
@@ -760,7 +760,7 @@ def own_filing_units(cfg=None, fetch=True):
     cfg = cfg or config.load()
     lex = union_lexicon(cfg)
     rx, _ = D.compile_lexicon(lex)
-    e = edgar.Edgar(net.SecClient(D.AS_OF, cfg), D.AS_OF) if fetch else None
+    e = edgar.Edgar(net.SecClient(config.as_of(), cfg), config.as_of()) if fetch else None
     rows = []
     for f in own_filings(cfg):
         cik10, acc, names = str(f["cik"]).zfill(10), f["accession"], [f["filer"]]

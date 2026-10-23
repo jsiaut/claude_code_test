@@ -64,7 +64,7 @@ def page(client=None):
     p = cache.other_path(*PAGE)
     if p.exists():
         return cache.read(p).decode("utf-8", "replace")
-    client = client or net.SecClient(config.load().get("as_of"), config.load())
+    client = client or net.SecClient(config.as_of(), config.load())
     raw, _ = client.get(PAGE_URL)
     cache.write(p, raw)
     return raw.decode("utf-8", "replace")
@@ -230,10 +230,10 @@ def fetch(only=None):
     gardée ni scannée. Les LEI relevés et acceptés (point 28) s'appliquent aux archives scannées ensuite ;
     une archive scannée avant qu'un LEI ne soit accepté est signalée, et un nouvel appel la rescanne."""
     from concurrent.futures import ProcessPoolExecutor
-    from .discovery import AS_OF
+    as_of = config.as_of()
     cfg = config.load()
     n = cfg_nport(cfg)
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(as_of, cfg)
     todo = in_period(archive_list(), n["period"][0], n["period"][1])
     done = manifest()
     leis = softbank_leis(done)
@@ -256,7 +256,7 @@ def fetch(only=None):
             else:
                 lm, published = _published(headers)
                 meta = dict(a, retrieved=t0, last_modified=lm)
-                if published and published > AS_OF:
+                if published and published > as_of:
                     zpath.unlink()     # publiée après l'as_of : connaissance postérieure, ni gardée ni scannée
                     _drop_extracts(a["name"])
                     rec = dict(meta, status="after_as_of")
@@ -275,9 +275,9 @@ def fetch(only=None):
 def stamp():
     """Date de publication (en-tête Last-Modified, requête HEAD) des archives scannées sans elle ; une
     archive publiée après l'as_of perd ses extraits et passe à l'état `after_as_of` (point 27)."""
-    from .discovery import AS_OF
+    as_of = config.as_of()
     cfg = config.load()
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(as_of, cfg)
     for name, r in sorted(manifest().items(), reverse=True):
         if r.get("status") != "scanned" or r.get("last_modified"):
             continue
@@ -288,7 +288,7 @@ def stamp():
             continue
         lm, published = _published(headers)
         t = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
-        if published and published > AS_OF:
+        if published and published > as_of:
             _drop_extracts(name)
             rec = {k: r.get(k) for k in ("name", "url", "filed_from", "filed_to", "retrieved", "bytes")}
             rec.update(last_modified=lm, stamped=t, status="after_as_of",
@@ -879,12 +879,12 @@ def fetch_unlisted(only=None):
     scanne dans un processus à part, puis effacée (D-0065, point 3). Une archive publiée après l'as_of n'est ni
     gardée ni scannée ; une archive déjà scannée avec la même version du lexique ne se tire pas."""
     from concurrent.futures import ProcessPoolExecutor
-    from .discovery import AS_OF
+    as_of = config.as_of()
     cfg = config.load()
     n = cfg_nport(cfg)
     lex = lexicon(cfg=cfg)
     save_lexicon(lex)
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(as_of, cfg)
     done, d58 = u_manifest(), manifest()
 
     def todo_(a):
@@ -926,7 +926,7 @@ def fetch_unlisted(only=None):
                             last_modified_d58=(d58.get(a["name"]) or {}).get("last_modified"))
                 finish(pending)           # le scan précédent a tourné pendant ce tirage
                 pending = None
-                if published and published > AS_OF:
+                if published and published > as_of:
                     zpath.unlink()        # connaissance postérieure, ni gardée ni scannée
                     _u_append(dict(meta, status="after_as_of"))
                     print(a["name"], "after_as_of", lm, flush=True)
@@ -996,10 +996,14 @@ def attributed(p, ent_rows=None, reg=None, cfg=None):
     return p
 
 
+def tickers_day(cfg=None):
+    """Date de la liste des symboles d'EDGAR en cache : la borne `tickers`, l'as_of à défaut (D-0073)."""
+    return cfg_unlisted(cfg).get("tickers") or config.as_of()
+
+
 def tickers(cfg=None):
     """CIK (dix chiffres) -> symboles, d'après la liste d'EDGAR en cache (D-0065, point 7)."""
-    day = cfg_unlisted(cfg).get("tickers") or "2026-10-07"
-    d = json.loads(cache.read(cache.api_path("none", "company_tickers", day)))
+    d = json.loads(cache.read(cache.api_path("none", "company_tickers", tickers_day(cfg))))
     out = {}
     for v in d.values():
         out.setdefault(str(v["cik_str"]).zfill(10), []).append(v["ticker"])
@@ -1040,9 +1044,8 @@ def listing(ent_rows, as_of, tick=None, forms_=None):
 def fetch_listing_submissions(as_of=None):
     """Submissions des entités cotées sans date de cotation connue qui portent des positions de la mesure
     (D-0065, point 7) : tirées une fois par le client unique, toutes leurs pages, après le scan."""
-    from .discovery import AS_OF
     from .edgar import Edgar
-    as_of = as_of or AS_OF
+    as_of = config.as_of(as_of)
     ent_rows = _entity_rows()
     listed = listing(ent_rows, as_of)
     sel, _ = mark_selection(attributed(u_positions(), ent_rows), as_of, {})
@@ -1303,7 +1306,7 @@ def u_exclusions(as_of, ent_rows=None, reg=None, tick=None, p=None):
     reach, _ = mark_selection(p, as_of, {})       # positions qui atteignent l'étape de la cotation (point 7)
     unknown = sorted({e for e in reach["entity_id"] if e in listed and listed[e] is None})
     for e in unknown:
-        ex("entity", e, "not_processed", "entité cotée (symbole au 2026-10-07) sans submissions complètes en cache : "
+        ex("entity", e, "not_processed", f"entité cotée (symbole au {tickers_day(cfg)}) sans submissions complètes en cache : "
            "date de cotation inconnue, positions hors de la mesure (D-0065, point 7)")
     plat = []
     credit_selection(p, out=plat)
@@ -1453,9 +1456,8 @@ def unlisted(as_of, ent_rows=None, reg=None, tick=None):
 
 def c_volume(as_of=None):
     """Décomptes de la sélection des marques de crédit, sans aucune valeur (D-0066, point 11)."""
-    from .discovery import AS_OF
     from collections import Counter
-    as_of = as_of or AS_OF
+    as_of = config.as_of(as_of)
     ent_rows = _entity_rows()
     p = u_attributed(ent_rows)
     by_rule = Counter(zip(p["attribution"].fillna("none"), p["asset_cat"].fillna("")))
@@ -1476,8 +1478,7 @@ def c_volume(as_of=None):
 
 def u_volume(as_of=None):
     """Décomptes du scan et de la sélection, sans aucune valeur de la mesure (consignés avant calcul)."""
-    from .discovery import AS_OF
-    as_of = as_of or AS_OF
+    as_of = config.as_of(as_of)
     m = u_manifest()
     cnt = []
     for name, r in sorted(m.items()):
@@ -1678,11 +1679,11 @@ def fetch_bonds(only=None):
     scannée. Les LEI acceptés s'appliquent aux archives scannées ensuite ; une archive scannée avant qu'un LEI ne soit
     accepté est signalée, et un nouvel appel la rescanne. L'empreinte de chaque archive se compare à celle de D-0065."""
     from concurrent.futures import ProcessPoolExecutor
-    from .discovery import AS_OF
+    as_of = config.as_of()
     cfg = config.load()
     n = cfg_nport(cfg)
     issuers = bond_issuers(cfg)
-    client = net.SecClient(AS_OF, cfg)
+    client = net.SecClient(as_of, cfg)
     done, d65 = b_manifest(), u_manifest()
     leis = set(bond_leis(done, issuers))
     BASE.mkdir(parents=True, exist_ok=True)
@@ -1702,7 +1703,7 @@ def fetch_bonds(only=None):
             else:
                 lm, published = _published(headers)
                 meta = dict(a, retrieved=t0, last_modified=lm, sha256_d65=(d65.get(a["name"]) or {}).get("sha256"))
-                if published and published > AS_OF:
+                if published and published > as_of:
                     zpath.unlink()     # publiée après l'as_of : connaissance postérieure, ni gardée ni scannée
                     d = BASE / a["name"] / B_SUBDIR
                     for f in (sorted(d.glob("*.parquet")) if d.exists() else []):
