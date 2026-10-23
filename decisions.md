@@ -3322,3 +3322,38 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - empreintes SHA-256 des documents (`cache.sha256`) : 36 s.
     - Piste pour une décision suivante : regrouper une fois au lieu de filtrer à chaque tour de boucle, ou confier ces filtres à DuckDB. Rien n'en est fait ici.
   - Outils : `make check` passe (ruff sans constat, 346 tests).
+
+- **D-0073 — Une seule source pour l'as_of : la clé `as_of` de `config.yaml`. Règles fixées avant tout changement.**
+  (1) Origine : remarque R3 de l'audit, remise par l'utilisateur le 2026-10-23 (« R3 — as_of écrit en dur : une mise à jour exige de modifier le code »), à considérer « éventuellement ». Elle est vérifiée sur le code de 98a0bc3. L'as_of de l'exécution reste le 2026-10-07, et aucune requête réseau n'est faite.
+
+  (2) Constat, vérifié :
+  - Trois constantes `AS_OF = "2026-10-07"` : `discovery.py:29`, `lender_liabilities.py:36` et `sb_own.py:22`. Sept modules importent celle de `discovery` : `foreign`, `formd`, `montages`, `nf_discovery`, `nport`, `ownership` et `sixk`.
+  - `text_catalog.py` écrit la date en dur (lignes 189 et 277), et le `Makefile` la met par défaut.
+  - `nport.py:67` lit `config.load().get("as_of")`, une clé qui n'existe pas. La requête de la page des Form N-PORT Data Sets du 2026-10-19 (ligne 25 055 du journal) porte donc `as_of: null`. C'est la seule des 25 582 lignes du journal dont l'as_of n'est pas le 2026-10-07.
+  - Trouvé en plus pendant la vérification :
+    - faute d'argument, `phase0.py` prend la date du jour ; le lecteur (`reader._run_info`) aussi, faute de `work/tmp/run.json` ;
+    - 19 bornes de `config.yaml` finissent en dur le 2026-10-07 : périodes des montages et de `softbank_deep`, de N-PORT et du volet A de D-0071, fenêtre des offres de rachat, rejeu des contrats des laboratoires, date de la liste des symboles d'EDGAR. Une mise à jour devrait aussi les changer une à une ;
+    - l'assemblage ne vérifie pas que l'inventaire et les fenêtres (`db/phase0.json`) sont au même as_of que lui.
+  - Ce qui n'est pas un défaut. Les lignes d'observations et du journal portent toutes l'as_of du 2026-10-07 malgré quinze jours de travail. L'as_of est la date de connaissance de l'exécution, non la date du travail :
+    - ce qui est publié après est écarté par règle (archives N-PORT publiées après, dépôts déposés après) ;
+    - le journal donne dans `ts` la date réelle de chaque requête ;
+    - §9.6 fait de « le même `as_of` » une condition de la reproductibilité ;
+    - le README ne contient pas la phrase citée ; l'allongement annuel de la fenêtre est dans §11 (phase 0).
+  - Dates qui ne sont pas des as_of, et qui restent :
+    - la date de la décision du périmètre et l'entrée des groupes dans les agrégats ;
+    - la première passe du bloc `text` ;
+    - le nom daté d'une réponse du service de recherche en cache (`discovery.py:395`), version d'une ressource vivante (« chaque tirage est horodaté »).
+
+  (3) Règles :
+  - Source unique : la clé `as_of` de `config.yaml`, lue par `config.as_of()`. Versionnée, elle se tient à côté des critères et des tables qu'elle date. Ni variable d'environnement, invisible dans le dépôt, ni date du jour.
+  - Les commandes qui prenaient un as_of en argument (`assemble`, `render`, `phase0`, `phase1_run`, `phase2_fetch`, `universe`, `formd`) le prennent de la configuration. Un argument reste accepté, mais il doit être égal à la clé ; sinon la commande s'arrête et dit pourquoi.
+  - Les trois constantes disparaissent. Les sept modules, `text_catalog` et `nport.py:67` lisent `config.as_of()`.
+  - Une borne de `config.yaml` qui finit à l'as_of s'écrit `as_of`, et `config.load()` la remplace par la date. Les 19 bornes ci-dessus passent à `as_of`.
+  - Gardes :
+    - l'assemblage s'arrête si `db/phase0.json` porte un autre as_of (« relancer la phase 0 ») ;
+    - le lecteur s'arrête si la passe en cours (`work/tmp/run*.json`) porte un autre as_of (« ouvrir une passe nouvelle ») ; faute de fichier, il prend l'as_of de la configuration, non la date du jour.
+  - Le `Makefile` ne fixe plus de date.
+  - La ligne 25 055 du journal reste telle quelle : le journal ne se réécrit pas.
+  - Effet attendu : aucun, puisque l'as_of reste le 2026-10-07. Les huit tables et les rendus doivent ressortir à l'octet près, sauf `delta.md` (base et durée) et `audit/annex_e.txt` et `annex_f.txt`, qui portent le diff de `config.yaml`.
+
+  (4) Mettre le modèle à jour devient : changer `as_of` dans `config.yaml`, puis relancer les phases dans l'ordre du README. Les gardes arrêtent toute commande qui mêlerait deux as_of.
