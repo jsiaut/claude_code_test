@@ -89,15 +89,18 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..3085ec7 100644
+index 1378604..a4c456f 100644
 --- a/config.yaml
 +++ b/config.yaml
-@@ -16,9 +16,202 @@ user_agent:
+@@ -16,9 +16,205 @@ user_agent:
    value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
    sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
  
 -scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
 -scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
++as_of: "2026-10-07"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
++                             # « as_of » dans ce fichier finit à cette date
+ 
 +scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs, ownership]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 +scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
 +  date: 2026-10-07
@@ -173,7 +176,7 @@ index 1378604..3085ec7 100644
 +      pairs_financed_documented: 12
 +      annex_e_e7: {outcomes: 24, indeterminate: 13, result: discrimination_possible}
 +    execution: "sans sous-agent (consigne de l'utilisateur)"
- 
++
 +  - date: 2026-10-10
 +    decision: "Fais le niveau 1, toujours sans sous-agent"
 +    question: "fragilité du financement de Blue Owl : signaux de portefeuille de toutes les BDC, événements F11 à F13 (niveau 1)"
@@ -297,7 +300,7 @@ index 1378604..3085ec7 100644
  window:
    start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
    include_interim: true
-@@ -38,16 +231,193 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+@@ -38,16 +234,193 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
    AMD: "0000002488"
    AVGO: "0001730168"
    MRVL: "0001835632"
@@ -491,7 +494,7 @@ index 1378604..3085ec7 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +425,789 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +428,789 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -1281,7 +1284,7 @@ index 1378604..3085ec7 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1269,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1272,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -1289,7 +1292,7 @@ index 1378604..3085ec7 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1285,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1288,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1298,7 +1301,7 @@ index 1378604..3085ec7 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1474,73 @@ annex_e:
+@@ -318,6 +1477,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1355,7 +1358,7 @@ index 1378604..3085ec7 100644
 +    per_thousand: [1000, 10000]  # montant par tranche de 1 000 $ de dette : ÷ 1 000
 +  net_assets_concepts: [AssetsNet, StockholdersEquity]   # dans cet ordre
 +  tenders:
-+    window: ["2022-10-01", "2026-10-07"]   # dépôt du SC TO-I
++    window: ["2022-10-01", as_of]   # dépôt du SC TO-I
 +    initial_form: "SC TO-I"
 +    amendment_form: "SC TO-I/A"
 +    program_min_offers: 4        # F16 : au moins quatre offres successives
@@ -1372,7 +1375,7 @@ index 1378604..3085ec7 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1593,42 @@ annex_f:
+@@ -370,6 +1596,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1415,7 +1418,7 @@ index 1378604..3085ec7 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1648,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1651,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1426,7 +1429,7 @@ index 1378604..3085ec7 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1701,465 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1704,465 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1498,7 +1501,7 @@ index 1378604..3085ec7 100644
 +# déposants nommés. Les fenêtres : deux paragraphes avant et deux après, fondues (D-0046, point 4).
 +softbank_deep:                # D-0058, volets B et C : dépôts EDGAR propres des entités de SoftBank, déposants contrôlés
 +  decision: D-0058
-+  period: ["2017-01-29", "2026-10-07"]
++  period: ["2017-01-29", as_of]
 +  own_ciks:                   # dénomination EDGAR qui contient « SoftBank » (hors eSoftBank.com) et véhicules du point 2,
 +                              # liste des noms d'EDGAR du 2026-10-09
 +    - {cik: "0001009417", name: "SOFTBANK HOLDINGS INC ET AL"}
@@ -1547,7 +1550,7 @@ index 1378604..3085ec7 100644
 +montages:
 +  meta_hyperion:
 +    decision: D-0046
-+    period: ["2025-10-01", "2026-10-07"]
++    period: ["2025-10-01", as_of]
 +    queries:
 +      - {q: '"Beignet Investor"'}
 +      - {q: '"Blue Owl" Hyperion'}
@@ -1565,7 +1568,7 @@ index 1378604..3085ec7 100644
 +    cap: 40
 +  athene_whco:
 +    decision: D-0049
-+    period: ["2026-01-01", "2026-10-07"]
++    period: ["2026-01-01", as_of]
 +    queries:
 +      - {q: '"WarehouseCo Intermediate Holdings"'}
 +      - {q: '"WarehouseCo"'}
@@ -1588,7 +1591,7 @@ index 1378604..3085ec7 100644
 +    cap: 40
 +  galaxy_helios:
 +    decision: D-0049
-+    period: ["2025-01-01", "2026-10-07"]
++    period: ["2025-01-01", as_of]
 +    queries:
 +      - {q: '"Helios" "CoreWeave"'}
 +      - {q: '"Galaxy Digital"', cik: "0001769628"}
@@ -1612,7 +1615,7 @@ index 1378604..3085ec7 100644
 +    decision: D-0058
 +    source: corpus
 +    groups: all
-+    period: ["2017-01-29", "2026-10-07"]   # début du texte (discovery.period_start) à l'as_of
++    period: ["2017-01-29", as_of]   # début du texte (discovery.period_start) à l'as_of
 +    terms:
 +      - {rx: '\bSoft[Bb]ank\b|\bSOFTBANK\b'}
 +      - {rx: '\bStar Beacon\b|\bStellar Beacon\b|\bSB Northstar\b|\bSVF Yellow\b|\bSVF II Energy\b|\bSB Energy\b|\bSB ENERGY\b|\bBrightstar US\b'}
@@ -1632,7 +1635,7 @@ index 1378604..3085ec7 100644
 +    order: recent_first
 +  stargate:                           # D-0058, points 7 et 20 : montage Stargate, du plus récent au plus ancien
 +    decision: D-0058
-+    period: ["2025-01-01", "2026-10-07"]
++    period: ["2025-01-01", as_of]
 +    queries:
 +      - {q: '"Stargate" "OpenAI"'}
 +      - {q: '"Stargate" "SoftBank"'}
@@ -1654,7 +1657,7 @@ index 1378604..3085ec7 100644
 +    decision: D-0059
 +    source: corpus
 +    groups: all
-+    period: ["2017-01-29", "2026-10-07"]   # début du texte (discovery.period_start) à l'as_of
++    period: ["2017-01-29", as_of]   # début du texte (discovery.period_start) à l'as_of
 +    terms:
 +      - {rx: '\bOpenAI\b|\bOPENAI\b'}
 +      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)'}   # « Anthropic Capital » : gérant homonyme (D-0041)
@@ -1672,7 +1675,7 @@ index 1378604..3085ec7 100644
 +    decision: D-0060
 +    source: tagged                    # faits retenus par pipeline.labs (instances des groupes en cache) ; aucune requête
 +    groups: all
-+    period: ["2017-01-29", "2026-10-07"]
++    period: ["2017-01-29", as_of]
 +    noted_terms: ['\bOpenAI\b', '\bOPENAI\b', '\bAnthropic\b', '\bANTHROPIC\b', '\bOpen AI\b', '\bChatGPT\b', '\bClaude\b',
 +                  '\bStargate\b', '\bfrontier AI lab\b']
 +    evidence: triplet                 # D-0066, point 5 : pièce de 8-K classée par son triplet
@@ -1683,7 +1686,7 @@ index 1378604..3085ec7 100644
 +    order: recent_first
 +  anthropic_chain:                    # D-0064, volet 7 : chaîne de calcul d'Anthropic, 8-K et leurs pièces
 +    decision: D-0064
-+    period: ["2023-01-01", "2026-10-07"]
++    period: ["2023-01-01", as_of]
 +    queries:                          # forme racine 8-K : 8-K et 8-K/A, pièces comprises (point 10) ; « Anthropic » croisé avec l'infrastructure (point 3)
 +      - {q: '"Fluidstack"', forms: ["8-K"]}
 +      - {q: '"Anthropic" "data center"', forms: ["8-K"]}
@@ -1712,7 +1715,7 @@ index 1378604..3085ec7 100644
 +    order: recent_first
 +  sec_letters:                        # D-0064, volet 6 : lettres du personnel de la SEC (UPLOAD) et réponses des sociétés (CORRESP)
 +    decision: D-0064
-+    period: ["2019-01-01", "2026-10-07"]
++    period: ["2019-01-01", as_of]
 +    queries:
 +      - {q: '"OpenAI"', forms: ["CORRESP", "UPLOAD"]}
 +      - {q: '"Anthropic"', forms: ["CORRESP", "UPLOAD"]}
@@ -1743,9 +1746,9 @@ index 1378604..3085ec7 100644
 +  labs_contracts:                     # D-0067, volet 8 : pièces contractuelles (EX-10, EX-4, EX-2) qui nomment un laboratoire
 +    decision: D-0067
 +    source: hits                      # pages de la recherche de la découverte déjà en cache, relues sans requête (point 3)
-+    replay: {terms: [OpenAI, Anthropic], start: "2017-01-01", end: "2026-10-07"}   # formulaires racines de la découverte
++    replay: {terms: [OpenAI, Anthropic], start: "2017-01-01", end: as_of}   # formulaires racines de la découverte
 +    file_type_rx: '^EX-(?:10|4|2)(?:\.|$|[A-Z])'
-+    period: ["2017-01-01", "2026-10-07"]
++    period: ["2017-01-01", as_of]
 +    terms:
 +      - {rx: '\bOpenAI\b|\bOPENAI\b'}
 +      - {rx: '\bAnthropic\b(?! Capital)|\bANTHROPIC\b(?! CAPITAL)'}   # « Anthropic Capital » : gérant homonyme (D-0041)
@@ -1767,7 +1770,7 @@ index 1378604..3085ec7 100644
 +  labs_events:                        # D-0067, volets 8 et 9 : capacités et événements des laboratoires dans le corpus en cache
 +    decision: D-0067
 +    source: lab_corpus                # documents des groupes, pièces des autres montages, notes lues de la découverte (point 4)
-+    period: ["2017-01-29", "2026-10-07"]
++    period: ["2017-01-29", as_of]
 +    exclude_montages: [labs_contracts]
 +    terms:
 +      - {rx: '\bOpenAI\b|\bOPENAI\b'}
@@ -1793,7 +1796,7 @@ index 1378604..3085ec7 100644
 +  backlog:                            # D-0068, point 6 : paragraphes d'un vendeur qui nomment l'un de ses clients et un terme de carnet
 +    decision: D-0068
 +    source: backlog                   # documents des vendeurs en cache (registre des documents), aucune requête ; EX-99 écartées
-+    period: ["2019-01-01", "2026-10-07"]
++    period: ["2019-01-01", as_of]
 +    forms: ["10-K", "10-K/A", "10-KT", "10-KT/A", "10-Q", "10-Q/A", "8-K", "8-K/A", "S-1", "S-1/A", "424B3", "424B4",
 +            "20-F", "20-F/A", "40-F", "40-F/A"]
 +    vocabulary: 'remaining performance obligations?|\bRPOs?\b|unsatisfied performance obligations?|contract(?:ed|ual)? (?:revenue|value)|total contract|aggregate (?:contract )?value|(?:future|minimum|remaining) (?:minimum )?(?:lease|rental) (?:payments|receipts)|lease payments to be received|\bbacklog\b|revenue backlog'
@@ -1812,7 +1815,7 @@ index 1378604..3085ec7 100644
 +  backlog_values:                     # D-0068, point 15 : paragraphes déjà lus qui portent une arête de valeur d'un vendeur
 +    decision: D-0068
 +    source: edge_values               # blocs lus (texte du bloc), citations des lignes du vendeur ; aucune requête
-+    period: ["2019-01-01", "2026-10-07"]
++    period: ["2019-01-01", as_of]
 +    terms:                            # libellé des exclusions ; la qualification passe par les citations des arêtes de valeur
 +      - {rx: '\bcommitted to pay\b', label: "paragraphe qui porte une arête de valeur du vendeur"}
 +    noted_terms: ['\b[Tt]otal contract value\b', '\b[Cc]ommitted to pay\b', '\b[Cc]ontract value\b', '\bRPOs?\b',
@@ -1826,7 +1829,7 @@ index 1378604..3085ec7 100644
 +
 +nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
 +  decision: D-0058
-+  period: ["2019-10-01", "2026-10-07"]     # première archive publiée (données d'octobre 2019) à l'as_of ; archive publiée après l'as_of écartée
++  period: ["2019-10-01", as_of]     # première archive publiée (données d'octobre 2019) à l'as_of ; archive publiée après l'as_of écartée
 +  readme: "https://www.sec.gov/files/nport_readme.pdf"   # description publiée (Last-Modified du 26 juillet 2024), lue le 2026-10-19
 +  exchange_rate_convention: currency_per_usd   # vérifiée sur les positions avant tout calcul (point 27)
 +  columns:                   # noms de la description, sections 5.1 à 5.3 et 5.10 à 5.12
@@ -1847,7 +1850,7 @@ index 1378604..3085ec7 100644
 +    fund: {accession: ACCESSION_NUMBER, series_name: SERIES_NAME, series_id: SERIES_ID, series_lei: SERIES_LEI}
 +  unlisted:                  # D-0065 : marques de tiers des non-cotés du modèle (volet 5 de D-0059), en un seul passage
 +    decision: D-0065
-+    tickers: "2026-10-07"    # liste des symboles d'EDGAR (company_tickers.json) en cache : cotation (point 7)
++    tickers: as_of    # liste des symboles d'EDGAR (company_tickers.json) en cache : cotation (point 7)
 +    quoted_levels: ["1", "2"]          # niveaux de la hiérarchie de juste valeur comptés, non gardés (point 5)
 +    mark: {asset_cats: [EC, EP], unit: NS, payoff: Long, level: "3"}   # positions de nport_equity_mark (point 8)
 +    listing_forms: [424B4, 424B1]      # premier prospectus d'introduction : date de cotation (point 7)
@@ -1868,7 +1871,7 @@ index 1378604..3085ec7 100644
 +    convertible_columns: [IS_CONVTIBLE_MANDATORY, IS_CONVTIBLE_CONTINGENT]   # Item C.9.f.i et ii (description, section 5.12)
 +ownership:                   # D-0071, volet A : déclarations de détention (13F, 13D, 13G), sans lecture de texte
 +  decision: D-0071
-+  period: ["2019-01-01", "2026-10-07"]        # dépôts de la période (13F, 13D et 13G)
++  period: ["2019-01-01", as_of]        # dépôts de la période (13F, 13D et 13G)
 +  thirteen_f_filers: [AMZN, GOOGL, INTC, NVDA]   # financeurs des paires qui déposent des 13F-HR
 +  dollars_from: "2023-01-03"   # valeurs des 13F en dollars à partir de ce dépôt, en milliers avant (règle de la SEC)
 +  pairs:                     # point 3 : S groupe, C déclarant (groupe, ou entité qui porte un CIK), arête de financement en titres

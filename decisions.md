@@ -3357,3 +3357,23 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Effet attendu : aucun, puisque l'as_of reste le 2026-10-07. Les huit tables et les rendus doivent ressortir à l'octet près, sauf `delta.md` (base et durée) et `audit/annex_e.txt` et `annex_f.txt`, qui portent le diff de `config.yaml`.
 
   (4) Mettre le modèle à jour devient : changer `as_of` dans `config.yaml`, puis relancer les phases dans l'ordre du README. Les gardes arrêtent toute commande qui mêlerait deux as_of.
+
+  (5) Résultats :
+  - Code (078a179) :
+    - la clé `as_of` est en tête de `config.yaml`, et les 19 bornes s'écrivent `as_of` ;
+    - `config.as_of()` lit la clé ; `config.check_as_of()` arrête une commande devant une étape d'un autre as_of ;
+    - les trois constantes sont retirées. Les sept modules, `text_catalog` et `nport.page` (l'ancienne ligne 67) lisent `config.as_of()`. La date de la liste des symboles vient de la borne `tickers` (`nport.tickers_day`), et le message d'exclusion qui la cite reste le même ;
+    - les commandes du point 3 se lancent sans date. Un argument daté est vérifié ;
+    - gardes : celles du point 3, et trois du même ordre (point 4). La phase 1 et l'univers s'arrêtent devant un autre `db/phase0.json`, le rendu devant d'autres tables (`work/tmp/assemble_stats.json`, « relancer l'assemblage ») ;
+    - le `Makefile` ne fixe plus de date, et le README décrit la source unique et la mise à jour.
+  - Tests : 13 nouveaux (`tests/test_d0073.py`). Le test de `config.load` (D-0062) reçoit une clé `as_of`, devenue obligatoire. `make check` passe : ruff sans constat, 359 tests.
+  - Réassemblage sans argument daté : 1 207 s.
+    - Rien n'est repris du mémo des étapes, car le code et `config.yaml` ont changé. Les plages de citations sont reprises du leur : `textnorm.py`, `cache.py` et `load.py` sont inchangés.
+    - La base XBRL seule prend 105 s, contre 67 s en D-0072, sans changement de son code.
+    - Les huit tables sont identiques à l'octet près à celles de 98a0bc3.
+  - Rendu sans argument daté :
+    - `synthesis.md`, `series.md`, `audit/numbers.csv` et `audit/annex_e.txt` sont identiques. Les critères de l'annexe E n'ont pas changé, et son diff reste vide ;
+    - `delta.md` ne change que par la durée et par la ligne de la décision nouvelle ; sa base est la même, les tables n'ayant pas changé ;
+    - `audit/annex_f.txt` ne change que par le diff de `config.yaml` : la clé `as_of` et les 19 bornes.
+  - Aucune requête réseau. Le journal reste à 25 583 lignes.
+  - Erratum du point 2 : le journal compte 25 583 lignes, dont 25 582 au 2026-10-07 ; la ligne 25 055 est la seule à `as_of: null`.

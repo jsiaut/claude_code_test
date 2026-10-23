@@ -25,7 +25,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 - Blocs lus : 11 195 sur 11 551 clés de contenu ; par item de 8-K : 1.01 469, 1.02 49, 2.01 38, 2.03 142, 3.03 35, 8.01 825 ; pièces arrêtées à leur en-tête : EX-4 356.
 - Lignes rejetées par la validation : 0.
 - Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 688 (collisions : 239).
-- Durée de l'assemblage : 1058 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 1207 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -91,6 +91,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 ## Décisions et variantes nouvelles
 
 - D-0072 — Observations d'architecture de l'audit : ce qui est déjà fait, ce qui se fait, ce qui ne se fait pas. Règles fixées avant tout changement.
+- D-0073 — Une seule source pour l'as_of : la clé `as_of` de `config.yaml`. Règles fixées avant tout changement.
 
 ## Critères des annexes E et F
 
