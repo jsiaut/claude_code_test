@@ -3494,3 +3494,43 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - `nport.frozen_lexicon` : à une exécution nouvelle, le lexique des non-cotés est celui du dernier scan de l'exécution précédente ;
     - `sb_own._header_party` : l'analyseur des en-têtes SGML s'appelait `_block`, et la fonction de même nom qui construit les blocs le masquait depuis D-0058 (3a6d650). `sb_own headers` échouait donc. Il est renommé, et sa sortie est identique.
   - À lire : 14 blocs, 46 559 caractères (12 6-K, 2 montages), liste `upd_20261024_s14`, du plus récent au plus ancien.
+
+  (7) Lecture des blocs de §14, intégration et résultats (2026-10-24), sans sous-agent :
+  - Lecture, liste `upd_20261024_s14` : 14 blocs et 16 lignes, soit 5 observations et 11 abstentions.
+    - Nebius : facilité relais garantie de 3,5 Md$ signée le 17 octobre 2026 avec Citibank, N.A., avec une clause de liquidité minimale et des sûretés sur la quasi-totalité des actifs des emprunteurs (6-K du 22 octobre). Le communiqué joint la redit sans montant, pour ne pas compter deux fois la facilité. Le 6-K est furnished : l'arête est une relation.
+    - ASML : initiative avec TSMC pour des photomasques de 12 pouces (High NA EUV), relation sans montant. Les états du T3 2026 sont en agrégat.
+    - SK hynix : Solidigm renonce à sa levée avant introduction en bourse, sans contrepartie. TSMC : relevés de dérivés en agrégat.
+    - Chaîne d'Anthropic : une compilation d'un tiers (Data443, hors champ) et un programme de partenaires (Kinetic Seas), sans arête.
+    - Aucune des 161 lignes nouvelles de la mise à jour ne nomme une personne physique (citations, notes, contreparties).
+  - Entités par extrait, après le premier réassemblage. Trois noms nouveaux restaient en attente :
+    - « TBC » devient un alias de The Boring Company, d'après l'extrait qui le définit dans la note des participations du 10-Q de SpaceX du 2026-10-22 : « TBC - The Boring Company ("TBC") » (D-0021) ;
+    - « District of Columbia Attorney General » et « participating states » (litiges de Meta) restent en attente : aucune pièce n'en affirme l'identité ;
+    - « Citi », dans le communiqué de Nebius, l'était déjà ; aucune position de BDC ne nomme TBC ni The Boring Company, et l'extraction des BDC Data Sets ne se refait pas.
+  - Réassemblages : le premier en 1 048 s, le second en 894 s (le mémo ne reprend rien, la configuration ayant changé).
+  - Constat et correctif du rendu :
+    - `delta.md` rapprochait les cellules et les contrôles des deux exécutions sur leur clé, as_of compris. À un as_of nouveau, aucune cellule ne se rapprochait : presque toutes apparaissaient et disparaissaient, et aucune valeur changée ne se lisait.
+    - `_same_run` lit comme un seul « run » l'as_of de chaque exécution, et une fin de période qui lui est égale (fenêtres jusqu'à la date de coupure). Les millésimes datés de la vue `as_known` (environ 3 500 cellules) gardent leur date dans la clé.
+    - Un test de plus : 21 dans `test_d0074`, 380 en tout, et ruff passe.
+  - Tables, contre celles de 580e8e9 :
+    - documents : 25 472 → 26 227 ; faits : 1 583 436 → 1 588 706 ;
+    - observations : 30 073 → 30 234. Ce sont 161 lignes dans 62 blocs, 145 des groupes et 16 de §14 ; aucune ne disparaît ;
+    - entités : 3 597 → 3 606 ;
+    - liens : 11 155 → 11 195, dont 22 arêtes nouvelles et aucune disparue (commercial à montant 4, soutien de crédit 5, financement à montant 2 et en relation 11). Entre autres : achats de SpaceX à Tesla (151, 480 et 506 M$), participation de SpaceX dans The Boring Company (gain latent de 561 M$), achat de Micron à Powerchip (1,8 Md$), facilités de MUFG (Blue Owl), de Citibank (Nebius), de Bank of America (Marvell) et de Morgan Stanley Senior Funding (TeraWulf) ;
+    - mesures : 188 379 → 189 234 ; contrôles : 70 269 → 70 578 ;
+    - exclusions : 31 716 → 31 860.
+      - `out_of_scope` + 128 : 124 Form D anciens, antérieurs à la fenêtre (le bloc `form_d` passe de 38 à 162), 3 6-K sans fenêtre et 1 de `sb_own`.
+      - `not_processed` + 35 et − 24. Les entrées : les 7 unités de la découverte, hors frontière, et celle de la piste des non-déposants, hors règle ; puis 27 8-K anciens de véhicules de BDC (Blue Owl 18, MSC Income Fund 6, trois autres 1 chacun). Ces 8-K sont entrés dans la file des annonces, qui ne s'était pas recalculée depuis le 2026-10-10 ; antérieurs à l'as_of précédent, ils restent au-delà du plafond (point 3). Les sorties : 24 fenêtres de 6-K au-delà du plafond, dont le texte est celui d'un bloc déjà lu, que la clé de contenu admet (vérifié fenêtre par fenêtre).
+      - `pending_entity` + 2, `financial_parties_only` + 2 (corps EX-4 de Cipher), `conflicting` + 1 (SpaceX).
+  - `delta.md` :
+    - événements nouveaux de l'annexe F : Meta F2 sur un trimestre ; SpaceX F1 sur un trimestre, F2 sur trois et F4 sur un. Aucun ne disparaît ;
+    - valeurs changées pour des périodes déjà publiées : 130 cellules de même clé. Ce sont surtout les trimestres de 2025 de SpaceX, calculés pour la première fois grâce aux comparatifs de son 10-Q du T3 2026 (« terme manquant » → calculée). S'y ajoutent les ratios des offres de rachat de quatre véhicules de BDC et l'issue E.7 (0,5602 → 0,5595) ;
+    - cellules apparues : celles des périodes closes depuis (T3 2026 de Meta et de SpaceX, exercice 2026 de Micron, clos le 3 septembre). On y trouve 148 cellules de `financed_status`, 188 de `segment_significant_expenses` et 20 de `form_d_offering_amount` : 30 offres des émetteurs du périmètre au lieu de 20 ;
+    - contrôles basculés : C1 3, vers `not_testable` ; C2 1, vers `ok`.
+  - Faits de la période, dans les lignes lues :
+    - Meta : pénalité civile de 25 Md$ prononcée le 21 octobre 2026 dans l'affaire du procureur général du Nouveau-Mexique ; accord d'août 2026 avec 52 procureurs généraux, jusqu'à environ 18,59 Md$ ;
+    - Cipher : obligations convertibles à 0,00 % de 850 M$, échéance 2032 ;
+    - Blue Owl : avenant n° 4 du crédit renouvelable, porté à 3,225 Md$ ;
+    - Micron : environ 134 Md$ d'obligations de prestation restantes au 3 septembre 2026 ;
+    - Nebius : facilité relais de 3,5 Md$.
+  - Constat, sans suite dans cette décision (aucune relecture, point 3) : neuf lignes de passes antérieures (2026-10-07), dans six blocs de Microsoft et de SpaceX, nomment une personne physique. Quatre le font dans une note, quatre dans une citation, une comme contrepartie. La règle les exclut. Leur correction est proposée à l'utilisateur. « Harbor Gates Capital, LLC » et « Musk Industries LLC » sont des sociétés.
+  - Verrou de session levé en fin d'exécution. La tâche planifiée de §11.5 n'est pas créée.

@@ -2728,8 +2728,13 @@ def previous_run(con, stats):
     return dict(prev, decisions=dec) if ok else None
 
 
-def _same(cols, a="c", b="p"):
-    return " AND ".join(f"{a}.{k} IS NOT DISTINCT FROM {b}.{k}" for k in cols)
+def _same_run(cols, a_run, b_run, a="c", b="p"):
+    """Rapprochement d'une exécution à l'autre (D-0074) : l'as_of de chaque exécution (`a_run` pour `a`, `b_run` pour
+    `b`), et une fin de période qui lui est égale (fenêtre jusqu'à la date de coupure), se lisent comme un seul « run » ;
+    les autres as_of, millésimes datés de la vue `as_known`, restent dans la clé tels quels."""
+    def col(t, k, run):
+        return f"(CASE WHEN {t}.{k} = '{run}' THEN 'run' ELSE {t}.{k} END)" if k in ("as_of", "period_end") else f"{t}.{k}"
+    return " AND ".join(f"{col(a, k, a_run)} IS NOT DISTINCT FROM {col(b, k, b_run)}" for k in cols)
 
 
 def decisions_list():
@@ -2744,6 +2749,9 @@ def decisions_list():
 def delta(con, as_of, stats):
     T = Tokens(con, "delta.md")
     P = previous_run(con, stats)
+    # as_of de l'exécution précédente : celui de ses contrôles, tous à la date de coupure (D-0074)
+    pr = q(con, "SELECT as_of FROM prev_controls GROUP BY 1 ORDER BY count(*) DESC LIMIT 1")
+    prev_as_of = pr[0]["as_of"] if pr else as_of
     since = (f"comparée à l'exécution précédente, dont les tables sont celles du commit {P['commit'][:12]} ({P['date'][:10]})"
              if P else "sans exécution précédente lisible : tout y est nouveau")
     L = ["# delta.md — à lire en premier", "", f"*Exécution du {as_of}, {since}. Généré depuis les tables (D-0069, point 8).*", ""]
@@ -2756,12 +2764,16 @@ def delta(con, as_of, stats):
     L.append("")
     ev_key = ("subject", "period_start", "period_end", "view", "breakdown_key")
 
+    def runs(cur):
+        return (as_of, prev_as_of) if cur == "measures" else (prev_as_of, as_of)
+
     def ev_diff(cur, prev, vehicles):
         return q(con, f"""SELECT c.subject, c.breakdown_key, count(*) AS n FROM {cur} c
                           WHERE c.measure = 'fragility_event' AND c.value_text = 'event'
                             AND c.subject {'' if vehicles else 'NOT '}LIKE 'cik:%'
                             AND NOT EXISTS (SELECT 1 FROM {prev} p WHERE p.measure = 'fragility_event'
-                                            AND p.value_text = 'event' AND {_same(ev_key)})
+                                            AND p.value_text = 'event'
+                                            AND {_same_run(ev_key, *runs(cur))})
                           GROUP BY 1, 2 ORDER BY 1, 2""")
     for title, rows, key in (("Apparus", ev_diff("measures", "prev_measures", False), "F_new"),
                              ("Disparus", ev_diff("prev_measures", "measures", False), "F_gone")):
@@ -2906,12 +2918,14 @@ def delta(con, as_of, stats):
                                                    OR c.value_text IS DISTINCT FROM p.value_text) AS v,
                            count(*) FILTER (WHERE c.status IS DISTINCT FROM p.status
                                                    OR c.nd_reason IS DISTINCT FROM p.nd_reason) AS s
-                    FROM measures c JOIN prev_measures p ON {_same(pk)} GROUP BY 1 HAVING v > 0 OR s > 0
+                    FROM measures c JOIN prev_measures p ON {_same_run(pk, as_of, prev_as_of)} GROUP BY 1 HAVING v > 0 OR s > 0
                     ORDER BY 2 DESC, 1""")
     nw = {r["measure"]: r["n"] for r in q(con, f"""SELECT measure, count(*) AS n FROM measures c WHERE NOT EXISTS
-                                                    (SELECT 1 FROM prev_measures p WHERE {_same(pk)}) GROUP BY 1""")}
+                                                    (SELECT 1 FROM prev_measures p WHERE {_same_run(pk, as_of, prev_as_of)})
+                                                    GROUP BY 1""")}
     gn = {r["measure"]: r["n"] for r in q(con, f"""SELECT measure, count(*) AS n FROM prev_measures c WHERE NOT EXISTS
-                                                    (SELECT 1 FROM measures p WHERE {_same(pk)}) GROUP BY 1""")}
+                                                    (SELECT 1 FROM measures p WHERE {_same_run(pk, prev_as_of, as_of)})
+                                                    GROUP BY 1""")}
     if ch or nw or gn:
         L.append("Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cellules apparues et disparues, "
                  "par mesure :")
@@ -2948,7 +2962,7 @@ def delta(con, as_of, stats):
     L.append("")
     cpk = ("control", "subject", "period_start", "period_end", "view", "as_of", "breakdown_key", "mapping_variant")
     fl = q(con, f"""SELECT c.control, p.status AS before, c.status AS after, count(*) AS n FROM controls c
-                    JOIN prev_controls p ON {_same(cpk)} WHERE c.status IS DISTINCT FROM p.status
+                    JOIN prev_controls p ON {_same_run(cpk, as_of, prev_as_of)} WHERE c.status IS DISTINCT FROM p.status
                     GROUP BY 1, 2, 3 ORDER BY 1, 2, 3""")
     for r in fl:
         L.append(f"- {r['control'].split('_')[0].upper()} : `{r['before']}` → `{r['after']}` "

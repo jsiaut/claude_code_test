@@ -255,6 +255,23 @@ class Queues(unittest.TestCase):
                 N.lexicon_path, N.config.previous_as_of = old_lp, old_prev
 
 
+class DeltaAcrossRuns(unittest.TestCase):
+    def test_cells_matched_across_as_of(self):
+        import duckdb
+        from pipeline import render as R
+        con = duckdb.connect()
+        con.execute("""CREATE TABLE c AS SELECT * FROM (VALUES ('q', '2026-06-30', '2026-10-24'), ('w', '2026-10-24', '2026-10-24'),
+                       ('v', '2026-03-31', '2026-03-01'), ('n', '2026-09-30', '2026-10-24')) t(measure, period_end, as_of)""")
+        con.execute("""CREATE TABLE p AS SELECT * FROM (VALUES ('q', '2026-06-30', '2026-10-07'), ('w', '2026-10-07', '2026-10-07'),
+                       ('v', '2026-03-31', '2026-03-01')) t(measure, period_end, as_of)""")
+        k = ("measure", "period_end", "as_of")
+        rows = con.execute(f"SELECT c.measure FROM c JOIN p ON {R._same_run(k, '2026-10-24', '2026-10-07')} ORDER BY 1").fetchall()
+        # trimestre, fenêtre jusqu'à la date de coupure et millésime daté se rapprochent ; le trimestre nouveau non
+        self.assertEqual([r[0] for r in rows], ["q", "v", "w"])
+        same = con.execute(f"SELECT count(*) FROM c JOIN p ON {R._same_run(k, '2026-10-07', '2026-10-07')}").fetchone()[0]
+        self.assertEqual(same, 1)          # même as_of des deux côtés : égalité simple, seul le millésime se rapproche
+
+
 class Phase0Index(unittest.TestCase):
     def test_argument_must_equal_the_key(self):
         from pipeline import phase0_index

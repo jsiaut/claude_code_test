@@ -89,17 +89,19 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..a4c456f 100644
+index 1378604..3742a2a 100644
 --- a/config.yaml
 +++ b/config.yaml
-@@ -16,9 +16,205 @@ user_agent:
+@@ -16,9 +16,207 @@ user_agent:
    value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
    sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
  
 -scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
 -scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
-+as_of: "2026-10-07"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
++as_of: "2026-10-24"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
 +                             # « as_of » dans ce fichier finit à cette date
++as_of_previous: ["2026-10-07"]   # as_of des exécutions précédentes, dans l'ordre (D-0074) : une recherche plein texte
++                                 # se coupe à ces dates, et une exécution reprend les catalogues de la précédente
  
 +scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs, ownership]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 +scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
@@ -300,7 +302,7 @@ index 1378604..a4c456f 100644
  window:
    start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
    include_interim: true
-@@ -38,16 +234,193 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+@@ -38,16 +236,193 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
    AMD: "0000002488"
    AVGO: "0001730168"
    MRVL: "0001835632"
@@ -494,7 +496,7 @@ index 1378604..a4c456f 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +428,789 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +430,791 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -1235,6 +1237,8 @@ index 1378604..a4c456f 100644
 +  - {alias: "Fluidstack USA II", of: "Fluidstack USA II Inc.", decision: D-0070, block: 86e8c413c10395d8aa29e0a2db2c53b140bd7c5dae8267b850b4cc415db53a74, accession: 0001819989-25-000112, quote: "Fluidstack USA II (\"Fluidstack\")", note: "10-Q de Cipher du 2025-11-03 : même bail de Barber Lake que le 8-K du 2025-09-25, qui nomme Fluidstack USA II Inc. (bloc ddf9156b047a)"}
 +  # D-0067, intégration : nom des lignes encore en attente avant le réassemblage, rattaché par extrait
 +  - {alias: "SE Global Holdings, Inc.", of: "SB Energy, Inc.", decision: D-0067, block: d093b87e0fd4dd757366103e7cf72b753741642a3ca2853fe6f22adf41d9eb23, accession: 0001628280-26-062846, quote: "SB Energy, Inc. (formerly SE Global Holdings, Inc.)", note: "ancien nom de la même entité (note 1 des états financiers du S-1/A) ; payeur des lignes du contrat de bons de souscription d'OpenAI (bloc 8473dfde)"}
++  # D-0074, intégration : sigle d'une ligne de la mise à jour encore en attente après le premier réassemblage, rattaché par l'extrait qui le définit
++  - {alias: "TBC", of: "The Boring Company", decision: D-0074, block: a8fa917a7d1db0972b3e8ce97024b77a9384286ce8ebd4f541d6c7f116033703, accession: 0001628280-26-066880, quote: "TBC - The Boring Company (\"TBC\")", note: "note des participations du 10-Q de SpaceX du 2026-10-22 ; la ligne du gain latent de 561 M$ vient de la note des parties liées du même 10-Q"}
 +own_entities:                # entités sans suffixe de forme juridique, identité établie par l'extrait
 +  - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
 +  - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
@@ -1284,7 +1288,7 @@ index 1378604..a4c456f 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1272,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1276,7 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -1292,7 +1296,7 @@ index 1378604..a4c456f 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1288,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1292,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1301,7 +1305,7 @@ index 1378604..a4c456f 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1477,73 @@ annex_e:
+@@ -318,6 +1481,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1375,7 +1379,7 @@ index 1378604..a4c456f 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1596,42 @@ annex_f:
+@@ -370,6 +1600,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1418,7 +1422,7 @@ index 1378604..a4c456f 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1651,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1655,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1429,7 +1433,7 @@ index 1378604..a4c456f 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1704,465 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1708,465 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,

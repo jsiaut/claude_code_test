@@ -1,6 +1,6 @@
 # series.md — vue temporelle
 
-*Exécution du 2026-10-07. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
+*Exécution du 2026-10-24. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
 
 ## NVIDIA (NVDA)
 
@@ -113,6 +113,7 @@
 | 2025-12-31 | 23,8 % | 22,2 % | 0,59 x | n.d. (terme manquant) | 14 831 M$ | 14 077 M$ | n.d. (entité non confirmée) | 30 j | n.d. (concept non résolu) | 0,58 x | 0,26 x |  |
 | 2026-03-31 | 33,1 % | 26,2 % | 0,59 x | n.d. (non publié) | 13 229 M$ | 12 386 M$ | 13 229 M$ | 28 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-06-30 | 28,0 % | 27,7 % | 0,95 x | n.d. (terme manquant) | 1 746 M$ | 784 M$ | 1 746 M$ | 33 j | n.d. (concept non résolu) | 0,76 x | n.d. (terme manquant) |  |
+| 2026-09-30 | 26,1 % | 27,5 % | 1,04 x | n.d. (terme manquant) | -1 157 M$ | -2 121 M$ | -1 157 M$ | 32 j | n.d. (concept non résolu) | 0,80 x | n.d. (terme manquant) | F2 |
 
 ## Microsoft (MSFT)
 
@@ -222,10 +223,11 @@
 | 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2025-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2025-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2025-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2025-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |  |
-| 2026-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F4 |
+| 2025-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 1,83 x | n.d. (terme manquant) | -3 112 M$ | -3 188 M$ | -3 112 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2025-12-31 | n.d. (terme manquant) | n.d. (non publié) | 2,59 x | n.d. (terme manquant) | -4 226 M$ | -4 308 M$ | -4 226 M$ | 29 j | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | F1, F2 |
+| 2026-03-31 | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | F4 |
 | 2026-06-30 | 91,9 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 42 j | 47 461 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2026-09-30 | 161,4 % | n.d. (non publié) | 2,03 x | n.d. (terme manquant) | -9 962 M$ | -10 059 M$ | -9 962 M$ | 30 j | 62 959 M$ | n.d. (non publié) | n.d. (non publié) | F2, F4 |
 
 ## AMD (AMD)
 
@@ -810,6 +812,7 @@
 | 2025-11-27 | 56,7 % | 45,4 % | 0,64 x | n.d. (terme manquant) | 3 022 M$ | 2 899 M$ | 3 022 M$ | 68 j | n.d. (non publié) | 0,40 x | 0,16 x |  |
 | 2026-02-26 | 196,3 % | 85,5 % | 0,54 x | n.d. (terme manquant) | 5 516 M$ | n.d. (terme manquant) | 5 516 M$ | 66 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-05-28 | 345,7 % | 167,0 % | 0,31 x | n.d. (terme manquant) | 17 562 M$ | n.d. (terme manquant) | 17 562 M$ | 68 j | 5 000 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2026-09-03 | 379,3 % | 256,3 % | 0,25 x | n.d. (terme manquant) | 32 863 M$ | n.d. (terme manquant) | 32 863 M$ | 65 j | 134 000 M$ | 0,03 x | n.d. (terme manquant) |  |
 
 ## TSMC (TSM)
 
@@ -10898,7 +10901,7 @@ Offres de rachat (D-0047) :
 | 2025-11-14 | 2025-12-15 | 0,97 x | 100,0 % | servie en entier |
 | 2026-02-13 | 2026-03-16 | 2,21 x | 45,2 % | réduite |
 | 2026-05-15 | 2026-06-15 | 3,36 x | 29,8 % | réduite |
-| 2026-08-14 | 2026-08-14 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
+| 2026-08-14 | 2026-08-14 | n.d. (non publié) | n.d. (non publié) | n.d. (résultat non publié) |
 
 ## MIDCAP APOLLO INSTITUTIONAL PRIVATE LENDING (véhicule BDC, cik:0002006758)
 
