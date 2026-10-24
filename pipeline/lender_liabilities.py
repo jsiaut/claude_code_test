@@ -212,27 +212,26 @@ def _client(rate=4.0):
 
 
 def _submissions(client, cik):
-    """Liste des dépôts d'un véhicule, en cache ; pages anciennes tirées si la liste récente ne remonte
-    pas au début de la fenêtre (D-0047, point 5)."""
+    """Liste des dépôts d'un véhicule, tirée une fois par exécution et datée de son as_of sous cache/api, comme celles
+    d'edgar.Edgar (D-0074) ; pages anciennes tirées si la liste récente ne remonte pas au début de la fenêtre (D-0047,
+    point 5). Les listes de la première exécution restent sous cache/edgar/submissions, sans date."""
+    from .edgar import cik10
     start = (_cfg().get("tenders") or {}).get("window", ["2022-10-01"])[0]
-    p = config.CACHE / "edgar" / "submissions" / f"CIK{cik}.json.zst"
-    if p.exists():
-        sub = json.loads(cache.read(p))
-    else:
-        raw, _ = client.get(f"https://data.sec.gov/submissions/CIK{cik}.json")
-        cache.write(p, raw)
-        sub = json.loads(raw)
+    c, as_of = cik10(cik), config.as_of()
+
+    def get(resource, url):
+        p = cache.api_path(c, resource, as_of)
+        if not p.exists():
+            raw, _ = client.get(url)
+            cache.write(p, raw)
+        return json.loads(cache.read(p))
+    sub = get("submissions", f"https://data.sec.gov/submissions/CIK{c}.json")
     pages = [sub["filings"]["recent"]]
     for fdesc in sub["filings"].get("files") or []:
         if fdesc.get("filingTo", "9999") < start:
             continue
-        q = config.CACHE / "edgar" / "submissions" / (fdesc["name"] + ".zst")
-        if q.exists():
-            pages.append(json.loads(cache.read(q)))
-        else:
-            raw, _ = client.get(f"https://data.sec.gov/submissions/{fdesc['name']}")
-            cache.write(q, raw)
-            pages.append(json.loads(raw))
+        res = "submissions-" + fdesc["name"].rsplit("-", 1)[-1].replace(".json", "")
+        pages.append(get(res, f"https://data.sec.gov/submissions/{fdesc['name']}"))
     return sub, pages
 
 
@@ -1189,8 +1188,15 @@ def announcement_units(as_of=None, rate=4.0):
     cap, win, rx = int(an.get("cap", 40)), int(an.get("window_paragraphs", 2)), _terms_rx(an)
     client = _client(rate)
     units, over, states = [], [], {}
+    from . import update
+    # plafond d'une exécution à l'autre (D-0074, point 3) : unités et 8-K déjà retenus restent ; une file à part,
+    # au même plafond, pour les 8-K de la période nouvelle
+    prev_units = [json.loads(x) for x in UNITS.read_text(encoding="utf-8").splitlines() if x.strip()] if UNITS.exists() else []
+    adm = update.admission(cap, {u["unit"] for u in prev_units})
+    prev_accs = {u["accession"] for u in prev_units}
     for q in announcement_queue(as_of, cfg):
-        if len(units) >= cap:
+        old = adm.since is not None and q["filing_date"] <= adm.since
+        if (old and q["accession"] not in prev_accs) or (not old and adm.taken[None] >= cap):
             over.append({k: q[k] for k in ("cik", "entity", "accession", "filing_date", "reason")})
             continue
         base = f"https://www.sec.gov/Archives/edgar/data/{int(q['cik'])}/{q['accession'].replace('-', '')}"
@@ -1229,7 +1235,7 @@ def announcement_units(as_of=None, rate=4.0):
                 else:
                     spans.append([a, b])
             for k, (a, b) in enumerate(spans):
-                if len(units) >= cap:
+                if not adm.take(f"{q['accession']}/{d}#{k}", q["filing_date"]):
                     over.append({"cik": q["cik"], "entity": q["entity"], "accession": q["accession"],
                                  "filing_date": q["filing_date"], "reason": q["reason"], "document": d, "window": k})
                     continue

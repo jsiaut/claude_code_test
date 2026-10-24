@@ -65,10 +65,13 @@ réseau signalées.
    `python3 -m pipeline.profiling work/tmp/profil.txt pipeline.assemble`.
 6. `python3 -m pipeline.render` : les rendus, en 30 secondes environ.
 
-Mettre le modèle à jour : changer `as_of` dans `config.yaml`, puis relancer les étapes ci-dessus dans
-l'ordre. Une commande s'arrête si l'étape précédente porte un autre as_of : l'assemblage et la phase 1
-devant `db/phase0.json` (« relancer la phase 0 »), le rendu devant les tables (« relancer
-l'assemblage »), le lecteur devant une passe ouverte (« ouvrir une passe nouvelle »).
+Mettre le modèle à jour : changer `as_of` dans `config.yaml` et ajouter l'ancien à `as_of_previous`,
+puis relancer les étapes ci-dessus dans l'ordre, et les blocs de §14 dans celui de D-0074 (point 3). Une
+commande s'arrête si l'étape précédente porte un autre as_of : l'assemblage et la phase 1 devant
+`db/phase0.json` (« relancer la phase 0 »), le rendu devant les tables (« relancer l'assemblage »), le
+lecteur devant une passe ouverte (« ouvrir une passe nouvelle »). Une recherche plein texte ne se tire
+que sur la fenêtre nouvelle ; les catalogues préparés et les files gardent tels quels les blocs et les
+unités de l'exécution précédente, et n'y ajoutent que ceux de la période nouvelle (D-0074).
 
 Les tables et les rendus ne dépendent pas de `PYTHONHASHSEED` : sous les graines 0 et 1, deux réassemblages
 à froid donnent les huit tables à l'octet près, et les rendus aussi, à la durée mesurée près (D-0072). Deux

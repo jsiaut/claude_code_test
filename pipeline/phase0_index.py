@@ -16,7 +16,8 @@ from .net import NotCollected, SecClient
 CLASSES = ("periodic", "8k_first_pass", "proxy", "ipo")
 
 
-def run(as_of, workers=4):
+def run(as_of=None, workers=4):
+    as_of = config.as_of(as_of)     # D-0073, oubli corrigé en D-0074
     con = duckdb.connect()
     inv = con.execute(f"""SELECT group_id, filer_cik, accessionNumber, form, filingDate, reportDate,
                                  items, inv_class, primaryDocument, size, acceptanceDateTime
@@ -62,4 +63,4 @@ def run(as_of, workers=4):
 
 
 if __name__ == "__main__":
-    run(sys.argv[1])
+    run(*sys.argv[1:2])

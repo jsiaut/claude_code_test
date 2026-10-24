@@ -400,7 +400,8 @@ class UnlistedFetch(unittest.TestCase):
                 return None, CaseInsensitiveDict({"Last-Modified": lm[name]})
         arch = [{"name": n, "url": f"https://www.sec.gov/files/{n}_nport.zip", "filed_from": "2026-01-01", "filed_to": "2026-09-30"}
                 for n in ("2026q3", "2026q2", "2026q1")]
-        saved = (N.BASE, N.U_MANIFEST, N.MANIFEST, N.archive_list, N.lexicon, N.cols, N.net.SecClient, N.config.load)
+        saved = (N.BASE, N.U_MANIFEST, N.MANIFEST, N.archive_list, N.lexicon, N.cols, N.net.SecClient, N.config.load,
+                 N.config.as_of)
         with tempfile.TemporaryDirectory() as d:
             N.BASE, N.U_MANIFEST, N.MANIFEST = Path(d), Path(d) / "u.jsonl", Path(d) / "m.jsonl"
             cfg = {"nport": {"period": ["2019-10-01", "2026-10-07"], "columns": UC, "unlisted": {}}, "as_of": "2026-10-07"}
@@ -410,13 +411,15 @@ class UnlistedFetch(unittest.TestCase):
             N.cols = lambda cfg=None: UC
             N.net.SecClient = Client
             N.config.load = lambda *a, **k: cfg
+            N.config.as_of = lambda cli=None: "2026-10-07"     # as_of de l'essai, pas celui de config.yaml
             try:
                 N.fetch_unlisted()
                 m = N.u_manifest()
                 left = sorted(p.name for p in Path(d).glob("*.zip"))
                 kept = pd.read_parquet(Path(d) / "2026q1" / "unlisted" / "holding.parquet")
             finally:
-                (N.BASE, N.U_MANIFEST, N.MANIFEST, N.archive_list, N.lexicon, N.cols, N.net.SecClient, N.config.load) = saved
+                (N.BASE, N.U_MANIFEST, N.MANIFEST, N.archive_list, N.lexicon, N.cols, N.net.SecClient, N.config.load,
+                 N.config.as_of) = saved
         self.assertEqual({k: r["status"] for k, r in m.items()}, {"2026q3": "scanned", "2026q2": "after_as_of", "2026q1": "scanned"})
         self.assertEqual(left, [])
         self.assertEqual(list(kept["HOLDING_ID"]), ["1"])

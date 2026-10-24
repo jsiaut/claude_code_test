@@ -16,8 +16,10 @@ user_agent:
   value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
   sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
 
-as_of: "2026-10-07"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
+as_of: "2026-10-24"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
                              # « as_of » dans ce fichier finit à cette date
+as_of_previous: ["2026-10-07"]   # as_of des exécutions précédentes, dans l'ordre (D-0074) : une recherche plein texte
+                                 # se coupe à ces dates, et une exécution reprend les catalogues de la précédente
 
 scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs, ownership]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)

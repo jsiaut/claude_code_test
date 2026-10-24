@@ -54,7 +54,7 @@ import sys
 
 import pandas as pd
 
-from . import cache, config, net
+from . import cache, config, net, update
 from . import discovery as D
 
 CATALOG = config.DB_DIR / "montages_blocks.jsonl"
@@ -62,6 +62,14 @@ HOLDINGS_FORMS = {"NPORT-P", "NPORT-P/A", "NT NPORT-P", "N-CSR", "N-CSR/A", "N-C
                   "N-PX", "N-PX/A", "486BPOS", "POS EX", "11-K"}
 WINDOW = 2
 FIRST = "meta_hyperion"        # montage de D-0046 : chemins et clés d'origine, inchangés
+
+
+def _write_info(info_path, d):
+    """Écrit les décomptes d'une étape (tirage, corpus) sans effacer ceux de la préparation, que garde une exécution
+    nouvelle pour sa période ancienne (D-0074, point 3)."""
+    info = json.loads(info_path.read_text()) if info_path.exists() else {}
+    info.update(d)
+    info_path.write_text(json.dumps(info, ensure_ascii=False))
 
 
 def specs(cfg=None):
@@ -104,35 +112,47 @@ def _client(rate=4.0):
 
 def search(mid, rate=4.0):
     """Toutes les pages de chaque requête du montage, tous formulaires, sur sa période (D-0049) ;
-    pages gardées en cache (cache/search) et requêtes consignées."""
+    pages gardées en cache (cache/search) et requêtes consignées. Par fenêtres coupées aux as_of des
+    exécutions précédentes (D-0074) : les résultats gardés restent tels quels, dans leur ordre, une
+    requête qui y figure ne se cherche que sur les fenêtres closes après l'as_of précédent, et les
+    résultats nouveaux s'ajoutent à la suite."""
     spec = specs()[mid]
     client = _client(rate)
     start, end = spec["period"]
     hits_path = _paths(mid)[0]
+    prev = config.previous_as_of()
+    old = json.loads(hits_path.read_text()) if prev and hits_path.exists() else None
+    done = {(h["query"], h.get("cik_filter")) for h in old or []}
     out, totals = [], []
     for qd in spec["queries"]:
-        params = {"q": qd["q"], "dateRange": "custom", "startdt": start, "enddt": end}
-        if qd.get("cik"):
-            params["ciks"] = qd["cik"]
-        if qd.get("forms"):                         # formulaires racines, pièces comprises (D-0064)
-            params["forms"] = ",".join(qd["forms"])
-        data, url, _ = D._efts(client, dict(params, **{"from": 0}))
-        tot = data["hits"]["total"]
-        n = tot["value"]
-        pages = [data] + [D._efts(client, dict(params, **{"from": f}))[0] for f in range(100, min(n, 10000), 100)]
-        for page in pages:
-            for h in page["hits"]["hits"]:
-                s = h["_source"]
-                out.append({"query": qd["q"], "cik_filter": qd.get("cik"), "id": h["_id"],
-                            "adsh": s.get("adsh") or h["_id"].split(":")[0],
-                            "file": h["_id"].split(":", 1)[1] if ":" in h["_id"] else None,
-                            "file_type": s.get("file_type"), "form": s.get("form"), "file_date": s.get("file_date"),
-                            "names": s.get("display_names"), "ciks": s.get("ciks"), "items": s.get("items"),
-                            "file_description": s.get("file_description")})
-        totals.append({"query": qd["q"], "cik_filter": qd.get("cik"), "total": n, "relation": tot.get("relation"),
-                       "url": url})
-        D._log_query({"montage": mid, "query": qd["q"], "cik": qd.get("cik"), "forms": qd.get("forms"), "start": start,
-                      "end": end, "total": n, "status": "complete"}, config.WORK / "montages" / "efts_queries.jsonl")
+        for a, b in config.search_windows(start, end):
+            if (qd["q"], qd.get("cik")) in done and b <= prev:
+                continue                      # fenêtre d'une exécution précédente : ses résultats sont gardés
+            params = {"q": qd["q"], "dateRange": "custom", "startdt": a, "enddt": b}
+            if qd.get("cik"):
+                params["ciks"] = qd["cik"]
+            if qd.get("forms"):                         # formulaires racines, pièces comprises (D-0064)
+                params["forms"] = ",".join(qd["forms"])
+            data, url, _ = D._efts(client, dict(params, **{"from": 0}))
+            tot = data["hits"]["total"]
+            n = tot["value"]
+            pages = [data] + [D._efts(client, dict(params, **{"from": f}))[0] for f in range(100, min(n, 10000), 100)]
+            for page in pages:
+                for h in page["hits"]["hits"]:
+                    s = h["_source"]
+                    out.append({"query": qd["q"], "cik_filter": qd.get("cik"), "id": h["_id"],
+                                "adsh": s.get("adsh") or h["_id"].split(":")[0],
+                                "file": h["_id"].split(":", 1)[1] if ":" in h["_id"] else None,
+                                "file_type": s.get("file_type"), "form": s.get("form"), "file_date": s.get("file_date"),
+                                "names": s.get("display_names"), "ciks": s.get("ciks"), "items": s.get("items"),
+                                "file_description": s.get("file_description")})
+            totals.append({"query": qd["q"], "cik_filter": qd.get("cik"), "total": n, "relation": tot.get("relation"),
+                           "url": url})
+            D._log_query({"montage": mid, "query": qd["q"], "cik": qd.get("cik"), "forms": qd.get("forms"), "start": a,
+                          "end": b, "total": n, "status": "complete"}, config.WORK / "montages" / "efts_queries.jsonl")
+    if old is not None:
+        known = {(h["query"], h.get("cik_filter"), h["id"]) for h in old}
+        out = old + [h for h in out if (h["query"], h.get("cik_filter"), h["id"]) not in known]
     hits_path.parent.mkdir(parents=True, exist_ok=True)
     hits_path.write_text(json.dumps(out, ensure_ascii=False))
     for t in totals:
@@ -141,10 +161,12 @@ def search(mid, rate=4.0):
 
 
 def periodic(client, cik, start, end):
-    """Rapports périodiques (10-Q, 10-K) d'un déposant, déposés dans la période."""
+    """Rapports périodiques (10-Q, 10-K) d'un déposant, déposés dans la période. Sa liste de dépôts se tire une fois
+    par exécution, datée de son as_of sous cache/api (D-0074) ; celle de la première exécution reste sous
+    cache/edgar/submissions, sans date."""
     cik = str(cik).zfill(10)
     url = f"https://data.sec.gov/submissions/CIK{cik}.json"
-    p = config.CACHE / "edgar" / "submissions" / f"CIK{cik}.json.zst"
+    p = cache.api_path(cik, "submissions", config.as_of())
     if p.exists():
         sub = json.loads(cache.read(p))
     else:
@@ -213,7 +235,7 @@ def fetch(mid, rate=4.0):
         info["owl_name"] = names.get(str(spec["periodic"][0]).zfill(10))
     else:
         info["periodic_names"] = names
-    info_path.write_text(json.dumps(info))
+    _write_info(info_path, info)
     print(len(rows), "pièces ;", sum(r["state"] == "fetched" for r in rows), "tirées ; relevés écartés", holdings,
           *(["; formulaires comptés", counted] if count_only else []))
 
@@ -246,8 +268,8 @@ def corpus(mid):
                      "file_date": x.file_date, "cik": x.cik, "filer": (meta.get(x.cik) or {}).get("name") or x.group_id,
                      "source": "corpus", "queries": "", "state": "cached"})
     pd.DataFrame(rows).to_parquet(docs_path, index=False)
-    info_path.write_text(json.dumps({"source": "corpus", "documents_in_period": int(len(d)), "documents_scanned": scanned,
-                                     "documents_named": len(rows)}))
+    _write_info(info_path, {"source": "corpus", "documents_in_period": int(len(d)), "documents_scanned": scanned,
+                            "documents_named": len(rows)})
     print(mid, ":", len(d), "documents dans la période ;", scanned, "en cache ;", len(rows), "nomment un terme")
 
 
@@ -268,12 +290,13 @@ def replay(mid):
     log = config.WORK / "montages" / f"replay_{mid}.jsonl"
     out = []
     for term in r["terms"]:
-        for h in D.harvest(_NoNet(), term, r.get("forms") or D.EX10_FORMS, start=r.get("start", D.START),
-                           end=r.get("end"), keep=lambda x: bool(keep.search(str(x.get("file_type") or "").upper())),
-                           log=log):
-            out.append({"query": term, "cik_filter": None, "id": h["id"], "adsh": h["adsh"], "file": h["file"],
-                        "file_type": h["file_type"], "form": h["form"], "file_date": h["file_date"],
-                        "names": h["display_names"], "ciks": h["ciks"], "items": h["items"], "file_description": None})
+        # mêmes fenêtres que la recherche de la découverte, coupées aux as_of précédents (D-0074)
+        for a, b in config.search_windows(r.get("start", D.START), r.get("end")):
+            for h in D.harvest(_NoNet(), term, r.get("forms") or D.EX10_FORMS, start=a, end=b,
+                               keep=lambda x: bool(keep.search(str(x.get("file_type") or "").upper())), log=log):
+                out.append({"query": term, "cik_filter": None, "id": h["id"], "adsh": h["adsh"], "file": h["file"],
+                            "file_type": h["file_type"], "form": h["form"], "file_date": h["file_date"],
+                            "names": h["display_names"], "ciks": h["ciks"], "items": h["items"], "file_description": None})
     hits_path = _paths(mid)[0]
     hits_path.parent.mkdir(parents=True, exist_ok=True)
     hits_path.write_text(json.dumps(out, ensure_ascii=False))
@@ -361,8 +384,8 @@ def lab_corpus(mid):
                  "block_key": b["content_key"], "tier": b.get("tier"), "assurance_level": b.get("assurance_level"),
                  "filing_status": b.get("filing_status")}, "blocks")
     pd.DataFrame(rows).to_parquet(docs_path, index=False)
-    info_path.write_text(json.dumps({"source": "lab_corpus", "documents_named": len(rows), "by_source": counts,
-                                     "excluded_pieces": len(skip)}))
+    _write_info(info_path, {"source": "lab_corpus", "documents_named": len(rows), "by_source": counts,
+                            "excluded_pieces": len(skip)})
     print(mid, ":", len(rows), "documents nomment un terme ;", counts)
 
 
@@ -430,8 +453,8 @@ def backlog_corpus(mid):
                      "filer": (meta.get(x.cik) or {}).get("name") or x.group_id,
                      "source": "backlog", "queries": "", "state": "cached"})
     pd.DataFrame(rows).to_parquet(docs_path, index=False)
-    info_path.write_text(json.dumps({"source": "backlog", "sellers": len(names), "documents_in_period": int(len(d)),
-                                     "documents_scanned": scanned, "documents_named": len(rows)}))
+    _write_info(info_path, {"source": "backlog", "sellers": len(names), "documents_in_period": int(len(d)),
+                            "documents_scanned": scanned, "documents_named": len(rows)})
     print(mid, ":", len(names), "vendeurs ;", len(d), "documents dans la période ;", scanned, "en cache ;", len(rows),
           "nomment un terme de carnet")
 
@@ -477,8 +500,8 @@ def values_corpus(mid):
                      "filing_status": b.get("filing_status"), "quotes": json.dumps(sorted(quotes[ck]), ensure_ascii=False),
                      "edges": json.dumps(sorted(edges[ck])), "source": "block", "queries": "", "state": "cached"})
     pd.DataFrame(rows).to_parquet(docs_path, index=False)
-    info_path.write_text(json.dumps({"source": "edge_values", "value_edges": int(len(e)),
-                                     "edges_filed_by_seller": sum(len(v) for v in edges.values()), "blocks": len(rows)}))
+    _write_info(info_path, {"source": "edge_values", "value_edges": int(len(e)),
+                            "edges_filed_by_seller": sum(len(v) for v in edges.values()), "blocks": len(rows)})
     print(mid, ":", len(e), "arêtes de valeur ;", sum(len(v) for v in edges.values()), "tirées d'une ligne du vendeur ;",
           len(rows), "blocs lus")
 
@@ -896,15 +919,18 @@ def _prepare_one(mid, spec, groups_by_cik):
     else:
         dup = []
     noted = noted_rx(spec)
+    # plafond d'une exécution à l'autre (D-0074, point 3) : les fenêtres déjà au catalogue y restent
+    adm = update.admission(spec["cap"], update.catalog_keys(CATALOG, where=lambda b: b.get("montage") == mid))
     out, over = [], []
     for n, (d, k, text, how, reading) in enumerate(units):
-        if n >= spec["cap"]:
+        ck = blocks.content_key(text, [])
+        if not adm.take(ck, d["file_date"]):
             over.append({"adsh": d["adsh"], "file": d["file"], "window": k})
             continue
         grp = groups_by_cik.get(d["cik"]) or ("CP:" + normalize_name(d["filer"]))
         tier, assurance, status = evidence(d, spec)
         fd = d["file_date"]
-        out.append({"content_key": blocks.content_key(text, []), "block_kind": "montage_text", "signal_class": 5,
+        out.append({"content_key": ck, "block_kind": "montage_text", "signal_class": 5,
                     "sort_key": f"mt{n:05d}" if mid == FIRST else f"mt:{mid}:{n:05d}",
                     "group_id": grp, "cik": d["cik"], "accession": d["adsh"],
                     "form": d["form"], "filing_date": fd, "acceptance": None, "knowledge_date": fd,
@@ -936,13 +962,53 @@ def merge_catalog(existing, new, only):
     return [b for b in existing if b.get("montage") != only] + list(new)
 
 
+INFO_LISTS = ("no_window", "over_cap", "excluded", "duplicates", "risk_factors", "already_read")
+
+
+def _carry_info(mid, since):
+    """Décomptes d'une exécution nouvelle (D-0074, point 3) : les listes de l'exécution précédente telles quelles, puis
+    les entrées du recalcul tirées de dépôts de la période nouvelle."""
+    _, docs_path, info_path = _paths(mid)
+    snap = update.previous_state(info_path, since)
+    if not info_path.exists() or not snap.exists():
+        return
+    base, info = json.loads(snap.read_text()), json.loads(info_path.read_text())
+    dates = {}
+    if docs_path.exists():
+        d = pd.read_parquet(docs_path, columns=["adsh", "file_date"])
+        dates = dict(zip(d["adsh"], d["file_date"].astype(str).str[:10]))
+    for k in INFO_LISTS:
+        if k in base or k in info:
+            info[k] = list(base.get(k) or []) + [e for e in info.get(k) or [] if dates.get(e.get("adsh"), "") > since]
+    info_path.write_text(json.dumps(info, ensure_ascii=False))
+
+
 def prepare(only=None):
     """Blocs des fenêtres de chaque montage, dans l'ordre des dates de dépôt ; plafond par montage. Avec
-    `only`, seul ce montage est préparé : les blocs déjà au catalogue pour les autres ne bougent pas."""
+    `only`, seul ce montage est préparé : les blocs déjà au catalogue pour les autres ne bougent pas.
+    Dans une exécution nouvelle (D-0074, point 3), les blocs de l'exécution précédente restent tels quels,
+    dans leur ordre, et chaque montage préparé n'y ajoute que ceux des dépôts de la période nouvelle."""
     p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
     groups_by_cik = {str(cik).zfill(10): m["group"] for cik, m in p0["meta"].items()}
+    since = config.previous_as_of()
     out = []
-    if only:
+    if since:
+        for mid in ([only] if only else list(specs())):          # état gardé avant toute réécriture
+            update.previous_state(_paths(mid)[2], since)
+        prev = update.read_jsonl(update.previous_state(CATALOG, since))
+        seen = {json.dumps(b, sort_keys=True) for b in prev}
+        added = {}                                              # montage -> blocs de la période nouvelle déjà préparés
+        for b in update.read_jsonl(CATALOG):
+            if json.dumps(b, sort_keys=True) not in seen:
+                added.setdefault(b.get("montage"), []).append(b)
+        for mid, spec in specs().items():
+            if only and mid != only:
+                continue
+            mine = [b for b in prev if b.get("montage") == mid]
+            added[mid] = update.carry_over(mine, _prepare_one(mid, spec, groups_by_cik), since)[len(mine):]
+            _carry_info(mid, since)
+        out = prev + [b for mid in specs() for b in added.get(mid, [])]
+    elif only:
         existing = [json.loads(x) for x in open(CATALOG, encoding="utf-8")] if CATALOG.exists() else []
         out = merge_catalog(existing, _prepare_one(only, specs()[only], groups_by_cik), only)
     else:

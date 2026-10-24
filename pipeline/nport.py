@@ -15,7 +15,7 @@ amendement remplace le dépôt). Le nombre de séries et le nominal détenu se p
 déclarée par des tiers (perspective `counterparty`), jamais une probabilité de défaut ni un fait comptable de
 SoftBank : elle n'entre dans aucune mesure de financement ni dans l'annexe F.
 
-    python -m pipeline.nport page       # page des jeux de données et description, tirées une fois
+    python -m pipeline.nport page       # page des jeux de données et description, tirées une fois par exécution (D-0074)
     python -m pipeline.nport fetch      # archives tirées, scannées, effacées (de la plus récente à la plus ancienne)
     python -m pipeline.nport stamp      # date de publication (HEAD) des archives scannées sans elle
     python -m pipeline.nport volume     # décompte des extraits et de la sélection, sans valeur de la mesure
@@ -36,7 +36,8 @@ import pandas as pd
 from . import cache, config, net
 
 SEC = "https://www.sec.gov"
-PAGE = ("datasets", "nport", "form-n-port-data-sets.html")
+PAGE = ("datasets", "nport", "form-n-port-data-sets.html")      # tirage de la première exécution, sans date
+PAGE_DATED = (("datasets", "nport"), "form-n-port-data-sets", ".html")   # tirages datés de leur as_of (D-0074)
 PAGE_URL = SEC + "/data-research/sec-markets-data/form-n-port-data-sets"
 BASE = config.CACHE / "datasets" / "nport"
 MANIFEST = BASE / "manifest.jsonl"
@@ -59,14 +60,20 @@ def cols(cfg=None):
 
 # -- page et archives -------------------------------------------------------------------------------
 
-def page(client=None):
-    """La page des jeux de données, tirée une fois et gardée en cache (comme en D-0036)."""
-    p = cache.other_path(*PAGE)
-    if p.exists():
+def page_path():
+    """Version de la page servie à l'as_of : datée, sinon celle de la première exécution, sans date (D-0074)."""
+    return cache.dated(*PAGE_DATED, config.as_of(), legacy=cache.other_path(*PAGE))
+
+
+def page(client=None, refresh=False):
+    """La page des jeux de données servie à l'as_of, tirée si aucune n'est en cache ; avec `refresh`, tirée une fois par
+    exécution et datée de son as_of (D-0074)."""
+    p = page_path()
+    if p is not None and not refresh:
         return cache.read(p).decode("utf-8", "replace")
+    from .edgar import dated_resource
     client = client or net.SecClient(config.as_of(), config.load())
-    raw, _ = client.get(PAGE_URL)
-    cache.write(p, raw)
+    raw, _ = dated_resource(client, PAGE_URL, *PAGE_DATED, config.as_of())
     return raw.decode("utf-8", "replace")
 
 
@@ -549,7 +556,7 @@ def exclusions(as_of):
     relevé (positions possiblement manquées) : visibles dans les exclusions (§11)."""
     cfg = config.load()
     n = cfg_nport(cfg)
-    if not n or not cache.other_path(*PAGE).exists():
+    if not n or page_path() is None:
         return []
     m = manifest()
     leis = softbank_leis(m)
@@ -1828,7 +1835,7 @@ def bond_exclusions(as_of):
     ne soit accepté (positions possiblement manquées) : visibles dans les exclusions (§11)."""
     cfg = config.load()
     n = cfg_nport(cfg)
-    if not cfg_bonds(cfg) or not cache.other_path(*PAGE).exists():
+    if not cfg_bonds(cfg) or page_path() is None:
         return []
     m = b_manifest()
     leis = set(bond_leis(m))
@@ -1910,7 +1917,7 @@ def bond_volume():
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     if cmd == "page":
-        html = page()
+        html = page(refresh=True)
         a = archive_list(html)
         print(len(a), "archives :", a[-1]["name"] if a else None, "à", a[0]["name"] if a else None)
         print("description :", readme_links(html))

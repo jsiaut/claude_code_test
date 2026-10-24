@@ -85,6 +85,16 @@ class Edgar:
         return parse_sgml_header(raw)
 
 
+def dated_resource(client, url, parts, stem, ext, as_of):
+    """Ressource vivante hors de l'API (page d'un jeu de données, liste des noms d'EDGAR), tirée une fois par exécution
+    et gardée datée de son as_of, sans écraser les versions d'avant (§9.6, D-0074) : octets et chemin."""
+    path = cache.dated_path(parts, stem, ext, as_of)
+    if not path.exists():
+        body, _ = client.get(url)
+        cache.write(path, body)
+    return cache.read(path), path
+
+
 def _columns_to_rows(cols):
     keys = list(cols.keys())
     n = len(cols[keys[0]]) if keys else 0
@@ -120,4 +130,4 @@ def parse_sgml_header(raw):
     return {"documents": docs, "header": header}
 
 
-__all__ = ["Edgar", "NotCollected", "cik10", "acc_nodash", "archive_url", "parse_sgml_header"]
+__all__ = ["Edgar", "NotCollected", "cik10", "acc_nodash", "archive_url", "dated_resource", "parse_sgml_header"]

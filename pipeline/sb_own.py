@@ -467,10 +467,13 @@ def blocks_b(cfg=None):
         lists["other_forms"].append({"acc": x.accessionNumber, "form": x.form, "date": x.filingDate, "filer": x.filer})
     # ordre et plafond
     units.sort(key=lambda u: (u["model"] is None, _neg(u["date"]), _neg(u["acc"])))
+    from . import update
+    # plafond d'une exécution à l'autre (D-0074, point 3) : les dépôts déjà au catalogue y restent
+    adm = update.admission(CAP_B, update.catalog_keys(BLOCKS, "accession", lambda b: b.get("sb_volet") == "B"))
     out = []
     for n, u in enumerate(units, 1):
         info[f"units:{u['kind']}"] += 1
-        if n > CAP_B:
+        if not adm.take(u["acc"], u["date"]):
             info[f"over_cap:{u['kind']}"] += 1
             lists["over_cap"].append({"acc": u["acc"], "form": u["form"], "date": u["date"], "label": u["label"],
                                       "blocks": len(u["blocks"])})
@@ -735,12 +738,15 @@ def blocks_c(cfg=None):
                 wins.append((x, d, k, "\n".join(paras[a:b])))
     seen6 = set()
     n6 = 0
+    from . import blocks, update
+    # plafond d'une exécution à l'autre (D-0074, point 3) : les fenêtres déjà au catalogue y restent
+    adm = update.admission(CAP_6K, update.catalog_keys(BLOCKS, where=lambda b: b.get("montage") == "sb_arm_6k"))
     for x, d, k, text in wins:
         if text in seen6:
             info["Arm:6k_duplicate"] += 1
             continue
         seen6.add(text)
-        if n6 >= CAP_6K:
+        if not adm.take(blocks.content_key(text, []), x.filingDate):
             info["Arm:6k_over_cap"] += 1
             lists["arm_6k_over_cap"].append({"acc": x.accessionNumber, "form": x.form, "date": x.filingDate,
                                              "file": d["FILENAME"], "window": k})
@@ -777,9 +783,12 @@ def blocks_c(cfg=None):
 
 def prepare():
     """Blocs des volets B et C, écrits d'un coup (remplacement atomique) ; volume compté par sorte et par déposant."""
+    from . import update
+    since = config.previous_as_of()
+    prev = update.read_jsonl(update.previous_state(BLOCKS, since)) if since else []
     b, ib, lb = blocks_b()
     c, ic, lc = blocks_c()
-    out = b + c
+    out = update.carry_over(prev, b + c, since)     # blocs de l'exécution précédente tels quels (D-0074, point 3)
     tmp = BLOCKS.with_suffix(".tmp")
     with open(tmp, "w", encoding="utf-8") as fh:
         for x in out:

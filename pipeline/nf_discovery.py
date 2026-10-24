@@ -24,7 +24,7 @@ import sys
 
 import pandas as pd
 
-from . import cache, config, net
+from . import cache, config, net, update
 from . import discovery as D
 
 MANIFEST = D.BASE / "manifest_nf.jsonl"
@@ -182,23 +182,26 @@ QUERY_LOG = config.WORK / "discovery" / "efts_queries_nf.jsonl"
 def search(rate=None, new_only=False):
     """La phrase de chaque terme de la piste, du 2017-01-01 à as_of, sur les formulaires racines
     des EX-10 (D-0036, point 5) ; pas de Form D. `new_only` : seuls les termes absents des résultats
-    déjà gardés sont cherchés, et leurs résultats s'ajoutent aux anciens (D-0058, point 24)."""
+    déjà gardés sont cherchés, et leurs résultats s'ajoutent aux anciens (D-0058, point 24). Chaque
+    terme se cherche par fenêtres coupées aux as_of des exécutions précédentes (D-0074)."""
     cfg = config.load()
     client = net.SecClient(config.as_of(), cfg)
     if rate:
         client.min_interval = 1.0 / rate
-    old = pd.read_parquet(EFTS_HITS) if new_only and EFTS_HITS.exists() else None
+    prev = config.previous_as_of()
+    old = pd.read_parquet(EFTS_HITS) if (new_only or prev) and EFTS_HITS.exists() else None
     done = set(old["term"]) if old is not None else set()
     rows = []
     for e in nf_lexicon(cfg):
-        if e["term"] in done:
+        if new_only and e["term"] in done:
             continue
-        rows += D.harvest(client, e["term"], D.EX10_FORMS,
-                          keep=lambda s: str(s.get("file_type") or "").upper().startswith("EX-10"), log=QUERY_LOG)
+        for a, b in config.search_windows(D.START):
+            if e["term"] in done and b <= prev:
+                continue                      # fenêtre d'une exécution précédente : ses résultats sont gardés (D-0074)
+            rows += D.harvest(client, e["term"], D.EX10_FORMS, start=a, end=b,
+                              keep=lambda s: str(s.get("file_type") or "").upper().startswith("EX-10"), log=QUERY_LOG)
         print(e["term"], len(rows), client.stats["requests"], flush=True)
-    df = pd.DataFrame(rows)
-    if old is not None:
-        df = pd.concat([old, df], ignore_index=True)
+    df = D.keep_new_rows(old, pd.DataFrame(rows), ["term", "id"])
     df.to_parquet(EFTS_HITS, index=False)
     print("hits", len(df), "requêtes", client.stats["requests"])
 
@@ -478,6 +481,33 @@ def select_with_prior(u, c, prior, cap, file, own=None):
     return out.sort_values("order", kind="mergesort").reset_index(drop=True)
 
 
+def extend_with_prior(prev, u, c, cap, file, own=None):
+    """File d'une exécution nouvelle (D-0074, point 3 ; règle de D-0058, point 24, pour une période nouvelle) : les
+    unités de l'exécution précédente telles quelles, règle, rang, état et numéro d'ordre compris ; les unités nouvelles,
+    dans l'ordre de la file recalculée, forment une file à part, R1 puis R2, avec le même plafond, numérotées à la
+    suite. Une unité nouvelle tirée d'un dépôt propre du groupe n'entre pas dans la file (état own_group)."""
+    def key(df):
+        return ["|".join("" if v is None or v != v else str(v) for v in r)
+                for r in df[UNIT_KEY].itertuples(index=False, name=None)]
+    known = set(key(prev))
+    fresh = u[[k not in known for k in key(u)]].copy()
+    if not len(fresh):
+        return prev
+    own = own or {}
+    mine = pd.Series([str(int(r.cik)) in own and (own[str(int(r.cik))] == "none" or
+                      str(r.date or "").replace("-", "") >= own[str(int(r.cik))].replace("-", ""))
+                      for r in fresh.itertuples(index=False)], index=fresh.index, dtype=bool)
+    new = select_units(fresh[~mine], c, cap)
+    grp = fresh[mine].copy()
+    grp["rule"], grp["queue"], grp["status"] = None, None, "own_group"
+    new = pd.concat([new, grp]).sort_values("order", kind="mergesort")
+    new["file"] = file
+    top = int(prev["order"].max()) if len(prev) else 0
+    new["order"] = range(top + 1, top + 1 + len(new))
+    cols = list(prev.columns) + [k for k in new.columns if k not in prev.columns]
+    return pd.concat([prev, new[[k for k in cols if k in new.columns]]], ignore_index=True)
+
+
 def prior_path(cfg=None):
     nf = ((cfg or config.load())["discovery"].get("non_filer") or {}).get("reading") or {}
     f = nf.get("new_file") or {}
@@ -504,7 +534,12 @@ def build_candidates():
     c = rank_candidates(m)
     nf = reading.get("new_file") or {}
     pp = prior_path(cfg)
-    if nf and pp is not None and pp.exists():
+    since = config.previous_as_of()
+    if since and UNITS.exists():          # file de l'exécution précédente gardée, unités nouvelles à la suite (D-0074)
+        update.previous_state(CANDIDATES, since)
+        u = extend_with_prior(pd.read_parquet(update.previous_state(UNITS, since)), reading_units(m, c), c,
+                              int(reading.get("cap_units", cap)), "D-0074", own=own_group_ciks(cfg))
+    elif nf and pp is not None and pp.exists():
         u = select_with_prior(reading_units(m, c), c, pd.read_parquet(pp), int(nf.get("cap_units", cap)),
                               nf["decision"], own=own_group_ciks(cfg))
     else:

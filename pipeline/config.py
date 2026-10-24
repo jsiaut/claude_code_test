@@ -53,8 +53,18 @@ def _parsed():
         with open(CONFIG_PATH, encoding="utf-8") as fh:
             raw = yaml.safe_load(fh) or {}
         a = _checked_as_of(raw.get("as_of"))
-        _PARSED.update(key=key, cfg=resolve_as_of(dict(raw, as_of=a), a))
+        prev = _checked_previous(raw.get("as_of_previous"), a)
+        _PARSED.update(key=key, cfg=resolve_as_of(dict(raw, as_of=a, as_of_previous=prev), a))
     return _PARSED["cfg"]
+
+
+def _checked_previous(v, a):
+    """La clé as_of_previous : les as_of des exécutions précédentes, dates croissantes antérieures à l'as_of (D-0074)."""
+    out = [_checked_as_of(x) for x in (v or [])]
+    if out != sorted(set(out)) or (out and out[-1] >= a):
+        raise SystemExit(f"config.yaml : as_of_previous doit lister des dates croissantes antérieures à l'as_of {a}, "
+                         f"pas {v!r} (D-0074)")
+    return out
 
 
 def load():
@@ -71,6 +81,27 @@ def as_of(cli=None):
         raise SystemExit(f"as_of {cli} en argument, {v} dans config.yaml : l'as_of n'a qu'une source, la clé as_of de "
                          "config.yaml (D-0073). Changer la clé, ou retirer l'argument.")
     return v
+
+
+def previous_as_of():
+    """As_of de l'exécution précédente (le dernier de as_of_previous), None à la première exécution (D-0074)."""
+    prev = _parsed()["as_of_previous"]
+    return prev[-1] if prev else None
+
+
+def search_windows(start, end=None):
+    """Fenêtres d'une recherche plein texte de `start` à `end` (l'as_of par défaut), coupées aux as_of des exécutions
+    précédentes : chaque fenêtre se tire une fois, à l'exécution qui la clôt, puis se rejoue du cache (D-0074)."""
+    import datetime as dt
+    end = end or as_of()
+    out, a = [], str(start)
+    for c in _parsed()["as_of_previous"]:
+        if a <= c < end:
+            out.append((a, c))
+            a = (dt.date.fromisoformat(c) + dt.timedelta(days=1)).isoformat()
+    if a <= end:
+        out.append((a, end))
+    return out
 
 
 def check_as_of(found, where, remedy):

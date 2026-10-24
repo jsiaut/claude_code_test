@@ -51,6 +51,27 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def dated_path(parts, stem, ext, date):
+    """Version d'une ressource vivante hors de l'API (page d'un jeu de données, liste des noms d'EDGAR), datée de
+    l'as_of de l'exécution qui l'a tirée : {stem}_{date}{ext}.zst (D-0074)."""
+    return config.CACHE.joinpath(*parts) / f"{stem}_{date}{ext}.zst"
+
+
+def dated(parts, stem, ext, date, legacy=None):
+    """Version servie à l'as_of `date` : la plus récente des versions datées au plus de lui ; à défaut, `legacy` (ancien
+    nom fixe) s'il existe, puis la plus ancienne version datée, tirée après coup pour la première exécution ; None
+    sinon (D-0074)."""
+    d = config.CACHE.joinpath(*parts)
+    files = sorted(d.glob(f"{stem}_????-??-??{ext}.zst")) if d.exists() else []
+    n = len(stem) + 1
+    upto = [f for f in files if f.name[n:n + 10] <= str(date)]
+    if upto:
+        return upto[-1]
+    if legacy is not None and legacy.exists():
+        return legacy
+    return files[0] if files else None
+
+
 def latest_api(cik, resource):
     """Dernier tirage horodaté d'une ressource d'API (nom de fichier = date)."""
     d = config.CACHE / "api" / cik / resource

@@ -136,6 +136,8 @@ def prepare():
     cap, width = int(s.get("cap_per_group") or 80), int(s.get("window") or 2)
     inv = {r["accessionNumber"]: r for r in filings(cfg).to_dict("records")}
     docs = pd.read_parquet(DOCS)
+    from . import update
+    adm = update.admission(cap, update.catalog_keys(CATALOG))    # plafond d'une exécution à l'autre (D-0074, point 3)
     out, over, no_window, not_text = [], [], [], []
     n_by = {}
     for acc, r in inv.items():
@@ -161,14 +163,13 @@ def prepare():
         if not units:
             no_window.append({"adsh": acc, "group_id": g, "documents": [n for n, _, _, _ in texts]})
         for d, k, text, how in units:
-            n = n_by.get(g, 0)
-            n_by[g] = n + 1
-            if n >= cap:
-                over.append({"adsh": acc, "file": d["file"], "window": k, "group_id": g})
-                continue
+            n_by[g] = n_by.get(g, 0) + 1
             b = blocks._block("foreign_6k_text", f, text, [], d["file"], None, exhibit_type=d["type"],
                               sgml_description=d["description"], window=k, text_extraction=how,
                               terms=sorted({m.group(0) for m in rx.finditer(text)}))
+            if not adm.take(b["content_key"], f["filing_date"], g):
+                over.append({"adsh": acc, "file": d["file"], "window": k, "group_id": g})
+                continue
             b["signal_class"] = 3
             b["sort_key"] = f"{b['sort_key']}:{int(d['seq']):03d}:{k:03d}"
             b["filing_status"], b["assurance_level"], b["tier"] = "furnished", "not_applicable", "E"
@@ -177,6 +178,8 @@ def prepare():
                 # admissible : exposé à la Section 11 par l'incorporation (§2.1, D-0042)
                 b["filing_status"], b["assurance_level"], b["tier"] = "filed", "unaudited", "C"
             out.append(b)
+    if adm.since:                       # blocs de l'exécution précédente tels quels (D-0074, point 3)
+        out = update.carry_over(update.read_jsonl(update.previous_state(CATALOG, adm.since)), out, adm.since)
     tmp = CATALOG.with_suffix(".jsonl.tmp")
     with open(tmp, "w", encoding="utf-8") as fh:
         for b in out:

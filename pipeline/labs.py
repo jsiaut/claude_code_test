@@ -425,15 +425,19 @@ def prepare_units(mid, spec, groups_by_cik):
         seen.add(ck)
         kept.append(u)
     noted = M.noted_rx(spec)
+    from . import update
+    # plafond d'une exécution à l'autre (D-0074, point 3) : les fenêtres déjà au catalogue y restent
+    adm = update.admission(spec["cap"], update.catalog_keys(M.CATALOG, where=lambda b: b.get("montage") == mid))
     out, over = [], []
     for n, (d, k, text, how, cands, lab_fids) in enumerate(kept):
-        if n >= spec["cap"]:
+        ck = blocks.content_key(text, cands)
+        if not adm.take(ck, d["file_date"]):
             over.append({"adsh": d["adsh"], "file": d["file"], "window": k})
             continue
         grp = groups_by_cik.get(d["cik"]) or d["filer"]
         tier, assurance, status = M.evidence(d, spec)          # triplet pour une pièce de 8-K (D-0066, point 5)
         fd = d["file_date"]
-        out.append({"content_key": blocks.content_key(text, cands), "block_kind": "montage_text", "signal_class": 5,
+        out.append({"content_key": ck, "block_kind": "montage_text", "signal_class": 5,
                     "sort_key": f"mt:{mid}:{n:05d}", "group_id": grp, "cik": d["cik"], "accession": d["adsh"],
                     "form": d["form"], "filing_date": fd, "acceptance": None, "knowledge_date": fd,
                     "period_start": None, "period_end": fd, "document": d["file"],

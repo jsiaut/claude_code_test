@@ -41,9 +41,9 @@ class ConfigLoad(unittest.TestCase):
             with _Paths(CONFIG_PATH=p):
                 c = config.load()
                 c["a"]["b"] = 99
-                self.assertEqual(config.load(), {"as_of": "2026-01-02", "a": {"b": 1}})
+                self.assertEqual(config.load(), {"as_of": "2026-01-02", "as_of_previous": [], "a": {"b": 1}})
                 p.write_text("as_of: 2026-01-02\na: {b: 2}\nz: 0\n", encoding="utf-8")
-                self.assertEqual(config.load(), {"as_of": "2026-01-02", "a": {"b": 2}, "z": 0})
+                self.assertEqual(config.load(), {"as_of": "2026-01-02", "as_of_previous": [], "a": {"b": 2}, "z": 0})
 
 
 class QuoteRangesMemo(unittest.TestCase):

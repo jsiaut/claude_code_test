@@ -3377,3 +3377,59 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - `audit/annex_f.txt` ne change que par le diff de `config.yaml` : la clé `as_of` et les 19 bornes.
   - Aucune requête réseau. Le journal reste à 25 583 lignes.
   - Erratum du point 2 : le journal compte 25 583 lignes, dont 25 582 au 2026-10-07 ; la ligne 25 055 est la seule à `as_of: null`.
+
+- **D-0074 — Mise à jour du modèle à l'as_of du 2026-10-24. Règles fixées avant tout tirage.**
+  (1) Origine : demande de l'utilisateur, le 2026-10-24 : « Fais une update du modèle à la date du jour ». C'est une exécution nouvelle (§11.5), la première après celle du 2026-10-07, et la première mise à jour selon D-0073 (point 4). Le 2026-10-24 est un samedi : la connaissance porte sur les dépôts dont la date de dépôt est au plus le vendredi 2026-10-23. Ni groupe, ni bloc de §14, ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change.
+
+  (2) Constat, sur le code de 8a17254, avant tout tirage :
+  - Changer la clé `as_of` suffit pour les phases 0 à 2 et pour les ressources de l'API (`cache/api/{cik}/{ressource}/{as_of}`), qui se tirent une fois à l'as_of nouvel. `phase0_index` prend encore l'as_of en argument, sans le vérifier : un oubli de D-0073.
+  - Ressources vivantes hors de l'API, tirées une fois sous un nom fixe :
+    - la page des Notes Data Sets (`financial-statement-notes-data-sets_2026-10-09`) et la liste des noms d'EDGAR (`cik-lookup-data_2026-10-09`) ;
+    - la page des Form N-PORT Data Sets, sans date ;
+    - la page des BDC Data Sets (`bdc-data-sets_2026-10-07`), tirée hors du code, comme ses archives ;
+    - les submissions des véhicules des BDC (`lender_liabilities`) et des déposants suivis par les montages (`montages.periodic`), en cache sans date.
+    Une mise à jour les relirait telles quelles.
+  - Recherches plein texte : chaque requête porte sa période entière, de son début à l'as_of. Avec l'as_of nouvel, l'adresse change et tout se retirerait : environ 2 600 pages pour la découverte et la piste des non-déposants (209 fenêtres consignées).
+  - Les catalogues préparés ne se recalculent pas à l'identique. Vérification sans réseau, à l'as_of du 2026-10-07, sur le code de la mise à jour :
+    - la recherche de la découverte, rejouée du cache, redonne ses 9 390 résultats à l'octet près ;
+    - le catalogue de la tranche et celui du bloc `text` se reconstruisent à l'identique (4 359 et 4 692 blocs), comme ceux des 6-K, du volet B et C de SoftBank et des annonces des BDC ;
+    - mais une préparation complète des montages ramène leur catalogue de 1 224 à 1 135 blocs : 91 blocs, tous lus, en sortent. La préparation dépend de ce qui a été lu depuis (une fenêtre déjà couverte par un bloc lu du même dépôt n'est plus servie), et le catalogue s'est construit montage par montage. Les lectures de ces blocs ne se chargeraient plus (`load_observations` ne charge que les blocs du catalogue) ;
+    - le rejeu complet des recherches de trois montages (`athene_whco`, `galaxy_helios`, `stargate`) ne redonne pas leurs résultats gardés, et celui de `meta_hyperion` demande des pages absentes du cache.
+  - Files plafonnées, la plupart triées du plus récent au plus ancien : montages (plafond par montage), 6-K (80 fenêtres par groupe), volet B de SoftBank (200 unités) et 6-K d'Arm (80), annonces des BDC (40), piste des non-déposants (300). Recalculées telles quelles, les unités nouvelles pousseraient au-delà du plafond des blocs déjà lus. Au plafond ou près de lui : les montages `anthropic_chain`, `labs_corpus` et `galaxy_helios`, les 6-K d'ASML, de SK hynix et d'Arm.
+  - File de la découverte : figée depuis le 2026-10-09, lue jusqu'au rang 50 de la passe A (395 unités, toutes préparées, D-0041). Ses unités préparées s'y rattachent par leur numéro d'ordre. Un recalcul de la file renumérote, si bien que ces rattachements, ses exclusions et la recherche complète côté client (E.0) se décaleraient.
+  - Piste des non-déposants : ses unités préparées s'y rattachent par leur pièce, mais un recalcul change le rang affiché des unités non lues.
+
+  (3) Règles :
+  - As_of : le 2026-10-24, dans `config.yaml`. La clé `as_of_previous` garde, dans l'ordre, les as_of des exécutions précédentes : `["2026-10-07"]`.
+  - Ressources vivantes : chacune se tire une fois, à l'as_of nouvel, et se garde datée de lui, sans écraser l'ancienne (§9.6). Ce sont les submissions, `companyfacts`, `company_tickers.json`, les pages des trois jeux de données, la liste des noms d'EDGAR, et les submissions des véhicules et des déposants des montages, désormais datées sous `cache/api`. Une archive déjà tirée ne se retire pas.
+  - Jeux de données : une archive nouvelle de la page (BDC, Notes, N-PORT), publiée à l'as_of au plus selon son en-tête Last-Modified, se tire et se traite comme les autres. Aucun traitement ne change.
+  - Recherches plein texte : une requête se coupe aux as_of précédents. Les résultats gardés restent tels quels, dans leur ordre. Une requête qui y figure ne se cherche que sur la fenêtre nouvelle, du 2026-10-08 au 2026-10-24, et ses résultats nouveaux s'ajoutent à la suite. Une requête jamais cherchée l'est sur toutes ses fenêtres. Le rejeu des laboratoires suit les fenêtres de la découverte. Une fenêtre déjà consignée ne se consigne pas une seconde fois.
+  - Reprise de l'exécution précédente : un catalogue préparé (montages, 6-K, SoftBank) et une file (découverte, piste des non-déposants) gardent leurs blocs et leurs unités tels quels, dans leur ordre, numéros d'ordre compris. Ils sont copiés une fois avant leur première réécriture, sous `{nom}.2026-10-07`. Seuls s'y ajoutent les blocs et les unités tirés de dépôts de la période nouvelle, dont la clé n'y est pas déjà. Les décomptes des montages (pièces sans fenêtre, au-delà du plafond, facteurs de risque, déjà lues) gardent de même leurs entrées anciennes.
+  - Files plafonnées (règle de D-0058, point 24, pour un lexique enrichi, étendue à une période nouvelle) : les unités de la période nouvelle forment une file à part, dans l'ordre de la file, avec le même plafond. Les unités anciennes gardent leur état. Sans as_of précédent, c'est le plafond simple, comme avant.
+  - Découverte (D-0041) :
+    - la frontière de lecture s'applique aux unités nouvelles : une unité nouvelle de la passe A d'un candidat classé au plus au rang 50 par l'exécution précédente se lit ;
+    - les autres restent non traitées, sauf celles que d'autres blocs sélectionnent déjà (`foreign`, `form_d`).
+  - Ordre :
+    - verrou de session (§11.5) ;
+    - phases 0, univers attendu, index, phases 1 et 2, catalogues de la tranche et du bloc `text`, puis leur lecture ;
+    - blocs de §14 : `lender` et `lender_portfolio` (BDC Data Sets), `lender_liabilities`, `discovery` (Notes, recherche, pièces, Form D, file), piste des non-déposants, `form_d`, `foreign` et 6-K, `sb_own`, `nport`, `ownership`, puis les montages, préparés après la lecture du texte des groupes comme aux exécutions précédentes ;
+    - un seul processus réseau à la fois, 5 requêtes par seconde au plus, pause de 10 minutes après un refus 403, chaque requête au journal.
+  - Volumes consignés ici avant toute lecture, catalogue par catalogue : dépôts nouveaux par classe, blocs à lire, caractères.
+  - Lecture : sans sous-agent, du plus récent au plus ancien, règles et guides inchangés. Un bloc dont la clé a déjà des observations ne se relit pas (§9.6).
+  - Réassemblage et rendus à l'as_of nouvel. `delta.md` se compare aux tables de 580e8e9, dernier commit qui les porte.
+  - Effets attendus : des cellules nouvelles pour les périodes closes depuis, et des valeurs changées pour des périodes déjà publiées (`companyfacts` révisés, retraitements), que `delta.md` montre par `recast_cause`.
+  - Non fait : aucun bloc nouveau, aucune relecture ; la tâche planifiée de §11.5 n'est pas créée.
+
+  (4) Code, avant tout tirage :
+  - `config.previous_as_of()` et `config.search_windows(début, fin)` : la clé `as_of_previous`, vérifiée (dates croissantes, antérieures à l'as_of), et les fenêtres d'une recherche coupées à ces dates ;
+  - `phase0_index` : as_of de la configuration, argument vérifié (D-0073) ;
+  - ressources vivantes datées :
+    - `cache.dated` sert à l'as_of la version la plus récente au plus de lui, sinon l'ancien nom fixe, sinon la plus ancienne ; `edgar.dated_resource` la tire une fois par exécution ;
+    - `discovery page` (page des Notes et liste des noms), `nport page`, `lender fetch` (page et archives des BDC Data Sets, tirées par le code, manifeste des tirages) ;
+  - submissions de `lender_liabilities` et de `montages.periodic` datées sous `cache/api`, comme celles d'`edgar.Edgar` ;
+  - recherches par fenêtres, résultats ajoutés à la suite des anciens : `discovery.search`, `nf_discovery.search`, `montages.search` ; `montages.replay` rejoue toutes les fenêtres ; une fenêtre déjà consignée ne se consigne plus (`discovery._log_query`) ;
+  - `update` :
+    - `Admission`, la file à part de la période nouvelle, dans les montages, les 6-K, le volet B et les 6-K d'Arm de SoftBank et les annonces des BDC ;
+    - `previous_state` et `carry_over`, la reprise de l'exécution précédente, dans `montages.prepare` (décomptes compris), `sixk.prepare` et `sb_own.prepare` ;
+  - files : `discovery.extend_units` et `nf_discovery.extend_with_prior` (unités anciennes telles quelles, nouvelles à la suite) ; `discovery prepare-frontier` prépare les unités nouvelles de la frontière ;
+  - les étapes des montages qui écrivent leurs décomptes (`fetch`, `corpus`, `lab_corpus`, `backlog_corpus`, `values_corpus`) n'effacent plus ceux de la préparation (`_write_info`).

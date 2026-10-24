@@ -7,6 +7,7 @@ juste valeur ÷ coût, part des intérêts capitalisés, part des prêts sans ac
 d'intérêts. `soi` exclut tags et axes personnalisés, si bien qu'une absence n'y prouve rien ;
 le millésime de chaque archive se garde (rafraîchissements rétroactifs, annexe D).
 
+    python -m pipeline.lender fetch       # page datée de l'as_of, archives nouvelles publiées à l'as_of au plus (D-0074)
     python -m pipeline.lender extract     # archives en cache -> db/bdc_soi.parquet
 """
 import io
@@ -20,6 +21,9 @@ import pandas as pd
 from . import cache, config
 
 ARCH = ("other", "bdc", "archives")
+PAGE = (("other", "bdc"), "bdc-data-sets", ".html")     # page datée de l'as_of qui l'a tirée (D-0074)
+PAGE_URL = "https://www.sec.gov/data-research/sec-markets-data/bdc-data-sets"
+ARCH_MANIFEST = ("other", "bdc", "archives_manifest.jsonl")
 KEEP = {
     "adsh": "adsh", "cik": "bdc_cik", "name": "bdc_name", "ddate": "ddate", "qtrs": "qtrs", "form": "form",
     "filed": "filed", "period": "period", "cstm": "cstm",
@@ -50,6 +54,59 @@ NUMERIC = ("rate", "rate_pik", "rate_cash", "principal", "cost", "fair_value")
 def archives():
     d = config.CACHE.joinpath(*ARCH)
     return sorted(d.glob("*_bdc.zip.zst"))
+
+
+def archive_links(html):
+    """Archives que publie la page : nom (« 2026_08_bdc ») -> adresse, dans l'ordre de la page."""
+    out = {}
+    for u, name in re.findall(r'href="([^"]*/business-development-company-bdc-data-sets/(\d{4}(?:q[1-4]|_\d\d)_bdc)\.zip)"',
+                              html):
+        out.setdefault(name, u if u.startswith("http") else "https://www.sec.gov" + u)
+    return out
+
+
+def _http_date(v):
+    from email.utils import parsedate_to_datetime
+    try:
+        return parsedate_to_datetime(v).date().isoformat() if v else None
+    except (TypeError, ValueError):
+        return None
+
+
+def fetch(rate=4.0):
+    """Page des BDC Data Sets tirée une fois par exécution, datée de son as_of, puis chaque archive qu'elle publie et
+    qui n'est pas en cache. Une archive publiée après l'as_of (en-tête Last-Modified) n'est pas gardée ; chaque tirage
+    va au manifeste (D-0074)."""
+    from . import edgar, net
+    as_of = config.as_of()
+    client = net.SecClient(as_of, config.load())
+    client.min_interval = 1.0 / rate
+    html, _ = edgar.dated_resource(client, PAGE_URL, *PAGE, as_of)
+    links = archive_links(html.decode("utf-8", "replace"))
+    have = {p.name[:-len(".zip.zst")] for p in archives()}
+    man = config.CACHE.joinpath(*ARCH_MANIFEST)
+    done = {json.loads(x)["name"] for x in man.read_text().splitlines() if x.strip()} if man.exists() else set()
+    out = []
+    for name, url in links.items():
+        if name in have or name in done:
+            continue
+        raw, headers = client.get(url)
+        lm = headers.get("Last-Modified")
+        published = _http_date(lm)
+        rec = {"name": name, "url": url, "as_of": as_of, "last_modified": lm, "bytes": len(raw),
+               "sha256": cache.sha256(raw)}
+        if published and published > as_of:
+            rec["status"] = "after_as_of"          # connaissance postérieure : ni gardée ni lue
+        else:
+            cache.write(config.CACHE.joinpath(*ARCH) / f"{name}.zip.zst", raw)
+            rec["status"] = "cached"
+        man.parent.mkdir(parents=True, exist_ok=True)
+        with open(man, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        out.append(rec)
+        print(name, rec["status"], lm, rec["bytes"], flush=True)
+    print(len(links), "archives sur la page ;", len(out), "tirées ;", client.stats)
+    return out
 
 
 def extract():
@@ -517,7 +574,9 @@ def exclusions(as_of):
 
 
 if __name__ == "__main__":
-    if sys.argv[1] == "extract":
+    if sys.argv[1] == "fetch":
+        fetch()
+    elif sys.argv[1] == "extract":
         df = extract()
         print(len(df), df["bdc_cik"].nunique(), "BDC")
     elif sys.argv[1] == "num":

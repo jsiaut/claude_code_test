@@ -6,6 +6,7 @@ archives se tirent de la plus récente à la plus ancienne ; une période non ti
 exclusion, et ses paires portent `search_incomplete`. La clé de `num` inclut `dimh`, faute de
 quoi un total et ses ventilations fusionneraient.
 
+    python -m pipeline.discovery page             # page des jeux de données et liste des noms, datées de l'as_of (D-0074)
     python -m pipeline.discovery fetch            # archives de la période de lecture, scannées
     python -m pipeline.discovery status           # archives tirées, restantes, lexique
 
@@ -24,11 +25,12 @@ import zipfile
 
 import pandas as pd
 
-from . import cache, config, net
+from . import cache, config, net, update
 
 BASE = config.CACHE / "datasets" / "notes"
 MANIFEST = BASE / "manifest.jsonl"
-PAGE = ("notes", "financial-statement-notes-data-sets_2026-10-09.html.zst")
+PAGE = (("notes",), "financial-statement-notes-data-sets", ".html")   # page datée de l'as_of qui l'a tirée (D-0074)
+PAGE_URL = "https://www.sec.gov/data-research/sec-markets-data/financial-statement-notes-data-sets"
 SEC = "https://www.sec.gov"
 
 # Taxonomies dont les faits ne sont pas des notes : page de couverture (dei), informations
@@ -111,9 +113,23 @@ def find_mentions(value, rx, lex, own_spans_fn):
 
 # -- archives ---------------------------------------------------------------------------
 
+def page_path():
+    """Version de la page des jeux de données servie à l'as_of (D-0074)."""
+    return cache.dated(*PAGE, config.as_of())
+
+
+def fetch_page(client=None):
+    """Page des jeux de données et liste des noms d'EDGAR, tirées une fois par exécution, datées de son as_of (D-0074)."""
+    from . import edgar
+    client = client or net.SecClient(config.as_of(), config.load())
+    edgar.dated_resource(client, PAGE_URL, *PAGE, config.as_of())
+    edgar.dated_resource(client, LOOKUP_URL, *LOOKUP, config.as_of())
+    return page_path(), cache.dated(*LOOKUP, config.as_of())
+
+
 def archive_list():
-    """Archives publiées sur la page des jeux de données (tirée le 2026-10-09)."""
-    html = cache.read(cache.other_path(*PAGE)).decode("utf-8", "replace")
+    """Archives publiées sur la page des jeux de données servie à l'as_of."""
+    html = cache.read(page_path()).decode("utf-8", "replace")
     rows = re.findall(r'<a href="(/files/dera/data/financial-statement-notes-data-sets/[^"]+\.zip)"'
                       r'[^>]*>([^<]*)</a>.*?views-field-filesize">([^<]*)<', html, re.S)
     out = []
@@ -401,8 +417,12 @@ def _efts(client, params, retries=3, pause=30.0):
 
 
 def _log_query(rec, log=None):
+    """Consigne une fenêtre de requête ; une fenêtre déjà consignée à l'identique, rejouée du cache, ne se consigne pas
+    une seconde fois (D-0074)."""
     log = log or QUERY_LOG
     log.parent.mkdir(parents=True, exist_ok=True)
+    if log.exists() and rec in (json.loads(x) for x in log.read_text(encoding="utf-8").splitlines() if x.strip()):
+        return
     with open(log, "a", encoding="utf-8") as fh:
         fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
@@ -453,23 +473,45 @@ def harvest(client, term, forms, start=START, end=None, keep=lambda s: True, log
     return out
 
 
+EFTS_HITS = config.DB_DIR / "discovery_efts.parquet"
+
+
+def keep_new_rows(old, df, key):
+    """Résultats gardés, puis les lignes nouvelles absentes de ceux-ci (clé `key`), dans leur ordre (D-0074)."""
+    if old is None:
+        return df
+    if not len(df):
+        return old
+    known = set(map(tuple, old[key].astype(str).values.tolist()))
+    df = df[[tuple(r) not in known for r in df[key].astype(str).values.tolist()]]
+    return pd.concat([old, df], ignore_index=True) if len(df) else old
+
+
 def search(rate=None):
-    """EX-10 et Form D qui nomment un terme du lexique, du 2017-01-01 à as_of."""
+    """EX-10 et Form D qui nomment un terme du lexique, du 2017-01-01 à as_of, par fenêtres coupées aux as_of des
+    exécutions précédentes (D-0074) : les résultats gardés restent tels quels, dans leur ordre, et un terme qui y figure
+    ne se cherche que sur les fenêtres closes après l'as_of précédent ; les lignes nouvelles s'ajoutent à la suite."""
     cfg = config.load()
     client = net.SecClient(config.as_of(), cfg)
     if rate:
         client.min_interval = 1.0 / rate
     lex = lexicon(cfg)
+    prev = config.previous_as_of()
+    old = pd.read_parquet(EFTS_HITS) if prev and EFTS_HITS.exists() else None
+    done = set(old["term"]) if old is not None else set()
     rows = []
     for e in lex:
-        rows += harvest(client, e["term"], EX10_FORMS,
-                        keep=lambda s: str(s.get("file_type") or "").upper().startswith("EX-10"))
-        rows += harvest(client, e["term"], ["D"], keep=lambda s: True)
+        for forms, keep in ((EX10_FORMS, lambda s: str(s.get("file_type") or "").upper().startswith("EX-10")),
+                            (["D"], lambda s: True)):
+            for a, b in config.search_windows(START):
+                if e["term"] in done and b <= prev:
+                    continue                  # fenêtre d'une exécution précédente : ses résultats sont gardés
+                rows += harvest(client, e["term"], forms, start=a, end=b, keep=keep)
         print(e["term"], len(rows), client.stats["requests"], flush=True)
-    df = pd.DataFrame(rows)
+    df = keep_new_rows(old, pd.DataFrame(rows), ["term", "id"])
     out = config.WORK / "discovery"
     out.mkdir(parents=True, exist_ok=True)
-    df.to_parquet(config.DB_DIR / "discovery_efts.parquet", index=False)
+    df.to_parquet(EFTS_HITS, index=False)
     print("hits", len(df), "requêtes", client.stats["requests"])
 
 
@@ -1053,10 +1095,34 @@ def reading_units(m, c):
     return u.reset_index(drop=True)
 
 
+UNIT_KEY = ["kind", "adsh", "doc", "value_sha"]
+FRONTIER = ("A", 50)          # D-0041 : la passe A reste lue jusqu'au rang 50
+
+
+def _unit_keys(df):
+    return ["|".join("" if v is None or v != v else str(v) for v in r)
+            for r in df[UNIT_KEY].itertuples(index=False, name=None)]
+
+
+def extend_units(prev, u):
+    """File d'une exécution nouvelle (D-0074, point 3) : les unités de l'exécution précédente telles quelles, numéro
+    d'ordre compris (les blocs préparés s'y rattachent par lui), puis les unités nouvelles, dans l'ordre de la file
+    recalculée, numérotées à la suite."""
+    known = set(_unit_keys(prev))
+    new = u[[k not in known for k in _unit_keys(u)]].copy()
+    top = int(prev["order"].max()) if len(prev) else 0
+    new["order"] = range(top + 1, top + 1 + len(new))
+    return pd.concat([prev, new[list(prev.columns)]], ignore_index=True) if len(new) else prev
+
+
 def build_candidates():
     m = all_mentions()
     c = rank_candidates(m)
     u = reading_units(m, c)
+    since = config.previous_as_of()
+    if since and UNITS.exists():          # file de l'exécution précédente gardée, unités nouvelles à la suite (D-0074)
+        update.previous_state(CANDIDATES, since)
+        u = extend_units(pd.read_parquet(update.previous_state(UNITS, since)), u)
     m.to_parquet(config.DB_DIR / "discovery_mentions.parquet", index=False)
     c.to_parquet(CANDIDATES, index=False)
     u.to_parquet(UNITS, index=False)
@@ -1159,6 +1225,35 @@ def prepare(n=50, rate=4.0):
     units = pd.read_parquet(UNITS)
     done = built_units()
     todo = [u for u in units.to_dict("records") if u["order"] not in done][:n]
+    _build(todo, client)
+
+
+def frontier_units():
+    """Unités nouvelles d'une exécution dans la frontière de lecture de D-0041 : passe A, candidat classé au plus au
+    rang 50 par l'exécution précédente (D-0074, point 3) ; les autres restent non traitées."""
+    since = config.previous_as_of()
+    prev_u = update.previous_state(UNITS, since) if since else None
+    prev_c = update.previous_state(CANDIDATES, since) if since else None
+    if not since or not prev_u.exists() or not prev_c.exists():
+        return []
+    top = int(pd.read_parquet(prev_u, columns=["order"])["order"].max())
+    c = pd.read_parquet(prev_c, columns=["cik", "rank"])
+    ranks = dict(zip(c["cik"].astype(str), c["rank"]))
+    units = pd.read_parquet(UNITS)
+    return [u for u in units[units["order"] > top].to_dict("records")
+            if u["pass"] == FRONTIER[0] and ranks.get(str(u["cik"]), FRONTIER[1] + 1) <= FRONTIER[1]]
+
+
+def prepare_frontier(rate=4.0):
+    """Blocs des unités nouvelles de la frontière de D-0041 qui ne le sont pas encore (D-0074, point 3)."""
+    cfg = config.load()
+    client = net.SecClient(config.as_of(), cfg)
+    client.min_interval = 1.0 / rate
+    done = built_units()
+    _build([u for u in frontier_units() if u["order"] not in done], client)
+
+
+def _build(todo, client):
     nb = 0
     for u in todo:
         if u["kind"] == "exhibit_header":
@@ -1180,14 +1275,15 @@ def prepare(n=50, rate=4.0):
 
 PERIODIC = {"10-K", "10-K/A", "10-KT", "10-KT/A", "10-Q", "10-Q/A", "10-QT", "10-QT/A",
             "20-F", "20-F/A", "40-F", "40-F/A"}
-LOOKUP = ("edgar", "cik-lookup-data_2026-10-09.txt.zst")
+LOOKUP = (("edgar",), "cik-lookup-data", ".txt")       # liste datée de l'as_of qui l'a tirée (D-0074)
+LOOKUP_URL = "https://www.sec.gov/Archives/edgar/cik-lookup-data.txt"
 
 
 def edgar_names():
     """Dénomination normalisée -> CIK, depuis la liste des noms d'EDGAR (§9.4)."""
     from .graph import normalize_name
-    p = cache.other_path(*LOOKUP)
-    if not p.exists():
+    p = cache.dated(*LOOKUP, config.as_of())
+    if p is None:
         return {}
     out = {}
     for l in cache.read(p).decode("latin-1").splitlines():
@@ -1266,7 +1362,9 @@ def client_states(read_cks, extended_start, names=None):
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
-    if cmd == "fetch":
+    if cmd == "page":
+        print(*(x.name for x in fetch_page()), sep=" ; ")
+    elif cmd == "fetch":
         fetch(only=set(sys.argv[2:]) or None)
     elif cmd == "search":
         search(rate=float(sys.argv[2]) if len(sys.argv) > 2 else None)
@@ -1274,6 +1372,8 @@ if __name__ == "__main__":
         build_candidates()
     elif cmd == "prepare":
         prepare(int(sys.argv[2]) if len(sys.argv) > 2 else 50)
+    elif cmd == "prepare-frontier":
+        prepare_frontier()
     elif cmd == "verify":
         verify_exhibits()
         verify_form_d()
