@@ -3433,3 +3433,15 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - `previous_state` et `carry_over`, la reprise de l'exécution précédente, dans `montages.prepare` (décomptes compris), `sixk.prepare` et `sb_own.prepare` ;
   - files : `discovery.extend_units` et `nf_discovery.extend_with_prior` (unités anciennes telles quelles, nouvelles à la suite) ; `discovery prepare-frontier` prépare les unités nouvelles de la frontière ;
   - les étapes des montages qui écrivent leurs décomptes (`fetch`, `corpus`, `lab_corpus`, `backlog_corpus`, `values_corpus`) n'effacent plus ceux de la préparation (`_write_info`).
+
+  (5) Phases 0 à 2 et catalogues des groupes, avant toute lecture (2026-10-24) :
+  - Réseau : 153 requêtes, toutes en 200, aucun refus 403. Phase 0 : 62 (`company_tickers.json` et 61 listes de submissions). Index : 26. Phase 1 : 49 (`companyfacts` et archives XBRL). Phase 2 : 16.
+  - Inventaire : 30 568 → 30 746 dépôts. Les 178 nouveaux sont déposés du 2026-10-08 au 2026-10-23 ; aucun ne sort, aucun ne change de classe.
+    - Tranche : 8 8-K à items de la tranche (Cipher 3, Riot, Blue Owl, Meta, TeraWulf, Marvell), 3 rapports périodiques (10-K de Micron, 10-Q de Meta et de SpaceX), 2 DEF 14A (IREN, Microsoft) et leurs 2 DEFA14A.
+    - Le reste : formulaires 3 et 4 (116) et 144 (20), 7 6-K (TSMC 3, SK hynix 2, ASML, Nebius), 8 8-K hors tranche, 3 13F-HR/A, 4 13G, 2 ARS, et 3 autres.
+  - Fenêtres : seule leur fin change, à l'as_of. Univers attendu : 24 472 cellules.
+  - Phase 1 : 788 dépôts lus ; les 7 échecs sont ceux déjà connus (amendements sans instance). Phase 2 : 2 340 documents, aucun échec.
+  - Catalogues : aucune clé déjà lue ne disparaît ni ne change.
+    - Tranche : 4 359 → 4 386 blocs. 26 clés nouvelles, 1 291 065 caractères. Six corps de pièces (Blue Owl, Cipher 3, Meta, Marvell), 1 193 931 caractères, ne se lisent que si leur en-tête le demande (§11.1) ; il reste 97 134 caractères d'items, d'en-têtes, d'Items 404, 4 et 9A et de la note de parties liées de SpaceX.
+    - Bloc `text` : 4 692 → 4 718 blocs. 24 clés nouvelles, 135 531 caractères : notes du 10-K de Micron (9), des 10-Q de SpaceX (7) et de Meta (6), item 2.03 de Blue Owl et de TeraWulf.
+  - À lire : 50 blocs, liste `upd_20261024_groups`, du plus récent au plus ancien.
