@@ -881,6 +881,21 @@ def save_lexicon(lex):
     return p
 
 
+def frozen_lexicon(done=None):
+    """Lexique d'une exécution nouvelle : celui du dernier scan de l'exécution précédente, gardé sous sa version, et non
+    celui des entités du jour, sans quoi un lexique enrichi par les lectures depuis ferait retirer et rescanner toutes
+    les archives (D-0074, point 3 : une archive déjà tirée ne se retire pas, aucun traitement ne change). None à la
+    première exécution, ou faute d'archive scannée."""
+    if not config.previous_as_of():
+        return None
+    done = u_manifest() if done is None else done
+    scanned = [r for r in done.values() if r.get("status") == "scanned" and r.get("lexicon")]
+    if not scanned:
+        return None
+    v = max(scanned, key=lambda r: r.get("retrieved") or "")["lexicon"]
+    return json.loads(lexicon_path(v).read_text(encoding="utf-8"))
+
+
 def fetch_unlisted(only=None):
     """De la plus récente archive à la plus ancienne : tirée par le client unique pendant que la précédente se
     scanne dans un processus à part, puis effacée (D-0065, point 3). Une archive publiée après l'as_of n'est ni
@@ -889,13 +904,17 @@ def fetch_unlisted(only=None):
     as_of = config.as_of()
     cfg = config.load()
     n = cfg_nport(cfg)
-    lex = lexicon(cfg=cfg)
-    save_lexicon(lex)
     client = net.SecClient(as_of, cfg)
     done, d58 = u_manifest(), manifest()
+    lex, since = frozen_lexicon(done), config.previous_as_of()
+    if lex is None:
+        lex = lexicon(cfg=cfg)
+        save_lexicon(lex)
 
     def todo_(a):
         r = done.get(a["name"]) or {}
+        if since and r.get("status") == "scanned":
+            return False                  # exécution nouvelle : une archive déjà scannée ne se retire pas (D-0074)
         return (not only or a["name"] in only) and not (
             r.get("status") == "after_as_of" or (r.get("status") == "scanned" and r.get("lexicon") == lex["version"]))
     todo = [a for a in in_period(archive_list(), n["period"][0], n["period"][1]) if todo_(a)]

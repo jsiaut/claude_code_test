@@ -77,8 +77,9 @@ def summary(period=None):
     return w
 
 
-def _block(text, label):
-    """Dénomination et CIK du premier bloc `label` (SUBJECT COMPANY, ISSUER) de l'en-tête SGML."""
+def _header_party(text, label):
+    """Dénomination et CIK du premier bloc `label` (SUBJECT COMPANY, ISSUER) de l'en-tête SGML. Nom distinct de
+    `_block`, qui construit les blocs et masquait cette fonction depuis D-0058 (constaté en D-0074)."""
     i = text.find(label)
     if i < 0:
         return None, None
@@ -110,7 +111,7 @@ def headers(rate=4.0):
             continue
         text = raw.decode("utf-8", "replace").replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
         label = "SUBJECT COMPANY:" if x.form in SCHEDULES else "ISSUER:" if x.form in OWNERSHIP else None
-        name, c = _block(text, label) if label else (None, None)
+        name, c = _header_party(text, label) if label else (None, None)
         docs = parse_sgml_header(raw)["documents"]
         rows.append({**r, "issuer": name, "issuer_cik": c,
                      "documents": json.dumps([{k: d.get(k) for k in ("TYPE", "FILENAME", "DESCRIPTION")} for d in docs])})

@@ -374,7 +374,11 @@
  "0001859919|0001859919-26-000082": {
   "acceptance_pct": "46.84",
   "acceptance_pct_quote": "@SENT:approximately 46.84% of the Shares",
-  "proration": true
+  "note": "réduction au prorata publiée (environ 46,84 % des parts apportées) ; parts apportées non chiffrées : les 7 080 516 parts de l'amendement final du 22 octobre 2026 sont les parts acceptées",
+  "proration": true,
+  "tendered": null,
+  "tendered_quote": null,
+  "tendered_unit": null
  },
  "0001860424|0001193125-25-080190": {
   "acceptance_pct": "66.54",

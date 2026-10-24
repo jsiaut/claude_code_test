@@ -1784,6 +1784,12 @@ def foreign_section(con, T):
                  + ", ".join(sorted(sel["filer"].fillna(sel["cik"]))) + "). Les autres restent dans la file, « non traités ». "
                  "Un 20-F ou un 40-F porte des états annuels audités ; un 6-K est furnished, admissible seulement s'il est "
                  "incorporé par référence dans un document d'enregistrement par mention expresse.")
+        held = inv[inv["held"]] if "held" in inv.columns else inv.iloc[0:0]
+        if len(held):
+            L.append("")
+            L.append(f"Entrés depuis dans une paire ou un cycle, {T.n('observations', {'foreign_held': True}, len(held))} "
+                     "émetteurs (" + ", ".join(sorted(held["filer"].fillna(held["cik"]))) + ") n'ont dans la file que des "
+                     "unités antérieures à l'as_of précédent : elles gardent leur état, « non traitées » (D-0074, point 3).")
         L.append("")
     rows = q(con, """SELECT o.group_id, o.form, o.framework, o.kind, o.family, count(*) AS n
                      FROM observations o WHERE o.validation_state = 'valid' AND o.form IN

@@ -3445,3 +3445,52 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Tranche : 4 359 → 4 386 blocs. 26 clés nouvelles, 1 291 065 caractères. Six corps de pièces (Blue Owl, Cipher 3, Meta, Marvell), 1 193 931 caractères, ne se lisent que si leur en-tête le demande (§11.1) ; il reste 97 134 caractères d'items, d'en-têtes, d'Items 404, 4 et 9A et de la note de parties liées de SpaceX.
     - Bloc `text` : 4 692 → 4 718 blocs. 24 clés nouvelles, 135 531 caractères : notes du 10-K de Micron (9), des 10-Q de SpaceX (7) et de Meta (6), item 2.03 de Blue Owl et de TeraWulf.
   - À lire : 50 blocs, liste `upd_20261024_groups`, du plus récent au plus ancien.
+
+  (6) Blocs de §14, avant toute lecture (2026-10-24) :
+  - Réseau : 611 requêtes, aucun refus 403. Une réponse 500 de la recherche plein texte a été relancée une fois, avec succès. Par bloc : BDC Data Sets et `lender_liabilities` 225, découverte 79, piste des non-déposants 69, `form_d` 85, `foreign` 18, 6-K 20, `sb_own` 64, N-PORT 9, `ownership` 7, montages 35. Avec les phases 0 à 2, cela fait 764 requêtes à cet as_of, et le journal compte 26 347 lignes.
+  - `lender` et `lender_portfolio` : la page des BDC Data Sets compte 22 archives, dont une nouvelle, `2026_09`, publiée le 2026-10-08 selon son en-tête Last-Modified. Volumes :
+    - dépôts : 2 395 → 2 397 ;
+    - lignes NUM : 3 465 406 → 3 466 288 ;
+    - lignes SOI : 1 031 750 → 1 031 997 ;
+    - positions : 746 458 → 746 616.
+  - `lender_liabilities` :
+    - inventaire des véhicules : 64 244 → 64 416 dépôts, aucun véhicule sans liste. 7 documents tirés sur 1 364.
+    - offres de rachat : 942 → 943. Il y a 594 lectures, dont 98 corrigées.
+      - Quatre sont nouvelles : Carlyle, 1 781 444 parts acceptées ; Eagle Point Trinity et Crestline, aucune part apportée ; Onex, sans résultat.
+      - BIP Ventures, sans résultat jusque-là, se lit à 105 319 parts apportées et acceptées.
+      - Barings se lit sur l'amendement final du 22 octobre 2026. Sa correction garde les parts apportées non chiffrées : la réduction au prorata est publiée (environ 46,84 % des parts apportées), et les 7 080 516 parts de cet amendement sont les parts acceptées.
+    - annonces : 40 → 42 unités. Les deux nouvelles, les 8-K d'OTIC et d'OCIC du 2026-10-23, ne portent aucune annonce.
+  - Découverte :
+    - la page des Notes Data Sets, tirée à cet as_of, ne porte aucune archive nouvelle : 76 archives, dont la dernière, `2026_09`, est déjà traitée ;
+    - la recherche plein texte (60 requêtes) passe de 9 390 à 9 414 résultats. Les candidats ne changent pas (3 074) ;
+    - la file passe de 19 194 à 19 201 unités. Les 7 nouvelles sont des en-têtes de pièces de la passe A, de candidats classés aux rangs 123 à 2 013 : aucune n'est dans la frontière (rang 50), et elles restent non traitées. Aucun bloc nouveau.
+  - Piste des non-déposants : 1 142 → 1 143 résultats (68 requêtes) ; une unité nouvelle, l'en-tête d'une pièce du 2026-10-13 qui nomme Nscale, hors règle. Aucun bloc nouveau.
+  - `form_d` : 883 → 965 Form D.
+    - 2 sont de la période nouvelle, parmi les véhicules candidats.
+    - 80 sont anciens et portent sur des groupes ajoutés après D-0041 : Apollo 55 (deux CIK), Applied Digital 7, Dell 6, Riot 5, Blue Owl 2, Intel 2, Backblaze, Core Scientific et IREN 1 chacun. La population des groupes passe ainsi de 38 à 118 dépôts. La collecte n'avait pas été relancée à leur ajout ; elle se refait ici sur la configuration du jour.
+    - Une collecte de données structurées se refait entière, comme les phases 0 à 2. Seuls les catalogues de lecture et les files gardent leur état (point 3). Les cellules que ces Form D produisent sont relevées à l'intégration.
+  - `foreign` : aucune unité nouvelle.
+    - Shinhan Financial Group, GCL Global Holdings et Korea Electric Power sont entrés depuis dans une paire ou un cycle ; ils ont 52 unités, toutes antérieures à l'as_of précédent.
+    - Une première préparation en a construit les blocs (18 requêtes). Ces blocs ont été retirés du catalogue de la découverte, qui revient à 401 blocs. Les unités gardent leur état, « non traitées » : c'est la garde `new_period`.
+    - L'inventaire retient 2 émetteurs (IREN, Nebius) et en garde 3 (`retention`), ce que la synthèse dit.
+  - 6-K : 7 6-K nouveaux (TSMC 3, SK hynix 2, ASML, Nebius) et 13 pièces tirées (20 requêtes).
+    - Quatre portent des fenêtres, soit 12 blocs et 43 329 caractères : TSMC 5, Nebius 3, ASML 3, SK hynix 1. Les trois autres n'en ont pas.
+    - Aucune fenêtre nouvelle n'est au-delà du plafond. Le catalogue passe de 400 à 412 blocs, et les 400 anciens sont identiques.
+  - `sb_own` : inventaire des déposants et 23 pièces tirées (64 requêtes en tout) ; 570 pièces et 529 en-têtes en cache. Le catalogue ne change pas : 473 blocs, identiques, aucun bloc nouveau.
+  - N-PORT :
+    - la page ne porte aucune archive nouvelle : 28 archives, de 2019q4 à 2026q3 ;
+    - aucune archive n'est à rescanner pour SoftBank ni pour les obligations (Oracle, CoreWeave) ;
+    - pour les non-cotés, le lexique se recalculait sur les entités du jour. Sa version changeait (`lx-e8610930b682` au lieu de `lx-cd6e02bb8912`), si bien que les 28 archives auraient été retirées et rescannées. Cinq ont été tirées avant l'arrêt, et les scans de trois d'entre elles (2026q1 à 2026q3) réécrits. Ces trois-là ont été retirées et rescannées sous le lexique de l'exécution précédente : empreintes et décomptes identiques. Le correctif est `frozen_lexicon`. En tout : 9 requêtes, 3,62 Go.
+  - `ownership` : 125 dépôts au plan (120 13F-HR, 5 13D ou 13G), 7 requêtes.
+  - Montages :
+    - recherches sur la fenêtre nouvelle (32 requêtes) : `meta_hyperion` passe de 2 793 à 2 991 résultats, `galaxy_helios` de 6 254 à 6 298, `anthropic_chain` de 242 à 244. `athene_whco`, `stargate` et `sec_letters` n'en ont pas de nouveaux. Ceux de `meta_hyperion` et de `galaxy_helios` sont des relevés de portefeuille (N-PORT, 13F, N-CSR), écartés comme avant ;
+    - tirages : 2 pièces (3 requêtes), deux EX-99.1 de 8-K de `anthropic_chain` (Kinetic Seas, Data443) ;
+    - préparation : les 1 224 blocs anciens sont identiques, et 2 blocs s'ajoutent, ceux de ces pièces (3 230 caractères). Dans `labs_events`, ces deux pièces sont sans fenêtre ;
+    - corpus, sans requête : aucun document de la période nouvelle ne nomme un terme. Le recalcul nomme des documents anciens de plus : `labs_corpus` 56, `softbank_corpus` 28, `backlog` 15, `backlog_values` 5, `labs_events` 3. Ce sont surtout des documents mis en cache depuis la préparation de ces montages, et ceux de Cerebras, ajouté depuis. Tous sont antérieurs au 2026-10-08 et restent hors du catalogue (point 3) ;
+    - `labs inventory`, sans requête : 130 faits des instances (OpenAI 109, Anthropic 21) et 20 des Notes Data Sets (14 et 6). Aucun ne vient d'un dépôt de la période nouvelle.
+  - Code, avant toute lecture, et 3 tests de plus (20 dans `test_d0074`) :
+    - `foreign.new_period` : une unité ancienne garde son état, même si son émetteur est entré depuis dans le graphe ;
+    - `foreign.retention` : un émetteur est retenu si une de ses unités sélectionnées est préparée. Il est gardé si la règle le retient sans unité préparée ;
+    - `nport.frozen_lexicon` : à une exécution nouvelle, le lexique des non-cotés est celui du dernier scan de l'exécution précédente ;
+    - `sb_own._header_party` : l'analyseur des en-têtes SGML s'appelait `_block`, et la fonction de même nom qui construit les blocs le masquait depuis D-0058 (3a6d650). `sb_own headers` échouait donc. Il est renommé, et sa sortie est identique.
+  - À lire : 14 blocs, 46 559 caractères (12 6-K, 2 montages), liste `upd_20261024_s14`, du plus récent au plus ancien.

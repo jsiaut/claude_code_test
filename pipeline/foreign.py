@@ -63,6 +63,14 @@ def graph_counterparty_ciks():
     return {str(int(c)) for c in ent["cik"] if str(c).strip().isdigit()}
 
 
+def new_period(u, since=None):
+    """Vrai si l'unité se prépare à cette exécution : toujours à la première ; à une exécution nouvelle, seulement si
+    son dépôt est postérieur à l'as_of précédent. Une unité ancienne de la file garde son état de l'exécution
+    précédente, même si son émetteur est entré depuis dans le graphe (D-0074, point 3)."""
+    since = config.previous_as_of() if since is None else since
+    return not since or str(u["date"]) > since.replace("-", "")
+
+
 def selected_units(cfg=None):
     """Unités de la file tirées d'un formulaire étranger, pour les émetteurs retenus par la règle."""
     cfg = cfg or config.load()
@@ -79,6 +87,16 @@ def selected_units(cfg=None):
     u = u[u["cik"].astype(str).isin(ciks)].copy()
     u["form"] = u["adsh"].map(form_of)
     return u[u["form"].isin(ff)].sort_values("order")
+
+
+def retention(inv, sel, built):
+    """Retenu : émetteur dont une unité sélectionnée est préparée. Gardé : émetteur que la règle retient, entré depuis
+    dans le graphe, dont toutes les unités sont antérieures à l'as_of précédent et gardent leur état (D-0074, point 3).
+    `sel` : unités sélectionnées ; `built` : numéros d'ordre des unités préparées."""
+    inv = inv.copy()
+    inv["selected"] = inv["cik"].isin({str(u["cik"]) for u in sel if u["order"] in built})
+    inv["held"] = inv["cik"].isin({str(u["cik"]) for u in sel}) & ~inv["selected"]
+    return inv
 
 
 def framework(u):
@@ -123,7 +141,7 @@ def prepare(rate=4.0):
     client.min_interval = 1.0 / rate
     ed = edgar.Edgar(client, config.as_of())
     done = D.built_units()
-    todo = [u for u in selected_units(cfg).to_dict("records") if u["order"] not in done]
+    todo = [u for u in selected_units(cfg).to_dict("records") if u["order"] not in done and new_period(u)]
     nb = 0
     for u in todo:
         if u["kind"] == "exhibit_header":
@@ -150,8 +168,7 @@ def prepare(rate=4.0):
             nb += 1
         with open(D.BUILT, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    inv = inventory(cfg)
-    inv["selected"] = inv["cik"].isin({str(u["cik"]) for u in selected_units(cfg).to_dict("records")})
+    inv = retention(inventory(cfg), selected_units(cfg).to_dict("records"), D.built_units())
     inv.to_parquet(INVENTORY, index=False)
     print(f"blocs préparés : {nb} sur {len(todo)} unités ; requêtes {client.stats['requests']} ; "
           f"émetteurs étrangers dans la file : {len(inv)}, retenus : {int(inv['selected'].sum())}")

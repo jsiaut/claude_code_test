@@ -221,6 +221,40 @@ class Queues(unittest.TestCase):
         self.assertEqual(set(new["file"]), {"D-0074"})
 
 
+    def test_foreign_prepares_only_new_period_units(self):
+        from pipeline import foreign as F
+        self.assertTrue(F.new_period({"date": "20210428"}, ""))             # première exécution : toutes
+        self.assertFalse(F.new_period({"date": "20210428"}, "2026-10-07"))  # ancienne, état gardé
+        self.assertFalse(F.new_period({"date": "20261007"}, "2026-10-07"))  # le jour de l'as_of précédent compris
+        self.assertTrue(F.new_period({"date": "20261013"}, "2026-10-07"))
+
+
+    def test_foreign_issuer_retained_only_if_a_unit_is_prepared(self):
+        from pipeline import foreign as F
+        inv = pd.DataFrame({"cik": ["1878848", "1263043", "999"]})
+        sel = [{"cik": 1878848, "order": 10}, {"cik": 1263043, "order": 20}, {"cik": 1263043, "order": 21}]
+        r = F.retention(inv, sel, {10: {}})
+        self.assertEqual(r["selected"].tolist(), [True, False, False])
+        self.assertEqual(r["held"].tolist(), [False, True, False])       # unités anciennes gardées, « non traitées »
+        self.assertEqual(F.retention(inv, sel, {10: {}, 20: {}, 21: {}})["selected"].tolist(), [True, True, False])
+
+    def test_unlisted_nport_lexicon_frozen_in_update(self):
+        from pipeline import nport as N
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "lx.json"
+            p.write_text(json.dumps({"version": "lx-old", "parts": {}, "legal": {}, "keep": {}}), encoding="utf-8")
+            old_lp, old_prev = N.lexicon_path, N.config.previous_as_of
+            N.lexicon_path = lambda v: p
+            try:
+                done = {"2026q3": {"status": "scanned", "lexicon": "lx-old", "retrieved": "2026-10-20T17:43:09+00:00"}}
+                N.config.previous_as_of = lambda: "2026-10-07"
+                self.assertEqual(N.frozen_lexicon(done)["version"], "lx-old")    # exécution nouvelle : lexique figé
+                N.config.previous_as_of = lambda: None
+                self.assertIsNone(N.frozen_lexicon(done))                        # première exécution : celui du jour
+            finally:
+                N.lexicon_path, N.config.previous_as_of = old_lp, old_prev
+
+
 class Phase0Index(unittest.TestCase):
     def test_argument_must_equal_the_key(self):
         from pipeline import phase0_index
