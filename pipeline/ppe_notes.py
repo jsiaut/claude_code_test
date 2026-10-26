@@ -26,7 +26,7 @@ BARE = re.compile(r"^\s*(?:" + CIP_NAME + r")\s*(?:,?\s*(?:net|gross))?\s*$", re
 
 # mots qu'une citation doit contenir pour une composante ou un état (point 5) ; rien pour `unspecified`
 COMPONENT_WORDS = {
-    "it_equipment": r"server|network|\bGPUs?\b|computer|comput|\bIT\b|information technology|hardware",
+    "it_equipment": r"server|network|\bGPUs?\b|computer|comput|\bIT\b|information technology|hardware|\b(?:hard|disk) drives?\b",
     "mining_equipment": r"\bminers?\b|mining|\bASICs?\b",
     "manufacturing_equipment": r"\btools?\b|tooling|machinery|manufactur|production|\bfabs?\b",
     "facilities": r"building|data ?cent(?:er|re)|facilit|leasehold|\bsites?\b|campus|infrastructure",
@@ -365,7 +365,11 @@ def semantic_errors(line):
 
 
 def breakdown(o):
-    return "|".join(str(o.get(k)) for k in ("component_of", "asset_component", "asset_state", "component_statement"))
+    """Clé d'une ligne : poste, composante, état et énoncé ; la classe telle qu'écrite (`instrument_key`) s'y ajoute
+    quand le texte écrit plusieurs montants d'une même composante à la même date (point 15)."""
+    k = "|".join(str(o.get(k)) for k in ("component_of", "asset_component", "asset_state", "component_statement"))
+    ik = o.get("instrument_key")
+    return k + "|" + ik if ik not in (None, NONE, "") else k
 
 
 def cip_lookup(con):

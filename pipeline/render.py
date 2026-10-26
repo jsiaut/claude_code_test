@@ -2435,9 +2435,10 @@ def ppe_rows(con, view="as_known"):
 
 
 def ppe_line(T, r, cip_cell, first):
-    parent, comp, state, stmt = r["breakdown_key"].split("|")
+    parent, comp, state, stmt, *cls = r["breakdown_key"].split("|", 4)
+    label = COMPONENT_FR.get(comp, comp) + (f" (« {_clean(cls[0], 60)} »)" if cls else "")
     return (f"| {str(r['period_end']) if first else ''} | {ppe_amount(T, cip_cell) if first and cip_cell else ('' if not first else '—')} | "
-            f"{COMPONENT_FR.get(comp, comp)} | {ASSET_STATE_FR.get(state, state)} | {COMPONENT_OF_FR.get(parent, parent)} | "
+            f"{label} | {ASSET_STATE_FR.get(state, state)} | {COMPONENT_OF_FR.get(parent, parent)} | "
             f"{COMPONENT_STATEMENT_FR.get(stmt, stmt)} | {ppe_amount(T, r) if stmt == 'amount' else '—'} | "
             f"{r['fl'].get('form')} {r['fl'].get('accession')} |")
 

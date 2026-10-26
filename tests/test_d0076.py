@@ -148,6 +148,16 @@ class QuoteWords(unittest.TestCase):
                       amount=None, unit=None, currency=None, amount_origin=None, amount_qualifier=None)
         self.assertTrue(any("état in_transit" in x for x in e))
 
+    def test_hard_drives(self):
+        """Point 16 : les disques durs sont du matériel informatique."""
+        q = "primarily comprised of hard drives that are not yet deployed"
+        block = {"text": "Construction-in-progress is " + q + ".", "candidate_facts": [], "locator": {}}
+        kw = dict(quote=q, asset_state="not_in_service", component_of="construction_in_progress", component_statement="primarily",
+                  amount=None, unit=None, currency=None, amount_origin=None, amount_qualifier=None)
+        self.assertEqual(load.semantic_errors(line(asset_component="it_equipment", **kw), block, locate=lambda b, x: None)[0], [])
+        e = load.semantic_errors(line(asset_component="mining_equipment", **kw), block, locate=lambda b, x: None)[0]
+        self.assertTrue(any("composante mining_equipment" in x for x in e))
+
 
 def obs(key, kd, **kw):
     o = {"obs_key": key, "kind": "observation", "validation_state": "valid", "group_id": "MU", "knowledge_date": kd,
@@ -183,6 +193,15 @@ class Cells(unittest.TestCase):
         self.assertEqual(len(cip), 2)                          # une date, deux vues
         self.assertTrue(all(c["value"] == Decimal("11400000000") and c["unit"] == "USD" for c in cip))
         self.assertEqual(json.loads(cip[0]["lineage"]), ["f:cip"])
+
+    def test_written_class_splits_the_key(self):
+        a = obs("a/1/0", "2026-10-20", instrument_key="land and buildings", asset_component="facilities",
+                asset_state="under_construction", quote="assets under construction for land and buildings of EUR 79.0 million")
+        b = obs("a/1/1", "2026-10-20", instrument_key="leasehold improvements", asset_component="facilities",
+                asset_state="under_construction", quote="leasehold improvements of EUR 7.8 million", amount="7800000")
+        keys = {c["breakdown_key"] for c in ppe_notes.component_cells([a, b], self.cip_at, "2026-12-31") if c["term"] == "component"}
+        self.assertEqual(keys, {"ppe_class|facilities|under_construction|amount|land and buildings",
+                                "ppe_class|facilities|under_construction|amount|leasehold improvements"})
 
     def test_no_tagged_cip(self):
         lines = [dict(obs("a/1/0", "2026-10-20"), group_id="MSFT")]
