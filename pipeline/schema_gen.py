@@ -155,6 +155,11 @@ TABLES = {
         # D-0068 : ligne de carnet
         ("backlog_basis", "backlog_basis"),
         ("backlog_statement", "backlog_statement"),
+        # D-0076 : ligne de composante
+        ("asset_component", "asset_component"),
+        ("asset_state", "asset_state"),
+        ("component_of", "component_of"),
+        ("component_statement", "component_statement"),
         ("validation_state", "validation_state NOT NULL"),
         ("validation_error", "VARCHAR"),
     ],

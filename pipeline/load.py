@@ -342,6 +342,8 @@ def semantic_errors(line, block, text_norm=None, locate=None):
         errs.append("unité et devise incohérentes")
     if line.get("capacity_value") is not None and not capacity_in_quote(q, line["capacity_value"], line.get("capacity_unit")):
         errs.append("capacité introuvable dans la citation avec son unité (D-0067, point 5)")
+    from .ppe_notes import semantic_errors as component_errors     # composante et état nommés (D-0076, point 5)
+    errs += component_errors(line)
     return errs, locator
 
 

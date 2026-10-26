@@ -552,6 +552,7 @@ def synthesis(con, as_of, stats):
     L += lab_clauses_section(con, T)
     L += lab_capacity_section(con, T)
     L += backlog_section(con, T)
+    L += ppe_components_section(con, T, stats)
     L += lab_events_section(con, T)
     # Évolution et non établi
     L.append("## Évolution")
@@ -2400,6 +2401,108 @@ def backlog_series(con, T):
     return L
 
 
+COMPONENT_FR = {"it_equipment": "matériel informatique", "mining_equipment": "machines de minage",
+                "manufacturing_equipment": "outils et machines de production", "facilities": "bâtiments et installations",
+                "software": "logiciels", "land": "terrains", "unspecified": "nature non écrite"}
+ASSET_STATE_FR = {"not_in_service": "pas encore en service", "under_construction": "en construction",
+                  "at_suppliers": "chez les fournisseurs", "in_transit": "en transit", "prepaid": "payé d'avance",
+                  "unspecified": "état non écrit"}
+COMPONENT_OF_FR = {"construction_in_progress": "en-cours", "ppe_class": "classe du tableau",
+                   "property_and_equipment": "immobilisations", "other_assets": "autre poste", "unspecified": "poste non écrit"}
+COMPONENT_STATEMENT_FR = {"amount": "montant", "primarily": "surtout", "includes": "comprend"}
+
+
+def ppe_amount(T, c):
+    """Montant d'une cellule de `ppe_component_disclosed`, dans sa devise, jamais converti (D-0076)."""
+    if c.get("value") is None:
+        return T.m(c) if c.get("status") == "not_determinable" else "—"
+    u = c.get("unit") or ""
+    return T.m(c) if u == "USD" else T.m(c, fmt="mn") + f" {u}"
+
+
+def ppe_rows(con, view="as_known"):
+    """Cellules de `ppe_component_disclosed` : composantes par groupe, en-cours balisé par (groupe, date)."""
+    rows = q(con, """SELECT * FROM measures WHERE measure = 'ppe_component_disclosed' AND view = ?
+                     ORDER BY subject, period_end, breakdown_key""", view)
+    comp, cip = defaultdict(list), {}
+    for r in rows:
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+        if r["term"] == "component":
+            comp[r["subject"]].append(r)
+        else:
+            cip[(r["subject"], str(r["period_end"]))] = r
+    return comp, cip
+
+
+def ppe_line(T, r, cip_cell, first):
+    parent, comp, state, stmt = r["breakdown_key"].split("|")
+    return (f"| {str(r['period_end']) if first else ''} | {ppe_amount(T, cip_cell) if first and cip_cell else ('' if not first else '—')} | "
+            f"{COMPONENT_FR.get(comp, comp)} | {ASSET_STATE_FR.get(state, state)} | {COMPONENT_OF_FR.get(parent, parent)} | "
+            f"{COMPONENT_STATEMENT_FR.get(stmt, stmt)} | {ppe_amount(T, r) if stmt == 'amount' else '—'} | "
+            f"{r['fl'].get('form')} {r['fl'].get('accession')} |")
+
+
+def ppe_components_section(con, T, stats):
+    """D-0076 : composition des en-cours et des actifs pas encore en service, telle que l'écrivent les notes ; la
+    dernière date de chaque groupe, jamais divisée ni additionnée."""
+    comp, cip = ppe_rows(con)
+    st = stats.get("ppe_components")
+    if not comp and not st:
+        return []
+    L = ["## Composition des en-cours, telle qu'écrite (D-0076)", ""]
+    L.append("Ce que les notes des rapports périodiques écrivent des en-cours et des actifs pas encore en service : la "
+             "composante (matériel informatique, bâtiments…), ce qui la tient hors service (pas encore mise en service, "
+             "chez les fournisseurs…), le poste qui la porte et, quand il est écrit, son montant (`ppe_component_disclosed`). "
+             "Une composante n'est jamais déduite d'un mot vague (« equipment », « AI infrastructure ») ; un montant écrit "
+             "n'est ni additionné ni rapporté à un total. L'en-cours balisé à la même date n'est qu'un repère. Le détail "
+             "par date est dans `series.md`.")
+    L.append("")
+    if comp:
+        L.append("| Groupe | Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |")
+        L.append("| --- | --- | ---: | --- | --- | --- | --- | ---: | --- |")
+        for g in sorted(comp, key=group_label):
+            last = max(str(r["period_end"]) for r in comp[g])
+            rs = [r for r in comp[g] if str(r["period_end"]) == last]
+            for i, r in enumerate(rs):
+                L.append(f"| {group_label(g) if i == 0 else ''} " + ppe_line(T, r, cip.get((g, last)), i == 0))
+        L.append("")
+    if st is not None:
+        none_term = [g for g in stats.get("groups") or [] if g not in comp and g not in st]
+        bare = [g for g in stats.get("groups") or [] if g not in comp and g in st and not st[g].get("blocks")]
+        silent = [g for g in stats.get("groups") or [] if g not in comp and st.get(g, {}).get("blocks")]
+        if none_term:
+            L.append("Aucun terme d'en-cours ni d'actif pas encore en service dans les notes : "
+                     + ", ".join(group_label(g) for g in sorted(none_term, key=group_label)) + ".")
+        if bare:
+            L.append("En-cours nommé seulement comme ligne nue d'un tableau, déjà balisée : "
+                     + ", ".join(group_label(g) for g in sorted(bare, key=group_label)) + ".")
+        if silent:
+            L.append("Fenêtres lues sans composante écrite : " + " ; ".join(
+                f"{group_label(g)} ({T.n('observations', {'ppe_read_blocks': g}, st[g]['read'])} "
+                f"{plural(st[g]['read'], 'bloc')} lus sur {T.n('observations', {'ppe_blocks': g}, st[g]['blocks'])})"
+                for g in sorted(silent, key=group_label)) + ".")
+        L.append("")
+    return L
+
+
+def ppe_components_series(con, T):
+    """D-0076 : composition des en-cours telle qu'écrite, toutes les dates, vue `as_known`."""
+    comp, cip = ppe_rows(con)
+    L = []
+    for g in sorted(comp, key=group_label):
+        L.append(f"## {group_label(g)} : composition des en-cours, telle qu'écrite (D-0076)")
+        L.append("")
+        L.append("| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |")
+        L.append("| --- | ---: | --- | --- | --- | --- | ---: | --- |")
+        prev = None
+        for r in sorted(comp[g], key=lambda r: (str(r["period_end"]), r["breakdown_key"])):
+            pe = str(r["period_end"])
+            L.append(ppe_line(T, r, cip.get((g, pe)), pe != prev))
+            prev = pe
+        L.append("")
+    return L
+
+
 def lab_events_section(con, T):
     """D-0067, volet 9 : événements propres aux laboratoires, par trimestre, hors annexe F (liste fermée)."""
     rows = _cell_rows(con, "lab_event")
@@ -3064,6 +3167,7 @@ def series(con, as_of, stats):
         L += labs_tagged_series(con, T)
         L += lab_terms_series(con, T)
     L += backlog_series(con, T)
+    L += ppe_components_series(con, T)
     if "lender_portfolio" in (config.load().get("scope") or []):
         # véhicules BDC des plateformes de présentation (D-0045 ; D-0055, point 7) : série complète, vue as_known
         lp = config.load().get("lender_portfolio") or {}

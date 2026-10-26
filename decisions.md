@@ -3611,3 +3611,108 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - `delta.md` :
     - valeurs changées pour `cip_share` (485 valeurs, 905 statuts ou motifs, sur les deux vues) et pour `implied_useful_life` (66 valeurs) ;
     - aucun événement de l'annexe F n'apparaît ni ne disparaît, et aucune arête ne change.
+- **D-0076 — Composition des en-cours et des actifs pas encore en service, telle que l'écrivent les notes (piste 4). Règles fixées avant toute lecture.**
+  (1) Origine : demande de l'utilisateur, le 2026-10-26 : « Oui, prépare la piste 4 ». C'est la quatrième piste de l'échange sur les GPU achetés et pas encore en service (D-0075, point 1) : lire dans le texte des notes ce que les tableaux balisés ne disent pas, c'est-à-dire quelle part des en-cours, ou des actifs pas encore en service, est du matériel informatique (serveurs, GPU) plutôt que des bâtiments. Elle vise aussi Microsoft, qui ne publie aucun en-cours en XBRL (D-0075, point 2), et la composition des en-cours d'Alphabet. L'as_of reste le 2026-10-24. Il n'y a aucune requête réseau.
+
+  (2) Constat, compté sans aucune valeur et sans lecture, sur le cache et les tables de 52a0873 :
+  - les blocs `lever_note` déjà lus (notes d'immobilisations et d'estimations) ne suffisent pas. Alphabet, NVIDIA et Intel publient leur tableau d'immobilisations dans une note de compléments du bilan (« Supplemental Financial Statement Information », « Balance Sheet Components », « Other Financial Statement Details »), que le catalogue ne sert pas. Le corpus est donc fait de toutes les notes des rapports périodiques ;
+  - corpus : 788 instances de rapports périodiques (10-K, 10-KT, 10-Q, 20-F et leurs amendements), 12 642 notes (blocs de texte des rôles de note, sans dimension). 532 notes, de 27 groupes, nomment un terme du lexique (point 4) ;
+  - Microsoft et Dell : aucun terme du lexique dans aucune note. Hors des notes, sur les octets des documents principaux de leurs 76 rapports périodiques, Dell n'en a aucun et Microsoft le seul « not deployed », une fois par rapport (36), hors de toute note. Microsoft ne publie donc ni en-cours ni actifs pas encore en service dans ses états, ni en XBRL ni en texte. AMD, Marvell, Cerebras et TeraWulf ne nomment leurs en-cours que comme ligne nue d'un tableau, déjà balisée ;
+  - fenêtres selon les règles du point 4 : 432, dont 397 textes distincts (290 502 caractères). 286 sont déjà dans un bloc lu du même dépôt (213 519 caractères), 111 jamais lues (76 983). Par groupe (textes distincts, caractères, déjà lus) : Akamai 20, 35 918, 0 ; Amazon 6, 6 724, 4 ; Applied Digital 9, 7 530, 8 ; ASML 21, 8 855, 8 ; Broadcom 8, 24 257, 8 ; Backblaze 6, 3 890, 6 ; Cipher 29, 36 029, 29 ; Core Scientific 23, 11 887, 20 ; CoreWeave 1, 1 181, 1 ; Galaxy 16, 10 686, 16 ; Alphabet 15, 10 943, 8 ; Hut 8 9, 11 218, 8 ; Intel 9, 15 808, 1 ; IREN 8, 4 245, 5 ; Meta 44, 39 721, 43 ; Micron 64, 19 850, 64 ; Nebius 10, 2 800, 8 ; NVIDIA 9, 3 925, 0 ; Oracle 1, 1 162, 1 ; Riot 28, 21 460, 23 ; Supermicro 47, 7 117, 11 ; SpaceX 2, 1 906, 2 ; TSMC 12, 3 390, 12 ;
+  - écartées par ces règles : les fenêtres faites de seules lignes d'en-cours nues (leur montant est balisé) ; les 52 fenêtres que seul « under construction » qualifiait (78 001 caractères), presque toutes dans les notes d'engagements, de baux ou de présentation (projets et sites loués en construction, qui ne sont pas des actifs au bilan) : le terme sort du lexique, sauf dans « assets under construction » ;
+  - variantes relevées avant de fixer le lexique : « construction in process » (NVIDIA, TeraWulf, Backblaze), « not ready for … use » (Alphabet), « pending deployment » et « undeployed » (Core Scientific, Backblaze) ;
+  - hors corpus : les 6-K des émetteurs étrangers. Ce sont des communiqués et des rapports sans notes balisées, aux paragraphes sans structure (ASML 20 fenêtres de 208 431 caractères, IREN 22 de 147 935, Nebius 13 de 5 582, TSMC 88 de 26 287). Leurs rapports annuels (20-F) sont dans le corpus. Sont aussi hors corpus le texte des rapports périodiques hors des notes (rapport de gestion) et les pièces EX-99.
+
+  (3) Règles générales :
+  - lignes descriptives, sans famille ni arête ;
+  - aucune arithmétique sur un chiffre lu dans le texte : ni somme, ni part, ni conversion. Un montant écrit se publie tel quel, à côté de l'en-cours balisé à la même date, jamais divisé par lui ;
+  - rien de ce qui est lu n'entre dans `cip_share`, `implied_useful_life` ou les indicateurs de D-0075, ni dans les annexes E et F, les mesures de financement, l'exposition, les paires, les cycles ou les conclusions.
+
+  (4) Montage `ppe_components`, source `ppe_notes` :
+  - corpus :
+    - les notes des rapports périodiques à instance XBRL (10-K, 10-KT, 10-Q, 20-F et amendements) des groupes de `config.yaml`, telles que le catalogue `text` les normalise : blocs de texte sans dimension des rôles de note ;
+    - les notes des jeux d'états financiers des documents d'enregistrement qui tiennent lieu de rapports périodiques (`registration_text`, D-0057, point 14), toutes notes comprises ;
+  - lexique, sans égard à la casse :
+    - en-cours : « construction in progress » ou « construction in process » (tirets admis), « constructions in progress », « assets under construction » ;
+    - pas en service : « not (yet) (been) placed / put in / into service, use ou operation », « not (yet) in / into service ou use », « not (yet) available / ready for (its / their) (intended) use » ;
+    - installation : « under installation », « pending installation », « awaiting installation », « not yet installed », « yet to be installed » ;
+    - déploiement : « pending / awaiting / prior to / before (its / their) deployment », « not (yet) (been) deployed », « undeployed » ;
+    - fournisseurs : « stored / held / located / warehoused by / at / with (our / its / the) (third-party) suppliers, vendors ou manufacturers » ;
+    - en transit : « machinery / equipment / miner(s) / server(s) in transit » ;
+  - paragraphe qualifiant : il nomme un terme du lexique. Renvois :
+    - une ligne de tableau qualifiante dont la première cellule porte une marque (« (1) », « (a) », « * », « [1] ») amène le premier renvoi qui la suit sous la même marque : un paragraphe hors tableau ouvert par elle, ou une ligne dont la première cellule n'est qu'elle ;
+    - un paragraphe qualifiant ouvert par une marque amène la ligne de tableau la plus proche avant lui dont la première cellule la porte ;
+    - le paragraphe amené qualifie à son tour ;
+  - fenêtre : un paragraphe de part et d'autre de chaque paragraphe qualifiant, fondues quand elles se touchent ;
+  - non servie : une fenêtre dont tous les paragraphes qualifiants sont des lignes de tableau dont la première cellule, marques ôtées, n'est que le terme d'en-cours (suivi au plus de « net » ou « gross ») : le montant est balisé et la ligne ne décrit rien. Elle est comptée dans les décomptes du montage, sans ligne d'exclusion ;
+  - faits candidats : les faits d'instance du dépôt, numériques, non nuls, à une date (instant), dont le concept figure dans un rôle de détail ou de tableau de la note (même titre que le rôle de la note, avant « (Details) », « (Tables) » ou « - »). Le lecteur voit ceux dont la valeur paraît dans le texte (D-0017) ;
+  - un texte distinct se lit une fois. Un texte qui est déjà un bloc d'un autre catalogue ou montage reçoit en tête une ligne qui le nomme, pour avoir sa propre clé (D-0068, point 15) ;
+  - ordre : des dépôts les plus anciens aux plus récents ;
+  - régimes :
+    - lecture complète d'une fenêtre jamais lue : codage habituel, plus les lignes de composante ;
+    - lecture complémentaire d'une fenêtre dont chaque paragraphe qualifiant est dans un bloc lu du même dépôt : seules s'écrivent des lignes de composante, sinon une abstention `duplicate_of_other_block` ;
+  - plafond : 2 000 unités, au-dessus du volume : tout se lit ;
+  - niveau de preuve : celui des notes du catalogue `text` (10-K, 10-KT et 20-F : `filed`, `audited`, A ; 10-Q : `filed`, `reviewed`, B) ; pour un document d'enregistrement, l'assurance de son jeu de notes ;
+  - date du bloc (`period_end`) : la date de fin de période du rapport ;
+  - montage nouveau : il se prépare sur toute sa période, y compris dans une exécution nouvelle. La règle de D-0074 (point 3 : les blocs de l'exécution précédente restent tels quels et seuls s'ajoutent ceux des dépôts de la période nouvelle) ne vaut que pour un montage qui figurait au catalogue de l'exécution précédente. Précision consignée avant de coder : sans elle, un montage nouveau ne recevrait que les dépôts postérieurs au 2026-10-07.
+
+  (5) Ligne de composante, descriptive, note finie par « ligne de composante (D-0076) » :
+  - `asset_component`, ce que le texte nomme, jamais déduit :
+    - `it_equipment` : serveurs, équipements de réseau, GPU, matériel informatique ;
+    - `mining_equipment` : machines de minage ;
+    - `manufacturing_equipment` : outils et machines de production ;
+    - `facilities` : bâtiments, centres de données, installations, aménagements ;
+    - `software` : logiciels ;
+    - `land` : terrains ;
+    - `unspecified` : le texte ne dit pas la nature (« equipment », « assets », « AI infrastructure », « data center equipment », « network infrastructure ») ;
+  - `asset_state`, ce qui le tient hors service, tel qu'écrit :
+    - `not_in_service` : pas encore mis en service, pas en usage, en installation ou en attente d'installation, pas déployé ;
+    - `under_construction` : en construction ou en développement, en-cours ;
+    - `at_suppliers` : stocké ou détenu chez des fournisseurs ;
+    - `in_transit` : en transit ;
+    - `prepaid` : acompte, paiement d'avance ou avance pour un actif pas encore reçu ;
+    - `unspecified` ;
+  - `component_of`, le poste qui le porte, tel qu'écrit :
+    - `construction_in_progress` : en-cours, ou son équivalent dans le tableau (« assets under construction », « assets not yet in use » de Nebius, « equipment under installation and construction in progress » de TSMC) ;
+    - `ppe_class` : une autre classe du tableau d'immobilisations (« Equipment », « Servers »…) ;
+    - `property_and_equipment` : les immobilisations entières, brutes ou nettes ;
+    - `other_assets` : un autre poste du bilan (acomptes, autres actifs) ;
+    - `unspecified` ;
+  - `component_statement` :
+    - `amount` : le montant de la composante à une date ;
+    - `primarily` : le poste se compose surtout de la composante, une ligne par composante nommée ;
+    - `includes` : le poste la comprend, sans montant ni prépondérance ;
+  - montant : champs habituels (montant, unité, devise, qualificatif, origine) pour `amount`, `tagged_reference` quand un fait candidat a cette valeur à cette date ; aucun montant pour `primarily` et `includes` ;
+  - `period_end` : la date de l'énoncé, telle qu'écrite, sinon la date de fin de période du bloc ; exigée. Un énoncé à deux dates fait deux lignes ;
+  - chaque fenêtre se lit seule, comparatifs compris : le code ne garde qu'une ligne par clé (point 6) ;
+  - contrôles au chargement : la citation contient un mot de la composante (`it_equipment` : server, network, GPU, computer, compute, IT, information technology, hardware ; `mining_equipment` : miner, mining, ASIC ; `manufacturing_equipment` : tool, machinery, manufacturing, production, fab ; `facilities` : building, data center, datacenter, facility, facilities, leasehold, site, campus, infrastructure ; `software` : software ; `land` : land) et un mot de l'état (`not_in_service` : service, use, install, deploy, operation, ready ; `under_construction` : construct, build, develop, progress, process ; `at_suppliers` : supplier, vendor, manufacturer ; `in_transit` : transit ; `prepaid` : deposit, prepa, advance) ; rien pour `unspecified` ;
+  - données personnelles : aucun nom de personne physique.
+
+  (6) Mesure `ppe_component_disclosed` (rang 2, §6.2, à une date), descriptive, deux termes :
+  - terme `component` : une cellule par groupe, date et clé (poste, composante, état et énoncé, `breakdown_key`), de deux vues : `as_known`, la ligne du premier dépôt qui écrit la clé à cette date ; `revised`, celle du dernier. Valeur : le montant écrit pour `amount`, avec son unité, sa devise et son origine ; pour `primarily` et `includes`, aucune valeur et l'énoncé en texte. Drapeaux : la citation et les observations ;
+  - terme `cip_tagged` : à chaque groupe et date qui ont une ligne, l'en-cours balisé à cette date (grandeur `construction_in_progress`), connu à la date de la première ligne (`as_known`) ou à l'as_of (`revised`), son fait en lignée ; sinon indéterminé, avec son motif. Il ne sert qu'à l'affichage, à côté des composantes. Précision consignée en codant, avant toute lecture : en drapeau, ce nombre aurait été publié sans cellule ni lignée ;
+  - aucune somme, aucune part, aucune conversion entre devises ; une ligne de niveau E n'entre pas.
+
+  (7) Champs et registre : `asset_component`, `asset_state`, `component_of` et `component_statement` (registre, lecteur, chargement, `schema.sql`) ; la mesure `ppe_component_disclosed`. Contrôles du lecteur : une ligne de composante porte ses quatre champs (`unspecified` admis) et sa date ; elle est descriptive (sans famille) ; un montant pour `amount`, aucun pour les autres énoncés.
+
+  (8) Rendus : dans la synthèse, section nouvelle « Composition des en-cours, telle qu'écrite (D-0076) », après le carnet contracté. Pour chaque groupe qui a des lignes, à sa dernière date : l'en-cours balisé, puis chaque composante (poste, état, énoncé, montant écrit, pièce). Ensuite, les groupes sans aucune ligne, avec leur motif : aucun terme dans les notes (Microsoft, Dell…), en-cours en ligne nue seulement (AMD…), ou fenêtres lues sans composante écrite. Le détail par date va dans `series.md`.
+
+  (9) Réseau : aucun, tout est en cache. Données personnelles : aucune personne physique n'est citée.
+
+  (10) Code avant tout traitement : source `ppe_notes` (corpus, renvois, fenêtres, faits candidats), montage dans `config.yaml`, préparation d'un montage nouveau, champs et contrôles, mesure, rendus, tests.
+
+  (11) Ordre et commits : règles, configuration, code et tests ; montage préparé et volume consigné avant lecture ; lecture par lots, sans sous-agent ; intégration (réassemblage, rendus, résultats, tests), commit, push, rapport.
+
+  (12) Limites connues avant lecture :
+  - Microsoft et Dell n'écrivent rien : leur composition reste inconnue ;
+  - beaucoup d'émetteurs ne publient que le total des en-cours : le texte ne dit la composition que si l'émetteur choisit de l'écrire ;
+  - un énoncé « surtout » ou « comprend » ne pèse rien, et un montant écrit n'est jamais rapporté à un total ;
+  - une fenêtre d'un paragraphe de part et d'autre peut manquer un énoncé plus éloigné ; les renvois ne se rattachent que par leur marque ;
+  - les 6-K ne sont pas lus : la composition trimestrielle des émetteurs étrangers n'est connue que par leurs rapports annuels.
+
+  (13) Code, consigné avant la préparation du montage et toute lecture :
+  - module `ppe_notes` : corpus (notes des instances XBRL et de `registration_text`), renvois, fenêtres, lignes d'en-cours nues, faits candidats, niveau de preuve (celui du registre des documents pour un rapport périodique, celui du jeu de notes pour un document d'enregistrement), contrôles des lignes de composante, mesure ;
+  - `montages` : source `ppe_notes`. Un montage nouveau se prépare sur toute sa période, sans état copié ni report de ses décomptes. Il est nouveau s'il n'a aucun bloc au catalogue de l'exécution précédente et que ses décomptes manquent, ou portent l'as_of courant comme première préparation (`first_as_of`) ;
+  - champs et registre, `schema.sql` régénéré ; mesure dans l'assemblage, décomptes par groupe dans les statistiques de l'assemblage (point 8) ; rendus de la synthèse et de `series.md` ;
+  - configuration : montage `ppe_components` (lexique, fenêtre, plafond, niveau `registry`) ;
+  - 21 tests (`test_d0076`), 414 en tout ; ruff passe.

@@ -21,8 +21,8 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, backlog, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, memo, model, montages, rank2,
-               sb_own, sixk, reader)
+               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, memo, model, montages,
+               ppe_notes, rank2, sb_own, sixk, reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
 
@@ -334,6 +334,8 @@ def run(as_of, use_cache=True, apercu=False):
     if not apercu:
         lever = rank2.depreciation_lever(cells, valid, as_of)
         cells += lever + rank2.lever_restatement(con, lever, as_of)
+        cells += ppe_notes.component_cells(valid, ppe_notes.cip_lookup(con), as_of)     # D-0076, point 6
+        stats["ppe_components"] = ppe_notes.corpus_stats(catalog)
     cells += sig_cells
 
     # 7. flux après financement des contreparties, matrice d'exposition tirée du texte

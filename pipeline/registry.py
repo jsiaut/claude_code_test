@@ -174,6 +174,13 @@ ENUMS = {
     "backlog_basis": ["rpo", "lease", "unspecified", NONE],
     "backlog_statement": ["remaining", "contract_value", "total_contract_value", "change", "excluded",
                           "included_no_amount", NONE],
+    # D-0076 : ligne de composante des en-cours et des actifs pas encore en service, telle qu'écrite (descriptive)
+    "asset_component": ["it_equipment", "mining_equipment", "manufacturing_equipment", "facilities", "software", "land",
+                        "unspecified", NONE],
+    "asset_state": ["not_in_service", "under_construction", "at_suppliers", "in_transit", "prepaid", "unspecified", NONE],
+    "component_of": ["construction_in_progress", "ppe_class", "property_and_equipment", "other_assets", "unspecified",
+                     NONE],
+    "component_statement": ["amount", "primarily", "includes", NONE],
     "validation_state": ["valid", "rejected_schema", "rejected_semantic"],
     "price_setting_participation": ["yes", "no", "unknown", NONE],
     # §2.6, §7.6, §11 exclusions
@@ -310,6 +317,8 @@ MEASURES = {
     # D-0068, volet 3 : loyers à recevoir d'un bailleur, part du carnet contracté attribuée à un client nommé
     "lessor_lease_receipts": (2, [NONE], "instant", "14"),
     "contracted_backlog_share": (2, ["rpo", "lease"], "instant", "14"),
+    # D-0076 : composition des en-cours telle qu'écrite (descriptive, jamais divisée ni additionnée)
+    "ppe_component_disclosed": (2, ["component", "cip_tagged"], "instant", "6.2"),
     # annexes
     "annex_e_outcome": (1, [NONE], "fiscal_year", "E"),
     "fragility_event": (1, [NONE], "quarter", "F"),

@@ -47,6 +47,10 @@ client nommé) ; un paragraphe qualifie s'il nomme l'un des clients de son vende
 
     python -m pipeline.montages backlog_corpus <montage>   # source `backlog` : documents en cache, aucune requête
     python -m pipeline.montages values_corpus <montage>    # source `edge_values` : blocs lus qui portent une arête de valeur
+
+D-0076 (point 4) : source `ppe_notes`, les notes des rapports périodiques (blocs de texte des rôles de note) et des
+documents d'enregistrement qui nomment un terme d'en-cours ou d'actif pas encore en service (pipeline/ppe_notes.py). Un
+montage nouveau, préparé pour la première fois dans l'exécution courante, se prépare sur toute sa période.
 """
 import json
 import re
@@ -824,10 +828,21 @@ def _order_key(d, k, spec, text=None):
     return (cls, neg, d["adsh"], d["file"], k)
 
 
+def is_new(mid):
+    """Montage préparé pour la première fois dans l'exécution courante (D-0076, point 4) : sans décomptes, ou dont les
+    décomptes portent l'as_of courant comme première préparation (`first_as_of`). Il se prépare sur toute sa période :
+    la règle de D-0074 (point 3) ne vaut que pour un montage de l'exécution précédente."""
+    p = _paths(mid)[2]
+    return not p.exists() or json.loads(p.read_text()).get("first_as_of") == config.as_of()
+
+
 def _prepare_one(mid, spec, groups_by_cik):
     if spec.get("source") == "tagged":          # paragraphes qui portent un fait balisé (D-0060, point 4)
         from . import labs
         return labs.prepare_units(mid, spec, groups_by_cik)
+    if spec.get("source") == "ppe_notes":       # notes qui nomment un terme d'en-cours (D-0076, point 4)
+        from . import ppe_notes
+        return ppe_notes.prepare_units(mid, spec, groups_by_cik)
     if spec.get("source") == "span":            # passage fixé d'un document (D-0066, point 7)
         return span_blocks(mid, spec, groups_by_cik)
     from . import blocks
@@ -987,15 +1002,19 @@ def prepare(only=None):
     """Blocs des fenêtres de chaque montage, dans l'ordre des dates de dépôt ; plafond par montage. Avec
     `only`, seul ce montage est préparé : les blocs déjà au catalogue pour les autres ne bougent pas.
     Dans une exécution nouvelle (D-0074, point 3), les blocs de l'exécution précédente restent tels quels,
-    dans leur ordre, et chaque montage préparé n'y ajoute que ceux des dépôts de la période nouvelle."""
+    dans leur ordre, et chaque montage préparé n'y ajoute que ceux des dépôts de la période nouvelle ; un montage
+    nouveau, sans bloc dans l'exécution précédente, se prépare sur toute sa période (D-0076, point 4)."""
     p0 = json.loads((config.DB_DIR / "phase0.json").read_text())
     groups_by_cik = {str(cik).zfill(10): m["group"] for cik, m in p0["meta"].items()}
     since = config.previous_as_of()
     out = []
     if since:
-        for mid in ([only] if only else list(specs())):          # état gardé avant toute réécriture
-            update.previous_state(_paths(mid)[2], since)
         prev = update.read_jsonl(update.previous_state(CATALOG, since))
+        had = {b.get("montage") for b in prev}
+        new = {mid for mid in specs() if mid not in had and is_new(mid)}     # toute leur période (D-0076, point 4)
+        for mid in ([only] if only else list(specs())):          # état gardé avant toute réécriture
+            if mid not in new:
+                update.previous_state(_paths(mid)[2], since)
         seen = {json.dumps(b, sort_keys=True) for b in prev}
         added = {}                                              # montage -> blocs de la période nouvelle déjà préparés
         for b in update.read_jsonl(CATALOG):
@@ -1005,6 +1024,9 @@ def prepare(only=None):
             if only and mid != only:
                 continue
             mine = [b for b in prev if b.get("montage") == mid]
+            if mid in new:                                      # aucun bloc dans l'exécution précédente
+                added[mid] = _prepare_one(mid, spec, groups_by_cik)
+                continue
             added[mid] = update.carry_over(mine, _prepare_one(mid, spec, groups_by_cik), since)[len(mine):]
             _carry_info(mid, since)
         out = prev + [b for mid in specs() for b in added.get(mid, [])]
@@ -1037,11 +1059,12 @@ def exclusions(as_of):
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
         terms = " », « ".join(t.get("label") or re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
-        if spec.get("source") in ("corpus", "tagged", "lab_corpus", "backlog", "edge_values"):
+        if spec.get("source") in ("corpus", "tagged", "lab_corpus", "backlog", "edge_values", "ppe_notes"):
             # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
             # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
             # plafond, une fenêtre reste à lire
-            pt = {"tagged": 4, "lab_corpus": 4, "backlog": 6, "edge_values": 15}.get(spec.get("source"), 3)   # D-0060, D-0058, D-0067, D-0068
+            pt = {"tagged": 4, "lab_corpus": 4, "backlog": 6, "edge_values": 15,          # D-0060, D-0058, D-0067, D-0068
+                  "ppe_notes": 4}.get(spec.get("source"), 3)                             # D-0076
             for d in info.get("risk_factors") or []:
                 ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
                    f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point {pt})", d["adsh"])

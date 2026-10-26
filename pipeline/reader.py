@@ -84,6 +84,9 @@ LINE_FIELDS = {
     "capacity_qualifier": "enum:amount_qualifier",
     # D-0068 : ligne de carnet, telle qu'écrite par le vendeur
     "backlog_basis": "enum:backlog_basis", "backlog_statement": "enum:backlog_statement",
+    # D-0076 : ligne de composante des en-cours, telle qu'écrite
+    "asset_component": "enum:asset_component", "asset_state": "enum:asset_state",
+    "component_of": "enum:component_of", "component_statement": "enum:component_statement",
 }
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _ISO_CCY = re.compile(r"^[A-Z]{3}$")
@@ -171,6 +174,8 @@ def schema_errors(line):
                 errs.append("un reste, une exclusion ou une inclusion porte sa date (period_end)")
             if not line.get("counterparty_name") or line.get("counterparty_evidence") != "named":
                 errs.append("une ligne de carnet nomme le client (counterparty_name, counterparty_evidence named)")
+        from .ppe_notes import schema_errors as component_errors     # ligne de composante (D-0076, point 7)
+        errs += component_errors(line)
     return errs
 
 
