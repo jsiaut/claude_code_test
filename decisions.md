@@ -3576,3 +3576,38 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - chacune se publie avec ses termes (numérateur et dénominateur), comme tout rapport de flux sur stock (§6.2) ;
     - motifs d'indétermination : « concept non résolu » ou « non publié » faute de terme, « période antérieure absente » faute d'en-cours au trimestre précédent, « dénominateur négatif ou nul » pour un capex ou des en-cours nuls.
   - Ni événement de l'annexe F, ni critère, ni seuil ne change, et il n'y a ni lecture ni requête. Le réassemblage et les rendus se font à l'as_of du 2026-10-24, et `delta.md` se compare aux tables de dca257c.
+
+  (4) Code, avant tout recalcul (8b77edc) :
+  - `config.yaml`, section `cip_dimensional` : l'axe, les quatre membres et les deux postes ;
+  - `quantities` :
+    - `cip_dimensional` remplit la table `cip_dim` avec les faits admis ;
+    - `occurrences` les ajoute sous `construction_in_progress`, avec le concept du poste ;
+    - grandeur nouvelle `ppe_and_finance_rou_gross` ;
+  - `rank2` :
+    - `cip_share_cell` : dénominateur du même poste, repli sur le total du tableau, drapeau ;
+    - `cip_flows` : les deux mesures ;
+    - la durée implicite garde son code et retire désormais les en-cours qu'elle reçoit ;
+  - registre (deux mesures), rendu (deux lignes des tableaux trimestriels), `schema.sql` régénéré ;
+  - 13 tests (`test_d0075`), 393 en tout ; ruff passe.
+
+  (5) Réassemblage et résultats (2026-10-26) :
+  - Réassemblage en 1 642 s, le mémo ne reprenant rien puisque la configuration a changé. L'étape de base y a pris 194 s. Mesurée à part, elle prend 103 s, la requête d'admission 0,1 s et la lecture des occurrences 2,1 s. L'écart avec les 894 s de D-0074 tient à la machine, comme en D-0070.
+  - Faits admis : 591, de 20 groupes. La correspondance des concepts passe de 36 011 à 36 138 lignes, celles de la grandeur nouvelle.
+  - `cip_share`, vue `as_known` : de 41 à 283 cellules calculées, et de 3 à 23 groupes.
+    - Dernières valeurs : Cipher 70,8 %, TeraWulf 63,2 %, Applied Digital 57,0 %, Cerebras 56,0 %, Hut 8 52,7 %, IREN 47,7 %, Nebius 39,1 % (fin 2025), Oracle 31,6 %, Meta 27,4 %, CoreWeave 22,6 %, Galaxy 21,8 %, SpaceX 21,6 %, Amazon 13,4 % (fin 2025), Micron 8,5 %, NVIDIA 4,0 %.
+    - Alphabet : l'en-cours est admis, mais son tableau ne publie aucun total brut qui le contienne, puisque ses actifs pas encore en service s'ajoutent après les amortissements. La part reste « non publié » depuis le 30 juin 2025.
+  - `implied_useful_life`, vue `as_known` : 32 des 64 cellules calculées changent. Entre autres :
+    - exercice 2025 : CoreWeave 9,54 → 6,98 ans, Nebius 8,85 → 5,71, Amazon 7,06 → 6,16, TeraWulf 11,95 → 5,31, Galaxy 27,70 → 7,45 ;
+    - autres exercices : IREN 7,32 → 6,38 (clos en juin 2025), NVIDIA 4,86 → 4,65 (clos en janvier 2026), Applied Digital 18,29 → 9,72 (clos en mai 2023).
+  - `cip_change_to_capex` : 226 cellules calculées, pour 17 groupes. Au dernier trimestre publié :
+    - Cipher 205 %, IREN 118 %, Core Scientific 86 % (T3 2025), TeraWulf 84 %, Cerebras 74 %, AMD 62 %, SpaceX 57 %, Applied Digital 43 %, CoreWeave 36 %, Alphabet 32 %, Oracle 30 %, Meta 27 %, Micron 4 % ;
+    - valeurs négatives quand les mises en service dépassent les entrées : Galaxy −298 %, Riot −41 %, Supermicro −11 %.
+  - `capitalized_interest_to_cip` : 46 cellules, pour 6 groupes. Au dernier trimestre, de 0,31 % (Alphabet) à 1,63 % (TeraWulf), avec CoreWeave à 0,73 % et SpaceX à 0,66 %.
+  - Contrôles : 70 578 → 70 585. Les sept nouveaux sont des C4 en `mismatch` : en-cours révisés d'un dépôt à l'autre chez Applied Digital (3), Alphabet et TeraWulf, total du tableau chez Cipher et Core Scientific. Aucun contrôle ne bascule.
+  - Tables, contre celles de dca257c :
+    - documents, observations, entités, liens et exclusions sont identiques ;
+    - les faits aussi, sauf la colonne `model_quantity` de 452 faits, ceux de la grandeur nouvelle ;
+    - mesures : 189 234 → 192 242, soit les deux mesures nouvelles, 1 504 cellules chacune.
+  - `delta.md` :
+    - valeurs changées pour `cip_share` (485 valeurs, 905 statuts ou motifs, sur les deux vues) et pour `implied_useful_life` (66 valeurs) ;
+    - aucun événement de l'annexe F n'apparaît ni ne disparaît, et aucune arête ne change.

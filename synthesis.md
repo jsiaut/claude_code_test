@@ -16,7 +16,7 @@
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17; Intel, Micron, TSMC depuis le 2026-10-18; ASML, SK hynix depuis le 2026-10-18; Cerebras depuis le 2026-10-22. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 56 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 168 issues ; motifs : intervalle à cheval sur le seuil : 42, précondition non remplie : 28, historique tronqué : 13, recherche incomplète : 9, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, caviardé : 1. Issues déterminées : E.1 non étayé 69, E.1 étayé 5. E.2 seule (dépendance de revenu) : 84 issues indéterminées sur 84. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. Complète veut dire que tous les blocs du catalogue de lecture des dépôts de la paire sont lus (notes, items de 8-K, pièces annexées, Items 404, 9A et 4) ; le rapport de gestion et la description de l'activité n'en font pas partie, si bien qu'une pièce L5 qui ne serait que là échapperait à la recherche (D-0069, point 8). La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
 - **Contrôles comptables, vue `as_known`** : `mismatch` 1 864, `not_testable` 1 108, `ok` 30 393, `tautological` 1 406 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
-- **Contrôles comptables, vue `revised`** : `mismatch` 3 031, `not_testable` 1 550, `ok` 29 820, `tautological` 1 406.
+- **Contrôles comptables, vue `revised`** : `mismatch` 3 038, `not_testable` 1 550, `ok` 29 820, `tautological` 1 406.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 195/877, C11 99/842, C12 432/2 055, C13 0/361, C14 85/1 195, C15 139/847, C16 2/511, C1 423/15 403, C2 180/9 041, C3 217/642, C5 0/250, C6 0/1 406, C7 9/530, C8 77/209, C9 6/602.
 - **Exclusions principales** : `not_processed` 27 933, `pending_entity` 1 932, `out_of_scope` 1 258, `financial_parties_only` 358, `conflicting` 258, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 24, `history_left_censored` 11, `not_public` 2.
 - **Doublons de clé primaire écartés à l'assemblage** (une ligne gardée par clé, la dernière ; D-0069, point 9) : `entities` 1, dont 1 clé(s) en collision, `exclusions` 2, dont 0 clé(s) en collision, `measures` 692, dont 240 clé(s) en collision.
@@ -656,7 +656,9 @@ Dernière information balisée utilisée : 2026-08-26.
 | Capitaux propres | 118 897 M$ | 157 293 M$ | 195 474 M$ | 228 984 M$ |
 | Résultats non distribués (déficit si négatif) | 107 908 M$ | 146 973 M$ | 185 038 M$ | 219 157 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -1,2 % | n.d. (non publié) | -0,9 % | -1,0 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | 4,0 % | n.d. (non publié) | n.d. (non publié) |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2025-01-26 | 2026-01-25 |
 | --- | ---: | ---: |
@@ -705,6 +707,8 @@ Dernière information balisée utilisée : 2026-07-23.
 | Résultats non distribués (déficit si négatif) | 297 226 M$ | 324 055 M$ | 384 024 M$ | 493 371 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -1,7 % | n.d. (non publié) | -0,4 % | 0,9 % |
 | En-cours ÷ immobilisations brutes | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Variation des en-cours ÷ capex décaissé | 34,0 % | 31,4 % | 84,1 % | 31,6 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | 0,2 % | 0,2 % | 0,3 % | 0,3 % |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -752,7 +756,9 @@ Dernière information balisée utilisée : 2026-07-31.
 | Capitaux propres | 369 631 M$ | 411 065 M$ | 441 914 M$ | 551 620 M$ |
 | Résultats non distribués (déficit si négatif) | 229 344 M$ | 250 536 M$ | 280 791 M$ | 343 438 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 1,0 % | n.d. (non publié) | 0,8 % | 0,9 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | 13,4 % | n.d. (non publié) | n.d. (non publié) |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -800,7 +806,9 @@ Dernière information balisée utilisée : 2026-10-22.
 | Capitaux propres | 217 243 M$ | 243 681 M$ | 261 221 M$ | 272 386 M$ |
 | Résultats non distribués (déficit si négatif) | 121 179 M$ | 144 647 M$ | 157 843 M$ | 165 342 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | -1,0 % | -0,2 % | 0,0 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 21,6 % | 23,8 % | 27,4 % | 27,4 % |
+| Variation des en-cours ÷ capex décaissé | 30,4 % | 55,3 % | 64,2 % | 27,0 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -849,6 +857,8 @@ Dernière information balisée utilisée : 2026-07-29.
 | Résultats non distribués (déficit si négatif) | 254 873 M$ | 280 789 M$ | 302 526 M$ | 328 265 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -0,1 % | -0,1 % | -0,2 % | n.d. (non publié) |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-06-30 | 2026-06-30 |
 | --- | ---: | ---: |
@@ -897,6 +907,8 @@ Dernière information balisée utilisée : 2026-09-11.
 | Résultats non distribués (déficit si négatif) | -9 355 M$ | -7 092 M$ | -4 309 M$ | -1 114 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 1,8 % | 1,3 % | n.d. (non publié) | 3,1 % |
 | En-cours ÷ immobilisations brutes | n.d. (non publié) | n.d. (non publié) | 32,6 % | 31,6 % |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (non publié) | n.d. (période antérieure absente) | 30,1 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-05-31 | 2026-05-31 |
 | --- | ---: | ---: |
@@ -944,7 +956,9 @@ Dernière information balisée utilisée : 2026-08-12.
 | Capitaux propres | 3 878 M$ | 3 335 M$ | 4 759 M$ | 5 024 M$ |
 | Résultats non distribués (déficit si négatif) | -2 192 M$ | -2 643 M$ | -3 383 M$ | -4 009 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 132,9 % | n.d. (non publié) | 111,6 % | 13,1 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 29,7 % | 27,6 % | 23,4 % | 22,6 % |
+| Variation des en-cours ÷ capex décaissé | 117,2 % | 60,7 % | 2,7 % | 36,4 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | 1,1 % | n.d. (frontière de retraitement) | 1,0 % | 0,7 % |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -992,7 +1006,9 @@ Dernière information balisée utilisée : 2026-10-22.
 | Capitaux propres | 2 573 M$ | 34 533 M$ | 127 224 M$ | 176 768 M$ |
 | Résultats non distribués (déficit si négatif) | -37 035 M$ | n.d. (non publié) | -41 852 M$ | -37 448 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | n.d. (non publié) | 100,2 % | 324,2 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 8,3 % | n.d. (non publié) | 15,1 % | 21,6 % |
+| Variation des en-cours ÷ capex décaissé | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (période antérieure absente) | 57,1 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (période antérieure absente) | 0,7 % |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1039,6 +1055,8 @@ Dernière information balisée utilisée : 2026-08-05.
 | Résultats non distribués (déficit si négatif) | 5 188 M$ | 6 699 M$ | 8 082 M$ | 5 909 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 0,3 % | n.d. (non publié) | 1,5 % | 1,8 % |
 | En-cours ÷ immobilisations brutes | 12,5 % | 10,3 % | 11,8 % | 18,1 % |
+| Variation des en-cours ÷ capex décaissé | 5,8 % | -36,9 % | 35,5 % | 62,1 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-28 | 2025-12-27 |
 | --- | ---: | ---: |
@@ -1087,6 +1105,8 @@ Dernière information balisée utilisée : 2026-09-10.
 | Résultats non distribués (déficit si négatif) | 9 761 M$ | 6 520 M$ | 12 166 M$ | 22 151 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | 1,1 % | 1,0 % | 0,6 % |
 | En-cours ÷ immobilisations brutes | 1,1 % | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Variation des en-cours ÷ capex décaissé | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2024-11-03 | 2025-11-02 |
 | --- | ---: | ---: |
@@ -1134,7 +1154,9 @@ Dernière information balisée utilisée : 2026-08-28.
 | Capitaux propres | 14 057 M$ | 14 308 M$ | 18 216 M$ | 18 532 M$ |
 | Résultats non distribués (déficit si négatif) | 1 010 M$ | 1 356 M$ | 1 336 M$ | 1 591 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -0,2 % | n.d. (non publié) | 2,0 % | 5,8 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2025-02-01 | 2026-01-31 |
 | --- | ---: | ---: |
@@ -1182,7 +1204,9 @@ Dernière information balisée utilisée : 2026-08-05.
 | Capitaux propres | 247 M$ | 140 M$ | -79 M$ | 147 M$ |
 | Résultats non distribués (déficit si négatif) | -867 M$ | -994 M$ | -1 421 M$ | -2 361 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 5,1 % | n.d. (non publié) | 10,4 % | 25,5 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 42,3 % | 65,2 % | 60,9 % | 63,2 % |
+| Variation des en-cours ÷ capex décaissé | 56,6 % | 107,3 % | 111,3 % | 84,2 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | 0,4 % | 1,1 % | 1,5 % | 1,6 % |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1230,7 +1254,9 @@ Dernière information balisée utilisée : 2026-08-04.
 | Capitaux propres | 783 M$ | 806 M$ | 714 M$ | 562 M$ |
 | Résultats non distribués (déficit si négatif) | -269 M$ | -1 004 M$ | -1 118 M$ | -1 386 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 18,2 % | n.d. (non publié) | 12,4 % | 9,2 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 1,3 % | 28,9 % | 54,4 % | 70,8 % |
+| Variation des en-cours ÷ capex décaissé | 0,1 % | 117,0 % | 100,7 % | 205,2 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1279,6 +1305,8 @@ Dernière information balisée utilisée : 2026-07-28.
 | Résultats non distribués (déficit si négatif) | -4 238 M$ | -4 147 M$ | -4 494 M$ | -5 649 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 8,9 % | n.d. (non publié) | -11,1 % | 2,3 % |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Variation des en-cours ÷ capex décaissé | 86,4 % | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1326,7 +1354,9 @@ Dernière information balisée utilisée : 2026-04-30.
 | Capitaux propres | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 4 594 M$ |
 | Résultats non distribués (déficit si négatif) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 3 300 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 39,1 % |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (période antérieure absente) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (période antérieure absente) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1372,7 +1402,9 @@ Dernière information balisée utilisée : 2026-08-27.
 | Capitaux propres | 2 876 M$ | 2 511 M$ | 2 665 M$ | 4 186 M$ |
 | Résultats non distribués (déficit si négatif) | -212 M$ | -367 M$ | -615 M$ | -1 299 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 91,1 % | 41,6 % | 52,6 % | n.d. (non publié) |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 19,4 % | 29,2 % | 41,9 % | 47,7 % |
+| Variation des en-cours ÷ capex décaissé | 126,0 % | 106,3 % | 110,7 % | 118,0 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-06-30 | 2026-06-30 |
 | --- | ---: | ---: |
@@ -1420,7 +1452,9 @@ Dernière information balisée utilisée : 2026-10-07.
 | Capitaux propres | 1 450 M$ | 1 581 M$ | 1 717 M$ | 1 602 M$ |
 | Résultats non distribués (déficit si négatif) | -512 M$ | -583 M$ | -662 M$ | -838 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 32,4 % | 26,8 % | n.d. (non publié) | 13,9 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 31,6 % | 50,3 % | 64,4 % | 57,0 % |
+| Variation des en-cours ÷ capex décaissé | -120,9 % | 116,4 % | 95,5 % | 43,1 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 1,1 % |
 
 | Mesure (exercice clos le) | 2025-05-31 | 2026-05-31 |
 | --- | ---: | ---: |
@@ -1469,6 +1503,8 @@ Dernière information balisée utilisée : 2026-09-08.
 | Résultats non distribués (déficit si négatif) | 1 420 M$ | 3 325 M$ | 6 343 M$ | 10 065 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -5,2 % | n.d. (non publié) | -6,6 % | -5,0 % |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-01-31 | 2026-01-30 |
 | --- | ---: | ---: |
@@ -1516,7 +1552,9 @@ Dernière information balisée utilisée : 2026-08-31.
 | Capitaux propres | 6 523 M$ | 6 992 M$ | 7 575 M$ | 14 479 M$ |
 | Résultats non distribués (déficit si négatif) | 3 603 M$ | 4 003 M$ | 4 487 M$ | 5 652 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 3,8 % | 9,1 % | 11,3 % | n.d. (non publié) |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 0,2 % | 1,7 % | 7,3 % | 6,8 % |
+| Variation des en-cours ÷ capex décaissé | 0,7 % | 48,3 % | 55,0 % | -11,0 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2025-06-30 | 2026-06-30 |
 | --- | ---: | ---: |
@@ -1564,7 +1602,9 @@ Dernière information balisée utilisée : 2024-11-13.
 | Capitaux propres | 1 442 M$ | 1 422 M$ | 1 380 M$ | 1 443 M$ |
 | Résultats non distribués (déficit si négatif) | 285 M$ | 5 M$ | -214 M$ | -365 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 26,3 % | n.d. (non publié) | 8,0 % | -0,4 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 5,4 % | 10,6 % | 29,1 % | 52,7 % |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | 1,1 % |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1612,7 +1652,9 @@ Dernière information balisée utilisée : 2026-08-10.
 | Capitaux propres | 1 762 M$ | 1 956 M$ | 1 812 M$ | 1 823 M$ |
 | Résultats non distribués (déficit si négatif) | 541 M$ | 343 M$ | 251 M$ | 233 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -35,1 % | n.d. (non publié) | 205,4 % | -48,1 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 74,3 % | 87,2 % | 89,5 % | 21,8 % |
+| Variation des en-cours ÷ capex décaissé | 127,6 % | 96,8 % | 105,3 % | -297,8 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1661,6 +1703,8 @@ Dernière information balisée utilisée : 2026-08-07.
 | Résultats non distribués (déficit si négatif) | 3 340 M$ | 3 425 M$ | 3 531 M$ | 3 611 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -5,5 % | n.d. (non publié) | -0,7 % | 5,8 % |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1708,7 +1752,9 @@ Dernière information balisée utilisée : 2026-08-03.
 | Capitaux propres | 83 M$ | 83 M$ | 85 M$ | 89 M$ |
 | Résultats non distribués (déficit si négatif) | -216 M$ | -222 M$ | -228 M$ | -233 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 30,9 % | n.d. (non publié) | 9,7 % | 9,3 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 0,1 % | 0,1 % | 0,1 % | 0,2 % |
+| Variation des en-cours ÷ capex décaissé | 1,1 % | -7,2 % | 6,9 % | 38,4 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1756,7 +1802,9 @@ Dernière information balisée utilisée : 2026-08-10.
 | Capitaux propres | 3 505 M$ | 2 858 M$ | 2 395 M$ | 2 193 M$ |
 | Résultats non distribués (déficit si négatif) | -663 M$ | -1 354 M$ | -1 854 M$ | -2 091 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 40,9 % | n.d. (non publié) | 5,5 % | -9,1 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 5,9 % | 7,8 % | 10,0 % | 8,7 % |
+| Variation des en-cours ÷ capex décaissé | -15,8 % | 65,5 % | 41,8 % | -41,5 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1805,6 +1853,8 @@ Dernière information balisée utilisée : 2026-07-31.
 | Résultats non distribués (déficit si négatif) | -1 508 M$ | -1 609 M$ | -1 744 M$ | -1 888 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | -54,8 % | n.d. (non publié) | 6,7 % | 4,9 % |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1851,6 +1901,8 @@ Dernière information balisée utilisée : 2026-08-10.
 | Résultats non distribués (déficit si négatif) | 7 306 M$ | 7 634 M$ | 5 157 M$ | 6 149 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 3,3 % | n.d. (non publié) | 0,3 % | 3,4 % |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1897,6 +1949,8 @@ Dernière information balisée utilisée : 2026-08-07.
 | Résultats non distribués (déficit si négatif) | 184 M$ | 192 M$ | -324 M$ | -19 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 1,9 % | n.d. (non publié) | 1,8 % | 2,2 % |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -1944,7 +1998,9 @@ Dernière information balisée utilisée : 2026-07-24.
 | Capitaux propres | 106 376 M$ | 114 281 M$ | 111 394 M$ | 87 542 M$ |
 | Résultats non distribués (déficit si négatif) | 49 602 M$ | 48 983 M$ | 45 179 M$ | 33 842 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 5,6 % | n.d. (non publié) | 17,0 % | 16,8 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | 16,3 % | n.d. (non publié) | n.d. (non publié) |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (non publié) | n.d. (non publié) |
 
 | Mesure (exercice clos le) | 2024-12-28 | 2025-12-27 |
 | --- | ---: | ---: |
@@ -1992,7 +2048,9 @@ Dernière information balisée utilisée : 2026-10-09.
 | Capitaux propres | 58 806 M$ | 72 459 M$ | 100 724 M$ | 138 378 M$ |
 | Résultats non distribués (déficit si négatif) | 53 344 M$ | 66 824 M$ | 94 682 M$ | 131 851 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | 1,4 % | 1,7 % | 1,8 % | n.d. (non publié) |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | 5,0 % | 6,3 % | 8,7 % | 8,5 % |
+| Variation des en-cours ÷ capex décaissé | 3,2 % | 28,1 % | 44,1 % | 4,4 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
 
 | Mesure (exercice clos le) | 2025-08-28 | 2026-09-03 |
 | --- | ---: | ---: |
@@ -2041,6 +2099,8 @@ Dernière information balisée utilisée : n.d..
 | Résultats non distribués (déficit si négatif) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 160 629 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -2087,6 +2147,8 @@ Dernière information balisée utilisée : 2026-02-25.
 | Résultats non distribués (déficit si négatif) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 17 587 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
 | En-cours ÷ immobilisations brutes | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | 13,8 % |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (période antérieure absente) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (période antérieure absente) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -2133,6 +2195,8 @@ Dernière information balisée utilisée : n.d..
 | Résultats non distribués (déficit si négatif) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Variation des en-cours ÷ capex décaissé | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -2178,7 +2242,9 @@ Dernière information balisée utilisée : 2026-08-12.
 | Capitaux propres | n.d. (non publié) | -579 M$ | -195 M$ | 9 155 M$ |
 | Résultats non distribués (déficit si négatif) | n.d. (non publié) | -905 M$ | -919 M$ | -1 370 M$ |
 | Variation du nombre moyen dilué d'actions (sur un an) | n.d. (non publié) | n.d. (non publié) | 20,8 % | -6,7 % |
-| En-cours ÷ immobilisations brutes | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| En-cours ÷ immobilisations brutes | n.d. (non publié) | 33,5 % | 46,1 % | 56,0 % |
+| Variation des en-cours ÷ capex décaissé | n.d. (non publié) | n.d. (période antérieure absente) | 99,4 % | 74,2 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | n.d. (non publié) | n.d. (période antérieure absente) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -6000,5 +6066,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 564, non publié 6 846, terme manquant 6 611, historique tronqué 4 227, période antérieure absente 1 730, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 933, recherche incomplète 576, dénominateur négatif ou nul 452, client anonyme 262, frontière de retraitement 192, caviardé 176, non collecté 152, période non écoulée à la date de coupure 92, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 22, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 614, non publié 7 616, terme manquant 6 671, historique tronqué 4 227, période antérieure absente 1 838, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 933, recherche incomplète 576, dénominateur négatif ou nul 453, client anonyme 262, frontière de retraitement 193, caviardé 176, non collecté 152, période non écoulée à la date de coupure 92, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 22, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
 

@@ -1,6 +1,6 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-10-24, comparée à l'exécution précédente, dont les tables sont celles du commit 580e8e97ffc5 (2026-10-22). Généré depuis les tables (D-0069, point 8).*
+*Exécution du 2026-10-24, comparée à l'exécution précédente, dont les tables sont celles du commit dca257ca9775 (2026-10-24). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
@@ -8,11 +8,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 
 ## Événements nouveaux de l'annexe F
 
-**Apparus** (trimestres des groupes) :
-- Meta : F2 (flux après financement des contreparties négatif) — 1 trimestre(s)
-- SpaceX : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
-- SpaceX : F2 (flux après financement des contreparties négatif) — 3 trimestre(s)
-- SpaceX : F4 (amendement ou dérogation de clause financière) — 1 trimestre(s)
+**Apparus** : aucun.
 
 **Disparus** : aucun.
 
@@ -29,7 +25,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 - Blocs lus : 11 257 sur 11 615 clés de contenu ; par item de 8-K : 1.01 474, 1.02 49, 2.01 38, 2.03 144, 3.03 35, 8.01 828 ; pièces arrêtées à leur en-tête : EX-4 358.
 - Lignes rejetées par la validation : 0.
 - Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 692 (collisions : 240).
-- Durée de l'assemblage : 894 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 1642 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -90,17 +86,11 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 
 ## Exclusions nouvelles, par motif
 
-- `out_of_scope` : +128, −0
-- `not_processed` : +35, −24
-- `financial_parties_only` : +2, −0
-- `pending_entity` : +2, −0
-- `conflicting` : +1, −0
+- Aucune.
 
 ## Décisions et variantes nouvelles
 
-- D-0072 — Observations d'architecture de l'audit : ce qui est déjà fait, ce qui se fait, ce qui ne se fait pas. Règles fixées avant tout changement.
-- D-0073 — Une seule source pour l'as_of : la clé `as_of` de `config.yaml`. Règles fixées avant tout changement.
-- D-0074 — Mise à jour du modèle à l'as_of du 2026-10-24. Règles fixées avant tout tirage.
+- D-0075 — En-cours publiés sous dimension et deux indicateurs des en-cours. Règles fixées avant tout changement.
 
 ## Critères des annexes E et F
 
@@ -112,7 +102,7 @@ Modifiés : annex_f
 
 ## Dépôts nouveaux
 
-Dépôts lus pour la première fois : D 76, 8-K 14, 6-K 8, D/A 6, 10-Q 2, 20-F 2, DEF 14A 2, 10-K 1, 10-Q/A 1, 20-F/A 1, F-1/A 1, S-1/A 1.
+Aucun.
 
 ## Valeurs changées pour des périodes déjà publiées
 
@@ -120,92 +110,21 @@ Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cel
 
 | Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
 | --- | ---: | ---: | ---: | ---: |
-| `capex_cash` | 4 | 4 | 6 | 0 |
-| `capex_to_cfo` | 4 | 4 | 12 | 0 |
-| `capex_to_revenue` | 4 | 4 | 6 | 0 |
-| `cfo_net_income_gap` | 4 | 4 | 6 | 0 |
-| `fcf_after_counterparty_financing` | 4 | 4 | 6 | 0 |
-| `fcf_after_finance_leases` | 4 | 4 | 6 | 0 |
-| `fcf_after_sbc` | 4 | 4 | 6 | 0 |
-| `fcf_basic` | 4 | 4 | 6 | 0 |
-| `fragility_event` | 4 | 9 | 46 | 6 |
-| `gross_margin` | 4 | 4 | 6 | 0 |
-| `operating_margin` | 4 | 4 | 6 | 0 |
-| `sbc_to_cfo` | 4 | 4 | 6 | 0 |
-| `capitalized_interest` | 2 | 2 | 6 | 0 |
-| `eq_equity_and_accumulated_deficit` | 2 | 2 | 12 | 0 |
-| `receivables_collection_period` | 2 | 2 | 12 | 0 |
-| `annex_e_outcome` | 1 | 0 | 5 | 0 |
-| `documented_pair_coverage` | 1 | 0 | 2 | 0 |
-| `bdc_liab_asset_coverage` | 0 | 0 | 2 | 0 |
-| `bdc_liab_debt_to_net_assets` | 0 | 0 | 2 | 0 |
-| `bdc_liab_liabilities_to_net_assets` | 0 | 0 | 2 | 0 |
-| `bdc_portfolio_fv_to_cost` | 0 | 0 | 2 | 0 |
-| `bdc_portfolio_non_accrual_share` | 0 | 0 | 2 | 0 |
-| `bdc_portfolio_pik_share` | 0 | 0 | 2 | 0 |
-| `bdc_portfolio_software_share` | 0 | 0 | 2 | 0 |
-| `bdc_portfolio_unfunded_ratio` | 0 | 0 | 2 | 0 |
-| `bdc_tender_acceptance_ratio` | 0 | 4 | 5 | 4 |
-| `bdc_tender_demand_ratio` | 0 | 4 | 5 | 4 |
-| `capex_accrual` | 0 | 0 | 2 | 2 |
-| `cip_share` | 0 | 0 | 6 | 0 |
-| `contract_coverage` | 0 | 0 | 1 | 0 |
-| `counterparty_exposure` | 0 | 0 | 10 | 9 |
-| `cov_interest_coverage` | 0 | 10 | 12 | 0 |
-| `cov_pik_interest` | 0 | 0 | 6 | 0 |
-| `customer_advances` | 0 | 0 | 6 | 0 |
-| `customer_concentration_anonymous` | 0 | 0 | 8 | 0 |
-| `depreciation_life_published` | 0 | 0 | 6 | 0 |
-| `documented_backlog_dependency` | 0 | 0 | 12 | 4 |
-| `documented_revenue_dependency` | 0 | 0 | 20 | 0 |
-| `earnings_bridge_pretax` | 0 | 0 | 4 | 4 |
-| `earnings_bridge_share` | 0 | 0 | 2 | 2 |
-| `eq_diluted_share_count_change` | 0 | 0 | 6 | 0 |
-| `exposure_matrix` | 0 | 0 | 56 | 2 |
-| `finance_lease_additions` | 0 | 0 | 2 | 2 |
-| `financed_status` | 0 | 0 | 148 | 0 |
-| `form_d_offering_amount` | 0 | 0 | 20 | 0 |
-| `implied_useful_life` | 0 | 0 | 2 | 2 |
-| `investor_customer_revenue_share` | 0 | 0 | 4 | 0 |
-| `lease_not_commenced_bridge` | 0 | 0 | 8 | 8 |
-| `lev_debt_and_leases_to_operating_income_plus_da` | 0 | 4 | 12 | 0 |
-| `liq_cash_to_12m_outflows` | 0 | 0 | 4 | 4 |
-| `liq_principal_due_to_cash` | 0 | 0 | 4 | 4 |
-| `liq_undrawn_committed_facilities` | 0 | 0 | 6 | 0 |
-| `named_edge_coverage` | 0 | 0 | 3 | 0 |
-| `operating_lease_rou_additions` | 0 | 44 | 6 | 0 |
-| `relationship_conclusion` | 0 | 0 | 1 | 0 |
-| `revenue_growth` | 0 | 3 | 12 | 0 |
-| `rpo_beyond_12m` | 0 | 0 | 4 | 0 |
-| `rpo_total` | 0 | 0 | 6 | 0 |
-| `segment_profit` | 0 | 0 | 42 | 0 |
-| `segment_revenue` | 0 | 0 | 42 | 0 |
-| `segment_significant_expenses` | 0 | 0 | 188 | 0 |
-| `sig_auditor_change_or_nonreliance` | 0 | 0 | 3 | 0 |
-| `sig_covenant_events` | 0 | 0 | 3 | 0 |
-| `sig_distress_8k_items` | 0 | 0 | 3 | 0 |
-| `sig_going_concern` | 0 | 0 | 3 | 0 |
-| `sig_late_filing` | 0 | 0 | 3 | 0 |
-| `sig_material_weakness` | 0 | 0 | 3 | 0 |
-| `sig_pledged_assets` | 0 | 0 | 3 | 0 |
-| `stock_paid_additions` | 0 | 0 | 2 | 2 |
-| `supplier_concentration` | 0 | 0 | 2 | 0 |
-| `vendor_financed_additions` | 0 | 0 | 2 | 2 |
-| `visible_pairs_count` | 0 | 0 | 1 | 0 |
-| `working_capital` | 0 | 0 | 36 | 0 |
+| `cip_share` | 485 | 905 | 0 | 0 |
+| `implied_useful_life` | 66 | 0 | 0 | 0 |
+| `capitalized_interest_to_cip` | 0 | 0 | 1 504 | 0 |
+| `cip_change_to_capex` | 0 | 0 | 1 504 | 0 |
 
-Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 107, Apollo 84, ASML 7, Broadcom 22, Backblaze 10, Blackstone 1, Cipher 45, Core Scientific 96, CoreWeave 3, Dell 277, Alphabet 20, Hut 8 7, Intel 44, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 32, Oracle 52, Blue Owl 7, Riot 112, Supermicro 162, TSMC 17, TeraWulf 20.
+Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 110, Apollo 84, ASML 7, Broadcom 22, Backblaze 10, Blackstone 1, Cipher 46, Core Scientific 97, CoreWeave 3, Dell 277, Alphabet 21, Hut 8 7, Intel 44, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 32, Oracle 52, Blue Owl 7, Riot 112, Supermicro 162, TSMC 17, TeraWulf 21.
 
 ## Arêtes nouvelles
 
-- Apparues : commercial/amount 4, credit_support/relation 5, financing/amount 2, financing/relation 11.
+- Apparues : aucune.
 - Disparues : aucune.
 
 ## Contrôles qui ont basculé
 
-- C1 : `mismatch` → `not_testable` 1
-- C1 : `ok` → `not_testable` 2
-- C2 : `not_testable` → `ok` 1
+- Aucun.
 
 ## Entités pending
 
@@ -221,5 +140,5 @@ Relations candidates par paire du registre : na01 0, na02 0, na03 233, na04 0, n
 
 ## Changements dus à une nouvelle passe de lecture ou au code
 
-Lecture : 161 lignes d'observation nouvelles, dans 62 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
+Lecture : 0 lignes d'observation nouvelles, dans 0 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
 

@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..3742a2a 100644
+index 1378604..99da218 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,207 @@ user_agent:
@@ -1433,7 +1433,7 @@ index 1378604..3742a2a 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1708,465 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1708,477 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1498,6 +1498,18 @@ index 1378604..3742a2a 100644
 +  interest_expense: [InterestExpense]
 +  interest_paid: [InterestPaidClassifiedAsOperatingActivities, InterestPaidClassifiedAsFinancingActivities]
 +  short_term_investments: [CurrentInvestments]
++
++cip_dimensional:             # D-0075 : en-cours publiés comme membre de l'axe des classes d'immobilisations, sur un poste
++                             # brut ; listes fermées, un membre ne s'ajoute que par décision (libellé ou documentation)
++  axis: us-gaap:PropertyPlantAndEquipmentByTypeAxis
++  members:
++    - us-gaap:ConstructionInProgressMember
++    - us-gaap:AssetUnderConstructionMember
++    - smci:BuildingsUnderConstructionMember     # libellé court « Construction in progress »
++    - nbis:AssetsNotInUseMember                 # « Assets not yet in use » : matériel informatique en cours d'installation
++  lines:
++    - us-gaap:PropertyPlantAndEquipmentGross
++    - us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization
 +
 +# Bloc montages (D-0046, D-0049) : un montage = une recherche plein texte d'EDGAR fixée d'avance, les
 +# rapports périodiques de déposants nommés, des termes qualifiants et un plafond d'unités. Un terme ne
