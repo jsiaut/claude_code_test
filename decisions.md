@@ -3534,3 +3534,45 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Nebius : facilité relais de 3,5 Md$.
   - Constat, sans suite dans cette décision (aucune relecture, point 3) : neuf lignes de passes antérieures (2026-10-07), dans six blocs de Microsoft et de SpaceX, nomment une personne physique. Quatre le font dans une note, quatre dans une citation, une comme contrepartie. La règle les exclut. Leur correction est proposée à l'utilisateur. « Harbor Gates Capital, LLC » et « Musk Industries LLC » sont des sociétés.
   - Verrou de session levé en fin d'exécution. La tâche planifiée de §11.5 n'est pas créée.
+
+- **D-0075 — En-cours publiés sous dimension et deux indicateurs des en-cours. Règles fixées avant tout changement.**
+  (1) Origine : demande de l'utilisateur, le 2026-10-26, à la suite d'un échange sur les GPU achetés et pas encore en service : « Oui fais les pistes 1 et 2 ». La piste 1 consiste à lire les en-cours publiés sous dimension, la piste 2 à ajouter deux indicateurs tirés du XBRL seul. L'as_of reste le 2026-10-24. Il n'y a ni requête réseau ni lecture.
+
+  (2) Constat, sur les tables de dca257c, avant tout changement :
+  - `cip_share` (§6.2, en-cours ÷ immobilisations brutes) : 752 cellules, dont 41 calculées, pour AMD, ASML et Oracle seulement. Les 711 autres sont indéterminées, 623 au motif « concept non résolu » et 88 « non publié ». La grandeur `construction_in_progress` ne lit que l'élément `ConstructionInProgressGross`, ou `ConstructionInProgress` en IFRS, et les occurrences n'admettent que des faits sans dimension (sauf le RPO, D-0068, volet 1).
+  - Les en-cours de 20 groupes sont pourtant dans `facts`. Ils y sont publiés comme membre de l'axe `us-gaap:PropertyPlantAndEquipmentByTypeAxis` d'un poste d'immobilisations brutes :
+    - membres : `us-gaap:ConstructionInProgressMember` (19 groupes) ; `us-gaap:AssetUnderConstructionMember` (Alphabet, depuis 2025) ; `smci:BuildingsUnderConstructionMember` (Supermicro, libellé court « Construction in progress ») ; `nbis:AssetsNotInUseMember` (Nebius, libellé « Assets not yet in use », documenté comme « computer equipment and other assets, which are under installation ») ;
+    - montants récents : Alphabet 122,8 Md$ (30 juin 2026), Meta 89,5 Md$ (30 septembre 2026), Amazon 71,7 Md$ (31 décembre 2025), SpaceX 23,7 Md$ (30 septembre 2026), CoreWeave 11,9 Md$ (30 juin 2026), Micron 11,4 Md$ (3 septembre 2026), IREN et Applied Digital 3,7 Md$ chacun, Nebius 2,4 Md$ (31 décembre 2025) ;
+    - postes porteurs : le plus souvent `PropertyPlantAndEquipmentGross` ; chez Micron, Cipher, Intel et Alphabet, `PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization`. Aucun dépôt ne publie, à une même date, deux membres admis ni un même membre sur deux postes ;
+    - total du tableau : chez Meta, Hut 8, IREN, Backblaze et Amazon, les classes sont balisées sur `PropertyPlantAndEquipmentGross`, et le total sur le poste qui comprend les droits d'utilisation des locations-financement.
+  - Effet sur `implied_useful_life` : la durée retire les en-cours de la base, mais seulement s'ils sont balisés sans dimension. Sinon, des actifs non amortis y restent (drapeau `land_or_cip_untagged`). Recalcul hors code sur l'exercice 2025 :
+    - CoreWeave : 9,54 ans publiés, 6,98 ans sans les en-cours ;
+    - Nebius : 8,85 ans publiés, environ 5,6 ans sans les actifs pas encore en service.
+  - Hors de la règle, consignés sans suite :
+    - les acomptes sur équipements (Applied Digital, Cipher, TeraWulf) : ce sont des avances aux fournisseurs, pas des en-cours ;
+    - le matériel « not placed into service » de Micron (6,12 Md$ au 3 septembre 2026), compris dans la ligne « Equipment » et publié en note de bas de tableau ;
+    - les en-cours portés par un poste net ou d'extension (Core Scientific ; Alphabet en 2019 et 2020) ;
+    - Microsoft, qui ne publie aucun en-cours en XBRL ;
+    - les terrains, eux aussi souvent publiés sous dimension, que la durée implicite ne retire donc pas toujours.
+
+  (3) Règles :
+  - En-cours sous dimension, grandeur `construction_in_progress`. Un fait est admis s'il remplit toutes ces conditions :
+    - fait d'instance à une seule dimension, sur l'axe `us-gaap:PropertyPlantAndEquipmentByTypeAxis` ;
+    - membre de la liste fermée ci-dessus (quatre membres), sur l'un des deux postes bruts (`PropertyPlantAndEquipmentGross`, ou `PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization`) ;
+    - périmètre publié et valeur présente ;
+    - poste présent dans la linkbase de présentation du dépôt, pour une note ou le bilan (§8.3).
+
+    Un dépôt qui balise `ConstructionInProgressGross` sans dimension à la même date garde ce fait. Les listes des membres et des postes sont dans `config.yaml` (`cip_dimensional`). Un membre ne s'y ajoute que par décision, sur son libellé ou sa documentation.
+  - Une seule valeur par période, choisie par l'ordre total (§7.3) comme pour les autres grandeurs : la valeur d'un membre, jamais une somme de membres.
+  - Dénominateur de `cip_share` : le total sans dimension, à la même date, du poste qui porte l'en-cours.
+    - Pour `PropertyPlantAndEquipmentGross`, c'est `gross_depreciable_ppe`. À défaut, c'est le total du tableau, droits d'utilisation des locations-financement compris : grandeur nouvelle `ppe_and_finance_rou_gross`, élément `PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization`, en note ou au bilan.
+    - Pour un en-cours porté par ce second poste, c'est ce seul total.
+    - Un en-cours sans dimension garde `gross_depreciable_ppe`, avec le même repli.
+    - Le drapeau de la cellule dit le poste de l'en-cours et le total retenu.
+  - `implied_useful_life` : les en-cours admis, avec ou sans dimension, se retirent du brut amortissable, comme le prévoit §6.2. Un en-cours est compris dans les immobilisations brutes quel que soit le tableau qui le porte. Le drapeau `land_or_cip_untagged` garde son sens.
+  - Deux indicateurs de rang 2, trimestriels (§6.2), aux libellés neutres :
+    - `cip_change_to_capex` : (en-cours en fin de trimestre − en-cours en fin du trimestre précédent) ÷ capex décaissé du trimestre. Le rapport est négatif quand les mises en service dépassent les entrées. La variation comprend aussi les acquisitions, cessions, dépréciations et reclassements, que la mesure ne sépare pas. Le drapeau dit si les deux en-cours viennent de postes différents ;
+    - `capitalized_interest_to_cip` : intérêts capitalisés du trimestre ÷ moyenne des en-cours de début et de fin de trimestre. C'est un taux du trimestre, non annualisé ;
+    - chacune se publie avec ses termes (numérateur et dénominateur), comme tout rapport de flux sur stock (§6.2) ;
+    - motifs d'indétermination : « concept non résolu » ou « non publié » faute de terme, « période antérieure absente » faute d'en-cours au trimestre précédent, « dénominateur négatif ou nul » pour un capex ou des en-cours nuls.
+  - Ni événement de l'annexe F, ni critère, ni seuil ne change, et il n'y a ni lecture ni requête. Le réassemblage et les rendus se font à l'as_of du 2026-10-24, et `delta.md` se compare aux tables de dca257c.

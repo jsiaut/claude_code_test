@@ -1769,6 +1769,18 @@ concept_anchors_ifrs:        # D-0056, point 5 : candidats ifrs-full des grandeu
   interest_paid: [InterestPaidClassifiedAsOperatingActivities, InterestPaidClassifiedAsFinancingActivities]
   short_term_investments: [CurrentInvestments]
 
+cip_dimensional:             # D-0075 : en-cours publiés comme membre de l'axe des classes d'immobilisations, sur un poste
+                             # brut ; listes fermées, un membre ne s'ajoute que par décision (libellé ou documentation)
+  axis: us-gaap:PropertyPlantAndEquipmentByTypeAxis
+  members:
+    - us-gaap:ConstructionInProgressMember
+    - us-gaap:AssetUnderConstructionMember
+    - smci:BuildingsUnderConstructionMember     # libellé court « Construction in progress »
+    - nbis:AssetsNotInUseMember                 # « Assets not yet in use » : matériel informatique en cours d'installation
+  lines:
+    - us-gaap:PropertyPlantAndEquipmentGross
+    - us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization
+
 # Bloc montages (D-0046, D-0049) : un montage = une recherche plein texte d'EDGAR fixée d'avance, les
 # rapports périodiques de déposants nommés, des termes qualifiants et un plafond d'unités. Un terme ne
 # qualifie jamais une pièce d'un déposant dont il est le nom (owner) ; only_in le réserve aux pièces de

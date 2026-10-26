@@ -255,6 +255,8 @@ RANK2_SERIES = [
     ("eq_equity_and_accumulated_deficit", "accumulated_deficit", "Résultats non distribués (déficit si négatif)", "usd"),
     ("eq_diluted_share_count_change", NONE, "Variation du nombre moyen dilué d'actions (sur un an)", "pct"),
     ("cip_share", NONE, "En-cours ÷ immobilisations brutes", "pct"),
+    ("cip_change_to_capex", NONE, "Variation des en-cours ÷ capex décaissé", "pct"),
+    ("capitalized_interest_to_cip", NONE, "Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé)", "pct"),
 ]
 ANNUAL = [
     ("liq_principal_due_to_cash", "horizon_12m", "Principal dû à 12 mois ÷ trésorerie", "x"),

@@ -50,6 +50,8 @@ STATEMENT_OF = {
     "accounts_payable": BS, "contract_liabilities_current": BS | NOTES,
 }
 
+PPE_ROU_GROSS = "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization"
+
 UNANCHORED = {
     "income_tax_expense": (["us-gaap:IncomeTaxExpenseBenefit"], IS),
     "effective_tax_rate": (["us-gaap:EffectiveIncomeTaxRateContinuingOperations"], NOTES),
@@ -60,6 +62,8 @@ UNANCHORED = {
                               "us-gaap:DepreciationAmortizationAndAccretionNet",
                               "us-gaap:DepreciationAndAmortization", "us-gaap:Depreciation"], CF),
     "gross_depreciable_ppe": (["us-gaap:PropertyPlantAndEquipmentGross"], NOTES | BS),
+    # D-0075 : total du tableau des immobilisations, droits d'utilisation des locations-financement compris
+    "ppe_and_finance_rou_gross": ([PPE_ROU_GROSS], NOTES | BS),
     "land": (["us-gaap:Land"], NOTES | BS),
     "construction_in_progress": (["us-gaap:ConstructionInProgressGross"], NOTES | BS),
     "debt_carrying_amount": (["us-gaap:LongTermDebt", "us-gaap:DebtLongtermAndShorttermCombinedAmount"], NOTES | BS),
@@ -117,7 +121,7 @@ DURATION_HINT = {  # grandeurs instantanées ; les autres sont des flux
     "finance_lease_liability_current", "finance_lease_liability_noncurrent",
     "finance_lease_payments_undiscounted", "finance_lease_imputed_interest", "short_term_investments",
     "undrawn_committed_facilities", "receivables", "inventories", "accounts_payable",
-    "contract_liabilities_current", "retained_earnings", "gross_depreciable_ppe", "land",
+    "contract_liabilities_current", "retained_earnings", "gross_depreciable_ppe", "ppe_and_finance_rou_gross", "land",
     "construction_in_progress", "debt_carrying_amount", "debt_current", "debt_noncurrent",
     "short_term_borrowings", "debt_principal_due_12m", "debt_principal_due_year2", "contract_assets",
     "operating_lease_payments_12m", "finance_lease_payments_12m",
@@ -211,10 +215,41 @@ def rpo_next_day(rows):
     return out
 
 
+def cip_dimensional(con, cfg=None):
+    """D-0075 : faits d'en-cours publiés comme membre de l'axe des classes d'immobilisations, sur un poste brut (listes
+    fermées de `cip_dimensional`), dans la table cip_dim. Un fait d'instance à une seule dimension, de périmètre publié,
+    dont le poste figure dans la linkbase de présentation du dépôt pour une note ou le bilan (§8.3). Un dépôt qui balise
+    l'en-cours sans dimension à la même date garde ce fait. Renvoie le nombre de faits admis."""
+    c = (cfg or config.load()).get("cip_dimensional") or {}
+    dims = [json.dumps([[c.get("axis"), m]], separators=(",", ":")) for m in c.get("members") or []]
+    lines = list(c.get("lines") or [])
+    kinds = sorted(NOTES | BS)
+    con.execute("DROP TABLE IF EXISTS cip_dim")
+    con.execute("CREATE TABLE cip_dim (fact_key VARCHAR)")
+    if not dims or not lines:
+        return 0
+
+    def ph(xs):
+        return ", ".join("?" * len(xs))
+    con.execute(f"""
+      INSERT INTO cip_dim SELECT f.fact_key FROM facts f
+      WHERE f.source = 'instance' AND f.n_dims = 1 AND f.period_type = 'instant'
+        AND f.dims IN ({ph(dims)}) AND f.concept IN ({ph(lines)})
+        AND f.reporting_scope = 'as_reported' AND f.value IS NOT NULL AND NOT coalesce(f.is_nil, false)
+        AND EXISTS (SELECT 1 FROM pres p WHERE p.accession = f.accession AND p.group_id = f.group_id
+                    AND (p.child = f.concept OR p.parent = f.concept) AND p.statement_kind IN ({ph(kinds)}))
+        AND NOT EXISTS (SELECT 1 FROM facts n JOIN concept_map m ON m.accession = n.accession AND m.concept = n.concept
+                        AND m.group_id = n.group_id AND m.quantity = 'construction_in_progress'
+                        WHERE n.accession = f.accession AND n.group_id = f.group_id AND n.n_dims = 0
+                          AND n.period_type = 'instant' AND n.period_end = f.period_end)""", [*dims, *lines, *kinds])
+    return con.execute("SELECT count(*) FROM cip_dim").fetchone()[0]
+
+
 def occurrences(con):
     """Occurrences admissibles des grandeurs : faits non dimensionnés, périmètre publié,
     rattachés par la correspondance du dépôt qui les porte ; pour rpo_total, le RPO « à partir du
-    lendemain de la clôture » d'un dépôt qui ne balise pas le total (D-0068, volet 1)."""
+    lendemain de la clôture » d'un dépôt qui ne balise pas le total (D-0068, volet 1) ; pour
+    construction_in_progress, le membre en-cours d'un poste brut (D-0075), dont le concept est celui du poste."""
     rows = con.execute(f"""SELECT fact_key, accession, CAST(period_end AS VARCHAR), dims, n_dims FROM facts
                            WHERE source = 'instance' AND concept = '{RPO_CONCEPT}' AND value IS NOT NULL""").fetchall()
     nd = sorted(rpo_next_day(rows))
@@ -224,18 +259,23 @@ def occurrences(con):
         con.register("df_rpo_next_day", pd.DataFrame({"fact_key": nd}, dtype=object))
         con.execute("INSERT INTO rpo_next_day SELECT CAST(fact_key AS VARCHAR) FROM df_rpo_next_day")
         con.unregister("df_rpo_next_day")
-    con.execute("DROP VIEW IF EXISTS q_occ")
-    con.execute("""
-      CREATE VIEW q_occ AS
-      SELECT m.quantity, f.group_id, f.fact_key, f.accession, f.form, f.concept, f.period_type,
+    cip_dimensional(con)
+    cols = """f.group_id, f.fact_key, f.accession, f.form, f.concept, f.period_type,
              f.period_start, f.period_end, f.unit, f.value, f.decimals, f.decimals_inf,
              f.precision_known, f.knowledge_date, f.acceptance_datetime, f.source,
-             f.doc_rank, f.occ_rank, f.tier, f.is_tagged, f.conflict
+             f.doc_rank, f.occ_rank, f.tier, f.is_tagged, f.conflict"""
+    con.execute("DROP VIEW IF EXISTS q_occ")
+    con.execute(f"""
+      CREATE VIEW q_occ AS
+      SELECT m.quantity, {cols}
       FROM facts f JOIN concept_map m
         ON m.accession = f.accession AND m.concept = f.concept AND m.group_id = f.group_id
       WHERE (f.n_dims = 0 OR (m.quantity = 'rpo_total' AND f.fact_key IN (SELECT fact_key FROM rpo_next_day)))
         AND f.reporting_scope = 'as_reported' AND f.value IS NOT NULL
         AND NOT coalesce(f.is_nil, false)
+      UNION ALL
+      SELECT 'construction_in_progress' AS quantity, {cols}
+      FROM facts f WHERE f.fact_key IN (SELECT fact_key FROM cip_dim)
     """)
 
 

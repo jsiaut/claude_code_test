@@ -13,7 +13,10 @@ from decimal import Decimal
 
 from . import model
 from .measures import NONE, Series, _ratio, cell
+from .quantities import PPE_ROU_GROSS
 
+# en-cours balisés sans dimension (§6.2) ; les autres viennent du membre en-cours d'un poste brut (D-0075)
+NONDIM_CIP = {"us-gaap:ConstructionInProgressGross", "ifrs-full:ConstructionInProgress"}
 QUARTER_FLOWS = {"gross_profit", "cost_of_revenue", "operating_income", "revenue_total", "capex_cash", "cfo",
                  "sbc_expense", "net_income", "depreciation_expense", "rou_obtained_operating_lease",
                  "capitalized_interest", "pik_interest", "interest_expense"}
@@ -115,6 +118,7 @@ def quarter_rank2(S, g, q, cutoff, view, as_of):
         out.append(cell(m, g, ps, pe, view, as_of, value=v, unit="USD", terms=t,
                         status="computed" if v is not None else "not_determinable",
                         nd_reason=None if v is not None else _nd(S, qn, r)))
+    out += cip_flows(S, g, q, cutoff, view, as_of, capex, t_capex, r_capex)
     # couverture des intérêts sur douze mois glissants, sans et avec réintégration des intérêts capitalisés
     oi_t, t_oit, r_oit = S.ttm("operating_income", q, cutoff)
     ie_t, t_iet, r_iet = S.ttm("interest_expense", q, cutoff)
@@ -200,12 +204,46 @@ def quarter_rank2(S, g, q, cutoff, view, as_of):
                     nd_reason=None if t else _nd(S, "contract_liabilities", None),
                     flags={"note": "passifs de contrat ; seuls les acomptes à composante de financement publiée "
                                    "entrent dans la mesure miroir (§3.3)"} if t else None))
-    cip = S.instant("construction_in_progress", pe, cutoff)
-    gross = S.instant("gross_depreciable_ppe", pe, cutoff)
-    out.append(_ratio_cell("cip_share", g, None, pe, view, as_of, cip["value"] if cip else None, [cip] if cip else [],
-                           None, gross["value"] if gross else None, [gross] if gross else [], None, S,
-                           "construction_in_progress", "gross_depreciable_ppe"))
+    out.append(cip_share_cell(S, g, pe, cutoff, view, as_of))
     return out
+
+
+def cip_share_cell(S, g, pe, cutoff, view, as_of):
+    """En-cours ÷ immobilisations brutes (§6.2) : le total sans dimension du poste qui porte l'en-cours, à la même date ;
+    pour le brut, à défaut, le total du tableau, droits d'utilisation des locations-financement compris (D-0075)."""
+    cip = S.instant("construction_in_progress", pe, cutoff)
+    if cip and cip["concept"] == PPE_ROU_GROSS:
+        qn, den = "ppe_and_finance_rou_gross", S.instant("ppe_and_finance_rou_gross", pe, cutoff)
+    else:
+        qn, den = "gross_depreciable_ppe", S.instant("gross_depreciable_ppe", pe, cutoff)
+        rou = None if den else S.instant("ppe_and_finance_rou_gross", pe, cutoff)
+        if rou:
+            qn, den = "ppe_and_finance_rou_gross", rou
+    fl = ({"cip_line": cip["concept"], "denominator": qn}
+          if cip and (cip["concept"] not in NONDIM_CIP or qn != "gross_depreciable_ppe") else None)
+    return _ratio_cell("cip_share", g, None, pe, view, as_of, cip["value"] if cip else None, [cip] if cip else [],
+                       None, den["value"] if den else None, [den] if den else [], None, S,
+                       "construction_in_progress", qn, flags=fl)
+
+
+def cip_flows(S, g, q, cutoff, view, as_of, capex, t_capex, r_capex):
+    """D-0075 : variation des en-cours sur le trimestre ÷ capex décaissé ; intérêts capitalisés ÷ en-cours moyen du
+    trimestre, non annualisé. Les deux en-cours sont ceux des fins du trimestre et du trimestre précédent."""
+    ps, pe = q["start"], q["end"]
+    pq = S.prior(q, 1)
+    c1 = S.instant("construction_in_progress", pe, cutoff)
+    c0 = S.instant("construction_in_progress", pq["end"], cutoff) if pq else None
+    if not (c1 and c0):
+        r = _nd(S, "construction_in_progress", None) if not c1 else "prior_period_missing"
+        return [cell(m, g, ps, pe, view, as_of, status="not_determinable", nd_reason=r, terms=[t for t in (c1, c0) if t])
+                for m in ("cip_change_to_capex", "capitalized_interest_to_cip")]
+    fl = {"cip_lines": sorted({c1["concept"], c0["concept"]})} if c1["concept"] != c0["concept"] else None
+    ci, t_ci, r_ci = S.quarter("capitalized_interest", q, cutoff)
+    return [_ratio_cell("cip_change_to_capex", g, ps, pe, view, as_of, c1["value"] - c0["value"], [c1, c0], None,
+                        capex, t_capex, r_capex, S, "construction_in_progress", "capex_cash", flags=fl),
+            _ratio_cell("capitalized_interest_to_cip", g, ps, pe, view, as_of, ci, t_ci, r_ci,
+                        (c1["value"] + c0["value"]) / 2, [c1, c0], None, S, "capitalized_interest",
+                        "construction_in_progress", flags=fl)]
 
 
 def annual_rank2(S, g, fs, fe, cutoff, view, as_of):

@@ -258,6 +258,9 @@ MEASURES = {
     "depreciation_life_change_effect": (2, [NONE], "fiscal_year", "6.2"),
     "implied_useful_life": (2, [NONE], "fiscal_year", "6.2"),
     "cip_share": (2, [NONE], "instant", "6.2"),
+    # D-0075 : variation des en-cours ÷ capex décaissé ; intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé)
+    "cip_change_to_capex": (2, [NONE], "quarter", "6.2"),
+    "capitalized_interest_to_cip": (2, [NONE], "quarter", "6.2"),
     "cfo_net_income_gap": (2, [NONE], "quarter", "6.2"),
     "sbc_to_cfo": (2, [NONE], "quarter", "6.2"),
     "receivables_collection_period": (1, [NONE], "quarter", "6.2"),
