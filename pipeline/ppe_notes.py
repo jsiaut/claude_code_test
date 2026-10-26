@@ -283,6 +283,7 @@ def prepare_units(mid, spec, groups_by_cik):
             over.append({"adsh": f["accession"], "file": n["instance"], "window": k})
             continue
         b.update({"signal_class": 5, "sort_key": f"mt:{mid}:{n_:05d}", "group_id": f["group_id"] or groups_by_cik.get(f["cik"]),
+                  "acceptance": None if f.get("acceptance") is None else str(f["acceptance"]),
                   "filing_status": status, "assurance_level": assurance, "tier": tier, "filer_name": None,
                   "exhibit_type": None, "window": k, "text_extraction": "xbrl_text_block" if n["concept"] else "html_notes",
                   "terms": sorted(set(noted.findall(text))), "queries": "", "montage": mid, "reading": reading,

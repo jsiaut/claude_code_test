@@ -3716,3 +3716,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - champs et registre, `schema.sql` régénéré ; mesure dans l'assemblage, décomptes par groupe dans les statistiques de l'assemblage (point 8) ; rendus de la synthèse et de `series.md` ;
   - configuration : montage `ppe_components` (lexique, fenêtre, plafond, niveau `registry`) ;
   - 21 tests (`test_d0076`), 414 en tout ; ruff passe.
+
+  (14) Volume du montage `ppe_components`, consigné le 2026-10-26 avant toute lecture :
+  - corpus : 12 911 notes, dont 342 avec au moins une fenêtre servie ; 288 fenêtres de seules lignes d'en-cours nues, non servies ;
+  - fenêtres : 448, dont 413 textes distincts (35 doublons) ; aucune au-delà du plafond, aucune ligne de tête (point 4) ;
+  - 413 blocs, 294 502 caractères : lecture complète 112 (78 103 caractères), complémentaire 301 (216 399) ;
+  - par niveau : A 182 (10-K, 10-KT, 20-F, notes auditées du 424B4 de SK hynix), B 231 (10-Q) ; dépôts du 2016-11-07 au 2026-10-22 ;
+  - par groupe (blocs, caractères, en lecture complémentaire) : Akamai 20, 35 918, 0 ; Amazon 10, 7 765, 8 ; Applied Digital 9, 7 530, 8 ; ASML 21, 8 855, 8 ; Broadcom 8, 24 257, 8 ; Backblaze 6, 3 890, 6 ; Cipher 29, 36 029, 29 ; Core Scientific 23, 11 887, 20 ; CoreWeave 1, 1 181, 1 ; Galaxy 16, 10 686, 16 ; Alphabet 15, 10 943, 8 ; Hut 8 9, 11 218, 8 ; Intel 9, 15 808, 1 ; IREN 8, 4 245, 5 ; Meta 44, 39 721, 43 ; Micron 72, 21 056, 72 ; Nebius 10, 2 800, 8 ; NVIDIA 9, 3 925, 0 ; Oracle 1, 1 162, 1 ; Riot 28, 21 460, 23 ; SK hynix 4, 1 753, 3 ; Supermicro 47, 7 117, 11 ; SpaceX 2, 1 906, 2 ; TSMC 12, 3 390, 12. L'écart avec le constat (397 textes, point 2) tient aux rôles de note lus dans les linkbases au lieu de la table `pres`, et aux notes du 424B4 de SK hynix ;
+  - file de lecture : `work/lists/ppe_components.txt`, des plus anciens aux plus récents ; passe `2026-10-26T16:00:00Z` à l'as_of du 2026-10-24 ; lecture par lots, sans sous-agent.
