@@ -2480,7 +2480,7 @@ def ppe_components_section(con, T, stats):
         if silent:
             L.append("Fenêtres lues sans composante écrite : " + " ; ".join(
                 f"{group_label(g)} ({T.n('observations', {'ppe_read_blocks': g}, st[g]['read'])} "
-                f"{plural(st[g]['read'], 'bloc')} lus sur {T.n('observations', {'ppe_blocks': g}, st[g]['blocks'])})"
+                f"{plural(st[g]['read'], 'bloc')} {plural(st[g]['read'], 'lu')} sur {T.n('observations', {'ppe_blocks': g}, st[g]['blocks'])})"
                 for g in sorted(silent, key=group_label)) + ".")
         L.append("")
     return L

@@ -10500,6 +10500,533 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2026-03-31 | [0 ; 100,0 %] (plafonnée) | 311 M$ | 310 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 |
 | 2026-06-30 | [0 ; 49,1 %] | 311 M$ | 633 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 |
 
+## ASML : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2017-12-31 | n.d. (non publié) | bâtiments et installations (« land and buildings ») | en construction | immobilisations | montant | 94,6 M EUR | 20-F 0000937966-19-000007 |
+|  |  | bâtiments et installations (« leasehold improvements ») | en construction | immobilisations | montant | 2,3 M EUR | 20-F 0000937966-19-000007 |
+|  |  | outils et machines de production (« machinery and equipment ») | en construction | immobilisations | montant | 29,3 M EUR | 20-F 0000937966-19-000007 |
+|  |  | nature non écrite (« furniture, fixtures and other equipment ») | en construction | immobilisations | montant | 7,0 M EUR | 20-F 0000937966-19-000007 |
+| 2018-12-31 | n.d. (non publié) | bâtiments et installations (« land and buildings ») | en construction | immobilisations | montant | 79,0 M EUR | 20-F 0000937966-19-000007 |
+|  |  | bâtiments et installations (« leasehold improvements ») | en construction | immobilisations | montant | 7,8 M EUR | 20-F 0000937966-19-000007 |
+|  |  | outils et machines de production (« machinery and equipment ») | en construction | immobilisations | montant | 39,1 M EUR | 20-F 0000937966-19-000007 |
+|  |  | nature non écrite (« furniture, fixtures and other equipment ») | en construction | immobilisations | montant | 9,3 M EUR | 20-F 0000937966-19-000007 |
+| 2019-12-31 | n.d. (non publié) | bâtiments et installations (« land and buildings ») | en construction | immobilisations | montant | 286,6 M EUR | 20-F 0000937966-20-000011 |
+|  |  | bâtiments et installations (« leasehold improvements ») | en construction | immobilisations | montant | 4,5 M EUR | 20-F 0000937966-20-000011 |
+|  |  | outils et machines de production (« machinery and equipment ») | en construction | immobilisations | montant | 85,4 M EUR | 20-F 0000937966-20-000011 |
+|  |  | nature non écrite (« furniture, fixtures and other equipment ») | en construction | immobilisations | montant | 7,8 M EUR | 20-F 0000937966-20-000011 |
+| 2020-12-31 | n.d. (non publié) | bâtiments et installations (« land and buildings ») | en construction | immobilisations | montant | 526,3 M EUR | 20-F 0000937966-21-000007 |
+|  |  | bâtiments et installations (« leasehold improvements ») | en construction | immobilisations | montant | 32,6 M EUR | 20-F 0000937966-21-000007 |
+|  |  | outils et machines de production (« machinery and equipment ») | en construction | immobilisations | montant | 113,4 M EUR | 20-F 0000937966-21-000007 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 676,4 M EUR | 20-F 0000937966-22-000013 |
+|  |  | nature non écrite (« furniture, fixtures and other equipment ») | en construction | immobilisations | montant | 4,1 M EUR | 20-F 0000937966-21-000007 |
+| 2021-12-31 | 695,9 M EUR | bâtiments et installations | en construction | en-cours | surtout | — | 20-F 0000937966-22-000013 |
+|  |  | outils et machines de production | en construction | en-cours | surtout | — | 20-F 0000937966-22-000013 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 695,9 M EUR | 20-F 0000937966-22-000013 |
+| 2022-12-31 | 869,8 M EUR | bâtiments et installations | en construction | en-cours | surtout | — | 20-F 0000937966-23-000014 |
+|  |  | outils et machines de production | en construction | en-cours | surtout | — | 20-F 0000937966-23-000014 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 869,8 M EUR | 20-F 0000937966-23-000014 |
+| 2023-12-31 | 1 658,0 M EUR | bâtiments et installations | en construction | en-cours | surtout | — | 20-F 0000937966-24-000008 |
+|  |  | outils et machines de production | en construction | en-cours | surtout | — | 20-F 0000937966-24-000008 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 1 658,0 M EUR | 20-F 0000937966-24-000008 |
+| 2024-12-31 | 1 729,7 M EUR | bâtiments et installations | en construction | en-cours | surtout | — | 20-F 0000937966-25-000009 |
+|  |  | outils et machines de production | en construction | en-cours | surtout | — | 20-F 0000937966-25-000009 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 1 729,7 M EUR | 20-F 0000937966-25-000009 |
+| 2025-12-31 | 1 771,0 M EUR | bâtiments et installations | en construction | en-cours | surtout | — | 20-F 0001628280-26-011378 |
+|  |  | outils et machines de production | en construction | en-cours | surtout | — | 20-F 0001628280-26-011378 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 1 771,0 M EUR | 20-F 0001628280-26-011378 |
+
+## Alphabet : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2023-12-31 | 35 136 M$ | nature non écrite | pas encore en service | immobilisations | montant | 35 136 M$ | 10-K 0001652044-25-000014 |
+| 2024-12-31 | 50 597 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001652044-25-000014 |
+|  |  | matériel informatique | pas encore en service | en-cours | comprend | — | 10-K 0001652044-25-000014 |
+|  |  | nature non écrite | pas encore en service | immobilisations | montant | 50 597 M$ | 10-K 0001652044-25-000014 |
+| 2025-03-31 | 55 641 M$ | nature non écrite | pas encore en service | immobilisations | montant | 55 641 M$ | 10-Q 0001652044-25-000043 |
+| 2025-06-30 | 61 700 M$ | nature non écrite | pas encore en service | immobilisations | montant | 61 700 M$ | 10-Q 0001652044-25-000062 |
+| 2025-09-30 | 69 856 M$ | nature non écrite | pas encore en service | immobilisations | montant | 69 856 M$ | 10-Q 0001652044-25-000091 |
+| 2025-12-31 | 78 592 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001652044-26-000018 |
+|  |  | matériel informatique | pas encore en service | en-cours | comprend | — | 10-K 0001652044-26-000018 |
+|  |  | nature non écrite | pas encore en service | immobilisations | montant | 78 592 M$ | 10-K 0001652044-26-000018 |
+| 2026-03-31 | 108 597 M$ | nature non écrite | pas encore en service | immobilisations | montant | 108 597 M$ | 10-Q 0001652044-26-000048 |
+| 2026-06-30 | 122 814 M$ | nature non écrite | pas encore en service | immobilisations | montant | 122 814 M$ | 10-Q 0001652044-26-000071 |
+
+## Amazon : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2018-12-31 | 6 861 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001018724-19-000004 |
+
+## Applied Digital : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2024-11-30 | 609 M$ | nature non écrite | en construction | en-cours | montant | 9 M$ | 10-Q 0001144879-25-000006 |
+| 2025-02-28 | 839 M$ | nature non écrite | en construction | en-cours | montant | 9 M$ | 10-Q 0001628280-25-017684 |
+| 2025-05-31 | 1 123 M$ | nature non écrite | en construction | en-cours | montant | 9 M$ | 10-K 0001144879-25-000021 |
+
+## Backblaze : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2024-12-31 | 311 000 $ | matériel informatique | pas encore en service | en-cours | comprend | — | 10-K 0001462056-25-000015 |
+| 2025-03-31 | 19 000 $ | matériel informatique | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-25-023137 |
+| 2025-06-30 | 75 000 $ | matériel informatique | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-25-038603 |
+
+## Cipher : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2021-09-30 | 108 118 $ | bâtiments et installations | en construction | immobilisations | surtout | — | 10-Q 0000950170-21-004222 |
+| 2021-12-31 | 5 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0000950170-22-002861 |
+|  |  | nature non écrite | en construction | en-cours | montant | 100 000 $ | 10-K 0000950170-22-002861 |
+|  |  | bâtiments et installations (« bbacs ») | payé d'avance | autre poste | montant | 5 M$ | 10-Q 0000950170-22-024761 |
+|  |  | machines de minage | payé d'avance | autre poste | montant | 10 M$ | 10-K 0000950170-22-002861 |
+|  |  | nature non écrite (« bbacs ») | payé d'avance | autre poste | montant | 5 M$ | 10-K 0000950170-22-002861 |
+|  |  | nature non écrite (« payments made on the company's behalf ») | payé d'avance | autre poste | montant | 2 M$ | 10-K 0000950170-22-002861 |
+|  |  | bâtiments et installations | en construction | immobilisations | surtout | — | 10-K 0000950170-22-002861 |
+| 2022-03-31 | 15 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000950170-22-008756 |
+|  |  | nature non écrite | en construction | en-cours | montant | 100 000 $ | 10-Q 0000950170-22-008756 |
+|  |  | nature non écrite (« additional payments on the company's behalf ») | en construction | en-cours | montant | 1 M$ | 10-Q 0000950170-22-008756 |
+|  |  | machines de minage | payé d'avance | autre poste | montant | 10 M$ | 10-Q 0000950170-22-008756 |
+|  |  | nature non écrite (« additional payments on the company's behalf ») | payé d'avance | autre poste | montant | 2 M$ | 10-Q 0000950170-22-008756 |
+|  |  | nature non écrite (« bbacs ») | payé d'avance | autre poste | montant | 23 M$ | 10-Q 0000950170-22-008756 |
+|  |  | nature non écrite (« payments made on the company's behalf ») | payé d'avance | autre poste | montant | 2 M$ | 10-Q 0000950170-22-008756 |
+|  |  | bâtiments et installations | en construction | immobilisations | surtout | — | 10-Q 0000950170-22-008756 |
+|  |  | logiciels | en construction | immobilisations | comprend | — | 10-Q 0000950170-22-008756 |
+| 2022-06-30 | 23 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000950170-22-015789 |
+|  |  | nature non écrite (« bbacs ») | payé d'avance | autre poste | montant | 27 M$ | 10-Q 0000950170-22-015789 |
+|  |  | bâtiments et installations | en construction | immobilisations | surtout | — | 10-Q 0000950170-22-015789 |
+|  |  | logiciels | en construction | immobilisations | comprend | — | 10-Q 0000950170-22-015789 |
+| 2022-09-30 | 40 M$ | bâtiments et installations (« bbacs ») | en construction | en-cours | montant | 3 M$ | 10-Q 0000950170-22-024761 |
+|  |  | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000950170-22-024761 |
+|  |  | bâtiments et installations (« bbacs ») | payé d'avance | autre poste | montant | 22 M$ | 10-Q 0000950170-22-024761 |
+|  |  | bâtiments et installations | en construction | immobilisations | surtout | — | 10-Q 0000950170-22-024761 |
+|  |  | logiciels | en construction | immobilisations | comprend | — | 10-Q 0000950170-22-024761 |
+| 2022-12-31 | 20 M$ | bâtiments et installations (« bbacs ») | en construction | en-cours | montant | 1 M$ | 10-K 0000950170-23-007793 |
+|  |  | bâtiments et installations (« bbacs ») | payé d'avance | autre poste | montant | 500 000 $ | 10-K 0000950170-23-007793 |
+|  |  | nature non écrite (« bbacs ») | état non écrit | poste non écrit | montant | 1 M$ | 10-Q 0000950170-23-019186 |
+| 2023-03-31 | 24 M$ | nature non écrite (« bbacs ») | état non écrit | poste non écrit | montant | 500 000 $ | 10-Q 0000950170-23-019186 |
+| 2024-03-31 | 8 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000950170-24-054002 |
+| 2024-06-30 | 20 M$ | bâtiments et installations | en construction | en-cours | montant | 20 M$ | 10-Q 0000950170-24-095795 |
+| 2024-09-30 | 56 M$ | bâtiments et installations | en construction | en-cours | montant | 56 M$ | 10-Q 0001819989-24-000028 |
+| 2024-12-31 | 82 M$ | bâtiments et installations | en construction | en-cours | montant | 82 M$ | 10-K 0001819989-25-000005 |
+| 2025-03-31 | 120 M$ | bâtiments et installations | en construction | en-cours | montant | 120 M$ | 10-Q 0001819989-25-000037 |
+| 2025-06-30 | 12 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001819989-25-000081 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 12 M$ | 10-Q 0001819989-25-000081 |
+| 2025-09-30 | 12 M$ | bâtiments et installations | en construction | en-cours | montant | 12 M$ | 10-Q 0001819989-25-000112 |
+| 2025-12-31 | 276 M$ | bâtiments et installations | en construction | en-cours | montant | 276 M$ | 10-K 0001819989-26-000009 |
+| 2026-03-31 | 834 M$ | bâtiments et installations | en construction | en-cours | montant | 834 M$ | 10-Q 0001819989-26-000028 |
+| 2026-06-30 | 1 676 M$ | bâtiments et installations | en construction | en-cours | montant | 1 676 M$ | 10-Q 0001819989-26-000041 |
+
+## Core Scientific : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2021-12-31 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 43 M$ | 10-Q 0001628280-22-014350 |
+| 2022-03-31 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 66 M$ | 10-Q 0001628280-22-014350 |
+| 2022-06-30 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 172 M$ | 10-Q 0001628280-22-023382 |
+| 2022-09-30 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 162 M$ | 10-Q 0001628280-22-030600 |
+| 2022-12-31 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 254 M$ | 10-K 0001628280-24-010682 |
+| 2023-12-31 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 184 M$ | 10-K 0001628280-24-010682 |
+| 2024-03-31 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 189 M$ | 10-Q 0001628280-24-021848 |
+| 2024-06-30 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 117 M$ | 10-Q 0001628280-24-035714 |
+| 2024-09-30 | 154 M$ | nature non écrite | en construction | immobilisations | montant | 154 M$ | 10-Q 0001628280-24-045811 |
+| 2024-12-31 | 163 M$ | nature non écrite | en construction | immobilisations | montant | 163 M$ | 10-K 0001628280-25-008302 |
+| 2025-03-31 | 277 M$ | nature non écrite | en construction | immobilisations | montant | 277 M$ | 10-Q 0001628280-25-023242 |
+| 2025-06-30 | 478 M$ | nature non écrite | en construction | immobilisations | montant | 478 M$ | 10-Q 0001628280-25-039284 |
+| 2025-09-30 | 689 M$ | nature non écrite | en construction | immobilisations | montant | 689 M$ | 10-Q 0001628280-25-046272 |
+| 2025-12-31 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 911 M$ | 10-K 0001628280-26-013305 |
+| 2026-03-31 | n.d. (non publié) | nature non écrite | en construction | immobilisations | montant | 925 M$ | 10-Q 0001628280-26-031396 |
+| 2026-06-30 | n.d. (non publié) | machines de minage | pas encore en service | autre poste | comprend | — | 10-Q 0001839341-26-000014 |
+|  |  | nature non écrite | état non écrit | autre poste | montant | 14 M$ | 10-Q 0001839341-26-000014 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 1 101 M$ | 10-Q 0001839341-26-000014 |
+
+## Galaxy : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2024-12-31 | 36 M$ | nature non écrite | en construction | immobilisations | montant | 36 M$ | 10-Q 0001859392-25-000030 |
+| 2025-06-30 | 500 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001859392-25-000030 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 500 M$ | 10-Q 0001859392-25-000030 |
+| 2025-09-30 | 804 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001859392-25-000082 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 804 M$ | 10-Q 0001859392-25-000082 |
+| 2025-12-31 | 1 344 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001859392-26-000016 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 1 344 M$ | 10-K 0001859392-26-000016 |
+| 2026-03-31 | 1 700 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001859392-26-000054 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 1 700 M$ | 10-Q 0001859392-26-000054 |
+| 2026-06-30 | 512 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001859392-26-000091 |
+|  |  | nature non écrite | en construction | immobilisations | montant | 512 M$ | 10-Q 0001859392-26-000091 |
+
+## IREN : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2025-06-30 | 238 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001878848-25-000063 |
+|  |  | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001878848-25-000063 |
+|  |  | matériel informatique | pas encore en service | classe du tableau | comprend | — | 10-K 0001878848-25-000063 |
+|  |  | machines de minage | pas encore en service | classe du tableau | comprend | — | 10-K 0001878848-25-000063 |
+| 2025-09-30 | 465 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001878848-25-000081 |
+| 2025-12-31 | 1 038 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001878848-26-000015 |
+| 2026-06-30 | 3 657 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001878848-26-000052 |
+
+## Intel : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2018-12-29 | 16 643 M$ | bâtiments et installations | pas encore en service | en-cours | comprend | — | 10-K 0000050863-19-000007 |
+| 2024-12-28 | 50 418 M$ | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 11 500 M$ | 10-Q 0000050863-25-000179 |
+| 2025-09-27 | n.d. (non publié) | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 5 200 M$ | 10-Q 0000050863-25-000179 |
+| 2025-12-27 | 34 543 M$ | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 5 600 M$ | 10-K 0000050863-26-000011 |
+| 2026-03-28 | n.d. (non publié) | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 5 800 M$ | 10-Q 0000050863-26-000079 |
+| 2026-06-27 | n.d. (non publié) | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 6 000 M$ | 10-Q 0000050863-26-000157 |
+
+## Meta : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2017-12-31 | 2 992 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001326801-19-000009 |
+| 2018-03-31 | 4 316 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001326801-18-000032 |
+|  |  | matériel informatique | en construction | en-cours | comprend | — | 10-Q 0001326801-18-000032 |
+| 2018-06-30 | 4 624 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001326801-18-000057 |
+|  |  | matériel informatique | en construction | en-cours | comprend | — | 10-Q 0001326801-18-000057 |
+| 2018-09-30 | 5 915 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001326801-18-000067 |
+|  |  | matériel informatique | en construction | en-cours | comprend | — | 10-Q 0001326801-18-000067 |
+| 2018-12-31 | 7 228 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001326801-19-000009 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-K 0001326801-19-000009 |
+| 2019-03-31 | 8 509 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-19-000037 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-19-000037 |
+| 2019-06-30 | 9 054 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-19-000055 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-19-000055 |
+| 2019-09-30 | 10 442 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-19-000069 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-19-000069 |
+| 2019-12-31 | n.d. (non publié) | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001326801-20-000013 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-K 0001326801-20-000013 |
+| 2020-03-31 | n.d. (non publié) | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-20-000048 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-20-000048 |
+| 2020-06-30 | n.d. (non publié) | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-20-000076 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-20-000076 |
+| 2020-09-30 | n.d. (non publié) | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-20-000084 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-20-000084 |
+| 2020-12-31 | 11 288 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001326801-21-000014 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-K 0001326801-21-000014 |
+| 2021-03-31 | 12 318 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-21-000033 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-21-000033 |
+| 2021-06-30 | 12 593 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-21-000049 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-21-000049 |
+| 2021-09-30 | 13 201 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-21-000065 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-21-000065 |
+| 2021-12-31 | 14 687 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001326801-22-000018 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-K 0001326801-22-000018 |
+| 2022-03-31 | 17 031 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000057 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000057 |
+| 2022-06-30 | 21 100 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000082 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000082 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000082 |
+| 2022-09-30 | 23 623 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000108 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000108 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-22-000108 |
+| 2022-12-31 | 25 052 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001326801-23-000013 |
+|  |  | matériel informatique | chez les fournisseurs | en-cours | montant | 2 180 M$ | 10-K 0001326801-23-000013 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-K 0001326801-23-000013 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-K 0001326801-23-000013 |
+| 2023-03-31 | 25 039 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000067 |
+|  |  | matériel informatique | chez les fournisseurs | en-cours | montant | 1 640 M$ | 10-Q 0001326801-23-000067 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000067 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000067 |
+| 2023-06-30 | 24 843 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000093 |
+|  |  | matériel informatique | chez les fournisseurs | en-cours | montant | 1 480 M$ | 10-Q 0001326801-23-000093 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000093 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000093 |
+| 2023-09-30 | 22 945 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000103 |
+|  |  | matériel informatique | chez les fournisseurs | en-cours | montant | 1 510 M$ | 10-Q 0001326801-23-000103 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000103 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-23-000103 |
+| 2023-12-31 | 24 269 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001326801-24-000012 |
+|  |  | matériel informatique | chez les fournisseurs | en-cours | montant | 1 400 M$ | 10-K 0001326801-24-000012 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-K 0001326801-24-000012 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-K 0001326801-24-000012 |
+| 2024-03-31 | 22 975 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000049 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000049 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000049 |
+| 2024-06-30 | 21 666 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000069 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000069 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000069 |
+| 2024-09-30 | 23 301 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000081 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000081 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-24-000081 |
+| 2024-12-31 | 26 802 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001326801-25-000017 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-K 0001326801-25-000017 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-K 0001326801-25-000017 |
+| 2025-03-31 | 32 385 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001326801-25-000054 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001326801-25-000054 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001326801-25-000054 |
+| 2025-06-01 | n.d. (non publié) | bâtiments et installations | état non écrit | autre poste | montant | 2 040 M$ | 10-Q 0001628280-25-036791 |
+| 2025-06-30 | 35 942 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001628280-25-036791 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001628280-25-036791 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001628280-25-036791 |
+|  |  | bâtiments et installations | en construction | autre poste | surtout | — | 10-Q 0001628280-25-036791 |
+|  |  | bâtiments et installations | état non écrit | autre poste | montant | 3 260 M$ | 10-Q 0001628280-25-036791 |
+|  |  | terrains | état non écrit | autre poste | surtout | — | 10-Q 0001628280-25-036791 |
+| 2025-09-30 | 44 015 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001628280-25-047240 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001628280-25-047240 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001628280-25-047240 |
+|  |  | bâtiments et installations | en construction | autre poste | surtout | — | 10-Q 0001628280-25-047240 |
+|  |  | bâtiments et installations | état non écrit | autre poste | montant | 4 660 M$ | 10-Q 0001628280-25-047240 |
+|  |  | terrains | état non écrit | autre poste | surtout | — | 10-Q 0001628280-25-047240 |
+| 2025-12-31 | 50 521 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001628280-26-003942 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-K 0001628280-26-003942 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-K 0001628280-26-003942 |
+| 2026-03-31 | 61 017 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001628280-26-028526 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001628280-26-028526 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001628280-26-028526 |
+|  |  | bâtiments et installations | en construction | autre poste | surtout | — | 10-Q 0001628280-26-028526 |
+|  |  | bâtiments et installations | état non écrit | autre poste | montant | 1 480 M$ | 10-Q 0001628280-26-028526 |
+|  |  | terrains | état non écrit | autre poste | surtout | — | 10-Q 0001628280-26-028526 |
+| 2026-06-30 | 80 345 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001628280-26-050705 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001628280-26-050705 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001628280-26-050705 |
+|  |  | bâtiments et installations | en construction | autre poste | surtout | — | 10-Q 0001628280-26-050705 |
+|  |  | bâtiments et installations | état non écrit | autre poste | montant | 2 030 M$ | 10-Q 0001628280-26-050705 |
+|  |  | terrains | état non écrit | autre poste | surtout | — | 10-Q 0001628280-26-050705 |
+| 2026-07-31 | n.d. (non publié) | bâtiments et installations | état non écrit | autre poste | montant | 1 890 M$ | 10-Q 0001628280-26-066773 |
+| 2026-09-30 | 89 499 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  | bâtiments et installations | en construction | autre poste | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  | bâtiments et installations | état non écrit | autre poste | montant | 2 600 M$ | 10-Q 0001628280-26-066773 |
+|  |  | terrains | état non écrit | autre poste | surtout | — | 10-Q 0001628280-26-066773 |
+
+## Micron : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2017-08-31 | 499 M$ | nature non écrite | pas encore en service | classe du tableau | montant | 994 M$ | 10-Q 0000723125-17-000166 |
+| 2017-11-30 | 560 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-17-000166 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-17-000166 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 060 M$ | 10-Q 0000723125-17-000166 |
+| 2018-03-01 | 599 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-18-000036 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-18-000036 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 920 M$ | 10-Q 0000723125-18-000036 |
+| 2018-05-31 | 826 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-18-000065 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-18-000065 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 410 M$ | 10-Q 0000723125-18-000065 |
+| 2018-08-30 | 1 162 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0000723125-18-000092 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-K 0000723125-18-000092 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 730 M$ | 10-K 0000723125-18-000092 |
+| 2018-11-29 | 1 467 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-18-000156 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-18-000156 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-18-000156 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 850 M$ | 10-Q 0000723125-18-000156 |
+| 2019-02-28 | 1 715 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-19-000014 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-19-000014 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-19-000014 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 510 M$ | 10-Q 0000723125-19-000014 |
+| 2019-05-30 | 1 893 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-19-000035 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-19-000035 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-19-000035 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 240 M$ | 10-Q 0000723125-19-000035 |
+| 2019-08-29 | 1 700 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0000723125-19-000094 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-K 0000723125-19-000094 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-K 0000723125-19-000094 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 330 M$ | 10-K 0000723125-19-000094 |
+| 2019-11-28 | 1 795 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-19-000174 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-19-000174 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-19-000174 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 800 M$ | 10-Q 0000723125-19-000174 |
+| 2020-02-27 | 2 119 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-20-000034 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-20-000034 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-20-000034 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 380 M$ | 10-Q 0000723125-20-000034 |
+| 2020-05-28 | 2 674 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-20-000067 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-20-000067 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-20-000067 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 817 M$ | 10-Q 0000723125-20-000067 |
+| 2020-09-03 | 1 600 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0000723125-20-000082 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-K 0000723125-20-000082 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-K 0000723125-20-000082 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 630 M$ | 10-K 0000723125-20-000082 |
+| 2020-12-03 | 1 814 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-21-000012 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-21-000012 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-21-000012 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 410 M$ | 10-Q 0000723125-21-000012 |
+| 2021-03-04 | 2 058 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-21-000032 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-21-000032 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-21-000032 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 270 M$ | 10-Q 0000723125-21-000032 |
+| 2021-06-03 | 1 553 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-21-000052 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-21-000052 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-21-000052 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 320 M$ | 10-Q 0000723125-21-000052 |
+| 2021-09-02 | 1 517 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0000723125-21-000065 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-K 0000723125-21-000065 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-K 0000723125-21-000065 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 990 M$ | 10-K 0000723125-21-000065 |
+| 2021-12-02 | 1 440 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-22-000004 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000004 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000004 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 150 M$ | 10-Q 0000723125-22-000004 |
+| 2022-03-03 | 1 740 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-22-000016 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000016 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000016 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 690 M$ | 10-Q 0000723125-22-000016 |
+| 2022-06-02 | 1 664 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-22-000036 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000036 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000036 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 400 M$ | 10-Q 0000723125-22-000036 |
+| 2022-09-01 | 1 897 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0000723125-22-000048 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-K 0000723125-22-000048 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-K 0000723125-22-000048 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 350 M$ | 10-K 0000723125-22-000048 |
+| 2022-12-01 | 1 828 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-22-000072 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000072 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-22-000072 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 4 100 M$ | 10-Q 0000723125-22-000072 |
+| 2023-03-02 | 2 093 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-23-000022 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-23-000022 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-23-000022 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 430 M$ | 10-Q 0000723125-23-000022 |
+| 2023-06-01 | 2 398 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-23-000041 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-23-000041 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-23-000041 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 330 M$ | 10-Q 0000723125-23-000041 |
+| 2023-08-31 | 2 464 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0000723125-23-000054 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-K 0000723125-23-000054 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-K 0000723125-23-000054 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 910 M$ | 10-K 0000723125-23-000054 |
+| 2023-11-30 | 2 215 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-23-000077 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-23-000077 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-23-000077 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 880 M$ | 10-Q 0000723125-23-000077 |
+| 2024-02-29 | 2 636 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-24-000007 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-24-000007 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-24-000007 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 270 M$ | 10-Q 0000723125-24-000007 |
+| 2024-05-30 | 3 351 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0000723125-24-000019 |
+|  |  | outils et machines de production | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-24-000019 |
+|  |  | logiciels | pas encore en service | en-cours | comprend | — | 10-Q 0000723125-24-000019 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 1 770 M$ | 10-Q 0000723125-24-000019 |
+| 2024-08-29 | 3 444 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0000723125-24-000027 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-K 0000723125-24-000027 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 100 M$ | 10-K 0000723125-24-000027 |
+| 2024-11-28 | 4 322 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000723125-24-000047 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-Q 0000723125-24-000047 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 090 M$ | 10-Q 0000723125-24-000047 |
+| 2025-02-27 | 4 427 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000723125-25-000009 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-Q 0000723125-25-000009 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 2 880 M$ | 10-Q 0000723125-25-000009 |
+| 2025-05-29 | 4 937 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000723125-25-000021 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-Q 0000723125-25-000021 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 400 M$ | 10-Q 0000723125-25-000021 |
+| 2025-08-28 | 5 518 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0000723125-25-000028 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-K 0000723125-25-000028 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 4 050 M$ | 10-K 0000723125-25-000028 |
+| 2025-11-27 | 5 693 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000723125-25-000046 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-Q 0000723125-25-000046 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 880 M$ | 10-Q 0000723125-25-000046 |
+| 2026-02-26 | 7 485 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000723125-26-000006 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-Q 0000723125-26-000006 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 3 930 M$ | 10-Q 0000723125-26-000006 |
+| 2026-05-28 | 10 935 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0000723125-26-000015 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-Q 0000723125-26-000015 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 4 200 M$ | 10-Q 0000723125-26-000015 |
+| 2026-09-03 | 11 424 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0000723125-26-000023 |
+|  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-K 0000723125-26-000023 |
+|  |  | nature non écrite | pas encore en service | classe du tableau | montant | 6 120 M$ | 10-K 0000723125-26-000023 |
+
+## Nebius : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2023-12-31 | 2 M$ | nature non écrite | pas encore en service | immobilisations | montant | 2 M$ | 20-F 0001558370-25-005991 |
+| 2024-12-31 | 164 M$ | matériel informatique | pas encore en service | en-cours | surtout | — | 20-F 0001558370-25-005991 |
+|  |  | nature non écrite | pas encore en service | en-cours | surtout | — | 20-F 0001558370-25-005991 |
+|  |  | nature non écrite | payé d'avance | en-cours | comprend | — | 20-F 0001558370-25-005991 |
+|  |  | nature non écrite | pas encore en service | immobilisations | montant | 164 M$ | 20-F 0001558370-25-005991 |
+| 2025-12-31 | 2 417 M$ | matériel informatique | pas encore en service | en-cours | surtout | — | 20-F 0001104659-26-052948 |
+|  |  | nature non écrite | pas encore en service | en-cours | surtout | — | 20-F 0001104659-26-052948 |
+|  |  | nature non écrite | payé d'avance | en-cours | comprend | — | 20-F 0001104659-26-052948 |
+|  |  | nature non écrite | pas encore en service | immobilisations | montant | 2 417 M$ | 20-F 0001104659-26-052948 |
+
+## Riot : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2019-12-31 | n.d. (non publié) | machines de minage | payé d'avance | autre poste | montant | 1 M$ | 10-K 0001079973-20-000216 |
+|  |  | machines de minage | pas encore en service | immobilisations | montant | 5 M$ | 10-Q 0001079973-20-000358 |
+|  |  | machines de minage | pas encore en service | immobilisations | comprend | — | 10-K 0001079973-20-000216 |
+| 2021-06-30 | 15 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001079973-21-000828 |
+|  |  | nature non écrite | payé d'avance | poste non écrit | montant | 14 M$ | 10-Q 0001079973-21-000828 |
+| 2021-09-30 | 69 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001079973-21-001156 |
+| 2021-12-31 | 114 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001079973-22-000280 |
+| 2022-06-30 | 93 M$ | bâtiments et installations | payé d'avance | en-cours | montant | 100 000 $ | 10-Q 0001553350-22-000687 |
+| 2022-09-30 | 108 M$ | bâtiments et installations | payé d'avance | en-cours | montant | 100 000 $ | 10-Q 0001079973-22-001403 |
+| 2022-12-31 | 97 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001558370-23-002704 |
+| 2023-03-31 | 89 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001558370-23-009137 |
+| 2024-03-31 | 204 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001558370-24-006400 |
+| 2024-06-30 | 110 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001558370-24-010495 |
+| 2024-09-30 | 84 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001558370-24-014179 |
+| 2024-12-31 | 83 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001558370-25-001888 |
+| 2025-12-31 | 166 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001104659-26-022322 |
+
+## SpaceX : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2026-06-30 | 12 554 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001628280-26-052535 |
+|  |  | nature non écrite | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-26-052535 |
+|  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001628280-26-052535 |
+| 2026-09-30 | 23 745 M$ | bâtiments et installations | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-26-066880 |
+|  |  | matériel informatique | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-26-066880 |
+
+## Supermicro : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2016-06-30 | 16 M$ | bâtiments et installations | en construction | en-cours | montant | 16 M$ | 10-Q 0001628280-16-020941 |
+|  |  | logiciels | en construction | classe du tableau | montant | 532 000 $ | 10-Q 0001628280-16-020941 |
+| 2016-09-30 | 20 M$ | bâtiments et installations | en construction | en-cours | montant | 20 M$ | 10-Q 0001628280-16-020941 |
+|  |  | logiciels | en construction | classe du tableau | montant | 450 000 $ | 10-Q 0001628280-16-020941 |
+| 2016-12-31 | 19 M$ | bâtiments et installations | en construction | en-cours | montant | 19 M$ | 10-Q 0001628280-17-000961 |
+|  |  | logiciels | en construction | classe du tableau | montant | 444 000 $ | 10-Q 0001628280-17-000961 |
+| 2017-03-31 | 23 M$ | bâtiments et installations | en construction | en-cours | montant | 23 M$ | 10-Q 0001628280-17-005370 |
+|  |  | logiciels | en construction | classe du tableau | montant | 435 000 $ | 10-Q 0001628280-17-005370 |
+| 2017-06-30 | 24 M$ | bâtiments et installations | en construction | en-cours | montant | 24 M$ | 10-K 0001375365-19-000039 |
+| 2018-06-30 | 2 M$ | bâtiments et installations | en construction | en-cours | montant | 2 M$ | 10-Q 0001375365-19-000078 |
+| 2018-09-30 | 3 M$ | bâtiments et installations | en construction | en-cours | montant | 3 M$ | 10-Q 0001375365-19-000076 |
+| 2018-12-31 | 4 M$ | bâtiments et installations | en construction | en-cours | montant | 4 M$ | 10-Q 0001375365-19-000077 |
+| 2019-03-31 | 8 M$ | bâtiments et installations | en construction | en-cours | montant | 8 M$ | 10-Q 0001375365-19-000078 |
+| 2019-06-30 | 14 M$ | bâtiments et installations | en construction | en-cours | montant | 14 M$ | 10-K 0001375365-19-000079 |
+| 2019-09-30 | 20 M$ | bâtiments et installations | en construction | en-cours | montant | 20 M$ | 10-Q 0001375365-19-000084 |
+| 2019-12-31 | 30 M$ | bâtiments et installations | en construction | en-cours | montant | 30 M$ | 10-Q 0001375365-20-000011 |
+|  |  | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001375365-20-000011 |
+| 2020-03-31 | 42 M$ | bâtiments et installations | en construction | en-cours | montant | 42 M$ | 10-Q 0001375365-20-000033 |
+| 2020-06-30 | 46 M$ | bâtiments et installations | en construction | en-cours | montant | 46 M$ | 10-K 0001375365-20-000064 |
+| 2020-09-30 | 55 M$ | bâtiments et installations | en construction | en-cours | montant | 55 M$ | 10-Q 0001375365-20-000074 |
+|  |  | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001375365-20-000074 |
+| 2020-12-31 | 69 M$ | bâtiments et installations | en construction | en-cours | montant | 69 M$ | 10-Q 0001375365-21-000011 |
+| 2021-03-31 | 80 M$ | bâtiments et installations | en construction | en-cours | montant | 80 M$ | 10-Q 0001375365-21-000034 |
+| 2021-06-30 | 87 M$ | bâtiments et installations | en construction | en-cours | montant | 87 M$ | 10-K 0001375365-21-000060 |
+|  |  | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0001375365-21-000060 |
+| 2021-09-30 | 6 M$ | bâtiments et installations | en construction | en-cours | montant | 6 M$ | 10-Q 0001375365-21-000083 |
+|  |  | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001375365-21-000083 |
+| 2021-12-31 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-Q 0001375365-22-000013 |
+| 2022-03-31 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-Q 0001375365-22-000058 |
+| 2022-06-30 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-K 0001375365-22-000103 |
+| 2022-09-30 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-Q 0001375365-22-000119 |
+| 2022-12-31 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-Q 0001375365-23-000012 |
+| 2023-03-31 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-Q 0001375365-23-000028 |
+| 2023-06-30 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-K 0001375365-23-000036 |
+| 2023-09-30 | 303 000 $ | bâtiments et installations | en construction | en-cours | montant | 303 000 $ | 10-Q 0001375365-23-000041 |
+| 2023-12-31 | 2 M$ | bâtiments et installations | en construction | en-cours | montant | 2 M$ | 10-Q 0001375365-24-000011 |
+| 2024-03-31 | 6 M$ | bâtiments et installations | en construction | en-cours | montant | 6 M$ | 10-Q 0001375365-24-000022 |
+| 2024-06-30 | 15 M$ | bâtiments et installations | en construction | en-cours | montant | 15 M$ | 10-Q 0001375365-25-000006 |
+| 2024-09-30 | 23 M$ | bâtiments et installations | en construction | en-cours | montant | 23 M$ | 10-Q 0001375365-25-000005 |
+| 2024-12-31 | 336 000 $ | bâtiments et installations | en construction | en-cours | montant | 336 000 $ | 10-Q 0001375365-25-000006 |
+
 ## BLUE OWL CAPITAL CORP II (véhicule BDC, cik:0001655887)
 
 | Date du bilan | Juste valeur ÷ coût | Intérêts capitalisés | Engagements non tirés ÷ portefeuille | Événements (F11 à F13) |

@@ -4595,7 +4595,7 @@ Entrés depuis dans une paire ou un cycle, 3 émetteurs (GCL GLOBAL HOLDINGS LTD
 
 | Émetteur | Formulaire | Cadre comptable | Lignes | dont arêtes |
 | --- | --- | --- | ---: | ---: |
-| ASML | 20-F | — | 6 | 5 |
+| ASML | 20-F | — | 63 | 5 |
 | ASML | 20-F | US GAAP | 515 | 455 |
 | ASML | 6-K | — | 90 | 2 |
 | ALIBABA GROUP HOLDING LTD | 20-F | — | 1 | 1 |
@@ -4618,14 +4618,14 @@ Entrés depuis dans une paire ou un cycle, 3 émetteurs (GCL GLOBAL HOLDINGS LTD
 | IREN | 6-K | — | 87 | 25 |
 | IREN | 6-K | IFRS | 1 | 0 |
 | IREN | 6-K/A | — | 10 | 1 |
-| Nebius | 20-F | — | 25 | 8 |
+| Nebius | 20-F | — | 41 | 8 |
 | Nebius | 20-F | US GAAP | 35 | 18 |
 | Nebius | 6-K | — | 122 | 46 |
 | Nebius | 6-K/A | — | 10 | 4 |
 | SoftBank | 20-F | — | 110 | 44 |
 | SoftBank | 6-K | — | 100 | 12 |
 | SK hynix | 6-K | — | 97 | 21 |
-| TSMC | 20-F | — | 40 | 33 |
+| TSMC | 20-F | — | 52 | 33 |
 | TSMC | 20-F | IFRS | 349 | 286 |
 | TSMC | 6-K | — | 104 | 20 |
 
@@ -6030,6 +6030,49 @@ Part du carnet contracté d'un vendeur que le vendeur attribue lui-même à un c
 
 Lignes de carnet sans aucune date où le carnet du vendeur, du même terme, est publié (aucune cellule) : Akamai → Anthropic, RPO (1 ligne) ; Hut 8 → Fluidstack, loyers à recevoir (1 ligne).
 
+## Composition des en-cours, telle qu'écrite (D-0076)
+
+Ce que les notes des rapports périodiques écrivent des en-cours et des actifs pas encore en service : la composante (matériel informatique, bâtiments…), ce qui la tient hors service (pas encore mise en service, chez les fournisseurs…), le poste qui la porte et, quand il est écrit, son montant (`ppe_component_disclosed`). Une composante n'est jamais déduite d'un mot vague (« equipment », « AI infrastructure ») ; un montant écrit n'est ni additionné ni rapporté à un total. L'en-cours balisé à la même date n'est qu'un repère. Le détail par date est dans `series.md`.
+
+| Groupe | Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | --- | ---: | --- | --- | --- | --- | ---: | --- |
+| ASML | 2025-12-31 | 1 771,0 M EUR | bâtiments et installations | en construction | en-cours | surtout | — | 20-F 0001628280-26-011378 |
+|  |  |  | outils et machines de production | en construction | en-cours | surtout | — | 20-F 0001628280-26-011378 |
+|  |  |  | nature non écrite | en construction | immobilisations | montant | 1 771,0 M EUR | 20-F 0001628280-26-011378 |
+| Alphabet | 2026-06-30 | 122 814 M$ | nature non écrite | pas encore en service | immobilisations | montant | 122 814 M$ | 10-Q 0001652044-26-000071 |
+| Amazon | 2018-12-31 | 6 861 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001018724-19-000004 |
+| Applied Digital | 2025-05-31 | 1 123 M$ | nature non écrite | en construction | en-cours | montant | 9 M$ | 10-K 0001144879-25-000021 |
+| Backblaze | 2025-06-30 | 75 000 $ | matériel informatique | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-25-038603 |
+| Cipher | 2026-06-30 | 1 676 M$ | bâtiments et installations | en construction | en-cours | montant | 1 676 M$ | 10-Q 0001819989-26-000041 |
+| Core Scientific | 2026-06-30 | n.d. (non publié) | machines de minage | pas encore en service | autre poste | comprend | — | 10-Q 0001839341-26-000014 |
+|  |  |  | nature non écrite | état non écrit | autre poste | montant | 14 M$ | 10-Q 0001839341-26-000014 |
+|  |  |  | nature non écrite | en construction | immobilisations | montant | 1 101 M$ | 10-Q 0001839341-26-000014 |
+| Galaxy | 2026-06-30 | 512 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001859392-26-000091 |
+|  |  |  | nature non écrite | en construction | immobilisations | montant | 512 M$ | 10-Q 0001859392-26-000091 |
+| IREN | 2026-06-30 | 3 657 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001878848-26-000052 |
+| Intel | 2026-06-27 | n.d. (non publié) | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 6 000 M$ | 10-Q 0000050863-26-000157 |
+| Meta | 2026-09-30 | 89 499 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  |  | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  |  | nature non écrite | en construction | en-cours | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  |  | bâtiments et installations | en construction | autre poste | surtout | — | 10-Q 0001628280-26-066773 |
+|  |  |  | bâtiments et installations | état non écrit | autre poste | montant | 2 600 M$ | 10-Q 0001628280-26-066773 |
+|  |  |  | terrains | état non écrit | autre poste | surtout | — | 10-Q 0001628280-26-066773 |
+| Micron | 2026-09-03 | 11 424 M$ | bâtiments et installations | en construction | en-cours | surtout | — | 10-K 0000723125-26-000023 |
+|  |  |  | outils et machines de production | pas encore en service | en-cours | surtout | — | 10-K 0000723125-26-000023 |
+|  |  |  | nature non écrite | pas encore en service | classe du tableau | montant | 6 120 M$ | 10-K 0000723125-26-000023 |
+| Nebius | 2025-12-31 | 2 417 M$ | matériel informatique | pas encore en service | en-cours | surtout | — | 20-F 0001104659-26-052948 |
+|  |  |  | nature non écrite | pas encore en service | en-cours | surtout | — | 20-F 0001104659-26-052948 |
+|  |  |  | nature non écrite | payé d'avance | en-cours | comprend | — | 20-F 0001104659-26-052948 |
+|  |  |  | nature non écrite | pas encore en service | immobilisations | montant | 2 417 M$ | 20-F 0001104659-26-052948 |
+| Riot | 2025-12-31 | 166 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001104659-26-022322 |
+| SpaceX | 2026-09-30 | 23 745 M$ | bâtiments et installations | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-26-066880 |
+|  |  |  | matériel informatique | pas encore en service | en-cours | surtout | — | 10-Q 0001628280-26-066880 |
+| Supermicro | 2024-12-31 | 336 000 $ | bâtiments et installations | en construction | en-cours | montant | 336 000 $ | 10-Q 0001375365-25-000006 |
+
+Aucun terme d'en-cours ni d'actif pas encore en service dans les notes : Apollo, Blackstone, Blue Owl, Dell, Microsoft.
+En-cours nommé seulement comme ligne nue d'un tableau, déjà balisée : AMD, Cerebras, Marvell, TeraWulf.
+Fenêtres lues sans composante écrite : Akamai (20 blocs lus sur 20) ; Broadcom (8 blocs lus sur 8) ; CoreWeave (1 bloc lu sur 1) ; Hut 8 (9 blocs lus sur 9) ; NVIDIA (9 blocs lus sur 9) ; Oracle (1 bloc lu sur 1) ; SK hynix (4 blocs lus sur 4) ; TSMC (12 blocs lus sur 12).
+
 ## Événements propres aux laboratoires (D-0067, volet 9 ; hors annexe F)
 
 Cinq observables datés, fixés avant toute lecture (D-0067, point 7), par laboratoire et trimestre civil, de 2021 T1 au dernier trimestre clos : L1 engagement réduit, L2 fin d'une exclusivité, L3 marque en baisse chez un actionnaire (valeur par action déclarée par un fonds, sous celle de sa date précédente pour le même titre, ou perte de valeur écrite), L4 garantie appelée, L5 site retardé. Ce n'est pas l'annexe F, liste fermée ; aucune somme, aucun score. L1, L2, L4 et L5 ne voient que les pièces en cache : un trimestre sans fait lu est « non déterminé », jamais « sans événement ».
@@ -6066,5 +6109,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 614, non publié 7 616, terme manquant 6 671, historique tronqué 4 227, période antérieure absente 1 838, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 933, recherche incomplète 576, dénominateur négatif ou nul 453, client anonyme 262, frontière de retraitement 193, caviardé 176, non collecté 152, période non écoulée à la date de coupure 92, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 22, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 614, non publié 7 641, terme manquant 6 671, historique tronqué 4 227, période antérieure absente 1 838, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 933, recherche incomplète 576, dénominateur négatif ou nul 453, client anonyme 262, frontière de retraitement 193, caviardé 176, non collecté 152, période non écoulée à la date de coupure 92, intervalle à cheval sur le seuil 89, faits en conflit 86, date manquante 22, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
 

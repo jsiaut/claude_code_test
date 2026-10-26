@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..99da218 100644
+index 1378604..008b933 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,207 @@ user_agent:
@@ -1433,7 +1433,7 @@ index 1378604..99da218 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -440,4 +1708,477 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
+@@ -440,4 +1708,502 @@ unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
     depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
     debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
@@ -1842,6 +1842,31 @@ index 1378604..99da218 100644
 +    dedupe: true
 +    evidence: registry                # niveau du bloc lu, tel quel
 +    cap: 100000
++  ppe_components:                     # D-0076, point 4 : notes qui nomment un terme d'en-cours ou d'actif pas encore en service
++    decision: D-0076
++    source: ppe_notes                 # notes des rapports périodiques (instances XBRL) et de `registration_text` ; aucune requête
++    terms:                            # lexique, sans égard à la casse (pipeline/ppe_notes.py)
++      - {rx: 'construction[\s-]+in[\s-]+pro(?:gress|cess)|constructions?[\s-]+in[\s-]+progress|assets?\s+under\s+construction',
++         label: "en-cours"}
++      - {rx: 'not\s+(?:yet\s+)?(?:been\s+)?(?:placed|put)\s+(?:in|into)\s+(?:service|use|operation)|not\s+(?:yet\s+)?(?:in|into)\s+(?:service|use)\b|not\s+(?:yet\s+)?(?:available|ready)\s+for\s+(?:its\s+|their\s+)?(?:intended\s+)?use',
++         label: "pas en service"}
++      - {rx: 'under\s+installation|pending\s+installation|awaiting\s+installation|not\s+yet\s+installed|yet\s+to\s+be\s+installed',
++         label: "en installation"}
++      - {rx: '(?:pending|awaiting|prior\s+to|before)\s+(?:its\s+|their\s+)?deployment|not\s+(?:yet\s+)?(?:been\s+)?deployed|undeployed',
++         label: "pas déployé"}
++      - {rx: '(?:stored|held|located|warehoused)\s+(?:by|at|with)\s+(?:our\s+|its\s+|the\s+)?(?:third[\s-]party\s+)?(?:suppliers?|vendors?|manufacturers?)',
++         label: "chez les fournisseurs"}
++      - {rx: '(?:machinery|equipment|miners?|servers?)\s+in\s+transit', label: "en transit"}
++    noted_terms: ['(?i:construction[\s-]+in[\s-]+pro(?:gress|cess))', '(?i:assets?\s+under\s+construction)',
++                  '(?i:not\s+(?:yet\s+)?(?:been\s+)?(?:placed|put)\s+(?:in|into)\s+(?:service|use|operation))',
++                  '(?i:not\s+(?:yet\s+)?(?:in|into)\s+(?:service|use)\b)', '(?i:not\s+(?:yet\s+)?(?:available|ready)\s+for)',
++                  '(?i:installation|installed)', '(?i:deploy(?:ed|ment))', '(?i:suppliers?|vendors?)', '(?i:in\s+transit)']
++    window: 1                         # un paragraphe de part et d'autre, renvois rattachés par leur marque, fenêtres fondues
++    complement: all                   # une fenêtre déjà dans un bloc lu du même dépôt : lecture complémentaire (composantes)
++    dedupe: true                      # un texte distinct se lit une fois ; servies des plus anciennes aux plus récentes
++    evidence: registry                # 10-K, 10-KT et 20-F : A, audité ; 10-Q : B, revu ; document d'enregistrement :
++                                      # l'assurance de son jeu de notes (pipeline/ppe_notes.evidence)
++    cap: 2000
 +
 +nport:                       # D-0058, volet F : obligations de SoftBank valorisées par les fonds (Form N-PORT Data Sets)
 +  decision: D-0058

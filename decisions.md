@@ -3733,3 +3733,32 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - constat de lecture : Backblaze écrit, dans le renvoi de sa ligne d'en-cours, « hard drives not yet deployed » (10-K de 2024), puis « primarily comprised of hard drives that are not yet deployed » (10-Q de 2025). Ce sont des disques de stockage, du matériel informatique au sens du point 5, mais la liste des mots du contrôle n'en contient aucun ;
   - règle : les mots de `it_equipment` s'étendent à « hard drive » et « disk drive », au singulier comme au pluriel. Rien d'autre ne change. Aucune ligne déjà lue n'est touchée : aucune n'a été refusée ni codée autrement pour ce motif.
   - ajout consigné après 312 blocs lus, avant de l'appliquer : un montant d'en-cours écrit pour une seule entité consolidée (Intel : « construction in progress assets » d'Arizona SCIP, entité à intérêt variable) porte le nom de l'entité tel qu'écrit dans `instrument_key`, comme une classe du point 15. Sans cela, la cellule se lirait comme l'en-cours du groupe entier.
+
+  (17) Résultats (2026-10-26), après réassemblage sans mémo (1 123 s) et rendus, contre les tables de 52a0873 :
+  - lecture : 413 blocs en 24 lots, sans sous-agent ; 778 lignes, dont 583 lignes de composante, toutes valides, et 195 abstentions (bloc déjà lu sans composante nouvelle 132, hors du champ 41, principe comptable 14, sans contenu utile 8). Deux amendements, écrits pendant la lecture et avant tout calcul (points 15 et 16) ;
+  - lignes par composante : bâtiments et installations 227 (12 groupes), nature non écrite 213 (12), matériel informatique 48 (6), outils et machines de production 47 (2), logiciels 32 (3), machines de minage 11 (4), terrains 5 (1). Par énoncé : montant 314 (276 balisés, 38 écrits seulement), « surtout » 147, « comprend » 122. Par état : en construction 366, pas encore en service 168, payé d'avance 26, non écrit 17, chez les fournisseurs 6 ;
+  - mesure `ppe_component_disclosed` : 1 290 cellules pour 16 groupes. Le terme `component` en compte 447 par vue. Le terme `cip_tagged` en compte 198 par vue : 173 calculées en vue `as_known` (176 en vue `revised`), 25 (22) indéterminées, motif non publié. Intel ne balise son en-cours qu'en fin d'exercice ; Core Scientific le balise, depuis son 10-K de 2025, sous un concept que la grandeur `construction_in_progress` (D-0075) ne lit pas ;
+  - matériel informatique, ce que la piste cherchait. Six groupes le nomment, un seul en chiffre une part :
+    - Meta : en-cours « mostly related to » centres de données, infrastructure de réseau et serveurs, depuis le 10-Q du deuxième trimestre 2022. Seule part informatique chiffrée du corpus : les composants de serveurs et de réseau stockés chez les fournisseurs, 2,18 Md$ au 2022-12-31, puis 1,64, 1,48, 1,51 et 1,40 Md$ au 2023-12-31 ; ils ne sont plus écrits ensuite. Des actifs de centres de données, surtout des en-cours et des terrains, passent en actifs détenus en vue de la vente : 2,04 Md$ en juin 2025 et 4,66 Md$ au 2025-09-30, avant l'apport à la coentreprise de Louisiane, puis 2,03 Md$ au 2026-06-30 et 2,60 Md$ au 2026-09-30 ;
+    - Alphabet : les « assets not yet in service » comprennent des bâtiments de centres de données et des serveurs en construction ou en assemblage (10-K de 2024 et de 2025), sans part chiffrée. Le poste vaut 35,1 Md$ au 2023-12-31, 50,6 Md$, 78,6 Md$, puis 122,8 Md$ au 2026-06-30 ;
+    - SpaceX : en-cours surtout des serveurs et équipements de réseau, et de l'infrastructure de centres de données pas encore en service (10-Q du troisième trimestre 2026 ; en-cours balisé 23,7 Md$). Au deuxième trimestre, le texte écrivait des installations, des équipements et une « AI infrastructure » ;
+    - Nebius : actifs pas encore en usage surtout des serveurs et équipements de réseau, acomptes compris ; 163,8 M$ au 2024-12-31, 2 417,4 M$ au 2025-12-31 ;
+    - Backblaze : en-cours surtout des disques durs pas encore déployés, de 19 000 à 311 000 $ ;
+    - IREN : la classe « Mining and HPC hardware » comprend des unités livrées mais entreposées, pas encore installées, sans montant. Ses en-cours sont des centres de données en développement (238 M$, puis 3 657 M$ au 2026-06-30) ;
+    - Microsoft et Dell n'écrivent rien. NVIDIA, CoreWeave, Oracle, Broadcom et Hut 8 n'écrivent que des principes ; TSMC et SK hynix, que leurs tableaux ;
+  - ailleurs, des bâtiments et des machines :
+    - Micron : équipement pas encore mis en service, dans la classe « Equipment », de 2,06 Md$ en 2017 à 6,12 Md$ au 2026-09-03 ; en-cours surtout de la construction et de l'installation d'outils ;
+    - Supermicro : bâtiments ;
+    - Cipher : centres de données pour des locataires de calcul intensif, 1 676 M$ au 2026-06-30 ;
+    - Core Scientific : en-cours de 1 101 M$ ; des machines de minage jamais déployées sont mises en vente, 13,8 M$ avec du matériel électrique ;
+    - Galaxy : infrastructure de centres de données ;
+    - Intel : en-cours d'Arizona SCIP, de 11,5 Md$ à 6,0 Md$ ;
+    - ASML : surtout des bâtiments, puis des machines, 1 771 M EUR ;
+    - Riot, Applied Digital (9,4 M$ de coûts d'extinction d'un billet à ordre) et Amazon (2018) ;
+  - tables, contre celles de 52a0873 :
+    - faits, documents, entités, liens, contrôles et exclusions sont identiques ;
+    - observations : 30 234 → 31 012, soit les 778 lignes et quatre colonnes nouvelles ; aucune ligne ancienne ne change ;
+    - mesures : 192 242 → 193 532, soit les seules 1 290 cellules nouvelles ;
+  - rendus : section « Composition des en-cours, telle qu'écrite (D-0076) » de la synthèse, et détail par date dans `series.md`. Le registre `audit/numbers.csv` passe de 52 353 à 52 737 nombres. `delta.md` ne montre que les 1 290 cellules apparues ; aucun événement de l'annexe F n'apparaît ni ne disparaît ;
+  - limites : la synthèse ne montre que la dernière date de chaque groupe. Chez Alphabet, la composition n'est écrite que dans le 10-K : elle manque à la dernière date trimestrielle et se lit dans `series.md`. Les lignes de montant prises aux tableaux (Core Scientific, Alphabet, Nebius, Galaxy) répètent l'en-cours balisé sans en dire la nature ;
+  - tests : 23 dans `test_d0076` (21 au point 13, plus un par amendement), 416 en tout ; ruff sans remarque.
