@@ -4024,7 +4024,12 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Exception à §7.4 : la passe ne relit pas le reste du bloc. Motif : elle ne fait que retirer des noms. Le lecteur valide chaque ligne (schéma, sémantique, citation retrouvée mot pour mot), et la passe la plus récente remplace l'ancienne au chargement.
   - Garde : un test parcourt les lignes chargées avec les motifs du constat et échoue si une personne physique y est nommée. Les noms de sociétés du constat sont admis.
   - Terme défini d'une partie (D-0039 précisé). Une partie que l'extrait désigne par un terme défini compte comme nommée quand le même document le définit avec son nom : au préambule (« BROADCOM INC. (the "Investor") ») ou dans ses définitions (« "Investor" means … »). Le document est fait des blocs du même dépôt et du même fichier (en-tête et corps). Les autres conditions de D-0039 tiennent : les parties de la ligne sont S et C.
+    - forme d'une définition : au préambule, le nom puis, entre parenthèses, le terme entre guillemets (« BROADCOM INC. (the "Investor") », « Google LLC (together with its subsidiaries and Affiliates, the "Investor") », « Amazon Web Services (collectively with its affiliates "Customer") ») ; dans les définitions, « "Investor" means … ». Le nom retenu est celui de S ou de C le plus proche du terme ;
+    - un terme qui se rapporterait aux deux parties, selon les définitions du document, ne compte pas ;
+    - dans l'extrait, le terme compte quand il y figure en mot entier, avec sa capitale, sans autre mot en capitale à sa suite (« Investor Agreement » n'est pas « Investor ») ;
+    - « the Company » que le document définit avec le nom de l'autre partie de la paire désigne cette partie, et non plus le déposant (une lettre d'engagement déposée par Amazon y appelle OpenAI « the Company »).
   - Plafond périmé. Dans `counterparty_exposure`, un plafond d'engagement (`contractual_outflows/commitment_cap/…`) peut être suivi d'un tirage en numéraire du même instrument, vu de la même perspective, daté après lui et au plus tard à t. Il ne dit plus alors le non-appelé à t :
+    - tirage en numéraire : une ligne de financement de la paire, du même instrument, au stade versé (`drawn_or_paid`), de nature `financing_cash`, qui n'est ni une fin d'instrument (remboursement, résiliation, conversion, cession) ni un encours ; c'est la définition du constat ;
     - il sort de la ligne, et les drapeaux de la ligne le nomment (`stale_caps`) ;
     - la ligne est partielle (terme manquant) s'il lui reste d'autres plafonds, indéterminée (terme manquant) sinon ;
     - aucun reste ne se calcule (plafond moins tirages) : un plafond publié peut être brut, ou déjà net des tirages du même jour.
@@ -4054,8 +4059,35 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - plus deux clés d'instrument tirées d'un nom de famille (Core Scientific et TeraWulf ; la seconde est sur une ligne de la première passe) ;
   - la passe `repass_d0078b` (pass_id 2026-10-27T18:40:00Z) les corrige selon les règles du point 3, sans rejet. Elle reprend les 120 lignes de ces 39 blocs :
     - un intitulé de procès devient la nature de l'action (« action collective … contre … ») ;
-    - la ligne de partie de la convention de vote de Cavium qui nomme une personne physique devient une abstention ;
+    - la ligne de partie de la convention de vote de Cavium qui nomme une personne physique devient une abstention (reprise au point 7) ;
     - les deux clés deviennent `corz:individual_lender_term_loan_2021` et `wulf:ceo_entity_exchange_warrants_2023` ;
   - D-0078 corrige donc 104 lignes, dans 85 blocs. Le relevé élargi, refait après les deux passes, ne trouve plus que des noms de sociétés, de lieux ou de projets ;
   - noms d'entités qui contiennent un nom de personne : une société ou une fondation reste sous son nom (The Jen-Hsun and Lori Huang Foundation ; Lawrence Investments, LLC ; Ben Milam Solar 1 LLC ; McCabe Petroleum Corporation). Une fiducie familiale compte comme la personne et n'est pas nommée ;
   - la garde du point 3 reprend les motifs du relevé élargi.
+
+  (7) Constat du réassemblage, puis deux règles complémentaires fixées avant tout changement :
+  - les mesures changées sont celles du point 4 : 4 expositions (plafonds périmés) et 2 conclusions. Les autres écarts ne sont que des clés renommées (identifiant de passe nouveau), de même valeur ;
+  - Amazon–OpenAI : deux plafonds sortent, et non un seul. Le plafond de 15,0 Md$ n'a pas de date propre ; son arête prend la date de connaissance (2026-02-27), que le relevé du constat écartait. Le versement de 15,0 Md$ du 31 mars 2026 le suit. La ligne est donc indéterminée (terme manquant), et non de 15,0 Md$ ;
+  - premier effet de bord. La ligne de partie de la convention de vote de Cavium, devenue abstention, ne laissait à l'en-tête que la partie déposante. La règle de lecture des corps (`exhibits.decide`) le classait alors « établissements financiers seulement », ce qu'il n'est pas, et son corps entrait dans le bloc text (un bloc de plus au rendement). Règle : une partie personne physique d'un en-tête de pièce garde sa ligne de partie, désignée par le terme défini de la pièce (« Stockholder »), sans son nom. Une troisième passe, `repass_d0078c`, reprend ce seul bloc ;
+  - second effet de bord. Le rendement du bloc text (D-0029) compte les lignes des passes postérieures à son ouverture. Les passes de correction y faisaient entrer des blocs lus avant l'ouverture : 124 observations et 17 abstentions de plus, sans lecture nouvelle. Règle : les passes de correction sont nommées dans `config.yaml` (`reading.correction_passes`). Un bloc lu avant l'ouverture et repris par une passe de correction reste hors du rendement.
+
+  (8) Résultats, après les trois passes, comparés aux tables de dcd6689 :
+  - tables : documents, faits, observations (31 287), liens, mesures (193 875) et contrôles gardent leur nombre de lignes. Entités 3 638 → 3 636 et exclusions 31 889 → 31 887 :
+    - cinq noms en attente disparaissent : deux personnes physiques, deux désignations qui en nommaient une, et le receveur de la ligne d'achat d'actions de SpaceX ;
+    - trois apparaissent : « these companies », « XIUC, X., x.AI » et « Stockholder » ;
+  - mesures de même clé changées : 6, soit 4 `counterparty_exposure` et 2 `relationship_conclusion`. Les 62 cellules `exposure_matrix` apparues et disparues sont les mêmes, de même valeur ; leur clé porte l'identifiant de passe ;
+  - plafonds périmés :
+    - Amazon envers Anthropic : 16,4 → 15,0 Md$, partielle (terme manquant) ; le plafond de 1,4 Md$ de 2025 sort ;
+    - Google envers Anthropic : 22,0 → 20,0 Md$, partielle, vue par autrui ; le plafond de 2,0 Md$ de 2023 sort ;
+    - Amazon envers OpenAI : 50,0 Md$ → indéterminée (terme manquant). Les deux plafonds sortent (point 7) : 15,0 Md$, versés le 31 mars 2026 ; 35,0 Md$, suivis des versements de 13,7 Md$ (30 juin 2026) et de 21,3 Md$ (31 juillet 2026) ;
+    - Apollo envers Athene : 350 M$ → indéterminée ;
+    - cellules de rang 1 : calculées 40 627 → 40 623, partielles 265 → 267, indéterminées 33 282 → 33 284 ;
+  - pièces de lien : 7 pièces nouvelles, dans 6 paires, par un terme défini que le même document définit avec le nom de la partie :
+    - « Investor » : Broadcom (EX-4.4 du S-1) et Google (EX-4.5). Broadcom–Anthropic et Google–Anthropic passent de `commercial_with_financing` à `documented_dependency` (L1) ;
+    - « Customer » (Amazon Web Services, deux lignes d'un 8-K de Marvell). Marvell–Amazon reste `causality_not_established` : sa structure est `financing_only` ;
+    - « Warrantholder » (OpenAI OpCo, LLC, pour AMD), « Purchaser » (Amazon Web Services, Inc., EX-4.3 du S-1), « Holder » et « Company » (la lettre d'engagement d'Amazon, où « the Company » est OpenAI). Ces trois paires étaient déjà `documented_dependency` ;
+    - pièces des blocs de la découverte : 11 → 14 ;
+  - rendement du bloc text : identique à celui de dcd6689 (blocs, lignes et arêtes) ;
+  - garde : la table des observations ne nomme aucune personne physique. Les rendus publiés n'en nomment pas non plus : le relevé n'y trouve que des noms de sociétés (T. Rowe Price, Dean Witter, George Warehousing, Ellison Institute, Musk Industries) ;
+  - rendus : `synthesis.md` (conclusions et grand livre des laboratoires, où un plafond retiré est dit), `delta.md` et `audit/`. La troisième passe entre dans le commit d'intégration.
+  - contrôles : `make check` (ruff, puis 448 tests) passe.

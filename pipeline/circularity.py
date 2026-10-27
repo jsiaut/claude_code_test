@@ -10,6 +10,7 @@ texte du fournisseur et, s'il dépose, du client (recherche complète au sens de
 L'absence n'est jamais un zéro ; aucun seuil de ratio ne déclenche seul une conclusion.
 """
 import datetime as dt
+import re
 from decimal import Decimal
 
 from . import backlog as B
@@ -303,11 +304,70 @@ def party_groups(o, reg):
     return out
 
 
-def link_pieces(pair, obs, reg, s_names, c_names):
+# D-0078 : terme défini d'une partie, au préambule (« BROADCOM INC. (the "Investor") ») ou dans les définitions
+# (« "Investor" means … »), retrouvé dans le texte du même document
+_TERM = r"[\"“]([A-Z][\w\-]*(?: [A-Z][\w\-]*){0,2})[\"”]"
+DEF_PAREN = re.compile(r"\(([^()]{0,80}?)" + _TERM + r"\s*\)")
+DEF_MEANS = re.compile(_TERM + r"\s+(?:shall\s+)?means?\s+(?=([^;\n]{0,200}))")   # fenêtre lue sans être consommée
+# entre le nom et la parenthèse, au plus une description (« , a Delaware corporation ») ; après « means », un article
+_DESC = re.compile(r"[\s,]*(?:(?:a|an)\s+[^()\"“”]{0,80})?[\s,]*$")
+_ART = re.compile(r"\s*(?:(?:the|a|an)\s+)?")
+
+
+def term_definitions(text):
+    """Définitions de termes d'une partie dans un texte : (terme, fenêtre, sens). Sens -1 : le nom précède la
+    parenthèse, dans la fenêtre qui va de la parenthèse précédente (ou de 200 caractères avant) au terme ; +1 : il
+    suit « means ». « (this "Agreement") » désigne un document, pas une partie."""
+    out = []
+    for m in DEF_PAREN.finditer(text):
+        if m.group(1).strip().lower().startswith(("this", "these")):
+            continue
+        lo = max(text.rfind(")", 0, m.start()), text.rfind("(", 0, m.start()), text.rfind(";", 0, m.start()),
+                 m.start() - 200)
+        out.append((m.group(2), text[lo + 1:m.start()], -1))
+    for m in DEF_MEANS.finditer(text):
+        out.append((m.group(1), m.group(2), 1))
+    return out
+
+
+def defined_parties(defs, s_names, c_names):
+    """Terme défini -> « s » ou « c ». Le nom de S ou de C le plus proche du terme, dans sa fenêtre : juste avant la
+    parenthèse (une description permise entre les deux), ou juste après « means ». Un terme qui se rapporte aux
+    deux, selon les définitions du document, ne compte pas (D-0078)."""
+    sides = {}
+    for term, win, sens in defs:
+        wl, best = win.lower(), None
+        for side, names in (("s", s_names), ("c", c_names)):
+            for n in names:
+                i = wl.rfind(n.lower()) if sens < 0 else wl.find(n.lower())
+                if i < 0:
+                    continue
+                pos = i + len(n) if sens < 0 else -i
+                if best is None or pos > best[0]:
+                    best = (pos, side, i)
+                elif pos == best[0] and side != best[1]:
+                    best = (pos, None, i)
+        if not best or not best[1]:
+            continue
+        if sens < 0 and not _DESC.fullmatch(wl[best[0]:]):
+            continue
+        if sens > 0 and best[2] != _ART.match(wl).end():
+            continue
+        sides.setdefault(term, set()).add(best[1])
+    return {t: v.pop() for t, v in sides.items() if len(v) == 1}
+
+
+def _uses_term(term, q):
+    """Le terme figure dans l'extrait en mot entier, avec sa capitale, sans autre mot en capitale à sa suite."""
+    return re.search(r"\b" + re.escape(term) + r"\b(?!\s+[A-Z])", q) is not None
+
+
+def link_pieces(pair, obs, reg, s_names, c_names, doc_defs=None):
     """Pièces L1 à L5 dont l'extrait, retrouvé mot pour mot, nomme les deux parties (§3.4).
     Le déposant se nomme lui-même par un terme défini (« the Company », « we »). Les parties
     de la ligne doivent être S et C : une ligne d'un tiers qui nomme l'une des deux n'est pas
-    une pièce de la paire (D-0039)."""
+    une pièce de la paire (D-0039). Une partie désignée par un terme défini compte comme nommée quand
+    le même document le définit avec son nom (`doc_defs` : clé de document -> définitions, D-0078)."""
     out = []
     # « the Group » : désignation du déclarant dans les comptes d'un groupe (IREN), réécrite « the Company » (D-0038)
     self_ref = ("the Company", "Company", "the Group", "The Group", "we ", "We ", "our ", "us ")
@@ -318,8 +378,18 @@ def link_pieces(pair, obs, reg, s_names, c_names):
             continue
         q = o.get("quote") or ""
         ql = q.lower()
-        s_hit = any(n.lower() in ql for n in s_names) or (o["group_id"] == pair.s and any(x in q for x in self_ref))
-        c_hit = any(n.lower() in ql for n in c_names) or (o["group_id"] == pair.c and any(x in q for x in self_ref))
+        defs = (doc_defs or {}).get(o.get("doc_key"))
+        terms = defined_parties(defs, s_names, c_names) if defs else {}
+        own = self_ref
+        # « the Company » défini avec le nom de l'autre partie la désigne, et non plus le déposant
+        other = "c" if o["group_id"] == pair.s else "s" if o["group_id"] == pair.c else None
+        if other and terms.get("Company") == other:
+            own = tuple(x for x in self_ref if "Company" not in x)
+        by_term = {side for t, side in terms.items() if _uses_term(t, q)}
+        s_hit = any(n.lower() in ql for n in s_names) or (o["group_id"] == pair.s and any(x in q for x in own)) \
+            or "s" in by_term
+        c_hit = any(n.lower() in ql for n in c_names) or (o["group_id"] == pair.c and any(x in q for x in own)) \
+            or "c" in by_term
         if s_hit and c_hit and {pair.s, pair.c} <= party_groups(o, reg):
             out.append(o)
     return out
@@ -378,11 +448,12 @@ def fiscal_years(quarters, ws, as_of_d):
 
 def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
                   report_dates, lookback, censored_groups, rev_notes_read=frozenset(), text_done=frozenset(),
-                  failed_until=None, client_state=None, backlog=None, closings=None, exits=None):
+                  failed_until=None, client_state=None, backlog=None, closings=None, exits=None, doc_defs=None):
     """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part). `backlog` : faits balisés, lignes
     de carnet et RPO publiés (backlog.Inputs, D-0068) ; sans lui, aucun RPO n'est publié. `closings` : fins
     d'instrument de toutes les arêtes (closing_index, D-0069). `exits` : sorties publiées par paire, tirées des
-    déclarations de détention (D-0071, point 3)."""
+    déclarations de détention (D-0071, point 3). `doc_defs` : définitions de termes des documents des pièces de
+    lien (term_definitions, D-0078)."""
     as_of_d = dt.date.fromisoformat(as_of)
     backlog = backlog if backlog is not None else B.Inputs()
     out, ev = [], {}
@@ -422,7 +493,7 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
                                             if l["_obs"]["group_id"] == c}
         c_names = names_of_group(reg, c) | {l["_obs"].get("counterparty_name") for l in p.edges
                                             if l["_obs"]["group_id"] == s}
-        pieces = link_pieces(p, obs, reg, {n for n in s_names if n}, {n for n in c_names if n})
+        pieces = link_pieces(p, obs, reg, {n for n in s_names if n}, {n for n in c_names if n}, doc_defs)
         structure = p.structure()
         ext_states = [search(q["end"]) for q in qs] or [search(as_of_d)]
         complete = all(x[0] for x in ext_states)
@@ -717,7 +788,9 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
     versé publié au coût (base `cost`, nature autre que `financing_cash`) est aussi un état. Un gain ou
     une perte de mise en équivalence est un flux du résultat, pas une exposition. Un encours est un état, qu'une
     fin du même instrument datée après lui et au plus tard à t périme ; une ligne sans numéraire n'est pas un apport ;
-    chaque ligne (bloc, base, catégorie) vient toute de S, ou toute d'autrui (D-0077, points 10 et 11)."""
+    chaque ligne (bloc, base, catégorie) vient toute de S, ou toute d'autrui (D-0077, points 10 et 11). Un plafond
+    suivi d'un tirage en numéraire du même instrument, vu de la même perspective, sort de sa ligne (`stale_caps`),
+    qui devient partielle, ou indéterminée s'il ne lui reste rien (D-0078)."""
     as_of_d = dt.date.fromisoformat(as_of)
     out = []
     for (s, c), p in sorted(pairs.items()):
@@ -783,11 +856,26 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
             if key[1] == "outstanding_balance" and l["_date"] and \
                     any(e > l["_date"] for e in ends.get((sides[key], ik), [])):
                 del states[(key, ik)]
+        # tirages en numéraire, par perspective et instrument : ils périment un plafond antérieur (D-0078)
+        draws = {}
+        for l in fin:
+            o = l["_obs"]
+            if l["family"] == "financing" and o.get("stage") == "drawn_or_paid" and o.get("amount_nature") == "financing_cash" \
+                    and o.get("unit") == CURRENCY and o.get("event_type") not in CLOSING_EVENTS \
+                    and o.get("measurement_basis") != "outstanding_balance" and l.get("instrument_key") \
+                    and l["_date"] and l["_date"] <= t:
+                draws.setdefault((perspective(l, s), l["instrument_key"]), []).append(l["_date"])
+        stale = {}
+        for (key, ik), (_, l) in list(states.items()):
+            if key[1] == "commitment_cap" and l["_date"] and \
+                    any(d > l["_date"] for d in draws.get((sides[key], ik), [])):
+                stale.setdefault(key, []).append(l["link_key"])
+                del states[(key, ik)]
         lines = dict(flows)
         for (key, ik), (_, l) in states.items():
             lines.setdefault(key, []).append(l)
         done = s in text_done
-        if not lines:
+        if not lines and not stale:
             out.append(cell("counterparty_exposure", s, None, t, "as_known", as_of, counterparty=c,
                             status="not_determinable", nd_reason="not_disclosed" if done else "not_processed",
                             flags={"wrong_way": wrong_way,
@@ -799,12 +887,22 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
             tiers = {}
             for l in ls:
                 tiers[l["tier"]] = tiers.get(l["tier"], Decimal(0)) + Decimal(str(l["_obs"]["amount"])) / v if v else Decimal(0)
+            st = stale.get((blk, basis, cat))
             out.append(cell("counterparty_exposure", s, None, t, "as_known", as_of, counterparty=c,
-                            breakdown=f"{blk}/{basis}/{cat}", value=v, unit="USD", status="computed" if done else "partial",
-                            nd_reason=None if done else "not_processed",
+                            breakdown=f"{blk}/{basis}/{cat}", value=v, unit="USD",
+                            status="computed" if done and not st else "partial",
+                            nd_reason="term_missing" if st else None if done else "not_processed",
                             flags={"wrong_way": wrong_way, "links": [l["link_key"] for l in ls],
                                    "rule": "somme des apports" if basis in ("cost", "principal") else
                                            "dernière valeur connue à la date, par instrument",
                                    "perspective": sides[(blk, basis, cat)],
+                                   **({"stale_caps": sorted(st)} if st else {}),
                                    "evidence_profile": {k: float(round(x, 4)) for k, x in tiers.items()}}))
+        # une ligne dont tous les plafonds sont périmés : le non-appelé à t est inconnu, aucun reste ne se calcule
+        for blk, basis, cat in sorted(set(stale) - set(lines)):
+            out.append(cell("counterparty_exposure", s, None, t, "as_known", as_of, counterparty=c,
+                            breakdown=f"{blk}/{basis}/{cat}", status="not_determinable", nd_reason="term_missing",
+                            flags={"wrong_way": wrong_way, "stale_caps": sorted(stale[(blk, basis, cat)]),
+                                   "rule": "plafond suivi d'un tirage du même instrument : non-appelé inconnu à la date",
+                                   "perspective": sides[(blk, basis, cat)]}))
     return out

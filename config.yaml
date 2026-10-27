@@ -1318,6 +1318,9 @@ thresholds:                  # seuils cités dans le corps (annexe B)
 reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
   max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
   text_block_first_pass: "2026-10-07T16:30:00Z"   # première passe du bloc text (D-0029) : ses lignes et celles des passes suivantes forment son rendement
+  # passes de correction, sans lecture nouvelle (D-0078) : un bloc lu avant l'ouverture du bloc text et repris par l'une
+  # d'elles reste hors de son rendement
+  correction_passes: ["2026-10-27T18:30:00Z", "2026-10-27T18:40:00Z", "2026-10-27T19:15:00Z"]
 
 session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
 

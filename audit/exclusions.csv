@@ -30162,7 +30162,6 @@ pending_entity:name:crusoe,entity,name:crusoe,pending_entity,« Crusoe » : iden
 pending_entity:name:crédit agricole corporate and investment bank,entity,name:crédit agricole corporate and investment bank,pending_entity,« Crédit Agricole Corporate and Investment Bank » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:cs,entity,name:cs,pending_entity,« CS » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:ctbc bank corp usa,entity,name:ctbc bank corp usa,pending_entity,« CTBC Bank Corp. (USA) » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
-pending_entity:name:current and former employees,entity,name:current and former employees,pending_entity,« current and former employees » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:customer,entity,name:customer,pending_entity,« Customer » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:customers,entity,name:customers,pending_entity,« customers » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:dalton utilities,entity,name:dalton utilities,pending_entity,« Dalton Utilities » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
@@ -30183,8 +30182,6 @@ pending_entity:name:doj,entity,name:doj,pending_entity,« DOJ » : identité non
 pending_entity:name:ec,entity,name:ec,pending_entity,« EC » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:eclipse,entity,name:eclipse,pending_entity,« Eclipse » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:eigen ai,entity,name:eigen ai,pending_entity,« Eigen AI » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
-pending_entity:name:ellison related companies,entity,name:ellison related companies,pending_entity,« Ellison related companies » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
-pending_entity:name:elon musk,entity,name:elon musk,pending_entity,« Elon Musk » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:entities participating in the pool,entity,name:entities participating in the pool,pending_entity,« entities participating in the pool » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:equipment lessor,entity,name:equipment lessor,pending_entity,« Equipment Lessor » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:ercot,entity,name:ercot,pending_entity,« ERCOT » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
@@ -30441,6 +30438,7 @@ pending_entity:name:standard chartered bank,entity,name:standard chartered bank,
 pending_entity:name:starion bank,entity,name:starion bank,pending_entity,« Starion Bank » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:state of texas,entity,name:state of texas,pending_entity,« State of Texas » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:stifel bank & trust,entity,name:stifel bank & trust,pending_entity,« Stifel Bank & Trust » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
+pending_entity:name:stockholder,entity,name:stockholder,pending_entity,« Stockholder » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:stonebriar,entity,name:stonebriar,pending_entity,« Stonebriar » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:sub-licensee,entity,name:sub-licensee,pending_entity,« Sub-licensee » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:subscribers,entity,name:subscribers,pending_entity,« the subscribers » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
@@ -30450,7 +30448,6 @@ pending_entity:name:suntrust bank,entity,name:suntrust bank,pending_entity,« SU
 pending_entity:name:suppliers,entity,name:suppliers,pending_entity,« suppliers » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:surety bond issuing companies,entity,name:surety bond issuing companies,pending_entity,« surety bond issuing companies » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:surety providers,entity,name:surety providers,pending_entity,« surety providers » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
-pending_entity:name:syed b ali,entity,name:syed b ali,pending_entity,« Syed B. Ali » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:symphony technology group,entity,name:symphony technology group,pending_entity,« Symphony Technology Group » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:syndicat de banques anonyme,entity,name:syndicat de banques anonyme,pending_entity,« syndicat de banques (anonyme) » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:syndicat de prêteurs du credit agreement anonyme,entity,name:syndicat de prêteurs du credit agreement anonyme,pending_entity,« syndicat de prêteurs du Credit Agreement (anonyme) » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
@@ -30465,6 +30462,7 @@ pending_entity:name:tera probe,entity,name:tera probe,pending_entity,« Tera Pro
 pending_entity:name:tess,entity,name:tess,pending_entity,« Tess » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:texas capital bank,entity,name:texas capital bank,pending_entity,« Texas Capital Bank » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:tfme’s affiliates,entity,name:tfme’s affiliates,pending_entity,« TFME’s Affiliates » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
+pending_entity:name:these companies,entity,name:these companies,pending_entity,« these companies » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:third parties,entity,name:third parties,pending_entity,« third parties » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:third party,entity,name:third party,pending_entity,« third party » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:third point,entity,name:third point,pending_entity,« Third Point » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
@@ -30521,7 +30519,7 @@ pending_entity:name:wilmington savings fund society fsb,entity,name:wilmington s
 pending_entity:name:windhq,entity,name:windhq,pending_entity,« WindHQ » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:x prize foundation,entity,name:x prize foundation,pending_entity,« X Prize Foundation » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:xai,entity,name:xai,pending_entity,« xAI » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
-pending_entity:name:xiuc x x ai and elon musk,entity,name:xiuc x x ai and elon musk,pending_entity,"« XIUC, X., x.AI, and Elon Musk » : identité non affirmée par une pièce (§10.2)",,,,,,2026-10-27
+pending_entity:name:xiuc x x ai,entity,name:xiuc x x ai,pending_entity,"« XIUC, X., x.AI » : identité non affirmée par une pièce (§10.2)",,,,,,2026-10-27
 pending_entity:name:y club,entity,name:y club,pending_entity,« Y Club » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:zt,entity,name:zt,pending_entity,« ZT » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27
 pending_entity:name:émetteurs des lettres de crédit anonymes,entity,name:émetteurs des lettres de crédit anonymes,pending_entity,« émetteurs des lettres de crédit (anonymes) » : identité non affirmée par une pièce (§10.2),,,,,,2026-10-27

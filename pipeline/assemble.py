@@ -400,11 +400,18 @@ def run(as_of, use_cache=True, apercu=False):
         cells += ocells
         own_exits = ownership.closing_ends(oexits)
         stats["ownership"] = dict(ost, exits_by_pair={f"{s}->{c}": [e["date"] for e in v] for (s, c), v in sorted(oexits.items())})
+    # D-0078 : définitions de termes des documents qui portent une pièce de lien (blocs du même dépôt et du même fichier)
+    link_docs = {o["doc_key"] for o in obs_rows if o.get("link_category") not in (None, circularity.NONE)}
+    doc_defs = {}
+    for b in catalog:
+        dk = f"{b['cik']}/{b['accession']}/{b['document']}"
+        if dk in link_docs:
+            doc_defs.setdefault(dk, []).extend(circularity.term_definitions(b["text"]))
     pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
                                        deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
                                        rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
                                        client_state=client_state, backlog=bl,
-                                       closings=circularity.closing_index(edges), exits=own_exits)
+                                       closings=circularity.closing_index(edges), exits=own_exits, doc_defs=doc_defs)
     cells += pc
     # D-0068, volet 3 : part du carnet contracté d'un vendeur attribuée à un client nommé (rang 2, §14)
     cells += backlog.share_cells(bl, {g: [q["end"] for q in cals[g]["quarters"] if q["end"] <= as_of_d] for g in groups},

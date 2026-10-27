@@ -2052,7 +2052,9 @@ def labs_ledger_section(con, T):
              "versés. Les capacités balisées (MW, GW) restent à part, jamais additionnées aux dollars. Chaque montant est vu par "
              "le déposant de sa pièce (colonne « Vu par ») : les comptes d'un laboratoire n'y paraissent que par son propre "
              "document d'enregistrement (le S-1 d'Anthropic, D-0077). Chaque ligne d'exposition d'une paire vient d'une seule "
-             "perspective : celle du partenaire dès qu'il la publie, sinon celle d'autrui, dite « vu par autrui » (invariant e).")
+             "perspective : celle du partenaire dès qu'il la publie, sinon celle d'autrui, dite « vu par autrui » (invariant e). Un "
+             "plafond d'engagement suivi d'un tirage en numéraire du même instrument en sort : la ligne devient partielle, sans "
+             "reste calculé (D-0078).")
     L.append("")
     by_pair = defaultdict(list)
     for c in cells:
@@ -2078,12 +2080,17 @@ def labs_ledger_section(con, T):
             L.append("")
             L.append(f"{T.n('links', {'lab_pair_edges': [lab, p]}, len(es))} {plural(len(es), 'arête')}, dont "
                      f"{T.n('links', {'lab_pair_edges_amount': [lab, p]}, n_amt)} à montant.")
+            # une ligne indéterminée parce que ses plafonds sont tirés depuis reste dite (D-0078)
             ex = q(con, """SELECT * FROM measures WHERE measure = 'counterparty_exposure' AND view = 'as_known' AND subject = ?
-                           AND counterparty = ? AND value IS NOT NULL ORDER BY period_end DESC, breakdown_key""", p, lab)
+                           AND counterparty = ? AND (value IS NOT NULL OR flags LIKE '%stale_caps%')
+                           ORDER BY period_end DESC, breakdown_key""", p, lab)
             if ex:
                 pe = ex[0]["period_end"]
-                parts = [f"{LAB_EXPO_FR.get(x['breakdown_key'], x['breakdown_key'])} {T.m(x)}"
+                parts = [f"{LAB_EXPO_FR.get(x['breakdown_key'], x['breakdown_key'])} "
+                         + (T.m(x) if x["value"] is not None else "indéterminés (plafonds tirés depuis)")
                          + (" (vu par autrui)" if json.loads(x["flags"] or "{}").get("perspective") == "counterparty" else "")
+                         + (" (sans le plafond antérieur, tiré depuis)"
+                            if x["value"] is not None and json.loads(x["flags"] or "{}").get("stale_caps") else "")
                          for x in ex if x["period_end"] == pe]
                 L.append(f"- Exposition du partenaire au {pe} (`counterparty_exposure`) : " + " ; ".join(parts) + ".")
             caps = [t for t in tagged if t["subject"] == p and t["counterparty"] == lab and (t["unit"] or "") in ("MW", "GW", "MWh", "megawatt", "gigawatt")]
@@ -3425,13 +3432,16 @@ TEXT_KIND_FR = {"concentration_text": "paragraphes sur les clients", "investment
                 "exhibit_body": "corps d'EX-10"}
 
 
-def edges_citing(con, first):
+def edges_citing(con, first, outside=()):
     """Arêtes dont la liste des preuves contient, comme sous-chaîne, la clé d'une ligne des passes du bloc
     text : ce que testait `evidence_keys LIKE '%' || obs_key || '%'` pour chaque arête et chaque ligne. Les
     clés se cherchent par leur préfixe commun, position par position. None si une clé est vide ou contient
-    un caractère spécial de LIKE : la requête d'avant s'applique alors."""
+    un caractère spécial de LIKE : la requête d'avant s'applique alors. `outside` : blocs hors du rendement
+    (corrected_outside, D-0078)."""
     keys = [k for (k,) in con.execute("""SELECT obs_key FROM observations WHERE pass_id >= ?
-                                         AND CAST(block_kind AS VARCHAR) NOT LIKE 'discovery_%'""", [first]).fetchall()]
+                                         AND CAST(block_kind AS VARCHAR) NOT LIKE 'discovery_%'
+                                         AND content_key NOT IN (SELECT unnest(?::VARCHAR[]))""",
+                                      [first, list(outside)]).fetchall()]
     if any(k is None or k == "" or "%" in k or "_" in k or "\\" in k for k in keys):
         return None
     if not keys:
@@ -3448,6 +3458,24 @@ def edges_citing(con, first):
     return hit
 
 
+def corrected_outside(con, correction_passes, first):
+    """Blocs dont la passe chargée est une passe de correction et que leur première passe date d'avant l'ouverture
+    du bloc text : lus avant elle, ils restent hors de son rendement (D-0078, point 7)."""
+    if not correction_passes:
+        return []
+    cks = [ck for (ck,) in con.execute("""SELECT DISTINCT content_key FROM observations
+                                          WHERE pass_id IN (SELECT unnest(?::VARCHAR[])) ORDER BY 1""",
+                                       [sorted(correction_passes)]).fetchall()]
+    out = []
+    for ck in cks:
+        p = config.OBS_DIR / f"{ck}.jsonl"
+        passes = [json.loads(x).get("pass_id") or "" for x in p.read_text(encoding="utf-8").splitlines() if x.strip()] \
+            if p.exists() else []
+        if passes and min(passes) < first:
+            out.append(ck)
+    return out
+
+
 def text_yield_section(con, T, stats):
     """Rendement du bloc `text` (§14) : blocs lus et restants par type, lignes rendues, et ce qui
     a changé depuis le rendement présenté à l'utilisateur avant l'ouverture."""
@@ -3456,6 +3484,7 @@ def text_yield_section(con, T, stats):
     if not (isinstance(sc, list) and "text" in sc):
         return []
     first = str((cfg.get("reading") or {}).get("text_block_first_pass"))
+    outside = corrected_outside(con, set((cfg.get("reading") or {}).get("correction_passes") or []), first)
     pres = (cfg.get("scope_decision") or {}).get("yield_presented") or {}
     tb = stats.get("blocks", {}).get("text", {})
     L = ["## Rendement du bloc text (§14)", ""]
@@ -3470,19 +3499,21 @@ def text_yield_section(con, T, stats):
                                     "du plus ancien au plus récent dans chaque type, et ouvre l'exécution suivante."
                                     if tot[1] < tot[0] else ". Aucun bloc du catalogue ne reste à lire."))
     lines = q(con, """SELECT kind, validation_state, count(*) AS n FROM observations WHERE pass_id >= ?
-                       AND CAST(block_kind AS VARCHAR) NOT LIKE 'discovery_%' GROUP BY 1, 2 ORDER BY 1, 2""", first)
+                       AND CAST(block_kind AS VARCHAR) NOT LIKE 'discovery_%'
+                       AND content_key NOT IN (SELECT unnest(?::VARCHAR[])) GROUP BY 1, 2 ORDER BY 1, 2""", first, outside)
     obs = sum(r["n"] for r in lines if r["kind"] == "observation" and r["validation_state"] == "valid")
     abst = sum(r["n"] for r in lines if r["kind"] == "abstention" and r["validation_state"] == "valid")
     rej = sum(r["n"] for r in lines if r["validation_state"] != "valid")
     L.append(f"- Lignes rendues dans les passes du bloc : {T.n('observations', {'text_obs': True}, obs)} observations, "
              f"{T.n('observations', {'text_abst': True}, abst)} abstentions motivées, "
              f"{T.n('observations', {'text_rejected': True}, rej)} rejetées par la validation.")
-    hit = edges_citing(con, first)
+    hit = edges_citing(con, first, outside)
     if hit is None:
         ed = q(con, """SELECT l.family, l.edge_evidence, count(DISTINCT l.link_key) AS n FROM links l
                         WHERE l.link_kind = 'edge' AND EXISTS (SELECT 1 FROM observations o WHERE o.pass_id >= ?
                               AND CAST(o.block_kind AS VARCHAR) NOT LIKE 'discovery_%'
-                              AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""", first)
+                              AND o.content_key NOT IN (SELECT unnest(?::VARCHAR[]))
+                              AND l.evidence_keys LIKE '%' || o.obs_key || '%') GROUP BY 1, 2 ORDER BY 1, 2""", first, outside)
     else:
         ed = q(con, """SELECT family, edge_evidence, count(DISTINCT link_key) AS n FROM links
                        WHERE link_kind = 'edge' AND link_key IN (SELECT unnest(?::VARCHAR[])) GROUP BY 1, 2 ORDER BY 1, 2""",

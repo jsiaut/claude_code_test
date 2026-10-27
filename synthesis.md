@@ -18,7 +18,7 @@
 - **Contrôles comptables, vue `as_known`** : `mismatch` 1 864, `not_testable` 1 110, `ok` 30 393, `tautological` 1 406 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 3 038, `not_testable` 1 550, `ok` 29 820, `tautological` 1 406.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 195/877, C11 99/842, C12 432/2 055, C13 0/361, C14 85/1 195, C15 139/847, C16 2/511, C1 423/15 403, C2 180/9 041, C3 217/642, C5 0/252, C6 0/1 406, C7 9/530, C8 77/209, C9 6/602.
-- **Exclusions principales** : `not_processed` 27 948, `pending_entity` 1 942, `out_of_scope` 1 262, `financial_parties_only` 358, `conflicting` 258, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 24, `history_left_censored` 11, `not_public` 2.
+- **Exclusions principales** : `not_processed` 27 948, `pending_entity` 1 940, `out_of_scope` 1 262, `financial_parties_only` 358, `conflicting` 258, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 24, `history_left_censored` 11, `not_public` 2.
 - **Doublons de clé primaire écartés à l'assemblage** (une ligne gardée par clé, la dernière ; D-0069, point 9) : `entities` 1, dont 1 clé(s) en collision, `exclusions` 2, dont 0 clé(s) en collision, `measures` 692, dont 240 clé(s) en collision.
 - **Arrêt (§11.4)** : aucun ; refus 403 de la SEC au journal : 0, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 1 sur 32 (Apollo) ; périodes en échec : 22 sur 913.
 
@@ -2367,7 +2367,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Amazon → OpenAI
 
-- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L5) ; 21 arêtes.
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L1, L5) ; 21 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : actif 2 trimestres, inconnu 25 trimestres ; sensibilité `ever_financed` : actif 2 trimestres, inconnu 25 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (caviardé) ; 2022-12-31 : n.d. (caviardé) ; 2023-12-31 : n.d. (caviardé) ; 2024-12-31 : n.d. (caviardé) ; 2025-12-31 : n.d. (caviardé).
 - Dépendance du carnet (RPO) : 2 cellules indéterminées (non publié), 1 cellule calculée, 1 cellule indéterminée (client anonyme).
@@ -2818,7 +2818,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Broadcom → Anthropic
 
-- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 10 arêtes.
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L1) ; 10 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 28 trimestres ; sensibilité `ever_financed` : jamais documenté 28 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-10-31 : n.d. (précondition non remplie) ; 2022-10-30 : n.d. (précondition non remplie) ; 2023-10-29 : n.d. (précondition non remplie) ; 2024-11-03 : n.d. (précondition non remplie) ; 2025-11-02 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 5).
@@ -3184,7 +3184,7 @@ Une paire réunit un groupe du périmètre et une contrepartie que ses pièces n
 
 ### Alphabet → Anthropic
 
-- Conclusion : **relation commerciale doublée d'un financement** ; structure commerciale et financière ; lien non trouvé, recherche complète au sens de E.0 ; 22 arêtes.
+- Conclusion : **dépendance documentée** ; structure commerciale et financière ; lien documenté (L1) ; 22 arêtes.
 - Statut « financé » F, politique de tête (`exposure_outstanding`) : jamais documenté 27 trimestres ; sensibilité `ever_financed` : jamais documenté 27 trimestres.
 - Dépendance de revenu documentée (`documented_revenue_dependency`, par exercice du fournisseur) : 2021-12-31 : n.d. (précondition non remplie) ; 2022-12-31 : n.d. (précondition non remplie) ; 2023-12-31 : n.d. (précondition non remplie) ; 2024-12-31 : n.d. (précondition non remplie) ; 2025-12-31 : n.d. (précondition non remplie).
 - Couverture contractuelle (accords connus déposés en entier, non caviardés) : 0 % (0 sur 9).
@@ -5663,7 +5663,7 @@ Cellules : Anthropic 25 (7 déposants), OpenAI 105 (6 déposants).
 
 ## Grand livre des laboratoires (D-0060, volet 4)
 
-Pour chaque laboratoire et chaque groupe qui a une arête avec lui : les instruments qui les lient, dans le sens des ressources (§3.1), au dernier montant admissible connu (`lab_ledger`), avec sa pièce. Un flux est le dernier flux publié, jamais une somme ; aucun total, ni par partenaire, ni par sens. Les états de la paire (au coût, au bilan, à la juste valeur, plafonds d'engagement) viennent de `counterparty_exposure` et ne nettent pas les engagements déjà versés. Les capacités balisées (MW, GW) restent à part, jamais additionnées aux dollars. Chaque montant est vu par le déposant de sa pièce (colonne « Vu par ») : les comptes d'un laboratoire n'y paraissent que par son propre document d'enregistrement (le S-1 d'Anthropic, D-0077). Chaque ligne d'exposition d'une paire vient d'une seule perspective : celle du partenaire dès qu'il la publie, sinon celle d'autrui, dite « vu par autrui » (invariant e).
+Pour chaque laboratoire et chaque groupe qui a une arête avec lui : les instruments qui les lient, dans le sens des ressources (§3.1), au dernier montant admissible connu (`lab_ledger`), avec sa pièce. Un flux est le dernier flux publié, jamais une somme ; aucun total, ni par partenaire, ni par sens. Les états de la paire (au coût, au bilan, à la juste valeur, plafonds d'engagement) viennent de `counterparty_exposure` et ne nettent pas les engagements déjà versés. Les capacités balisées (MW, GW) restent à part, jamais additionnées aux dollars. Chaque montant est vu par le déposant de sa pièce (colonne « Vu par ») : les comptes d'un laboratoire n'y paraissent que par son propre document d'enregistrement (le S-1 d'Anthropic, D-0077). Chaque ligne d'exposition d'une paire vient d'une seule perspective : celle du partenaire dès qu'il la publie, sinon celle d'autrui, dite « vu par autrui » (invariant e). Un plafond d'engagement suivi d'un tirage en numéraire du même instrument en sort : la ligne devient partielle, sans reste calculé (D-0078).
 
 ### Anthropic
 
@@ -5672,7 +5672,7 @@ Partenaires : 20 ; arêtes : 167.
 #### Amazon
 
 94 arêtes, dont 70 à montant.
-- Exposition du partenaire au 2026-06-30 (`counterparty_exposure`) : engagements non appelés (plafond) 16 400 M$ ; au bilan (participation) 92 500 M$ ; au coût (participation) 18 000 M$ ; à la juste valeur (participation) 97 900 M$ ; encours (billets convertibles ou participation) 6 200 M$ (vu par autrui).
+- Exposition du partenaire au 2026-06-30 (`counterparty_exposure`) : engagements non appelés (plafond) 15 000 M$ (partiel) (sans le plafond antérieur, tiré depuis) ; au bilan (participation) 92 500 M$ ; au coût (participation) 18 000 M$ ; à la juste valeur (participation) 97 900 M$ ; encours (billets convertibles ou participation) 6 200 M$ (vu par autrui).
 
 | Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Vu par | Montants publiés |
 | --- | --- | --- | --- | ---: | --- | --- | --- | ---: |
@@ -5699,7 +5699,7 @@ Sans montant admissible : amzn:anthropic_financing_facility (obligations convert
 #### Alphabet
 
 22 arêtes, dont 8 à montant.
-- Exposition du partenaire au 2026-06-30 (`counterparty_exposure`) : engagements non appelés (plafond) 22 000 M$ (vu par autrui) ; au coût (participation) 23 300 M$ (vu par autrui).
+- Exposition du partenaire au 2026-06-30 (`counterparty_exposure`) : engagements non appelés (plafond) 20 000 M$ (partiel) (vu par autrui) (sans le plafond antérieur, tiré depuis) ; au coût (participation) 23 300 M$ (vu par autrui).
 
 | Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Vu par | Montants publiés |
 | --- | --- | --- | --- | ---: | --- | --- | --- | ---: |
@@ -5899,7 +5899,7 @@ Sans montant admissible : crwv:openai_msa (engagement d'achat, signé, 8-K 00017
 #### Amazon
 
 21 arêtes, dont 9 à montant.
-- Exposition du partenaire au 2026-06-30 (`counterparty_exposure`) : engagements non appelés (plafond) 50 000 M$ ; au bilan (participation) 28 700 M$ ; au coût (participation) 28 700 M$.
+- Exposition du partenaire au 2026-06-30 (`counterparty_exposure`) : engagements non appelés (plafond) indéterminés (plafonds tirés depuis) ; au bilan (participation) 28 700 M$ ; au coût (participation) 28 700 M$.
 
 | Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Vu par | Montants publiés |
 | --- | --- | --- | --- | ---: | --- | --- | --- | ---: |
@@ -6220,5 +6220,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 614, non publié 7 649, terme manquant 6 671, historique tronqué 4 227, période antérieure absente 1 838, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 943, recherche incomplète 576, dénominateur négatif ou nul 453, client anonyme 262, frontière de retraitement 193, caviardé 176, non collecté 152, intervalle à cheval sur le seuil 89, faits en conflit 86, période non écoulée à la date de coupure 80, date manquante 30, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 614, non publié 7 649, terme manquant 6 673, historique tronqué 4 227, période antérieure absente 1 838, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 943, recherche incomplète 576, dénominateur négatif ou nul 453, client anonyme 262, frontière de retraitement 193, caviardé 176, non collecté 152, intervalle à cheval sur le seuil 89, faits en conflit 86, période non écoulée à la date de coupure 80, date manquante 30, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
 
