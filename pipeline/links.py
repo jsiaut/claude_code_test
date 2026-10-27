@@ -67,6 +67,12 @@ def build_edges(obs, reg):
             if (str(m["ref"]).startswith("NF:") and m.get("consolidation_treatment") == "parent"
                     and m.get("status") != "pending" and m.get("valid_from") in (None, "none")):
                 heads.setdefault(m["ref"], eid)
+    # laboratoire qui dépose son document d'enregistrement : son entité de config.yaml (D-0077, point 4)
+    from .nf_discovery import own_filer_ciks
+    for ref in own_filer_ciks().values():
+        lab = f"lab:{ref[4:].lower()}"
+        if ref.startswith("LAB:") and lab in reg.members:
+            heads.setdefault(ref, lab)
     for o in obs:
         if o["kind"] != "observation" or o["validation_state"] != "valid":
             continue

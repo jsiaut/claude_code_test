@@ -739,42 +739,261 @@ def toc_section(raw, title):
     return textnorm.lines_to_text([ln for ln in lines[start:end] if not PAGE_NOISE.search(ln[0].strip())])
 
 
-def financial_notes_html(raw, running_headers=()):
+def financial_notes_html(raw, running_headers=(), headings=False):
     """Notes des états financiers d'un document d'enregistrement en HTML : un jeu s'ouvre à un titre
     « Notes to ... Financial Statements » suivi de la note 1 ; une note va de son titre « N. TITRE »
     (numérotation suivie, titre court) au titre suivant ; un jeu se ferme au titre d'un état
-    financier ou à la partie II. Les pieds de page (F-n) et les titres courants sont retirés."""
+    financier ou à la partie II. Les pieds de page (F-n) et les titres courants sont retirés.
+    Avec `headings` (mise en page positionnée, une ligne visuelle par élément, D-0077, point 9) : un titre
+    de note se lit sur une ligne de titre, en capitales ou non, et sa suite sur la ligne de titre suivante ;
+    seule une ligne de titre ferme un jeu, une ligne de paragraphe pouvant commencer par « consolidated
+    statements of » ; les numéros de page seuls sont retirés."""
     from . import sections, textnorm
     lines = sections._lines(raw)
     heads = {h.upper() for h in running_headers}
     out, cur_set, expect, cur = [], -1, None, None
 
+    def noise(t):
+        return PAGE_NOISE.search(t) or t.upper() in heads or (headings and PAGE_NUMBER.match(t))
+
     def close(end):
         if cur is not None:
-            body = [ln for ln in lines[cur["start"]:end]
-                    if not PAGE_NOISE.search(ln[0].strip()) and ln[0].strip().upper() not in heads]
+            body = [ln for ln in lines[cur["start"]:end] if not noise(ln[0].strip())]
             cur["text"] = textnorm.lines_to_text(body)
             out.append(cur)
 
     i = 0
     while i < len(lines):
-        t = lines[i][0].strip()
+        t, h = lines[i][0].strip(), lines[i][1]
         m = NOTE_TITLE.match(t) if len(t) < 120 else None
         if expect is None:
             if NOTES_SET.search(t) and len(t) < 160:
                 expect = 1
                 cur_set += 1
-        elif m and int(m.group(1)) == expect and (m.group(2).isupper() or t.lower().startswith("note")):
+        elif m and int(m.group(1)) == expect and (m.group(2).isupper() or t.lower().startswith("note") or (headings and h)):
             close(i)
-            cur = {"set": cur_set, "number": expect, "title": m.group(2).strip(), "start": i}
+            title = m.group(2).strip()
+            if headings and TITLE_CONT.search(title) and i + 1 < len(lines) and lines[i + 1][1]:
+                title = f"{title} {lines[i + 1][0].strip()}"
+            cur = {"set": cur_set, "number": expect, "title": title, "start": i}
             expect += 1
-        elif cur is not None and SET_END.search(t) and len(t) < 160:
+        elif cur is not None and SET_END.search(t) and len(t) < 160 and (h or not headings):
             close(i)
             cur, expect = None, None
             continue
         i += 1
     close(len(lines))
     return out
+
+
+# -- prospectus d'un laboratoire qui dépose son document d'enregistrement (D-0077, points 4 et 9) -----------
+PAGE_NUMBER = re.compile(r"^\d{1,3}$")
+TITLE_CONT = re.compile(r"(?:\band|\bof|\bthe|\bfor|\bto|,|&)$", re.I)
+_TOP = re.compile(r"(?:^|;)\s*top:\s*(-?[\d.]+)pt")
+
+
+def _norm_title(s):
+    return re.sub(r"\s+", " ", s.replace("\u2019", "'").replace("\u2018", "'")).strip().lower()
+
+
+def toc_titles(lines):
+    """Titres du sommaire dans leur ordre (lignes « Titre | page » des 600 premières lignes) et indice de la dernière
+    ligne du sommaire."""
+    rows = [(i, TOC_ROW.match(t.strip()).group(1).strip()) for i, (t, _) in enumerate(lines[:600]) if TOC_ROW.match(t.strip())]
+    titles, seen = [], set()
+    for _, t in rows:
+        if _norm_title(t) not in seen:
+            seen.add(_norm_title(t))
+            titles.append(t)
+    return titles, (rows[-1][0] if rows else -1)
+
+
+def _title_at(lines, i, want, span=3):
+    """Nombre de lignes du titre `want` (forme normalisée) qui commence à la ligne i, ou 0 : une ligne de titre seule,
+    ou coupée sur deux ou trois lignes de titre ; une ligne qui n'est pas en gras compte seule si elle vaut le titre
+    entier. Une rangée de tableau n'est jamais un titre."""
+    t, h = lines[i]
+    if " | " in t:
+        return 0
+    if not h:
+        return 1 if _norm_title(t) == want else 0
+    acc = ""
+    for k in range(span):
+        if i + k >= len(lines) or " | " in lines[i + k][0] or not lines[i + k][1]:
+            return 0
+        acc = f"{acc} {lines[i + k][0].strip()}".strip()
+        n = _norm_title(acc)
+        if n == want:
+            return k + 1
+        if not want.startswith(n):
+            return 0
+    return 0
+
+
+def prospectus_sections(lines):
+    """Sections du sommaire (D-0077, point 9) : chaque titre se cherche dans le corps après le titre précédent trouvé,
+    dans l'ordre du sommaire ; une section va de son titre au titre suivant trouvé. Renvoie [(rang, titre, début, fin)]
+    et les titres introuvables."""
+    titles, last = toc_titles(lines)
+    starts, pos = [], last + 1
+    for title in titles:
+        want = _norm_title(title)
+        hit = None
+        for i in range(pos, len(lines)):
+            n = _title_at(lines, i, want)
+            if n:
+                hit = (i, n)
+                break
+        starts.append(hit)
+        if hit:
+            pos = hit[0] + hit[1]
+    found = [(k, titles[k], s[0]) for k, s in enumerate(starts) if s]
+    out = [(k, t, a, found[j + 1][2] if j + 1 < len(found) else len(lines)) for j, (k, t, a) in enumerate(found)]
+    return out, [titles[k] for k, s in enumerate(starts) if not s]
+
+
+def paragraph_starts(raw, gap=14.0, noise=lambda t: False):
+    """Débuts de paragraphe d'une mise en page positionnée, où chaque ligne visuelle est un élément placé par sa
+    coordonnée verticale (D-0077, point 9) : une ligne ouvre un paragraphe quand elle est à plus de `gap` points sous la
+    ligne de texte précédente de la même page ; un saut de page n'en ouvre jamais. Une ligne de bruit (`noise` : titre
+    courant, numéro de page) n'ouvre rien et ne sert pas de référence. Renvoie [(texte, début)] dans l'ordre du
+    document, le texte normalisé comme les lignes de `sections._lines`."""
+    from . import textnorm
+
+    def top(el):
+        m = _TOP.search(el.get("style") or "")
+        return float(m.group(1)) if m else None
+
+    def is_page(el):
+        st = el.get("style") or ""
+        return "border" in st and "background-color" in st
+
+    root = textnorm.parse_html(raw)
+    out, prev, page = [], None, None
+    for el in root.iter("div"):
+        t = top(el)
+        if t is None or any(top(d) is not None for d in el.iter("div") if d is not el):
+            continue
+        text = re.sub(r"\s+", " ", textnorm.norm_inline(el.text_content() or "")).strip()
+        if not text:
+            continue
+        y, p, anc = t, None, el.getparent()
+        while anc is not None:              # position dans la page : décalages des parents placés
+            if anc.tag == "div" and is_page(anc):
+                p = anc
+                break
+            if anc.tag == "div":
+                y += top(anc) or 0.0
+            anc = anc.getparent()
+        if noise(text):
+            out.append((text, False))
+            continue
+        out.append((text, p is page and prev is not None and y - prev > gap))
+        prev, page = y, p
+    return out
+
+
+def mark_paragraphs(lines, seq):
+    """[(texte, titre, début de paragraphe)] : les lignes s'alignent sur les lignes positionnées (paragraph_starts) par
+    leur plus longue suite commune ; une ligne sans correspondante (rangée de tableau) n'ouvre pas de paragraphe."""
+    import difflib
+    a = [t.strip() for t, _ in lines]
+    starts = [False] * len(a)
+    for m in difflib.SequenceMatcher(None, a, [t for t, _ in seq], autojunk=False).get_matching_blocks():
+        for k in range(m.size):
+            starts[m.a + k] = bool(seq[m.b + k][1])
+    return [(t, h, starts[i]) for i, (t, h) in enumerate(lines)]
+
+
+def split_section(marked, max_chars):
+    """Blocs d'une section (D-0077, point 4) : un intertitre ouvre un segment, et les segments se regroupent dans l'ordre
+    tant que le bloc ne dépasse pas `max_chars` caractères ; un segment plus long se coupe à ses débuts de paragraphe,
+    et un paragraphe ne se coupe jamais. `marked` : [(texte, titre, début de paragraphe)]."""
+    def size(ls):
+        return len("\n".join(x[0] for x in ls))
+
+    segs, cur, prev = [], [], False
+    for ln in marked:
+        head = bool(ln[1]) and " | " not in ln[0]
+        if head and not prev and cur:
+            # intertitre en italique, non reconnu comme titre, juste avant une légende de tableau en gras : il suit
+            lead = [cur.pop()] if (len(cur) > 1 and cur[-1][2] and len(cur[-1][0].strip()) < 100
+                                   and not cur[-1][0].rstrip().endswith((".", ";", ":", ","))) else []
+            segs.append(cur)
+            cur = lead
+        cur.append(ln)
+        prev = head
+    if cur:
+        segs.append(cur)
+    pieces = []
+    for sg in segs:
+        if size(sg) <= max_chars:
+            pieces.append(sg)
+            continue
+        paras, par = [], []
+        for ln in sg:
+            if ln[2] and par:
+                paras.append(par)
+                par = []
+            par.append(ln)
+        paras.append(par)
+        acc = []
+        for par in paras:
+            if acc and size(acc + par) > max_chars:
+                pieces.append(acc)
+                acc = []
+            acc = acc + par
+        pieces.append(acc)
+    blocks, acc = [], []
+    for pc in pieces:
+        if acc and size(acc + pc) > max_chars:
+            blocks.append(acc)
+            acc = []
+        acc = acc + pc
+    if acc:
+        blocks.append(acc)
+    return blocks
+
+
+def _running_headers(f):
+    return f.get("running_headers") or [f["filer"].upper().replace("LTD", "LIMITED"), f["filer"].upper()]
+
+
+_PROSPECTUS = {}
+
+
+def own_prospectus(f, raw=None):
+    """Prospectus d'un document propre (D-0077, point 9) : sections retenues, découpées, [(rang, titre, morceau,
+    morceaux, texte)] ; texte de l'Item 404 ; titres introuvables. Gardé par accession pour la durée du processus."""
+    if f["accession"] in _PROSPECTUS:
+        return _PROSPECTUS[f["accession"]]
+    from . import sections, textnorm
+    p = f["prospectus"]
+    raw = raw or cache.read(cache.archive_path(str(f["cik"]).zfill(10), f["accession"], f["primary"]))
+    lines = sections._lines(raw)
+    secs, missing = prospectus_sections(lines)
+    heads = {h.upper() for h in _running_headers(f)}
+
+    def noise(t):
+        t = t.strip()
+        return bool(PAGE_NOISE.search(t) or PAGE_NUMBER.match(t) or t.upper() in heads)
+    marks = (mark_paragraphs(lines, paragraph_starts(raw, noise=noise)) if p.get("layout") == "positioned"
+             else [(t, h, False) for t, h in lines])
+    excluded = {_norm_title(t) for t in p.get("excluded") or {}}
+    out, item_404 = [], None
+    for k, title, a, b in secs:
+        body = [m for m in marks[a:b] if not noise(m[0])]
+        if _norm_title(title) == _norm_title(p["item_404"]):
+            item_404 = textnorm.lines_to_text([(t, h) for t, h, _ in body])
+        elif _norm_title(title) not in excluded:
+            parts = split_section(body, int(p.get("max_chars", 25000)))
+            out += [(k, title, j, len(parts), "\n".join(x[0] for x in part)) for j, part in enumerate(parts)]
+    _PROSPECTUS[f["accession"]] = (out, item_404, missing)
+    return _PROSPECTUS[f["accession"]]
+
+
+def _section_doc(f, k, j, m):
+    return f"{f['primary']}#t{k + 1:02d}" + (f".{j + 1:02d}" if m > 1 else "")
 
 
 def _co_mentions(text, rx, lex, names, own_ref, period):
@@ -786,20 +1005,30 @@ def _co_mentions(text, rx, lex, names, own_ref, period):
     return sorted(refs - {own_ref})
 
 
+EXHIBIT_TYPES = {"EX-10": re.compile(r"^EX-10(\.\d+[A-Z]?)?$"), "EX-4": re.compile(r"^EX-4(\.\d+[A-Z]?)?$")}
+ITEM_404_TITLE = "Certain Relationships and Related Party Transactions"
+
+
 def own_filing_units(cfg=None, fetch=True):
     """Unités du document d'enregistrement de chaque tête de non-déposant (D-0054, point 13) :
     pièces EX-10 (en-tête), Item 404 et notes des états financiers du document principal, toutes lues
     comme le texte d'un groupe ; la liste des filiales (EX-21) au niveau 1. Les co-mentions du lexique
-    d'ensemble sont gardées pour information."""
+    d'ensemble sont gardées pour information. Un laboratoire qui dépose (D-0077, point 9) y ajoute ses
+    pièces EX-4 (`exhibit_types`) et les sections de son prospectus (`prospectus`). La file de l'exécution
+    précédente est copiée avant sa réécriture (D-0074, point 3)."""
     from . import edgar
     cfg = cfg or config.load()
     lex = union_lexicon(cfg)
     rx, _ = D.compile_lexicon(lex)
     e = edgar.Edgar(net.SecClient(config.as_of(), cfg), config.as_of()) if fetch else None
+    since = config.previous_as_of()
+    if since:
+        update.previous_state(OWN_UNITS, since)
     rows = []
     for f in own_filings(cfg):
         cik10, acc, names = str(f["cik"]).zfill(10), f["accession"], [f["filer"]]
         period = str(f["filed"]).replace("-", "")
+        types = [EXHIBIT_TYPES[x] for x in f.get("exhibit_types") or ["EX-10"]]
 
         def raw_of(doc):
             p = cache.archive_path(cik10, acc, doc)
@@ -809,7 +1038,7 @@ def own_filing_units(cfg=None, fetch=True):
                 "date": period}
         for d in docs:
             t = d["TYPE"].upper().strip()
-            if re.match(r"^EX-10(\.\d+[A-Z]?)?$", t):
+            if any(x.match(t) for x in types):
                 text, _ = D.plain_text(raw_of(d["FILENAME"]))
                 co = _co_mentions(text, rx, lex, names, f["ref"], period)
                 rows.append(dict(base, kind="exhibit_header", doc=d["FILENAME"], exhibit_type=t, section=None,
@@ -818,15 +1047,23 @@ def own_filing_units(cfg=None, fetch=True):
                 rows.append(dict(base, kind="entity_list", doc=d["FILENAME"], exhibit_type=t, section=None,
                                  chars=None, co_refs=""))
         raw = raw_of(f["primary"])
-        sec = toc_section(raw, "Certain Relationships and Related Party Transactions")
+        if f.get("prospectus"):
+            parts, sec, _ = own_prospectus(f, raw)
+            title_404 = f["prospectus"]["item_404"]
+        else:
+            parts, sec, title_404 = [], toc_section(raw, ITEM_404_TITLE), ITEM_404_TITLE
         if sec:
             rows.append(dict(base, kind="item_404", doc=f["primary"] + "#item404", exhibit_type=None,
-                             section="Certain Relationships and Related Party Transactions", chars=len(sec),
+                             section=title_404, chars=len(sec),
                              co_refs=";".join(_co_mentions(sec, rx, lex, names, f["ref"], period))))
-        for n in financial_notes_html(raw, running_headers=[f["filer"].upper().replace("LTD", "LIMITED"), f["filer"].upper()]):
+        for n in financial_notes_html(raw, running_headers=_running_headers(f), headings=bool(f.get("prospectus"))):
             rows.append(dict(base, kind="note", doc=f"{f['primary']}#s{n['set'] + 1}n{n['number']:02d}", exhibit_type=None,
                              section=f"{n['number']}. {n['title']}", note_set=n["set"], chars=len(n["text"]),
                              co_refs=";".join(_co_mentions(n["text"], rx, lex, names, f["ref"], period))))
+        for k, title, j, m, text in parts:
+            rows.append(dict(base, kind="prospectus_section", doc=_section_doc(f, k, j, m), exhibit_type=None,
+                             section=title if m == 1 else f"{title} ({j + 1}/{m})", chars=len(text),
+                             co_refs=";".join(_co_mentions(text, rx, lex, names, f["ref"], period))))
     u = pd.DataFrame(rows)
     if u.empty:
         return u
@@ -839,9 +1076,18 @@ def own_filing_units(cfg=None, fetch=True):
     return u
 
 
+def _note_level(f, number, st):
+    """Niveau d'une note : celui de son jeu, sauf note nommée dans `note_assurance` (D-0077, point 9)."""
+    level = {int(k): v for k, v in (f.get("note_assurance") or {}).items()}.get(number, st.get("assurance"))
+    if level == "unaudited":
+        return "C", "unaudited"
+    tier, assurance, _ = D.form_evidence(f["form"], "FY" if level == "audited" else None)
+    return tier, assurance
+
+
 def _own_block(u, f):
-    """Bloc d'une unité du document d'enregistrement : en-tête de pièce, Item 404, note ou liste des
-    filiales ; les lignes vont au groupe non déposant (load.line_group)."""
+    """Bloc d'une unité du document d'enregistrement : en-tête de pièce, Item 404, note, section du
+    prospectus ou liste des filiales ; les lignes vont au groupe non déposant (load.line_group)."""
     from . import blocks, sections
     cik10, acc = str(f["cik"]).zfill(10), f["accession"]
     sk = f"nfo{int(u['order']):05d}"
@@ -859,24 +1105,33 @@ def _own_block(u, f):
                     period_end=f["filed"], document=doc, locator={"file": doc, "accession": acc, "cik": cik10, "byte_range": None},
                     text=text, candidate_facts=[], chars=len(text), exhibit_type=u["exhibit_type"],
                     assurance_level="not_applicable", tier="D", mention_class="contract")
-    if u["kind"] == "item_404":
-        text = toc_section(raw, "Certain Relationships and Related Party Transactions")
-        return dict(common, content_key=blocks.content_key(text, []), block_kind="discovery_item_404", period_start=None,
+    if u["kind"] in ("item_404", "prospectus_section"):
+        if u["kind"] == "item_404":
+            text = own_prospectus(f, raw)[1] if f.get("prospectus") else toc_section(raw, ITEM_404_TITLE)
+        else:
+            text = next(t for k, _, j, m, t in own_prospectus(f, raw)[0] if _section_doc(f, k, j, m) == u["doc"])
+        kind, label = (("discovery_item_404", u["section"]) if u["kind"] == "item_404"
+                       else ("discovery_prospectus_section", f"{f['form']}, section « {u['section']} »"))
+        return dict(common, content_key=blocks.content_key(text, []), block_kind=kind, period_start=None,
                     period_end=f["filed"], document=doc, locator={"file": doc, "accession": acc, "cik": cik10, "byte_range": None,
                                                                    "section": u["section"]},
-                    text=text, candidate_facts=[], chars=len(text), note_label=u["section"],
-                    assurance_level="not_applicable", tier="C", mention_class="related_party")
+                    text=text, candidate_facts=[], chars=len(text), note_label=label,
+                    assurance_level="not_applicable", tier="C",
+                    mention_class="related_party" if u["kind"] == "item_404" else "prospectus")
     sets = f.get("note_sets") or []
-    notes = financial_notes_html(raw, running_headers=[f["filer"].upper().replace("LTD", "LIMITED"), f["filer"].upper()])
+    notes = financial_notes_html(raw, running_headers=_running_headers(f), headings=bool(f.get("prospectus")))
     n = next(x for x in notes if f"{doc}#s{x['set'] + 1}n{x['number']:02d}" == u["doc"])
     st = sets[n["set"]] if n["set"] < len(sets) else {}
-    tier, assurance, _ = D.form_evidence(f["form"], "FY" if st.get("assurance") == "audited" else None)
-    return dict(common, content_key=blocks.content_key(n["text"], []), block_kind="discovery_note",
-                period_start=st.get("period_start"), period_end=st.get("period_end"), document=doc,
-                locator={"file": doc, "accession": acc, "cik": cik10, "byte_range": None, "section": u["section"]},
-                text=n["text"], candidate_facts=[], chars=len(n["text"]),
-                note_label=f"{st.get('label', '')} — note {u['section']}", assurance_level=assurance, tier=tier,
-                mention_class="related_party" if D.RELATED_TAG.search(n["title"].replace(" ", "")) else "note")
+    tier, assurance = _note_level(f, n["number"], st)
+    b = dict(common, content_key=blocks.content_key(n["text"], []), block_kind="discovery_note",
+             period_start=st.get("period_start"), period_end=st.get("period_end"), document=doc,
+             locator={"file": doc, "accession": acc, "cik": cik10, "byte_range": None, "section": u["section"]},
+             text=n["text"], candidate_facts=[], chars=len(n["text"]),
+             note_label=f"{st.get('label', '')} — note {u['section']}", assurance_level=assurance, tier=tier,
+             mention_class="related_party" if D.RELATED_TAG.search(n["title"].replace(" ", "")) else "note")
+    if st.get("audited_through") and n["number"] not in {int(k) for k in f.get("note_assurance") or {}}:
+        b["audited_through"] = st["audited_through"]     # au-delà, une ligne est non auditée (load._line_level)
+    return b
 
 
 def prepare_own():

@@ -153,6 +153,8 @@ ENUMS = {
                    "discovery_note", "discovery_exhibit_header", "discovery_exhibit_body",
                    # document d'enregistrement de la tête d'un non-déposant (D-0054, point 13)
                    "discovery_item_404", "discovery_entity_list",
+                   # sections du prospectus d'un laboratoire qui dépose son document d'enregistrement (D-0077, point 4)
+                   "discovery_prospectus_section",
                    # bloc montages : paragraphes autour des termes d'un montage (D-0046)
                    "montage_text",
                    # paragraphes des 6-K des groupes émetteurs privés étrangers (D-0048)

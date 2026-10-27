@@ -487,16 +487,26 @@ class QuoteRanges:
         tmp.replace(self.path)
 
 
+def _line_level(b, l):
+    """Niveau et assurance d'une ligne : ceux de son bloc, sauf dans un jeu de notes qui mêle exercices audités et
+    période intermédiaire non auditée (D-0077, point 9) : une ligne datée après `audited_through` est de niveau C."""
+    cut, end = b.get("audited_through"), l.get("period_end") or l.get("event_date")
+    if cut and end and str(end)[:10] > cut:
+        return "C", "unaudited"
+    return b.get("tier"), b.get("assurance_level")
+
+
 def _obs_row(l, b, n, state, errs, locator):
     known = {k: l.get(k) for k in reader.LINE_FIELDS}
+    tier, assurance = _line_level(b, l)
     row = {
         "obs_key": f"{b['content_key']}/{l.get('pass_id')}/{n}", "content_key": b["content_key"],
         "pass_as_of": l.get("as_of"), "pass_id": l.get("pass_id"), "line_no": n,
         "block_kind": b["block_kind"], "doc_key": f"{b['cik']}/{b['accession']}/{b['document']}",
         "group_id": b["group_id"], "cik": b["cik"], "accession": b["accession"], "form": b["form"],
         "item": b.get("item"), "exhibit_type": b.get("exhibit_type"), "knowledge_date": b["knowledge_date"],
-        "filing_status": b.get("filing_status", "filed"), "assurance_level": b.get("assurance_level"),
-        "tier": b.get("tier"), "framework": block_framework(b), "locator": locator, "validation_state": state,
+        "filing_status": b.get("filing_status", "filed"), "assurance_level": assurance,
+        "tier": tier, "framework": block_framework(b), "locator": locator, "validation_state": state,
         "validation_error": "; ".join(errs) if errs else None,
     }
     for k, v in known.items():
