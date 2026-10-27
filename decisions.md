@@ -3840,3 +3840,34 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Tranche : 4 305 → 4 306 clés. La nouvelle est l'item 8.01 du 8-K de SpaceX, 3 226 caractères.
     - Bloc `text` : 4 432 clés, inchangé, aucun rapport périodique n'étant nouveau.
   - À lire : 1 bloc.
+
+  (8) Blocs de §14, avant toute lecture (2026-10-27) :
+  - Réseau : 459 requêtes, toutes en 200, aucun refus 403. Par bloc : BDC Data Sets et `lender_liabilities` 216, découverte 82, piste des non-déposants 67, `form_d` 5, 6-K 6, `sb_own` 41, N-PORT 1, `ownership` 7, montages 34. Avec le statut et les phases 0 à 2, cela fait 566 requêtes à cet as_of, et le journal compte 26 913 lignes.
+    - La recherche plein texte de la découverte s'est arrêtée sur une requête (Form D, « MAIV ») : quatre réponses de suite, en 200, portaient l'erreur `ConnectionError` du service, sans résultat. Relancée six minutes plus tard, elle a rejoué ses pages en cache et fini (13 requêtes).
+    - Piste des non-déposants : une première commande, `search new`, ne cherchait que les 21 termes sans résultat (règle d'un lexique enrichi, D-0058, point 24). À une exécution nouvelle, la commande est `search`, qui cherche chaque terme sur la fenêtre nouvelle (46 requêtes de plus). Les pages des 21 termes, en cache, ne se sont pas redemandées.
+  - `lender` et `lender_portfolio` : la page des BDC Data Sets porte les mêmes 22 archives, dont la dernière est `2026_09`. Aucun tirage, volumes inchangés.
+  - `lender_liabilities` :
+    - inventaire des véhicules : 64 416 → 64 444 dépôts, aucun véhicule sans liste. 34 dépôts sont nouveaux (2026-10-26 et 2026-10-27). 6 sortent : des dépôts de 2010 d'un même véhicule, passés de la liste récente d'EDGAR à une page plus ancienne que le début de la fenêtre (2022-10-01), qui ne se tire pas. 5 documents tirés.
+    - offres de rachat : 943, inchangé. Il y a 596 lectures (594), dont 100 corrigées (98). Elles portent sur les amendements finaux du 2026-10-26 :
+      - OCIC et OTIC (Blue Owl) se lisent pour la première fois. OCIC : 341 389 461 parts apportées (16,8 %), 101 609 211 acceptées. OTIC : 108 556 457 apportées (39 %), 13 926 862 acceptées. Les deux offres sont réduites au prorata, à environ 29,8 % et 12,8 % des parts apportées ;
+      - North Haven Private Income Fund et sa série A se relisent : 8 633 441 et 758 427 parts acceptées, au prorata de 43,7 % et 73,1 %. L'amendement précédent donnait 43,8 % et 73,3 % ;
+      - KKR FS Income Trust se relit sur son amendement du 2026-10-26, sans écart ;
+      - quatre corrections sont nouvelles, dont la date d'expiration de North Haven (2026-09-14), citée mot pour mot.
+    - annonces : les mêmes 42 unités, aucune requête, aucun relevé en erreur. Le fichier des unités a été réécrit avant sa copie sous `.2026-10-24` : la copie suit la réécriture, sans unité nouvelle ni perdue.
+  - Découverte :
+    - la page des Notes Data Sets porte les mêmes 76 archives, dont la dernière, `2026_09`, est déjà traitée ;
+    - la recherche plein texte (66 requêtes) passe de 9 414 à 9 433 résultats, et la vérification tire 14 pièces ;
+    - les candidats passent de 3 074 à 3 075, et la file de 19 201 à 19 215 unités. Le candidat nouveau est Anthropic, PBC, au rang 169, par les 14 pièces EX-10 de son S-1 : ce sont les 14 unités nouvelles. Elles sont hors de la frontière (rang 50) et restent non traitées, ces pièces se lisant comme texte propre du laboratoire (point 4). Aucun bloc nouveau.
+  - Piste des non-déposants : 1 143 → 1 144 résultats. Le nouveau est la pièce EX-10.11 du S-1 d'Anthropic, qui nomme Fluidstack. Son en-tête nomme aussi Alphabet, Broadcom et Oracle. Son unité est retenue (règle R1, file des unités nouvelles de D-0074) et son bloc se prépare sans requête : 429 → 430 blocs. Il se lit avec les unités du S-1, dont il est une pièce.
+  - `form_d` : 965 Form D, inchangé (5 requêtes).
+  - `foreign` : aucune unité nouvelle, et l'inventaire retient toujours 2 émetteurs.
+  - 6-K : 3 6-K nouveaux de SK hynix, 3 pièces tirées (6 requêtes). Un seul porte une fenêtre : le tableau des actions propres détenues au 26 octobre 2026 (494 caractères). Le catalogue passe de 412 à 413 blocs, et les 412 anciens sont identiques.
+  - `sb_own` : inventaire des déposants (41 requêtes), aucune pièce ni aucun en-tête à tirer. 473 blocs, identiques.
+  - N-PORT : 28 archives, de 2019q4 à 2026q3, aucune nouvelle ; aucune archive à rescanner (SoftBank, obligations, non-cotés).
+  - `ownership` : 125 dépôts au plan (120 13F-HR, 5 13D ou 13G), inchangé.
+  - Montages :
+    - recherches sur la fenêtre nouvelle (31 requêtes) : `meta_hyperion` passe de 2 991 à 3 044 résultats et `galaxy_helios` de 6 298 à 6 335. Les autres montages n'en ont pas de nouveaux. Ce sont des relevés de portefeuille, écartés comme avant, sauf deux pièces du 8-K de résultats de Galaxy du 2026-10-27 (3 requêtes) : le communiqué et la présentation trimestriels, écartés par la règle du montage ;
+    - `labs_contracts` : la relecture des pages en cache donne 21 pièces nouvelles, toutes du S-1 d'Anthropic (14 EX-10 et 7 EX-4). Ce montage lit les pièces des contreparties des laboratoires (D-0067, point 1). Celles du laboratoire lui-même se lisent comme son texte propre (point 4) : elles ne s'ajoutent pas au montage, qui garde ses 206 blocs, et rien ne se lit deux fois ;
+    - corpus, sans requête : aucun document de la période nouvelle n'y entre. `labs inventory` donne les mêmes 150 faits, 130 des instances et 20 des Notes Data Sets ;
+    - préparation : les 1 639 blocs sont identiques, et aucun ne s'ajoute.
+  - À lire : 1 bloc de §14, la fenêtre 6-K de SK hynix (liste `upd_20261027_s14`). L'en-tête de l'EX-10.11 se lit avec le S-1.

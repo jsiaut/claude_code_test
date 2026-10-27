@@ -298,6 +298,11 @@
   "_index": 162,
   "proration": true
  },
+ "0001812554|0001628280-26-059106": {
+  "acceptance_pct": "29.8",
+  "acceptance_pct_quote": "@SENT:representing 29.8% of the Shares",
+  "proration": true
+ },
  "0001817825|0001213900-23-072913": {
   "_index": 166,
   "accepted": "all",
@@ -355,6 +360,10 @@
   "proration": true
  },
  "0001851322|0001193125-26-349128": {
+  "acceptance_pct": "43.7",
+  "acceptance_pct_quote": "@SENT:approximately 43.7% of the Units",
+  "expiration": "2026-09-14",
+  "expiration_quote": "@SENT:The Offer expired at 12:01 a.m., Eastern Time, on September 14, 2026",
   "proration": true
  },
  "0001859919|0001859919-26-000025": {
@@ -412,6 +421,11 @@
   "proration": true
  },
  "0001869453|0001628280-26-038221": {
+  "proration": true
+ },
+ "0001869453|0001628280-26-059107": {
+  "acceptance_pct": "12.8",
+  "acceptance_pct_quote": "@SENT:representing 12.8% of the Shares",
   "proration": true
  },
  "0001899996|0001193125-24-208442": {
@@ -531,6 +545,8 @@
   "proration": true
  },
  "0001973476|0001193125-26-349165": {
+  "acceptance_pct": "73.1",
+  "acceptance_pct_quote": "@SENT:approximately 73.1% of the Units",
   "proration": true
  },
  "0001976336|0001104659-26-096596": {

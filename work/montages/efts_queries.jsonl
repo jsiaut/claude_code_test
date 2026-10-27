@@ -66,3 +66,34 @@
 {"montage": "anthropic_chain", "query": "\"Anthropic\" \"Amazon Web Services\"", "cik": null, "forms": ["8-K"], "start": "2026-10-08", "end": "2026-10-24", "total": 0, "status": "complete"}
 {"montage": "sec_letters", "query": "\"OpenAI\"", "cik": null, "forms": ["CORRESP", "UPLOAD"], "start": "2026-10-08", "end": "2026-10-24", "total": 0, "status": "complete"}
 {"montage": "sec_letters", "query": "\"Anthropic\"", "cik": null, "forms": ["CORRESP", "UPLOAD"], "start": "2026-10-08", "end": "2026-10-24", "total": 0, "status": "complete"}
+{"montage": "meta_hyperion", "query": "\"Beignet Investor\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 9, "status": "complete"}
+{"montage": "meta_hyperion", "query": "\"Blue Owl\" Hyperion", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 4, "status": "complete"}
+{"montage": "meta_hyperion", "query": "\"Blue Owl\" \"Richland Parish\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "meta_hyperion", "query": "\"Blue Owl\" \"Meta Platforms\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 40, "status": "complete"}
+{"montage": "meta_hyperion", "query": "\"Blue Owl\"", "cik": "0001326801", "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "athene_whco", "query": "\"WarehouseCo Intermediate Holdings\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "athene_whco", "query": "\"WarehouseCo\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "athene_whco", "query": "\"capital solution\" \"Broadcom\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "athene_whco", "query": "\"Apollo\"", "cik": "0001730168", "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "athene_whco", "query": "\"Athene\"", "cik": "0001730168", "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "athene_whco", "query": "\"Broadcom\"", "cik": "0001527469", "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "athene_whco", "query": "\"Broadcom\"", "cik": "0001858681", "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "galaxy_helios", "query": "\"Helios\" \"CoreWeave\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 35, "status": "complete"}
+{"montage": "galaxy_helios", "query": "\"Galaxy Digital\"", "cik": "0001769628", "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "galaxy_helios", "query": "\"CoreWeave\"", "cik": "0001859392", "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 2, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"OpenAI\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"SoftBank\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"Oracle\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "stargate", "query": "\"Stargate\" \"data center\"", "cik": null, "forms": null, "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Fluidstack\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"data center\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"compute\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"megawatts\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"gigawatt\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"TPU\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Trainium\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Azure\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Google Cloud\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "anthropic_chain", "query": "\"Anthropic\" \"Amazon Web Services\"", "cik": null, "forms": ["8-K"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "sec_letters", "query": "\"OpenAI\"", "cik": null, "forms": ["CORRESP", "UPLOAD"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
+{"montage": "sec_letters", "query": "\"Anthropic\"", "cik": null, "forms": ["CORRESP", "UPLOAD"], "start": "2026-10-25", "end": "2026-10-27", "total": 0, "status": "complete"}
