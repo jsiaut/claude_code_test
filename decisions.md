@@ -3898,3 +3898,93 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - La liste des filiales, 386 caractères.
     - Corps des pièces : 2 818 729 caractères en tout (EX-10 2 195 971, EX-4 622 758). Le lexique ne trouve un groupe ou un non-déposant que dans ceux des EX-10.8, 10.10 et 10.11 et des EX-4.3 à 4.7 (1 717 595). Chaque corps retenu par son en-tête se consigne à sa préparation.
   - Catalogue de la piste : 430 → 529 blocs, les 430 anciens identiques. File des unités propres : 65 → 164 unités, celles de Nscale identiques.
+
+  (10) Constat du premier réassemblage, et règles fixées avant tout changement du code (2026-10-27) :
+  - Premier réassemblage en 1 067 s, avec les entités par extrait de l'intégration (point 12). Comparées aux tables de ceace41, les cellules des paires d'Anthropic montrent trois défauts du calcul. Les lignes du S-1 sont les premières à les révéler en nombre :
+    - perspectives mêlées. `counterparty_exposure` et `fcf_after_counterparty_financing` additionnent les lignes que publie le groupe mesuré et celles que publie sa contrepartie, quand les deux décrivent les mêmes versements sous des clés d'instrument distinctes (`amzn:…` et `anthropic:…`). L'exposition au coût d'Amazon envers Anthropic passe de 18,0 à 58,0 Md$ et ses engagements non appelés de 16,4 à 39,4 Md$. Son flux après financement des contreparties perd de 1,2 à 16,2 Md$ sur six trimestres ; au T1 2024 il devient négatif, et l'événement F2 de l'annexe F bascule. `invariants` vérifie les invariants (a), (b), (d), (f) et (g) de §7.6, pas (e) ;
+    - encours comptés comme des apports. Un encours (`outstanding_balance`) est un état, mais il entre dans la somme des apports au coût et dans les financements accordés du trimestre : 2,6 et 4,0 Md$ d'Amazon au 31 décembre 2025, 2,2 et 4,0 Md$ au 30 juin 2026, et 750 M$ de Google au 31 décembre 2025, convertis en janvier 2026. Le défaut existait déjà : le flux d'Applied Digital retranche l'encours d'un billet à vue (58,6 et 58,5 M$, aux 31 mai et 31 août 2026) ;
+    - billets sans numéraire comptés comme apports. La réémission des billets d'Amazon non convertis (3,1 ; 1,3 ; 2,6 et 2,2 Md$, `financing_noncash`) entre dans la somme des apports au coût, qui ne réunit que des apports en numéraire (règle de `counterparty_exposure`).
+  - Avant le S-1, une seule cellule d'exposition mêlait les deux perspectives : Intel envers Micron, principal de 3,267 Md$, lignes d'Intel et de Micron. Neuf ne venaient que de la contrepartie, dont celles de NVIDIA envers CoreWeave, Intel, Nebius et Nscale. Le flux de NVIDIA après financement retranche des financements que seules ses contreparties publient (CoreWeave, Intel, Nebius, Nscale), sans doublon. Une seule paire reçoit des lignes de deux déclarants autres que le groupe mesuré : le soutien de Google à Fluidstack, que publient Cipher et TeraWulf pour leurs sites.
+  - Constats sans suite dans cette décision, faute de relecture (point 3) :
+    - les plafonds d'engagement ne se nettent pas des tirages ; le rendu du grand livre écrit déjà cette limite ;
+    - la cellule d'Intel envers Micron additionne le même apport de 319 M$, publié pour le trimestre puis pour le semestre ;
+    - le flux de Meta après financement retranche deux fois son investissement dans Scale AI : 13,79 Md$ au T2 2025, puis 13,80 Md$ au 31 décembre 2025, une valeur au bilan lue comme un versement.
+    Leur correction est proposée à l'utilisateur.
+  - Règles :
+    - perspective d'une ligne pour le nœud mesuré N (§10.4) : `reporting_entity` si la ligne vient d'un document de N (son groupe déclarant est N), `counterparty` sinon. Le champ `source_perspective` de `links`, relatif au déclarant de la ligne, ne change pas ;
+    - une perspective par paire. Pour la paire (S, C), `counterparty_exposure` et `fcf_after_counterparty_financing` ne prennent que les lignes que S publie, dès qu'il en publie au moins une qui entre dans la mesure ; sinon, celles des documents d'autrui. Aucune somme et aucun choix d'état ne mêlent les deux. La cellule le dit : `perspective` dans les drapeaux de l'exposition ; pour le flux, les lignes vues par autrui vont dans `financing_given_counterparty` et `repayments_received_counterparty`, à côté des listes de S. Le flux disponible reste celui de S, et sa combinaison avec un financement vu par autrui est ainsi ventilée (invariant e) ;
+    - un encours est un état, jamais un flux : il ne s'additionne pas aux apports et ne compte pas parmi les financements accordés du trimestre. Dans `counterparty_exposure`, il vaut le dernier encours connu à t par instrument (`exposed_assets/outstanding_balance/…`), sauf si une fin du même instrument (remboursement, conversion, résiliation, cession) est datée après lui et au plus tard à t ;
+    - une ligne sans numéraire (`financing_noncash`) n'est jamais un apport au coût ;
+    - invariant (e) : `invariants` écarte un agrégat dont les lignes, pour une même contrepartie, viennent des deux perspectives de son sujet (`invalid_aggregate`, invariant e, motif `mixed_perspective`, nouvelle valeur de l'énumération des motifs). Les règles qui précèdent l'empêchent, et un test le vérifie ;
+    - rendu du grand livre : chaque montant dit son déclarant (colonne « Vu par »), et l'exposition d'une paire dit sa perspective. La phrase « le grand livre ne dit rien des comptes des laboratoires » ne vaut plus pour Anthropic, dont le S-1 est le texte propre.
+  - Effet attendu, avant tout calcul :
+    - Amazon–Anthropic : les cellules de ceace41 ;
+    - Google–Anthropic et Broadcom–Anthropic : les seules lignes du S-1, vues par la contrepartie ;
+    - Applied Digital : deux trimestres corrigés ;
+    - Intel–Micron : les seules lignes d'Intel.
+    Le réassemblage suivant le vérifie (point 11).
+
+  (11) Effet du second réassemblage, et règle revue avant tout changement du code (2026-10-27) :
+  - Second réassemblage en 619 s, avec le code du point 10 et 21 tests dans `test_d0077` (437 en tout ; ruff passe). Contre ceace41 :
+    - comme attendu : les cellules d'Amazon envers Anthropic sont celles de ceace41 (exposition, flux après financement, événement F2 du T1 2024). Google et Broadcom envers Anthropic ne portent que les lignes du S-1, vues par autrui. Le flux d'Applied Digital ne retranche plus ses deux encours. La garde de l'invariant (e) ne se déclenche jamais ;
+    - non attendu : la règle « une perspective par paire » retire de `counterparty_exposure` des lignes que seule la contrepartie publie, sous un bloc ou une base que S ne publie pas. Ce sont le soutien de capacité de 6,3 Md$ de NVIDIA envers CoreWeave et son achat d'actions de 2,0 Md$ de janvier 2026, vus par CoreWeave ; l'achat d'actions de 5,0 Md$ de NVIDIA chez Intel en décembre 2025, vu par Intel ; et la créance de 969 M$ sur IMFT, vue par Micron. NVIDIA, Intel et Micron n'y ajoutent ni ne retranchent rien : aucune somme ne mêlait ces lignes aux leurs.
+  - Règle revue :
+    - pour `counterparty_exposure`, la perspective se choisit par ligne de la paire (bloc, base et catégorie de la matrice), non par paire. Une ligne ne prend que les lignes que S publie sous ce bloc, cette base et cette catégorie, dès qu'il en publie une ; sinon, celles des documents d'autrui. Chaque ligne dit sa perspective (`perspective` dans ses drapeaux). Aucune somme et aucun choix d'état ne mêlent les deux, et l'exposition reste sans total (§4.6). Les fins d'instrument qui périment un encours se lisent de la même perspective que lui ;
+    - pour `fcf_after_counterparty_financing`, la règle par paire tient : la cellule est une seule valeur par trimestre, et seules des lignes de flux y entrent.
+  - Effet attendu, avant tout calcul :
+    - NVIDIA envers CoreWeave et Intel : les cellules de ceace41 ;
+    - Intel envers Micron : 1,1 Md$ au bilan et un principal de 638 M$, vus par Intel ; 969 M$ au bilan, vus par Micron ;
+    - Amazon envers Anthropic : les cellules de ceace41, plus une ligne d'encours vue par Anthropic (`exposed_assets/outstanding_balance/equity_investment`) ;
+    - le reste comme au second réassemblage.
+    Le réassemblage suivant le vérifie (point 12).
+
+  (12) Lecture, intégration et résultats (2026-10-27), sans sous-agent :
+  - Lecture des blocs de la mise à jour (117a4e0) : 2 blocs et 2 lignes.
+    - SpaceX : lettre d'engagement ferme du 24 octobre 2026 (8-K, item 8.01) pour un contrat-cadre de location-financement de baies de GPU. Le bailleur est « an entity managed by Apollo Global Management, Inc. ». Le principal total attendu est d'environ 40 Md$, par tranches d'environ cinq ans. La ligne est au stade signé ; le bailleur reste en attente (D-0055, point 5) ;
+    - SK hynix : la fenêtre du 6-K (actions propres au 26 octobre 2026) est une abstention, hors champ.
+  - Lecture du S-1 (9c56df3 et e023e60), liste `s1_anthropic` vide : 106 blocs, 2 116 853 caractères, 273 lignes (157 observations et 116 abstentions), 0 erreur sémantique. Aucune personne physique n'est nommée, ni comme contrepartie, ni en citation, ni en note.
+    - Blocs : les 100 du point 9, et six corps de pièces retenus par leur en-tête, 707 098 caractères. Leur volume se consigne ici, après la lecture ; le point 9 le voulait à leur préparation. Ce sont l'EX-4.3, accord d'achat d'actions et de facilité de billets d'AWS du 20 avril 2026 (118 750) ; l'EX-4.4, convention de billets de Broadcom du 31 mars 2026 (181 479) ; l'EX-4.5, convention de billets de Google du 31 mars 2026 (138 443) ; l'EX-4.6 et l'EX-4.7, droits d'enregistrement de Broadcom et de Google (70 149 et 21 711) ; l'EX-10.11, contrat-cadre de location d'équipements TPU8i de Broadcom (176 566) ;
+    - pièces arrêtées à leur en-tête : l'EX-4.1 (spécimen d'action) et l'EX-4.2 (droits des investisseurs), sans partie d'un groupe ; les EX-10.1 à 10.9 et 10.12 à 10.14, hors champ ; l'EX-10.10, crédit renouvelable, aux seules parties financières (l'agent Morgan Stanley Senior Funding, Inc. et seize chefs de file) ;
+    - abstentions par motif : sans contrepartie nommée 41, doublon d'un autre bloc 31, hors champ 22, sans contenu utile 13, texte type 4, hors du schéma 2, parties financières seulement 2, sans montant 1 ;
+    - observations par famille : financement 83, commercial 28, soutien de crédit 6, contrepartie au client 2. Les 38 autres sont des parties de contrats, des rattachements et trois acquisitions (Bun, Stainless Software, Inc. et Coefficient Bio, Inc.) ;
+    - pièces de lien (§3.4) : 8.
+      - AWS : la facilité de 2026 ne s'ouvre que par paliers de capacité livrée par AWS (L2), et chaque tirage suppose ses accords de capacité en vigueur (L1) ;
+      - Broadcom : ses billets ne servent qu'à payer les loyers dus à Broadcom au titre du bail TPU8i (L1) ;
+      - Google : chaque tirage se rapporte à de la capacité TPU livrée par des vendeurs tiers agréés, sous conditions de clôture (L1, deux fois) ;
+      - AMD : engagement d'acheter jusqu'à 5,0 Md$ d'actions de classe N, écrit dans l'accord de fourniture de matériel (L5), par tranches après chaque palier de livraison de GPU (L2) ;
+      - Amazon : ses billets peuvent se régler par compensation avec les sommes qu'Amazon doit à Anthropic au titre des accords commerciaux (L5).
+  - Faits du S-1, dans les lignes lues :
+    - engagements de capacité nommés (rapport de gestion ; accords signés ou modifiés d'avril à octobre 2026) : Google au moins 114,5 Md$, SpaceX.AI LLC au plus 120,5 Md$, Amazon au moins 110,0 Md$, Microsoft au moins 44,9 Md$, Nscale au plus 44,6 Md$ et Lambda environ 41,3 Md$, ces deux derniers payables à la livraison acceptée. AMD : plus de 20,0 Md$, estimation de la direction, sous conditions ;
+    - baux de Broadcom : environ 161,2 Md$ de loyers non actualisés, dont environ 125,2 Md$ pour le bail de 2026, que Broadcom entend céder à un partenaire financier. Billets de Broadcom : jusqu'à 42,0 Md$, rien d'émis. Dépôt de garantie de 2,5 Md$ en avril 2026 ;
+    - chaîne TPU8i : Broadcom achète les TPU8i à Google et les loue à AI Infrastructure OpCo II, LLC, filiale d'Anthropic. Google apporte un soutien de crédit et peut reprendre le bail. Fluidstack USA I Inc. y opère des sites ; les autres opérateurs agréés sont caviardés ;
+    - financements : billets d'Amazon (4,0 Md$ en 2023 et 4,0 Md$ en 2024, en partie convertis, 6,2 Md$ d'encours au 30 juin 2026) et de Google (2,0 Md$ en 2023 et 1,3 Md$ en 2024, convertis). Conventions de 2026 : Google jusqu'à 30,0 Md$ (20,0 Md$ disponibles après sa série H), Amazon jusqu'à 20,0 Md$ (15,0 Md$ disponibles). Actions G-2 (Google 10,0 Md$, Amazon 5,0 Md$) et série H (Google 10,0 Md$, Amazon 5,0 Md$, 65,2 Md$ en tout au deuxième trimestre 2026). Crédit renouvelable porté de 2,5 à 15,0 Md$, rien de tiré au 30 juin 2026 ;
+    - relations nouvelles : Fluidstack USA I Inc., opérateur de centres de données ; Spark Capital, actionnaire des séries C à H ; Accenture, intention d'au moins 1 Md$ ; commissions des places de marché de Google, de Microsoft et d'AWS ; Microsoft, client ;
+    - engagements anonymes : accords de capacité d'environ 417 Md$ au premier semestre 2026 et 245 Md$ depuis ; engagements d'achat de 54,6 Md$ fin 2025 et d'environ 265,6 Md$ au 30 juin 2026 ; baux non commencés de 50,2 et 321,4 Md$ ;
+    - chiffres propres du laboratoire, constats de lecture non codés (point 2) : revenu de 4,6 Md$ en 2025 et de 16,3 Md$ au premier semestre 2026, dont 11,6 Md$ au deuxième trimestre, premier trimestre à résultat d'exploitation positif (974 M$) ; perte nette de 42,0 Md$ en 2025 et de 80,7 Md$ au premier semestre 2026, dont 72,4 Md$ de juste valeur des billets convertibles ; 112,4 Md$ de trésorerie et 19,3 Md$ de placements à court terme au 30 juin 2026 ; places de marché des fournisseurs de cloud, 48 % du revenu du semestre ;
+    - facteurs de risque, constats sans pièce de lien :
+      - des financements obligent à des engagements d'achat exclusifs ou préférentiels envers certains fournisseurs de puces ;
+      - des concepteurs de puces apportent aussi des financements d'infrastructure ;
+      - des accords d'électricité et de centres de données de vingt ans sont à prendre ou à payer, avec répercussion sans plafond du combustible ;
+      - un concurrent apporte un soutien de crédit ;
+      - Amazon et Google détiendraient chacun plus de 5 % après conversion ;
+    - liste des filiales (EX-21.1) vide : « None ».
+  - Entités par extrait, avant le premier réassemblage : 8 entrées. Elles citent leur bloc, leur accession et leur extrait (D-0021), et un test les vérifie (`test_d0077`).
+    - Rattachements : SpaceX.AI LLC à SPCX ; AI Infrastructure OpCo II, LLC et Anthropic Public Benefit Fund, LLC à `LAB:ANTHROPIC`, avec l'alias « Anthropic Public Benefit Fund » ; le Long-Term Benefit Trust, entité à intérêts variables consolidée depuis 2023, à `LAB:ANTHROPIC`. Spark Capital, Accenture et Ode with Anthropic deviennent des groupes propres. La table `entities` passe de 3 606 à 3 638 lignes ;
+    - restent en attente : le bailleur géré par Apollo (D-0055, point 5) ; « Bun » ; « Hut 8 », nom d'un accord de reconnaissance dont les parties sont caviardées ; et sept désignations (« a privately-held company », « the power counterparty », « suppliers »…). AI Infrastructure OpCo, LLC reste un groupe propre : aucun extrait n'en fait une filiale.
+  - Réassemblages : trois, en 1 067, 619 et 620 s (points 10 et 11). Le code des points 10 et 11 ajoute 7 tests (22 dans `test_d0077`, 438 en tout) ; ruff passe. Le rendu du grand livre gagne la colonne « Vu par » et la nature « sans numéraire ».
+  - Tables, contre celles de ceace41 :
+    - documents : 26 227 → 26 804. Ce sont les 36 documents du S-1, 11 documents des dépôts nouveaux des groupes, et 530 relevés et documents de l'as_of : submissions 326, pages de recherche 161, `companyfacts` 37 et six autres ;
+    - faits : 1 588 706 → 1 588 711, les 5 faits de la pièce des droits d'enregistrement du S-3ASR de Meta (`ffd:`) ;
+    - observations : 31 012 → 31 287, soit 273 lignes du S-1 et 2 de la mise à jour ; aucune ne disparaît ;
+    - liens : 11 195 → 11 285, soit 88 arêtes nouvelles, aucune disparue, et 2 relations entre montants. Par nature : commercial à montant 6 et en relation 13, soutien de crédit en relation 2, financement à montant 29 et en relation 38. Toutes viennent du S-1, sauf le bail de SpaceX ;
+    - mesures : 193 532 → 193 875 ; contrôles : 70 585 → 70 587, aucun ne bascule ;
+    - exclusions : 31 860 → 31 889. Les 15 `not_processed` sont les 14 unités du S-1 dans la file de la découverte (rang 169, lues comme texte propre, point 8) et un 8-K de Blue Owl Capital Corp II au-delà du plafond. Les 4 `out_of_scope` sont deux 6-K de SK hynix et deux pièces du 8-K de Galaxy ; les 10 `pending_entity`, les noms ci-dessus.
+  - `delta.md` :
+    - événements de l'annexe F : aucun n'apparaît ni ne disparaît pour les groupes ; F15 +2 pour les véhicules de BDC ;
+    - flux après financement des contreparties, 12 cellules changées. Google : 8, les financements accordés à Anthropic que seul le S-1 publie (0,5 ; 2,05 ; 0,75 et 20,0 Md$ sur quatre trimestres). Au deuxième trimestre 2026, le flux passe de −5,9 à −25,9 Md$. Applied Digital : 4, l'encours d'un billet n'est plus retranché ;
+    - exposition : Intel envers Micron, principal ramené de 3,267 Md$ à 638 M$ (lignes d'Intel). Lignes nouvelles, vues par Anthropic : encours des billets d'Amazon 6,2 Md$ ; Google, 23,3 Md$ au coût et 22,0 Md$ de plafonds, dont les 2,0 Md$ de 2023, déjà tirés et non nettés (limite écrite au point 10) ; Broadcom, 42,0 Md$ de plafond ;
+    - paires nouvelles : Alphabet–Anthropic et Alphabet–Broadcom (216 cellules du statut financé, 20 de dépendance de revenu, 24 de carnet, 3 de revenu en titres) ;
+    - conclusions de paire : AMD–Anthropic passe à `documented_dependency`, par les pièces L2 et L5 ; Broadcom–Anthropic et Microsoft–Anthropic passent à `commercial_with_financing` ; Alphabet–Anthropic est `commercial_with_financing` ; Broadcom–Alphabet passe à `reciprocal_commercial_only`, comme Alphabet–Broadcom, nouvelle. Annexe E : 10 issues nouvelles, toutes indéterminées ; E.6 compte 118 cycles orientés au lieu de 109 (AMD 3 → 5, Broadcom 1 → 5, Alphabet 3 → 7, Microsoft 4 → 6, NVIDIA 9 → 10) ;
+    - grand livre : 26 cellules de plus ; matrice d'exposition d'Anthropic : 27 cellules, une par ligne.
+  - Constats proposés à l'utilisateur, sans suite ici : ceux du point 10 (plafonds non nettés, apport d'Intel compté deux fois, investissement de Meta dans Scale AI retranché deux fois), et les neuf lignes de passes antérieures qui nomment une personne physique (D-0074, point 7).
+  - Verrou de session levé en fin d'exécution. La tâche planifiée de §11.5 n'est pas créée.

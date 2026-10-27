@@ -578,7 +578,8 @@ def run(as_of, use_cache=True, apercu=False):
 
 def invariants(cells, edges, rels, reg):
     """§7.6 sur les sommes d'arêtes : niveau E ou F, devises mêlées, chevauchement non
-    résolu, entité pending. Une violation exclut l'agrégat (invalid_aggregate)."""
+    résolu, perspectives mêlées pour une même contrepartie, entité pending. Une violation exclut
+    l'agrégat (invalid_aggregate)."""
     by = {l["link_key"]: l for l in edges}
     unresolved = {(r["a_key"], r["b_key"]) for r in rels if r["resolution"] == "unresolved"}
     out = []
@@ -586,7 +587,8 @@ def invariants(cells, edges, rels, reg):
         if c["measure"] not in ("counterparty_exposure", "fcf_after_counterparty_financing", "documented_revenue_dependency"):
             continue
         fl = json.loads(c["flags"]) if c.get("flags") else {}
-        keys = fl.get("links") or (fl.get("financing_given", []) + fl.get("repayments_received", []))
+        keys = fl.get("links") or (fl.get("financing_given", []) + fl.get("repayments_received", [])
+                                   + fl.get("financing_given_counterparty", []) + fl.get("repayments_received_counterparty", []))
         ls = [by[k] for k in keys if k in by]
         if not ls:
             continue
@@ -600,15 +602,23 @@ def invariants(cells, edges, rels, reg):
             bad.append("d")
         if len({l["_obs"].get("framework") for l in ls} - {None, NONE}) > 1:
             bad.append("f")          # aucune somme entre cadres comptables (US GAAP et IFRS), bloc foreign
+        # (e) pour une même contrepartie, des lignes du sujet et d'autrui à la fois (§10.4, D-0077, point 10)
+        side = {}
+        for l in ls:
+            other = l["to_group"] if l["from_group"] == c["subject"] else \
+                l["from_group"] if l["to_group"] == c["subject"] else c["counterparty"]
+            side.setdefault(other, set()).add(circularity.perspective(l, c["subject"]))
+        if any(len(v) > 1 for v in side.values()):
+            bad.append("e")
         if any(l["from_group"] is None or l["to_group"] is None for l in ls):
             bad.append("g")
         if bad:
             # motif de la cellule : l'invariant violé, le plus spécifique d'abord ; (a) niveau E ou F :
             # une pièce non admissible dans un agrégat, précondition de la somme non remplie
-            reason = {"d": "blocked_overlap", "b": "mixed_currency", "f": "mixed_framework", "g": "pending_entity",
-                      "a": "precondition_not_met"}
+            reason = {"d": "blocked_overlap", "b": "mixed_currency", "f": "mixed_framework", "e": "mixed_perspective",
+                      "g": "pending_entity", "a": "precondition_not_met"}
             c["status"] = "blocked_overlap" if bad == ["d"] else "not_determinable"
-            c["nd_reason"] = next(reason[x] for x in ("d", "b", "f", "g", "a") if x in bad)
+            c["nd_reason"] = next(reason[x] for x in ("d", "b", "f", "e", "g", "a") if x in bad)
             c["value"] = None
             out.append({"exclusion_key": f"invalid_aggregate:{c['measure']}:{c['subject']}:{c['counterparty']}:{c['period_end']}:{c['breakdown_key']}",
                         "item_kind": "aggregate", "item_key": f"{c['measure']}/{c['subject']}/{c['counterparty']}/{c['period_end']}",

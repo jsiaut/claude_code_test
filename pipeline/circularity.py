@@ -697,12 +697,27 @@ def _precision(x):
     return len(t)
 
 
+def perspective(l, node):
+    """Perspective d'une ligne pour le nœud mesuré (§10.4) : `reporting_entity` si elle vient d'un document du nœud
+    (son groupe déclarant), `counterparty` sinon (D-0077, point 10)."""
+    return "reporting_entity" if (l.get("_obs") or {}).get("group_id") == node else "counterparty"
+
+
+def one_perspective(lines, node):
+    """Une seule perspective (invariant e, D-0077, points 10 et 11) : parmi des lignes (lien, …), celles que publie le
+    nœud dès qu'il en publie une, sinon celles des documents d'autrui, jamais les deux."""
+    own = [x for x in lines if perspective(x[0], node) == "reporting_entity"]
+    return (own, "reporting_entity") if own else (lines, "counterparty" if lines else None)
+
+
 def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
     """Une ligne par bloc et par base, sans total (§4.6), avec wrong_way. Au coût, les apports en
     numéraire s'additionnent ; un plafond d'engagement, une valeur au bilan ou une garantie est un
     état : la dernière valeur connue à t par instrument, jamais une somme dans le temps. Un cumul
     versé publié au coût (base `cost`, nature autre que `financing_cash`) est aussi un état. Un gain ou
-    une perte de mise en équivalence est un flux du résultat, pas une exposition."""
+    une perte de mise en équivalence est un flux du résultat, pas une exposition. Un encours est un état, qu'une
+    fin du même instrument datée après lui et au plus tard à t périme ; une ligne sans numéraire n'est pas un apport ;
+    chaque ligne (bloc, base, catégorie) vient toute de S, ou toute d'autrui (D-0077, points 10 et 11)."""
     as_of_d = dt.date.fromisoformat(as_of)
     out = []
     for (s, c), p in sorted(pairs.items()):
@@ -710,9 +725,9 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
         t = qs[-1]["end"] if qs else as_of_d
         ever_active = any(v[0] == "active" for v in ev[(s, c)]["F"]["as_known"]["exposure_outstanding"].values())
         wrong_way = bool(ever_active and p.com)
-        flows, states = {}, {}
-        for l in p.fin + [x for x in p.edges if x["from_group"] == s and x["to_group"] == c
-                          and x["family"] == "credit_support"]:
+        fin = p.fin + [x for x in p.edges if x["from_group"] == s and x["to_group"] == c and x["family"] == "credit_support"]
+        kept = []
+        for l in fin:
             o = l["_obs"]
             if o.get("amount") is None or o.get("unit") != CURRENCY or l.get("_dup_of"):
                 continue
@@ -729,20 +744,45 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
             elif l["family"] == "financing" and mb == "cost" and nat != "financing_cash" and et not in FLOW_ONLY:
                 # cumul versé à une date (« funded as of ») : la dernière valeur, jamais une somme (D-0059, point 11)
                 key = ("exposed_assets", "cost", "equity_investment" if equity else "loan_receivable")
+            elif l["family"] == "financing" and mb == "outstanding_balance" and et not in FLOW_ONLY:
+                key = ("exposed_assets", "outstanding_balance", "equity_investment" if equity else "loan_receivable")
             elif l["family"] == "financing" and l["edge_evidence"] == "amount" and et not in FLOW_ONLY \
-                    and mb != "equity_method":
-                flows.setdefault(("exposed_assets", "cost" if equity else "principal",
-                                  "equity_investment" if equity else "loan_receivable"), []).append(l)
+                    and mb != "equity_method" and nat != "financing_noncash":
+                kept.append((l, "flow", ("exposed_assets", "cost" if equity else "principal",
+                                         "equity_investment" if equity else "loan_receivable")))
                 continue
             elif l["family"] == "credit_support":
                 key = ("contingent_obligations", mb or "commitment_cap", o.get("category_id") or "guarantee")
             else:
                 continue
+            kept.append((l, "state", key))
+        # une perspective par ligne de la matrice (point 11) : S dès qu'il publie la ligne, sinon autrui
+        by_key, sides = {}, {}
+        for x in kept:
+            by_key.setdefault(x[2], []).append(x)
+        kept = []
+        for key, xs in by_key.items():
+            use, sides[key] = one_perspective(xs, s)
+            kept += use
+        # fins d'instrument, en toute unité, par perspective : elles périment un encours antérieur vu de la même
+        ends = {}
+        for l in fin:
+            if l["_obs"].get("event_type") in CLOSING_EVENTS and l["_date"] and l["_date"] <= t:
+                ends.setdefault((perspective(l, s), l.get("instrument_key") or l["link_key"]), []).append(l["_date"])
+        flows, states = {}, {}
+        for l, kind, key in kept:
+            if kind == "flow":
+                flows.setdefault(key, []).append(l)
+                continue
             ik = l.get("instrument_key") or l["link_key"]
-            rank = (l["_date"] or dt.date.min, _precision(o["amount"]), str(_kd(l) or ""))
+            rank = (l["_date"] or dt.date.min, _precision(l["_obs"]["amount"]), str(_kd(l) or ""))
             cur = states.get((key, ik))
             if cur is None or rank > cur[0]:
                 states[(key, ik)] = (rank, l)
+        for (key, ik), (_, l) in list(states.items()):
+            if key[1] == "outstanding_balance" and l["_date"] and \
+                    any(e > l["_date"] for e in ends.get((sides[key], ik), [])):
+                del states[(key, ik)]
         lines = dict(flows)
         for (key, ik), (_, l) in states.items():
             lines.setdefault(key, []).append(l)
@@ -765,5 +805,6 @@ def counterparty_exposure(pairs, ev, cals, as_of, text_done=frozenset()):
                             flags={"wrong_way": wrong_way, "links": [l["link_key"] for l in ls],
                                    "rule": "somme des apports" if basis in ("cost", "principal") else
                                            "dernière valeur connue à la date, par instrument",
+                                   "perspective": sides[(blk, basis, cat)],
                                    "evidence_profile": {k: float(round(x, 4)) for k, x in tiers.items()}}))
     return out

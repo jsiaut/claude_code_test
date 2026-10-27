@@ -1884,7 +1884,8 @@ LAB_EDGE_FR = {"equity_primary": "fonds propres", "convertible_or_safe": "obliga
                "purchase_commitment": "engagement d'achat", "capacity_lease": "bail de capacité", "prepayment": "paiement d'avance",
                "equity_or_warrants_to_customer": "titres ou bons remis au client", "credits_to_customer": "crédits au client",
                "cash_incentive_to_customer": "incitation en numéraire"}
-LAB_NAT_FR = {"financing_cash": "versement", "investment_carrying_amount": "valeur au bilan", "fair_value": "juste valeur",
+LAB_NAT_FR = {"financing_cash": "versement", "financing_noncash": "sans numéraire",
+              "investment_carrying_amount": "valeur au bilan", "fair_value": "juste valeur",
               "commitment_unexecuted": "engagement non exécuté", "capacity_commitment": "engagement de capacité",
               "consideration_payable_to_customer": "contrepartie payable au client", "revenue_recognized_gross": "revenu (brut)",
               "revenue_recognized_net": "revenu (net)", "guarantee_amount": "montant garanti", "lease_payment": "loyers",
@@ -2049,7 +2050,9 @@ def labs_ledger_section(con, T):
              "publié, jamais une somme ; aucun total, ni par partenaire, ni par sens. Les états de la paire (au coût, au bilan, à "
              "la juste valeur, plafonds d'engagement) viennent de `counterparty_exposure` et ne nettent pas les engagements déjà "
              "versés. Les capacités balisées (MW, GW) restent à part, jamais additionnées aux dollars. Chaque montant est vu par "
-             "le déposant de sa pièce : le grand livre ne dit rien des comptes des laboratoires.")
+             "le déposant de sa pièce (colonne « Vu par ») : les comptes d'un laboratoire n'y paraissent que par son propre "
+             "document d'enregistrement (le S-1 d'Anthropic, D-0077). Chaque ligne d'exposition d'une paire vient d'une seule "
+             "perspective : celle du partenaire dès qu'il la publie, sinon celle d'autrui, dite « vu par autrui » (invariant e).")
     L.append("")
     by_pair = defaultdict(list)
     for c in cells:
@@ -2079,7 +2082,9 @@ def labs_ledger_section(con, T):
                            AND counterparty = ? AND value IS NOT NULL ORDER BY period_end DESC, breakdown_key""", p, lab)
             if ex:
                 pe = ex[0]["period_end"]
-                parts = [f"{LAB_EXPO_FR.get(x['breakdown_key'], x['breakdown_key'])} {T.m(x)}" for x in ex if x["period_end"] == pe]
+                parts = [f"{LAB_EXPO_FR.get(x['breakdown_key'], x['breakdown_key'])} {T.m(x)}"
+                         + (" (vu par autrui)" if json.loads(x["flags"] or "{}").get("perspective") == "counterparty" else "")
+                         for x in ex if x["period_end"] == pe]
                 L.append(f"- Exposition du partenaire au {pe} (`counterparty_exposure`) : " + " ; ".join(parts) + ".")
             caps = [t for t in tagged if t["subject"] == p and t["counterparty"] == lab and (t["unit"] or "") in ("MW", "GW", "MWh", "megawatt", "gigawatt")]
             if caps:
@@ -2088,8 +2093,8 @@ def labs_ledger_section(con, T):
             pc = by_pair.get((lab, p)) or []
             if pc:
                 L.append("")
-                L.append("| Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Montants publiés |")
-                L.append("| --- | --- | --- | --- | ---: | --- | --- | ---: |")
+                L.append("| Sens | Instrument | Type | Nature | Dernier montant | Date | Pièce | Vu par | Montants publiés |")
+                L.append("| --- | --- | --- | --- | ---: | --- | --- | --- | ---: |")
                 for c in sorted(pc, key=lambda c: (c["fl"].get("direction"), c["fl"].get("family"), c["breakdown_key"])):
                     fl = c["fl"]
                     src = q(con, """SELECT o.amount_qualifier, o.event_type, o.period_label FROM links l JOIN observations o
@@ -2107,7 +2112,8 @@ def labs_ledger_section(con, T):
                     ik = fl.get("instrument_key") or "arête sans clé d'instrument"
                     L.append(f"| {LAB_DIR_FR.get(fl.get('direction'), fl.get('direction'))} | {ik} | "
                              f"{LAB_EDGE_FR.get(fl.get('edge_type'), fl.get('edge_type'))} | {nat} | {val} | {c['period_end']} | "
-                             f"{fl.get('form')} {fl.get('accession')} | {T.n('links', {'lab_ledger_amounts': c['breakdown_key'], 'pair': [lab, p]}, fl.get('n_amounts'))} |")
+                             f"{fl.get('form')} {fl.get('accession')} | {group_label(fl['filer']) if fl.get('filer') else '?'} | "
+                             f"{T.n('links', {'lab_ledger_amounts': c['breakdown_key'], 'pair': [lab, p]}, fl.get('n_amounts'))} |")
             with_cell = {c["fl"].get("instrument_key") for c in pc}
             rel = defaultdict(list)
             for e in es:
@@ -2593,6 +2599,8 @@ LAB_EXPO_FR = {"exposed_assets/cost/equity_investment": "au coût (participation
                "exposed_assets/carrying_amount/loan_receivable": "au bilan (prêt)",
                "exposed_assets/fair_value/equity_investment": "à la juste valeur (participation)",
                "exposed_assets/fair_value/loan_receivable": "à la juste valeur (prêt)",
+               "exposed_assets/outstanding_balance/equity_investment": "encours (billets convertibles ou participation)",
+               "exposed_assets/outstanding_balance/loan_receivable": "encours (prêt)",
                "contractual_outflows/commitment_cap/uncalled_commitment": "engagements non appelés (plafond)"}
 
 

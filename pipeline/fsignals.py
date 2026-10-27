@@ -13,6 +13,7 @@ from decimal import Decimal
 
 import pandas as pd
 
+from .circularity import perspective
 from .events import REGIME_6K, regime_6k
 from .measures import cell
 
@@ -197,17 +198,24 @@ def pledged_signals(groups, quarters_by_group, obs, as_of, report_end_of, text_d
 def counterparty_financing(groups, quarters_by_group, edges, measures_df, as_of, text_done=frozenset()):
     """fcf_after_counterparty_financing = fcf_basic − financements en numéraire accordés à des
     contreparties nommées + remboursements reçus ; partial tant que le texte du groupe n'est pas
-    lu en entier (notes d'investissements du bloc text de §14), computed ensuite."""
+    lu en entier (notes d'investissements du bloc text de §14), computed ensuite. Un encours n'est pas un
+    financement du trimestre ; par contrepartie, les lignes viennent toutes du groupe, ou toutes d'autrui, et la
+    cellule range à part celles qu'elle doit à autrui (D-0077, point 10)."""
     out = []
     m = measures_df[(measures_df["measure"] == "fcf_basic")]
     for g in groups:
         given = [l for l in edges if l["from_group"] == g and l["family"] == "financing" and l["edge_evidence"] == "amount"
                  and l["unit"] == "USD" and l["_obs"].get("amount_nature") == "financing_cash"
                  and l["_obs"].get("event_type") not in ("repayment", "conversion") and not l.get("_dup_of")
+                 and l["_obs"].get("measurement_basis") != "outstanding_balance"
                  and l["elimination_status"] != "eliminated"]
         back = [l for l in edges if l["to_group"] == g and l["family"] == "financing" and l["edge_evidence"] == "amount"
                 and l["unit"] == "USD" and l["_obs"].get("event_type") == "repayment" and not l.get("_dup_of")
                 and l["elimination_status"] != "eliminated" and l["from_group"] != g]
+        own_cp = {l["to_group"] for l in given if perspective(l, g) == "reporting_entity"} | \
+                 {l["from_group"] for l in back if perspective(l, g) == "reporting_entity"}
+        given = [l for l in given if l["to_group"] not in own_cp or perspective(l, g) == "reporting_entity"]
+        back = [l for l in back if l["from_group"] not in own_cp or perspective(l, g) == "reporting_entity"]
         for q in quarters_by_group[g]:
             ps, pe = q["start"], q["end"]
             for view in ("revised", "as_known"):
@@ -225,15 +233,20 @@ def counterparty_financing(groups, quarters_by_group, edges, measures_df, as_of,
                 kds = [str(r.iloc[0]["knowledge_date"])] if r.iloc[0].get("knowledge_date") not in (None, "") and \
                     not pd.isna(r.iloc[0].get("knowledge_date")) else []
                 kds += [str(_kd) for _kd in (l.get("knowledge_date") for l in gq + bq) if _kd]
+                fl = {"fcf_basic_lineage": r.iloc[0]["lineage"],
+                      "financing_given": [l["link_key"] for l in gq if perspective(l, g) == "reporting_entity"],
+                      "repayments_received": [l["link_key"] for l in bq if perspective(l, g) == "reporting_entity"],
+                      "basis": "financements nommés lus dans la tranche et le bloc text" if done else
+                               "financements lus dans la tranche ; notes d'investissements hors tranche"}
+                # financements que seule la contrepartie publie : rangés à part, la combinaison est ventilée (invariant e)
+                for k, ls in (("financing_given_counterparty", gq), ("repayments_received_counterparty", bq)):
+                    ks = [l["link_key"] for l in ls if perspective(l, g) == "counterparty"]
+                    if ks:
+                        fl[k] = ks
                 out.append(cell("fcf_after_counterparty_financing", g, ps, pe, view, as_of, value=v, unit="USD",
                                 knowledge_date=max(kds) if kds else None,
                                 status="computed" if done else "partial", nd_reason=None if done else "not_processed",
-                                coverage="observed" if done else "not_processed",
-                                flags={"fcf_basic_lineage": r.iloc[0]["lineage"],
-                                       "financing_given": [l["link_key"] for l in gq],
-                                       "repayments_received": [l["link_key"] for l in bq],
-                                       "basis": "financements nommés lus dans la tranche et le bloc text" if done else
-                                                "financements lus dans la tranche ; notes d'investissements hors tranche"}))
+                                coverage="observed" if done else "not_processed", flags=fl))
     return out
 
 

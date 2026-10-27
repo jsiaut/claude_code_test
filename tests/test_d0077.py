@@ -2,9 +2,16 @@
 
 Lancement : python3 -m unittest discover -s tests -t .
 """
+import datetime as dt
+import json
 import unittest
 
+import pandas as pd
+
+from pipeline import assemble
+from pipeline import circularity as C
 from pipeline import entities as E
+from pipeline import fsignals as Fs
 from pipeline import links, load, nf_discovery
 from pipeline import nf_discovery as N
 from pipeline.graph import normalize_name
@@ -157,6 +164,132 @@ class LineLevel(unittest.TestCase):
         self.assertEqual(load._line_level(b, {"event_date": "2026-02-01"}), ("C", "unaudited"))
         self.assertEqual(load._line_level({"tier": "C", "assurance_level": "not_applicable"}, {"period_end": "2026-06-30"}),
                          ("C", "not_applicable"))
+
+
+
+class Integration(unittest.TestCase):
+    """Intégration (D-0077, point 12) : chaque entité nommée par le S-1 cite son extrait ; une désignation de fonds
+    gérés reste en attente (D-0055, point 5) ; une appartenance que le texte n'écrit pas ne se suppose pas."""
+
+    def setUp(self):
+        from pipeline import config
+        self.cfg = config.load()
+
+    def test_entrees_citent_leur_extrait(self):
+        rows = [c for k in ("confirmed_entities", "own_entities", "entity_aliases") for c in self.cfg[k]
+                if c.get("decision") == "D-0077"]
+        self.assertEqual(len(rows), 8)
+        for c in rows:
+            self.assertRegex(c["block"], r"^[0-9a-f]{64}$")
+            self.assertEqual(c["accession"], "0001628280-26-067168")
+            self.assertTrue(c["quote"].strip())
+
+    def test_rattachements(self):
+        names = ["SpaceX.AI LLC", "AI Infrastructure OpCo II, LLC", "Anthropic Public Benefit Fund",
+                 "Long-Term Benefit Trust", "Spark Capital", "an entity managed by Apollo Global Management, Inc.",
+                 "AI Infrastructure OpCo, LLC"]
+        _, reg = E.build({"meta": {}}, self.cfg, {n: False for n in names})
+        g = lambda n: E.resolve(reg, n, "2026-10-26")[1]
+        self.assertEqual(g("SpaceX.AI LLC"), "SPCX")
+        self.assertEqual(g("AI Infrastructure OpCo II, LLC"), "LAB:ANTHROPIC")
+        self.assertEqual(g("Anthropic Public Benefit Fund"), "LAB:ANTHROPIC")
+        self.assertEqual(g("Long-Term Benefit Trust"), "LAB:ANTHROPIC")
+        self.assertEqual(g("Spark Capital"), "CP:spark capital")
+        self.assertIsNone(g("an entity managed by Apollo Global Management, Inc."))
+        self.assertEqual(g("AI Infrastructure OpCo, LLC"), "CP:ai infrastructure opco llc")
+
+
+def fin(key, ik, date, amount, group, nature="financing_cash", basis="principal", event="funding",
+        edge_type="convertible_or_safe", unit="USD", frm="AMZN", to="LAB:ANTHROPIC"):
+    return {"link_key": "edge:" + key, "instrument_key": ik, "family": "financing", "edge_type": edge_type,
+            "from_group": frm, "to_group": to, "edge_evidence": "amount", "_date": dt.date.fromisoformat(date), "tier": "A",
+            "unit": unit, "amount": amount, "elimination_status": "not_applicable",
+            "_obs": {"amount": amount, "unit": unit, "event_type": event, "amount_nature": nature,
+                     "measurement_basis": basis, "knowledge_date": date, "group_id": group}}
+
+
+class Perspective(unittest.TestCase):
+    """Point 10 : une perspective par paire ; un encours est un état ; une ligne sans numéraire n'est pas un apport ;
+    l'invariant (e) écarte un agrégat qui mêle les deux perspectives d'une même contrepartie."""
+
+    def exposure(self, edges, s="AMZN"):
+        p = C.Pair(s, "LAB:ANTHROPIC")
+        p.edges = edges
+        q = dt.date(2026, 6, 30)
+        ev = {(s, "LAB:ANTHROPIC"): {"F": {"as_known": {"exposure_outstanding": {q: ("active", [])}}}}}
+        out = C.counterparty_exposure({(s, "LAB:ANTHROPIC"): p}, ev, {s: {"quarters": [{"end": q}]}}, "2026-10-27",
+                                      text_done=frozenset({s}))
+        return {c["breakdown_key"]: (c["value"], json.loads(c["flags"]).get("perspective")) for c in out}
+
+    def test_les_lignes_du_groupe_mesure_l_emportent(self):
+        got = self.exposure([fin("a", "amzn:n", "2023-09-30", "1250000000", "AMZN"),
+                             fin("b", "amzn:n", "2024-03-31", "2750000000", "AMZN"),
+                             fin("c", "anthropic:n23", "2023-09-30", "1200000000", "LAB:ANTHROPIC"),
+                             fin("d", "anthropic:n23", "2024-03-31", "2800000000", "LAB:ANTHROPIC")])
+        self.assertEqual(got, {"exposed_assets/cost/equity_investment": (4000000000, "reporting_entity")})
+
+    def test_une_perspective_par_ligne_de_la_matrice(self):
+        # NVIDIA publie la juste valeur de sa participation ; CoreWeave, le soutien de capacité et l'achat d'actions
+        got = self.exposure([fin("a", "nvda:crwv", "2025-04-27", "1000000000", "NVDA", nature="fair_value", basis="fair_value",
+                                 event="recognition", edge_type="equity_primary", frm="NVDA"),
+                             fin("b", "crwv:spa", "2026-01-23", "2000000000", "CRWV", basis=None, edge_type="equity_primary",
+                                 frm="NVDA")], s="NVDA")
+        self.assertEqual(got, {"exposed_assets/fair_value/equity_investment": (1000000000, "reporting_entity"),
+                               "exposed_assets/cost/equity_investment": (2000000000, "counterparty")})
+
+    def test_sinon_les_lignes_d_autrui_dites_comme_telles(self):
+        got = self.exposure([fin("a", "anthropic:g23", "2023-09-30", "500000000", "LAB:ANTHROPIC", frm="GOOGL"),
+                             fin("b", "anthropic:g23", "2024-09-30", "750000000", "LAB:ANTHROPIC", frm="GOOGL")], s="GOOGL")
+        self.assertEqual(got, {"exposed_assets/cost/equity_investment": (1250000000, "counterparty")})
+
+    def test_encours_etat_perime_par_une_fin_du_meme_instrument(self):
+        got = self.exposure([fin("a", "anthropic:n23", "2023-09-30", "1200000000", "LAB:ANTHROPIC"),
+                             fin("b", "anthropic:n23", "2025-12-31", "2600000000", "LAB:ANTHROPIC", basis="outstanding_balance",
+                                 event=None),
+                             fin("c", "anthropic:n23", "2026-06-30", "2200000000", "LAB:ANTHROPIC", basis="outstanding_balance",
+                                 event=None),
+                             fin("d", "anthropic:g23", "2025-12-31", "750000000", "LAB:ANTHROPIC", basis="outstanding_balance",
+                                 event=None),
+                             fin("e", "anthropic:g23", "2026-01-31", "3300000", "LAB:ANTHROPIC", nature="financing_noncash",
+                                 basis=None, event="conversion", unit="shares")])
+        self.assertEqual(got["exposed_assets/cost/equity_investment"][0], 1200000000)
+        self.assertEqual(got["exposed_assets/outstanding_balance/equity_investment"][0], 2200000000)
+
+    def test_billet_sans_numeraire_n_est_pas_un_apport(self):
+        got = self.exposure([fin("a", "anthropic:n23", "2024-03-31", "2800000000", "LAB:ANTHROPIC"),
+                             fin("b", "anthropic:n23", "2025-12-31", "3100000000", "LAB:ANTHROPIC", nature="financing_noncash",
+                                 event="amendment")])
+        self.assertEqual(got, {"exposed_assets/cost/equity_investment": (2800000000, "counterparty")})
+
+    def test_flux_apres_financement(self):
+        q = {"start": dt.date(2026, 4, 1), "end": dt.date(2026, 6, 30)}
+        m = pd.DataFrame([{"measure": "fcf_basic", "subject": "AMZN", "period_end": "2026-06-30", "view": v,
+                           "status": "computed", "value": "1000", "nd_reason": None, "lineage": "[]", "knowledge_date": None}
+                          for v in ("revised", "as_known")])
+        edges = [fin("a", "amzn:h", "2026-06-30", "500", "AMZN", basis=None),
+                 fin("b", "anthropic:h", "2026-05-31", "500", "LAB:ANTHROPIC", basis=None),
+                 fin("c", "anthropic:n23", "2026-06-30", "220", "LAB:ANTHROPIC", basis="outstanding_balance", event=None),
+                 fin("d", "x:loan", "2026-05-15", "100", "CP:x", basis=None, frm="AMZN", to="CP:x")]
+        out = [c for c in Fs.counterparty_financing(["AMZN"], {"AMZN": [q]}, edges, m, "2026-10-27",
+                                                    text_done=frozenset({"AMZN"})) if c["view"] == "as_known"]
+        self.assertEqual(out[0]["value"], 400)
+        fl = json.loads(out[0]["flags"])
+        self.assertEqual((fl["financing_given"], fl["financing_given_counterparty"]), (["edge:a"], ["edge:d"]))
+
+    def test_invariant_e(self):
+        edges = [fin("a", "amzn:n", "2024-03-31", "100", "AMZN"), fin("b", "anthropic:n", "2024-03-31", "100", "LAB:ANTHROPIC"),
+                 fin("c", "x:loan", "2024-03-31", "100", "CP:x", to="CP:x")]
+        cell = lambda keys, measure="counterparty_exposure": {
+            "measure": measure, "subject": "AMZN", "counterparty": "LAB:ANTHROPIC", "period_end": "2026-06-30",
+            "breakdown_key": "none", "as_of": "2026-10-27", "status": "computed", "value": 200, "nd_reason": None,
+            "flags": json.dumps({"links": keys})}
+        mixed = cell(["edge:a", "edge:b"])
+        out = assemble.invariants([mixed], edges, [], None)
+        self.assertEqual((mixed["status"], mixed["nd_reason"], mixed["value"]), ("not_determinable", "mixed_perspective", None))
+        self.assertEqual(out[0]["invariant"], "e")
+        # deux contreparties, une perspective chacune : ventilé, admis
+        fcf = cell(["edge:a", "edge:c"], "fcf_after_counterparty_financing")
+        self.assertEqual(assemble.invariants([fcf], edges, [], None), [])
 
 
 if __name__ == "__main__":

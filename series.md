@@ -1,6 +1,6 @@
 # series.md — vue temporelle
 
-*Exécution du 2026-10-24. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
+*Exécution du 2026-10-27. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
 
 ## NVIDIA (NVDA)
 
@@ -47,18 +47,18 @@
 | 2022-12-31 | 1,0 % | 9,8 % | 0,32 x | n.d. (terme manquant) | 16 019 M$ | n.d. (terme manquant) | 16 019 M$ | 49 j | 64 300 M$ | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2023-03-31 | 2,6 % | 5,3 % | 0,27 x | n.d. (non publié) | 17 220 M$ | n.d. (terme manquant) | 17 220 M$ | 46 j | 61 700 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2023-06-30 | 7,1 % | 4,1 % | 0,24 x | n.d. (terme manquant) | 21 778 M$ | n.d. (terme manquant) | 21 778 M$ | 47 j | 60 600 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2023-09-30 | 11,0 % | 5,3 % | 0,26 x | n.d. (terme manquant) | 22 601 M$ | n.d. (terme manquant) | 22 601 M$ | 49 j | 64 900 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2023-09-30 | 11,0 % | 5,3 % | 0,26 x | n.d. (terme manquant) | 22 601 M$ | n.d. (terme manquant) | 22 101 M$ | 49 j | 64 900 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2023-12-31 | 13,5 % | 8,7 % | 0,58 x | n.d. (terme manquant) | 7 896 M$ | n.d. (terme manquant) | 7 896 M$ | 51 j | 74 100 M$ | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2024-03-31 | 15,4 % | 11,8 % | 0,42 x | n.d. (non publié) | 16 836 M$ | n.d. (terme manquant) | 16 836 M$ | 50 j | 72 500 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-06-30 | 13,6 % | 13,4 % | 0,49 x | n.d. (terme manquant) | 13 454 M$ | n.d. (terme manquant) | 13 454 M$ | 51 j | 78 800 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2024-09-30 | 15,1 % | 14,4 % | 0,43 x | n.d. (terme manquant) | 17 637 M$ | n.d. (terme manquant) | 17 637 M$ | 51 j | 86 800 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2024-09-30 | 15,1 % | 14,4 % | 0,43 x | n.d. (terme manquant) | 17 637 M$ | n.d. (terme manquant) | 15 587 M$ | 51 j | 86 800 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-12-31 | 11,8 % | 13,9 % | 0,36 x | n.d. (terme manquant) | 24 837 M$ | n.d. (terme manquant) | 24 837 M$ | 50 j | 93 200 M$ | 0,11 x | 0,13 x |  |
 | 2025-03-31 | 12,0 % | 13,1 % | 0,48 x | n.d. (terme manquant) | 18 953 M$ | 18 761 M$ | 18 953 M$ | 51 j | 92 400 M$ | 0,11 x | 0,12 x |  |
 | 2025-06-30 | 13,8 % | 13,1 % | 0,81 x | n.d. (terme manquant) | 5 301 M$ | 5 191 M$ | 5 301 M$ | 52 j | 108 200 M$ | 0,20 x | 0,12 x |  |
-| 2025-09-30 | 15,9 % | 13,4 % | 0,49 x | n.d. (terme manquant) | 24 461 M$ | 24 369 M$ | 24 461 M$ | 51 j | 157 700 M$ | 0,19 x | 0,12 x |  |
+| 2025-09-30 | 15,9 % | 13,4 % | 0,49 x | n.d. (terme manquant) | 24 461 M$ | 24 369 M$ | 23 711 M$ | 51 j | 157 700 M$ | 0,19 x | 0,12 x |  |
 | 2025-12-31 | 18,0 % | 15,1 % | 0,53 x | n.d. (terme manquant) | 24 551 M$ | 22 957 M$ | 24 551 M$ | 51 j | 242 800 M$ | 0,32 x | 0,12 x |  |
 | 2026-03-31 | 21,8 % | 17,5 % | 0,78 x | n.d. (terme manquant) | 10 116 M$ | 9 594 M$ | 10 116 M$ | 52 j | 467 600 M$ | 0,49 x | 0,11 x |  |
-| 2026-06-30 | 24,2 % | 20,1 % | 1,15 x | n.d. (terme manquant) | -5 855 M$ | -6 173 M$ | -5 855 M$ | 53 j | 519 500 M$ | 0,58 x | 0,12 x | F2 |
+| 2026-06-30 | 24,2 % | 20,1 % | 1,15 x | n.d. (terme manquant) | -5 855 M$ | -6 173 M$ | -25 855 M$ | 53 j | 519 500 M$ | 0,58 x | 0,12 x | F2 |
 
 ## Amazon (AMZN)
 
@@ -477,8 +477,8 @@
 | 2025-08-31 | 84,3 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -331 M$ | -361 M$ | -331 M$ | 42 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2025-11-30 | 250,1 % | ↯ | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -568 M$ | -608 M$ | -568 M$ | 10 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2026-02-28 | 139,3 % | ↯ | 14,09 x | n.d. (terme manquant) | -720 M$ | -745 M$ | -720 M$ | 15 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
-| 2026-05-31 | ↯ | ↯ | 9,73 x | n.d. (terme manquant) | -1 157 M$ | -1 162 M$ | -1 252 M$ | 20 j | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | F1, F2 |
-| 2026-08-31 | 322,4 % | ↯ | 32,46 x | n.d. (terme manquant) | -2 011 M$ | -2 025 M$ | -2 069 M$ | 31 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
+| 2026-05-31 | ↯ | ↯ | 9,73 x | n.d. (terme manquant) | -1 157 M$ | -1 162 M$ | -1 194 M$ | 20 j | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | F1, F2 |
+| 2026-08-31 | 322,4 % | ↯ | 32,46 x | n.d. (terme manquant) | -2 011 M$ | -2 025 M$ | -2 011 M$ | 31 j | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 
 ## Dell (DELL)
 
@@ -9911,7 +9911,7 @@ Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées
 | 2026-03-31 | 99,9 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
 | 2026-06-30 | 100,3 % | 20,3 M USD | 1 | 1 | 1 | 2027-10-30 | 7,54 | — | Trinity Capital Inc. 7.54% Series A Senior Note, Tranche A, Due 10/27 |
 
-## UBS Securities LLC (CP:ubs securities llc) : prêts et dette valorisés par les fonds (Form N-PORT)
+## UBS SECURITIES LLC (CP:ubs securities llc) : prêts et dette valorisés par les fonds (Form N-PORT)
 
 Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
 
@@ -11243,7 +11243,7 @@ Offres de rachat (D-0047) :
 | 2025-11-26 | 2025-12-31 | n.d. (non publié) | 100,0 % | servie en entier |
 | 2026-02-27 | 2026-03-31 | 4,38 x | 22,8 % | réduite |
 | 2026-05-26 | 2026-06-30 | 3,76 x | 26,6 % | réduite |
-| 2026-08-26 | 2026-08-26 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
+| 2026-08-26 | 2026-09-30 | 3,36 x | 29,8 % | réduite |
 
 ## BLUE OWL TECHNOLOGY INCOME CORP. (véhicule BDC, cik:0001869453)
 
@@ -11302,7 +11302,7 @@ Offres de rachat (D-0047) :
 | 2025-11-26 | 2026-01-08 | 0,77 x | 100,0 % | servie en entier |
 | 2026-02-27 | 2026-03-31 | 8,08 x | 14,4 % | réduite |
 | 2026-05-26 | 2026-06-30 | 7,62 x | 13,1 % | réduite |
-| 2026-08-26 | 2026-08-26 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
+| 2026-08-26 | 2026-09-30 | 7,79 x | 12,8 % | réduite |
 
 ## BLUE OWL TECHNOLOGY FINANCE CORP. II (véhicule BDC, cik:0001889668)
 
