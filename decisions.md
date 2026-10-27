@@ -3808,3 +3808,19 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Ordre : statut, tirage du document et de ses pièces, unités et blocs, volume consigné ici avant toute lecture, puis lecture, après celle des blocs de la mise à jour.
 
   (5) Ordre et commits : la décision et la configuration ; le statut d'Anthropic ; les phases 0 à 2 et les catalogues des groupes ; les blocs de §14 ; les unités du S-1 ; chaque partie avec son volume consigné ici avant toute lecture ; la lecture de la mise à jour, puis celle du S-1, un commit par partie ; l'intégration (entités par extrait, réassemblages, rendus, résultats ici, tests, commit, push, rapport). La tâche planifiée de §11.5 n'est pas créée.
+
+  (6) Statut d'Anthropic, vérifié le 2026-10-27 avant tout autre tirage (5 requêtes) :
+  - Recherche plein texte, consignée dans `work/d0077/status_queries.jsonl` :
+    - la phrase « Anthropic PBC » sur les S-1 et S-1/A depuis le 2026-09-01 ne donne aucun résultat (réponse 200, sans erreur) ;
+    - « Anthropic » sur tous les formulaires du 2026-10-20 au 2026-10-27 donne 101 documents. Le seul dont le déclarant soit Anthropic est le S-1 du 2026-10-26 d'Anthropic, PBC (CIK 2130357), 0001628280-26-067168, 34 documents indexés. Les autres sont des prospectus et relevés de fonds (485, N-CSR, N-PORT), des circulaires de Microsoft et de Meta, et deux 8-K de tiers déjà connus (Kinetic Seas, Data443).
+  - Submissions du CIK 2130357 :
+    - Anthropic, PBC, Delaware, SIC 7372, exercice clos le 31 décembre, sans ticker ni bourse ;
+    - un DRS du 2026-06-01, puis cinq DRS/A (2026-07-13, 2026-08-10, 2026-09-04, 2026-10-01, 2026-10-09), non publics ;
+    - le S-1 du 2026-10-26, accepté à 13 h 00 UTC.
+  - Ni prise d'effet, ni 424B4, ni rapport périodique, ni titre coté : Anthropic reste un laboratoire non déposant, et le S-1 est son texte propre (point 4).
+  - Le dépôt compte 87 documents :
+    - le prospectus `anthropicpbc-sx1.htm` (14,2 Mo) ;
+    - 5 pièces EX-3, 7 EX-4 et 14 EX-10 ;
+    - une lettre de changement de commissaire aux comptes (EX-16.1), la liste des filiales (EX-21.1), deux consentements d'auditeurs (EX-23.1 et 23.2) et deux EX-99 ;
+    - 44 images, qui ne se lisent pas ;
+    - le XBRL ne porte que la pièce des droits d'enregistrement (R1 à R3). Les états financiers ne sont pas balisés : leurs notes se lisent en HTML, sans fait candidat, et un montant y est `narrative_only`.
