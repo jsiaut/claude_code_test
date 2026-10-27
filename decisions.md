@@ -3824,3 +3824,19 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - une lettre de changement de commissaire aux comptes (EX-16.1), la liste des filiales (EX-21.1), deux consentements d'auditeurs (EX-23.1 et 23.2) et deux EX-99 ;
     - 44 images, qui ne se lisent pas ;
     - le XBRL ne porte que la pièce des droits d'enregistrement (R1 à R3). Les états financiers ne sont pas balisés : leurs notes se lisent en HTML, sans fait candidat, et un montant y est `narrative_only`.
+
+  (7) Phases 0 à 2 et catalogues des groupes, avant toute lecture (2026-10-27) :
+  - Réseau : 102 requêtes, toutes en 200, aucun refus 403. Phase 0 : 62 (`company_tickers.json` et 61 listes de submissions). Index : 2. Phase 1 : 37 (`companyfacts`). Phase 2 : 1.
+  - Inventaire : 30 746 → 30 761 dépôts. Les 15 nouveaux sont déposés les 2026-10-26 et 2026-10-27 ; aucun ne sort, aucun ne change de classe.
+    - Tranche : un 8-K de SpaceX (item 8.01, 2026-10-26).
+    - Le reste :
+      - Meta : un S-3ASR, deux 424B5 et deux FWP (émission sur sa déclaration d'enregistrement) ;
+      - Galaxy : un 8-K de résultats (items 2.02, 7.01 et 9.01) ;
+      - SK hynix : trois 6-K, dont un 6-K/A ;
+      - Microsoft : un PX14A6G ;
+      - Nebius et Dell : deux formulaires 4 ; Meta : deux formulaires 144.
+  - Univers attendu : 24 472 cellules, inchangé. Phase 1 : 788 dépôts lus, et les 7 échecs déjà connus. Phase 2 : 2 341 documents, aucun échec.
+  - Catalogues : aucune clé déjà lue ne disparaît ni ne change.
+    - Tranche : 4 305 → 4 306 clés. La nouvelle est l'item 8.01 du 8-K de SpaceX, 3 226 caractères.
+    - Bloc `text` : 4 432 clés, inchangé, aucun rapport périodique n'étant nouveau.
+  - À lire : 1 bloc.
