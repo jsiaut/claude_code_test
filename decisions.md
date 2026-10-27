@@ -3762,3 +3762,49 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - rendus : section « Composition des en-cours, telle qu'écrite (D-0076) » de la synthèse, et détail par date dans `series.md`. Le registre `audit/numbers.csv` passe de 52 353 à 52 737 nombres. `delta.md` ne montre que les 1 290 cellules apparues ; aucun événement de l'annexe F n'apparaît ni ne disparaît ;
   - limites : la synthèse ne montre que la dernière date de chaque groupe. Chez Alphabet, la composition n'est écrite que dans le 10-K : elle manque à la dernière date trimestrielle et se lit dans `series.md`. Les lignes de montant prises aux tableaux (Core Scientific, Alphabet, Nebius, Galaxy) répètent l'en-cours balisé sans en dire la nature ;
   - tests : 23 dans `test_d0076` (21 au point 13, plus un par amendement), 416 en tout ; ruff sans remarque.
+- **D-0077 — Mise à jour du modèle à l'as_of du 2026-10-27 et lecture détaillée du S-1 d'Anthropic. Règles fixées avant tout tirage.**
+  (1) Origine : demande de l'utilisateur, le 2026-10-27 : « Fais une mise à jour du modèle à la date du jour, en particulier pour éplucher dans les moindres détails le S-1 d'Anthropic qui vient de sortir ». C'est la deuxième mise à jour (§11.5), après celle du 2026-10-24 (D-0074). Lecture séquentielle par l'exécutant, sans sous-agent. Ni groupe, ni bloc de §14, ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change, hors ce que fixe le point 4 pour le S-1.
+
+  (2) Constat, sans tirage, sur le code de ceace41 :
+  - Le 2026-10-27 est un mardi. Les tirages commencent vers 12 h 10 UTC, soit 8 h 10 à New York. Les dépôts datés du jour que la SEC accepte ensuite manquent à cette exécution. La connaissance porte donc sur les dépôts datés au plus du lundi 2026-10-26, et sur ceux du 2026-10-27 acceptés avant chaque tirage, dont l'heure est au journal.
+  - Anthropic PBC n'a pas de ticker dans `company_tickers.json` (2026-10-07 et 2026-10-24). La liste des noms d'EDGAR du 2026-10-24 ne lui donne aucun CIK : 90 véhicules de fonds portent son nom, et lui-même n'y figure pas. Son S-1 n'est pas en cache.
+  - Le modèle tient Anthropic pour un laboratoire, groupe économique non déposant (`LAB:ANTHROPIC`, §10.4), vu seulement par ses contreparties.
+  - La règle de D-0054 (point 13) couvre le document d'enregistrement public de la tête d'un non-déposant, celui de Nscale : il est le texte propre du groupe et se lit en entier, comme celui d'un groupe de la liste (D-0033). `nf_discovery own` en tire les unités :
+    - l'en-tête des pièces EX-10, puis le corps quand l'en-tête montre un groupe de la liste, un laboratoire, Stargate ou un non-déposant ;
+    - l'Item 404, borné au titre suivant du sommaire ;
+    - chaque note des états financiers ;
+    - la liste des filiales (EX-21), au niveau 1.
+  - Ces unités laissent de côté plusieurs sections du prospectus :
+    - le rapport de gestion, dont les besoins de trésorerie liés aux obligations connues (Item 303(b)(1)) portent les engagements de calcul ;
+    - la description de l'activité, avec ses partenaires, ses clients et ses sites ;
+    - le résumé, les facteurs de risque, l'emploi du produit, la capitalisation et la dilution ;
+    - la table des principaux actionnaires et la description du capital.
+  - Le schéma des lignes ne code que des arêtes avec contrepartie : financement, commercial, soutien de crédit, contrepartie remise au client. Les chiffres propres du laboratoire (revenu total, résultat, trésorerie) n'y ont pas de ligne. Ils ne se codent pas et n'entrent dans aucune mesure ; les résultats les citent comme constats de lecture.
+  - Reprise de l'exécution précédente : le code de D-0074 (`update`, `config.previous_as_of`, `config.search_windows`) prend le dernier as_of de `as_of_previous`. Un second as_of précédent ne demande aucun changement.
+
+  (3) Mise à jour : règles de D-0074 (point 3), à l'as_of du 2026-10-27, avec `as_of_previous: ["2026-10-07", "2026-10-24"]`.
+  - Période nouvelle : dépôts datés du 2026-10-25 au 2026-10-27. Une recherche plein texte n'est tirée que sur cette fenêtre.
+  - Les catalogues préparés et les files de l'exécution précédente sont copiés une fois sous `{nom}.2026-10-24`, avant leur première réécriture. Seuls s'y ajoutent les blocs et les unités de la période nouvelle.
+  - Le reste ne change pas : ordre, réseau (un seul processus, 5 requêtes par seconde au plus, pause de 10 minutes après un refus 403, chaque requête au journal), volumes consignés ici avant toute lecture, lecture du plus récent au plus ancien, `delta.md` comparé aux tables de ceace41.
+
+  (4) Le S-1 d'Anthropic :
+  - Statut :
+    - il se vérifie par une recherche plein texte (formulaires S-1 et S-1/A, phrase « Anthropic PBC », du 2026-09-01 au 2026-10-27), puis par les submissions du CIK trouvé ;
+    - si ce CIK n'a déposé avant l'as_of ni rapport périodique, ni 424B4, ni prise d'effet, Anthropic reste un laboratoire non déposant, comme Nscale, et son S-1 est son texte propre ;
+    - un rapport périodique, une prise d'effet ou un titre coté avant l'as_of font revoir cette règle ici, avant toute lecture.
+  - Perspective : le CIK déclarant du document appartient à Anthropic. Les lignes du S-1 sont donc en perspective `reporting_entity` (§10.4) et vont au nœud `LAB:ANTHROPIC` (`discovery.non_filer.own_filings`). Un nœud reconstruit ne se compare jamais à ce nœud déclaré sans le dire (invariant e).
+  - Document : le dernier S-1 ou S-1/A déposé à l'as_of, avec ses pièces.
+  - Unités de D-0054 (point 13) : en-têtes des pièces EX-10 et corps retenus par leur en-tête, Item 404, chaque note des états annuels audités et des états intermédiaires, liste des filiales au niveau 1.
+  - Unités en plus, à la demande de l'utilisateur : chaque section du sommaire du prospectus, de son titre au titre suivant (`toc_section`). Elles se lisent comme le texte d'un groupe, toutes sauf :
+    - celles qui ne décrivent que des personnes physiques : direction et gouvernance, rémunération des dirigeants et des administrateurs ;
+    - celles qui ne décrivent qu'un cadre juridique ou fiscal sans contrepartie : questions juridiques, experts, informations complémentaires, conséquences fiscales, glossaire et conventions de présentation ;
+    - les sections déjà couvertes par les unités de D-0054 : Item 404, états financiers.
+  - Découpage : une section de plus de 25 000 caractères se coupe à ses intertitres, en blocs de 25 000 caractères au plus. Un intertitre ouvre toujours un bloc ; un paragraphe ne se coupe jamais.
+  - Données personnelles :
+    - aucune personne physique comme contrepartie, nœud ou citation ;
+    - dans la table des principaux actionnaires, seules les lignes d'entités se lisent ;
+    - les noms des fondateurs, des dirigeants, des administrateurs et des fiduciaires d'un trust ne se citent jamais, même dans une note de ligne.
+  - Lecture : types d'arêtes et guide inchangés. Les facteurs de risque se lisent, mais une dépendance qu'ils sont seuls à nommer n'est pas une pièce de lien (§ « dépendance commerciale »). Une même arête écrite dans plusieurs sections (résumé, rapport de gestion, notes) se code dans la note des états financiers quand elle y figure, sinon dans la section la plus précise, et ailleurs en `duplicate_of_other_block` : rien ne se compte deux fois.
+  - Ordre : statut, tirage du document et de ses pièces, unités et blocs, volume consigné ici avant toute lecture, puis lecture, après celle des blocs de la mise à jour.
+
+  (5) Ordre et commits : la décision et la configuration ; le statut d'Anthropic ; les phases 0 à 2 et les catalogues des groupes ; les blocs de §14 ; les unités du S-1 ; chaque partie avec son volume consigné ici avant toute lecture ; la lecture de la mise à jour, puis celle du S-1, un commit par partie ; l'intégration (entités par extrait, réassemblages, rendus, résultats ici, tests, commit, push, rapport). La tâche planifiée de §11.5 n'est pas créée.
