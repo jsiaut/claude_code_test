@@ -3988,3 +3988,74 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - grand livre : 26 cellules de plus ; matrice d'exposition d'Anthropic : 27 cellules, une par ligne.
   - Constats proposés à l'utilisateur, sans suite ici : ceux du point 10 (plafonds non nettés, apport d'Intel compté deux fois, investissement de Meta dans Scale AI retranché deux fois), et les neuf lignes de passes antérieures qui nomment une personne physique (D-0074, point 7).
   - Verrou de session levé en fin d'exécution. La tâche planifiée de §11.5 n'est pas créée.
+- **D-0078 — Corrections après D-0077 : lignes qui nomment une personne physique, parties désignées par un terme défini, plafonds périmés. Règles fixées avant tout changement.**
+  (1) Origine : demande de l'utilisateur, le 2026-10-27, après le bilan du S-1 : « Ok on fait le 1 avec les plafonds ». Le point 1 proposé réunit trois corrections :
+  - les lignes qui nomment une personne physique (D-0074, point 7) ;
+  - la pièce de lien de Broadcom, dont l'extrait désigne la partie par un terme défini ;
+  - les plafonds d'engagement suivis d'un tirage (D-0077, point 10).
+
+  Lecture séquentielle par l'exécutant, sans sous-agent. Aucun tirage et aucune requête. Ni groupe, ni bloc de §14, ni critère des annexes E et F, ni seuil ne change.
+
+  (2) Constat, sans changement, sur les tables de dcd6689 :
+  - Personnes physiques :
+    - le relevé de D-0074 ne portait que sur Microsoft et SpaceX : 9 lignes dans 6 blocs ;
+    - le relevé de toutes les lignes chargées (dernière passe de chaque bloc ; contrepartie, payeur, receveur, citation, note) en trouve 66, dans 47 blocs ;
+    - motifs du relevé : un titre de civilité (Mr., Ms., Mrs., Dr.), un prénom suivi d'une initiale et d'un nom, un nom suivi d'une fonction (Chief…, Director, President, Founder…), et les noms de fondateurs, dirigeants, administrateurs et actionnaires de contrôle que le corpus cite ;
+    - par groupe : TeraWulf 23, Oracle 12, SpaceX 7, Broadcom 5, Meta 4, Dell 3, Alphabet 3, Amazon 2, Paramount Skydance 2, Microsoft 2, Marvell 1, Intel 1, Core Scientific 1 ;
+    - par champ : note 44, citation 24, payeur 3, contrepartie 1 (une ligne peut en cumuler plusieurs) ;
+    - ces 47 blocs portent 214 lignes dans leur dernière passe ;
+    - les noms de sociétés qui contiennent un nom de famille sont des sociétés et restent : Ellison Institute, LLC ; Musk Industries LLC ; Green Earth Liang's Inc. ; Kohlberg Kravis Roberts ; MSD Capital, L.P. ; Harbor Gates Capital, LLC.
+  - Pièces de lien :
+    - 56 lignes portent une catégorie L1 à L5 ; 23 servent une paire, 33 n'en servent aucune ;
+    - 5 des 33 désignent une partie par un terme défini (« the Investor », « the Customer »), et trois d'entre elles ont une paire du périmètre : Broadcom–Anthropic et Google–Anthropic (l'« Investor » des conventions de billets du S-1, défini au préambule) et Marvell–Amazon (« the Customer ») ;
+    - la règle de D-0039 veut le nom de chaque partie dans l'extrait. Broadcom–Anthropic reste donc « recherche faite, rien trouvé », alors que les billets de Broadcom ne servent qu'à payer les loyers dus à Broadcom.
+  - Plafonds : 4 plafonds d'engagement sont suivis d'un tirage en numéraire du même instrument, daté après eux et au plus tard à t. Ils restent comptés parmi les engagements non appelés, chacun dans une cellule d'exposition :
+    - Amazon envers Anthropic, 1,4 Md$ de 2025 ;
+    - Amazon envers OpenAI, 35,0 Md$ du 31 mars 2026 ;
+    - Apollo envers Athene, 350 M$ de 2019 ;
+    - Google envers Anthropic, 2,0 Md$ de 2023.
+
+  (3) Règles :
+  - Personnes physiques. La règle de D-0077 (point 4) vaut pour tout le corpus : aucune ligne chargée ne nomme une personne physique, ni comme contrepartie, payeur ou receveur, ni en citation, ni en note. Une passe de correction (liste `repass_d0078`, as_of 2026-10-27) reprend toutes les lignes de la dernière passe des 47 blocs et ne change que les champs qui nomment une personne :
+    - une note dit la fonction au lieu du nom (« le président-directeur général », « un administrateur ») ;
+    - une citation se réduit à un passage de la citation d'origine, donc mot pour mot du bloc, qui ne nomme personne et porte encore la ligne ;
+    - une ligne dont la contrepartie, le payeur ou le receveur est une personne physique devient une abstention (`out_of_scope_content`, motif en note). Quand la personne n'est qu'une des parties, à côté de sociétés, la ligne ne garde que les sociétés ;
+    - rien d'autre ne change : montants, dates, instruments, types d'arête et stades restent ceux de la passe précédente.
+  - Exception à §7.4 : la passe ne relit pas le reste du bloc. Motif : elle ne fait que retirer des noms. Le lecteur valide chaque ligne (schéma, sémantique, citation retrouvée mot pour mot), et la passe la plus récente remplace l'ancienne au chargement.
+  - Garde : un test parcourt les lignes chargées avec les motifs du constat et échoue si une personne physique y est nommée. Les noms de sociétés du constat sont admis.
+  - Terme défini d'une partie (D-0039 précisé). Une partie que l'extrait désigne par un terme défini compte comme nommée quand le même document le définit avec son nom : au préambule (« BROADCOM INC. (the "Investor") ») ou dans ses définitions (« "Investor" means … »). Le document est fait des blocs du même dépôt et du même fichier (en-tête et corps). Les autres conditions de D-0039 tiennent : les parties de la ligne sont S et C.
+  - Plafond périmé. Dans `counterparty_exposure`, un plafond d'engagement (`contractual_outflows/commitment_cap/…`) peut être suivi d'un tirage en numéraire du même instrument, vu de la même perspective, daté après lui et au plus tard à t. Il ne dit plus alors le non-appelé à t :
+    - il sort de la ligne, et les drapeaux de la ligne le nomment (`stale_caps`) ;
+    - la ligne est partielle (terme manquant) s'il lui reste d'autres plafonds, indéterminée (terme manquant) sinon ;
+    - aucun reste ne se calcule (plafond moins tirages) : un plafond publié peut être brut, ou déjà net des tirages du même jour.
+
+  (4) Effet attendu, avant tout calcul :
+  - 66 lignes corrigées. La ligne d'achat d'actions de SpaceX par une personne physique devient une abstention ; la ligne d'amende de la Commission européenne ne garde que les sociétés ;
+  - une pièce de paire pour Broadcom–Anthropic et Google–Anthropic, peut-être aussi pour Marvell–Amazon. Leurs conclusions peuvent changer ;
+  - plafonds :
+    - Amazon envers Anthropic : 16,4 → 15,0 Md$, partielle ;
+    - Google envers Anthropic : 22,0 → 20,0 Md$, partielle ;
+    - Amazon envers OpenAI : 50,0 → 15,0 Md$, partielle ;
+    - Apollo envers Athene : 350 M$ → indéterminée.
+
+  (5) Ordre et commits :
+  - la décision, puis la passe de correction (un commit) ;
+  - le code et les tests, puis un réassemblage et les rendus ;
+  - les résultats ici, les contrôles, puis un commit et le push ;
+  - le verrou de session levé. La tâche planifiée de §11.5 n'est pas créée.
+
+  (6) Passe de correction, puis seconde passe :
+  - la passe `repass_d0078` (pass_id 2026-10-27T18:30:00Z) reprend les 214 lignes des 47 blocs et en corrige 66, sans rejet ;
+  - un nouveau relevé, après la passe, montre que le premier en manquait. Le motif « prénom, initiale, nom » était mal écrit et ne trouvait rien ; le relevé ne cherchait ni les titres français (« M. », « Mme »), ni les intitulés de procès, ni les noms de famille dans les clés d'instrument ;
+  - le relevé élargi ajoute ces motifs, plus un prénom courant suivi d'un mot en capitale, un nom de famille courant précédé d'un mot en capitale, « Judge », les fiducies familiales (« Family Trust ») et les noms de famille dans les clés d'instrument. Il trouve encore 38 lignes, dans 38 blocs :
+    - 18 intitulés de procès qui nomment le demandeur : Microsoft 9, Broadcom 5, CoreWeave 3, NVIDIA 1 ;
+    - 20 autres lignes : administrateurs, dirigeants, un juge, un actionnaire de Cavium, un prêteur ;
+    - par champ : note 32, citation 7, contrepartie 1 ;
+    - plus deux clés d'instrument tirées d'un nom de famille (Core Scientific et TeraWulf ; la seconde est sur une ligne de la première passe) ;
+  - la passe `repass_d0078b` (pass_id 2026-10-27T18:40:00Z) les corrige selon les règles du point 3, sans rejet. Elle reprend les 120 lignes de ces 39 blocs :
+    - un intitulé de procès devient la nature de l'action (« action collective … contre … ») ;
+    - la ligne de partie de la convention de vote de Cavium qui nomme une personne physique devient une abstention ;
+    - les deux clés deviennent `corz:individual_lender_term_loan_2021` et `wulf:ceo_entity_exchange_warrants_2023` ;
+  - D-0078 corrige donc 104 lignes, dans 85 blocs. Le relevé élargi, refait après les deux passes, ne trouve plus que des noms de sociétés, de lieux ou de projets ;
+  - noms d'entités qui contiennent un nom de personne : une société ou une fondation reste sous son nom (The Jen-Hsun and Lori Huang Foundation ; Lawrence Investments, LLC ; Ben Milam Solar 1 LLC ; McCabe Petroleum Corporation). Une fiducie familiale compte comme la personne et n'est pas nommée ;
+  - la garde du point 3 reprend les motifs du relevé élargi.
