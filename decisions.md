@@ -4091,3 +4091,23 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - garde : la table des observations ne nomme aucune personne physique. Les rendus publiés n'en nomment pas non plus : le relevé n'y trouve que des noms de sociétés (T. Rowe Price, Dean Witter, George Warehousing, Ellison Institute, Musk Industries) ;
   - rendus : `synthesis.md` (conclusions et grand livre des laboratoires, où un plafond retiré est dit), `delta.md` et `audit/`. La troisième passe entre dans le commit d'intégration.
   - contrôles : `make check` (ruff, puis 448 tests) passe.
+
+- **D-0079 — Documentation d'exploitation : clone partiel et `CLAUDE.md`. Aucun changement de règle, de code ni de table.**
+  (1) Origine : recommandations de l'utilisateur, le 2026-10-28. Il propose de documenter un clone partiel à la place du clone complet, et d'écrire un `CLAUDE.md` court, avec les invariants.
+
+  (2) Constat, mesuré dans le clone de la session :
+  - historique : 373 commits et 3,3 Go de fichiers en brut. `tables/facts.parquet` en fait 1,3 Go (24 versions), presque incompressible (0,94 Go compressé). `audit/numbers.csv` en fait 0,6 Go (42 versions), mais 35 Mo compressé. Ce sont les Parquet qui pèsent, pas les CSV. Le paquet de GitHub, mesuré par l'utilisateur, fait 716 Mio et croît de 42 à 52 Mio par mise à jour ;
+  - le pipeline ne lit dans l'historique que trois choses :
+    - le `git log` de `tables/measures.parquet` (assemble), qui n'a besoin que des commits ;
+    - `config.yaml` au commit des critères `3ff3b98`, et le diff depuis lui (render) ;
+    - les tables et `decisions.md` du commit précédent (render, pour `delta.md`) ;
+  - essai : un clone `--filter=blob:none --no-checkout` du dépôt local a un `.git` de 3,4 Mo (commits et arbres). Ces commandes y marchent : `git show` et `git diff` tirent à la demande les fichiers absents (3 Mo pour une table et le diff des critères). L'utilisateur mesure 55 Mo avec l'extraction, contre 719 Mo pour un clone complet ;
+  - aucun `CLAUDE.md`. Les règles d'exploitation sont réparties entre `README.md` (5 ko), `SPEC.md` (170 ko), `config.yaml` (370 ko) et `decisions.md` (825 ko, chronologique) ;
+  - le crochet `.githooks/pre-commit` ne tourne que dans un clone qui l'active (`core.hooksPath`). Il n'est pas activé dans celui de la session : `make check` s'y lance à la main avant chaque commit.
+
+  (3) Règles :
+  - `README.md` : un clone partiel (`git clone --filter=blob:none`) ou complet, jamais superficiel (`--depth 1`). Le rendu tire depuis `origin` les fichiers des deux commits qu'il relit ;
+  - ni LFS ni réécriture de l'historique : leur coût dépasse le gain pour ce dépôt. La croissance du paquet est notée sans être traitée. Si elle devait compter, le levier serait `tables/facts.parquet`, réécrit à chaque mise à jour ;
+  - `CLAUDE.md`, en français, une cinquantaine de lignes : les invariants, chacun avec sa source (SPEC, D-nnnn). Il ne fixe aucune règle nouvelle et ne remplace ni `README.md`, ni `SPEC.md`, ni `decisions.md`, qui l'emportent en cas d'écart. Il reprend aussi les consignes durables de l'utilisateur : pas de sous-agent ; ni pull request ni tâche planifiée sans demande ; rapports courts en français. S'y ajoute le contrôle, avant commit, de l'absence de l'adresse de contact dans l'index.
+
+  (4) Résultats : `CLAUDE.md` est créé et `README.md` corrigé (le clone, et un renvoi vers `CLAUDE.md`). Ni code, ni tables, ni rendus ne changent. `make check` passe.
