@@ -40,7 +40,7 @@ def tol_of(row):
     return HALF * Decimal(10) ** (-int(d))
 
 
-def ctrl(control, subject, ps, pe, view, as_of, status, accession=None, breakdown=NONE, lhs=None, rhs=None,
+def ctrl(control, subject, ps, pe, view, as_of, status, accession=None, *, breakdown=NONE, lhs=None, rhs=None,
          tol=None, basis="declared", explanation=None, reason=None, evidence=None, variant=NONE):
     from .measures import ds
     diff = (lhs - rhs) if (lhs is not None and rhs is not None) else None

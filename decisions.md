@@ -4173,3 +4173,33 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - règle d'arrêt : aucun arrêt. Apollo reste le seul groupe dont plus de la moitié des périodes testées sont en échec ; périodes en échec 22 → 21, sur 913. Ses `components_missing` restants sont des éléments non balisés, que cette décision ne touche pas (point 3) ;
   - rendus : `synthesis.md` (compte des statuts, `mismatch` par contrôle), `delta.md` (contrôles basculés) et `audit/` ;
   - contrôles : `make check` (ruff, puis 457 tests) passe ; `tests/test_d0080.py` couvre les composantes d'un total d'état, l'échéancier de C10 laissé tel quel et les trois issues de C12.
+
+- **D-0081 — Données passées en dictionnaires : clés hors schéma refusées, paramètres de queue nommés. Partie légère seulement ; aucune table ne change.**
+  (1) Origine : recommandation de l'utilisateur, le 2026-10-28. Les données circulent en dictionnaires, si bien qu'une faute de clé ou un argument décalé passe inaperçu. Le remède proposé : trois dataclass (cellule, contrôle, arête) et un objet de contexte. L'utilisateur retient la partie légère proposée en réponse (« oui fais que la partie légère »), ni les dataclass ni le contexte. Il écarte aussi, pour l'instant, le protocole commun aux blocs de §14 : aucun bloc nouveau n'est prévu.
+
+  (2) Constat :
+  - 1 239 fonctions dans `pipeline/`, dont 16 annotées ;
+  - `measures.cell` a 26 paramètres et 192 appels, tous avec six arguments positionnels au plus (mesure, sujet, début, fin, vue, as_of) ; `controls.ctrl` a 17 paramètres et 27 appels, avec huit arguments positionnels au plus (jusqu'à l'accession) ;
+  - `circularity.pair_measures` a 21 paramètres et un appel, dans l'assemblage, avec 13 arguments positionnels ; `circularity.dependency_cells` a 19 paramètres et un appel, avec 19 arguments positionnels. Un argument décalé entre deux paramètres de même nature n'y lève rien ;
+  - `assemble.insert` met `None` dans une colonne absente d'une ligne et jette sans bruit toute clé qui n'est pas une colonne de la table. Une faute de clé (`c["nd_reson"] = …`) publie donc une cellule sans motif, sans erreur ;
+  - sonde, sans changement de code : un assemblage réel (mémo repris, 344 s, tables identiques à l'octet près) relève les clés jetées par `insert`. Une seule : `fact_id`, toujours vide, dans 3 556 lignes de faits : 3 536 des BDC (`lender.bdc_facts`) et 20 des Notes Data Sets (`labs.nds_fact_rows`). Ces faits n'ont pas d'identifiant XBRL, et la table `facts` n'a pas cette colonne. Aucune autre table ne reçoit de clé inconnue. La sonde comptait par table, et la première version de ce constat attribuait les 3 556 lignes aux seules Notes Data Sets : le premier réassemblage de vérification s'est arrêté sur les faits des BDC, que la règle refuse (point 5).
+
+  (3) Règles :
+  - `assemble.insert` refuse (`ValueError`) toute clé hors des colonnes de la table, en nommant la table et les clés. Une colonne absente d'une ligne reste vide, comme avant ;
+  - `lender.bdc_facts` et `labs.nds_fact_rows` n'écrivent plus `fact_id` ;
+  - paramètres nommés obligatoires :
+    - `measures.cell`, après `as_of` ;
+    - `controls.ctrl`, après `accession` ;
+    - `circularity.pair_measures`, après `pairs` ;
+    - `circularity.dependency_cells`, après `as_of` ;
+    - les deux appels de ces dernières fonctions sont réécrits avec des noms ;
+  - aucune table ne doit changer : un réassemblage complet le vérifie, à l'octet près.
+
+  (4) Ordre et commits : la décision, le code et les tests, le réassemblage de vérification, les résultats ici, `make check`, puis un commit et le push.
+
+  (5) Résultats :
+  - le premier réassemblage de vérification s'est arrêté à l'insertion des faits des BDC (`facts : clés hors du schéma ['fact_id']`) : la règle a trouvé la seconde source que la sonde, qui comptait par table, n'avait pas distinguée. `lender.bdc_facts` est corrigé comme `labs.nds_fact_rows`, et le constat (point 2) le dit ;
+  - le second réassemblage, complet et sans mémo (1 080 s), redonne les huit tables identiques à l'octet près à celles de 7610aae. Rien d'autre ne change : ni rendu ni nombre publié ;
+  - `tests/test_d0081.py` couvre le refus d'une clé hors schéma, une colonne absente laissée vide, les lignes de faits des BDC et des Notes Data Sets, et les paramètres nommés des quatre fonctions ;
+  - contrôles : `make check` (ruff, puis 463 tests) passe ;
+  - non fait, par décision de l'utilisateur : les dataclass et l'objet de contexte, et le protocole des blocs de §14.

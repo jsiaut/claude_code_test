@@ -52,11 +52,15 @@ PK_COLLISIONS = {}      # clés en collision, toutes, écrites dans work/tmp/pk_
 
 def insert(con, table, rows, cols=None):
     """Insère des lignes ; deux lignes de même clé primaire n'en font qu'une, la dernière, et le doublon est
-    compté dans PK_DUPLICATES : identique, ou en collision quand les deux lignes diffèrent."""
+    compté dans PK_DUPLICATES : identique, ou en collision quand les deux lignes diffèrent. Une clé qui n'est pas une
+    colonne de la table est une faute, refusée au lieu d'être jetée (D-0081) ; une colonne absente reste vide."""
     if not rows:
         return 0
     df = pd.DataFrame(rows)
     cols = cols or [c[0] for c in con.execute(f"DESCRIBE {table}").fetchall()]
+    unknown = sorted(set(df.columns) - set(cols))
+    if unknown:
+        raise ValueError(f"{table} : clés hors du schéma {unknown}")
     for c in cols:
         if c not in df.columns:
             df[c] = None
@@ -407,9 +411,10 @@ def run(as_of, use_cache=True, apercu=False):
         dk = f"{b['cik']}/{b['accession']}/{b['document']}"
         if dk in link_docs:
             doc_defs.setdefault(dk, []).extend(circularity.term_definitions(b["text"]))
-    pc, ev = circularity.pair_measures(pairs, cals, gw, revenue, conc_cells, named_conc, obs_rows, reg, as_of,
-                                       deadlines, rd, cfg["thresholds"]["financed_lookback_quarters"], censored,
-                                       rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
+    pc, ev = circularity.pair_measures(pairs, cals=cals, groups_window=gw, revenue=revenue, conc_cells=conc_cells,
+                                       named_conc=named_conc, obs=obs_rows, reg=reg, as_of=as_of, deadlines=deadlines,
+                                       report_dates=rd, lookback=cfg["thresholds"]["financed_lookback_quarters"],
+                                       censored_groups=censored, rev_notes_read=rev_read, text_done=text_done, failed_until=failed_until,
                                        client_state=client_state, backlog=bl,
                                        closings=circularity.closing_index(edges), exits=own_exits, doc_defs=doc_defs)
     cells += pc

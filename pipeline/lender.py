@@ -463,7 +463,7 @@ def bdc_facts(num):
                     "reporting_scope": "as_reported", "value": _num_or_none(r.value),
                     "value_text": None if _num_or_none(r.value) is not None else (r.value or None),
                     "decimals": None, "decimals_inf": None, "precision_known": False, "is_nil": False,
-                    "is_fixed_zero": False, "fact_id": None, "locator": f"{r.archive}:datasets/num.tsv",
+                    "is_fixed_zero": False, "locator": f"{r.archive}:datasets/num.tsv",
                     "is_tagged": True, "tier": tier, "filing_status": "filed",
                     "assurance_level": "audited" if tier == "A" else "reviewed",
                     "knowledge_date": f"{r.filed[:4]}-{r.filed[4:6]}-{r.filed[6:8]}", "fy": None, "fp": None})

@@ -38,7 +38,7 @@ class Cell(dict):
     pass
 
 
-def cell(measure, subject, ps, pe, view, as_of, term=NONE, breakdown=NONE, value=None, status="computed",
+def cell(measure, subject, ps, pe, view, as_of, *, term=NONE, breakdown=NONE, value=None, status="computed",
          nd_reason=None, terms=(), numerator=None, denominator=None, unit=None, flags=None,
          coverage="observed", knowledge_date=None, value_text=None, counterparty=NONE, policy=NONE,
          perimeter=NONE, variant=NONE, lower=None, upper=None, bound_basis=None):

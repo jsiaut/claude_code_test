@@ -203,7 +203,7 @@ def nds_fact_rows(facts):
                     "dims": f["dims"], "n_dims": len(f["dims_list"]), "framework": "us_gaap", "reporting_scope": "as_reported",
                     "value": v, "value_text": None if v is not None else (str(f["value"]) if f["value"] is not None else None),
                     "decimals": None, "decimals_inf": None, "precision_known": False, "is_nil": False, "is_fixed_zero": False,
-                    "fact_id": None, "locator": f["locator"], "is_tagged": True, "tier": f["tier"], "filing_status": "filed",
+                    "locator": f["locator"], "is_tagged": True, "tier": f["tier"], "filing_status": "filed",
                     "assurance_level": "audited" if f["tier"] == "A" else "reviewed", "knowledge_date": f["knowledge_date"],
                     "fy": None, "fp": None})
     return out

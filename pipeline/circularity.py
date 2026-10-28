@@ -446,7 +446,7 @@ def fiscal_years(quarters, ws, as_of_d):
     return out
 
 
-def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
+def pair_measures(pairs, *, cals, groups_window, revenue, conc_cells, named_conc, obs, reg, as_of, deadlines,
                   report_dates, lookback, censored_groups, rev_notes_read=frozenset(), text_done=frozenset(),
                   failed_until=None, client_state=None, backlog=None, closings=None, exits=None, doc_defs=None):
     """Cellules de §3 par paire, et les éléments de l'annexe E (renvoyés à part). `backlog` : faits balisés, lignes
@@ -535,10 +535,11 @@ def pair_measures(pairs, cals, groups_window, revenue, conc_cells, named_conc, o
                 stq = {q["end"]: F[view]["exposure_outstanding"].get(q["end"], ("unknown", []))[0] for q in fqs}
                 active = [e for e, v in stq.items() if v == "active"]
                 rev, rterms = revenue(s, fs, fe, cut)
-                cells = dependency_cells(p, s, c, fs, fe, view, cell_as_of, cut, stq, active, rev, rterms,
-                                         conc_cells, named_conc, censored, rev_notes_read,
-                                         next((search(e)[1] for e in stq if not search(e)[0]), None),
-                                         s in text_done, backlog)
+                cells = dependency_cells(p, s, c, fs, fe, view, cell_as_of, cut=cut, stq=stq, active=active, rev=rev,
+                                         rterms=rterms, conc_cells=conc_cells, named_conc=named_conc, censored=censored,
+                                         rev_notes_read=rev_notes_read,
+                                         search_reason=next((search(e)[1] for e in stq if not search(e)[0]), None),
+                                         s_done=s in text_done, backlog=backlog)
                 out += cells
                 if view == "as_known":
                     # E.3 porte sur le RPO de fin d'exercice : le terme `total` (D-0068, point 4)
@@ -563,7 +564,7 @@ def _rev_note_read(rev_notes_read, s, fe):
     return any(g == s and abs((d - fe).days) <= 7 for g, d in rev_notes_read)
 
 
-def dependency_cells(p, s, c, fs, fe, view, as_of, cut, stq, active, rev, rterms, conc_cells, named_conc,
+def dependency_cells(p, s, c, fs, fe, view, as_of, *, cut, stq, active, rev, rterms, conc_cells, named_conc,
                      censored, rev_notes_read=frozenset(), search_reason=None, s_done=False, backlog=None):
     out = []
     flags_q = {"quarters": {str(k): v for k, v in sorted(stq.items())}}
