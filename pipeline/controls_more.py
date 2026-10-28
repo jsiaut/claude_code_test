@@ -7,9 +7,11 @@ balisés (billets de trésorerie), publiés comme tels, jamais équilibrés.
 C11 et C12 rapprochent les secteurs et la ventilation du revenu du revenu consolidé.
 Les membres d'un axe se lisent dans la linkbase de présentation du dépôt, rôle par rôle :
 seuls les membres de premier niveau d'un tableau se somment (un membre imbriqué est une
-composante de son parent, et deux tableaux sur un même axe sont deux ventilations).
+composante de son parent, et deux tableaux sur un même axe sont deux ventilations). Un même tableau
+peut aussi en porter plusieurs : une somme qui dépasse le total se relit par ses ventilations (D-0080).
 """
 import datetime as dt
+import itertools
 import json
 from collections import defaultdict
 from decimal import Decimal
@@ -27,6 +29,7 @@ RECON = {"us-gaap:IntersegmentEliminationMember", "us-gaap:CorporateNonSegmentMe
 DISAGG_AXES = ("srt:ProductOrServiceAxis", "srt:StatementGeographicalAxis",
                "us-gaap:TimingOfTransferOfGoodOrServiceAxis", "us-gaap:ContractWithCustomerSalesChannelAxis")
 HALF = Decimal("0.5")
+MAX_MEMBERS = 12      # au-delà, 4 083 sous-ensembles : la recherche des ventilations ne se fait pas (D-0080)
 
 
 def _tol(d, inf):
@@ -54,6 +57,18 @@ def _why(s, total, missing, below=None):
     if missing:
         return "members_missing"
     return below or "sum_below_total"
+
+
+def ventilations(members, total):
+    """Sous-ensembles d'au moins deux membres d'un tableau qui somment au total, à la tolérance d'arrondi près :
+    un même tableau peut porter plusieurs ventilations du revenu (D-0080). `members` et `total` sont des lignes de
+    faits (value, decimals, decimals_inf) ; renvoie des tuples d'indices, du plus petit au plus grand."""
+    if len(members) > MAX_MEMBERS:
+        return []
+    vals = [(Decimal(str(x.value)), _tol(x.decimals, x.decimals_inf) or Decimal(0)) for x in members]
+    tv, tt = Decimal(str(total.value)), _tol(total.decimals, total.decimals_inf) or Decimal(0)
+    return [s for n in range(2, len(vals) + 1) for s in itertools.combinations(range(len(vals)), n)
+            if abs(sum(vals[i][0] for i in s) - tv) <= sum(vals[i][1] for i in s) + tt]
 
 
 def _facts(con, quantity):
@@ -157,20 +172,37 @@ def segments_and_disaggregation(con, as_of):
                 if t is None:
                     continue
                 for role, top in tables:
-                    rs = [members[m] for m in top if m in members]
+                    names = [m for m in top if m in members]
+                    rs = [members[m] for m in names]
                     if len(rs) < 2:
                         continue
                     s = sum(Decimal(str(x.value)) for x in rs)
                     tol, basis = _sum_tol(rs + [t])
                     okay = abs(s - Decimal(str(t.value))) <= tol
                     missing = [m for m in top if m not in members]
+                    bk = f"{key[0]}|{axis}|{role.rsplit('/', 1)[-1]}"
+                    ev = {"members": [x.fact_key for x in rs], "total": t.fact_key, "role": role, "members_missing": missing}
+                    vs = ventilations(rs, t) if not okay and s > Decimal(str(t.value)) else []
+                    if vs:
+                        # plusieurs ventilations dans un tableau : ok si chaque membre est dans l'une d'elles (D-0080)
+                        ev["ventilations"] = [[rs[i].fact_key for i in v] for v in vs]
+                        outside = [names[i] for i in range(len(rs)) if not any(i in v for v in vs)]
+                        if not outside:
+                            first = [rs[i] for i in vs[0]]
+                            vtol, vbasis = _sum_tol(first + [t])
+                            out.append(ctrl("c12_revenue_disaggregation", g, key[1], key[2], "as_known", as_of, "ok", acc,
+                                            breakdown=bk, lhs=sum(Decimal(str(x.value)) for x in first),
+                                            rhs=Decimal(str(t.value)), tol=vtol, basis=vbasis, evidence=ev))
+                        else:
+                            ev["outside"] = outside
+                            out.append(ctrl("c12_revenue_disaggregation", g, key[1], key[2], "as_known", as_of,
+                                            "not_testable", acc, breakdown=bk, evidence=ev,
+                                            reason="membres qui se recoupent : une partie seulement somme au total"))
+                        continue
                     out.append(ctrl("c12_revenue_disaggregation", g, key[1], key[2], "as_known", as_of,
-                                    "ok" if okay else "mismatch", acc,
-                                    breakdown=f"{key[0]}|{axis}|{role.rsplit('/', 1)[-1]}", lhs=s, rhs=Decimal(str(t.value)),
+                                    "ok" if okay else "mismatch", acc, breakdown=bk, lhs=s, rhs=Decimal(str(t.value)),
                                     tol=tol, basis=basis,
-                                    explanation=None if okay else _why(s, Decimal(str(t.value)), missing),
-                                    evidence={"members": [x.fact_key for x in rs], "total": t.fact_key, "role": role,
-                                              "members_missing": missing}))
+                                    explanation=None if okay else _why(s, Decimal(str(t.value)), missing), evidence=ev))
     return out
 
 

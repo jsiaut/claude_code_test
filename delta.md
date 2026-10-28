@@ -1,10 +1,10 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-10-27, comparée à l'exécution précédente, dont les tables sont celles du commit dcd6689f4c74 (2026-10-27). Généré depuis les tables (D-0069, point 8).*
+*Exécution du 2026-10-27, comparée à l'exécution précédente, dont les tables sont celles du commit e82a0340bd71 (2026-10-27). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
-Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 1 sur 32 (Apollo) ; périodes en échec : 22 sur 913.
+Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 1 sur 32 (Apollo) ; périodes en échec : 21 sur 913.
 
 ## Événements nouveaux de l'annexe F
 
@@ -25,7 +25,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 - Blocs lus : 11 778 sur 12 136 clés de contenu ; par item de 8-K : 1.01 474, 1.02 49, 2.01 38, 2.03 144, 3.03 35, 8.01 829 ; pièces arrêtées à leur en-tête : EX-4 358.
 - Lignes rejetées par la validation : 0.
 - Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 692 (collisions : 240).
-- Durée de l'assemblage : 616 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 1389 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -86,11 +86,12 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 
 ## Exclusions nouvelles, par motif
 
-- `pending_entity` : +3, −5
+- Aucune.
 
 ## Décisions et variantes nouvelles
 
-- D-0078 — Corrections après D-0077 : lignes qui nomment une personne physique, parties désignées par un terme défini, plafonds périmés. Règles fixées avant tout changement.
+- D-0079 — Documentation d'exploitation : clone partiel et `CLAUDE.md`. Aucun changement de règle, de code ni de table.
+- D-0080 — Contrôles C1, C2 et C12 : composantes d'un total et ventilations d'un même tableau. Règles fixées avant tout changement de code.
 
 ## Critères des annexes E et F
 
@@ -106,24 +107,23 @@ Aucun.
 
 ## Valeurs changées pour des périodes déjà publiées
 
-Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cellules apparues et disparues, par mesure :
-
-| Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
-| --- | ---: | ---: | ---: | ---: |
-| `counterparty_exposure` | 4 | 4 | 0 | 0 |
-| `relationship_conclusion` | 2 | 0 | 0 | 0 |
-| `exposure_matrix` | 0 | 0 | 62 | 62 |
+Aucune cellule changée, apparue ni disparue.
 
 Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 110, Apollo 84, ASML 7, Broadcom 22, Backblaze 10, Blackstone 1, Cipher 46, Core Scientific 97, CoreWeave 3, Dell 277, Alphabet 21, Hut 8 7, Intel 44, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 32, Oracle 52, Blue Owl 7, Riot 112, Supermicro 162, TSMC 17, TeraWulf 21.
 
 ## Arêtes nouvelles
 
-- Apparues : commercial/amount 109, commercial/relation 6, financing/amount 37, financing/relation 36.
-- Disparues : commercial/amount 109, commercial/relation 6, financing/amount 37, financing/relation 36.
+- Apparues : aucune.
+- Disparues : aucune.
 
 ## Contrôles qui ont basculé
 
-- Aucun.
+- C12 : `mismatch` → `not_testable` 129
+- C12 : `mismatch` → `ok` 103
+- C1 : `mismatch` → `ok` 234
+- C1 : `ok` → `mismatch` 4
+- C2 : `mismatch` → `ok` 38
+- C2 : `ok` → `mismatch` 5
 
 ## Entités pending
 
@@ -139,5 +139,5 @@ Relations candidates par paire du registre : na01 0, na02 0, na03 233, na04 0, n
 
 ## Changements dus à une nouvelle passe de lecture ou au code
 
-Lecture : 333 lignes d'observation nouvelles, dans 85 blocs, et 333 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
+Lecture : 0 lignes d'observation nouvelles, dans 0 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
 

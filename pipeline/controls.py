@@ -97,12 +97,14 @@ class Filing:
             return Decimal(str(cw.iloc[0]["weight"]))
         return Decimal(1)
 
-    def siblings(self, total, kinds):
+    def siblings(self, total, kinds, statement=False):
         """Composantes d'un total (§8.3) : ses enfants de calcul dans le rôle de l'état, plus
         les lignes que la présentation place sous le même parent sans les rattacher au calcul
         (ni directement ni sous un sous-total) ; le signe d'une telle ligne vient de son solde
         débit/crédit. Sans aucune relation de calcul, les enfants de présentation seuls, sous-totaux
-        intermédiaires écartés. Renvoie une liste de (rôle, composantes, poids)."""
+        intermédiaires écartés. Total d'un état (`statement`, C1 et C2, D-0080) : dès qu'un arc existe,
+        ses enfants de calcul seuls ; sans arc, jamais une voisine du total, enfant de calcul d'un de ses
+        parents de calcul. Renvoie une liste de (rôle, composantes, poids)."""
         p = self.pres[self.pres["statement_kind"].isin(kinds)]
         skip = ("Axis", "Member", "Table", "LineItems", "Domain")
         out = []
@@ -137,7 +139,9 @@ class Filing:
                 if c not in calc_kids and (self.calc_parents.get(c, set()) & set(sibs)):
                     last_boundary = i
             sibs = sibs[last_boundary + 1:]
-            if calc_kids:
+            if calc_kids and statement:
+                comps = calc_kids
+            elif calc_kids:
                 covered = set(calc_kids)
                 todo = list(calc_kids)
                 while todo:
@@ -152,6 +156,10 @@ class Filing:
                     weights[c] = self._weight(c, total)
             else:
                 comps = [c for c in sibs if not (self.calc_parents.get(c, set()) & set(sibs))]
+                if statement:
+                    # les voisines du total (passif courant à côté des capitaux propres) composent son parent
+                    peers = {k for par, ks in self.calc_parents.items() if total in ks for k in ks}
+                    comps = [c for c in comps if c not in peers]
                 weights = {c: self._weight(c, total) for c in comps}
             out.append((role, comps, weights))
         return out
@@ -240,14 +248,14 @@ def run(con, as_of):
         F = Filing(acc, fa, pres_by.get(acc, pres.iloc[0:0]), calc_by.get(acc, calc.iloc[0:0]), crdr)
         # C1 composantes du bilan
         for total in BS_TOTALS:
-            for role, comps, w in F.siblings(total, {"balance_sheet"}):
+            for role, comps, w in F.siblings(total, {"balance_sheet"}, statement=True):
                 for ptype, ps, pe in F.periods(total):
                     r = sum_check("c1_balance_components", F, g, total, comps, w, ptype, ps, pe, view, as_of, form)
                     if r:
                         out.append(r)
         # C2 composantes du tableau des flux
         for total in CF_TOTALS:
-            for role, comps, w in F.siblings(total, {"cash_flow"}):
+            for role, comps, w in F.siblings(total, {"cash_flow"}, statement=True):
                 for ptype, ps, pe in F.periods(total):
                     r = sum_check("c2_cash_flow_components", F, g, total, comps, w, ptype, ps, pe, view, as_of, form)
                     if r:

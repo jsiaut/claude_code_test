@@ -4111,3 +4111,65 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - `CLAUDE.md`, en français, une cinquantaine de lignes : les invariants, chacun avec sa source (SPEC, D-nnnn). Il ne fixe aucune règle nouvelle et ne remplace ni `README.md`, ni `SPEC.md`, ni `decisions.md`, qui l'emportent en cas d'écart. Il reprend aussi les consignes durables de l'utilisateur : pas de sous-agent ; ni pull request ni tâche planifiée sans demande ; rapports courts en français. S'y ajoute le contrôle, avant commit, de l'absence de l'adresse de contact dans l'index.
 
   (4) Résultats : `CLAUDE.md` est créé et `README.md` corrigé (le clone, et un renvoi vers `CLAUDE.md`). Ni code, ni tables, ni rendus ne changent. `make check` passe.
+
+- **D-0080 — Contrôles C1, C2 et C12 : composantes d'un total et ventilations d'un même tableau. Règles fixées avant tout changement de code.**
+  (1) Origine : recommandation de l'utilisateur, le 2026-10-28. Une part des `mismatch` publiés de C1, C2 et C12 seraient des faux positifs de la sélection des composantes. Correctifs proposés :
+  - ne sommer que les enfants de calcul du total quand le déposant en publie ;
+  - n'ajouter des lignes de présentation qu'en l'absence de tout arc ;
+  - ne jamais prendre pour composante une voisine du total qui est enfant de calcul de son parent ;
+  - rendre `not_testable` une somme sans composante ;
+  - pour C12, reconnaître plusieurs partitions sur un même axe avant de déclarer un écart.
+
+  (2) Constat, sur les tables de e82a034, vue `as_known` :
+  - 1 864 `mismatch`, dont :
+    - C1 423 : `components_missing` 347, `sum_differs` 50, `mapped_concept_outside_statement_tree` 26 ;
+    - C2 180 : 107, 31 et 42 ;
+    - C12 432 : `sum_exceeds_total` 207, `sum_below_total` 134, `members_missing` 91.
+  - C1 et C2 : `Filing.siblings` somme les enfants de calcul du total dans le rôle de l'état. Il y ajoute les lignes que la présentation place au même niveau sans les rattacher au calcul, signées par leur solde débit/crédit. Or ces lignes sont souvent les voisines du total, composantes de son parent :
+    - Oracle, 17 périodes de 2018 à 2023 : selon le calcul, les capitaux propres y compris minoritaires sont la somme des capitaux propres et des minoritaires. S'y ajoutaient le passif courant, le passif non courant et les engagements, faute d'un sous-total du passif balisé ;
+    - Blue Owl, 5 périodes : l'actif, ajouté au total du passif et des capitaux propres avec le signe opposé, annulait la somme (lhs = 0). Ce n'est pas une absence de composante : `sum_check` rend déjà `not_testable` quand aucune composante n'est balisée ;
+    - TSMC, AMD, ASML et Blackstone : même mécanisme, ou un sous-total compté avec ses composantes.
+  - Recalcul de tous les dépôts avec les seuls enfants de calcul dès qu'un arc existe, réduit à la vue `as_known` comme le fait l'assemblage :
+    - C1 : 44 des 50 `sum_differs` et 96 des 347 `components_missing` deviennent `ok` ; 2 `ok` deviennent `mismatch` (AMD au 26 mars 2022) ;
+    - C2 : 21 des 31 `sum_differs` et 1 des 107 `components_missing` deviennent `ok` ; 4 `ok` deviennent `mismatch` (AMD, Broadcom, Blackstone) ;
+    - les `mismatch` qui naissent viennent d'un calcul incomplet du déposant : la somme de ses enfants de calcul ne fait pas le total sans la ligne de présentation que l'ancienne règle ajoutait.
+  - C10 et C13 passent par la même fonction. La règle nouvelle y rendrait 133 contrôles non testables (80 `ok`, 53 `sum_differs`). Par exemple, AMD décompose deux fois le total des paiements de loyers : en passif plus intérêts implicites, dans le rôle de la note, et en tranches annuelles, dans un second réseau. Le filtre des tranches de même famille ne garderait alors plus rien.
+  - C12, sur les 207 `sum_exceeds_total` :
+    - 28, ceux de Backblaze, portent deux ventilations complètes dans un même tableau du même axe : B2 et Computer Backup d'une part, Consumption, Subscription et Physical Media de l'autre. La somme vaut exactement deux fois le total ;
+    - dans les autres, des membres se recoupent : Intel publie « Platform », somme de cinq autres membres ; Meta publie « US » à côté de « US & Canada » ; Oracle publie « Software » et « Cloud » avec leurs parties, dans un tableau qui ne couvre pas tout le revenu ;
+    - les tableaux de C12 ont au plus 10 membres.
+  - Plus largement, 851 des 1 864 `mismatch` (46 %) portent un code qui désigne un élément non balisé, non un désaccord arithmétique : `components_missing` 457, `restricted_cash_not_tagged` 145, `members_missing` 95, `residual_noncash_or_untagged_flows` 77, `reconciliation_not_tagged` 77. C'est ce qui fait d'Apollo le seul groupe dont plus de la moitié des périodes testées sont en échec (règle d'arrêt, D-0069, point 8) : 142 de ses 275 `mismatch` sont des `components_missing`.
+
+  (3) Règles :
+  - C1 et C2, totaux des états :
+    - les composantes d'un total sont ses enfants de calcul dans le rôle de l'état, à défaut ses enfants de calcul dans un autre rôle. Dès qu'un arc existe, aucune ligne de présentation ne s'y ajoute ;
+    - sans aucun arc, les lignes que la présentation place avant le total sous le même parent, comme avant, sauf ses voisines : une ligne enfant de calcul d'un parent de calcul du total n'est jamais une composante ;
+  - C10 et C13 gardent leur règle (enfants de calcul et lignes de présentation, tranches de même famille seulement) : la règle nouvelle les priverait de composantes ;
+  - une somme sans composante balisée est déjà `not_testable` : rien ne change ;
+  - C12, quand la somme des membres d'un tableau dépasse le total. Un même tableau peut porter plusieurs ventilations, comme deux tableaux sur un axe en portent deux (D-0024). On cherche les sous-ensembles d'au moins deux membres qui somment au total, à la tolérance d'arrondi près (au plus 1 013 sous-ensembles pour 10 membres) :
+    - si chaque membre appartient à l'un d'eux, le contrôle est `ok`, et les preuves nomment les ventilations ;
+    - si un sous-ensemble somme au total sans couvrir tous les membres, le contrôle est `not_testable`, motif « membres qui se recoupent », et les preuves nomment les membres restés hors de toute ventilation ;
+    - sinon l'écart se publie comme avant (`sum_exceeds_total`) ;
+  - la recherche ne choisit pas les membres qui font passer la somme : un membre resté hors de toute ventilation empêche le `ok`. Elle lève la réserve de D-0069 (point 10), qui laissait à l'utilisateur les membres qui se recoupent dans C12 ;
+  - la règle d'arrêt et le compte des statuts de la note ne changent pas : les codes de couverture du balisage y restent des `mismatch`. Les en distinguer changerait la lecture de §11.4 fixée par D-0069 (point 8), et ce choix revient à l'utilisateur.
+
+  (4) Effet attendu, avant tout calcul, en vue `as_known` :
+  - C1 : −138 `mismatch` ;
+  - C2 : −18 `mismatch` ;
+  - C12 : 50 `sum_exceeds_total` deviennent `ok` (Backblaze 28, Intel 19, NVIDIA 3) et 67 `not_testable` (Meta 49, Intel 18) ; Oracle (81), Google (5) et Intel (4) restent `sum_exceeds_total` ;
+  - en tout, les `mismatch` passent de 1 864 à environ 1 591. La règle d'arrêt est recalculée sur les tables nouvelles.
+
+  (5) Ordre et commits : la décision, le code et les tests, un réassemblage comparé aux tables de e82a034, les rendus, les résultats ici, `make check`, puis un commit et le push.
+
+  (6) Résultats, comparés aux tables de e82a034 :
+  - seule la table `controls` change ; elle garde 70 587 lignes, sans ligne apparue ni disparue. Les sept autres tables sont inchangées ;
+  - vue `as_known` : `mismatch` 1 864 → 1 591, `not_testable` 1 110 → 1 177, `ok` 30 393 → 30 599 ;
+    - C1 : 96 `components_missing` et 44 `sum_differs` deviennent `ok` ; 2 `ok` deviennent `mismatch` (AMD au 26 mars 2022) ; C1 compte 285 `mismatch` sur 15 403 (423 avant) ;
+    - C2 : 21 `sum_differs` et 1 `components_missing` deviennent `ok` ; 4 `ok` deviennent `mismatch` (AMD, Broadcom, Blackstone) ; 162 `mismatch` sur 9 041 (180 avant) ;
+    - C12 : 50 `sum_exceeds_total` deviennent `ok` (Backblaze 28, Intel 19, NVIDIA 3) et 67 `not_testable` (Meta 49, Intel 18) ; 315 `mismatch` sur 2 055 (432 avant). Restent `sum_exceeds_total` Oracle (81), Google (5) et Intel (4) ;
+    - C10 et C13 sont inchangés ;
+  - vue `revised` : `mismatch` 3 038 → 2 816, `not_testable` 1 550 → 1 612, `ok` 29 820 → 29 980 ;
+  - ces nombres sont ceux de l'effet attendu (point 4), à l'unité près ;
+  - règle d'arrêt : aucun arrêt. Apollo reste le seul groupe dont plus de la moitié des périodes testées sont en échec ; périodes en échec 22 → 21, sur 913. Ses `components_missing` restants sont des éléments non balisés, que cette décision ne touche pas (point 3) ;
+  - rendus : `synthesis.md` (compte des statuts, `mismatch` par contrôle), `delta.md` (contrôles basculés) et `audit/` ;
+  - contrôles : `make check` (ruff, puis 457 tests) passe ; `tests/test_d0080.py` couvre les composantes d'un total d'état, l'échéancier de C10 laissé tel quel et les trois issues de C12.
