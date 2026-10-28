@@ -152,7 +152,8 @@ class Series:
         out = []
         for m in rows:
             sub = m[m["accession"] == acc]
-            out.append(model._term_dict(sub.loc[sub["order_key"].idxmax()], m["value"].nunique() > 1))
+            rev = m["value"].nunique() > 1 and model.revised(m["value"], m["decimals"], m["decimals_inf"], m["accession"])
+            out.append(model._term_dict(sub.loc[sub["order_key"].idxmax()], rev))
         return out[0], out[1], None
 
     def ttm(self, qn, q, cutoff):
@@ -168,6 +169,42 @@ class Series:
             terms += t
         return sum(vals), terms, None
 
+    def da(self, q, cutoff):
+        """D-0082 : dotations aux amortissements du trimestre (D&A). La ligne globale du tableau des flux
+        (depreciation_expense) ; sinon la dotation des immobilisations corporelles (ppe_depreciation) plus
+        l'amortissement des incorporels (intangible_amortization). Un groupe qui ne balise jamais ce dernier garde la
+        seule dotation, marquée ; une ligne globale en recast_boundary le reste, sans repli. Renvoie
+        (valeur, termes, motif, base)."""
+        v, t, r = self.quarter("depreciation_expense", q, cutoff)
+        if v is not None:
+            return v, t, None, "total_line"
+        if r == "recast_boundary":
+            return None, t, r, None
+        d, td, rd = self.quarter("ppe_depreciation", q, cutoff)
+        if d is None:
+            return None, t + td, r if rd == "concept_unresolved" else rd, None
+        if not self.has("intangible_amortization"):
+            return d, td, None, "depreciation_only"
+        a, ta, ra = self.quarter("intangible_amortization", q, cutoff)
+        if a is None:
+            return None, td + ta, ra if ra == "recast_boundary" else "term_missing", None
+        return d + a, td + ta, None, "depreciation_plus_intangible_amortization"
+
+    def da_ttm(self, q, cutoff):
+        """Dotations (`da`) sur douze mois glissants : quatre trimestres ; renvoie (valeur, termes, motif, bases)."""
+        idx = next((k for k, x in enumerate(self.quarters) if x["end"] == q["end"]), None)
+        if idx is None or idx < 3:
+            return None, [], "prior_period_missing", set()
+        vals, terms, bases = [], [], set()
+        for x in self.quarters[idx - 3: idx + 1]:
+            v, t, r, b = self.da(x, cutoff)
+            if v is None:
+                return None, terms + t, r or "term_missing", set()
+            vals.append(v)
+            terms += t
+            bases.add(b)
+        return sum(vals), terms, None, bases
+
     def prior(self, q, n=4):
         idx = next((k for k, x in enumerate(self.quarters) if x["end"] == q["end"]), None)
         if idx is None or idx < n:
@@ -177,8 +214,10 @@ class Series:
 
 # dettes qui excluent par définition les emprunts à court terme : eux seuls les reçoivent en plus ;
 # DebtCurrent, DebtLongtermAndShorttermCombinedAmount, CurrentBorrowingsAndCurrentPortionOfNoncurrentBorrowings
-# et Borrowings les contiennent déjà (D-0069, point 4)
-STB_EXCLUDED_CURRENT = {"us-gaap:LongTermDebtCurrent", "ifrs-full:CurrentPortionOfLongtermBorrowings"}
+# et Borrowings les contiennent déjà (D-0069, point 4) ; NotesPayableCurrent, part courante des billets à long
+# terme, les exclut (D-0082)
+STB_EXCLUDED_CURRENT = {"us-gaap:LongTermDebtCurrent", "ifrs-full:CurrentPortionOfLongtermBorrowings",
+                        "us-gaap:NotesPayableCurrent"}
 STB_EXCLUDED_TOTAL = {"us-gaap:LongTermDebt"}
 
 
@@ -324,10 +363,12 @@ def quarter_measures(S, g, q, cutoff, view, as_of):
     else:
         out.append(cell("revenue_growth", g, ps, pe, view, as_of, term="ttm", status="not_determinable",
                         nd_reason=r_ttm or "prior_period_missing"))
-    # levier : dette et passifs locatifs ÷ (résultat opérationnel + dotations), douze mois glissants
+    # levier : dette et passifs locatifs ÷ (résultat opérationnel + dotations), douze mois glissants ; les dotations
+    # qui ne viennent pas d'une ligne globale sont nommées (D-0082)
     oi, t_oi, r_oi = S.ttm("operating_income", q, cutoff)
-    da, t_da, r_da = S.ttm("depreciation_expense", q, cutoff)
+    da, t_da, r_da, da_bases = S.da_ttm(q, cutoff)
     den = (oi + da) if (oi is not None and da is not None) else None
+    da_fl = {"da_basis": sorted(da_bases - {"total_line"})} if da_bases - {"total_line"} else None
     debt_terms = [S.instant(x, pe, cutoff) for x in ("debt_current", "debt_noncurrent")]
     debt_alt = S.instant("debt_carrying_amount", pe, cutoff)
     stb = S.instant("short_term_borrowings", pe, cutoff)
@@ -343,7 +384,7 @@ def quarter_measures(S, g, q, cutoff, view, as_of):
         debt, dts = None, []
     v, r = _ratio(debt, den) if den is not None else (None, r_oi or r_da or "term_missing")
     out.append(cell("lev_debt_and_leases_to_operating_income_plus_da", g, ps, pe, view, as_of, term="debt",
-                    value=v, numerator=debt, denominator=den, terms=dts + t_oi + t_da,
+                    value=v, numerator=debt, denominator=den, terms=dts + t_oi + t_da, flags=da_fl,
                     status="computed" if v is not None else "not_determinable",
                     nd_reason=r if v is None else None))
     lease_terms = [S.instant(x, pe, cutoff) for x in ("operating_lease_liability_current",
@@ -357,7 +398,7 @@ def quarter_measures(S, g, q, cutoff, view, as_of):
         leases = sum(t["value"] for t in have)
         v, r = _ratio(leases, den) if den is not None else (None, r_oi or r_da or "term_missing")
         out.append(cell("lev_debt_and_leases_to_operating_income_plus_da", g, ps, pe, view, as_of, term="leases",
-                        value=v, numerator=leases, denominator=den, terms=have + t_oi + t_da,
+                        value=v, numerator=leases, denominator=den, terms=have + t_oi + t_da, flags=da_fl,
                         status="computed" if v is not None else "not_determinable", nd_reason=r if v is None else None))
     else:
         out.append(cell("lev_debt_and_leases_to_operating_income_plus_da", g, ps, pe, view, as_of, term="leases",

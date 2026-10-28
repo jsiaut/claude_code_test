@@ -4203,3 +4203,125 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - `tests/test_d0081.py` couvre le refus d'une clé hors schéma, une colonne absente laissée vide, les lignes de faits des BDC et des Notes Data Sets, et les paramètres nommés des quatre fonctions ;
   - contrôles : `make check` (ruff, puis 463 tests) passe ;
   - non fait, par décision de l'utilisateur : les dataclass et l'objet de contexte, et le protocole des blocs de §14.
+
+- **D-0082 — Levier, dotations et additions payées en titres : dette d'Oracle, deux grandeurs de dotations, révisions jugées à la tolérance d'arrondi, `StockIssued1` retiré. Règles fixées avant tout changement de code.**
+  (1) Origine : recommandations de l'utilisateur, le 2026-10-28 (« Il y a aussi ça à peut être considérer »), en quatre points : la dette d'Oracle n'est pas reconnue ; la grandeur « dotations » n'est pas la même d'un groupe à l'autre ; un changement d'unité est pris pour un retraitement ; `StockIssued1` n'est pas du capex payé en actions. Chaque constat est revérifié sur le code, sur les tables de 8e3073a et sur la base du dernier réassemblage (`db/model.duckdb`, lue sans écriture). Aucune requête réseau, aucune lecture de texte. Les définitions citées viennent des `MetaLinks.json` en cache.
+
+  (2) Constat, point 1 (dette) — confirmé, et plus large qu'Oracle.
+  - Levier (`lev_debt_and_leases_to_operating_income_plus_da`), vue `revised` : au dernier trimestre de chaque groupe, la part dette est calculée pour 8 groupes sur 33 (`term_missing` 8, `concept_unresolved` 6, `not_disclosed` 5, `recast_boundary` 4, `denominator_nonpositive` 2). Depuis 2024, parts dette et locations réunies : 162 calculées, 303 `term_missing`, 73 `concept_unresolved`, 61 `recast_boundary`.
+  - Oracle présente sa dette au bilan en deux lignes, `NotesPayableCurrent` (7 625 M$ au 31 août 2026) et `LongTermNotesAndLoans` (117 712 M$), hors des candidats (`LongTermDebtCurrent`, `DebtCurrent` ; `LongTermDebtNoncurrent`). La dette n'est reconnue qu'aux clôtures annuelles, par le total de la note de dette (`DebtLongtermAndShorttermCombinedAmount`). Ce total égale la somme des deux lignes : 7 199 + 122 342 = 129 541 M$ au 31 mai 2026.
+  - Définitions : `LongTermNotesAndLoans`, « all notes and loans payable […], excluding current portion » ; `NotesPayableCurrent`, « portions of long-term notes payable due within one year » ; `LongTermNotesPayable`, les billets à plus d'un an, hors part courante. Ces deux dernières ne couvrent que les billets.
+  - Le motif publié pour Oracle, `recast_boundary`, vient du dénominateur : un levier sans dénominateur prend le motif du dénominateur. Les dotations d'Oracle sur douze mois tombent en `recast_boundary` depuis mai 2024, à cause d'une précision double (point 3). Les deux défauts se cumulent.
+  - Au dernier trimestre, la dette manque pour 9 groupes. Outre Oracle :
+    - Galaxy présente trois lignes : `NotesPayableCurrent`, `LoansPayableCurrent` et `LongTermNotesPayable` ;
+    - chez Applied Digital, le premier candidat présent (`LongTermDebtCurrent`, dans une note) n'a pas de fait non dimensionné à la date ;
+    - Akamai n'a que des billets convertibles ;
+    - CoreWeave depuis juin 2026, Hut 8 et Supermicro présentent leur dette en extension ;
+    - Backblaze ne présente au bilan que des obligations locatives, en extension ;
+    - TeraWulf ventile sa dette par type au bilan, sans total non dimensionné.
+  - Lignes multiples : avec les candidats actuels, aucun dépôt ne présente au bilan deux lignes standard de dette d'une même position. TeraWulf présente, à côté de `LongTermDebtCurrent`, une dette convertible courte en extension (8 dépôts), qui n'est pas comptée. C'est une limite déjà présente ; cette décision n'y touche pas.
+
+  (3) Constat, point 2 (dotations) — confirmé.
+  - `depreciation_expense` prend dans le tableau des flux le premier concept présent parmi `DepreciationDepletionAndAmortization`, `DepreciationAmortizationAndAccretionNet`, `DepreciationAndAmortization` et `Depreciation`. Par groupe et par dépôt :
+    - `Depreciation` seul : Oracle, Alphabet, Intel, Blue Owl, TeraWulf et Nebius ; Broadcom (33 dépôts sur 35) et Cipher (17 sur 20) le plus souvent ;
+    - `DepreciationAndAmortization` : Hut 8 et Marvell ; NVIDIA et Riot en partie ;
+    - `DepreciationDepletionAndAmortization` : 17 groupes ;
+    - aucun : Microsoft, Blackstone, TSMC et SK hynix.
+  - `Depreciation` est la dotation des immobilisations corporelles (« allocation of the cost of tangible assets »). Là où ce concept est retenu, le dénominateur du levier omet l'amortissement des incorporels, pourtant balisé à part (`AmortizationOfIntangibleAssets`) : Broadcom 8 062 M$ sur l'exercice 2025 (dotation : 574 M$), Oracle 1 671 M$ sur l'exercice 2026, Intel 949 M$ et Blue Owl 359 M$ en 2025.
+  - Microsoft : la ligne du tableau des flux est une extension, `msft:DepreciationAmortizationAndOther` (38 534 M$ sur l'exercice 2026), qui ne se rattache pas (§8.3). `Depreciation` (34 300 M$, précision −8) et `AmortizationOfIntangibleAssets` (4 700 M$) sont balisés dans les notes, hors du tableau des flux auquel la grandeur est restreinte. Le levier et la durée implicite sortent `concept_unresolved` ; la couverture des intérêts ne dépend pas des dotations (§4.3).
+  - Durée implicite (`implied_useful_life`, §6.2) : brut amortissable moyen ÷ `depreciation_expense`. §6.2 demande la dotation des immobilisations. Broadcom : 12,1 ans sur l'exercice 2025 (6 954 ÷ 574) ; avec l'amortissement des incorporels, 0,8 an. Le drapeau des cellules dit « amortissement des incorporels compris » même quand le concept retenu est `Depreciation` (Broadcom, Oracle).
+
+  (4) Constat, point 3 (changement d'unité) — confirmé ; il cause aussi les dotations d'Oracle.
+  - Un trimestre obtenu par différence de cumuls est `recast_boundary` si l'un de ses termes a été révisé et l'autre non (SPEC, §7.3). « Révisé » veut dire aujourd'hui : plus d'une valeur distincte parmi les occurrences de la période connues à la date de coupure, sans tolérance d'arrondi (`model.term_value`).
+  - CoreWeave : dotations du premier semestre 2025, 1 002 978 k$ (précision −3) dans le 10-Q de 2025, 1 003 M$ (−6) en comparatif du 10-Q de 2026. L'écart (22 k$) est sous la tolérance de §8.3, ½·10³ + ½·10⁶ = 500,5 k$. Même chose pour les intérêts capitalisés (13 092 k$ et 13 M$ dans le même 10-Q), d'où la couverture `with` en `recast_boundary` depuis 2025.
+  - Oracle : son 10-K de 2026 balise la dotation de chaque exercice deux fois, à deux précisions : 3 129 M$ (−6) et 3,1 Md$ (−8), puis 3 867 M$ et 3,9 Md$. Le 10-Q d'août 2026 fait de même pour un trimestre : 1 351 M$ et 1,4 Md$. Dans un même dépôt, la dotation annuelle passe donc pour révisée.
+  - C4 (`c4_restatement_detection`) applique déjà une tolérance d'arrondi : ces cas n'y sont pas des retraitements.
+  - 680 cellules de mesures sont `recast_boundary` (487 en vue `revised`, 193 en `as_known`), dont 191 de levier et 117 de couverture.
+
+  (5) Constat, point 4 (`StockIssued1`) — confirmé.
+  - `stock_paid_ppe_additions` est ancrée sur `StockIssued1` (annexe B). Sa définition : « The fair value of stock issued in noncash financing activities ». Elle couvre toute émission d'actions sans contrepartie en trésorerie, pas seulement des immobilisations, et aucun élément us-gaap ne désigne des immobilisations payées en actions.
+  - 20 cellules `stock_paid_additions` sont calculées :
+    - AMD 2022, 48 514 M$ : actions remises pour Xilinx ;
+    - Riot 2021, 352,9 M$ : Whinstone ;
+    - CoreWeave 2025, 350 M$, libellé « Issuance of common stock for contract incentive » : actions remises à OpenAI, déjà comptées comme contrepartie payable à un client. La note publie « Additions payées en titres : 350 M$ » ;
+    - Nebius 2025, 19,2 M$ ; Hut 8, 0,8 M$ ; 15 zéros.
+  - `capex_to_cfo` avec additions non monétaires (`term = with`) n'est jamais calculé (1 504 cellules `not_determinable`) : il demande les trois additions, et celle-ci est rarement résolue. Cette décision n'y change rien.
+
+  (6) Règles, fixées avant tout changement de code.
+  - Point 1, dette :
+    - candidats ajoutés après les candidats actuels (le premier présent l'emporte, §8.3) : `NotesPayableCurrent` pour `debt_current` ; `LongTermNotesAndLoans` puis `LongTermNotesPayable` pour `debt_noncurrent` ;
+    - ces trois définitions sont plus étroites que la grandeur (billets, ou billets et emprunts). Un de ces candidats n'est donc retenu dans un dépôt que s'il est la seule ligne de dette de sa position au bilan de ce dépôt. Une autre ligne standard de la même position (liste fermée, dans le code) ou une ligne en extension dont le nom local contient `Debt`, `Borrowing`, `LoansPayable`, `NotesPayable` ou `LineOfCredit` l'écarte. La position reste alors non résolue pour ce dépôt, plutôt que sous-estimée ;
+    - les emprunts à court terme (`ShortTermBorrowings`, `CommercialPaper`) n'écartent rien. `NotesPayableCurrent` les exclut par définition : il rejoint la liste de D-0069 (point 4), et ils s'y ajoutent ;
+    - hors de cette décision : billets convertibles seuls (Akamai), lignes en extension (CoreWeave, Hut 8, Supermicro), dette ventilée par dimension (TeraWulf), premier candidat présent sans fait non dimensionné (Applied Digital) ;
+  - point 2, dotations :
+    - deux grandeurs nouvelles, non ancrées, retenues dans le tableau des flux ou dans une note, candidats fixés par définition : `ppe_depreciation` (`Depreciation`) et `intangible_amortization` (`AmortizationOfIntangibleAssets`) ;
+    - `depreciation_expense` ne garde que les lignes globales du tableau des flux : `DepreciationDepletionAndAmortization`, `DepreciationAmortizationAndAccretionNet`, `DepreciationAndAmortization`. `Depreciation` en sort ;
+    - dotations du levier, par trimestre : la ligne globale. Sinon, `ppe_depreciation` + `intangible_amortization`. Un groupe qui ne balise jamais l'amortissement des incorporels garde la seule dotation des immobilisations, marquée (`da_basis = depreciation_only`). Un groupe qui le balise, mais pas pour ce trimestre, sort `not_determinable` (`term_missing`). Une ligne globale `recast_boundary` le reste, sans repli ;
+    - la somme sur douze mois additionne quatre trimestres ainsi obtenus. La cellule porte `da_basis` dès qu'un trimestre ne vient pas d'une ligne globale ;
+    - la composante `depreciation_and_amortization` de `cfo_net_income_gap`, donnée pour information, suit la même règle ;
+    - durée implicite : brut amortissable moyen ÷ `ppe_depreciation`. Sans elle, la cellule est `not_determinable`, jamais calculée sur la ligne globale. Le drapeau nomme la dotation retenue ;
+  - point 3, révisions :
+    - une période est révisée avant la date de coupure si deux de ses occurrences connues diffèrent de plus que leur tolérance d'arrondi : ½·10^(−decimals) chacune, zéro pour `INF` (§8.3) ;
+    - une occurrence de companyfacts, sans précision, prend celle d'une occurrence d'instance du même dépôt à la même valeur, sinon zéro ;
+    - un changement de présentation (milliers puis millions, ou un arrondi en milliards à côté du même nombre en millions) n'est donc plus une révision. Un écart au-delà de l'arrondi en reste une ;
+    - la valeur retenue ne change pas : l'occurrence la plus récente, comme avant. C4 ne change pas ;
+  - point 4, `StockIssued1` :
+    - `stock_paid_ppe_additions` n'a plus de candidat dans `config.yaml` (annexe B). `stock_paid_additions` sort `not_determinable` (`concept_unresolved`) partout, comme §5.5 le prévoit pour une grandeur sans concept résolu ;
+    - une lecture du texte pourrait la documenter plus tard. Elle n'est pas faite ici ;
+    - le changement de `concept_anchors` est signalé dans la note avec cette décision ;
+  - commun :
+    - ces correspondances ne changent pas après un `mismatch` (§8.3) : aucun contrôle arithmétique ne porte sur ces grandeurs. Les contrôles de rattachement de C1 et C2 (`mapping:<grandeur>`) suivent la correspondance ; ils seront comparés ;
+    - `concepts.csv` donne la règle et son texte pour les correspondances nouvelles.
+
+  (7) Effet attendu :
+  - Oracle : dette reconnue à chaque trimestre (125 337 M$ au 31 août 2026) ; dotations sur douze mois calculées, amortissement des incorporels compris ;
+  - CoreWeave : levier et couverture `with` recalculés depuis septembre 2025, sauf la dette au 30 juin 2026 (lignes en extension) ;
+  - Microsoft : levier calculé là où `Depreciation` et l'amortissement des incorporels sont balisés pour les quatre trimestres ;
+  - Broadcom : dénominateur du levier augmenté d'environ 8 Md$ par an ; durée implicite inchangée (déjà sur `Depreciation`) ;
+  - groupes sur `DepreciationDepletionAndAmortization` : durée implicite allongée là où `Depreciation` est balisé, `not_determinable` ailleurs ;
+  - `recast_boundary` en baisse dans toutes les mesures trimestrielles ;
+  - `stock_paid_additions` : 20 cellules calculées deviennent `not_determinable`.
+
+  (8) Ordre et commits : la décision, le code et les tests, un réassemblage comparé aux tables de 8e3073a, les rendus, les résultats ici, `make check`, puis un commit et le push.
+
+  (9) Résultats, comparés aux tables de 8e3073a (réassemblage complet, 948 s) :
+  - `documents`, `observations`, `entities`, `links` et `exclusions` sont identiques à l'octet près. Trois tables changent : `facts`, `measures` et `controls` ;
+  - `facts` garde ses 1 588 711 lignes ; seule la grandeur rattachée (`model_quantity`) change, pour 5 922 faits :
+    - `AmortizationOfIntangibleAssets` → `intangible_amortization` : 3 113 ;
+    - `Depreciation` → `ppe_depreciation` : 2 322, dont 950 venaient de `depreciation_expense` ;
+    - `LongTermNotesAndLoans` → `debt_noncurrent` : 148 ; `LongTermNotesPayable` → `debt_noncurrent` : 55 ; `NotesPayableCurrent` → `debt_current` : 131 ;
+    - `StockIssued1` n'est plus rattaché : 153 ;
+  - `measures` garde ses 193 875 clés ; 1 327 lignes changent :
+    - `recast_boundary` : 680 → 506 cellules (vue `revised` 487 → 408, `as_known` 193 → 98). 170 deviennent calculées ;
+    - 42 cellules calculées deviennent `recast_boundary` (Cipher, Marvell, Apollo, Blackstone). L'ancienne règle prenait pour révisés les deux termes d'une différence de cumuls, l'un pour un vrai retraitement, l'autre pour une simple double précision : ils semblaient de même base, et la frontière ne se voyait pas. Exemple : Cipher, capex du premier semestre 2025 retraité de 55 867 à 218 245 k$ dans le 10-Q de 2026 ; ses neuf mois ne sont balisés que dans le 10-Q de 2025, deux fois (262 035 k$ et 262,0 M$). L'ancien troisième trimestre (43 790 k$) mêlait donc le semestre retraité et les neuf mois non retraités ;
+    - Core Scientific reste `recast_boundary` au dernier trimestre : son résultat opérationnel des neuf mois 2025 a été retraité (−126 305 → −128 114 k$), pas celui de l'exercice ;
+  - levier (`lev_debt_and_leases_to_operating_income_plus_da`), vue `revised` :
+    - part dette au dernier trimestre : calculée 8 → 9 groupes ; `term_missing` 8 → 10 ; `concept_unresolved` 6 → 5 ; `recast_boundary` 4 → 1 ; `denominator_nonpositive` 2 → 3 ; `not_disclosed` 5 → 5 ;
+    - depuis 2024, deux parts réunies : calculées 162 → 173 ; `term_missing` 303 → 320 ; `concept_unresolved` 73 → 53 ; `recast_boundary` 61 → 47 ; `denominator_nonpositive` 35 → 41 ;
+    - Oracle : calculé à chaque trimestre depuis août 2024 ; 3,69 au 31 août 2026 (dette 125 337 M$, résultat opérationnel et dotations sur douze mois 33 938 M$), 4,33 au 31 mai 2026 ;
+    - Microsoft : calculé depuis juin 2025, de 0,28 à 0,21 (dotation et amortissement des incorporels lus dans les notes) ;
+    - CoreWeave : 6,51, 8,87 puis 8,30 de septembre 2025 à mars 2026. Au 30 juin 2026, la dette manque (lignes en extension). La couverture `with` est calculée depuis septembre 2025 (de 0,14 à −0,12) ;
+    - Broadcom : 1,37 → 1,16 au 2 août 2026, amortissement des incorporels compris. Les quatre trimestres de novembre 2024 à août 2025 deviennent `term_missing` : cet amortissement n'est balisé par trimestre que depuis l'exercice 2025, si bien que le quatrième trimestre de l'exercice 2024 ne se dérive pas ;
+    - Intel : 4,45 → 4,11 au dernier trimestre ;
+    - Alphabet : ses 16 cellules calculées (part dette de 0,11 à 0,58) deviennent `term_missing`. L'amortissement de ses incorporels n'est balisé que pour les deux premiers trimestres de 2025 et de 2026 : la règle du point 6 le traite comme un terme manquant, alors qu'il pèse peu devant la dotation. Une variante, l'amortissement exigé seulement des dépôts qui le présentent, est laissée à l'utilisateur ;
+    - Cipher, dernier trimestre : `recast_boundary` → `denominator_nonpositive` ;
+  - durée implicite (`implied_useful_life`), vue `revised` : calculée 66 → 80 ; `concept_unresolved` 31 → 27 ; `not_disclosed` 67 → 57 :
+    - durées allongées, sur le dernier exercice : Amazon 6,2 → 9,7 ans ; Dell 4,8 → 6,6 ; NVIDIA 4,7 → 5,5 ; Akamai 7,8 → 9,3 ; ASML 9,6 → 10,8 ; Galaxy 7,4 → 13,9 ;
+    - durées nouvelles : Microsoft 10,4 ans (exercice 2026), AMD 7,7, Marvell 9,9, Blackstone 9,9, Applied Digital 17,8 ;
+    - durées perdues : Supermicro (2021 à 2023) et IREN (2025), qui ne balisent pas `Depreciation` ; Riot de 2022 à 2025, qui ne balise plus cette dotation que par trimestre, sans valeur annuelle ;
+    - inchangées : Broadcom 12,1 ans, Oracle 8,1, Intel, Alphabet, Cipher, Nebius, TeraWulf ;
+  - `stock_paid_additions` : 20 cellules calculées → `not_determinable` (`concept_unresolved`), dont CoreWeave 2025 (350 M$), AMD 2022 (48 514 M$) et Riot 2021 (352,9 M$). La note ne publie plus d'additions payées en titres ;
+  - annexe F : 1 487 → 1 494 événements. 7 événements nouveaux : Cipher, F1 (trois trimestres) et F2 (deux) ; Core Scientific, F1 et F2 fin 2022. 7 cellules deviennent « sans événement » ; deux cellules F8 d'Apollo deviennent indéterminées ;
+  - `controls` : 70 587 → 71 106 lignes. Aucune ligne existante ne change de statut :
+    - contrôles de rattachement de C2 : `mapping:depreciation_expense` disparaît (328 lignes), `mapping:ppe_depreciation` (328) et `mapping:intangible_amortization` (330) apparaissent ;
+    - contrôles de rattachement de C1 : `mapping:debt_current` (66) et `mapping:debt_noncurrent` (102) apparaissent, tous `ok` ;
+    - les `mismatch` de rattachement d'Intel (`Depreciation` hors de l'arbre de calcul de son tableau des flux) passent d'une grandeur à l'autre ; AMD et Intel en ajoutent 6 sur l'amortissement des incorporels ;
+    - C4 : 9 lignes de `depreciation_expense` disparaissent, 30 apparaissent sur les deux grandeurs nouvelles ;
+    - vue `as_known` : `mismatch` 1 591 → 1 594, `ok` 30 599 → 30 845. Vue `revised` : `mismatch` 2 816 → 2 840, `ok` 29 980 → 30 226 ;
+  - règle d'arrêt : aucun arrêt. Apollo reste le seul groupe dont plus de la moitié des périodes testées sont en échec ; 21 périodes en échec sur 913, comme avant ;
+  - écart : au premier rendu, la note ne signalait pas le changement de `concept_anchors`, promis au point 6. Quand les critères de l'annexe F ont changé, le rendu ne liste pas les autres clés de `config.yaml`. Une ligne propre aux ancrages de concepts est ajoutée à l'en-tête de la note, et le rendu est relancé ;
+  - rendus : `synthesis.md` (comptes des contrôles, tableaux du levier, de la durée implicite et des additions, événements de l'annexe F, ligne des ancrages), `delta.md`, `series.md` et `audit/` (dont `concepts.csv`, avec la règle `definition_sole_debt_line`) ;
+  - tests :
+    - `make check` (ruff, puis 486 tests) passe ;
+    - `tests/test_d0082.py` (23 tests) couvre la garde des lignes de dette, l'ajout des emprunts à court terme à `NotesPayableCurrent`, les quatre bases des dotations et leur drapeau, la durée implicite, la révision jugée à l'arrondi (changement d'unité, double précision, companyfacts, chevauchement deux à deux insuffisant) et l'absence de candidat pour les additions payées en titres ;
+    - deux jeux de données de tests suivent la règle nouvelle, sans changer ce qu'ils vérifient. `tests/test_memo.py` passe de la précision −6 à 2, pour que 10 et 11 restent une révision. `tests/test_d0075.py` donne sa dotation de 2 454 sous `ppe_depreciation`.

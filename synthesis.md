@@ -12,12 +12,13 @@
   - annexe F, ajout de F15 (D-0047) : « offre de rachat d'une BDC dont les parts acceptées sont inférieures aux parts apportées (réduction au prorata) » ; règle {"measure": "bdc_tender_acceptance_ratio", "condition": "acceptées < apportées, ou réduction au prorata annoncée", "dated_at": "expiration de l'offre"} ; sujets : bdc_vehicles
   - annexe F, ajout de F16 (D-0047) : « interruption d'un programme régulier d'offres de rachat d'une BDC » ; règle {"condition": "au moins quatre offres déposées à 120 jours au plus d'intervalle, puis aucune offre dans les 120 jours ; ni 8-A12B ni N-54C ou formulaire 15 dans l'intervalle", "dated_at": "dépôt de la dernière offre + 120 jours"} ; sujets : bdc_vehicles
   - annexe F, inchangés : F1, F2, F3, F4, F5, F6, F7, F8, F9, F10 (mêmes observables, mêmes règles)
+- **Ancrages de concepts (`concept_anchors`, annexe B) modifiés** depuis ce commit : second candidat de capex, D-0012 ; StockIssued1 retiré des additions payées en titres, D-0082.
 - **Périmètre couvert : premier passage et blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs`, `ownership` de §14**, ouverts sur décision de l'utilisateur (`lender`, `text` le 2026-10-07 ; `discovery` le 2026-10-09 ; `paths`, `form_d` le 2026-10-10 ; `foreign` le 2026-10-10 ; `discovery` le 2026-10-10 ; `lender_portfolio` le 2026-10-10 ; `montages` le 2026-10-10 ; `lender_liabilities` le 2026-10-10 ; `nport` le 2026-10-19 ; `labs` le 2026-10-20, chaque fois après le rendement présenté). Premier passage : faits balisés des trente-trois groupes, notes de parties liées, Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation, items 1.01, 1.02, 3.03 et 8.01 des 8-K avec leurs pièces EX-10 et EX-4. Bloc `lender` : portefeuilles publiés des BDC (BDC Data Sets). Bloc `text` : notes d'investissements, de dette, de baux et d'engagements, texte autour des faits de concentration, items 2.01 et 2.03 des 8-K, corps des EX-10 arrêtés à leur en-tête (les EX-4 arrêtés à leur en-tête restent exclus, §14 ne les rouvrant pas) ; tout le catalogue du bloc est lu, aucun bloc ne reste « non traité ». Bloc `discovery` : déposants hors du périmètre qui nomment un groupe (Notes Data Sets, recherche plein texte des EX-10 et des Form D), lus dans l'ordre du classement fixé d'avance (D-0036) ; la passe A est lue jusqu'au rang 2 077 du classement, puis la lecture est arrêtée sur décision de l'utilisateur (D-0041) ; le reste de la file reste « non traité ». Bloc `paths` : cycles orientés de longueur 2 ou 3 entre groupes, tirés des arêtes établies (D-0041). Bloc `form_d` : Form D des entités des groupes et des véhicules tiers nommés d'après un non-déposant (D-0041). Bloc `foreign` : dépôts 20-F, 40-F et 6-K des émetteurs étrangers que la spec nomme ou qui sont déjà dans une paire ou un cycle, cadre comptable relevé, aucune somme entre US GAAP et IFRS (D-0042). 
 - **Composition des agrégats entre groupes** (§9.6) : NVIDIA, Alphabet, Amazon, Meta, Microsoft, Oracle, CoreWeave, SpaceX, AMD, Broadcom, Marvell depuis le 2026-10-07; TeraWulf, Cipher, Core Scientific depuis le 2026-10-10; Nebius, IREN depuis le 2026-10-11; Applied Digital depuis le 2026-10-11; Dell, Supermicro depuis le 2026-10-16; Hut 8, Galaxy depuis le 2026-10-16; Akamai, Backblaze, Riot depuis le 2026-10-16; Blue Owl, Apollo, Blackstone depuis le 2026-10-17; Intel, Micron, TSMC depuis le 2026-10-18; ASML, SK hynix depuis le 2026-10-18; Cerebras depuis le 2026-10-22. Tout agrégat entre groupes (paires, cycles, issues E.6 à E.9) change de composition à la date d'entrée d'un groupe : l'écart avec l'état publié avant tient d'abord à l'ajout, non à un fait économique. Fusions inversées (D-0043) : TeraWulf, réalisée le 2021-12-13 avec IKONICS Corporation comme déclarant légal ; Cipher, réalisée le 2021-08-27 avec Good Works Acquisition Corp. comme déclarant légal ; Core Scientific, réalisée le 2022-01-19 avec Power & Digital Infrastructure Acquisition Corp. comme déclarant légal ; Galaxy, réalisée le 2025-05-13 avec Galaxy Digital Inc. (anciennement Galaxy Digital Pubco Inc.), sans filiale avant la réorganisation comme déclarant légal ; Blue Owl, réalisée le 2021-05-19 avec Altimar Acquisition Corporation (SPAC) comme déclarant légal ; les rapports antérieurs du déclarant légal présentent une autre entité et restent hors du groupe, dont l'historique est tronqué à gauche. Autres ruptures d'historique (D-0048) : Nebius au 2024-07-12 (Yandex N.V. (activités russes cédées)) ; IREN au 2024-07-01 (rapports en IFRS (20-F, 6-K)) ; les dépôts antérieurs restent hors du groupe.
 - **Résultat principal (E.7) : discrimination possible au sens de E.7.** 56 % des issues de E.1 et E.2 au point de tête (10 %) sont indéterminées, sur 168 issues ; motifs : intervalle à cheval sur le seuil : 42, précondition non remplie : 28, historique tronqué : 13, recherche incomplète : 9, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) : 1, caviardé : 1. Issues déterminées : E.1 non étayé 69, E.1 étayé 5. E.2 seule (dépendance de revenu) : 84 issues indéterminées sur 84. Une issue « non étayé » de E.1 dit qu'aucune pièce de lien (L1 à L5) n'est trouvée sous une recherche complète au sens de E.0, non que le financement soit sans rapport avec les achats. Complète veut dire que tous les blocs du catalogue de lecture des dépôts de la paire sont lus (notes, items de 8-K, pièces annexées, Items 404, 9A et 4) ; le rapport de gestion et la description de l'activité n'en font pas partie, si bien qu'une pièce L5 qui ne serait que là échapperait à la recherche (D-0069, point 8). La découverte (§14) n'étant lue que sur les premiers rangs de son classement, les paires dont le client a encore des dépôts à lire restent indéterminées.
-- **Contrôles comptables, vue `as_known`** : `mismatch` 1 591, `not_testable` 1 177, `ok` 30 599, `tautological` 1 406 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
-- **Contrôles comptables, vue `revised`** : `mismatch` 2 816, `not_testable` 1 612, `ok` 29 980, `tautological` 1 406.
-  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 195/877, C11 99/842, C12 315/2 055, C13 0/361, C14 85/1 195, C15 139/847, C16 2/511, C1 285/15 403, C2 162/9 041, C3 217/642, C5 0/252, C6 0/1 406, C7 9/530, C8 77/209, C9 6/602.
+- **Contrôles comptables, vue `as_known`** : `mismatch` 1 594, `not_testable` 1 177, `ok` 30 845, `tautological` 1 406 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
+- **Contrôles comptables, vue `revised`** : `mismatch` 2 840, `not_testable` 1 612, `ok` 30 226, `tautological` 1 406.
+  Par contrôle (`mismatch` sur total, vue `as_known`) : C10 195/877, C11 99/842, C12 315/2 055, C13 0/361, C14 85/1 195, C15 139/847, C16 2/511, C1 285/15 487, C2 165/9 206, C3 217/642, C5 0/252, C6 0/1 406, C7 9/530, C8 77/209, C9 6/602.
 - **Exclusions principales** : `not_processed` 27 948, `pending_entity` 1 940, `out_of_scope` 1 262, `financial_parties_only` 358, `conflicting` 258, `invalid_aggregate` 52, `parse_failed` 32, `submitted_draft` 24, `history_left_censored` 11, `not_public` 2.
 - **Doublons de clé primaire écartés à l'assemblage** (une ligne gardée par clé, la dernière ; D-0069, point 9) : `entities` 1, dont 1 clé(s) en collision, `exclusions` 2, dont 0 clé(s) en collision, `measures` 692, dont 240 clé(s) en collision.
 - **Arrêt (§11.4)** : aucun ; refus 403 de la SEC au journal : 0, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 1 sur 32 (Apollo) ; périodes en échec : 21 sur 913.
@@ -186,12 +187,17 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F2 (flux après financement des contreparties négatif) — rendu public le 2022-08-09, rattaché au trimestre clos le 2022-06-30 ; pièce : faits balisés.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2022-11-14, rattaché au trimestre clos le 2022-09-30 ; pièce : 10-Q 0000950170-22-015789, 10-Q 0000950170-22-024761.
 - F2 (flux après financement des contreparties négatif) — rendu public le 2022-11-14, rattaché au trimestre clos le 2022-09-30 ; pièce : faits balisés.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2023-03-14, rattaché au trimestre clos le 2022-12-31 ; pièce : 10-Q 0000950170-22-024761, 10-K 0000950170-23-007793.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-03-14, rattaché au trimestre clos le 2022-12-31 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2023-03-14, rattaché au trimestre clos le 2022-12-31 ; pièce : 10-K 0000950170-23-007793.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2023-05-09, rattaché au trimestre clos le 2023-03-31 ; pièce : 10-Q 0000950170-23-019186.
 - F2 (flux après financement des contreparties négatif) — rendu public le 2023-05-09, rattaché au trimestre clos le 2023-03-31 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2023-05-09, rattaché au trimestre clos le 2023-03-31 ; pièce : 10-Q 0000950170-23-019186.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2023-08-08, rattaché au trimestre clos le 2023-06-30 ; pièce : 10-Q 0000950170-23-039416.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2023-11-08, rattaché au trimestre clos le 2023-09-30 ; pièce : 10-Q 0000950170-23-060724.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2024-03-05, rattaché au trimestre clos le 2023-12-31 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2024-03-05, rattaché au trimestre clos le 2023-12-31 ; pièce : 10-K 0000950170-24-025442.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2024-05-07, rattaché au trimestre clos le 2024-03-31 ; pièce : 10-Q 0000950170-24-054002.
 - F2 (flux après financement des contreparties négatif) — rendu public le 2024-05-07, rattaché au trimestre clos le 2024-03-31 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2024-05-07, rattaché au trimestre clos le 2024-03-31 ; pièce : 10-Q 0000950170-24-054002.
 - F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2024-08-13, rattaché au trimestre clos le 2024-06-30 ; pièce : 10-Q 0000950170-24-054002, 10-Q 0000950170-24-095795.
@@ -233,7 +239,9 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F10 (doute sur la continuité d'exploitation) — rendu public le 2022-11-22, rattaché au trimestre clos le 2022-09-30 ; pièce : 10-Q 0001628280-22-030600.
 - F2 (flux après financement des contreparties négatif) — rendu public le 2022-11-22, rattaché au trimestre clos le 2022-09-30 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2022-11-22, rattaché au trimestre clos le 2022-09-30 ; pièce : 10-Q 0001628280-22-030600.
+- F1 (capex décaissé supérieur au CFO deux trimestres de suite) — rendu public le 2023-04-04, rattaché au trimestre clos le 2022-12-31 ; pièce : 10-Q 0001628280-22-030600, 10-K 0001628280-23-010454.
 - F10 (doute sur la continuité d'exploitation) — rendu public le 2023-04-04, rattaché au trimestre clos le 2022-12-31 ; pièce : 10-K 0001628280-23-010454.
+- F2 (flux après financement des contreparties négatif) — rendu public le 2023-04-04, rattaché au trimestre clos le 2022-12-31 ; pièce : faits balisés.
 - F5 (faiblesse significative du contrôle interne) — rendu public le 2023-04-04, rattaché au trimestre clos le 2022-12-31 ; pièce : 10-K 0001628280-23-010454.
 - F8 (croissance annuelle passée sous zéro) — rendu public le 2023-04-04, rattaché au trimestre clos le 2022-12-31 ; pièce : faits balisés.
 - F10 (doute sur la continuité d'exploitation) — rendu public le 2023-05-15, rattaché au trimestre clos le 2023-03-31 ; pièce : 10-Q 0001628280-23-017974.
@@ -606,14 +614,14 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 
 États de couverture des cellules de l'annexe F (groupe × trimestre ; F11 à F14 : véhicule BDC × date de bilan, D-0045 et D-0047 ; F15 : véhicule × offre de rachat ; F16 : véhicule × offre qui clôt une série), pour lire ce qui n'a pas été observé :
 
-- F1 : calculée / événement 124 ; calculée / sans événement 342 ; indéterminée 286
-- F2 : calculée / événement 186 ; calculée / sans événement 325 ; indéterminée 241
+- F1 : calculée / événement 128 ; calculée / sans événement 347 ; indéterminée 277
+- F2 : calculée / événement 189 ; calculée / sans événement 327 ; indéterminée 236
 - F3 : calculée / sans événement 558 ; partielle / sans événement 194
 - F4 : calculée / événement 28 ; calculée / sans événement 493 ; partielle / sans événement 231
 - F5 : calculée / événement 99 ; calculée / sans événement 459 ; indéterminée 194
 - F6 : calculée / événement 8 ; indéterminée 744
 - F7 : calculée / événement 5 ; calculée / sans événement 105 ; indéterminée 642
-- F8 : calculée / événement 31 ; calculée / sans événement 415 ; indéterminée 306
+- F8 : calculée / événement 31 ; calculée / sans événement 413 ; indéterminée 308
 - F9 : calculée / sans événement 701 ; indéterminée 51
 - F10 : calculée / événement 10 ; calculée / sans événement 548 ; indéterminée 194
 - F11 : calculée / événement 500 ; calculée / sans événement 1 010 ; indéterminée 580
@@ -692,8 +700,8 @@ Dernière information balisée utilisée : 2026-07-23.
 | Flux après financement des contreparties | 23 711 M$ | 24 551 M$ | 10 116 M$ | -25 855 M$ |
 | Délai de recouvrement (créances) | 51 j | 51 j | 52 j | 53 j |
 | Obligations de prestation restantes (RPO) | 157 700 M$ | 242 800 M$ | 467 600 M$ | 519 500 M$ |
-| Dette ÷ (résultat opérationnel + dotations) | 0,19 x | 0,32 x | 0,49 x | 0,58 x |
-| Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,12 x | 0,12 x | 0,11 x | 0,12 x |
+| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | 59,6 % | 59,8 % | 62,4 % | 61,6 % |
 | Marge opérationnelle | 30,5 % | 31,6 % | 36,1 % | 34,0 % |
@@ -842,8 +850,8 @@ Dernière information balisée utilisée : 2026-07-29.
 | Flux après financement des contreparties | 25 663 M$ | 5 882 M$ | 15 803 M$ | 19 639 M$ |
 | Délai de recouvrement (créances) | 63 j | 64 j | 65 j | 82 j |
 | Obligations de prestation restantes (RPO) | 398 000 M$ | 631 000 M$ | 633 000 M$ | 684 000 M$ |
-| Dette ÷ (résultat opérationnel + dotations) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
+| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | 0,22 x | 0,21 x |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | 0,09 x | 0,09 x |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | 69,0 % | 68,0 % | 67,6 % | 67,2 % |
 | Marge opérationnelle | 48,9 % | 47,1 % | 46,3 % | 45,1 % |
@@ -892,8 +900,8 @@ Dernière information balisée utilisée : 2026-09-11.
 | Flux après financement des contreparties | -9 967 M$ | -11 484 M$ | -1 873 M$ | -5 396 M$ |
 | Délai de recouvrement (créances) | 53 j | 56 j | 50 j | 54 j |
 | Obligations de prestation restantes (RPO) | 523 300 M$ | 552 600 M$ | 638 000 M$ | 664 000 M$ |
-| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
-| Passifs locatifs ÷ (résultat opérationnel + dotations) | 1,00 x | 1,06 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
+| Dette ÷ (résultat opérationnel + dotations) | 4,22 x | 4,86 x | 4,33 x | 3,69 x |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,92 x | 0,99 x | 1,27 x | 1,29 x |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Marge opérationnelle | 29,5 % | 31,8 % | 32,0 % | 34,8 % |
@@ -942,8 +950,8 @@ Dernière information balisée utilisée : 2026-08-12.
 | Flux après financement des contreparties | -700 M$ | -2 501 M$ | -4 711 M$ | -5 743 M$ |
 | Délai de recouvrement (créances) | 112 j | 185 j | 92 j | 90 j |
 | Obligations de prestation restantes (RPO) | 50 000 M$ | 60 700 M$ | 98 800 M$ | 103 700 M$ |
-| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 8,88 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
-| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 3,51 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
+| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 8,88 x | 8,30 x | n.d. (terme manquant) |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | 3,51 x | 3,43 x | 4,40 x |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | 73,0 % | 67,6 % | 65,5 % | 65,9 % |
 | Marge opérationnelle | 3,8 % | -5,7 % | -6,9 % | -1,9 % |
@@ -958,7 +966,7 @@ Dernière information balisée utilisée : 2026-08-12.
 | Variation du nombre moyen dilué d'actions (sur un an) | 132,9 % | n.d. (non publié) | 111,6 % | 13,1 % |
 | En-cours ÷ immobilisations brutes | 29,7 % | 27,6 % | 23,4 % | 22,6 % |
 | Variation des en-cours ÷ capex décaissé | 117,2 % | 60,7 % | 2,7 % | 36,4 % |
-| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | 1,1 % | n.d. (frontière de retraitement) | 1,0 % | 0,7 % |
+| Intérêts capitalisés ÷ en-cours moyen (trimestre, non annualisé) | 1,1 % | 1,0 % | 1,0 % | 0,7 % |
 
 | Mesure (exercice clos le) | 2024-12-31 | 2025-12-31 |
 | --- | ---: | ---: |
@@ -968,7 +976,7 @@ Dernière information balisée utilisée : 2026-08-12.
 | Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions en location-financement | 142 M$ | 343 M$ |
 | Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Additions payées en titres | 0 $ | 350 M$ |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (concept non résolu).
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture 38 500 M$.
@@ -1066,7 +1074,7 @@ Dernière information balisée utilisée : 2026-08-05.
 | Dépréciations d'investissements | n.d. (non publié) | 53 M$ |
 | Additions en location-financement | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions financées par le vendeur | n.d. (non publié) | n.d. (non publié) |
-| Additions payées en titres | 0 $ | n.d. (non publié) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-27 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : after_year_5 0 $ ; total publié 12 166 M$ ; within_12m 8 498 M$ ; year_2 1 099 M$ ; year_3 1 216 M$ ; year_4 1 197 M$ ; year_5 156 M$.
 Baux non commencés au 2025-12-27 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture 1 300 M$.
@@ -1090,7 +1098,7 @@ Dernière information balisée utilisée : 2026-09-10.
 | Flux après financement des contreparties | 7 466 M$ | 8 010 M$ | 10 262 M$ | 13 665 M$ |
 | Délai de recouvrement (créances) | 36 j | 40 j | 44 j | 42 j |
 | Obligations de prestation restantes (RPO) | 33 300 M$ | 45 000 M$ | 164 600 M$ | 179 200 M$ |
-| Dette ÷ (résultat opérationnel + dotations) | 2,58 x | 2,33 x | 1,95 x | 1,37 x |
+| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 1,16 x |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | 68,0 % | 68,1 % | 69,5 % | 69,1 % |
@@ -1216,7 +1224,7 @@ Dernière information balisée utilisée : 2026-08-05.
 | Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions en location-financement | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Additions payées en titres | n.d. (non publié) | n.d. (non publié) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié 90 M$.
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
@@ -1240,8 +1248,8 @@ Dernière information balisée utilisée : 2026-08-04.
 | Flux après financement des contreparties | -256 M$ | -280 M$ | -462 M$ | -654 M$ |
 | Délai de recouvrement (créances) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
 | Obligations de prestation restantes (RPO) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Dette ÷ (résultat opérationnel + dotations) | 12,99 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
-| Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,27 x | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) | n.d. (frontière de retraitement) |
+| Dette ÷ (résultat opérationnel + dotations) | 12,87 x | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | 0,26 x | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | 62,7 % | 59,4 % | 49,2 % | 39,4 % |
 | Marge opérationnelle | -52,5 % | -503,4 % | -328,9 % | -316,2 % |
@@ -1316,7 +1324,7 @@ Dernière information balisée utilisée : 2026-07-28.
 | Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions en location-financement | n.d. (non publié) | 2 M$ |
 | Additions financées par le vendeur | n.d. (non publié) | n.d. (non publié) |
-| Additions payées en titres | n.d. (non publié) | n.d. (non publié) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié 8 170 M$.
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
@@ -1366,7 +1374,7 @@ Dernière information balisée utilisée : 2026-04-30.
 | Dépréciations d'investissements | n.d. (non publié) | n.d. (non publié) |
 | Additions en location-financement | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Additions payées en titres | n.d. (non publié) | 19 M$ |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (concept non résolu).
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture 168 M$ ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture 9 760 M$.
@@ -1381,11 +1389,11 @@ Dernière information balisée utilisée : 2026-08-27.
 | --- | ---: | ---: | ---: | ---: |
 | Croissance du revenu (glissement annuel) | 355,4 % | 59,0 % | -0,0 % | -26,7 % |
 | Croissance du revenu (douze mois glissants) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | 41,1 % |
-| Capex décaissé ÷ CFO | 1,27 x | 7,53 x | 12,60 x | n.d. (frontière de retraitement) |
+| Capex décaissé ÷ CFO | 1,27 x | 7,53 x | 12,60 x | 0,73 x |
 | Capex ÷ CFO, additions non monétaires comprises | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
-| Flux disponible (CFO − capex) | -38 M$ | -468 M$ | -874 M$ | n.d. (frontière de retraitement) |
-| Flux disponible après locations-financement | n.d. (terme manquant) | n.d. (terme manquant) | -881 M$ | n.d. (frontière de retraitement) |
-| Flux après financement des contreparties | -38 M$ | -468 M$ | -874 M$ | n.d. (frontière de retraitement) |
+| Flux disponible (CFO − capex) | -38 M$ | -468 M$ | -874 M$ | 482 M$ |
+| Flux disponible après locations-financement | n.d. (terme manquant) | n.d. (terme manquant) | -881 M$ | 451 M$ |
+| Flux après financement des contreparties | -38 M$ | -468 M$ | -874 M$ | 482 M$ |
 | Délai de recouvrement (créances) | 9 j | 5 j | 43 j | 14 j |
 | Obligations de prestation restantes (RPO) | 195 M$ | 289 M$ | 710 M$ | 5 100 M$ |
 | Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) |
@@ -1394,9 +1402,9 @@ Dernière information balisée utilisée : 2026-08-27.
 | Marge brute | 66,4 % | 64,4 % | 72,4 % | 75,7 % |
 | Marge opérationnelle | -31,8 % | -63,0 % | -161,3 % | -452,1 % |
 | Capex décaissé ÷ revenu | 0,75 x | 2,92 x | 6,56 x | 9,68 x |
-| Flux disponible après rémunération en actions | -110 M$ | -526 M$ | -905 M$ | n.d. (frontière de retraitement) |
-| Rémunération en actions ÷ CFO | 0,51 x | 0,81 x | 0,42 x | n.d. (frontière de retraitement) |
-| Écart CFO − résultat net | -242 M$ | 227 M$ | 323 M$ | n.d. (frontière de retraitement) |
+| Flux disponible après rémunération en actions | -110 M$ | -526 M$ | -905 M$ | 439 M$ |
+| Rémunération en actions ÷ CFO | 0,51 x | 0,81 x | 0,42 x | 0,02 x |
+| Écart CFO − résultat net | -242 M$ | 227 M$ | 323 M$ | 2 495 M$ |
 | Résultat opérationnel ÷ charge d'intérêts (12 mois) | n.d. (terme manquant) | n.d. (terme manquant) | -10,22 x | -17,67 x |
 | Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 23 M$ (partiel) | 3 M$ (partiel) | 47 M$ (partiel) | -25 M$ (partiel) |
 | Capitaux propres | 2 876 M$ | 2 511 M$ | 2 665 M$ | 4 186 M$ |
@@ -1438,8 +1446,8 @@ Dernière information balisée utilisée : 2026-10-07.
 | Flux après financement des contreparties | -568 M$ | -720 M$ | -1 194 M$ | -2 011 M$ |
 | Délai de recouvrement (créances) | 10 j | 15 j | 20 j | 31 j |
 | Obligations de prestation restantes (RPO) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
-| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) |
-| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) |
+| Dette ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
+| Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | 20,6 % | 42,5 % | 37,6 % | 28,1 % |
 | Marge opérationnelle | -24,5 % | -67,6 % | -48,2 % | -18,2 % |
@@ -1614,7 +1622,7 @@ Dernière information balisée utilisée : 2024-11-13.
 | Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions en location-financement | 26 M$ | n.d. (non publié) |
 | Additions financées par le vendeur | n.d. (non publié) | n.d. (non publié) |
-| Additions payées en titres | n.d. (non publié) | n.d. (non publié) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (non publié).
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
@@ -1814,7 +1822,7 @@ Dernière information balisée utilisée : 2026-08-10.
 | Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions en location-financement | n.d. (non publié) | 4 M$ |
 | Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Additions payées en titres | n.d. (non publié) | n.d. (non publié) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : 1 29 M$ ; 2 7 M$ ; total publié n.d. (concept non résolu).
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
@@ -1960,7 +1968,7 @@ Dernière information balisée utilisée : 2026-08-07.
 | Dépréciations d'investissements | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions en location-financement | n.d. (concept non résolu) | n.d. (concept non résolu) |
 | Additions financées par le vendeur | n.d. (concept non résolu) | n.d. (concept non résolu) |
-| Additions payées en titres | n.d. (non publié) | n.d. (non publié) |
+| Additions payées en titres | n.d. (concept non résolu) | n.d. (concept non résolu) |
 
 Obligations d'achat publiées au 2025-12-31 (flux non actualisés, tranches telles que publiées, aucun total ajouté par le modèle) : total publié n.d. (non publié).
 Baux non commencés au 2025-12-31 (pont ouverture + nouveaux − commencés = clôture) : ouverture n.d. (concept non résolu) ; nouveaux n.d. (non publié) ; commencés n.d. (non publié) ; clôture n.d. (concept non résolu).
@@ -1984,14 +1992,14 @@ Dernière information balisée utilisée : 2026-07-24.
 | Flux après financement des contreparties | 121 M$ | 800 M$ | -2 540 M$ | 4 450 M$ |
 | Délai de recouvrement (créances) | 21 j | 26 j | 27 j | 23 j |
 | Obligations de prestation restantes (RPO) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) |
-| Dette ÷ (résultat opérationnel + dotations) | 5,90 x | 5,45 x | 7,28 x | 4,45 x |
+| Dette ÷ (résultat opérationnel + dotations) | 5,20 x | 4,91 x | 6,33 x | 4,11 x |
 | Passifs locatifs ÷ (résultat opérationnel + dotations) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) |
 | *Rang 2 : rentabilité, fonds de roulement, capitaux propres* |  |  |  |  |
 | Marge brute | 38,2 % | 36,1 % | 39,4 % | 40,4 % |
 | Marge opérationnelle | 5,0 % | 4,2 % | -23,1 % | 11,1 % |
 | Capex décaissé ÷ revenu | 0,18 x | 0,26 x | 0,27 x | 0,16 x |
-| Flux disponible après rémunération en actions | -427 M$ | n.d. (frontière de retraitement) | -3 161 M$ | 3 764 M$ |
-| Rémunération en actions ÷ CFO | 0,22 x | n.d. (frontière de retraitement) | 0,57 x | 0,10 x |
+| Flux disponible après rémunération en actions | -427 M$ | 262 M$ | -3 161 M$ | 3 764 M$ |
+| Rémunération en actions ÷ CFO | 0,22 x | 0,13 x | 0,57 x | 0,10 x |
 | Écart CFO − résultat net | -1 517 M$ | 4 879 M$ | 4 824 M$ | 18 039 M$ |
 | Résultat opérationnel ÷ charge d'intérêts (12 mois) | -2,29 x | -2,03 x | -4,78 x | -0,07 x |
 | Fonds de roulement (créances + stocks − fournisseurs − passifs de contrat) | 4 423 M$ (partiel) | 5 575 M$ (partiel) | 9 333 M$ (partiel) | 7 769 M$ (partiel) |
@@ -6220,5 +6228,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 614, non publié 7 649, terme manquant 6 673, historique tronqué 4 227, période antérieure absente 1 838, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 943, recherche incomplète 576, dénominateur négatif ou nul 453, client anonyme 262, frontière de retraitement 193, caviardé 176, non collecté 152, intervalle à cheval sur le seuil 89, faits en conflit 86, période non écoulée à la date de coupure 80, date manquante 30, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 15 938, concept non résolu 8 611, non publié 7 612, terme manquant 6 723, historique tronqué 4 227, période antérieure absente 1 835, annuel seulement 1 154, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 046, précondition non remplie 943, recherche incomplète 576, dénominateur négatif ou nul 474, client anonyme 262, caviardé 176, non collecté 152, frontière de retraitement 98, intervalle à cheval sur le seuil 89, faits en conflit 86, période non écoulée à la date de coupure 80, date manquante 30, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
 

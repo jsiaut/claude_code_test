@@ -10,6 +10,7 @@ change que sur une pièce nouvelle (decisions.md).
 """
 import datetime as dt
 import json
+import re
 from decimal import Decimal
 
 import pandas as pd
@@ -58,17 +59,22 @@ UNANCHORED = {
     "retained_earnings": (["us-gaap:RetainedEarningsAccumulatedDeficit"], BS),
     "fx_effect_on_cash": (["us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
                            "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations"], CF),
+    # D-0082 : ligne globale du tableau des flux (D&A) ; la dotation des seules immobilisations corporelles et
+    # l'amortissement des incorporels sont deux grandeurs à part, lues dans le tableau des flux ou dans une note
     "depreciation_expense": (["us-gaap:DepreciationDepletionAndAmortization",
                               "us-gaap:DepreciationAmortizationAndAccretionNet",
-                              "us-gaap:DepreciationAndAmortization", "us-gaap:Depreciation"], CF),
+                              "us-gaap:DepreciationAndAmortization"], CF),
+    "ppe_depreciation": (["us-gaap:Depreciation"], CF | NOTES),
+    "intangible_amortization": (["us-gaap:AmortizationOfIntangibleAssets"], CF | NOTES),
     "gross_depreciable_ppe": (["us-gaap:PropertyPlantAndEquipmentGross"], NOTES | BS),
     # D-0075 : total du tableau des immobilisations, droits d'utilisation des locations-financement compris
     "ppe_and_finance_rou_gross": ([PPE_ROU_GROSS], NOTES | BS),
     "land": (["us-gaap:Land"], NOTES | BS),
     "construction_in_progress": (["us-gaap:ConstructionInProgressGross"], NOTES | BS),
     "debt_carrying_amount": (["us-gaap:LongTermDebt", "us-gaap:DebtLongtermAndShorttermCombinedAmount"], NOTES | BS),
-    "debt_current": (["us-gaap:LongTermDebtCurrent", "us-gaap:DebtCurrent"], BS | NOTES),
-    "debt_noncurrent": (["us-gaap:LongTermDebtNoncurrent"], BS | NOTES),
+    "debt_current": (["us-gaap:LongTermDebtCurrent", "us-gaap:DebtCurrent", "us-gaap:NotesPayableCurrent"], BS | NOTES),
+    "debt_noncurrent": (["us-gaap:LongTermDebtNoncurrent", "us-gaap:LongTermNotesAndLoans",
+                         "us-gaap:LongTermNotesPayable"], BS | NOTES),
     "short_term_borrowings": (["us-gaap:ShortTermBorrowings", "us-gaap:CommercialPaper"], BS | NOTES),
     "debt_principal_due_12m": (["us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths"], NOTES),
     "debt_principal_due_year2": (["us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo"], NOTES),
@@ -111,6 +117,44 @@ UNANCHORED = {
     "stockholders_equity": (["us-gaap:StockholdersEquity"], BS),
     "doc_error_correction_flag": (["dei:DocumentFinStmtErrorCorrectionFlag"], {"cover"}),
 }
+
+# D-0082 : lignes de dette plus étroites que leur grandeur (billets, billets et emprunts), retenues seulement comme
+# seule ligne de dette de leur position au bilan du dépôt. Une autre ligne standard de la même position, ou une
+# extension de dette, les écarte : la position reste alors non résolue plutôt que sous-estimée. Les emprunts à court
+# terme de short_term_borrowings n'écartent rien, ils s'ajoutent à ces lignes (D-0069, point 4)
+DEBT_LINES = {
+    "current": {f"us-gaap:{c}" for c in (
+        "LongTermDebtCurrent", "DebtCurrent", "NotesAndLoansPayableCurrent", "NotesPayableCurrent", "LoansPayableCurrent",
+        "OtherLoansPayableCurrent", "ConvertibleNotesPayableCurrent", "ConvertibleDebtCurrent",
+        "ConvertibleSubordinatedDebtCurrent", "OtherNotesPayableCurrent", "OtherLongTermDebtCurrent", "SecuredDebtCurrent",
+        "UnsecuredDebtCurrent", "SeniorNotesCurrent", "SubordinatedDebtCurrent", "JuniorSubordinatedNotesCurrent",
+        "MediumtermNotesCurrent", "NotesPayableToBankCurrent", "LoansPayableToBankCurrent",
+        "LongTermDebtAndCapitalLeaseObligationsCurrent", "ShortTermBankLoansAndNotesPayable",
+        "ShortTermNonBankLoansAndNotesPayable", "OtherShortTermBorrowings", "LinesOfCreditCurrent", "BankOverdrafts")},
+    "noncurrent": {f"us-gaap:{c}" for c in (
+        "LongTermDebtNoncurrent", "LongTermNotesAndLoans", "LongTermNotesPayable", "LongTermLoansPayable",
+        "LongTermLoansFromBank", "NotesPayableToBankNoncurrent", "ConvertibleLongTermNotesPayable",
+        "ConvertibleDebtNoncurrent", "ConvertibleSubordinatedDebtNoncurrent", "OtherLongTermDebtNoncurrent",
+        "OtherLongTermNotesPayable", "LongTermLineOfCredit", "SecuredLongTermDebt", "UnsecuredLongTermDebt",
+        "SeniorLongTermNotes", "SubordinatedLongTermDebt", "MediumtermNotesNoncurrent",
+        "LongTermDebtAndCapitalLeaseObligations")},
+}
+SOLE_DEBT_LINE = {"us-gaap:NotesPayableCurrent": "current", "us-gaap:LongTermNotesAndLoans": "noncurrent",
+                  "us-gaap:LongTermNotesPayable": "noncurrent"}
+DEBT_EXTENSION = re.compile(r"Debt|Borrowing|LoansPayable|NotesPayable|LineOfCredit")
+NOT_A_DEBT_LINE = re.compile(r"Receivable|IssuanceCost|Securit|Investment|(Member|Axis|Domain|Abstract|Table|LineItems)$")
+STANDARD_NS = ("us-gaap:", "ifrs-full:", "dei:", "srt:")
+
+
+def sole_debt_line(concepts, cand):
+    """D-0082 : `cand` est la seule ligne de dette de sa position au bilan du dépôt. `concepts` : concept -> types
+    d'état où la linkbase de présentation du dépôt le place."""
+    others = {c for c, kinds in concepts.items() if "balance_sheet" in kinds and c != cand}
+    if others & DEBT_LINES[SOLE_DEBT_LINE[cand]]:
+        return False
+    return not any(not c.startswith(STANDARD_NS) and DEBT_EXTENSION.search(c.split(":", 1)[-1])
+                   and not NOT_A_DEBT_LINE.search(c.split(":", 1)[-1]) for c in others)
+
 
 DURATION_HINT = {  # grandeurs instantanées ; les autres sont des flux
     "total_assets", "current_assets", "total_liabilities", "current_liabilities", "temporary_equity",
@@ -175,11 +219,14 @@ def map_concepts(con, cfg=None):
             for cand in d["candidates"]:
                 kinds = concepts.get(cand)
                 if kinds and (kinds & d["statements"]):
+                    if cand in SOLE_DEBT_LINE and not sole_debt_line(concepts, cand):
+                        continue
                     chosen = (cand, sorted(kinds & d["statements"])[0])
                     break
             if chosen:
-                rows.append((g, qn, acc, chosen[0], "anchor_first_present" if d["anchored"]
-                             else "definition_first_present", chosen[1]))
+                rule = "anchor_first_present" if d["anchored"] else \
+                    "definition_sole_debt_line" if chosen[0] in SOLE_DEBT_LINE else "definition_first_present"
+                rows.append((g, qn, acc, chosen[0], rule, chosen[1]))
     con.execute("DROP TABLE IF EXISTS concept_map")
     con.execute("""CREATE TABLE concept_map (group_id VARCHAR, quantity VARCHAR, accession VARCHAR,
                    concept VARCHAR, rule VARCHAR, statement_kind VARCHAR)""")

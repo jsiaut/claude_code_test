@@ -178,15 +178,15 @@ class CipFlows(unittest.TestCase):
 
 
 class ImpliedLife(unittest.TestCase):
-    """CoreWeave, exercice 2025 : la base amortissable perd ses en-cours publiés sous dimension (6,98 ans, et non 9,54)."""
+    """CoreWeave, exercice 2025 : la base amortissable perd ses en-cours publiés sous dimension (6,98 ans, et non 9,54,
+    pour une dotation de 2 454 M$ ; depuis D-0082, la dotation est celle des immobilisations corporelles)."""
 
     def test_dimensional_cip_leaves_the_base(self):
         rows = [("gross_depreciable_ppe", GROSS, None, "2024-12-31", 12880, "k24", "2025-03-01"),
                 ("gross_depreciable_ppe", GROSS, None, "2025-12-31", 33941, "k25", "2026-03-01"),
                 ("construction_in_progress", GROSS, None, "2024-12-31", 3201, "k24", "2025-03-01"),
                 ("construction_in_progress", GROSS, None, "2025-12-31", 9376, "k25", "2026-03-01"),
-                ("depreciation_expense", "us-gaap:DepreciationDepletionAndAmortization", "2025-01-01", "2025-12-31",
-                 2454, "k25", "2026-03-01")]
+                ("ppe_depreciation", "us-gaap:Depreciation", "2025-01-01", "2025-12-31", 2454, "k25", "2026-03-01")]
         S = series(rows, fys=(2024, 2025))
         out = rank2.annual_rank2(S, "G", D("2025-01-01"), D("2025-12-31"), D(AS_OF), "as_known", AS_OF)
         c = next(x for x in out if x["measure"] == "implied_useful_life")

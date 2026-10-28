@@ -1723,7 +1723,8 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr�
   dividends_declared: [Dividends, DividendsCommonStock]
   profit_including_nci: [ProfitLoss]
   vendor_financed_ppe_additions: [NoncashOrPartNoncashAcquisitionFixedAssetsAcquired1]   # sans distinction du mode de paiement
-  stock_paid_ppe_additions: [StockIssued1]      # souvent en extension ou seulement narratif
+  stock_paid_ppe_additions: []                 # souvent en extension ou seulement narratif ; StockIssued1 retiré (D-0082) :
+                                                # « stock issued in noncash financing activities », pas des immobilisations
   debt_proceeds: [ProceedsFromIssuanceOfLongTermDebt, ProceedsFromIssuanceOfDebt]
   debt_repayments: [RepaymentsOfLongTermDebt, RepaymentsOfDebt]
   rou_obtained_finance_lease: [RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability]
@@ -1750,7 +1751,7 @@ concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans l
 
 unanchored_quantities:       # résolues par la seule règle de §8.3
   [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
-   depreciation_expense, gross_depreciable_ppe, land, construction_in_progress,
+   depreciation_expense, ppe_depreciation, intangible_amortization, gross_depreciable_ppe, land, construction_in_progress,
    debt_principal, debt_carrying_amount, rpo_within_12m, contract_assets, sbc_expense,
    interest_expense, interest_paid, operating_lease_payments_12m, finance_lease_payments_12m]
 

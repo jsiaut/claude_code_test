@@ -146,7 +146,11 @@ def occurrence_index(occ):
         return None
     return {"pe": pe, "ps": ps, "kd": kd, "instant": (occ["period_type"] == "instant").to_numpy(dtype=bool),
             "duration": (occ["period_type"] == "duration").to_numpy(dtype=bool),
-            "order_key": occ["order_key"].to_numpy(dtype=object), "value": occ["value"].to_numpy()}
+            "order_key": occ["order_key"].to_numpy(dtype=object), "value": occ["value"].to_numpy(),
+            # précision et dépôt de chaque occurrence, pour juger une révision à la tolérance d'arrondi (D-0082)
+            "dec": occ["decimals"].astype("Float64").to_numpy(dtype=float, na_value=np.nan),
+            "inf": occ["decimals_inf"].astype("boolean").fillna(False).to_numpy(dtype=bool),
+            "acc": occ["accession"].to_numpy(dtype=object)}
 
 
 def _positions(ix, start, end, instant, tol=3):
@@ -202,7 +206,8 @@ def term_value(occ_q, start, end, instant, cutoff, ix=None):
                     best = i                               # premier maximum, comme idxmax
             r = occ_q.iloc[best]
             vals = ix["value"][known]
-            revised_before = len(np.unique(vals[~np.isnan(vals)])) > 1
+            revised_before = len(np.unique(vals[~np.isnan(vals)])) > 1 and \
+                revised(vals, ix["dec"][known], ix["inf"][known], ix["acc"][known])
             return _term_dict(r, revised_before)
     m = _match(occ_q, start, end, instant)
     if m.empty:
@@ -210,8 +215,46 @@ def term_value(occ_q, start, end, instant, cutoff, ix=None):
     r = pick(m, cutoff)
     if r is None:
         return None
-    revised_before = m[(m["knowledge_date"] <= cutoff)]["value"].nunique() > 1
+    k = m[(m["knowledge_date"] <= cutoff)]
+    revised_before = k["value"].nunique() > 1 and revised(k["value"], k["decimals"], k["decimals_inf"], k["accession"])
     return _term_dict(r, revised_before)
+
+
+HALF = Decimal("0.5")
+
+
+def _decimals(d):
+    if d is None or d is pd.NA:
+        return None
+    return None if d != d else int(d)
+
+
+def _true(x):
+    return x is not None and x is not pd.NA and x == x and bool(x)
+
+
+def revised(values, decimals, infs, accessions):
+    """D-0082 : la valeur d'une période a été révisée si deux de ses occurrences diffèrent de plus que leur tolérance
+    d'arrondi, ½·10^(−decimals) chacune (§8.3), zéro pour INF. Une occurrence sans précision (companyfacts) prend la
+    plus large de celles du même dépôt à la même valeur, sinon zéro. Un changement d'unité de présentation, ou un même
+    nombre balisé à deux précisions, n'est donc pas une révision. Les valeurs absentes ne comptent pas."""
+    rows = []
+    for v, d, inf, a in zip(values, decimals, infs, accessions):
+        if v is None or v != v:
+            continue
+        d = _decimals(d)
+        tol = Decimal(0) if _true(inf) else (HALF * Decimal(10) ** (-d) if d is not None else None)
+        rows.append((Decimal(str(v)), tol, a))
+    if len({v for v, _, _ in rows}) <= 1:
+        return False
+    widest = {}
+    for v, tol, a in rows:
+        if tol is not None:
+            widest[(a, v)] = max(widest.get((a, v), tol), tol)
+    bounds = [(v, tol if tol is not None else widest.get((a, v), Decimal(0))) for v, tol, a in rows]
+    # des intervalles deux à deux sécants ont un point commun : il suffit de comparer la plus haute borne basse
+    # à la plus basse borne haute
+    return max(v - t for v, t in bounds) > min(v + t for v, t in bounds)
 
 
 def quarter_series(occ, group, quantity, cal, instant, view, as_of, report_dates):

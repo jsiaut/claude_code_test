@@ -212,7 +212,8 @@ def criteria_diff(old, new):
             out.append(f"`{blk}`, clés modifiées : " + ", ".join(f"`{k}`" for k in ks))
     return out
 
-CONFIG_DECISIONS = {"concept_anchors": "second candidat de capex, D-0012",
+CONFIG_DECISIONS = {"concept_anchors": "second candidat de capex, D-0012 ; StockIssued1 retiré des additions payées en "
+                                       "titres, D-0082",
                     "confirmed_entities": "entités confirmées par extrait, D-0021",
                     "entity_aliases": "alias confirmés par extrait, D-0021",
                     "own_entities": "entités propres confirmées par extrait, D-0021"}
@@ -374,6 +375,10 @@ def synthesis(con, as_of, stats):
                  + ". Diff, et ce qui ne change pas :")
         for line in criteria_diff(old, new):
             L.append("  - " + line)
+        # les ancrages de concepts sont des données de départ (annexe B) qui changent des grandeurs publiées (D-0082)
+        if json.dumps(old.get("concept_anchors"), sort_keys=True) != json.dumps(new.get("concept_anchors"), sort_keys=True):
+            L.append(f"- **Ancrages de concepts (`concept_anchors`, annexe B) modifiés** depuis ce commit : "
+                     f"{CONFIG_DECISIONS['concept_anchors']}.")
     if not blocks_open:
         L.append(f"- **Périmètre couvert : premier passage.** Faits balisés des {n_groups(new)} groupes, puis notes de parties liées, "
                  "Item 404, Item 9A, Item 4 des 10-Q, continuité d'exploitation et items 1.01, 1.02, 3.03 et 8.01 des 8-K "
@@ -3254,7 +3259,10 @@ RULE_TEXT = {
     "definition_first_present": "grandeur sans ancre : premier concept standard dont la définition de la taxonomie 2026 "
                                 "correspond, présent dans la linkbase de présentation pour l'état concerné ; liste fixée "
                                 "avant tout contrôle",
-    "D1_label_match": "état annuel lu en HTML dans le 424B4 : concept du 10-Q dont le libellé correspond à la ligne "
+    "definition_sole_debt_line": "grandeur sans ancre : ligne de billets (ou de billets et emprunts), plus étroite que la "
+                                 "grandeur, retenue seulement comme seule ligne de dette de sa position au bilan du dépôt "
+                                 "(D-0082)",
+    "D1_label_match":"état annuel lu en HTML dans le 424B4 : concept du 10-Q dont le libellé correspond à la ligne "
                       "(is_tagged = false)"}
 
 

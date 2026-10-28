@@ -123,15 +123,16 @@ class TermValueByPositions(unittest.TestCase):
 
     def setUp(self):
         k = lambda acc, rank: ("2026-01-01 00:00:00", acc, 1, -6, rank)
+        # précision de deux décimales : 10 et 11 diffèrent au-delà de l'arrondi, la révision se voit (D-0082)
         self.o = occ([
-            ["duration", D(2025, 1, 1), D(2025, 3, 31), D(2025, 5, 1), 10.0, k("a1", 1), "f1", "a1", "c", "B", -6, False, True, True],
-            ["duration", D(2025, 1, 2), D(2025, 3, 30), D(2025, 6, 1), 11.0, k("a2", 1), "f2", "a2", "c", "B", -6, False, True, True],
-            ["duration", D(2025, 1, 2), D(2025, 3, 30), D(2025, 6, 1), 11.0, k("a2", 1), "f3", "a2", "c", "B", -6, False, True, True],
-            ["duration", D(2024, 4, 1), D(2025, 3, 31), D(2025, 5, 1), 40.0, k("a1", 2), "f4", "a1", "c", "B", -6, False, True, True],
-            ["instant", pd.NaT, D(2025, 3, 31), D(2025, 5, 1), 7.0, k("a1", 3), "f5", "a1", "c", "B", -6, False, True, True],
-            ["instant", pd.NaT, D(2025, 4, 2), D(2025, 7, 1), 8.0, k("a3", 1), "f6", "a3", "c", "B", -6, False, True, True],
+            ["duration", D(2025, 1, 1), D(2025, 3, 31), D(2025, 5, 1), 10.0, k("a1", 1), "f1", "a1", "c", "B", 2, False, True, True],
+            ["duration", D(2025, 1, 2), D(2025, 3, 30), D(2025, 6, 1), 11.0, k("a2", 1), "f2", "a2", "c", "B", 2, False, True, True],
+            ["duration", D(2025, 1, 2), D(2025, 3, 30), D(2025, 6, 1), 11.0, k("a2", 1), "f3", "a2", "c", "B", 2, False, True, True],
+            ["duration", D(2024, 4, 1), D(2025, 3, 31), D(2025, 5, 1), 40.0, k("a1", 2), "f4", "a1", "c", "B", 2, False, True, True],
+            ["instant", pd.NaT, D(2025, 3, 31), D(2025, 5, 1), 7.0, k("a1", 3), "f5", "a1", "c", "B", 2, False, True, True],
+            ["instant", pd.NaT, D(2025, 4, 2), D(2025, 7, 1), 8.0, k("a3", 1), "f6", "a3", "c", "B", 2, False, True, True],
             ["duration", D(2025, 1, 1), D(2025, 3, 31), D(2025, 9, 1), float("nan"), k("a0", 1), "f7", "a0", "c", "B",
-             -6, False, True, True],
+             2, False, True, True],
         ])
         self.ix = model.occurrence_index(self.o)
 

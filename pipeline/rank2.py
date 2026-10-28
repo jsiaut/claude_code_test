@@ -102,7 +102,7 @@ def quarter_rank2(S, g, q, cutoff, view, as_of):
                            "sbc_expense", "cfo"))
     ni, t_ni, r_ni = S.quarter("net_income", q, cutoff)
     if cfo is not None and ni is not None:
-        da, t_da, _ = S.quarter("depreciation_expense", q, cutoff)
+        da, _, _, _ = S.da(q, cutoff)
         comp = {"depreciation_and_amortization": str(da) if da is not None else None,
                 "share_based_compensation": str(sbc) if sbc is not None else None}
         out.append(cell("cfo_net_income_gap", g, ps, pe, view, as_of, value=cfo - ni, unit="USD",
@@ -266,7 +266,8 @@ def annual_rank2(S, g, fs, fe, cutoff, view, as_of):
         out.append(cell("capex_accrual", g, fs, fe, view, as_of, status="not_determinable",
                         nd_reason=(_nd(S, "capex_cash", None) if not capex else _nd(S, "unpaid_capex", None)
                                    if not un1 else "prior_period_missing")))
-    # durée d'utilité implicite : brut amortissable moyen (hors terrains et en-cours) ÷ dotations
+    # durée d'utilité implicite : brut amortissable moyen (hors terrains et en-cours) ÷ dotation des immobilisations
+    # corporelles, jamais la ligne globale des dotations, qui comprend l'amortissement des incorporels (D-0082)
     def depreciable(end):
         g_ = S.instant("gross_depreciable_ppe", end, cutoff)
         if not g_:
@@ -277,17 +278,17 @@ def annual_rank2(S, g, fs, fe, cutoff, view, as_of):
             [x for x in (g_, land, cip) if x]
     d1, t1 = depreciable(fe)
     d0, t0 = depreciable(fqs_prev[-1]["end"]) if fqs_prev else (None, [])
-    dep = S.duration("depreciation_expense", fs, fe, cutoff)
+    dep = S.duration("ppe_depreciation", fs, fe, cutoff)
     if d1 is not None and d0 is not None and dep and dep["value"] > 0:
         avg = (d1 + d0) / 2
         out.append(cell("implied_useful_life", g, fs, fe, view, as_of, value=avg / dep["value"], numerator=avg,
                         denominator=dep["value"], unit="years", terms=t1 + t0 + [dep],
-                        flags={"note": "dotations du tableau des flux (amortissement des incorporels compris) : "
-                                       "durée implicite par défaut", "land_or_cip_untagged": len(t1) < 3}))
+                        flags={"note": "dotation des immobilisations corporelles (Depreciation), hors amortissement "
+                                       "des incorporels", "land_or_cip_untagged": len(t1) < 3}))
     else:
         out.append(cell("implied_useful_life", g, fs, fe, view, as_of, status="not_determinable",
                         nd_reason=(_nd(S, "gross_depreciable_ppe", None) if d1 is None else "prior_period_missing"
-                                   if d0 is None else _nd(S, "depreciation_expense", None))))
+                                   if d0 is None else _nd(S, "ppe_depreciation", None))))
     out += liquidity_12m(S, g, fs, fe, cutoff, view, as_of)
     # part des effets publiés du pont dans le résultat avant impôt (§6.2) : seulement si celui-ci
     # est positif et dépasse 5 % du revenu ; un terme non publié rend la part partielle
