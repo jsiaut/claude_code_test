@@ -1258,6 +1258,8 @@ own_entities:                # entités sans suffixe de forme juridique, identit
   - {name: "Accenture", decision: D-0077, block: e81f7ed9c9237199cce7b00dadee3c8058e4b6321efce2d8a85a2eff717c819a, accession: 0001628280-26-067168, quote: "to build external reviewer capacity with Accenture", note: "activité du S-1 (7/8) : intégrateur, intention d'investir au moins 1 Md$ sur cinq ans avec lui"}
   - {name: "Ode with Anthropic", decision: D-0077, block: dfb9911ff86904681ab9513744b3a95b82acbcd039affa647e741363abec319b, accession: 0001628280-26-067168, quote: "We recently launched Ode with Anthropic, an AI services company, in partnership with leading private equity firms", note: "activité du S-1 (1/8) : société de services d'IA lancée avec des fonds de capital-investissement non nommés ; investissement de 325 M$ d'Anthropic (notes 3 et 16), consolidation non écrite : entité et groupe propres"}
 
+  # D-0083, point 10 : coentreprise d'Alphabet nommée par la note du revenu du 10-Q du T3 2026, identité établie par l'extrait
+  - {name: "Crux AI", decision: D-0083, block: b854d77efddfe7e23eb259ae420054f65bc099163f86c750fa42ce77bb2f14c2, accession: 0001652044-26-000084, quote: "a multi-year commercial agreement with Crux AI, an unconsolidated equity method joint venture and a related party", note: "coentreprise mise en équivalence d'Alphabet, non consolidée : entité et groupe propres ; client de Google Cloud (16,8 Md$ de carnet) et bénéficiaire d'appuis potentiels de 10,0 Md$"}
 # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
 # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
 tier1:

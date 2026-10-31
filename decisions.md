@@ -4429,3 +4429,21 @@ Ce fichier ne va pas à l'auditeur (§12.2).
       - `ppe_components` 2 : 10-Q d'Alphabet et d'Intel.
     - Formulaires : 485BPOS et N-CSRS/A ne figurent pas dans la liste des relevés de portefeuille de D-0046 (point 8), qui compte 486BPOS et N-CSRS. Leurs fenêtres se préparent donc et se lisent comme tout bloc. La liste ne change pas (point 1) ; la question est laissée à l'utilisateur.
   - À lire : 34 blocs de §14, 51 961 caractères, liste `upd_20261031_s14`, du plus récent au plus ancien.
+
+  (9) Lecture des blocs de §14 (2026-10-31), par l'exécutant, sans sous-agent, liste `upd_20261031_s14` :
+  - Les 34 blocs, 51 961 caractères : 36 lignes, dont 6 observations (2 à contrepartie nommée) et 30 abstentions (hors champ 20, sans contenu utile 8, doublon d'un autre bloc 1, texte type 1) ; aucune ligne rejetée.
+  - Observations :
+    - SoftBank : l'annexe 13D/A sur VTEX (37 477 996 actions de classe A détenues par le fonds SoftBank Latin America, 340 630 vendues en 60 jours) est une ligne descriptive, sans arête, comme les détentions de D-0058 ;
+    - composantes des immobilisations (D-0076) : en-cours d'Arizona SCIP chez Intel, 5,9 Md$ au 2026-09-26 et 5,6 Md$ au 2025-12-27 ; actifs pas encore en service d'Alphabet, 78 592 et 145 270 M$ ;
+    - Evercore (communiqué de résultats, niveau E) : conseil de Broadcom sur une opération « enabling the deployment of $63 billion of AI compute capacity to Anthropic ». C'est une ligne descriptive à contrepartie nommée (Anthropic), sans montant ni arête ; le montant reste dans la note. Le texte ne la rattache pas au soutien de valeur résiduelle du 8-K de Broadcom du 2026-10-26, dont le client n'est pas nommé, et aucun rattachement n'est fait.
+  - Abstentions :
+    - les 18 fenêtres des 485BPOS et du N-CSRS/A sont des lignes de titres d'états des placements, hors champ. Dans celui de DoubleLine, « Galaxy » désigne Galaxy Pipeline Assets Bidco Ltd., homonyme sans rapport avec Galaxy Digital ;
+    - les communiqués de résultats citent des produits d'Anthropic ou d'OpenAI intégrés à ceux du déposant (AWS, Tenable), une alliance sans engagement (ServiceNow), un projet client (Cognizant), une transcription de société d'acquisition, la couverture de PitchBook (Morningstar) et la liste des nouveaux accords d'AWS (Meta, NVIDIA, OpenAI, Oracle…), sans objet ni montant, non codée comme au T1 2026 ;
+    - l'avenant n° 5 au prêt à terme d'Installed Building Products (250 M$ de Royal Bank of Canada) : AMD n'y est pas partie, comme pour les avenants précédents ;
+    - le plafond de rachat d'actions propres de SK hynix : politique de capital, hors champ.
+  - Personnes physiques (D-0078) : aucune ligne ne cite celles que nomment les textes (orateurs de la transcription, dirigeant et chercheurs de Morningstar, signataires).
+  - Écart : le premier lot de 16 lignes (15 blocs) a été soumis deux fois, la seconde par une commande destinée à n'afficher que sa sortie. Les lignes en double, identiques et de la même passe, ont été retirées avant tout commit : chaque ligne figure une fois, et rien d'autre n'a changé.
+
+  (10) Entités par extrait, avant le réassemblage (2026-10-31) : une entrée.
+  - « Crux AI » devient une entité et un groupe propres (`own_entities`), comme Project Beignet Holdings (D-0046) : la note du revenu d'Alphabet la décrit comme « an unconsolidated equity method joint venture and a related party ». Elle n'est pas rattachée à Alphabet, qui ne la consolide pas.
+  - Morgan Stanley Capital Services LLC, acheteur à terme de Meta, porte sa forme juridique : c'est une entité propre par la règle de D-0022, sans entrée. Restent en attente, comme avant, les noms sans forme juridique déjà vus (« Dell », « HPE », « Lenovo », « PriceRunner », « Media Content Protection », European Commission).
