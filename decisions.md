@@ -4374,3 +4374,25 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Tranche : 4 306 → 4 324 clés, 347 485 caractères. Ce sont l'Item 4 des cinq 10-Q (8 689), la note de parties liées de Blue Owl (5 952), les items 1.01 (11 029) et 3.03 (5 707) de Meta, les quatre items 8.01 (4 926) et les en-têtes de trois pièces du 8-K de Meta (9 998 : EX-4.2, EX-10.1 et EX-10.2). Leurs corps (301 184 caractères) ne se lisent que si l'en-tête le demande (§11.1).
     - Bloc `text` : 4 432 → 4 460 clés, 147 033 caractères. Ce sont les notes des cinq 10-Q (engagements 5, investissements 5, dette 5, locations 4, revenu 3, notes de levier 5) et l'item 2.03 de Broadcom (2 966).
   - À lire : 43 blocs, 193 334 caractères, et au plus les trois corps de pièces de Meta. Liste `upd_20261031_groups`, du plus récent au plus ancien.
+
+  (7) Lecture des blocs des groupes (2026-10-31), par l'exécutant, sans sous-agent, liste `upd_20261031_groups` :
+  - Lus : les 43 blocs et deux corps de pièces de Meta, 45 clés sur 46. Les EX-10.1 et EX-10.2 (confirmations de vente à terme d'actions, parties bancaires seulement) se rouvrent, comme tout EX-10, par le bloc `text` de §14. L'EX-4.2 (convention de dépôt) reste à son en-tête : dépositaire bancaire seulement, et §14 ne rouvre pas un EX-4.
+  - Lignes : 141, dont 122 observations (49 à contrepartie nommée) et 19 abstentions ; aucune ligne rejetée. Deux en-têtes refusés une fois (titre de pièce absent du bloc) ont été soumis à nouveau avec le titre écrit, « Confirmation ».
+  - Nouveautés de la période :
+    - Amazon : une facilité de prêt garantie, liée à des accords de financement fournisseur pour l'achat d'actifs d'infrastructure technologique, jusqu'à environ 80,0 Md$ (tirages du T1 2027 au T3 2028, échéance cinq ans après chaque tirage, sûreté sur les actifs achetés) ; le term loan de 17,5 Md$ tiré en septembre 2026 ; des obligations de juillet (25,0 Md$) et de septembre (4,3 Md£) ; deux facilités renouvelables remplacées en octobre 2026 ; les obligations d'achat d'immobilisations présentées à part (159,6 Md$) ; des baux non commencés de 164,9 Md$.
+    - Meta : des actions de préférence Series A à conversion obligatoire (250 000 000 actions de dépôt, 1/20 d'action de 1 000 $ de préférence de liquidation) et des ventes à terme de 40 000 000 actions de classe A, 20 000 000 avec chacun des deux acheteurs à terme nommés, à 622,91875 $ par action au départ, à régler au plus tard le 19 novembre 2027.
+    - Alphabet :
+      - la coentreprise Crux AI, mise en équivalence et partie liée : 10,0 Md$ d'appuis potentiels (centres de données et énergie) et 16,8 Md$ de carnet au titre d'un accord commercial pluriannuel (ligne de carnet, D-0068) ;
+      - des garanties de rachat de matériel TPU vendu, 6,6 Md$ au plus ;
+      - des garanties pour les équipements énergétiques portées à 16,2 Md$ ;
+      - 802,1 Md$ d'engagements, dont 4,5 Md$ de lettres de crédit ;
+      - 130,5 Md$ de baux non commencés ;
+      - le prêt à terme garanti de 5,0 Md$ de Waymo (octobre 2026) ;
+      - les amendes du DMA (430 M€ et 460 M€).
+    - Broadcom : un soutien de valeur résiduelle à une entité ad hoc, sur des baies d'IA louées à un client non nommé, environ 43 Md$ au plus, non actualisé.
+    - Microsoft : 364,6 Md$ de baux non commencés (329,1 Md$ au 30 juin 2026).
+    - Intel : 19,6 Md$ d'engagements d'investissement et deux accords d'approvisionnement en substrats (5,3 à 6,1 Md$, après la clôture).
+    - Blackstone : deux souches à prix fixé (600 M$ 2031, 500 M$ 2033), le 8-K de clôture étant postérieur à l'as_of.
+  - Contreparties anonymes : aucune ligne n'attribue une contrepartie que le texte ne nomme pas. Restent sans nom le client de Broadcom, l'entité ad hoc et les partenaires financiers ; le prêteur de la facilité fournisseur d'Amazon ; la société privée du dérivé de 20,0 Md$ d'Alphabet ; les fournisseurs de substrats d'Intel.
+  - Personnes physiques (D-0078) : aucune ligne ne cite celles que nomment les textes (signataires des confirmations et employés des acheteurs à terme, fondateur partie à un accord de Meta cité par les confirmations, demandeurs des actions collectives d'Amazon, ministre dans un litige d'Intel).
+  - Écart : la ligne d'appui de Crux AI (note des EDV d'Alphabet) portait d'abord « Crux AI joint venture ». Avant tout commit, dans la même passe, le nom a été ramené à « Crux AI », celui de la ligne de carnet, pour qu'une seule entité porte les deux. Les autres champs sont inchangés, et le contrôle sémantique a été refait.
