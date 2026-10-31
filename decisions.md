@@ -4350,3 +4350,27 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Non fait : aucun bloc nouveau, aucune relecture ; la tâche planifiée de §11.5 n'est pas créée.
 
   (4) Ordre et commits : la décision et la configuration ; le statut des têtes non déposantes ; les phases 0 à 2 et les catalogues des groupes ; les blocs de §14, chaque partie avec son volume consigné ici avant toute lecture ; la lecture ; l'intégration (entités par extrait, réassemblage, rendus, résultats ici, tests, commit, push, rapport).
+
+  (5) Constat de la phase 0, et règle fixée avant toute recherche plein texte (2026-10-31) :
+  - Les submissions du 2026-10-31 portent 20 dépôts datés du 2026-10-27, acceptés après le tirage de D-0077 (vers 12 h 17 UTC). D-0077 (point 2) les savait absents de son exécution. La phase 0 les rattrape, comme tout dépôt manquant : 8-K de Blackstone (deux, item 8.01) et de Broadcom (item 2.03), 424B5 et FWP de Blackstone, et des formulaires 4, 144, 13G et PX14A6G.
+  - Les recherches plein texte, elles, ne les reverraient jamais. Leur fenêtre du 2026-10-25 au 2026-10-27 s'est tirée le 2026-10-27 vers 12 h 40, et la fenêtre suivante commence au lendemain de l'as_of précédent.
+  - Les fenêtres des exécutions du 2026-10-07 et du 2026-10-24 n'ont pas ce défaut. La première s'est tirée deux jours après son as_of. La seconde tombait un samedi.
+  - Règle : à partir de l'as_of précédent du 2026-10-27 (clé `search_overlap_from` de `config.yaml`), la fenêtre suivante reprend ce jour, ici du 2026-10-27 au 2026-10-31. Les fenêtres antérieures gardent leurs bornes, sous lesquelles elles se rejouent du cache.
+  - Les trois recherches (découverte, piste des non-déposants, montages) ajoutent leurs résultats nouveaux à la suite des anciens. Elles écartent ceux déjà gardés, par terme et identifiant du document : un document du 2026-10-27 déjà vu ne se compte pas deux fois.
+  - Code : `config.search_windows`, et 4 tests dans `tests/test_d0083.py`.
+
+  (6) Phases 0 à 2 et catalogues des groupes, avant toute lecture (2026-10-31) :
+  - Réseau : 149 requêtes, toutes en 200, aucun refus 403. Statut des têtes non déposantes : 2. Phase 0 : 62 (`company_tickers.json` et 61 listes de submissions). Index : 20. Phase 1 : 57 (`companyfacts` et archives XBRL). Phase 2 : 8.
+  - Statut des têtes non déposantes : ni Nscale (dernier dépôt, son S-1 du 2026-09-18) ni Anthropic (son S-1 du 2026-10-26) n'ont déposé depuis. Rien ne change pour leur texte propre (point 3).
+  - Inventaire : 30 761 → 30 832 dépôts. Il y en a 71 nouveaux : 51 datés du 2026-10-28 au 2026-10-30, et les 20 du 2026-10-27 du point 5. Aucun ne sort, aucun ne change de classe.
+    - Tranche : 5 rapports périodiques, les 10-Q de Microsoft (2026-10-28), d'Alphabet (2026-10-29), d'Amazon, d'Intel et de Blue Owl (2026-10-30) ; 5 8-K à items de la tranche : Meta (items 1.01, 3.03 et 5.03, 2026-10-29), Microsoft (8.01), Blue Owl (8.01, avec ses résultats) et Blackstone (deux 8.01).
+    - Le reste :
+      - 8-K hors tranche : résultats d'Alphabet, de Microsoft, d'Amazon et d'Intel (item 2.02), Oracle et Apollo (item 7.01), Broadcom (item 2.03, lu par le bloc `text`) ;
+      - émissions : 424B5 de Meta (deux) et de Blackstone (deux), 424B2 et FWP de Microsoft, FWP de Blackstone ; 8-A12B et certification de bourse de Meta ;
+      - SK hynix : cinq 6-K ;
+      - formulaires 4 (26) et 144 (4), 13G et 13G/A (7), PX14A6G (2) et un avis d'Intel (IRANNOTICE).
+  - Univers attendu : 24 472 → 24 612 cellules. Phase 1 : 793 dépôts lus (788), et les 7 échecs déjà connus (dépôts sans instance XBRL). Phase 2 : 2 349 documents (2 341), aucun échec.
+  - Catalogues : aucune clé déjà lue ne disparaît ni ne change.
+    - Tranche : 4 306 → 4 324 clés, 347 485 caractères. Ce sont l'Item 4 des cinq 10-Q (8 689), la note de parties liées de Blue Owl (5 952), les items 1.01 (11 029) et 3.03 (5 707) de Meta, les quatre items 8.01 (4 926) et les en-têtes de trois pièces du 8-K de Meta (9 998 : EX-4.2, EX-10.1 et EX-10.2). Leurs corps (301 184 caractères) ne se lisent que si l'en-tête le demande (§11.1).
+    - Bloc `text` : 4 432 → 4 460 clés, 147 033 caractères. Ce sont les notes des cinq 10-Q (engagements 5, investissements 5, dette 5, locations 4, revenu 3, notes de levier 5) et l'item 2.03 de Broadcom (2 966).
+  - À lire : 43 blocs, 193 334 caractères, et au plus les trois corps de pièces de Meta. Liste `upd_20261031_groups`, du plus récent au plus ancien.

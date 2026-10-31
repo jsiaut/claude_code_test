@@ -20,6 +20,8 @@ as_of: "2026-10-31"           # date de connaissance de l'exécution, seule sour
                              # « as_of » dans ce fichier finit à cette date
 as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27"]   # as_of des exécutions précédentes, dans l'ordre (D-0074) : une recherche plein texte
                                  # se coupe à ces dates, et une exécution reprend les catalogues de la précédente
+search_overlap_from: "2026-10-27"   # D-0083, point 5 : à partir de cet as_of précédent, la fenêtre suivante d'une recherche
+                                    # plein texte reprend son jour, pour les dépôts acceptés après le tirage de ce jour-là
 
 scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs, ownership]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)

@@ -94,11 +94,15 @@ def search_windows(start, end=None):
     précédentes : chaque fenêtre se tire une fois, à l'exécution qui la clôt, puis se rejoue du cache (D-0074)."""
     import datetime as dt
     end = end or as_of()
+    # D-0083, point 5 : un tirage fait le jour même de l'as_of laisse hors de sa fenêtre les dépôts de ce jour acceptés
+    # après lui ; à partir de `search_overlap_from`, la fenêtre suivante reprend ce jour (résultats dédoublonnés par
+    # identifiant). Les fenêtres antérieures ne changent pas : elles se rejouent du cache sous leurs bornes
+    overlap = _parsed().get("search_overlap_from")
     out, a = [], str(start)
     for c in _parsed()["as_of_previous"]:
         if a <= c < end:
             out.append((a, c))
-            a = (dt.date.fromisoformat(c) + dt.timedelta(days=1)).isoformat()
+            a = c if overlap and c >= str(overlap) else (dt.date.fromisoformat(c) + dt.timedelta(days=1)).isoformat()
     if a <= end:
         out.append((a, end))
     return out
