@@ -4396,3 +4396,36 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Contreparties anonymes : aucune ligne n'attribue une contrepartie que le texte ne nomme pas. Restent sans nom le client de Broadcom, l'entité ad hoc et les partenaires financiers ; le prêteur de la facilité fournisseur d'Amazon ; la société privée du dérivé de 20,0 Md$ d'Alphabet ; les fournisseurs de substrats d'Intel.
   - Personnes physiques (D-0078) : aucune ligne ne cite celles que nomment les textes (signataires des confirmations et employés des acheteurs à terme, fondateur partie à un accord de Meta cité par les confirmations, demandeurs des actions collectives d'Amazon, ministre dans un litige d'Intel).
   - Écart : la ligne d'appui de Crux AI (note des EDV d'Alphabet) portait d'abord « Crux AI joint venture ». Avant tout commit, dans la même passe, le nom a été ramené à « Crux AI », celui de la ligne de carnet, pour qu'une seule entité porte les deux. Les autres champs sont inchangés, et le contrôle sémantique a été refait.
+
+  (8) Blocs de §14, avant toute lecture (2026-10-31) :
+  - Réseau : 483 requêtes, toutes en 200, aucun refus 403. Par bloc : BDC Data Sets 1, `lender_liabilities` 225, découverte 69, piste des non-déposants 71, `form_d` 5, 6-K 10, `sb_own` 43, N-PORT 1, `ownership` 7, montages 51. Avec le statut et les phases 0 à 2, cela fait 632 requêtes à cet as_of, et le journal compte 27 566 lignes.
+  - `lender` et `lender_portfolio` : la page des BDC Data Sets porte les mêmes 22 archives, dont la dernière est `2026_09`. Aucun tirage, volumes inchangés.
+  - `lender_liabilities` :
+    - inventaire des véhicules : 64 444 → 64 507 dépôts, dont 72 datés du 2026-10-28 au 2026-10-30 ; aucun véhicule sans liste. Le solde tient, comme au 2026-10-27, à des dépôts anciens passés à une page de la liste d'EDGAR plus ancienne que la fenêtre (non recomptés un à un). 15 documents tirés.
+    - offres de rachat : 943 → 950. Il y a 601 lectures (596), dont 100 corrigées (100). Chaque lecture nouvelle ou changée a été vérifiée sur le texte de l'amendement final ; aucune ne demande de correction.
+      - Cinq lectures sont nouvelles : Vista Credit Strategic Lending (1 184 111,347 actions apportées, toutes acceptées), StepStone Private Credit Fund (10 000), LGAM Private Credit (toutes les parts apportées rachetées, nombre non écrit), Lord Abbett Private Credit Fund (21 178,6539) et Silver Point Private Credit Fund (95 455 apportées et acceptées).
+      - Trois sont relues sur un amendement final plus récent. Carlyle Credit Solutions : environ 1 781 107 actions acceptées (amendement n° 2 du 2026-10-27 ; 1 781 444 dans l'amendement n° 1). Fidelity Private Credit Fund : premier relevé, 1 367 793 actions, toutes acceptées. KKR FS Income Trust Select : amendement n° 2 du 2026-10-27, mêmes nombres.
+    - annonces : les mêmes 42 unités, aucune requête, aucun relevé en erreur. Le fichier des unités a été copié sous `.2026-10-27` avant `announce` ; il est identique après.
+  - Découverte :
+    - la page des Notes Data Sets ne porte aucune archive nouvelle (47 sur 47 scannées, la dernière `2026_09`) ;
+    - la recherche plein texte (60 requêtes, fenêtre du 2026-10-27 au 2026-10-31, point 5) passe de 9 433 à 9 449 résultats, et la vérification tire 7 pièces ;
+    - les candidats passent de 3 075 à 3 077. Il y en a trois nouveaux : Sagard Private Income Fund Inc. et KAT Construction Services, Inc. (Alphabet), Regenlab USA Inc. (Amazon). Un sort : Anthropic, PBC (rang 169). Depuis l'intégration de D-0077, ses dépôts sont ceux d'une entité du registre rattachée au laboratoire, et `group_ciks` les écarte comme ceux d'un groupe ; ses 14 unités restent dans la file telles quelles ;
+    - la file passe de 19 215 à 19 221 unités, les anciennes identiques, les nouvelles numérotées à la suite. Une seule entre dans la frontière (rang 50) : la pièce EX-10.1 (« Amendment No. 5 ») d'Installed Building Products, Inc. du 2026-10-27, candidat au rang 39 par une mention d'AMD. Son en-tête se prépare sans requête : 401 → 402 blocs.
+  - Piste des non-déposants : la recherche (67 requêtes) passe de 1 144 à 1 148 résultats, et la vérification tire 4 pièces. Les candidats passent de 384 à 383 (Anthropic, PBC sort, même motif), sans candidat nouveau. Les 4 unités nouvelles (mentions de Samsung) sont hors règle et n'entrent dans aucune file. Les blocs et la liste des blocs construits, copiés sous `.2026-10-27` avant `prepare`, sont identiques après : 535 blocs.
+  - `form_d` : 965 Form D, inchangé (5 requêtes).
+  - `foreign` : aucune unité nouvelle, et l'inventaire retient toujours 2 émetteurs.
+  - 6-K : 5 pièces tirées (10 requêtes). Une seule porte une fenêtre : le plafond de rachat d'actions propres de SK hynix (552 caractères). Le catalogue passe de 413 à 414 blocs, les anciens identiques.
+  - `sb_own` : inventaire des déposants (43 requêtes). Un bloc nouveau : l'annexe 13D/A de SB Global Advisers (SoftBank) du 2026-10-30 sur VTEX (5 300 caractères). Le catalogue passe de 473 à 474 blocs, les anciens identiques.
+  - N-PORT : 28 archives, de 2019q4 à 2026q3, aucune nouvelle ; aucune à rescanner.
+  - `ownership` : 125 dépôts au plan (120 13F-HR, 5 13D ou 13G), inchangé (7 requêtes).
+  - Montages :
+    - recherches sur la fenêtre du point 5 (37 requêtes), résultats de la veille gardés une fois : `meta_hyperion` passe de 3 044 à 3 446, `galaxy_helios` de 6 335 à 6 688, `anthropic_chain` de 244 à 263, `stargate` de 232 à 233. `athene_whco` et `sec_letters` n'en ont pas de nouveaux. Les relevés de portefeuille restent écartés par formulaire ;
+    - pièces tirées (14 requêtes) : 4 pour `meta_hyperion`, 1 pour `galaxy_helios`, 8 pour `anthropic_chain` ;
+    - corpus, sans requête : `labs inventory` donne 169 faits (150 au 2026-10-27), 149 des instances et 20 des Notes Data Sets. Les 19 nouveaux viennent des instances déposées du 2026-10-28 au 2026-10-30 ;
+    - préparation : 1 639 → 1 670 blocs, les 1 639 anciens identiques ligne à ligne. Il y en a 31 nouveaux :
+      - `anthropic_chain` 11 : pièces EX-99 de 8-K de résultats, pour Amazon (4), Tenable (2), Silicon Valley Acquisition Corp, Cognizant, Morningstar (lettre du dirigeant, 18 757 caractères), ServiceNow et Evercore ;
+      - `meta_hyperion` 9 : 485BPOS de quatre fonds American Funds (2026-10-30) ;
+      - `galaxy_helios` 9 : N-CSRS/A de DoubleLine Funds Trust (2026-10-28) ;
+      - `ppe_components` 2 : 10-Q d'Alphabet et d'Intel.
+    - Formulaires : 485BPOS et N-CSRS/A ne figurent pas dans la liste des relevés de portefeuille de D-0046 (point 8), qui compte 486BPOS et N-CSRS. Leurs fenêtres se préparent donc et se lisent comme tout bloc. La liste ne change pas (point 1) ; la question est laissée à l'utilisateur.
+  - À lire : 34 blocs de §14, 51 961 caractères, liste `upd_20261031_s14`, du plus récent au plus ancien.
