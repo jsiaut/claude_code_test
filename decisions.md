@@ -4325,3 +4325,28 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - `make check` (ruff, puis 486 tests) passe ;
     - `tests/test_d0082.py` (23 tests) couvre la garde des lignes de dette, l'ajout des emprunts à court terme à `NotesPayableCurrent`, les quatre bases des dotations et leur drapeau, la durée implicite, la révision jugée à l'arrondi (changement d'unité, double précision, companyfacts, chevauchement deux à deux insuffisant) et l'absence de candidat pour les additions payées en titres ;
     - deux jeux de données de tests suivent la règle nouvelle, sans changer ce qu'ils vérifient. `tests/test_memo.py` passe de la précision −6 à 2, pour que 10 et 11 restent une révision. `tests/test_d0075.py` donne sa dotation de 2 454 sous `ppe_depreciation`.
+
+- **D-0083 — Mise à jour du modèle à l'as_of du 2026-10-31. Règles fixées avant tout tirage.**
+  (1) Origine : demande de l'utilisateur, le 2026-10-31 : « Ok on oublie pour l'instant, mets plutôt à jour le modèle à la date du jour ». La variante laissée à l'utilisateur par D-0082 (point 9, Alphabet) reste en attente. C'est la troisième mise à jour (§11.5), après celles du 2026-10-24 (D-0074) et du 2026-10-27 (D-0077). Lecture séquentielle par l'exécutant, sans sous-agent. Ni groupe, ni bloc de §14, ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change.
+
+  (2) Constat, sans tirage, sur le code de c649d25 :
+  - Le 2026-10-31 est un samedi, et EDGAR ne reçoit aucun dépôt le week-end : la connaissance porte sur les dépôts datés au plus du vendredi 2026-10-30. Les tirages commencent vers 9 h 20 UTC.
+  - Reprise de l'exécution précédente : le code de D-0074 prend le dernier as_of de `as_of_previous`, ici le 2026-10-27. Aucun changement de code n'est requis.
+  - Deux leçons de D-0077 (point 8) :
+    - la piste des non-déposants se cherche par `search`, chaque terme sur la fenêtre nouvelle, et non par `search new` ;
+    - le fichier des unités d'annonces des BDC se copie sous `.2026-10-27` avant que `announce` ne le réécrive, comme les blocs et les unités de la piste avant `prepare`.
+  - Têtes non déposantes dont le S-1 se lit comme texte propre (Nscale, D-0054 ; Anthropic, D-0077) : aucune règle ne dit encore comment traiter une modification (S-1/A), une prise d'effet, un 424B4 ou un rapport périodique de la période nouvelle.
+  - Les tables de c649d25 portent le code de D-0082 : `delta.md` s'y compare.
+
+  (3) Règles : celles de D-0074 (point 3), à l'as_of du 2026-10-31, avec `as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27"]`.
+  - Période nouvelle : dépôts datés du 2026-10-28 au 2026-10-31. Une recherche plein texte n'est tirée que sur cette fenêtre.
+  - Les catalogues préparés et les files de l'exécution précédente se copient une fois sous `{nom}.2026-10-27`, avant leur première réécriture. Seuls s'y ajoutent les blocs et les unités de la période nouvelle.
+  - Statut des deux têtes non déposantes : leurs submissions se tirent à l'as_of, avant les phases (2 requêtes). Si la période nouvelle porte un des dépôts cités plus haut, son traitement se fixe ici, avant toute lecture. Sinon, rien ne change.
+  - Le reste ne change pas :
+    - ordre : verrou de session ; phases 0 à 2 et catalogues des groupes ; blocs de §14 dans l'ordre de D-0074 ; montages préparés après la lecture du texte des groupes ;
+    - réseau : un seul processus, 5 requêtes par seconde au plus, pause de 10 minutes après un refus 403, chaque requête au journal ;
+    - volumes consignés ici avant toute lecture ; lecture du plus récent au plus ancien, sans sous-agent ;
+    - `delta.md` comparé aux tables de c649d25.
+  - Non fait : aucun bloc nouveau, aucune relecture ; la tâche planifiée de §11.5 n'est pas créée.
+
+  (4) Ordre et commits : la décision et la configuration ; le statut des têtes non déposantes ; les phases 0 à 2 et les catalogues des groupes ; les blocs de §14, chaque partie avec son volume consigné ici avant toute lecture ; la lecture ; l'intégration (entités par extrait, réassemblage, rendus, résultats ici, tests, commit, push, rapport).
