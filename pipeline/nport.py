@@ -1036,10 +1036,20 @@ def tickers(cfg=None):
     return out
 
 
-def listing_date(cik, as_of, forms_=("424B4", "424B1")):
+NOT_LISTED = "not_listed"     # D-0083, point 11 : symbole réservé pendant l'enregistrement, aucune cotation à l'as_of
+REGISTRATION_FORMS = ("DRS", "DRS/A", "S-1", "S-1/A", "F-1", "F-1/A")
+EFFECT_FORMS = ("EFFECT", "8-A12B", "10-Q", "10-K", "20-F", "40-F")
+
+
+def listing_date(cik, as_of, forms_=("424B4", "424B1"), registration=None, effect=None):
     """Dépôt du premier prospectus d'introduction (424B4 ou 424B1, à l'as_of au plus) dans les submissions en
     cache ; "" si elles n'en montrent aucun (cotée sur toute la période) ; None si elles ne sont pas en cache,
-    ou pas toutes leurs pages (D-0065, point 7)."""
+    ou pas toutes leurs pages (D-0065, point 7). Sans prospectus, une entité dont le premier dépôt est un
+    enregistrement d'introduction n'est cotée qu'au premier dépôt de prise d'effet ou de cotation ; NOT_LISTED
+    tant qu'il n'y en a pas (D-0083, point 11)."""
+    u = cfg_unlisted()
+    registration = tuple(registration or u.get("registration_forms") or REGISTRATION_FORMS)
+    effect = tuple(effect or u.get("effect_forms") or EFFECT_FORMS)
     c = str(cik).zfill(10)
     main = cache.latest_api(c, "submissions")
     if main is None:
@@ -1051,19 +1061,29 @@ def listing_date(cik, as_of, forms_=("424B4", "424B1")):
         if q is None:
             return None
         pages.append(json.loads(cache.read(q)))
-    dates = [d for pg in pages for fm, d in zip(pg.get("form", []), pg.get("filingDate", []))
-             if fm in forms_ and d <= as_of]
-    return min(dates) if dates else ""
+    rows = [(d, fm) for pg in pages for fm, d in zip(pg.get("form", []), pg.get("filingDate", [])) if d <= as_of]
+    dates = [d for d, fm in rows if fm in forms_]
+    if dates:
+        return min(dates)
+    first = min((d for d, _ in rows), default=None)
+    if first is not None and any(fm in registration for d, fm in rows if d == first):
+        ev = [d for d, fm in rows if fm in effect]
+        return min(ev) if ev else NOT_LISTED
+    return ""
 
 
 def listing(ent_rows, as_of, tick=None, forms_=None):
-    """Par entité dont le CIK porte un symbole : sa date de cotation ("" sur toute la période, None si inconnue)."""
+    """Par entité dont le CIK porte un symbole : sa date de cotation ("" sur toute la période, None si inconnue).
+    Une entité en cours d'enregistrement (NOT_LISTED) n'y figure pas : elle se traite comme une entité sans symbole
+    (D-0083, point 11)."""
     tick = tickers() if tick is None else tick
     forms_ = tuple(forms_ or cfg_unlisted().get("listing_forms") or ("424B4", "424B1"))
     out = {}
     for r in ent_rows:
         if r["record_kind"] == "entity" and r.get("cik") and str(r["cik"]).zfill(10) in tick:
-            out[r["entity_id"]] = listing_date(r["cik"], as_of, forms_)
+            d = listing_date(r["cik"], as_of, forms_)
+            if d != NOT_LISTED:
+                out[r["entity_id"]] = d
     return out
 
 

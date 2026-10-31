@@ -89,19 +89,21 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..22d8c41 100644
+index 1378604..883c621 100644
 --- a/config.yaml
 +++ b/config.yaml
-@@ -16,9 +16,207 @@ user_agent:
+@@ -16,9 +16,209 @@ user_agent:
    value_sources: ["env:SEC_USER_AGENT", "file:secrets/user_agent.txt"]
    sec_hosts: [www.sec.gov, data.sec.gov, efts.sec.gov, xbrl.sec.gov]
  
 -scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
 -scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
-+as_of: "2026-10-27"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
++as_of: "2026-10-31"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
 +                             # « as_of » dans ce fichier finit à cette date
-+as_of_previous: ["2026-10-07", "2026-10-24"]   # as_of des exécutions précédentes, dans l'ordre (D-0074) : une recherche plein texte
++as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27"]   # as_of des exécutions précédentes, dans l'ordre (D-0074) : une recherche plein texte
 +                                 # se coupe à ces dates, et une exécution reprend les catalogues de la précédente
++search_overlap_from: "2026-10-27"   # D-0083, point 5 : à partir de cet as_of précédent, la fenêtre suivante d'une recherche
++                                    # plein texte reprend son jour, pour les dépôts acceptés après le tirage de ce jour-là
  
 +scope: [lender, text, discovery, paths, form_d, foreign, lender_portfolio, montages, lender_liabilities, nport, labs, ownership]   # blocs de §14 ouverts sur décision de l'utilisateur (§11.1)
 +scope_decision:              # réponse de l'utilisateur à la seconde page (§11.1, §11.3)
@@ -302,7 +304,7 @@ index 1378604..22d8c41 100644
  window:
    start_fiscal_year: 2021    # premier exercice clos en 2021 ; fin : as_of (§11.1)
    include_interim: true
-@@ -38,16 +236,193 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
+@@ -38,16 +238,193 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (
    AMD: "0000002488"
    AVGO: "0001730168"
    MRVL: "0001835632"
@@ -496,7 +498,7 @@ index 1378604..22d8c41 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +430,832 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +432,834 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -1326,10 +1328,12 @@ index 1378604..22d8c41 100644
 +  - {name: "Accenture", decision: D-0077, block: e81f7ed9c9237199cce7b00dadee3c8058e4b6321efce2d8a85a2eff717c819a, accession: 0001628280-26-067168, quote: "to build external reviewer capacity with Accenture", note: "activité du S-1 (7/8) : intégrateur, intention d'investir au moins 1 Md$ sur cinq ans avec lui"}
 +  - {name: "Ode with Anthropic", decision: D-0077, block: dfb9911ff86904681ab9513744b3a95b82acbcd039affa647e741363abec319b, accession: 0001628280-26-067168, quote: "We recently launched Ode with Anthropic, an AI services company, in partnership with leading private equity firms", note: "activité du S-1 (1/8) : société de services d'IA lancée avec des fonds de capital-investissement non nommés ; investissement de 325 M$ d'Anthropic (notes 3 et 16), consolidation non écrite : entité et groupe propres"}
 +
++  # D-0083, point 10 : coentreprise d'Alphabet nommée par la note du revenu du 10-Q du T3 2026, identité établie par l'extrait
++  - {name: "Crux AI", decision: D-0083, block: b854d77efddfe7e23eb259ae420054f65bc099163f86c750fa42ce77bb2f14c2, accession: 0001652044-26-000084, quote: "a multi-year commercial agreement with Crux AI, an unconsolidated equity method joint venture and a related party", note: "coentreprise mise en équivalence d'Alphabet, non consolidée : entité et groupe propres ; client de Google Cloud (16,8 Md$ de carnet) et bénéficiaire d'appuis potentiels de 10,0 Md$"}
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1317,10 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1321,10 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
@@ -1340,7 +1344,7 @@ index 1378604..22d8c41 100644
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1336,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1340,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1349,7 +1353,7 @@ index 1378604..22d8c41 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1525,73 @@ annex_e:
+@@ -318,6 +1529,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1423,7 +1427,7 @@ index 1378604..22d8c41 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1644,42 @@ annex_f:
+@@ -370,6 +1648,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1466,7 +1470,7 @@ index 1378604..22d8c41 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1699,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1703,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1477,7 +1481,7 @@ index 1378604..22d8c41 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -411,7 +1723,8 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -411,7 +1727,8 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    dividends_declared: [Dividends, DividendsCommonStock]
    profit_including_nci: [ProfitLoss]
    vendor_financed_ppe_additions: [NoncashOrPartNoncashAcquisitionFixedAssetsAcquired1]   # sans distinction du mode de paiement
@@ -1487,7 +1491,7 @@ index 1378604..22d8c41 100644
    debt_proceeds: [ProceedsFromIssuanceOfLongTermDebt, ProceedsFromIssuanceOfDebt]
    debt_repayments: [RepaymentsOfLongTermDebt, RepaymentsOfDebt]
    rou_obtained_finance_lease: [RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability]
-@@ -438,6 +1751,504 @@ concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans l
+@@ -438,6 +1755,508 @@ concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans l
  
  unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
@@ -1952,6 +1956,10 @@ index 1378604..22d8c41 100644
 +    quoted_levels: ["1", "2"]          # niveaux de la hiérarchie de juste valeur comptés, non gardés (point 5)
 +    mark: {asset_cats: [EC, EP], unit: NS, payoff: Long, level: "3"}   # positions de nport_equity_mark (point 8)
 +    listing_forms: [424B4, 424B1]      # premier prospectus d'introduction : date de cotation (point 7)
++    # D-0083, point 11 : sans prospectus, une entité dont le premier dépôt est un enregistrement d'introduction n'est
++    # cotée qu'au premier dépôt de prise d'effet ou de cotation ; sans lui, elle se traite comme une entité sans symbole
++    registration_forms: [DRS, DRS/A, S-1, S-1/A, F-1, F-1/A]
++    effect_forms: [EFFECT, 8-A12B, 10-Q, 10-K, 20-F, 40-F]
 +    credit:                  # D-0066, point 4 : positions de nport_credit_mark (prêts et titres de dette, nominal, niveau 3)
 +      decision: D-0066
 +      asset_cats: [LON, DBT]

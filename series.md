@@ -1,6 +1,6 @@
 # series.md — vue temporelle
 
-*Exécution du 2026-10-27. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
+*Exécution du 2026-10-31. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
 
 ## NVIDIA (NVDA)
 
@@ -59,6 +59,7 @@
 | 2025-12-31 | 18,0 % | 15,1 % | 0,53 x | n.d. (terme manquant) | 24 551 M$ | 22 957 M$ | 24 551 M$ | 51 j | 242 800 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-03-31 | 21,8 % | 17,5 % | 0,78 x | n.d. (terme manquant) | 10 116 M$ | 9 594 M$ | 10 116 M$ | 52 j | 467 600 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-06-30 | 24,2 % | 20,1 % | 1,15 x | n.d. (terme manquant) | -5 855 M$ | -6 173 M$ | -25 855 M$ | 53 j | 519 500 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
+| 2026-09-30 | 24,7 % | 22,2 % | 1,21 x | n.d. (terme manquant) | -9 065 M$ | -10 175 M$ | -9 065 M$ | 52 j | 567 700 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 
 ## Amazon (AMZN)
 
@@ -86,6 +87,7 @@
 | 2025-12-31 | 13,6 % | 12,4 % | 0,73 x | n.d. (terme manquant) | 14 937 M$ | 14 552 M$ | 13 537 M$ | 29 j | 244 000 M$ | 0,47 x | 0,70 x |  |
 | 2026-03-31 | 16,6 % | 14,2 % | 1,70 x | n.d. (terme manquant) | -18 171 M$ | -18 639 M$ | -33 171 M$ | 37 j | 364 000 M$ | 0,78 x | 0,67 x | F2 |
 | 2026-06-30 | 19,6 % | 15,8 % | 1,19 x | n.d. (terme manquant) | -8 821 M$ | -9 216 M$ | -32 521 M$ | 40 j | 496 000 M$ | 0,78 x | 0,65 x | F1, F2 |
+| 2026-09-30 | 12,1 % | 15,4 % | 1,82 x | n.d. (terme manquant) | -34 837 M$ | -35 270 M$ | -56 137 M$ | 45 j | 578 000 M$ | 0,98 x | 0,62 x | F1, F2 |
 
 ## Meta (META)
 
@@ -143,6 +145,7 @@
 | 2025-12-31 | 16,7 % | 16,7 % | 0,84 x | n.d. (terme manquant) | 5 882 M$ | 5 181 M$ | 5 882 M$ | 64 j | 631 000 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-03-31 | 18,3 % | 17,9 % | 0,66 x | n.d. (terme manquant) | 15 803 M$ | 14 964 M$ | 15 803 M$ | 65 j | 633 000 M$ | 0,22 x | 0,09 x |  |
 | 2026-06-30 | 17,7 % | 17,8 % | 0,65 x | n.d. (terme manquant) | 19 639 M$ | 18 717 M$ | 19 639 M$ | 82 j | 684 000 M$ | 0,21 x | 0,09 x |  |
+| 2026-09-30 | 18,8 % | 17,9 % | 0,68 x | n.d. (terme manquant) | 18 633 M$ | 17 633 M$ | 18 633 M$ | 62 j | 683 000 M$ | 0,17 x | 0,11 x |  |
 
 ## Oracle (ORCL)
 
@@ -703,6 +706,7 @@
 | 2025-12-31 | 19,7 % | 25,0 % | 0,06 x | n.d. (terme manquant) | 359 M$ | n.d. (concept non résolu) | 359 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2026-03-31 | 10,3 % | 19,3 % | 0,13 x | n.d. (terme manquant) | 89 M$ | n.d. (concept non résolu) | 89 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2026-06-30 | 7,1 % | 14,2 % | 0,02 x | n.d. (terme manquant) | 453 M$ | n.d. (concept non résolu) | 453 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-09-30 | 10,8 % | 11,8 % | 0,01 x | n.d. (terme manquant) | 601 M$ | n.d. (concept non résolu) | 601 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 
 ## Apollo (APO)
 
@@ -784,6 +788,7 @@
 | 2025-12-27 | -4,1 % | -0,5 % | 0,81 x | n.d. (terme manquant) | 800 M$ | n.d. (terme manquant) | 800 M$ | 26 j | n.d. (non publié) | 4,91 x | n.d. (terme manquant) | F8 |
 | 2026-03-28 | 7,2 % | 1,4 % | 3,32 x | n.d. (terme manquant) | -2 540 M$ | n.d. (terme manquant) | -2 540 M$ | 27 j | n.d. (non publié) | 6,33 x | n.d. (terme manquant) | F2 |
 | 2026-06-27 | 25,4 % | 7,5 % | 0,36 x | n.d. (terme manquant) | 4 450 M$ | n.d. (terme manquant) | 4 450 M$ | 23 j | n.d. (non publié) | 4,11 x | n.d. (terme manquant) |  |
+| 2026-09-26 | 20,9 % | 12,1 % | 0,79 x | n.d. (terme manquant) | 1 058 M$ | 939 M$ | 1 058 M$ | 23 j | n.d. (non publié) | 3,49 x | n.d. (terme manquant) |  |
 
 ## Micron (MU)
 
@@ -9975,12 +9980,17 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | Fait balisé | Membre | Période | Valeur | Pièce |
 | --- | --- | --- | ---: | --- |
 | `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Anthropic | 2026-04-01 → 2026-06-30 | 100 000 M$ | 10-Q 0001018724-26-000026 |
+| `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Anthropic | 2026-04-01 → 2026-06-30 | 100 000 M$ | 10-Q 0001018724-26-000040 |
+| `EquitySecuritiesWithoutReadilyDeterminableFairValueUpwardPriceAdjustmentAnnualAmount` | Anthropic | 2025-01-01 → 2025-09-30 | 7 200 M$ | 10-Q 0001018724-26-000040 |
+| `EquitySecuritiesWithoutReadilyDeterminableFairValueUpwardPriceAdjustmentAnnualAmount` | Anthropic | 2026-01-01 → 2026-09-30 | 62 800 M$ | 10-Q 0001018724-26-000040 |
+| `InvestmentOwnedBalanceShares` | Anthropic | au 2026-09-30 | 164 000 000 actions | 10-Q 0001018724-26-000040 |
 | `LineOfCreditFacilityCurrentBorrowingCapacity` | Anthropic | au 2026-06-30 | 15 000 M$ | 10-Q 0001018724-26-000026 |
 | `LineOfCreditFacilityExpirationPeriod` | Anthropic | 2026-01-01 → 2026-06-30 | 30 mois | 10-Q 0001018724-26-000026 |
 | `LineOfCreditFacilityExpirationPeriod` | Anthropic | 2026-04-01 → 2026-04-29 | 30 mois | 10-Q 0001018724-26-000014 |
 | `LineOfCreditFacilityMaximumBorrowingCapacity` | Anthropic | au 2026-06-30 | 20 000 M$ | 10-Q 0001018724-26-000026 |
 | `LineOfCreditFacilityMaximumBorrowingCapacity` | Anthropic | au 2026-04-29 | 20 000 M$ | 10-Q 0001018724-26-000014 |
 | `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Anthropic | au 2026-06-30 | 10 ans | 10-Q 0001018724-26-000026 |
+| `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Anthropic | au 2026-06-30 | 10 ans | 10-Q 0001018724-26-000040 |
 
 **Anthropic — Apollo**
 
@@ -10036,10 +10046,13 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | --- | --- | --- | ---: | --- |
 | `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Open AI | 2026-01-01 → 2026-03-31 | 100 000 M$ | 10-Q 0001018724-26-000014 |
 | `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Open AI | 2026-01-01 → 2026-03-31 | 100 000 M$ | 10-Q 0001018724-26-000026 |
+| `RevenueRemainingPerformanceObligationAmountPeriodIncreaseDecrease` | Open AI | 2026-01-01 → 2026-03-31 | 100 000 M$ | 10-Q 0001018724-26-000040 |
 | `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Open AI | au 2026-03-31 | 8 ans | 10-Q 0001018724-26-000014 |
 | `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Open AI | au 2026-03-31 | 8 ans | 10-Q 0001018724-26-000026 |
+| `RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1` | Open AI | au 2026-03-31 | 8 ans | 10-Q 0001018724-26-000040 |
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000014 |
 | `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000026 |
+| `RevenueRemainingPerformanceObligation` | Open AI | au 2026-03-31 | 38 000 M$ | 10-Q 0001018724-26-000040 |
 
 **OpenAI — Cerebras**
 
@@ -10113,6 +10126,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2025-12-31 | 11 700 M$ | 10-Q 0001193125-26-027207 |
 | `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2026-03-31 | 11 800 M$ | 10-Q 0001193125-26-191507 |
 | `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2026-06-30 | 11 900 M$ | 10-K 0001193125-26-323660 |
+| `EquityMethodInvestmentsFunded` | OpenAI Global, LLC | au 2026-09-30 | 12 000 M$ | 10-Q 0001193125-26-436133 |
 | `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2024-09-30 | 13 000 M$ | 10-Q 0000950170-24-118967 |
 | `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2024-12-31 | 13 000 M$ | 10-Q 0000950170-25-010491 |
 | `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2025-03-31 | 13 000 M$ | 10-Q 0000950170-25-061046 |
@@ -10121,12 +10135,15 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2025-12-31 | 13 000 M$ | 10-Q 0001193125-26-027207 |
 | `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2026-03-31 | 13 000 M$ | 10-Q 0001193125-26-191507 |
 | `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2026-06-30 | 13 000 M$ | 10-K 0001193125-26-323660 |
+| `EquityMethodInvestmentsTotalFundingCommitments` | OpenAI Global, LLC | au 2026-09-30 | 13 000 M$ | 10-Q 0001193125-26-436133 |
 | `InvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2025-10-28 | 27,0 % | 10-Q 0001193125-25-256321 |
 | `PurchaseCommitmentIncrementalAmountCommitted` | OpenAI Global, LLC | 2025-10-28 → 2025-10-28 | 250 000 M$ | 10-Q 0001193125-25-256321 |
 | `AccountsReceivableNet` | OpenAI Global, LLC | au 2026-06-30 | 6 000 M$ | 10-K 0001193125-26-323660 |
+| `AccountsReceivableNet` | OpenAI Global, LLC | au 2026-09-30 | 7 200 M$ | 10-Q 0001193125-26-436133 |
 | `EquityMethodInvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2025-12-31 | 27,0 % | 10-Q 0001193125-26-027207 |
 | `EquityMethodInvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2026-03-31 | 27,0 % | 10-Q 0001193125-26-191507 |
 | `EquityMethodInvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2026-06-30 | 25,0 % | 10-K 0001193125-26-323660 |
+| `EquityMethodInvestmentOwnershipPercentage` | OpenAI Global, LLC | au 2026-09-30 | 24,0 % | 10-Q 0001193125-26-436133 |
 | `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2023-07-01 → 2024-06-30 | -1 500 M$ | 10-K 0001193125-26-323660 |
 | `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2024-07-01 → 2024-09-30 | -688 M$ | 10-Q 0001193125-25-256321 |
 | `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2024-07-01 → 2024-12-31 | -1 900 M$ | 10-Q 0001193125-26-027207 |
@@ -10140,7 +10157,9 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-07-01 → 2026-03-31 | 5 900 M$ | 10-Q 0001193125-26-191507 |
 | `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2026-01-01 → 2026-03-31 | -19 M$ | 10-Q 0001193125-26-191507 |
 | `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2025-07-01 → 2026-06-30 | 6 500 M$ | 10-K 0001193125-26-323660 |
+| `NonoperatingIncomeExpense` | OpenAI Global, LLC | 2026-07-01 → 2026-09-30 | 272 M$ | 10-Q 0001193125-26-436133 |
 | `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI Global, LLC | 2025-07-01 → 2026-06-30 | 24 100 M$ | 10-K 0001193125-26-323660 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | OpenAI Global, LLC | 2026-07-01 → 2026-09-30 | 10 000 M$ | 10-Q 0001193125-26-436133 |
 
 **OpenAI — DESTINY TECH100 INC. (cik:0001843974, hors du graphe)**
 
@@ -10402,11 +10421,18 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - series:S000007733, « anthropic pbc series d pc pp » : 148,29 au 2025-09-30, 148,28 au 2025-12-31 (valeur par action, USD) (0000035402-26-001320)
 - series:S000007755, « anthropic pbc series d pc pp » : 148,29 au 2025-09-30, 148,28 au 2025-12-31 (valeur par action, USD) (0000035402-26-001344)
 
+## Alphabet → Crux AI : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-09-30 | 3,0 % | 16 800 M$ | 567 700 M$ | reste écrit par le vendeur | 10-Q 0001652044-26-000084 |
+
 ## Amazon → Anthropic : carnet contracté, RPO (D-0068)
 
 | Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-09-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 
 ## Amazon → OpenAI : carnet contracté, RPO (D-0068)
 
@@ -10414,6 +10440,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-03-31 | 10,4 % | 38 000 M$ | 364 000 M$ | RPO balisé par client | 10-Q 0001018724-26-000014 |
 | 2026-06-30 | [0 ; 27,8 %] | 138 000 M$ | 496 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001018724-26-000014 |
+| 2026-09-30 | [0 ; 23,9 %] | 138 000 M$ | 578 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001018724-26-000014 |
 
 ## Applied Digital → CoreWeave : carnet contracté, loyers à recevoir (D-0068)
 
@@ -10480,6 +10507,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2025-12-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 | 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 | 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-09-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 
 ## Nebius → Meta : carnet contracté, RPO (D-0068)
 
@@ -10553,6 +10581,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 |  |  | nature non écrite | pas encore en service | immobilisations | montant | 78 592 M$ | 10-K 0001652044-26-000018 |
 | 2026-03-31 | 108 597 M$ | nature non écrite | pas encore en service | immobilisations | montant | 108 597 M$ | 10-Q 0001652044-26-000048 |
 | 2026-06-30 | 122 814 M$ | nature non écrite | pas encore en service | immobilisations | montant | 122 814 M$ | 10-Q 0001652044-26-000071 |
+| 2026-09-30 | 145 270 M$ | nature non écrite | pas encore en service | immobilisations | montant | 145 270 M$ | 10-Q 0001652044-26-000084 |
 
 ## Amazon : composition des en-cours, telle qu'écrite (D-0076)
 
@@ -10683,6 +10712,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2025-12-27 | 34 543 M$ | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 5 600 M$ | 10-K 0000050863-26-000011 |
 | 2026-03-28 | n.d. (non publié) | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 5 800 M$ | 10-Q 0000050863-26-000079 |
 | 2026-06-27 | n.d. (non publié) | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 6 000 M$ | 10-Q 0000050863-26-000157 |
+| 2026-09-26 | n.d. (non publié) | nature non écrite (« arizona scip ») | en construction | immobilisations | montant | 5 900 M$ | 10-Q 0000050863-26-000191 |
 
 ## Meta : composition des en-cours, telle qu'écrite (D-0076)
 

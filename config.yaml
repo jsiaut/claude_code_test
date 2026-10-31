@@ -2214,6 +2214,10 @@ nport:                       # D-0058, volet F : obligations de SoftBank valoris
     quoted_levels: ["1", "2"]          # niveaux de la hiérarchie de juste valeur comptés, non gardés (point 5)
     mark: {asset_cats: [EC, EP], unit: NS, payoff: Long, level: "3"}   # positions de nport_equity_mark (point 8)
     listing_forms: [424B4, 424B1]      # premier prospectus d'introduction : date de cotation (point 7)
+    # D-0083, point 11 : sans prospectus, une entité dont le premier dépôt est un enregistrement d'introduction n'est
+    # cotée qu'au premier dépôt de prise d'effet ou de cotation ; sans lui, elle se traite comme une entité sans symbole
+    registration_forms: [DRS, DRS/A, S-1, S-1/A, F-1, F-1/A]
+    effect_forms: [EFFECT, 8-A12B, 10-Q, 10-K, 20-F, 40-F]
     credit:                  # D-0066, point 4 : positions de nport_credit_mark (prêts et titres de dette, nominal, niveau 3)
       decision: D-0066
       asset_cats: [LON, DBT]

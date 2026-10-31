@@ -4447,3 +4447,75 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   (10) Entités par extrait, avant le réassemblage (2026-10-31) : une entrée.
   - « Crux AI » devient une entité et un groupe propres (`own_entities`), comme Project Beignet Holdings (D-0046) : la note du revenu d'Alphabet la décrit comme « an unconsolidated equity method joint venture and a related party ». Elle n'est pas rattachée à Alphabet, qui ne la consolide pas.
   - Morgan Stanley Capital Services LLC, acheteur à terme de Meta, porte sa forme juridique : c'est une entité propre par la règle de D-0022, sans entrée. Restent en attente, comme avant, les noms sans forme juridique déjà vus (« Dell », « HPE », « Lenovo », « PriceRunner », « Media Content Protection », European Commission).
+
+  (11) Premier réassemblage (2026-10-31), constat, et règle fixée avant tout changement de code :
+  - Réassemblage : 1 385 s. Tables contre c649d25 : documents 26 804 → 27 439 (+635), faits 1 588 711 → 1 598 069 (+9 358), observations 31 287 → 31 464 (+177), entités 3 636 → 3 643 (+7), liens 11 285 → 11 315 (+30), mesures 193 875 → 194 277 (+402), contrôles 71 106 → 71 589 (+483), exclusions 31 887 → 31 903 (+16). Aucun document, fait, observation, entité ni lien ne disparaît.
+  - Chaque écart s'explique par la période nouvelle (point 12), sauf un : les marques N-PORT d'Anthropic.
+    - `company_tickers.json` du 2026-10-31 donne le symbole ANT au CIK 2130357 (Anthropic PBC), absent de la liste du 2026-10-27.
+    - Les submissions du même jour n'en portent aucun (champs `tickers` et `exchanges` vides). Elles ne montrent qu'un DRS (2026-06-01), cinq DRS/A et le S-1 du 2026-10-26 : ni prospectus d'introduction (424B4 ou 424B1), ni avis de prise d'effet.
+    - La règle de D-0065 (point 7) lit « symbole sans prospectus d'introduction » comme « coté sur toute la période ». Les 606 marques de l'entité `name:anthropic pbc` sortent donc à l'étape `listed_at_date`. `nport_equity_mark` d'Anthropic passe de 620 à 14 cellules ; restent celles de l'émetteur déclaré « Anthropic », sans CIK.
+    - `nport_equity_held` passe de 11 à 3 trimestres, et leurs valeurs chutent (15,35 Md$ → 120,8 M$ au 2026-06-30). L'événement L3 d'Anthropic (`lab_event`) devient non déterminable pour 8 trimestres : 2 calculés au lieu de 10.
+  - C'est faux : Anthropic n'est pas cotée à l'as_of. Le symbole est réservé pendant l'enregistrement de son offre.
+    - SB Energy Inc. est dans le même cas (SBE ; DRS du 2026-05-22, S-1 du 2026-09-01, deux S-1/A). Elle était déjà « cotée sur toute la période » au 2026-10-27, mais n'a aucune position N-PORT : aucun effet sur les tables.
+    - Des 16 entités « cotées sur toute la période », ces deux seules ont un premier dépôt qui est un enregistrement d'introduction.
+  - Règle, qui précise D-0065 (point 7) :
+    - Une entité à symbole, sans prospectus d'introduction à l'as_of, dont le premier dépôt à l'as_of est un enregistrement d'introduction (DRS, S-1 ou F-1, ou leur modification), n'était pas cotée avant lui.
+    - Sa date de cotation est celle du premier dépôt, à l'as_of, qui marque la prise d'effet ou la cotation : avis EFFECT, enregistrement 8-A12B, rapport périodique (10-Q, 10-K, 20-F, 40-F).
+    - Sans un tel dépôt, elle n'est pas cotée à l'as_of. Elle se traite comme une entité sans symbole, règle des archives cotées comprise (D-0065, point 15).
+    - Rien ne change pour les autres entités, ni pour celles dont un prospectus d'introduction donne la date.
+  - Attendu : les 606 marques et les 8 trimestres de valeur détenue d'Anthropic PBC reviennent, aux valeurs du 2026-10-27 (les 28 archives N-PORT sont inchangées, point 8), et l'événement L3 avec eux. SB Energy sort de la liste des entités cotées, sans effet. Aucune autre table ne change.
+  - Un second réassemblage suit. Ses tables se comparent à celles de c649d25 (point 12) et à celles du premier.
+
+  (12) Code, second réassemblage, comparaison et rendus (2026-10-31) :
+  - Code de la règle du point 11 : `nport.listing_date` et `nport.listing`, listes `registration_forms` et `effect_forms` sous `nport.unlisted` de `config.yaml`, 4 tests dans `tests/test_d0083.py`. `make check` : 494 tests, tous passés.
+  - Second réassemblage : 1 257 s. Contre le premier, seules changent des cellules d'Anthropic : ses 606 marques et 8 trimestres de valeur détenue reviennent ; 3 trimestres de valeur détenue et 11 cellules de `lab_event` retrouvent leur valeur. Contre c649d25, l'as_of mis à part, les 620 marques, les 11 trimestres et les 115 cellules de `lab_event` d'Anthropic sont identiques. SB Energy sort de la liste des entités cotées, sans effet. Les sept autres tables sont celles du premier réassemblage, ligne pour ligne.
+  - Tables contre c649d25 :
+    - documents 26 804 → 27 439 (+635), aucun retiré : listes de submissions 327, pages web 165, documents principaux 58, `companyfacts` 37, en-têtes SGML 16, index de dépôt 10, instances 6, archives XBRL 5, `MetaLinks` 5, `FilingSummary` 5, liste des symboles 1.
+    - faits 1 588 711 → 1 598 069 (+9 358), aucun retiré : instances 7 187 et `companyfacts` 2 171. Ce sont les cinq 10-Q (Alphabet 2 588, Amazon 1 962, Blue Owl 1 686, Intel 1 606, Microsoft 1 504) et 12 faits des 424B5 de Meta.
+    - observations 31 287 → 31 464 (+177), aucune retirée : les 141 lignes des groupes (point 7) et les 36 de §14 (point 9), soit 128 observations et 49 abstentions.
+    - entités 3 636 → 3 643 (+7) : Crux AI et Morgan Stanley Capital Services LLC, une entité et une appartenance chacune (point 10) ; trois noms en attente, sans identité affirmée par une pièce (« counterparties », « lenders under supplier financing arrangements », « special purpose vehicle »).
+    - liens 11 285 → 11 315 (+30), aucun retiré : 22 arêtes et 8 relations entre montants.
+      - Intel : revenus d'Altera (446 et 126 M$) et participation dans Altera (3,1 Md$) ; revenus de HP, de Lenovo Group et de Dell ; garanties envers Amazon Web Services, Oracle, IBM, Cisco et trois noms en attente (Dell, HPE, Lenovo).
+      - Alphabet : appui de 10,0 Md$ à Crux AI. Meta : ventes à terme d'actions avec Goldman Sachs & Co. LLC et Morgan Stanley Capital Services LLC, deux arêtes chacune, sans montant.
+      - Microsoft : deux arêtes de financement vers OpenAI, de nature « mise en équivalence », 272 M$ au trimestre clos le 2026-09-30 et 4,1 Md$ au trimestre clos le 2025-09-30.
+      - Amazon : engagement d'achat d'Apple. Blackstone : garantie de sa filiale de financement.
+      - Un lien change, par sa seule date de connaissance : l'arête de prépaiement de Cipher à SuperAcme (2021) passe du 2021-09-09 au 2021-09-08. La pièce figure dans le 8-K du 2021-09-08 et dans son 8-K/A du lendemain, sous la même clé de contenu. Le chargement garde le dernier des deux blocs du catalogue (`load.load_observations`), et leur ordre a changé quand la phase 2 a réécrit le catalogue des groupes. Aucun autre effet.
+    - mesures 193 875 → 194 891 (+1 016) : 2 329 cellules apparaissent et 1 313 disparaissent.
+      - 1 312 cellules changent de date de fin. Celles datées de l'as_of passent au 2026-10-31 : `annex_e_outcome` 407, `contract_coverage` 252, `relationship_conclusion` 252, `documented_pair_coverage` 207, `documented_path` 118. `counterparty_exposure` (58) passe au trimestre nouveau. Les cellules de trois offres de rachat de BDC (`bdc_tender_acceptance_ratio`, `bdc_tender_demand_ratio` et F15, 6 chacune) suivent la dernière offre du véhicule.
+      - 1 016 cellules sont nouvelles : le trimestre clos fin septembre 2026 des cinq 10-Q (ratios et flux, segments 188, `financed_status` 172, `exposure_matrix` 67, `working_capital` 60, signaux), `documented_backlog_dependency` (44, dont 22 de la vue par millésime), les offres de rachat nouvelles (14 ratios et leurs événements), `annex_e_outcome` d'Alphabet (16), `lab_tagged_value` d'Amazon et de Microsoft (14), `ppe_component_disclosed` d'Alphabet et d'Intel (8).
+      - Une cellule change de clé : la ligne mise en équivalence du grand livre de Microsoft (`lab_ledger`) passe de l'exercice 2026 (6,5 Md$) au trimestre clos le 2026-09-30 (272 M$).
+      - 389 cellules de même clé changent. Pour 345, seules leur lignée, leur date de connaissance ou leurs drapeaux changent : 370 dates de connaissance passent à un dépôt de la période nouvelle, qui reprend la période en comparatif. Pour les 44 autres :
+        - offres de rachat : Carlyle Credit Solutions a ses taux (acceptation 1,0, demande 0,373 ; point 8). Les offres de Star Mountain Lower Middle-Market Capital, de Kennedy Lewis Capital et d'Audax Private Credit Fund, closes fin août et début septembre, passent de « offre peut-être encore ouverte » à « résultat non publié ». 5 cellules F16 se ferment sans événement : une offre nouvelle est venue dans les 120 jours ;
+        - Intel : `fcf_after_finance_leases` du trimestre clos le 2025-09-27 devient calculable (27 M$), le 10-Q nouveau donnant le terme en comparatif. Blue Owl : `operating_lease_rou_additions` des T3 et T4 2025, de même ;
+        - Microsoft et Alphabet : dans les vues `revised`, les profils de preuve changent, les termes repris par les 10-Q nouveaux passant du niveau A (audité) au niveau B (revu) ; valeurs inchangées.
+      - Deux valeurs changent parmi les cellules datées de l'as_of.
+        - La part E7 de l'annexe E pour l'ensemble passe de 0,5595 à 0,5625, conclusion inchangée.
+        - Les paires documentées d'Alphabet passent de 1 à 5. Les quatre nouvelles (Anthropic, Cipher, ADT, Planet Labs) ont des arêtes connues après le 10-Q du T2 d'Alphabet : le S-1 d'Anthropic du 2026-10-26, et des dépôts du 2026-07-30 au 2026-09-03. En vue `as_known`, elles ne s'activent qu'au trimestre du 2026-09-30, qu'ouvre le 10-Q du 2026-10-29.
+    - contrôles 71 106 → 71 589 (+483) :
+      - 252 contrôles bilatéraux (C5) datés de l'as_of passent au 2026-10-31.
+      - 121 lignes de la vue `revised` passent au dépôt plus récent qui reprend la même date. 112 gardent leur statut, et 9 basculent, tous en C1 :
+        - 7 de `ok` à `not_testable`, pour Amazon, Alphabet, Intel, Microsoft et Blue Owl : le 10-Q nouveau ne balise aucune composante des capitaux propres à cette date ;
+        - 1 de `ok` à `mismatch` (Intel au 2025-09-27, composantes manquantes) ;
+        - 1 de `mismatch` à `not_testable` (Intel au 2025-06-28).
+      - 483 contrôles sont nouveaux (les cinq 10-Q). Les désaccords passent de 4 434 à 4 445 :
+        - sommes des échéanciers de location des 10-Q d'Amazon, d'Alphabet et de Blue Owl (C10, comme au 2026-06-30) ;
+        - composantes des capitaux propres de Blue Owl (C1, comme depuis 2021) ;
+        - un retraitement d'Intel au 2025-09-27 (C4 : gains et pertes sur investissements, 486 → 611 M$, cause inconnue).
+    - exclusions 31 887 → 31 903 (+16) : 19 nouvelles, 3 retirées.
+      - Nouvelles :
+        - 9 unités non traitées : 5 de la file de la découverte, hors frontière, et 4 de la piste des non-déposants, hors règle (point 8) ;
+        - 5 documents hors champ : quatre 6-K de SK hynix sans terme du lexique, et le 10-Q de Blue Owl pour les montages ;
+        - les 3 noms en attente ;
+        - l'en-tête de l'EX-4.2 de Meta (parties financières seulement, point 7) ;
+        - l'agrégat d'exposition d'Alphabet à Fluidstack, invalide par l'invariant (a), qui passe au trimestre nouveau.
+      - Retirées : le même agrégat au 2026-06-30, et les deux graphies du nom d'émetteur « Morgan Stanley Capital Services LLC » déclaré par des fonds (N-PORT). Ce nom est désormais rattaché à l'entité du point 10.
+  - Rendus : `delta.md` se compare à c649d25.
+    - Aucun arrêt (§11.4) : aucun refus 403 ; 1 groupe sur 32 en échec (Apollo, comme avant) ; 21 périodes en échec sur 918.
+    - Événements nouveaux de l'annexe F, au trimestre clos fin septembre 2026 :
+      - Amazon : F1 (capex décaissé de 77,3 Md$, 1,82 fois le CFO, après 1,19 au T2) et F2 (flux après financement des contreparties : −56,1 Md$) ;
+      - Alphabet : F1 (51,4 Md$, 1,21 fois le CFO, après 1,15 au T2) et F2 (−9,1 Md$).
+    - Aucun événement ne disparaît. 31 938 nombres publiés.
+  - Laissés à l'utilisateur :
+    - la variante d'Alphabet de D-0082 (point 9) ;
+    - l'ajout de 485BPOS et de N-CSRS/A aux relevés de portefeuille (point 8).
+  - Proposé, non fait : quand un même contenu figure dans deux dépôts, garder le bloc du premier dépôt plutôt que le dernier du catalogue. Le choix ne dépendrait plus de l'ordre des lignes.
