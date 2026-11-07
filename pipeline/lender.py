@@ -85,7 +85,9 @@ def fetch(rate=4.0):
     links = archive_links(html.decode("utf-8", "replace"))
     have = {p.name[:-len(".zip.zst")] for p in archives()}
     man = config.CACHE.joinpath(*ARCH_MANIFEST)
-    done = {json.loads(x)["name"] for x in man.read_text().splitlines() if x.strip()} if man.exists() else set()
+    # une archive publiée après l'as_of d'une exécution se réexamine à la suivante (D-0084, point 10)
+    done = {r["name"] for r in (json.loads(x) for x in man.read_text().splitlines() if x.strip())
+            if r.get("status") != "after_as_of"} if man.exists() else set()
     out = []
     for name, url in links.items():
         if name in have or name in done:

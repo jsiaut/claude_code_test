@@ -4659,3 +4659,16 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - seules les clés nouvelles, c'est-à-dire les textes que l'amendement change, se lisent, comme tout bloc nouveau, du plus récent au plus ancien ;
     - les blocs du S-1 restent tels quels. Là où l'amendement change un passage, les deux versions coexistent, chacune avec son dépôt.
   - Code : `nf_discovery.prepare_own` écarte une unité dont la clé est déjà au catalogue, et la note comme préparée (texte identique). Un test.
+
+  (10) Phases 0 à 2 et catalogues des groupes du temps B, avant toute lecture (2026-11-07) :
+  - Réseau : 217 requêtes, toutes abouties : statut des têtes 2, phase 0 62, index 42, phase 1 85, phase 2 24.
+  - Inventaire : 30 832 → 30 944 dépôts. Les 112 nouveaux sont datés du 2026-11-02 au 2026-11-06 ; aucun ne sort, aucun ne change de classe.
+    - Rapports périodiques : les 10-Q d'Akamai, AMD, Apollo, Backblaze, Blackstone, Cipher, Core Scientific, Hut 8, IREN, Riot, SMCI et TeraWulf.
+    - 8-K : Microsoft (deux), Marvell (deux), TeraWulf (deux), et un pour Alphabet, Meta, Oracle, SpaceX, AMD, Cipher, Core Scientific, IREN, Applied Digital, SMCI, Hut 8, Akamai, Backblaze, Riot, Apollo, Blackstone et Micron.
+    - Le reste : dix communications de Marvell sur un regroupement d'entreprises (formulaire 425), des émissions (424B5 et FWP de Meta, 424B5 et 424B2 d'Oracle), et des formulaires 4, 144 et 13G.
+  - Univers attendu : 24 612 → 24 948 cellules. Index : 2 249 → 2 270 dépôts. Phase 1 : 805 dépôts lus (793), les 7 échecs connus. Phase 2 : 2 373 documents (2 349), aucun échec.
+  - Catalogues : aucune clé ne disparaît.
+    - Tranche : 4 324 → 4 384 clés. Ses 359 clés sans lecture sont, comme à 12000e6, les corps de pièces arrêtés à leur en-tête.
+    - Bloc `text` : 4 460 → 4 522 clés.
+  - À lire : 107 blocs, 618 245 caractères, et au plus 15 corps de pièces (1 082 500 caractères) si leur en-tête le demande (§11.1). Liste `upd_20261107_groups`, du plus récent au plus ancien.
+  - Écart et code, au tirage des BDC Data Sets : l'archive 2026_10, marquée « publiée après l'as_of » au temps A, n'était jamais réexaminée, car le tirage écarte tout nom déjà au manifeste. Une archive marquée ainsi se réexamine désormais à l'exécution suivante (`lender.fetch`). Elle se tire après la chaîne en cours, et les extraits des BDC se refont.
