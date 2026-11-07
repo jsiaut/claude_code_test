@@ -4647,3 +4647,15 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les archives nouvelles des jeux de données (BDC et Notes 2026_10, publiées le 2026-11-04) se tirent et se traitent comme les autres.
   - Le 2026-11-07 est un samedi : la connaissance porte sur les dépôts datés au plus du vendredi 2026-11-06.
   - Comparaison : les tables du temps B se comparent à celles de 12000e6, dernier commit qui en porte. Les écarts du temps A (point 7) s'y retrouvent ; les autres viennent de la période nouvelle, et chacun s'explique ici. `delta.md` se compare de même à 12000e6.
+
+  (9) S-1/A d'Anthropic, règle fixée avant toute lecture (2026-11-07) :
+  - Statut des têtes non déposantes, à l'as_of (2 requêtes) :
+    - Nscale n'a rien déposé depuis son S-1 du 2026-09-18 ;
+    - Anthropic PBC a déposé le 2026-11-02 l'amendement n° 1 de son S-1 (S-1/A, 0001628280-26-068676). Ses submissions portent désormais le symbole ANT, sans bourse. Aucun avis de prise d'effet, aucun 424B4 : elle n'est pas cotée (D-0083, point 11).
+  - Le S-1/A porte son document principal (1,6 million de caractères), une EX-4.4, une EX-3.1 (statuts) et deux consentements (EX-23). Ses états financiers vont désormais jusqu'au 30 septembre 2026 : neuf mois clos les 30 septembre 2025 et 2026, non audités ; exercices 2023 à 2025 audités. Les notes 16 et 17 restent les événements postérieurs, audités puis non audités.
+  - Règle :
+    - le S-1/A se lit comme le S-1 (D-0077, points 4 et 9), comme texte propre de LAB:ANTHROPIC. Entrée de `own_filings`, avec les mêmes sections écartées et la même mise en page. Pièces lues : EX-10 et EX-4, ici l'EX-4.4. Il n'a pas de liste des filiales ;
+    - une unité dont le texte est déjà un bloc du catalogue (même clé, venue du S-1) n'y entre pas : le texte identique reste rattaché à son dépôt d'origine, le S-1 du 2026-10-26, et à sa date de connaissance ;
+    - seules les clés nouvelles, c'est-à-dire les textes que l'amendement change, se lisent, comme tout bloc nouveau, du plus récent au plus ancien ;
+    - les blocs du S-1 restent tels quels. Là où l'amendement change un passage, les deux versions coexistent, chacune avec son dépôt.
+  - Code : `nf_discovery.prepare_own` écarte une unité dont la clé est déjà au catalogue, et la note comme préparée (texte identique). Un test.

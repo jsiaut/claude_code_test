@@ -1201,15 +1201,25 @@ def prepare_own():
     u = pd.read_parquet(OWN_UNITS)
     done = built_units()
     todo = [x for x in u[u["status"] == "queued"].to_dict("records") if (x["adsh"], x["doc"]) not in done]
+    # D-0084, point 9 : un texte déjà bloc du catalogue (un amendement qui reprend son document d'origine) n'y entre
+    # pas une seconde fois ; il reste rattaché à son dépôt d'origine
+    have = {json.loads(x)["content_key"] for x in open(CATALOG, encoding="utf-8") if x.strip()} if CATALOG.exists() else set()
+    n_new = n_same = 0
     for x in todo:
         b = _own_block(x, fs[x["adsh"]])
-        with open(CATALOG, "a", encoding="utf-8") as fh:
-            fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+        same = b["content_key"] in have
+        if not same:
+            with open(CATALOG, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+            have.add(b["content_key"])
+        n_new += not same
+        n_same += same
         rec = {"order": int(x["order"]), "queue": None, "rank": None, "cik": x["cik"], "kind": x["kind"], "adsh": x["adsh"],
-               "doc": x["doc"], "rule": x["rule"], "content_key": b["content_key"], "error": None, "own_filing": True}
+               "doc": x["doc"], "rule": x["rule"], "content_key": b["content_key"], "error": "identical_text" if same else None,
+               "own_filing": True}
         with open(BUILT, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    print(f"blocs préparés : {len(todo)}")
+    print(f"blocs préparés : {n_new} ; textes identiques à un bloc déjà au catalogue : {n_same}")
 
 
 if __name__ == "__main__":

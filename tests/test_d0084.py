@@ -114,6 +114,32 @@ class Montages(unittest.TestCase):
             self.assertFalse(montages._kept(paras))
 
 
+class AmendedOwnFiling(unittest.TestCase):
+    """Point 9 : un amendement qui reprend un texte déjà bloc du catalogue ne l'y ajoute pas une seconde fois."""
+
+    def test_identical_text_stays_with_the_original_filing(self):
+        from pipeline import nf_discovery as N
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            old = N.OWN_UNITS, N.CATALOG, N.BUILT, N.own_filings, N._own_block
+            N.OWN_UNITS, N.CATALOG, N.BUILT = d / "u.parquet", d / "c.jsonl", d / "b.jsonl"
+            try:
+                pd.DataFrame([{"order": 1, "cik": "1", "kind": "note", "adsh": "A2", "doc": "same", "rule": None,
+                               "status": "queued"},
+                              {"order": 2, "cik": "1", "kind": "note", "adsh": "A2", "doc": "changed", "rule": None,
+                               "status": "queued"}]).to_parquet(N.OWN_UNITS, index=False)
+                N.CATALOG.write_text(json.dumps({"content_key": "k-same", "accession": "A1"}) + "\n", encoding="utf-8")
+                N.own_filings = lambda cfg=None: [{"accession": "A2"}]
+                N._own_block = lambda x, f: {"content_key": "k-" + x["doc"], "accession": x["adsh"]}
+                N.prepare_own()
+                cat = [json.loads(x) for x in N.CATALOG.read_text(encoding="utf-8").splitlines()]
+                self.assertEqual([(b["content_key"], b["accession"]) for b in cat], [("k-same", "A1"), ("k-changed", "A2")])
+                built = [json.loads(x) for x in N.BUILT.read_text(encoding="utf-8").splitlines()]
+                self.assertEqual([r["error"] for r in built], ["identical_text", None])
+            finally:
+                N.OWN_UNITS, N.CATALOG, N.BUILT, N.own_filings, N._own_block = old
+
+
 class Restrict(unittest.TestCase):
     def test_catalog_keeps_kept_keys_in_order_once(self):
         with tempfile.TemporaryDirectory() as d:
