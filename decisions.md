@@ -4519,3 +4519,48 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - la variante d'Alphabet de D-0082 (point 9) ;
     - l'ajout de 485BPOS et de N-CSRS/A aux relevés de portefeuille (point 8).
   - Proposé, non fait : quand un même contenu figure dans deux dépôts, garder le bloc du premier dépôt plutôt que le dernier du catalogue. Le choix ne dépendrait plus de l'ordre des lignes.
+
+- **D-0084 — Mise à jour du modèle à l'as_of du 2026-11-07, sur un conteneur neuf : reconstruction à l'as_of du 2026-10-31 (temps A), puis mise à jour (temps B). Règles fixées avant tout tirage.**
+  (1) Origine : demande de l'utilisateur, le 2026-11-07 : « Ok on oublie pour l'instant, mets plutôt à jour le modèle à la date du jour ».
+  - Ses réponses, le même jour : tout retirer de la SEC, puis mettre à jour ; procéder en deux temps ; le User-Agent qu'il fournit vaut pour cette session seulement. Ce User-Agent n'est écrit que dans `secrets/user_agent.txt` (hors suivi, chmod 600). Une seule identité sert pendant toute l'exécution.
+  - C'est la quatrième mise à jour (§11.5), après D-0074, D-0077 et D-0083. Lecture séquentielle par l'exécutant, sans sous-agent. Ni pull request ni tâche planifiée.
+
+  (2) Constat, sans tirage (2026-11-07) :
+  - Le conteneur de la session a été recréé : le clone ne porte que ce que Git suit.
+    - Ont disparu : `db/` (inventaire, faits XBRL, catalogues, files, mémo ; environ 2,4 Go), `cache/` (copies des dépôts, réponses des recherches), `work/tmp/` et `secrets/`.
+    - Les dépendances se réinstallent sans écart (`requirements.txt`, versions exactes).
+    - Sans `db/`, `assemble` ne démarre pas (README).
+  - Volume à retirer, d'après le journal (27 566 lignes) : 25 821 adresses distinctes tirées avec succès, 41,0 Go. Ce total comprend 68 archives de plus de 200 Mo (29,9 Go : Notes Data Sets, N-PORT, BDC Data Sets) et 2 838 requêtes de recherche plein texte.
+  - Les résultats gardés des recherches plein texte (`db/discovery_efts.parquet` et ses pareils) ont disparu. Restent les journaux de leurs requêtes (`work/*/efts_queries*.jsonl`), sans les résultats.
+  - Les catalogues préparés (montages, 6-K, SoftBank) et les files (découverte, piste des non-déposants, offres de rachat) dépendent de l'historique : plafonds d'une exécution à l'autre, tranches, fenêtres « déjà lues » (D-0058, point 3 ; D-0074, point 3). Recalculés à neuf, ils ne redonnent pas ceux de 12000e6, et le code le dit (`pipeline/update.py`).
+  - Ce que 12000e6 garde de cet historique :
+    - 11 857 blocs lus : `work/observations/`, avec, dans `tables/observations.parquet`, le type, le document et l'accession de chaque bloc ;
+    - 359 blocs arrêtés à leur en-tête (`financial_parties_only`) ;
+    - 27 929 documents non traités ;
+    - les lectures des offres de rachat (`work/tenders/`).
+  - Le 2026-11-07 est un samedi : le temps B porte sur les dépôts datés au plus du vendredi 2026-11-06.
+
+  (3) Règles du temps A, reconstruction à l'as_of du 2026-10-31 :
+  - Configuration inchangée : `as_of`, `as_of_previous` et `search_overlap_from` comme au commit 12000e6.
+  - Réseau :
+    - chaque ressource se tire de nouveau, une fois, par le client unique : 5 requêtes par seconde au plus, pause de 10 minutes après un refus 403, chaque requête au journal ;
+    - une ressource vivante tirée le 2026-11-07 se garde sous l'as_of du 2026-10-31. Seuls ses dépôts datés au plus du 2026-10-31 comptent, là où le code filtre ; ce que le code ne filtre pas (par exemple des faits de `companyfacts` déposés depuis) se repère à la comparaison ;
+    - une archive (Notes, N-PORT, BDC) se tire si son en-tête Last-Modified est au plus du 2026-10-31.
+  - Recherches plein texte :
+    - toutes les fenêtres se tirent de nouveau, et les résultats se dédoublonnent par (terme, identifiant) ;
+    - les journaux de requêtes versionnés ne se réécrivent pas. Une fenêtre identique déjà consignée ne se consigne pas de nouveau ; une fenêtre dont le total a changé se note ici avec son écart.
+  - Catalogues et files :
+    - chacun se recalcule sur toute la période close au 2026-10-31, sans plafond ni filtre « déjà lu » ;
+    - puis il se ramène à ce que 12000e6 en montre. Un bloc se garde si sa clé a des lectures ou une exclusion `financial_parties_only`. Une unité de file se prépare si un bloc gardé en vient ; les autres restent non traitées, comme dans 12000e6.
+  - Critère : chacune des 11 857 clés lues revient dans un catalogue. Une clé manquante est un échec de la reconstruction, consigné avec sa cause ; elle ne se relit pas.
+  - Lecture : aucune au temps A. Un bloc recalculé, sans lecture et absent de 12000e6, ne se lit pas ; il est compté.
+  - Réassemblage au 2026-10-31, puis comparaison des huit tables à celles de 12000e6, table par table. Chaque écart s'explique ici. Les tables du temps A ne se commitent pas.
+  - Code : un mode de reconstruction, activé explicitement et couvert par des tests ; hors de ce mode, rien ne change.
+
+  (4) Temps B, mise à jour à l'as_of du 2026-11-07 : règles de D-0083 (points 3 et 5), avec `as_of_previous` augmenté du 2026-10-31. Elles se fixent au point qui ouvre le temps B, après le temps A et avant tout tirage de la période nouvelle.
+
+  (5) Ordre et commits :
+  - la décision ;
+  - le code et les tests du mode de reconstruction ;
+  - le temps A, consigné ici : phases 0 à 2, catalogues, blocs de §14, réassemblage, comparaison ;
+  - le temps B, comme D-0083 : tirages, volumes consignés avant lecture, lecture, intégration, rendus, résultats, tests, commit, push, verrou, rapport.
