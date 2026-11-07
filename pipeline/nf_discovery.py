@@ -669,6 +669,60 @@ def prepare(n=50, rate=4.0):
     print(f"blocs préparés : {nb} sur {len(todo)} unités ; requêtes {client.stats['requests']}")
 
 
+def prepare_history(rate=4.0):
+    """Mode de reconstruction (D-0084, point 3) : blocs des unités de la piste dont vient un bloc lu ou arrêté à son
+    en-tête au commit de référence, quels que soient leur règle et leur état ; une pièce par son document, une note par
+    son accession. Puis les corps de pièces lus, et les unités du document d'enregistrement d'une accession lue. Le
+    catalogue se ramène ensuite aux clés gardées (`reconstruction restrict`)."""
+    from . import reconstruction as R
+    if not R.reference():
+        raise SystemExit("prepare_history ne sert qu'au mode de reconstruction (D-0084).")
+    cfg = config.load()
+    client = net.SecClient(config.as_of(), cfg)
+    client.min_interval = 1.0 / rate
+    docs, accs = R.documents(), R.accessions()
+    done = built_units()
+    todo = [u for u in pd.read_parquet(UNITS).to_dict("records") if (u["adsh"], u["doc"]) not in done and
+            ((u["adsh"], u["doc"]) in docs if u["kind"] == "exhibit_header" else u["adsh"] in accs)]
+    nb = 0
+    for u in todo:
+        b, err = (_exhibit_block if u["kind"] == "exhibit_header" else _note_block)(u, client)
+        q = None if u.get("queue") is None or u.get("queue") != u.get("queue") else int(u["queue"])
+        if b:
+            b.update({"unit_order": int(u["order"]), "nf_queue": q, "nf_rule": u.get("rule")})
+            with open(CATALOG, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+            nb += 1
+        rec = {"order": int(u["order"]), "queue": q, "rank": int(u["rank"]), "cik": u["cik"], "kind": u["kind"],
+               "adsh": u["adsh"], "doc": u["doc"], "rule": u.get("rule"), "content_key": b["content_key"] if b else None,
+               "error": err}
+        with open(BUILT, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    print(f"blocs préparés : {nb} sur {len(todo)} unités ; requêtes {client.stats['requests']}")
+    for acc, doc in sorted(R.documents(("discovery_exhibit_body",))):
+        if CATALOG.exists() and any(json.loads(x).get("accession") == acc and json.loads(x).get("document") == doc
+                                    for x in open(CATALOG, encoding="utf-8") if '"discovery_exhibit_header"' in x):
+            prepare_body(acc, doc)
+    if OWN_UNITS.exists():
+        fs = {f["accession"]: f for f in own_filings()}
+        own = pd.read_parquet(OWN_UNITS)
+        done = built_units()
+        n_own = 0
+        for x in own.to_dict("records"):
+            if x["adsh"] not in accs or (x["adsh"], x["doc"]) in done or x["adsh"] not in fs:
+                continue
+            b = _own_block(x, fs[x["adsh"]])
+            with open(CATALOG, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+            rec = {"order": int(x["order"]), "queue": None, "rank": None, "cik": x["cik"], "kind": x["kind"],
+                   "adsh": x["adsh"], "doc": x["doc"], "rule": x.get("rule"), "content_key": b["content_key"],
+                   "error": None, "own_filing": True}
+            with open(BUILT, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            n_own += 1
+        print(f"blocs du document d'enregistrement : {n_own}")
+
+
 def prepare_body(adsh, doc):
     """Corps d'un EX-10 dont l'en-tête, lu, montre un groupe partie (D-0044, point 5) : lu après
     les notes, sous le même rang que son en-tête ; tiré du cache, sans requête."""
@@ -1173,5 +1227,7 @@ if __name__ == "__main__":
         own_filing_units()
     elif cmd == "prepare_own":
         prepare_own()
+    elif cmd == "prepare_history":
+        prepare_history()
     else:
         status()

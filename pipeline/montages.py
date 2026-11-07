@@ -157,6 +157,16 @@ def search(mid, rate=4.0):
     if old is not None:
         known = {(h["query"], h.get("cik_filter"), h["id"]) for h in old}
         out = old + [h for h in out if (h["query"], h.get("cik_filter"), h["id"]) not in known]
+    else:
+        from . import reconstruction
+        if reconstruction.reference():     # D-0084 : toutes les fenêtres retirées, un résultat vu deux fois compte une fois
+            seen, ded = set(), []
+            for h in out:
+                k = (h["query"], h.get("cik_filter"), h["id"])
+                if k not in seen:
+                    seen.add(k)
+                    ded.append(h)
+            out = ded
     hits_path.parent.mkdir(parents=True, exist_ok=True)
     hits_path.write_text(json.dumps(out, ensure_ascii=False))
     for t in totals:
@@ -566,6 +576,13 @@ def read_texts(mid):
     return out
 
 
+def _kept(paras):
+    """Mode de reconstruction (D-0084, point 3) : une fenêtre dont le bloc a des lectures au commit de référence n'est
+    jamais « déjà lue », quoi qu'on ait lu depuis sa préparation."""
+    from . import blocks, reconstruction
+    return bool(reconstruction.reference()) and blocks.content_key("\n".join(paras), []) in reconstruction.keys()
+
+
 def covered(para, texts):
     """Un paragraphe figure mot pour mot, aux blancs près, dans l'un des textes lus du même dépôt."""
     p = _norm(para)
@@ -902,8 +919,9 @@ def _prepare_one(mid, spec, groups_by_cik):
                 if comp == "all" or (comp == "party" and d.get("party")):
                     units.append((d, k, "\n".join(paras[a:b]), how, "complement"))
                     continue
-                already.append(ref)
-                continue
+                if not _kept(paras[a:b]):
+                    already.append(ref)
+                    continue
             units.append((d, k, "\n".join(paras[a:b]), how, "complete" if comp else None))
     units.sort(key=lambda u: _order_key(u[0], u[1], spec, u[2]))
     if spec.get("source") == "edge_values":

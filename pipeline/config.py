@@ -84,7 +84,11 @@ def as_of(cli=None):
 
 
 def previous_as_of():
-    """As_of de l'exécution précédente (le dernier de as_of_previous), None à la première exécution (D-0074)."""
+    """As_of de l'exécution précédente (le dernier de as_of_previous), None à la première exécution (D-0074). En mode de
+    reconstruction, None aussi : chaque catalogue et chaque file se recalcule sur toute la période (D-0084, point 3)."""
+    from . import reconstruction
+    if reconstruction.reference():
+        return None
     prev = _parsed()["as_of_previous"]
     return prev[-1] if prev else None
 

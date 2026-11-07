@@ -420,6 +420,9 @@ def _log_query(rec, log=None):
     """Consigne une fenêtre de requête ; une fenêtre déjà consignée à l'identique, rejouée du cache, ne se consigne pas
     une seconde fois (D-0074)."""
     log = log or QUERY_LOG
+    from . import reconstruction
+    if reconstruction.reference():        # D-0084 : les journaux versionnés ne se réécrivent pas au temps A
+        log = config.WORK / "tmp" / "reconstruction" / log.parent.name / log.name
     log.parent.mkdir(parents=True, exist_ok=True)
     if log.exists() and rec in (json.loads(x) for x in log.read_text(encoding="utf-8").splitlines() if x.strip()):
         return
@@ -477,7 +480,11 @@ EFTS_HITS = config.DB_DIR / "discovery_efts.parquet"
 
 
 def keep_new_rows(old, df, key):
-    """Résultats gardés, puis les lignes nouvelles absentes de ceux-ci (clé `key`), dans leur ordre (D-0074)."""
+    """Résultats gardés, puis les lignes nouvelles absentes de ceux-ci (clé `key`), dans leur ordre (D-0074). En mode
+    de reconstruction, toutes les fenêtres se tirent de nouveau : une ligne vue deux fois se garde une fois (D-0084)."""
+    from . import reconstruction
+    if old is None and reconstruction.reference() and len(df):
+        return df.drop_duplicates(key, ignore_index=True)
     if old is None:
         return df
     if not len(df):
@@ -1253,6 +1260,23 @@ def prepare_frontier(rate=4.0):
     _build([u for u in frontier_units() if u["order"] not in done], client)
 
 
+def prepare_history(rate=4.0):
+    """Mode de reconstruction (D-0084, point 3) : blocs des unités de la file dont vient un bloc lu ou arrêté à son
+    en-tête au commit de référence, une pièce par son document, une note par son accession. Le catalogue se ramène
+    ensuite aux clés gardées (`reconstruction restrict`)."""
+    from . import reconstruction as R
+    if not R.reference():
+        raise SystemExit("prepare-history ne sert qu'au mode de reconstruction (D-0084).")
+    cfg = config.load()
+    client = net.SecClient(config.as_of(), cfg)
+    client.min_interval = 1.0 / rate
+    docs = R.documents()
+    accs = R.accessions()
+    done = built_units()
+    _build([u for u in pd.read_parquet(UNITS).to_dict("records") if u["order"] not in done and
+            ((u["adsh"], u["doc"]) in docs if u["kind"] == "exhibit_header" else u["adsh"] in accs)], client)
+
+
 def _build(todo, client):
     nb = 0
     for u in todo:
@@ -1374,6 +1398,8 @@ if __name__ == "__main__":
         prepare(int(sys.argv[2]) if len(sys.argv) > 2 else 50)
     elif cmd == "prepare-frontier":
         prepare_frontier()
+    elif cmd == "prepare-history":
+        prepare_history()
     elif cmd == "verify":
         verify_exhibits()
         verify_form_d()

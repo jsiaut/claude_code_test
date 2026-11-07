@@ -23,7 +23,14 @@ class Admission:
         self.taken = Counter()
 
     def take(self, key, date, group=None):
-        """Vrai si l'unité `key` (dépôt daté `date`) est admise dans la file de son groupe."""
+        """Vrai si l'unité `key` (dépôt daté `date`) est admise dans la file de son groupe. En mode de reconstruction,
+        seulement si sa clé est gardée par le commit de référence, sans plafond (D-0084, point 3)."""
+        from . import reconstruction
+        if reconstruction.reference():
+            ok = reconstruction.admits(key)
+            if ok:
+                self.taken[group] += 1
+            return ok
         if self.since is not None and str(date or "")[:10] <= self.since:
             return key in self.admitted
         if self.taken[group] >= self.cap:

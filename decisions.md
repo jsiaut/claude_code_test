@@ -4564,3 +4564,23 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - le code et les tests du mode de reconstruction ;
   - le temps A, consigné ici : phases 0 à 2, catalogues, blocs de §14, réassemblage, comparaison ;
   - le temps B, comme D-0083 : tirages, volumes consignés avant lecture, lecture, intégration, rendus, résultats, tests, commit, push, verrou, rapport.
+
+  (6) Mode de reconstruction : règles par bloc, fixées avant les tirages de §14 (2026-11-07) :
+  - Interrupteur : la variable `PIPELINE_RECONSTRUCTION` nomme le commit de référence, 12000e6.
+    - Pour les catalogues et les files, l'exécution devient une première exécution : `config.previous_as_of()` vaut None.
+    - Les fenêtres des recherches plein texte restent coupées aux as_of précédents.
+  - Clés gardées : les 11 857 clés lues que charge 12000e6, et les 359 blocs arrêtés à leur en-tête. S'en déduisent les accessions et les documents (accession, fichier) des blocs lus.
+  - Plafonds (`update.Admission`) : une unité se garde si sa clé, de contenu ou d'accession, est gardée, et cela sans plafond. Les autres vont au-delà du plafond, comme toute unité non préparée.
+  - Montages : une fenêtre dont le bloc a des lectures n'est jamais « déjà lue ».
+  - Découverte et piste des non-déposants :
+    - candidats et files se recalculent comme à une première exécution ;
+    - se préparent les unités dont vient un bloc gardé, une pièce par son document, une note par son accession (`prepare-history`) ;
+    - pour la piste, s'y ajoutent les corps de pièces lus et les unités du document d'enregistrement d'une accession lue.
+  - Annonces des BDC : les unités sont les 42 des relevés versionnés (`work/tenders/announcements.jsonl`). Les autres 8-K de la file restent au-delà du plafond, sans tirage.
+  - N-PORT des non-cotés : le lexique est celui du scan du 2026-10-20 (D-0065).
+    - Il se recalcule sur la configuration et la table des entités du commit 1a7e348, par le code d'aujourd'hui, identique sur ces fonctions.
+    - Résultat : version `lx-cd6e02bb8912`, 1 527 dénominations légales. Il en manque 15 par rapport à 12000e6, ce que 12000e6 note (« 15 dénominations légales ajoutées depuis, non scannées »).
+  - Recherches : une ligne vue deux fois (le 2026-10-27, jour de recouvrement) se garde une fois. Les fenêtres consignées au temps A vont sous `work/tmp/reconstruction/`, et se comparent aux journaux versionnés.
+  - Catalogues ramenés aux clés gardées (`reconstruction restrict`) : montages, 6-K, SoftBank, découverte, piste des non-déposants. Les catalogues des groupes et du bloc `text`, recalculés à chaque exécution, ne se touchent pas : ils se vérifient.
+  - Historique Git : le clone du conteneur était superficiel (51 commits). Il est complété en clone partiel (`--filter=blob:none`, README), ce qu'exigent le rendu (commit des critères 3ff3b98) et le lexique ci-dessus.
+  - Code : `pipeline/reconstruction.py`, et des crochets dans `config`, `update`, `discovery`, `nf_discovery`, `montages`, `lender_liabilities` et `nport`. 9 tests dans `tests/test_d0084.py`. Hors du mode, rien ne change.

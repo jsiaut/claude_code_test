@@ -881,11 +881,36 @@ def save_lexicon(lex):
     return p
 
 
+LEXICON_COMMIT = "1a7e348"    # D-0084, point 6 : code, configuration et entités du scan des non-cotés (D-0065, 2026-10-20)
+
+
+def historical_lexicon(commit=LEXICON_COMMIT):
+    """Mode de reconstruction (D-0084, point 6) : le lexique du scan des 28 archives des non-cotés, recalculé sur la
+    configuration et la table des entités du commit `commit`, et gardé sous sa version."""
+    import io
+    import subprocess
+
+    import yaml
+
+    def show(path):
+        return subprocess.run(["git", "show", f"{commit}:{path}"], capture_output=True, check=True,
+                              cwd=config.ROOT).stdout
+    e = pd.read_parquet(io.BytesIO(show("tables/entities.parquet")))
+    rows = e.astype(object).where(e.notna(), None).to_dict("records")
+    cfg = config.resolve_as_of(yaml.safe_load(show("config.yaml").decode("utf-8")), config.as_of())
+    lex = lexicon(rows, cfg)
+    save_lexicon(lex)
+    return lex
+
+
 def frozen_lexicon(done=None):
     """Lexique d'une exécution nouvelle : celui du dernier scan de l'exécution précédente, gardé sous sa version, et non
     celui des entités du jour, sans quoi un lexique enrichi par les lectures depuis ferait retirer et rescanner toutes
     les archives (D-0074, point 3 : une archive déjà tirée ne se retire pas, aucun traitement ne change). None à la
     première exécution, ou faute d'archive scannée."""
+    from . import reconstruction
+    if reconstruction.reference():
+        return historical_lexicon()
     if not config.previous_as_of():
         return None
     done = u_manifest() if done is None else done

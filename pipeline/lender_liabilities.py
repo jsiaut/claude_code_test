@@ -1194,9 +1194,16 @@ def announcement_units(as_of=None, rate=4.0):
     prev_units = [json.loads(x) for x in UNITS.read_text(encoding="utf-8").splitlines() if x.strip()] if UNITS.exists() else []
     adm = update.admission(cap, {u["unit"] for u in prev_units})
     prev_accs = {u["accession"] for u in prev_units}
+    # mode de reconstruction (D-0084, point 3) : les unités sont celles des relevés d'annonces versionnés
+    from . import reconstruction
+    rec = bool(reconstruction.reference())
+    hist = {json.loads(x)["unit"] for x in ANNOUNCEMENTS.read_text(encoding="utf-8").splitlines() if x.strip()} \
+        if rec and ANNOUNCEMENTS.exists() else set()
+    hist_accs = {u.split("/")[0] for u in hist}
     for q in announcement_queue(as_of, cfg):
         old = adm.since is not None and q["filing_date"] <= adm.since
-        if (old and q["accession"] not in prev_accs) or (not old and adm.taken[None] >= cap):
+        if (rec and q["accession"] not in hist_accs) or \
+                (not rec and ((old and q["accession"] not in prev_accs) or (not old and adm.taken[None] >= cap))):
             over.append({k: q[k] for k in ("cik", "entity", "accession", "filing_date", "reason")})
             continue
         base = f"https://www.sec.gov/Archives/edgar/data/{int(q['cik'])}/{q['accession'].replace('-', '')}"
@@ -1235,7 +1242,8 @@ def announcement_units(as_of=None, rate=4.0):
                 else:
                     spans.append([a, b])
             for k, (a, b) in enumerate(spans):
-                if not adm.take(f"{q['accession']}/{d}#{k}", q["filing_date"]):
+                unit = f"{q['accession']}/{d}#{k}"
+                if not (unit in hist if rec else adm.take(unit, q["filing_date"])):
                     over.append({"cik": q["cik"], "entity": q["entity"], "accession": q["accession"],
                                  "filing_date": q["filing_date"], "reason": q["reason"], "document": d, "window": k})
                     continue
