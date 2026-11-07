@@ -4632,3 +4632,18 @@ Ce fichier ne va pas à l'auditeur (§12.2).
       - 99 sont nouvelles : 51 unités et 48 fenêtres hors champ des montages ;
       - 15 671 libellés changent, par les rangs des candidats, recalculés.
   - Bilan : la reconstruction redonne 12000e6 à ces écarts près, chacun expliqué. Le temps B part de cet état, et ses tables se comparent à celles de 12000e6.
+
+  (8) Temps B, mise à jour à l'as_of du 2026-11-07 : règles fixées avant tout tirage de la période nouvelle.
+  - Configuration : `as_of: "2026-11-07"` et `as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27", "2026-10-31"]`. `search_overlap_from` reste au 2026-10-27 : la fenêtre nouvelle d'une recherche va du 2026-10-31 au 2026-11-07. Le 2026-10-31, un samedi, ne porte aucun dépôt.
+  - Mode : ordinaire. `PIPELINE_RECONSTRUCTION` n'est plus posée. L'état du temps A tient lieu d'exécution précédente :
+    - catalogues et files gardent leurs blocs et leurs unités, copiés sous `{nom}.2026-10-31` avant leur première réécriture ;
+    - les résultats gardés des recherches sont ceux du temps A ;
+    - le lexique N-PORT des non-cotés reste celui du dernier scan (point 6).
+  - Le reste suit D-0083 (points 3 et 5) :
+    - statut des têtes non déposantes (Nscale, Anthropic) : submissions à l'as_of, avant les phases. Un S-1/A, une prise d'effet, un 424B4 ou un rapport périodique de la période nouvelle se traite par une règle fixée ici avant toute lecture. Sinon, rien ne change ;
+    - réseau : un seul processus, 5 requêtes par seconde au plus, pause de 10 minutes après un refus 403, chaque requête au journal ;
+    - ordre : phases 0 à 2 et catalogues des groupes ; blocs de §14 dans l'ordre de D-0074 ; montages préparés après la lecture du texte des groupes ;
+    - volumes consignés ici avant toute lecture. Ne se lisent que les blocs tirés de dépôts de la période nouvelle, du plus récent au plus ancien, par l'exécutant, sans sous-agent ;
+    - les archives nouvelles des jeux de données (BDC et Notes 2026_10, publiées le 2026-11-04) se tirent et se traitent comme les autres.
+  - Le 2026-11-07 est un samedi : la connaissance porte sur les dépôts datés au plus du vendredi 2026-11-06.
+  - Comparaison : les tables du temps B se comparent à celles de 12000e6, dernier commit qui en porte. Les écarts du temps A (point 7) s'y retrouvent ; les autres viennent de la période nouvelle, et chacun s'explique ici. `delta.md` se compare de même à 12000e6.
