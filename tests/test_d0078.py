@@ -166,7 +166,7 @@ Marie Mark Martin Mary Masayoshi Matt Matthew Michael Michelle Mike Nancy Nathan
 Patricia Patrick Paul Peter Philip Rachel Rajeev Ralph Ray Raymond Rebecca Reid Richard Rick Robert Robin Roger Ronald
 Rose Russell Ryan Safra Sam Samuel Sandra Sara Sarah Satya Scott Sean Sergey Sharon Stephen Steve Steven Sundar Susan
 Syed Ted Thomas Tim Timothy Todd Tom Tony Victor Walter Wayne Wes William""".split()
-SURNAMES = """Altman Amodei Ballmer Belardi Benioff Bezos Birchall Brin Catz Denholm Ellison Feldman Gracias Hoffman Huang
+SURNAMES = """Altman Amodei Ballmer Bartz Belardi Benioff Bezos Birchall Brin Catz Denholm Ellison Feldman Gracias Hoffman Huang
 Intrator Jassy Masaitis McCabe Moussouris Musk Nadella Novak Pichai Prager Schmidt Shotwell Suleyman Sutardja Varjabedian
 Yaccarino Zuckerberg""".split()
 PATTERNS = [
@@ -184,7 +184,8 @@ ALLOWED = sorted("""Carl Zeiss|Ben Milam|Frank Funds|BCH San Jose LLC|Jane Stree
 |Raymond Chabot|James River|George Town|Howard Street|Dave Inc|Grace Period|Saint Lawrence|Bradley Woods|Trade Mark Licence
 |B. Riley|Term Loan A. The|Company A. Intel|Texas v. Meta|Brandt Dr. S.|Green Earth Liang's Inc.|Green Earth Liang
 |The Jen-Hsun and Lori Huang Foundation|Huang Foundation|McCabe Petroleum|Ellison Institute|Ellison Medical|Musk Industries
-|Harbor Gates|Kohlberg Kravis Roberts|Kravis Roberts|Hong Kong|Kleiner Perkins|Janus Henderson|The Washington Post""".replace("\n", "").split("|"),
+|Harbor Gates|Kohlberg Kravis Roberts|Kravis Roberts|Hong Kong|Kleiner Perkins|Janus Henderson|The Washington Post
+|Charles Schwab & Co., Inc.""".replace("\n", "").split("|"),
                  key=len, reverse=True)
 
 
@@ -206,12 +207,12 @@ class NoNaturalPerson(unittest.TestCase):
     def test_le_releve_trouve_les_motifs(self):
         df = pd.DataFrame([{"obs_key": "k", "instrument_key": "wulf:prager_exchange_warrants_2023",
                             **{f: None for f in FIELDS},
-                            "note": "contrat avec James R. Belardi ; Moussouris v. Microsoft ; M. Hao ; Booth Family Trust",
+                            "note": "contrat avec James R. Belardi ; Moussouris v. Microsoft ; M. Hao ; Booth Family Trust ; règlement Bartz ; Charles Schwab & Co., Inc.",
                             "quote": "Robin L. Washington will serve", "payer": "Green Earth Liang's Inc."}])
         got = {m for _, _, m in person_hits(df)}
         self.assertTrue({"James R. Belardi", "Moussouris v. M", "M. Hao", "Family Trust", "Robin L. Washington",
-                         "wulf:prager_exchange_warrants_2023"} <= got)
-        self.assertFalse(any("Liang" in m for m in got))
+                         "wulf:prager_exchange_warrants_2023", "Bartz"} <= got)
+        self.assertFalse(any("Liang" in m or "Schwab" in m for m in got))     # sociétés admises (D-0084, point 14)
 
     def test_aucune_ligne_chargee_ne_nomme_une_personne(self):
         p = config.TABLES / "observations.parquet"

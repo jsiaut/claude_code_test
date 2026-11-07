@@ -290,6 +290,10 @@
   "_index": 146,
   "proration": true
  },
+ "0001803498|0001193125-26-331631": {
+  "note": "réduction au prorata publiée : 90 421 325 parts acceptées sur 181 287 647 apportées (49,9 %), soit 5 % des parts en circulation au 30 juin 2026",
+  "proration": true
+ },
  "0001812554|0001628280-26-012584": {
   "_index": 161,
   "proration": true
@@ -343,7 +347,15 @@
   "_index": 195,
   "proration": true
  },
+ "0001837532|0001193125-26-352316": {
+  "note": "réduction au prorata publiée : 29 368 950 parts acceptées sur 86 655 453 apportées (33,9 %), soit 5 % des parts en circulation au 30 juin 2026",
+  "proration": true
+ },
  "0001838126|0001628280-26-033166": {
+  "proration": true
+ },
+ "0001838126|0001628280-26-055335": {
+  "note": "réduction au prorata publiée : 24 668 750 parts acceptées sur 56 440 057 apportées (43,7 %), soit 5 % des parts en circulation au 30 juin 2026",
   "proration": true
  },
  "0001838126|0001838126-26-000007": {
@@ -475,11 +487,11 @@
  },
  "0001920145|0001193125-26-365299": {
   "_index": 419,
-  "note": "estimation publiée avant le décompte final ; acceptation non publiée à as_of",
+  "note": "amendement final n° 2 du 2026-11-04 : parts apportées confirmées (7 605 110,708, soit l'estimation de l'amendement n° 1), toutes acceptées ; part des parts en circulation tirée de l'estimation",
   "tendered": "7605110.708",
   "tendered_pct": "2.03",
   "tendered_pct_quote": "@SENT:approximately 7,605,110.708 Shares",
-  "tendered_quote": "@SENT:approximately 7,605,110.708 Shares",
+  "tendered_quote": "@SENT:7,605,110.708 Shares were validly tendered and not withdrawn",
   "tendered_unit": "shares"
  },
  "0001923622|0001683863-24-004437": {
@@ -510,6 +522,12 @@
  },
  "0001923622|0001923622-26-000014": {
   "_index": 443,
+  "accepted": "all",
+  "accepted_basis": "payment_of_tendered",
+  "accepted_quote": "@SENT:Shares were repurchased at a price",
+  "proration": false
+ },
+ "0001923622|0001923622-26-000017": {
   "accepted": "all",
   "accepted_basis": "payment_of_tendered",
   "accepted_quote": "@SENT:Shares were repurchased at a price",
@@ -550,11 +568,11 @@
   "proration": true
  },
  "0001976336|0001104659-26-096596": {
-  "note": "estimation publiée avant le décompte final ; acceptation non publiée à as_of",
+  "note": "amendement final du 2026-11-06 : parts apportées confirmées (147 606,240, soit l'estimation de l'amendement précédent), toutes acceptées ; part des parts en circulation tirée de l'estimation",
   "tendered": "147606.240",
   "tendered_pct": "0.45",
   "tendered_pct_quote": "@SENT:The Fund estimates that 147,606.240 Shares",
-  "tendered_quote": "@SENT:The Fund estimates that 147,606.240 Shares",
+  "tendered_quote": "@SENT:147,606.240 Shares of the Fund were validly tendered and not withdrawn",
   "tendered_unit": "shares"
  },
  "0001983514|0001193125-26-088208": {

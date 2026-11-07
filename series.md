@@ -1,6 +1,6 @@
 # series.md — vue temporelle
 
-*Exécution du 2026-10-31. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
+*Exécution du 2026-11-07. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
 
 ## NVIDIA (NVDA)
 
@@ -258,6 +258,7 @@
 | 2025-12-27 | 34,1 % | 34,3 % | 0,09 x | n.d. (terme manquant) | 2 378 M$ | n.d. (concept non résolu) | 2 378 M$ | 56 j | 315 M$ | n.d. (non publié) | n.d. (non publié) | F6 |
 | 2026-03-28 | 37,8 % | 35,0 % | 0,13 x | n.d. (terme manquant) | 2 566 M$ | n.d. (concept non résolu) | 2 566 M$ | 54 j | 264 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-06-27 | 50,1 % | 39,5 % | 0,34 x | n.d. (terme manquant) | 1 558 M$ | n.d. (concept non résolu) | 1 558 M$ | 57 j | 222 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2026-09-26 | 44,7 % | 41,9 % | 0,54 x | n.d. (terme manquant) | 554 M$ | n.d. (concept non résolu) | 554 M$ | 63 j | 246 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 
 ## Broadcom (AVGO)
 
@@ -344,6 +345,7 @@
 | 2025-12-31 | 2,4 % | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -703 M$ | -703 M$ | -703 M$ | 3 j | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 | 2026-03-31 | -1,1 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -541 M$ | -541 M$ | -541 M$ | 15 j | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2, F8 |
 | 2026-06-30 | -6,0 % | 14,6 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -992 M$ | -992 M$ | -992 M$ | 27 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2026-09-30 | 50,7 % | 13,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -877 M$ | -877 M$ | -877 M$ | 21 j | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 
 ## Cipher (CIFR)
 
@@ -371,6 +373,7 @@
 | 2025-12-31 | 41,4 % | 48,0 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -280 M$ | -282 M$ | -280 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 | 2026-03-31 | -28,8 % | 38,0 % | 6,05 x | n.d. (non publié) | -462 M$ | -464 M$ | -462 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2, F8 |
 | 2026-06-30 | -43,0 % | 20,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -654 M$ | -655 M$ | -654 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2026-09-30 | -62,8 % | -29,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -1 684 M$ | -1 685 M$ | -1 684 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 
 ## Core Scientific (CORZ)
 
@@ -398,6 +401,7 @@
 | 2025-12-31 | -16,0 % | -37,5 % | ↯ | n.d. (terme manquant) | ↯ | ↯ | ↯ | n.d. (terme manquant) | n.d. (non publié) | ↯ | ↯ | F5, F7 |
 | 2026-03-31 | 44,9 % | -13,7 % | 1,56 x | n.d. (non publié) | -139 M$ | -140 M$ | -139 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | ↯ | F2, F5 |
 | 2026-06-30 | 108,8 % | 26,4 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -584 M$ | -584 M$ | -584 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | F1, F2, F5 |
+| 2026-09-30 | 187,1 % | 77,2 % | 8,28 x | n.d. (terme manquant) | -475 M$ | -475 M$ | -475 M$ | n.d. (terme manquant) | n.d. (non publié) | ↯ | n.d. (terme manquant) | F1, F2, F5 |
 
 ## Nebius (NBIS)
 
@@ -452,6 +456,7 @@
 | 2025-12-31 | 59,0 % | n.d. (terme manquant) | 7,53 x | n.d. (terme manquant) | -468 M$ | n.d. (terme manquant) | -468 M$ | 5 j | 289 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2026-03-31 | -0,0 % | n.d. (terme manquant) | 12,60 x | n.d. (terme manquant) | -874 M$ | -881 M$ | -874 M$ | 43 j | 710 M$ | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | F1, F2, F8 |
 | 2026-06-30 | -26,7 % | 41,1 % | 0,73 x | n.d. (terme manquant) | 482 M$ | 451 M$ | 482 M$ | 14 j | 5 100 M$ | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) |  |
+| 2026-09-30 | -5,0 % | 0,9 % | 4,03 x | n.d. (non publié) | -1 602 M$ | -1 632 M$ | -1 602 M$ | 77 j | 6 347 M$ | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F2 |
 
 ## Applied Digital (APLD)
 
@@ -541,7 +546,8 @@
 | 2025-09-30 | -15,5 % | 11,9 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -950 M$ | n.d. (terme manquant) | -950 M$ | 46 j | 1 028 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5, F8 |
 | 2025-12-31 | 123,4 % | 34,8 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -45 M$ | n.d. (terme manquant) | -45 M$ | 80 j | 1 303 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
 | 2026-03-31 | 122,7 % | 56,2 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -6 696 M$ | n.d. (terme manquant) | -6 696 M$ | 74 j | 2 136 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
-| 2026-06-30 | 93,2 % | 77,8 % | 0,04 x | n.d. (terme manquant) | 719 M$ | n.d. (terme manquant) | 714 M$ | 50 j | 2 612 M$ | n.d. (non publié) | n.d. (non publié) | F4, F5 |
+| 2026-06-30 | 93,2 % | 77,8 % | 0,04 x | n.d. (terme manquant) | 719 M$ | n.d. (terme manquant) | 703 M$ | 50 j | 2 612 M$ | n.d. (non publié) | n.d. (non publié) | F4, F5 |
+| 2026-09-30 | 297,5 % | 156,5 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -476 M$ | n.d. (terme manquant) | -476 M$ | 45 j | 5 666 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
 
 ## Hut 8 (HUT)
 
@@ -571,6 +577,7 @@
 | 2025-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (non publié) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (non publié) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2026-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 
 ## Galaxy (GLXY)
 
@@ -625,6 +632,7 @@
 | 2025-12-31 | n.d. (terme manquant) | n.d. (non publié) | 0,36 x | n.d. (terme manquant) | 235 M$ | n.d. (concept non résolu) | 235 M$ | n.d. (terme manquant) | 5 200 M$ | n.d. (terme manquant) | 1,23 x |  |
 | 2026-03-31 | n.d. (non publié) | n.d. (terme manquant) | 0,33 x | n.d. (terme manquant) | 211 M$ | n.d. (concept non résolu) | 211 M$ | n.d. (non publié) | 5 500 M$ | n.d. (terme manquant) | 1,41 x |  |
 | 2026-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | 0,44 x | n.d. (terme manquant) | 181 M$ | n.d. (concept non résolu) | 181 M$ | n.d. (terme manquant) | 7 600 M$ | n.d. (terme manquant) | 1,50 x | F4 |
+| 2026-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | 1,19 x | n.d. (terme manquant) | -82 M$ | n.d. (concept non résolu) | -82 M$ | n.d. (terme manquant) | 19 900 M$ | n.d. (terme manquant) | 1,65 x | F2 |
 
 ## Backblaze (BLZE)
 
@@ -652,6 +660,7 @@
 | 2025-12-31 | 11,8 % | 14,3 % | 0,03 x | n.d. (terme manquant) | 9 M$ | n.d. (concept non résolu) | 9 M$ | 8 j | 66 M$ | n.d. (terme manquant) | 12,92 x |  |
 | 2026-03-31 | 11,7 % | 13,3 % | 0,19 x | n.d. (non publié) | 3 M$ | n.d. (concept non résolu) | 3 M$ | 10 j | 76 M$ | n.d. (terme manquant) | 5,22 x |  |
 | 2026-06-30 | 17,7 % | 13,9 % | 0,08 x | n.d. (terme manquant) | 10 M$ | n.d. (concept non résolu) | 10 M$ | 11 j | 396 M$ | n.d. (terme manquant) | 4,16 x | F4 |
+| 2026-09-30 | 25,5 % | 16,9 % | 0,32 x | n.d. (terme manquant) | 6 M$ | n.d. (concept non résolu) | 6 M$ | 13 j | 400 M$ | ↯ | ↯ | F4 |
 
 ## Riot (RIOT)
 
@@ -679,6 +688,7 @@
 | 2025-12-31 | 7,2 % | 71,9 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -188 M$ | n.d. (concept non résolu) | -188 M$ | 18 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 | 2026-03-31 | 3,6 % | 42,4 % | n.d. (dénominateur négatif ou nul) | n.d. (non publié) | -298 M$ | n.d. (concept non résolu) | -298 M$ | 36 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 | 2026-06-30 | 13,9 % | 24,5 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -151 M$ | n.d. (concept non résolu) | -151 M$ | 22 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
+| 2026-09-30 | 0,7 % | 6,1 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -264 M$ | n.d. (concept non résolu) | -264 M$ | 10 j | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (dénominateur négatif ou nul) | F1, F2 |
 
 ## Blue Owl (OWL)
 
@@ -734,6 +744,7 @@
 | 2025-12-31 | 86,7 % | 22,7 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2026-03-31 | -8,8 % | 28,2 % | n.d. (non publié) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
 | 2026-06-30 | 63,7 % | 41,2 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-09-30 | -51,8 % | 12,2 % | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
 
 ## Blackstone (BX)
 
@@ -761,6 +772,7 @@
 | 2025-12-31 | 41,4 % | 9,2 % | 0,02 x | n.d. (terme manquant) | 1 045 M$ | n.d. (concept non résolu) | 1 045 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2026-03-31 | 10,0 % | 15,2 % | 0,03 x | n.d. (terme manquant) | 958 M$ | n.d. (concept non résolu) | 958 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
 | 2026-06-30 | 35,9 % | 17,2 % | 0,02 x | n.d. (terme manquant) | 1 909 M$ | n.d. (concept non résolu) | 1 909 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) |  |
+| 2026-09-30 | -0,8 % | 22,1 % | 0,02 x | n.d. (terme manquant) | 1 917 M$ | n.d. (concept non résolu) | 1 917 M$ | n.d. (terme manquant) | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F8 |
 
 ## Intel (INTC)
 
@@ -2295,6 +2307,7 @@ Actions déclarées par le financeur au 13F (date de portefeuille) ou à une ann
 | 2025-12-31 | 13F | 31 942 641 | 629,9 M$ | — |  |
 | 2026-03-31 | 13F | 35 248 893 | 985,2 M$ | — |  |
 | 2026-06-30 | 13F | 35 248 893 | 1 167,8 M$ | — |  |
+| 2026-09-30 | 13F | 35 248 893 | 577,7 M$ | — |  |
 
 ## Amazon (AMZN) → RIVIAN AUTOMOTIVE, INC. / DE (CP:rivian automotive inc / de) : déclarations de détention
 
@@ -2322,6 +2335,7 @@ Actions déclarées par le financeur au 13F (date de portefeuille) ou à une ann
 | 2025-12-31 | 13F | 158 363 834 | 3 121,4 M$ | — |  |
 | 2026-03-31 | 13F | 158 363 834 | 2 383,4 M$ | — |  |
 | 2026-06-30 | 13F | 158 363 834 | 2 747,6 M$ | — |  |
+| 2026-09-30 | 13F | 158 363 834 | 2 366,0 M$ | — |  |
 
 ## Intel (INTC) → ASML (ASML) : déclarations de détention
 
@@ -10019,9 +10033,13 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 
 | Fait balisé | Membre | Période | Valeur | Pièce |
 | --- | --- | --- | ---: | --- |
+| `LessorOperatingLeaseLeaseNotYetCommencedRenewalTerm1` | Anthropic HPC Lease | au 2026-07-31 | 5 ans | 10-Q 0001628280-26-071671 |
 | `LessorOperatingLeaseLeaseNotYetCommencedRenewalTerm1` | Anthropic HPC Lease | au 2026-07-06 | 5 ans | 10-Q 0001083301-26-000166 |
+| `LessorOperatingLeaseLeaseNotYetCommencedTermOfContract1` | Anthropic HPC Lease | au 2026-07-31 | 20 ans | 10-Q 0001628280-26-071671 |
 | `LessorOperatingLeaseLeaseNotYetCommencedTermOfContract1` | Anthropic HPC Lease | au 2026-07-06 | 20 ans | 10-Q 0001083301-26-000166 |
+| `LessorOperatingLeaseLeaseNotYetCommencedMegawattsOfCriticalITLoad` | Anthropic HPC Lease | au 2026-07-31 | 401 MW | 10-Q 0001628280-26-071671 |
 | `LessorOperatingLeaseLeaseNotYetCommencedMegawattsOfCriticalITLoad` | Anthropic HPC Lease | au 2026-07-06 | 401 MW | 10-Q 0001083301-26-000166 |
+| `LessorOperatingLeaseLeaseNotYetCommencedNumberOfRenewalOptions` | Anthropic HPC Lease | au 2026-07-31 | 2 (unité balisée : USD) | 10-Q 0001628280-26-071671 |
 | `LessorOperatingLeaseLeaseNotYetCommencedNumberOfRenewalOptions` | Anthropic HPC Lease | au 2026-07-06 | 2 (unité balisée : USD) | 10-Q 0001083301-26-000166 |
 
 **Anthropic — SALESFORCE, INC. (cik:0001108524, hors du graphe)**
@@ -10218,7 +10236,6 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - Cerebras, cerebras:openai_working_capital_loan — échéance, 2026-04-17 (date de la pièce), — (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras : à l'échéance, remboursement en numéraire, par la fourniture de services à OpenAI ou par cession d'actifs selon le MRA ; intérêts réputés payés selon l'annexe B du MRA ; ligne de clause (D-0067)
 - Cerebras, cerebras:openai_working_capital_loan — échéance, 2026-05-04 (date de la pièce), — (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : la trésorerie du compte séquestre non engagée revient à OpenAI en réduction du prêt ; contrôle du compte transféré à OpenAI sur un événement déclencheur ou une résiliation qui ne lui est pas imputable ; période de transition de durée caviardée, services et redevances maintenus ; ligne de clause (D-0067)
 - Cerebras, cerebras:openai_working_capital_loan — échéance, 2032-12-31 (fin de période), 1 005 M$ (S-1 EX-10.12 0001628280-26-025762) : billet garanti de Cerebras au profit d'OpenAI OpCo, LLC, du 5 janvier 2026 : principal et intérêts dus le 31 décembre 2032, ou plus tôt selon les sections 3 et 8 ; ligne de clause (D-0067)
-- CoreWeave, crwv:openai_commercial_agreement — durée, 2025-03-12 (date de la pièce) ; « through October 2030 », 11 900 M$ (S-1/A 0001193125-25-052207) : S-1/A de CoreWeave du 12 mars 2025 : horizon de l'engagement d'OpenAI au contrat-cadre de mars 2025 ; montant déjà codé en ligne de famille ; durée et résiliation pour faute codées sur la pièce (bloc b3ea1b55) ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_msa — engagement minimal, 2025-03-12 (date de la pièce), — (S-1/A EX-10.24 0001193125-25-052207) : contrat-cadre de CoreWeave de mars 2025 : paiement dû par le client après une résiliation pour faute, CoreWeave revendant au mieux les serveurs de sa capacité réservée ; période de transition aux durées caviardées, payée en numéraire ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_msa — clause de sortie, 2025-03-12 (date de la pièce) ; « thirty (30) consecutive days or longer », — (S-1/A EX-10.24 0001193125-25-052207) : contrat-cadre de CoreWeave de mars 2025 : la force majeure n'excuse pas les paiements des services rendus ; cession libre à une société affiliée ou lors d'une fusion ou cession d'actifs ; sous-traitance des aspects essentiels soumise à l'accord du client ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_msa — clause de sortie, 2025-03-12 (date de la pièce), — (S-1/A EX-10.24 0001193125-25-052207) : contrat-cadre de CoreWeave de mars 2025 : résiliation pour faute ouverte aux deux parties ; CoreWeave ne peut pas résilier pour un usage contraire à la politique d'usage ; ligne de clause (D-0067)
@@ -10229,7 +10246,6 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - CoreWeave, crwv:openai_msa_2025 — clause de sortie, 2025-09-25 (date de la pièce), — (S-4/A EX-10.32 0001140361-25-036118) : contrat-cadre de CoreWeave : résiliation pour faute ouverte aux deux parties, bons de commande compris ; délai de régularisation prolongé si la réparation est engagée ; CoreWeave ne peut pas résilier pour un usage contraire à la politique d'usage, l'indemnisation étant son seul recours ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_msa_2025 — clause de sortie, 2025-09-25 (date de la pièce) ; « thirty (30) consecutive days or longer », — (S-4/A EX-10.32 0001140361-25-036118) : contrat-cadre de CoreWeave avec OpenAI OpCo, LLC : la force majeure n'excuse pas les paiements des services rendus ; cession libre à une société affiliée ou lors d'une fusion ou cession d'actifs ; sous-traitance des aspects essentiels soumise à l'accord du client ; communication du contrat aux prêteurs de CoreWeave déjà codée au bloc 6eb5ce02 ; ligne de clause (D-0067)
 - CoreWeave, crwv:openai_msa_2025 — durée, 2025-09-25 (date de la pièce), — (S-4/A EX-10.32 0001140361-25-036118) : contrat-cadre de CoreWeave avec OpenAI OpCo, LLC : durée liée aux bons de commande ; contrat lu au bloc 6eb5ce02 (8-K du même jour) ; ligne de clause (D-0067)
-- DigitalBridge Group, Inc., stargate:vantage_frontier_lighthouse — calendrier de livraison, 2025-10-30 (date de la pièce) ; « first delivery in H2 2026 with phased completion by 2028 », — (8-K EX-99.1 0001679688-25-000096) : présentation de DigitalBridge : première livraison au second semestre 2026, achèvement par phases d'ici 2028 pour les deux campus ; ligne de clause (D-0067)
 - Microsoft, msft:openai_partnership — exclusivité, 2023-07-27 (date de la pièce), — (10-K 0000950170-23-035122) : 10-K de Microsoft du 27 juillet 2023 : Azure fournisseur exclusif de nuage d'OpenAI ; même phrase dans le 10-K de 2024 et un 8-K de décembre 2024 ; le 10-K de juillet 2025 écrit une exclusivité de l'interface et un droit de premier refus (bloc 99b35d57), ce droit prenant fin le 28 octobre 2025 (bloc a2aae958) ; ligne de clause (D-0067)
 - Microsoft, msft:openai_partnership — exclusivité, 2025-07-30 (date de la pièce), — (10-K 0000950170-25-100235) : 10-K de Microsoft du 30 juillet 2025 : l'interface d'OpenAI est exclusive à Azure et Microsoft a un droit de premier refus sur les nouveaux besoins de capacité d'OpenAI ; les 10-K de 2023 et 2024 écrivaient Azure « fournisseur exclusif » d'OpenAI (bloc e0769154) ; le texte n'écrit pas de fin ni de restriction, d'où aucune ligne d'événement ; le droit de premier refus prend fin le 28 octobre 2025 …
 - NVIDIA, nvda:portsmouth_rvg_2026 — exclusivité, 2026-08-17 (date de la pièce), 4,25 GW (8-K 0001045810-26-000069) : 8-K de NVIDIA du 17 août 2026 : OpenAI, preneur au site de Portsmouth, y déploie la plateforme de NVIDIA, sauf exceptions limitées, en contrepartie du soutien de crédit ; ligne de clause et de capacité (D-0067)
@@ -10252,6 +10268,12 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - Akamai, akam:anthropic_msa — clause de sortie, 2026-09-24 (date de la pièce), — (8-K 0001193125-26-401048) : 8-K d'Akamai : sortie d'Akamai ; ligne de clause (D-0067)
 - Akamai, akam:anthropic_msa — clause de sortie, 2026-09-24 (date de la pièce), — (8-K 0001193125-26-401048) : 8-K d'Akamai : sortie d'Anthropic d'un plan de projet sur panne importante ; ligne de clause (D-0067)
 - Akamai, akam:anthropic_msa — durée, 2026-09-24 (date de la pièce) ; « initial seven-year term commencing on their respective service start dates », — (8-K 0001193125-26-401048) : 8-K d'Akamai du 24 septembre 2026 : plans de projet 2 et 3 du 18 septembre 2026 sous le contrat-cadre du 5 mai 2026, sept ans chacun à compter de leur début de service ; contrat à déposer avec le 10-Q du troisième trimestre ; ligne de clause (D-0067)
+- Akamai, akam:anthropic_msa — clause de sortie, 2026-11-06 (date de la pièce), — (10-Q EX-10.1 0001086222-26-000100) : contrat-cadre de services (MSA) entre Akamai Technologies, Inc. et Anthropic PBC, client (pièce 10.1 du 10-Q d'Akamai du 2026-11-06, caviardée) (« Customer » : Anthropic PBC, fenêtre des parties du même contrat) : Anthropic peut résilier sans pénalité si le contrôle d'Akamai passe à l'un de ses concurrents ; Akamai ne peut céder le contrat à un concurrent d'Anthropic ; ligne de clause (D-0067)
+- Akamai, akam:anthropic_msa — clause de sortie, 2026-11-06 (date de la pièce), — (10-Q EX-10.1 0001086222-26-000100) : contrat-cadre de services (MSA) entre Akamai Technologies, Inc. et Anthropic PBC, client (pièce 10.1 du 10-Q d'Akamai du 2026-11-06, caviardée) (« Customer » : Anthropic PBC, fenêtre des parties du même contrat) : Akamai peut résilier un plan de projet s'il ne peut faire cesser une contrefaçon, en remboursant les frais payés d'avance ; ligne de clause (D-0067)
+- Akamai, akam:anthropic_msa — clause de sortie, 2026-11-06 (date de la pièce), — (10-Q EX-10.1 0001086222-26-000100) : contrat-cadre de services (MSA) entre Akamai Technologies, Inc. et Anthropic PBC, client (pièce 10.1 du 10-Q d'Akamai du 2026-11-06, caviardée) (« Customer » : Anthropic PBC, fenêtre des parties du même contrat) : Akamai peut résilier, restreindre ou suspendre les services après un manquement non corrigé d'Anthropic, le délai de correction des impayés étant caviardé ; Anthropic garde l'accès à se…
+- Akamai, akam:anthropic_msa — clause de sortie, 2026-11-06 (date de la pièce), — (10-Q EX-10.1 0001086222-26-000100) : contrat-cadre de services (MSA) entre Akamai Technologies, Inc. et Anthropic PBC, client (pièce 10.1 du 10-Q d'Akamai du 2026-11-06, caviardée) (« Customer » : Anthropic PBC, fenêtre des parties du même contrat) : Anthropic peut résilier après un manquement substantiel d'Akamai non corrigé ; ligne de clause (D-0067)
+- Akamai, akam:anthropic_msa — clause de sortie, 2026-11-06 (date de la pièce), — (10-Q EX-10.1 0001086222-26-000100) : contrat-cadre de services (MSA) entre Akamai Technologies, Inc. et Anthropic PBC, client (pièce 10.1 du 10-Q d'Akamai du 2026-11-06, caviardée) (« Customer » : Anthropic PBC, fenêtre des parties du même contrat) : une procédure d'insolvabilité de l'une des parties est un manquement immédiat ; Akamai peut alors suspendre ou résilier, Anthropic résilier tout ou partie du contrat ; ligne de clause (…
+- Akamai, akam:anthropic_msa — durée, 2026-11-06 (date de la pièce), — (10-Q EX-10.1 0001086222-26-000100) : contrat-cadre de services (MSA) entre Akamai Technologies, Inc. et Anthropic PBC, client (pièce 10.1 du 10-Q d'Akamai du 2026-11-06, caviardée) (« Customer » : Anthropic PBC, fenêtre des parties du même contrat) : durée indéterminée ; aucune partie ne peut résilier le contrat-cadre tant qu'un plan de projet est en cours, hors manquement et insolvabilité ; résiliation sur préavis (caviardé) sans p…
 - Akamai, akam:anthropic_warrant — clause de sortie, 2026-09-24 (date de la pièce), — (8-K EX-4.1 0001193125-26-401048) : bon d'Akamai : la part non acquise tombe d'elle-même si les contrats commerciaux avec Anthropic expirent ou sont résiliés avant l'acquisition ; aucune tranche ne s'acquiert tant qu'un défaut de paiement dure ; ligne de clause (D-0067)
 - Akamai, akam:anthropic_warrant — clause de sortie, 2026-09-24 (date de la pièce), — (8-K EX-4.1 0001193125-26-401048) : bon d'Akamai : reprise sans contrepartie des actions de la tranche liée au contrat impayé, exercées ou non ; délai de régularisation caviardé ([***]) ; ligne de clause (D-0067)
 - Akamai, akam:anthropic_warrant — durée, 2026-09-24 (date de la pièce) ; « seventh anniversary of the Issue Date », — (8-K EX-4.1 0001193125-26-401048) : bon d'Akamai au profit d'Anthropic : expiration à 17 h (heure de New York) au septième anniversaire de la date d'émission (18 septembre 2026) ; chaque part acquise s'exerce de son événement d'acquisition à l'expiration ; ligne de clause (D-0067)
@@ -10260,6 +10282,10 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - Akamai, akam:anthropic_warrant — tranche d'acquisition, 2026-09-24 (date de la pièce), 80 % (8-K EX-4.1 0001193125-26-401048) : bon d'Akamai : troisième tranche, 80 % cumulés pour une hausse cumulée de TCV d'au moins 6,0 Md$ ; ligne de clause (D-0067)
 - Akamai, akam:anthropic_warrant — tranche d'acquisition, 2026-09-24 (date de la pièce), 100 % (8-K EX-4.1 0001193125-26-401048) : bon d'Akamai : dernière tranche, 100 % des actions du bon pour une hausse cumulée de TCV d'au moins 9,0 Md$ ; ligne de clause (D-0067)
 - Amazon, amzn:anthropic_financing_facility — durée, 2026-04-30 (date de la pièce) ; « 30 months after a liquidity event », 20 000 M$ (10-Q 0001018724-26-000014) : 10-Q d'Amazon au 31 mars 2026 : facilité de financement d'Anthropic conclue après la clôture, rien de tirable à l'origine ; option d'investir jusqu'à 5,0 Md$ dans les levées futures, imputée sur la facilité ; ligne de clause (D-0067)
+- Anthropic, anthropic:broadcom_2026_npa — échéance, 2026-11-02 (date de la pièce) ; « 5 ans ; 63 mois ; 57 mois », — (S-1/A EX-4.4 0001628280-26-068676) : fenêtre de la pièce 4.4 du S-1/A d'Anthropic (convention d'achat de billets de Broadcom, texte à jour de l'amendement n° 1), dont le corps est lu en entier (D-0084, point 12) (« Investor » : Broadcom Inc.) : échéances des billets, cinq ans pour les 24 premiers Md$, 63 mois de 24 à 32 Md$, 57 mois au-delà, à compter du début de la période de tirage ; remboursement en numéraire à l'échéance sauf co…
+- Anthropic, anthropic:broadcom_2026_npa — clause de sortie, 2026-11-02 (date de la pièce), — (S-1/A EX-4.4 0001628280-26-068676) : fenêtre de la pièce 4.4 du S-1/A d'Anthropic (convention d'achat de billets de Broadcom, texte à jour de l'amendement n° 1), dont le corps est lu en entier (D-0084, point 12) (« Investor » : Broadcom Inc.) : sur un cas de défaut, Broadcom peut mettre fin à ses engagements et rendre exigibles le principal et les intérêts des billets, d'office en cas de procédure collective ; ligne de clause (D-006…
+- Anthropic, anthropic:broadcom_2026_npa — clause de sortie, 2026-11-02 (date de la pièce), — (S-1/A EX-4.4 0001628280-26-068676) : fenêtre de la pièce 4.4 du S-1/A d'Anthropic (convention d'achat de billets de Broadcom, texte à jour de l'amendement n° 1), dont le corps est lu en entier (D-0084, point 12) : cas de défaut des billets, dont l'impayé d'un loyer au titre du contrat de location (après l'amendement, de tout contrat de location, Broadcom ou autre bailleur) et d'un contrat de location de calcul constituant un endette…
+- Anthropic, anthropic:broadcom_2026_npa — durée, 2026-11-02 (date de la pièce), — (S-1/A EX-4.4 0001628280-26-068676) : fenêtre de la pièce 4.4 du S-1/A d'Anthropic (convention d'achat de billets de Broadcom, texte à jour de l'amendement n° 1), dont le corps est lu en entier (D-0084, point 12) : période de tirage ouverte à la première échéance trimestrielle suivant la mise en service du premier Pod loué, close au plus tôt au cinquième anniversaire, à une opération de liquidation ou au plafond caviardé ; ligne de c…
 - Apollo, apollo:broadcom_capital_solution — calendrier de livraison, 2026-08-10 (date de la pièce) ; « beginning in mid-2026 », — (10-Q 0001858681-26-000040) : 10-Q d'Apollo au 30 juin 2026 (page de note R24) : accord de 35 Md$ avec Broadcom pour l'expansion de l'infrastructure de calcul d'Anthropic à partir de mi-2026 ; obligation d'achat de WHCO, garantie limitée d'AHL à 15 % de l'obligation restante, éteinte au fil des financements et au plus tard en 2028 (montants codés au bloc 29f74ba9) ; ligne de clause (D-0067)
 - Nscale, nscale:anthropic_gpu_services_order — calendrier de livraison, 2026-09-18 (date de la pièce), — (S-1 EX-10.25 0001193125-26-395475) : commande de Nscale : livraison par tranches ; pour la tranche 1, site, nombre de systèmes, nombre de GPU, capacité totale et date de livraison attendue caviardés ([***]) ; ligne de clause (D-0067)
 - Nscale, nscale:anthropic_gpu_services_order — calendrier de livraison, 2026-09-18 (date de la pièce), — (S-1 EX-10.25 0001193125-26-395475) : commande de Nscale : période de grâce, puis paliers de retard avec remise de retard sur les redevances ; livraison anticipée possible au choix d'Anthropic ; ligne de clause (D-0067)
@@ -10278,39 +10304,32 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - Nscale, nscale:anthropic_gpu_services_order — durée, 2026-09-18 (date de la pièce), — (S-1 EX-10.25 0001193125-26-395475) : commande de Nscale : contrat en vigueur jusqu'à la fin de la dernière tranche livrée et reçue ; prolongations au choix d'Anthropic, alignées sur les contrats des autres sociétés du groupe ; ligne de clause (D-0067)
 - TeraWulf, wulf:justified_anthropic_lease — calendrier de livraison, 2026-07-06 (date de la pièce) ; « in phases beginning in late 2027 and concluding in early 2028 », — (8-K 0001104659-26-080583) : 8-K de TeraWulf : livraison par phases de fin 2027 à début 2028 ; ligne de clause (D-0067)
 - TeraWulf, wulf:justified_anthropic_lease — durée, 2026-07-06 (date de la pièce) ; « a term of 20 years thereafter ; two successive five-year renewal options », — (8-K 0001104659-26-080583) : 8-K de TeraWulf : loyer dû dès la livraison, 20 ans, prolongeable de dix ans au choix d'Anthropic ; paiements d'Anthropic appelés à être soutenus par un crédit de catégorie investissement non nommé ; ligne de clause (D-0067)
+- TeraWulf, wulf:justified_anthropic_lease — calendrier de livraison, 2026-11-06 (date de la pièce) ; « Q4 2027 – 1H 2028 », 401 MW (8-K EX-99.2 0001628280-26-071306) : présentation de TeraWulf du 2026-11-06 : livraison par phases des 401 MW de charge informatique critique louée à Anthropic à Justified, du T4 2027 au premier semestre 2028 (CB-1 137,6 MW au T4 2027, CB-2 137,6 MW au T1 2028, CB-3 125,6 MW au T2 2028 selon une autre diapositive) ; ligne de clause et de capacité (D-0067)
+- TeraWulf, wulf:justified_anthropic_tpu_covenant — exclusivité, 2026-11-04 (date de la pièce), — (8-K EX-10.1 0001628280-26-069810) : fenêtre de la pièce 10.1 de TeraWulf (formulaire d'accord de soutien de crédit), dont le corps est lu en entier au point 11 : Anthropic (« Tenant ») et ses affiliées n'utilisent dans les locaux de Justified que des TPU approuvés par Google pendant toute la durée de l'accord, obligation du seul locataire ; ligne de clause (D-0067)
+- TeraWulf, wulf:justified_google_backstop — clause de sortie, 2026-11-04 (date de la pièce), — (8-K EX-10.1 0001628280-26-069810) : fenêtre de la pièce 10.1 de TeraWulf (formulaire d'accord de soutien de crédit), dont le corps est lu en entier au point 11 : l'accord de soutien prend fin d'office à l'expiration du bail, au paiement de l'indemnité ou à la novation, ou quand Anthropic (ou une société mère ou filiale, qui garantit alors le bail) garde trois mois une notation de catégorie investissement ; Google peut aussi résilie…
 
 ## OpenAI : capacités écrites (D-0067, volet 8)
 
 - AMD, amd:openai_supply_2025 — calcul, 2025-10-06 (date de la pièce), 1 GW (8-K 0001193125-25-230895) : 8-K d'AMD du 6 octobre 2025 : engagement ferme d'OpenAI, à la signature du contrat d'approvisionnement, d'acheter le premier gigawatt de GPU MI450 ; ligne de clause et de capacité (D-0067)
 - AMD, amd:openai_supply_2025 — calcul, 2025-10-06 (date de la pièce), 6 GW (8-K 0001193125-25-230895) : 8-K d'AMD : six gigawatts de GPU, seuil d'acquisition complète du bon ; seul le premier gigawatt fait l'objet d'un engagement ferme ; les dépôts suivants écrivent « deploy 6 gigawatts » puis « intends to deploy up to 6 gigawatts » ; ligne de capacité (D-0067)
-- Amazon, amzn:openai_aws_2026 — calcul, 2026-04-29 (date de la pièce) ; « begins ramping in 2027 », 2 GW (8-K 0001018724-26-000012) : communiqué d'Amazon du 29 avril 2026 (pièce 99.1) : engagement d'OpenAI à consommer environ 2 GW de capacité Trainium par AWS, montée en charge dès 2027 ; ligne de capacité (D-0067)
 - Cerebras, cerebras:openai_mra — calcul, 2026-08-12 (date de la pièce) ; « multi-year term », 750 MW (10-Q 0001628280-26-056357) : 10-Q de Cerebras au 30 juin 2026 (page de note R10) : capacité de calcul d'inférence engagée par OpenAI au MRA de décembre 2025, sur trois ou quatre ans extensibles à cinq ; même texte que la note lue au bloc 150c8de9 ; ligne de capacité (D-0067)
 - Cerebras, cerebras:openai_mra — calcul, 2026-12-31 (fin de période) ; « by the end of calendar year 2026 », 250 MW (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : premier segment de la capacité initiale, 250 MW avant la fin de 2026, répartis dans un nombre caviardé de centres de données ; ligne de clause et de capacité (D-0067)
 - Cerebras, cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 1,25 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : option d'OpenAI sur une capacité additionnelle déployée par tranches d'ici fin 2030 ; ligne de capacité (D-0067)
 - Cerebras, cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 2 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : total écrit par Cerebras, capacité engagée et option comprises ; non additionné ici ; ligne de capacité (D-0067)
-- DigitalBridge Group, Inc., stargate:vantage_frontier_lighthouse — hébergement, 2025-10-30 (date de la pièce), 1,40 GW (8-K EX-99.1 0001679688-25-000096) : présentation de DigitalBridge du 30 octobre 2025 (pièce 99.1) : campus Frontier de Vantage (comté de Shackelford, Texas), « GPU compute capacity » de 1,4 GW pour une infrastructure destinée à Oracle et OpenAI ; chantier en cours, statut contractuel non écrit ici ; ligne de capacité (D-0067)
-- DigitalBridge Group, Inc., stargate:vantage_frontier_lighthouse — hébergement, 2025-10-30 (date de la pièce), 1 GW (8-K EX-99.1 0001679688-25-000096) : présentation de DigitalBridge : campus Lighthouse de Vantage (Port Washington, Wisconsin), environ 1,0 GW, pour Oracle et OpenAI ; le fournisseur d'électricité WEC Energy écrit 1,3 GW de demande et 3,5 GW de potentiel pour ce site (bloc 029f351b) ; ligne de capacité (D-0067)
-- GraniteShares ETF Trust, stargate:crusoe_abilene — hébergement, 2026-05-18 (date de la pièce), 1,20 GW (485APOS 0001493152-26-024144) : prospectus de fonds indiciels de GraniteShares (485APOS du 18 mai 2026) sur l'action de Crusoe Energy Systems : campus phare de 1,2 GW à Abilene (Texas), élément clé du programme Stargate d'OpenAI ; statut contractuel non écrit ; ligne de capacité (D-0067)
-- NVIDIA, nvda:openai_10gw_partnership — calcul, 2025-11-19 (date de la pièce), 10 GW (8-K 0001045810-25-000228) : communiqué de NVIDIA du 19 novembre 2025 sur le troisième trimestre de l'exercice 2026 : partenariat stratégique annoncé avec OpenAI pour déployer au moins 10 GW de systèmes NVIDIA ; aucun contrat définitif décrit ici ; ligne de capacité (D-0067)
 - NVIDIA, nvda:portsmouth_rvg_2026 — hébergement, 2026-08-17 (date de la pièce), 4,25 GW (8-K 0001045810-26-000069) : 8-K de NVIDIA du 17 août 2026 : OpenAI, preneur au site de Portsmouth, y déploie la plateforme de NVIDIA, sauf exceptions limitées, en contrepartie du soutien de crédit ; ligne de clause et de capacité (D-0067)
 - NVIDIA, nvda:sb_energy_openai_guarantees — hébergement, 2026-08-26 (date de la pièce), 3,80 GW (10-Q 0001045810-26-000075) : 10-Q de NVIDIA : option de soutien de crédit sur environ 3,8 GW de plus à mesure que le site grandit ; SB Energy déclare ces bâtiments déjà loués à OpenAI (bloc a2c9a066) ; capacité de 4,25 GW, exclusivité et fin des garanties codées sur le 8-K du 17 août 2026 (bloc 61cd4955) ; ligne de capacité (D-0067)
 - SoftBank, sbenergy:openai_warrants — hébergement, 2026-09-01 (date de la pièce), 800 MW (S-1 EX-4.1 0001628280-26-059639) : annexe E du bon refondu de SB Energy, ligne 1 : 868 934 bons acquis à la signature des baux NNN de 800 MW de charge IT au projet d'Orion (Milam County), déjà échangés ; la capacité est celle des baux que la ligne dit signés ; ligne de clause et de capacité (D-0067)
 - SoftBank, sbenergy:ports_pike_leases — hébergement, 2026-09-01 (date de la pièce), 4,25 GW (S-1 0001628280-26-059639) : S-1 de SB Energy : capacité initiale des bâtiments loués à OpenAI au campus PORTS-Pike, couverte par la garantie de NVIDIA ; ligne de capacité (D-0067)
 - SoftBank, sbenergy:ports_pike_leases — hébergement, 2026-09-21 (date de la pièce), 3,78 GW (S-1/A 0001628280-26-062846) : S-1/A de SB Energy : bâtiments loués à OpenAI au campus PORTS-Pike hors de la garantie initiale de NVIDIA ; option de garantie de NVIDIA, à défaut OpenAI doit trouver à une date fixée un garant noté au moins A- ; ligne de capacité (D-0067)
-- WEC ENERGY GROUP, INC., stargate:vantage_port_washington — électricité, 2025-12-05 (date de la pièce) ; « through 2030 », 1,30 GW (8-K EX-99.1 0000783325-25-000068) : présentation de WEC Energy du 5 décembre 2025 : demande d'électricité prévue jusqu'en 2030 pour le campus de Vantage à Port Washington, partie du partenariat d'OpenAI et d'Oracle (Stargate) ; prévision du fournisseur d'électricité ; ligne de capacité (D-0067)
-- WEC ENERGY GROUP, INC., stargate:vantage_port_washington — électricité, 2025-12-05 (date de la pièce) ; « over time », 3,50 GW (8-K EX-99.1 0000783325-25-000068) : présentation de WEC Energy : potentiel du site de Port Washington à terme ; quatre bâtiments prévus sur 670 acres, plus de 15 Md$ d'investissement attendu ; les présentations suivantes, jusqu'en septembre 2026, reprennent les mêmes chiffres, le chantier étant en cours ; ligne de capacité (D-0067)
 
 ## Anthropic : capacités écrites (D-0067, volet 8)
 
-- AMD, amd:anthropic_mi450_2026 — calcul, 2026-08-04 (date de la pièce), 2 GW (8-K 0000002488-26-000121) : communiqué d'AMD du 4 août 2026 (pièce 99.1) : partenariat stratégique annoncé avec Anthropic pour déployer jusqu'à 2 GW de GPU MI450 en baies Helios ; part ferme, calendrier et montant non publiés ; ligne de capacité (D-0067)
-- Amazon, amzn:anthropic_aws_commitment — calcul, 2026-04-29 (date de la pièce), 5 GW (8-K 0001018724-26-000012) : communiqué d'Amazon du 29 avril 2026 : Anthropic s'assure jusqu'à 5 GW de puces Trainium actuelles et futures ; extension de plus de 100,0 Md$ sur 10 ans de l'engagement d'Anthropic écrite au 10-Q du deuxième trimestre (bloc 0427b505) ; ligne de capacité (D-0067)
 - Broadcom, avgo:anthropic_tpu_capacity_2027 — calcul, 2026-04-06 (date de la pièce) ; « beginning in 2027 », 3,50 GW (8-K 0001193125-26-144028) : 8-K de Broadcom du 6 avril 2026 : collaboration élargie entre Broadcom, Google et Anthropic, environ 3,5 GW de capacité de calcul TPU de nouvelle génération dès 2027, part des plusieurs gigawatts engagés par Anthropic ; la consommation dépend du succès commercial continu d'Anthropic ; partenaires opérationnels et financiers en discussion ; ligne de capacité (D-0067)
-- ERock, Inc., erock:anthropic_power_order — électricité, 2026-08-11 (date de la pièce) ; « extending production commitments into 2028 », 470 MW (8-K EX-99.1 0001193125-26-344714) : communiqué d'ERock du 11 août 2026 (pièce 99.1) : bon de commande d'équipements de production d'électricité sur site de 470 MW pour Anthropic, montant non publié ; ligne de capacité (D-0067)
 - Hut 8, hut:anthropic_partnership — hébergement, 2026-02-25 (date de la pièce), 2 295 MW (10-K 0001104659-26-019392) : 10-K de Hut 8 du 25 février 2026 : partenariat de décembre 2025 avec Anthropic et Fluidstack, total possible de 2 295 MW (bail de 245 MW avec Fluidstack à River Bend, droit de première offre de Fluidstack sur 1 000 MW d'extension, 1 050 MW optionnels avec Anthropic) ; total écrit par Hut 8, non additionné ici ; ligne de capacité (D-0067)
 - Hut 8, hut:anthropic_partnership — hébergement, 2026-02-25 (date de la pièce), 1 050 MW (10-K 0001104659-26-019392) : 10-K de Hut 8 : capacité optionnelle que Hut 8 et Anthropic peuvent étudier et développer ensemble sur le reste du portefeuille ; ligne de capacité (D-0067)
-- Hut 8, hut:anthropic_partnership — hébergement, 2026-02-25 (date de la pièce), 245 MW (8-K 0001104659-26-019393) : communiqué de Hut 8 du 25 février 2026 (pièce 99.1) : au moins 245 MW, soit le bail de 15 ans signé avec Fluidstack à River Bend (garanti par Google), premier hall prévu au deuxième trimestre 2027 ; plafond de 2 295 MW codé au bloc 3cbda562 ; ligne de capacité (D-0067)
-- NVIDIA, nvda:anthropic_compute_1gw — calcul, 2025-11-19 (date de la pièce) ; « initially », 1 GW (8-K 0001045810-25-000228) : communiqué de NVIDIA du 19 novembre 2025 : Anthropic adopte d'abord 1 GW de capacité de calcul sur systèmes Grace Blackwell et Vera Rubin ; annonce, aucun contrat décrit ici ; ligne de capacité (D-0067)
 - TeraWulf, wulf:justified_anthropic_lease — hébergement, 2026-07-06 (date de la pièce), 401 MW (8-K 0001104659-26-080583) : 8-K de TeraWulf du 6 juillet 2026 : bail de 20 ans de sa filiale Raylan Data LLC avec Anthropic PBC, environ 401 MW de charge IT au campus Justified (Hawesville, Kentucky) ; ligne de capacité (D-0067)
+- TeraWulf, wulf:justified_anthropic_lease — hébergement, 2026-11-06 (date de la pièce) ; « Q4 2027 – 1H 2028 », 401 MW (8-K EX-99.2 0001628280-26-071306) : présentation de TeraWulf du 2026-11-06 : livraison par phases des 401 MW de charge informatique critique louée à Anthropic à Justified, du T4 2027 au premier semestre 2028 (CB-1 137,6 MW au T4 2027, CB-2 137,6 MW au T1 2028, CB-3 125,6 MW au T2 2028 selon une autre diapositive) ; ligne de clause et de capacité (D-0067)
+- TeraWulf, wulf:justified_anthropic_lease — hébergement, 2026-11-06 (date de la pièce), 401 MW (10-Q 0001628280-26-071671) : charge informatique critique promise à Anthropic au campus Justified Data, livrée par phases (10-Q du troisième trimestre 2026)
 
 ## OpenAI : marques en baisse chez un actionnaire, L3 (D-0067, volet 9)
 
@@ -10421,26 +10440,25 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - series:S000007733, « anthropic pbc series d pc pp » : 148,29 au 2025-09-30, 148,28 au 2025-12-31 (valeur par action, USD) (0000035402-26-001320)
 - series:S000007755, « anthropic pbc series d pc pp » : 148,29 au 2025-09-30, 148,28 au 2025-12-31 (valeur par action, USD) (0000035402-26-001344)
 
+## Akamai → Anthropic : carnet contracté, RPO (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-09-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+
 ## Alphabet → Crux AI : carnet contracté, RPO (D-0068)
 
 | Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-09-30 | 3,0 % | 16 800 M$ | 567 700 M$ | reste écrit par le vendeur | 10-Q 0001652044-26-000084 |
 
-## Amazon → Anthropic : carnet contracté, RPO (D-0068)
-
-| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
-| --- | ---: | ---: | ---: | --- | --- |
-| 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
-| 2026-09-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
-
 ## Amazon → OpenAI : carnet contracté, RPO (D-0068)
 
 | Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-03-31 | 10,4 % | 38 000 M$ | 364 000 M$ | RPO balisé par client | 10-Q 0001018724-26-000014 |
-| 2026-06-30 | [0 ; 27,8 %] | 138 000 M$ | 496 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001018724-26-000014 |
-| 2026-09-30 | [0 ; 23,9 %] | 138 000 M$ | 578 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001018724-26-000014 |
+| 2026-06-30 | n.d. (non publié) | — | — | contrat connu par une arête de valeur, sans ligne de carnet | — |
+| 2026-09-30 | n.d. (non publié) | — | — | contrat connu par une arête de valeur, sans ligne de carnet | — |
 
 ## Applied Digital → CoreWeave : carnet contracté, loyers à recevoir (D-0068)
 
@@ -10458,6 +10476,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-06-30 | [0 ; 84,6 %] | 335 M$ | 396 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001628280-26-044804 |
+| 2026-09-30 | [0 ; 83,8 %] | 335 M$ | 400 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001628280-26-044804 |
 
 ## Cerebras → OpenAI : carnet contracté, RPO (D-0068)
 
@@ -10465,6 +10484,12 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 | 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+
+## Core Scientific → CoreWeave : carnet contracté, loyers à recevoir (D-0068)
+
+| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
+| --- | ---: | ---: | ---: | --- | --- |
+| 2026-09-30 | 24,0 % | 1 800 M$ | 7 484 M$ | reste écrit par le vendeur | 10-Q 0001839341-26-000030 |
 
 ## CoreWeave → Meta : carnet contracté, RPO (D-0068)
 
@@ -10480,11 +10505,11 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
 | --- | ---: | ---: | ---: | --- | --- |
 | 2025-03-31 | 0,0 % | 0 $ | 14 700 M$ | contrat exclu du RPO par le vendeur (zéro) | 10-Q 0001769628-25-000014 |
-| 2025-06-30 | [0 ; 52,8 %] | 15 900 M$ | 30 100 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 10-Q 0001769628-25-000014 |
-| 2025-09-30 | [0 ; 44,8 %] | 22 400 M$ | 50 000 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
-| 2025-12-31 | [0 ; 36,9 %] | 22 400 M$ | 60 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
-| 2026-03-31 | [0 ; 22,7 %] | 22 400 M$ | 98 800 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
-| 2026-06-30 | [0 ; 21,6 %] | 22 400 M$ | 103 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041, 8-K 0001193125-25-216497, 10-Q 0001769628-25-000014 |
+| 2025-06-30 | [0 ; 39,5 %] | 11 900 M$ | 30 100 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001769628-25-000041 |
+| 2025-09-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2025-12-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 
 ## IREN → Microsoft : carnet contracté, RPO (D-0068)
 
@@ -10493,21 +10518,14 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2025-12-31 | [0 ; 100,0 %] (plafonnée) | 9 700 M$ | 289 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 |
 | 2026-03-31 | [0 ; 100,0 %] (plafonnée) | 9 700 M$ | 710 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 |
 | 2026-06-30 | [0 ; 100,0 %] (plafonnée) | 9 700 M$ | 5 100 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 |
+| 2026-09-30 | [0 ; 100,0 %] (plafonnée) | 9 700 M$ | 6 347 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001140361-25-040072 |
 
 ## IREN → NVIDIA : carnet contracté, RPO (D-0068)
 
 | Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-06-30 | [0 ; 66,7 %] | 3 400 M$ | 5 100 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001878848-26-000026 |
-
-## Microsoft → OpenAI : carnet contracté, RPO (D-0068)
-
-| Date | Part du carnet | Numérateur | Carnet du vendeur | Base | Pièces |
-| --- | ---: | ---: | ---: | --- | --- |
-| 2025-12-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
-| 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
-| 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
-| 2026-09-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-09-30 | [0 ; 53,6 %] | 3 400 M$ | 6 347 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-Q 0001878848-26-000026 |
 
 ## Nebius → Meta : carnet contracté, RPO (D-0068)
 
@@ -10527,6 +10545,13 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-03-31 | [0 ; 100,0 %] (plafonnée) | 311 M$ | 310 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 |
 | 2026-06-30 | [0 ; 49,1 %] | 311 M$ | 633 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 |
+| 2026-09-30 | [0 ; 49,7 %] | 311 M$ | 626 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 10-K 0001104659-26-022322 |
+
+## AMD : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2026-09-26 | 1 317 M$ | matériel informatique | en construction | en-cours | surtout | — | 10-Q 0000002488-26-000191 |
 
 ## ASML : composition des en-cours, telle qu'écrite (D-0076)
 
@@ -10650,6 +10675,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2025-12-31 | 276 M$ | bâtiments et installations | en construction | en-cours | montant | 276 M$ | 10-K 0001819989-26-000009 |
 | 2026-03-31 | 834 M$ | bâtiments et installations | en construction | en-cours | montant | 834 M$ | 10-Q 0001819989-26-000028 |
 | 2026-06-30 | 1 676 M$ | bâtiments et installations | en construction | en-cours | montant | 1 676 M$ | 10-Q 0001819989-26-000041 |
+| 2026-09-30 | 3 357 M$ | bâtiments et installations | en construction | en-cours | montant | 3 357 M$ | 10-Q 0001819989-26-000050 |
 
 ## Core Scientific : composition des en-cours, telle qu'écrite (D-0076)
 
@@ -10673,6 +10699,8 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2026-06-30 | n.d. (non publié) | machines de minage | pas encore en service | autre poste | comprend | — | 10-Q 0001839341-26-000014 |
 |  |  | nature non écrite | état non écrit | autre poste | montant | 14 M$ | 10-Q 0001839341-26-000014 |
 |  |  | nature non écrite | en construction | immobilisations | montant | 1 101 M$ | 10-Q 0001839341-26-000014 |
+| 2026-09-30 | n.d. (non publié) | nature non écrite | en construction | en-cours | montant | 1 800 M$ | 10-Q 0001839341-26-000030 |
+|  |  | nature non écrite | état non écrit | autre poste | montant | 30 M$ | 10-Q 0001839341-26-000030 |
 
 ## Galaxy : composition des en-cours, telle qu'écrite (D-0076)
 
@@ -10690,6 +10718,12 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2026-06-30 | 512 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001859392-26-000091 |
 |  |  | nature non écrite | en construction | immobilisations | montant | 512 M$ | 10-Q 0001859392-26-000091 |
 
+## Hut 8 : composition des en-cours, telle qu'écrite (D-0076)
+
+| Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
+| --- | ---: | --- | --- | --- | --- | ---: | --- |
+| 2026-09-30 | 1 296 M$ | nature non écrite | payé d'avance | en-cours | comprend | — | 10-Q 0001193125-26-446146 |
+
 ## IREN : composition des en-cours, telle qu'écrite (D-0076)
 
 | Date | En-cours balisé | Composante | État | Poste | Énoncé | Montant écrit | Pièce |
@@ -10701,6 +10735,8 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2025-09-30 | 465 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001878848-25-000081 |
 | 2025-12-31 | 1 038 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001878848-26-000015 |
 | 2026-06-30 | 3 657 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-K 0001878848-26-000052 |
+| 2026-09-30 | 4 608 M$ | bâtiments et installations | en construction | en-cours | comprend | — | 10-Q 0001878848-26-000066 |
+|  |  | matériel informatique | pas encore en service | en-cours | comprend | — | 10-Q 0001878848-26-000066 |
 
 ## Intel : composition des en-cours, telle qu'écrite (D-0076)
 
@@ -11130,7 +11166,7 @@ Offres de rachat (D-0047) :
 | 2025-06-30 | 98,63 % (partiel) | n.d. (non balisé) | ≥ 9,73 % |  |
 | 2025-09-30 | 97,95 % (partiel) | n.d. (non balisé) | ≥ 10,30 % | F11 |
 | 2025-12-31 | 97,96 % (partiel) | n.d. (non balisé) | ≥ 8,63 % |  |
-| 2026-03-31 | 97,98 % (partiel) | n.d. (non balisé) | ≥ 9,26 % |  |
+| 2026-03-31 | 97,98 % (partiel) | n.d. (non balisé) | ≥ 9,11 % |  |
 | 2026-06-30 | 96,30 % (partiel) | n.d. (non balisé) | ≥ 7,69 % |  |
 
 Passif (D-0047) :
@@ -11291,7 +11327,7 @@ Offres de rachat (D-0047) :
 | 2025-06-30 | 100,02 % (partiel) | n.d. (non balisé) | ≥ 11,95 % |  |
 | 2025-09-30 | 99,99 % (partiel) | n.d. (non balisé) | ≥ 12,79 % | F14 |
 | 2025-12-31 | 99,70 % (partiel) | n.d. (non balisé) | ≥ 13,44 % | F11 |
-| 2026-03-31 | 96,84 % (partiel) | n.d. (non balisé) | ≥ 13,25 % | F11, F15 |
+| 2026-03-31 | 96,83 % (partiel) | n.d. (non balisé) | ≥ 13,25 % | F11, F15 |
 | 2026-06-30 | 96,06 % (partiel) | n.d. (non balisé) | ≥ 9,62 % | F11, F14, F15 |
 
 Passif (D-0047) :
@@ -11418,7 +11454,7 @@ Passif (D-0047) :
 | 2025-09-30 | 100,91 % (partiel) | n.d. (non balisé) | n.d. (non balisé) |  |
 | 2025-12-31 | 100,48 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11, F14 |
 | 2026-03-31 | 98,94 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F11, F14 |
-| 2026-06-30 | 98,98 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F14 |
+| 2026-06-30 | 98,99 % (partiel) | n.d. (non balisé) | n.d. (non balisé) | F14 |
 
 Passif (D-0047) :
 
@@ -11458,7 +11494,7 @@ Offres de rachat (D-0047) :
 | 2025-11-14 | 2025-12-15 | 0,97 x | 100,0 % | servie en entier |
 | 2026-02-13 | 2026-03-16 | 2,21 x | 45,2 % | réduite |
 | 2026-05-15 | 2026-06-15 | 3,36 x | 29,8 % | réduite |
-| 2026-08-14 | 2026-08-14 | n.d. (non publié) | n.d. (non publié) | n.d. (résultat non publié) |
+| 2026-08-14 | 2026-09-14 | 2,95 x | 33,9 % | réduite |
 
 ## MIDCAP APOLLO INSTITUTIONAL PRIVATE LENDING (véhicule BDC, cik:0002006758)
 
@@ -11546,9 +11582,9 @@ Passif (D-0047) :
 | 2024-06-30 | 99,43 % | ≥ 3,69 % | ≥ 15,05 % | F12, F14 |
 | 2024-09-30 | 99,53 % | ≥ 3,97 % | ≥ 15,20 % | F12 |
 | 2024-12-31 | 99,03 % | ≥ 5,05 % | ≥ 12,81 % | F12 |
-| 2025-03-31 | 100,60 % | ≥ 7,50 % | ≥ 12,92 % | F12, F14 |
-| 2025-06-30 | 100,27 % | ≥ 5,41 % | ≥ 13,84 % |  |
-| 2025-09-30 | 98,98 % | ≥ 7,85 % | ≥ 14,06 % | F11 |
+| 2025-03-31 | 99,92 % | ≥ 6,57 % | ≥ 12,92 % | F12, F14 |
+| 2025-06-30 | 100,95 % | ≥ 5,29 % | ≥ 13,84 % |  |
+| 2025-09-30 | 98,98 % | ≥ 7,85 % | ≥ 14,06 % |  |
 | 2025-12-31 | 98,62 % | ≥ 6,05 % | ≥ 12,34 % | F11, F14 |
 | 2026-03-31 | 97,42 % | ≥ 6,15 % | ≥ 11,50 % | F11, F14 |
 | 2026-06-30 | 96,34 % | ≥ 5,33 % | ≥ 10,38 % | F11 |
@@ -11590,9 +11626,9 @@ Passif (D-0047) :
 | 2024-12-31 | 98,97 % | ≥ 4,19 % | ≥ 14,17 % | F12, F14 |
 | 2025-03-31 | 98,98 % | ≥ 5,09 % | ≥ 12,94 % | F12 |
 | 2025-06-30 | 99,48 % | ≥ 5,14 % | ≥ 13,32 % | F12 |
-| 2025-09-30 | 99,15 % | ≥ 5,77 % | ≥ 14,33 % | F12 |
-| 2025-12-31 | 99,17 % | ≥ 4,83 % | ≥ 29,32 % |  |
-| 2026-03-31 | 97,62 % | ≥ 4,97 % | ≥ 24,12 % | F14 |
+| 2025-09-30 | 99,12 % | ≥ 5,77 % | ≥ 14,33 % | F12 |
+| 2025-12-31 | 98,66 % | ≥ 4,83 % | ≥ 29,39 % | F11 |
+| 2026-03-31 | 97,62 % | ≥ 4,97 % | ≥ 24,12 % | F11, F14 |
 | 2026-06-30 | 96,64 % | ≥ 4,79 % | ≥ 22,70 % | F11, F14 |
 
 Passif (D-0047) :
@@ -11635,7 +11671,8 @@ Offres de rachat (D-0047) :
 | 2025-11-03 | 2025-12-02 | 0,91 x | 100,0 % | servie en entier |
 | 2026-02-02 | 2026-03-02 | 1,39 x | 100,0 % | servie en entier |
 | 2026-05-01 | 2026-05-29 | 2,06 x | 48,5 % | réduite |
-| 2026-08-04 | 2026-08-04 | n.d. (non publié) | n.d. (non publié) | n.d. (résultat non publié) |
+| 2026-08-04 | 2026-08-31 | 2,00 x | 49,9 % | réduite |
+| 2026-11-02 | 2026-11-02 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
 
 ## BLACKSTONE PRIVATE REAL ESTATE CREDIT & INCOME FUND (véhicule BDC, cik:0002049733)
 
