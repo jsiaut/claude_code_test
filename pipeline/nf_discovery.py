@@ -220,10 +220,11 @@ def verify(rate=4.0):
     client.min_interval = 1.0 / rate
     h = pd.read_parquet(EFTS_HITS)
     h = h[h["file_type"].fillna("").str.upper().str.startswith("EX-10")].drop_duplicates("id")
+    hist = D._history_accessions()           # D-0084, point 7
 
     def one(r):
         names = D._display(r["display_names"])
-        filers = [(n, c) for n, c in names if str(int(c)) not in excluded]
+        filers = [(n, c) for n, c in names if str(int(c)) not in excluded or r["adsh"] in hist]
         if not filers:
             return None
         name, cik10 = filers[0]
@@ -699,11 +700,9 @@ def prepare_history(rate=4.0):
         with open(BUILT, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
     print(f"blocs préparés : {nb} sur {len(todo)} unités ; requêtes {client.stats['requests']}")
-    for acc, doc in sorted(R.documents(("discovery_exhibit_body",))):
-        if CATALOG.exists() and any(json.loads(x).get("accession") == acc and json.loads(x).get("document") == doc
-                                    for x in open(CATALOG, encoding="utf-8") if '"discovery_exhibit_header"' in x):
-            prepare_body(acc, doc)
     if OWN_UNITS.exists():
+        from . import edgar
+        e = edgar.Edgar(client, config.as_of())
         fs = {f["accession"]: f for f in own_filings()}
         own = pd.read_parquet(OWN_UNITS)
         done = built_units()
@@ -711,7 +710,9 @@ def prepare_history(rate=4.0):
         for x in own.to_dict("records"):
             if x["adsh"] not in accs or (x["adsh"], x["doc"]) in done or x["adsh"] not in fs:
                 continue
-            b = _own_block(x, fs[x["adsh"]])
+            f = fs[x["adsh"]]
+            e.archive(str(f["cik"]).zfill(10), x["adsh"], x["doc"].split("#")[0])   # tiré s'il manque au cache
+            b = _own_block(x, f)
             with open(CATALOG, "a", encoding="utf-8") as fh:
                 fh.write(json.dumps(b, ensure_ascii=False) + "\n")
             rec = {"order": int(x["order"]), "queue": None, "rank": None, "cik": x["cik"], "kind": x["kind"],
@@ -721,6 +722,11 @@ def prepare_history(rate=4.0):
                 fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
             n_own += 1
         print(f"blocs du document d'enregistrement : {n_own}")
+    # corps de pièces lus, après les en-têtes des documents d'enregistrement
+    for acc, doc in sorted(R.documents(("discovery_exhibit_body",))):
+        if CATALOG.exists() and any(json.loads(x).get("accession") == acc and json.loads(x).get("document") == doc
+                                    for x in open(CATALOG, encoding="utf-8") if '"discovery_exhibit_header"' in x):
+            prepare_body(acc, doc)
 
 
 def prepare_body(adsh, doc):

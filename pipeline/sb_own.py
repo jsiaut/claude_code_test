@@ -55,6 +55,11 @@ def inventory(rate=4.0):
         for s in subs:
             rows.append({"cik": c, "filer": main.get("name"), "role": e.get("role", "own"), **{k: s.get(k) for k in FIELDS}})
     df = pd.DataFrame(rows)
+    from . import reconstruction
+    if reconstruction.reference() and len(df):
+        # D-0084, point 7 : la liste vivante, tirée après l'as_of, porte des dépôts postérieurs ; l'inventaire tiré à
+        # l'as_of n'en portait pas
+        df = df[df["filingDate"].astype(str) <= config.as_of()].reset_index(drop=True)
     df.to_parquet(INV, index=False)
     META.write_text(json.dumps(meta, ensure_ascii=False, indent=1))
     print("requêtes", client.stats.get("requests"), "; CIK", len(meta), "; dépôts", len(df))

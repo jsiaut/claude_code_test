@@ -145,6 +145,13 @@ def archive_list():
             end = dt.date(y + (int(mo) == 12), int(mo) % 12 + 1, 1) - dt.timedelta(days=1)
         out.append({"name": name, "url": SEC + u, "label": label.strip(), "size": size.strip(),
                     "filed_from": start.isoformat(), "filed_to": end.isoformat()})
+    from . import reconstruction
+    if reconstruction.reference():
+        # D-0084 : la page, tirée après l'as_of, porte des archives publiées depuis ; seules comptent celles que les
+        # documents du commit de référence portent (archives de la page servie à son as_of)
+        d = reconstruction.table("documents")
+        known = set(d.loc[d["resource_kind"] == "dataset_archive", "document"].astype(str))
+        out = [a for a in out if a["name"] + ".zip" in known]
     return out
 
 
@@ -208,6 +215,14 @@ def _read_tsv(zf, name, col=None, values=None, quoting=3):
     return pd.concat(parts, ignore_index=True)
 
 
+def _history_accessions():
+    """Mode de reconstruction (D-0084, point 7) : un dépôt d'un déposant aujourd'hui écarté (groupe, entité du registre)
+    reste lu si un bloc de la découverte ou de la piste, lu au commit de référence, en vient, comme quand il l'a été ;
+    hors du mode, aucun."""
+    from . import reconstruction
+    return set(reconstruction.accessions_of("discovery_")) if reconstruction.reference() else set()
+
+
 def scan(zpath, lex, excluded_ciks, keep_refs=None):
     """Scan d'une archive : lignes de `txt` qui nomment un terme du lexique, hors des dépôts
     des groupes et hors des taxonomies qui ne sont pas des notes ; puis, pour les dépôts
@@ -219,7 +234,7 @@ def scan(zpath, lex, excluded_ciks, keep_refs=None):
     sub = _read_tsv(zf, "sub.tsv")
     sub["cik"] = sub["cik"].str.lstrip("0")
     names = {r.adsh: (r.name, r.former) for r in sub[["adsh", "name", "former"]].itertuples(index=False)}
-    excl = set(sub.loc[sub["cik"].isin(excluded_ciks), "adsh"])
+    excl = set(sub.loc[sub["cik"].isin(excluded_ciks), "adsh"]) - _history_accessions()
     stats = {"txt_rows": 0, "txt_bytes": 0, "prefilter": 0, "hit_rows": 0, "truncated_rows": 0,
              "truncated_hit_rows": 0, "excluded_group_rows": 0, "excluded_not_note_rows": 0,
              "own_name_only_rows": 0}
@@ -845,9 +860,11 @@ def verify_exhibits(rate=4.0):
     rows = []
     from concurrent.futures import ThreadPoolExecutor
 
+    hist = _history_accessions()
+
     def one(r):
         names = _display(r["display_names"])
-        filers = [(n, c) for n, c in names if str(int(c)) not in excluded]
+        filers = [(n, c) for n, c in names if str(int(c)) not in excluded or r["adsh"] in hist]
         if not filers:
             return None
         name, cik10 = filers[0]
@@ -934,9 +951,11 @@ def verify_form_d(rate=4.0):
     rows = []
     from concurrent.futures import ThreadPoolExecutor
 
+    hist = _history_accessions()
+
     def one(r):
         names = _display(r["display_names"])
-        filers = [(n, c) for n, c in names if str(int(c)) not in excluded]
+        filers = [(n, c) for n, c in names if str(int(c)) not in excluded or r["adsh"] in hist]
         if not filers:
             return None
         name, cik10 = filers[0]

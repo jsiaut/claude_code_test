@@ -1128,6 +1128,13 @@ def exclusions(as_of):
                 continue
             ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
                f"fenêtre au-delà du plafond de {spec['cap']} unités ({'D-0046, point 4' if mid == FIRST else dec})", d["adsh"])
+    from . import reconstruction
+    if reconstruction.reference():
+        # D-0084, point 7 : une fenêtre recalculée hors des clés gardées ne compte au-delà du plafond que si le commit
+        # de référence l'y comptait ; sinon ses bornes ou son état ont changé, et elle n'est pas une exclusion
+        ref = reconstruction.table("exclusions")
+        known = set(ref.loc[ref["reason"] == "not_processed", "exclusion_key"])
+        out = [e for e in out if e["reason"] != "not_processed" or e["exclusion_key"] in known]
     return out
 
 

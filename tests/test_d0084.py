@@ -88,6 +88,20 @@ class Searches(unittest.TestCase):
                 config.WORK = old
 
 
+class HistoryAccessions(unittest.TestCase):
+    def test_read_filings_of_now_excluded_filers_stay_read(self):
+        with _Mode():
+            old = reconstruction.accessions_of
+            reconstruction.accessions_of = lambda prefix: frozenset({"0001083301-26-000166"}) \
+                if prefix == "discovery_" else frozenset()
+            try:
+                self.assertEqual(discovery._history_accessions(), {"0001083301-26-000166"})
+            finally:
+                reconstruction.accessions_of = old
+        if not os.environ.get(reconstruction.ENV):
+            self.assertEqual(discovery._history_accessions(), set())
+
+
 class Montages(unittest.TestCase):
     def test_a_read_window_is_never_already_read(self):
         from pipeline import blocks

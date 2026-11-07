@@ -74,6 +74,17 @@ def accessions():
 
 
 @functools.lru_cache(maxsize=None)
+def _kind_accessions(ref, prefix):
+    obs = _table("observations", ref)
+    return frozenset(obs.loc[obs["block_kind"].astype(str).str.startswith(prefix), "accession"].dropna())
+
+
+def accessions_of(prefix):
+    """Accessions des blocs lus dont le type commence par `prefix` (par exemple « discovery_ »)."""
+    return _kind_accessions(reference(), prefix)
+
+
+@functools.lru_cache(maxsize=None)
 def _documents(ref, kinds):
     obs = _table("observations", ref)
     if kinds:

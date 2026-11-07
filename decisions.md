@@ -4584,3 +4584,51 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Catalogues ramenés aux clés gardées (`reconstruction restrict`) : montages, 6-K, SoftBank, découverte, piste des non-déposants. Les catalogues des groupes et du bloc `text`, recalculés à chaque exécution, ne se touchent pas : ils se vérifient.
   - Historique Git : le clone du conteneur était superficiel (51 commits). Il est complété en clone partiel (`--filter=blob:none`, README), ce qu'exigent le rendu (commit des critères 3ff3b98) et le lexique ci-dessus.
   - Code : `pipeline/reconstruction.py`, et des crochets dans `config`, `update`, `discovery`, `nf_discovery`, `montages`, `lender_liabilities` et `nport`. 9 tests dans `tests/test_d0084.py`. Hors du mode, rien ne change.
+
+  (7) Temps A, reconstruction à l'as_of du 2026-10-31, et comparaison à 12000e6 (2026-11-07) :
+  - Réseau : 26 794 requêtes, dont www.sec.gov 23 466, efts.sec.gov 2 951, data.sec.gov 374 et xbrl.fasb.org 3. Environ 98 Go, Notes et N-PORT compris, puisque chaque volet retire ses archives.
+    - Aucun refus 403. 139 réponses 503 et 13 réponses 500 ont été redemandées par le client.
+    - Deux coupures du relais réseau (« server draining », « connection reset ») ont arrêté l'index et le tirage des offres de rachat. Les deux commandes ont été relancées et n'ont tiré que le manquant.
+  - Phases 0 à 2, identiques à 12000e6 : inventaire de 30 832 dépôts, univers de 24 612 cellules, 793 dépôts XBRL lus (les 7 échecs connus), 2 349 documents.
+    - Catalogues des groupes (4 324 clés) et du bloc `text` : les 8 420 clés lues de ces catalogues reviennent toutes.
+  - Blocs de §14 :
+    - BDC Data Sets : 22 archives. La 23e (2026_10, Last-Modified du 2026-11-04) n'est pas gardée.
+    - Passif des BDC : 42 unités d'annonces, identiques. Les 601 relevés d'offres se recalculent à l'identique du fichier versionné.
+    - Découverte : 47 archives des Notes ; 9 443 résultats de recherche (12000e6 : 9 449). Sur 256 fenêtres, 10 changent de total, toutes du 2026-10-25 au 2026-10-27 : ce sont les dépôts du 27 acceptés après le tirage d'alors (D-0083, point 5), et les résultats dédoublonnés sont les mêmes. Candidats 3 074 (3 077), unités 18 983 (19 221).
+    - Piste des non-déposants : 1 148 résultats (identique), 387 candidats (383).
+    - `form_d` : 965 Form D (identique). Labs : 169 faits (identique). SoftBank : 474 blocs (identique). 6-K : 407 blocs gardés.
+    - N-PORT : trois volets de 28 archives chacun, les non-cotés avec le lexique du point 6.
+  - Règles ajoutées en cours de route, chacune fixée avant le tirage qu'elle règle ou consignée comme écart :
+    - écart : la découverte a tiré et scanné l'archive des Notes 2026_10, publiée le 2026-11-04, que le point 3 excluait. Elle a été retirée du manifeste et ses extraits effacés. En mode de reconstruction, la liste des archives se borne aux 47 que portent les documents de 12000e6 ;
+    - déposants devenus groupes ou entités du registre depuis leur lecture (APO, CBRS, CIFR, INTC, IREN, NBIS, WULF, Inphi, VMware) : 164 blocs lus en venaient. Un dépôt reste lu, au scan comme à la vérification des pièces, si un bloc de la découverte ou de la piste lu à 12000e6 en vient (525 accessions). Écart : la règle visait d'abord toutes les accessions lues, ce qui faisait entrer des pièces des groupes eux-mêmes (3 095 candidats). Corrigée, elle a demandé de rescanner une seconde fois les neuf archives concernées ;
+    - inventaire de SoftBank borné à l'as_of : la liste vivante portait un 6-K d'Arm du 2026-11-04, qui faisait échouer la préparation ;
+    - piste des non-déposants : deux pièces de documents d'enregistrement absentes du cache sont tirées. Les corps des pièces se préparent après les en-têtes des documents d'enregistrement : cinq corps de pièces du S-1 d'Anthropic manquaient sans cela ;
+    - deux entrées qu'aucun programme n'écrit, produites à la première exécution :
+      - `exhibits_tranche.json`, types SGML de 237 pièces, reconstitué depuis la table `documents` de 12000e6 ;
+      - `usgaap2026_balance.json`, soldes des concepts de `us-gaap-2026.xsd`, retiré de xbrl.fasb.org (4 966 701 octets, comme le 2026-10-07) : 7 377 concepts ;
+    - deux étapes oubliées, faites ensuite : `lender num` (faits des BDC Data Sets) et `spacex_d1.run` (série annuelle de SpaceX lue dans le 424B4, D1) ;
+    - fenêtres de montages recalculées hors des clés gardées : elles ne comptent au-delà du plafond que si 12000e6 les y comptait. Sinon, 607 fenêtres passaient à tort « au-delà du plafond ».
+  - Couverture : 11 756 des 11 857 clés lues reviennent.
+    - 101 manquent, toutes de montages : anthropic_chain 37, galaxy_helios 25, stargate 16, les deux derniers ensemble 2, sec_letters 3, sources par bloc 17, corpus 1. Elles portent 108 lignes : 83 abstentions et 25 observations, dont une seule à type d'arête (equity_primary).
+    - Cause : une fenêtre se recalcule avec les termes qualifiants d'aujourd'hui (registre, lexiques), plus riches qu'à sa préparation, si bien que ses bornes changent. 24 des 28 blocs à citation ont leur passage dans un bloc actuel, sous d'autres bornes.
+    - Ce sont des échecs de la reconstruction. Ils ne se relisent pas (point 3).
+  - Réassemblage au 2026-10-31 : 582 s. Tables contre 12000e6 :
+    - documents 27 439 → 27 255 :
+      - les listes vivantes des as_of antérieurs n'existent plus (submissions −785, companyfacts −111) ;
+      - les pages de recherche se gardent sous leur date de tirage (−2 837, +2 938) ;
+      - des documents principaux sont tirés en plus ou en moins par les volets refaits (+720, −78) ;
+      - 15 899 documents changent d'empreinte. Ce sont surtout des documents principaux, plus courts ou plus longs de quelques octets dans le balisage, hors du texte : les clés des blocs sont identiques. S'y ajoutent les archives des BDC, que la SEC a republiées le 2026-10-08 (2026_08 le 2026-10-20), après le premier tirage ;
+    - faits : identiques (1 598 069) ;
+    - observations 31 464 → 31 356 : les 108 lignes des blocs manquants. Pour 26 blocs, le même texte figure dans deux dépôts (une pièce de Brookfield, un 6-K d'IREN, des documents de CoreWeave), et le chargement garde le dernier bloc du catalogue (D-0083, point 12). Leurs 26 lignes changent de document ;
+    - entités : identiques, sauf la fin d'une ancienne dénomination d'Applied Digital (2026-10-19 → 2026-11-06). La liste vivante, tirée après l'as_of, porte le changement de nom ;
+    - liens 11 315 → 11 314 : l'arête du bloc manquant ; 3 dates de connaissance changent pour la cause des 26 lignes ;
+    - mesures 194 891 → 194 871 :
+      - 20 cellules disparaissent, avec les blocs manquants : `lab_capacity` 12, `lab_contract_clause` 2, `contracted_backlog_share` 6 ;
+      - 168 valeurs changent, toutes des BDC, par leurs archives republiées : `bdc_portfolio_fv_to_cost` 123, F11 42, F12 3 ;
+      - les drapeaux de 17 876 cellules des BDC changent avec le millésime des archives ;
+    - contrôles : identiques, à une preuve près ;
+    - exclusions 31 903 → 31 331 :
+      - 671 disparaissent : 598 unités de la découverte et leurs 14 décomptes par groupe, unités des groupes ajoutés après la découverte (D-0043) que la file gardait d'une exécution à l'autre ; 53 de la piste ; 4 fenêtres de facteurs de risque ; 2 6-K ;
+      - 99 sont nouvelles : 51 unités et 48 fenêtres hors champ des montages ;
+      - 15 671 libellés changent, par les rangs des candidats, recalculés.
+  - Bilan : la reconstruction redonne 12000e6 à ces écarts près, chacun expliqué. Le temps B part de cet état, et ses tables se comparent à celles de 12000e6.
