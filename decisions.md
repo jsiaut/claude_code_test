@@ -4773,3 +4773,26 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - exclusions +729, −2 : `not_processed` +692 (documents et périodes de la période nouvelle), `pending_entity` +13 (les six noms ci-dessus et sept positions de BDC sur Valor Compute Infrastructure L.P.), −2 (Samsung Bioepis, ci-dessus), `financial_parties_only` +12 (en-têtes d'EX-4 : actes de fiducie), `out_of_scope` +6 (10-Q de BDC de Blue Owl sans paragraphe qualifiant), `conflicting` +5 (faits nouveaux de Riot, Hut 8, Blackstone, Cipher), `invalid_aggregate` +1.
   - Comparaison à 12000e6 (tables du commit précédent) : les écarts du temps A (point 7) plus ceux-ci. `delta.md` : aucun arrêt (aucun refus 403 ; aucun groupe en échec sur 32 ; 21 périodes en échec sur 930) ; dépôts lus pour la première fois : 10-Q 27, 8-K 18, 13F-HR 2, 10-K 1, 11-K/A 1, F-1/A 1, S-1/A 1 ; événements nouveaux de l'annexe F : Akamai F2, Apollo F8, Backblaze F4, Blackstone F8, Cipher F1 et F2, Core Scientific F1, F2 et F5, IREN F2, Riot F1 et F2, Supermicro F2 et F5, TeraWulf F1 et F2, aucun disparu ; véhicules BDC F11 +27/−16, F12 +1/−2, F15 +3/−0 ; arêtes apparues 298, une relation de financement disparue (temps A) ; 32 291 nombres publiés.
   - Laissés à l'utilisateur, sans changement ici : la règle de D-0083 (point 12), qui rattache un texte repris mot pour mot au dernier dépôt et peut avancer une date de connaissance (cas de Blackstone ci-dessus) ; la variante Alphabet de D-0082 ; les formulaires 485BPOS et N-CSRS/A des relevés de portefeuille ; la persistance du conteneur (catalogues et cache à refaire sur un conteneur neuf).
+
+- **D-0085 — Mise à jour du modèle à l'as_of du 2026-11-14. Règles fixées avant tout tirage.**
+  (1) Origine : demande de l'utilisateur, le 2026-11-14 : « Mets à jour le modèle à la date du jour ». C'est la cinquième mise à jour (§11.5), après D-0074, D-0077, D-0083 et D-0084. Lecture séquentielle par l'exécutant, sans sous-agent. Ni groupe, ni bloc de §14, ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change. Les points laissés à l'utilisateur par D-0084 (point 15) restent en attente. Ni pull request ni tâche planifiée.
+
+  (2) Constat, sans tirage (2026-11-14) :
+  - Le conteneur est celui de D-0084 : `db/`, `cache/`, `work/tmp/` et `secrets/` sont présents. L'exécution précédente est celle du 2026-11-07 ; ses tables sont celles du commit 8cf383c.
+  - La session de D-0084 continue : le User-Agent que l'utilisateur a fourni pour elle reste le seul, dans `secrets/user_agent.txt` (hors suivi).
+  - Le 2026-11-14 est un samedi : la connaissance porte sur les dépôts datés au plus du vendredi 2026-11-13. L'as_of précédent, le 2026-11-07, était aussi un samedi, sans dépôt.
+  - Leçon de D-0084 (point 14) : une erreur de montant (2,6 Md$ codés pour 2,2 Md$ cités) n'a été vue qu'après le premier réassemblage. Le schéma ne compare pas le montant d'une ligne à sa citation.
+
+  (3) Règles : celles de D-0083 (points 3 et 5) et de D-0084 (point 8), à l'as_of du 2026-11-14 :
+  - Configuration : `as_of: "2026-11-14"` et `as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27", "2026-10-31", "2026-11-07"]`. `search_overlap_from` reste au 2026-10-27 : la fenêtre nouvelle d'une recherche va du 2026-11-07 au 2026-11-14.
+  - Catalogues préparés et files de l'exécution précédente : copiés une fois sous `{nom}.2026-11-07` avant leur première réécriture ; seuls s'y ajoutent les blocs et les unités de la période nouvelle.
+  - Statut des têtes non déposantes (Nscale, Anthropic) : leurs submissions se tirent à l'as_of, avant les phases (2 requêtes). Un dépôt de la période nouvelle (modification du S-1, avis de prise d'effet, 424B4, rapport périodique) se traite par une règle fixée ici avant toute lecture ; une nouvelle modification du S-1 se lit comme celle de D-0084 (point 9). Sinon, rien ne change.
+  - Le reste ne change pas :
+    - ordre : verrou de session ; phases 0 à 2 et catalogues des groupes ; blocs de §14 dans l'ordre de D-0074 ; montages préparés après la lecture du texte des groupes ;
+    - réseau : un seul processus, 5 requêtes par seconde au plus, pause de 10 minutes après un refus 403, chaque requête au journal ;
+    - archives nouvelles des jeux de données (Notes, BDC, N-PORT), s'il y en a : tirées et traitées comme les autres ;
+    - volumes consignés ici avant toute lecture ; ne se lisent que les blocs tirés de dépôts de la période nouvelle, du plus récent au plus ancien.
+  - Contrôle ajouté, avant tout réassemblage : chaque montant des lignes nouvelles se compare à sa citation, et les lignes nouvelles passent le relevé des personnes physiques de D-0078. Un montant absent de sa citation qui n'est ni un fait balisé, ni un montant nul, ni une somme écrite en note se corrige dans la même passe, avec un écart consigné ici.
+  - Comparaison : les tables se comparent à celles de 8cf383c, clé par clé, et chaque écart s'explique ici ; `delta.md` s'y compare aussi.
+
+  (4) Ordre et commits : la décision et la configuration ; le statut des têtes non déposantes ; les phases 0 à 2 et les catalogues des groupes ; les blocs de §14, chaque partie avec son volume consigné ici avant toute lecture ; la lecture ; l'intégration (contrôles du point 3, entités par extrait, réassemblage, comparaison, rendus, résultats ici, tests, commit, push, verrou levé, rapport).
