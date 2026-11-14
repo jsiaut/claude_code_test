@@ -603,5 +603,8 @@
   "tendered_pct_quote": "@SENT:A total of 2,573.8439 Shares",
   "tendered_quote": "@SENT:A total of 2,573.8439 Shares",
   "tendered_unit": "shares"
+ },
+ "0001860424|0001193125-26-419144": {
+  "proration": true
  }
 }

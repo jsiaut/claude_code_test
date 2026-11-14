@@ -1104,6 +1104,7 @@ def own_filing_units(cfg=None, fetch=True):
                 rows.append(dict(base, kind="exhibit_header", doc=d["FILENAME"], exhibit_type=t, section=None,
                                  chars=len(text), co_refs=";".join(co)))
             elif t.startswith("EX-21") and d["FILENAME"] == f.get("entity_list"):
+                raw_of(d["FILENAME"])           # au cache : prepare_own la lit sans requête (D-0085, point 8)
                 rows.append(dict(base, kind="entity_list", doc=d["FILENAME"], exhibit_type=t, section=None,
                                  chars=None, co_refs=""))
         raw = raw_of(f["primary"])

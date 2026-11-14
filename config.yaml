@@ -554,6 +554,12 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
          note_sets: [{period_start: "2025-01-01", period_end: "2025-12-31", label: "états annuels audités, exercices 2025 et 2024", assurance: audited},
                      {period_start: "2026-01-01", period_end: "2026-06-30", label: "états intermédiaires résumés au 30 juin 2026", assurance: reviewed}],
          decision: D-0054}
+      # S-1/A n° 1 de Nscale (D-0085, point 5) : seuls les textes qui changent entrent au catalogue
+      - {ref: "NF:NSCALE", cik: "2110365", filer: "Nscale plc", accession: "0001193125-26-458722", form: S-1/A,
+         filed: "2026-11-12", primary: ck0002110365-20261112.htm, entity_list: ck0002110365-ex21_1.htm,
+         note_sets: [{period_start: "2025-01-01", period_end: "2025-12-31", label: "états annuels audités, exercices 2025 et 2024", assurance: audited},
+                     {period_start: "2026-01-01", period_end: "2026-06-30", label: "états intermédiaires résumés au 30 juin 2026", assurance: reviewed}],
+         decision: D-0085}
       # S-1 d'un laboratoire, texte propre de LAB:ANTHROPIC (D-0077, points 4 et 9)
       - ref: "LAB:ANTHROPIC"
         cik: "2130357"
@@ -613,6 +619,35 @@ discovery:                   # bloc de §14 ouvert le 2026-10-09 (décision D-00
             "WHERE YOU CAN FIND ADDITIONAL INFORMATION": "informations complémentaires"
             "INDEX TO CONSOLIDATED FINANCIAL STATEMENTS": "états financiers, lus par leurs notes"
         decision: D-0084
+      # S-1/A n° 2 du laboratoire (D-0085, point 5) : seuls les textes qui changent entrent au catalogue
+      - ref: "LAB:ANTHROPIC"
+        cik: "2130357"
+        filer: "Anthropic, PBC"
+        accession: "0001628280-26-072484"
+        form: S-1/A
+        filed: "2026-11-10"
+        primary: anthropicpbc-sx1ax2.htm
+        exhibit_types: [EX-10, EX-4]          # un EX-4 se traite comme un EX-10 : en-tête, puis corps retenu par l'en-tête
+        running_headers: ["Anthropic, PBC", "(Continued)"]
+        note_sets: [{period_start: "2023-01-01", period_end: "2026-09-30", audited_through: "2025-12-31", assurance: audited,
+                     label: "états consolidés, exercices 2023 à 2025 audités, neuf mois clos les 30 septembre 2025 et 2026 non audités"}]
+        note_assurance: {16: audited, 17: unaudited}    # 16 : événements postérieurs, audités ; 17 : « Subsequent Events (Unaudited) »
+        prospectus:
+          layout: positioned                 # une ligne visuelle par élément placé : paragraphes par l'écart vertical
+          max_chars: 25000
+          item_404: "CERTAIN RELATIONSHIPS AND RELATED PERSON TRANSACTIONS"
+          excluded:                          # sections non lues (D-0077, point 4), titre du sommaire -> motif
+            "SELECT DEFINED TERMS": "glossaire"
+            "SPECIAL NOTE REGARDING FORWARD-LOOKING STATEMENTS": "cadre juridique sans contrepartie : mise en garde sur les déclarations prospectives"
+            "INDUSTRY, MARKET, AND OTHER DATA": "convention de présentation : sources des données de marché"
+            "MANAGEMENT": "personnes physiques : direction et gouvernance"
+            "EXECUTIVE COMPENSATION": "personnes physiques : rémunération des dirigeants et des administrateurs"
+            "MATERIAL U.S. FEDERAL INCOME TAX CONSEQUENCES TO NON-U.S. HOLDERS OF OUR CLASS A COMMON STOCK": "conséquences fiscales"
+            "LEGAL MATTERS": "questions juridiques"
+            "EXPERTS": "experts"
+            "WHERE YOU CAN FIND ADDITIONAL INFORMATION": "informations complémentaires"
+            "INDEX TO CONSOLIDATED FINANCIAL STATEMENTS": "états financiers, lus par leurs notes"
+        decision: D-0085
 
 form_d:                      # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
   excluded_issuers:          # le terme y désigne autre chose qu'une exposition à la cible ; motif lu dans le Form D
