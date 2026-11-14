@@ -4850,3 +4850,161 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les fenêtres de `labs_contracts` tirées des EX-10.2 (44) et EX-10.6 (5) du S-1/A n° 2 se lisent comme toute fenêtre. Ces pièces sont le plan d'intéressement de 2026 et la politique de rémunération des administrateurs extérieurs, dont les en-têtes du S-1 ont été lus hors champ. Celles des EX-10.15 (7) et EX-10.16 (5) se lisent avec leur en-tête ;
     - les fenêtres du prospectus de Nscale (7) se lisent en regard de celles du S-1 (2). Le contrôle du point 5, sur les passages qui nomment Anthropic, se fait à leur lecture ;
     - le reste se lit comme d'habitude. Les petits blocs se lisent par lots (`lot`, `submit-lot`).
+
+  (10) Lecture de §14 (2026-11-14), liste `upd_20261114_s14`, par l'exécutant seul :
+  - 303 blocs, 1 816 655 caractères : les 302 du point 9 et le corps de l'EX-10.15 du S-1/A n° 2 d'Anthropic (40 986 caractères), préparé par `nf_discovery body` et ajouté à la liste, son en-tête montrant Google LLC pour partie (§11.1). L'en-tête de l'EX-10.16, un modèle sans investisseur ni montant, reste à l'en-tête.
+  - 545 lignes : 271 observations, dont 189 à contrepartie nommée ou dérivable, et 274 abstentions. Familles : financement 117, commercial 72, soutien de crédit 14, contrepartie au client 3, sans famille 65. Par partie : S-1/A d'Anthropic, 124 blocs et fenêtres, 71 observations ; S-1/A de Nscale, 43 et 133 (surtout des lignes reprises du S-1) ; 6-K de Nebius, 55 et 40 ; 6-K de TSMC, 39 et 8 ; montages, 42 et 19.
+  - Constats principaux :
+    - Anthropic (S-1/A n° 2) :
+      - placement privé concomitant de 26,0 Md$ d'actions de classe N au prix de l'introduction : Google LLC et NVIDIA 10,0 Md$ chacune, AMD 2,5 Md$, Broadcom, Micron et Microsoft 1,0 Md$ chacune, TSMC Partners, Ltd. 0,5 Md$ ;
+      - l'achat de Google exerce l'option d'accélération de sa convention de billets de mars 2026, dont le disponible tombe de 20,0 à 10,0 Md$ (EX-10.15, corps lu ; contrat caduc sans garantie de placement au 31 janvier 2027). Celui d'AMD réduit son engagement de 5,0 à 2,5 Md$ ;
+      - fourchette de 70 à 78 $, 801 351 354 actions offertes par la société, produit net d'environ 84,6 Md$ placement compris ;
+      - engagements portés à environ 900,9 Md$ (895,4 Md$) et accord Microsoft à 47,2–49,2 Md$ (44,9 Md$) ;
+      - l'accord d'août 2026 avec Lambda, environ 34,9 Md$, est devenu résiliable par chacune des parties, Lambda n'ayant pas obtenu le bail du site à temps (signal `site_delay`) ;
+      - remboursements de coûts aux développeurs de 4,2 Md$ et garantie d'un contrat d'achat d'électricité de 500 M$ ;
+      - 156,2 Md$ de baux non commencés auprès de bailleurs non consolidés ; accords postérieurs d'environ 106 Md$ ;
+      - billets d'Amazon : 579,3 M$ seulement convertis à l'introduction (plafond de 12 % non levé), le reste en billets de report ;
+      - SpaceXAI nommée parmi les fournisseurs de calcul ; Accenture co-investit au moins 1 Md$ dans le programme de contrôleurs externes.
+    - TSMC : son conseil autorise au plus 500 M$ dans Anthropic au prix de l'introduction et au plus 500 M$ d'actions de préférence d'OpenAI (6-K du 2026-11-10). Rapport du troisième trimestre :
+      - encaissements provisoires de clients pour réserver la capacité de 359,5 Md NT$ (234,2 au 30 juin) ;
+      - achat d'une usine d'AUO Corporation pour 38,8 Md NT$ ;
+      - garanties bancaires de 41,1 Md NT$.
+    - Nebius (rapport et lettre du troisième trimestre) :
+      - billets prêtés à deux promoteurs de centres de données non consolidés : 348,6 M$, puis 230,6 M$ le 1er octobre et jusqu'à 662,2 M$ envisagés ; loyers payés d'avance de 1 078,1 M$ ; exposition maximale de 1 462,4 M$ ;
+      - produits différés de 9,41 Md$, carnet de 38,7 Md$, baux non commencés de 13,86 Md$, engagements d'électricité de 2,73 Md$ (5,32 Md$ au 30 juin) ;
+      - lettre : 12 Md$ de contrats signés depuis le début du troisième trimestre ; livraison d'une partie de la capacité de Microsoft au New Jersey reportée au deuxième trimestre 2027 (signal `site_delay`) ; une quinzaine de clients nommés.
+    - RUM Group Inc. (EX-4.1 de son 10-Q) : bon de souscription de 50 808 408 actions de classe A au profit d'Anthropic, du 30 septembre 2026, acquis par tranches à la livraison et au paiement de capacité de centre de données.
+    - Nscale (S-1/A n° 1) :
+      - contrat de calcul avec Figure d'environ 3,5 Md$, payé pour moitié en actions de Figure ;
+      - aucun financement ferme pour exécuter les contrats d'Anthropic ; commandes passées pour éviter les pénalités de retard qu'ils prévoient ;
+      - NVIDIA tient 2,0 Md$ des obligations convertibles de 3,1 Md$, dont le taux passe de 2 % à 5,5 % ;
+      - engagements d'achat d'environ 3,0 Md$ liés aux 52,5 Md$ de contrats.
+      - Contrôle du point 5 : aucune fenêtre ne porte le passage sur le bâtiment 2 du campus de Monarch exercé par Anthropic ; il n'entre pas.
+    - Galaxy et CoreWeave (montages) : revenu du bail de la phase I de CoreWeave de 79,1 M$ au trimestre ; engagements de construction de CoreWeave d'environ 2,1 Md$.
+  - Choix et écarts :
+    - l'homologue d'une note se choisissait par son titre seul. Or les états annuels et intermédiaires de Nscale portent les mêmes titres, si bien que la note 6 intermédiaire était lue en regard de la note annuelle. L'appariement tient désormais compte de la période. Le texte ajouté de Nscale est de 25 354 caractères, et non de 27 560 (point 9). Les notes sont lues avec l'appariement corrigé ;
+    - le bloc de l'Item 404 de Nscale a été rejeté une fois : des lignes reprises du S-1 portaient le nom ancien du fonds de Sandton, absent du S-1/A. Il a été soumis de nouveau sous le nom écrit ; un bloc rejeté n'écrit rien ;
+    - le bloc des flux de trésorerie de Nebius porte une abstention. Les avances de clients des neuf mois sont relevées sur la note des produits différés, qui en donne le montant ; pas de ligne en double.
+
+  (11) Contrôles avant le réassemblage, et passe de correction (2026-11-14) :
+  - Montants et citations : 237 montants des lignes du 2026-11-14 vérifiés, 20 sans forme retrouvée dans leur citation :
+    - faits balisés (5) ;
+    - fractions d'acquisition du bon de RUM Group, écrites en pourcentage dans la citation (4) ;
+    - sommes écrites en note (4 : Nebius 13 429,7 M$, Meta 9,0 Md€, Macquarie 78,9 M$, bons de NVIDIA 236,4 M$) ;
+    - un montant nul ; un faux relevé dû aux centimes (Aker) ;
+    - quatre lignes reprises du S-1 de Nscale, dont la citation s'arrête avant le montant (Future Tech 23,3 M$ ; Sandton 4 999 343,58 $ ; Aker 1 868 609 264,80 $ et 349 971 938,94 $). Les montants ont été vérifiés dans le bloc, sans correction ;
+    - la ligne Lambda (34,9 Md$), corrigée ci-dessous.
+  - Personnes physiques : 679 lignes du 2026-11-14 passées au relevé de D-0078, aucune mention. Les noms des signataires et des actionnaires lus dans les textes ne sont pas repris.
+  - Constat : le bloc de la note 4 de l'amendement n° 1 d'Anthropic (58d3426a72ef) porte ses 6 lignes en double dans la passe du 2026-11-07. C'est un reste du double lancement signalé en D-0084, point 14, et ces lignes sont chargées comme 12 observations dans les tables de 8cf383c.
+  - Passe de correction `repass_d0085` (passe `2026-11-14T18:00:00Z`, inscrite dans `reading.correction_passes`), 2 blocs :
+    - la note 4 de l'amendement n° 1, avec ses 6 lignes uniques ;
+    - la partie 7/8 du rapport de gestion du S-1/A n° 2, dont la ligne Lambda cite aussi la phrase qui porte le montant.
+    - la ligne de garantie de la facilité DDTL 5.5 de CoreWeave, lue dans la note de la dette du 10-Q, nommait comme bénéficiaire la filiale de la DDTL 5.0 (« CoreWeave Financing DDTL V, LLC ») au lieu de « CoreWeave Financing DDTL V-V, LLC ». Le bloc (d6ae28f96c92) entre dans la même passe, avec ses 41 lignes.
+
+  (12) Entités par extrait, avant le réassemblage (2026-11-14) : une entrée.
+  - Alias « Nscale plc » de Nscale Limited, tête de NF:NSCALE. Extrait de la liste des filiales du S-1 : « Nscale Limited will be re-registered as a public limited company … under the named Nscale plc ».
+  - Restent en attente, comme les clients nommés dans la lettre de Nebius du deuxième trimestre (Higgsfield, AMI, Cohere…) :
+    - les noms sans forme juridique de la lecture : les clients de la lettre de Nebius du troisième trimestre, Figure, DataOne, SpaceXAI ;
+    - « CFD V-V », comme « CFD V ».
+  - TSMC Partners, Ltd. a une forme juridique : c'est une entité propre. Elle n'est pas rattachée à TSMC, car aucun extrait n'en affirme la qualité de filiale ; un tableau de placements d'un 6-K de 2024 la montre seulement comme porteuse de titres. AUO Corporation est une entité propre.
+
+  (13) Premier réassemblage : échec, puis règle fixée avant tout changement de code (2026-11-14).
+  - Constat : l'assemblage s'arrête au bout de 803 s dans `documents._incorporated`, sur une ligne JSON coupée.
+    - Le texte du 6-K 0001104659-26-126008, préparé à cet as_of, porte 11 séparateurs de ligne Unicode (U+2028). `sixk.prepare` les écrit tels quels (`ensure_ascii=False`, ce que la norme JSON admet).
+    - `documents` lit ce catalogue avec `str.splitlines()`, qui les prend pour des fins de ligne. Le lecteur, qui parcourt le fichier ligne à ligne, ne les a pas vus.
+    - Aucun autre fichier JSONL (db/, work/, tables/, racine) n'en porte.
+  - Règles :
+    - `sixk.prepare` échappe U+2028 et U+2029 (`\u2028`, `\u2029`) en écrivant le catalogue ; la valeur lue ne change pas ;
+    - le catalogue présent est réécrit une fois avec le même échappement, sans réseau ni nouvelle préparation. Contrôle : chaque ligne lue avant (coupée sur les seuls sauts de ligne) égale la ligne lue après, et le catalogue garde 501 blocs ;
+    - puis le réassemblage reprend.
+
+  (14) Second réassemblage (520 s), comparaison aux tables de 8cf383c, puis écart et règle fixée avant toute lecture (2026-11-14).
+  - Constat : Akamai n'est plus un groupe dont tout le texte est lu. Ses 46 cellules de `fcf_after_counterparty_financing` passent de « calculée » à « partielle / non traité ». Ses cellules F2 (23, dont l'événement apparu au 2026-11-07) deviennent indéterminées, et ses F3 (23) partielles.
+  - Cause : deux corps restent non lus, ceux de l'EX-10.1 et de l'EX-10.2 du 8-K d'Akamai du 2026-11-12, modèles de confirmation des couvertures (100 475 et 86 573 caractères).
+  - Écart au point 9 : ces corps y sont laissés à leur en-tête au titre de §11.1. Or le bloc `text` de §14 rouvre tout EX-10 arrêté à son en-tête (`reader.text_body`), comme les confirmations de Meta lues au 2026-10-31 et au 2026-11-07 (D-0083, D-0084). La file du lecteur les montre : 2 blocs, 187 048 caractères.
+  - Règles, fixées avant toute lecture :
+    - les deux corps se lisent en entier, un à la fois, sous la passe ordinaire de cet as_of, liste `upd_20261114_akam` ;
+    - pas de lecture par différence : les deux modèles diffèrent (171 paragraphes de l'EX-10.2, 80 431 caractères, absents de l'EX-10.1) ;
+    - codage comme les formulaires d'Akamai déjà lus (couvertures des obligations convertibles de 2025 et bons de 2029) : abstention `no_named_counterparty` si la banque contrepartie reste en blanc ; sinon, lignes ordinaires ;
+    - puis contrôles des montants et des personnes (point 3), troisième réassemblage, comparaison et rendus.
+
+  (15) Intégration et résultats (2026-11-14) :
+  - Lecture du point 14, liste `upd_20261114_akam` : 2 corps lus en entier, 2 abstentions `no_named_counterparty`.
+    - L'EX-10.1 est le modèle de confirmation d'option d'achat ; l'EX-10.2, celui des bons vendus.
+    - Banque contrepartie, nombre d'options ou de bons, prix d'exercice et prime y restent en blanc.
+    - Aucune ligne ne reprend les personnes que nomment les textes (deux dirigeants, une avocate). File du lecteur : 0.
+  - Code : `sixk._line` (point 13), avec un test (`tests/test_d0085.py`). Le catalogue des 6-K est réécrit : seule la ligne du 6-K 0001104659-26-126008 change d'octets, et ses 501 blocs se relisent à l'identique.
+  - Réassemblages : trois.
+    - Le premier échoue au bout de 803 s (point 13). Le deuxième (520 s) montre l'écart du point 14. Le troisième (535 s, durée que donne `delta.md`) donne les tables commitées.
+    - Entre les deux derniers ne changent que les 2 abstentions, les 2 exclusions `not_processed` des corps, et 92 cellules d'Akamai, de nouveau calculées comme au 2026-11-07 : 46 de `fcf_after_counterparty_financing` et 46 de F2 et F3. Akamai redevient un groupe dont tout le texte est lu (33 groupes).
+    - Tables : documents 28 636, faits 1 631 687, observations 32 975, entités 3 716, liens 12 036, mesures 200 166, contrôles 73 037, exclusions 32 119.
+  - Comparaison aux tables de 8cf383c, clé par clé :
+    - documents +642 :
+      - 326 réponses de l'API des dépôts, 164 pages de recherche, 73 documents principaux, 37 relevés companyfacts, 16 en-têtes, 9 index ;
+      - 7 instances XBRL, 3 archives XBRL, 3 FilingSummary, 3 MetaLinks, une liste des tickers.
+      - `fetched_as_of` vaut l'as_of de l'exécution pour chaque document : 2026-11-07 → 2026-11-14 ;
+    - faits +6 081 (4 796 des 7 instances nouvelles, 1 285 de companyfacts), aucun fait ancien changé ;
+    - observations 32 323 → 32 975 : +664, −12.
+      - Lignes nouvelles : groupes 111 lignes (86 observations, 25 abstentions), §14 545 (271 et 274), corps d'Akamai 2.
+      - La passe de correction remplace 58 de ces lignes (41 de la note de dette de CoreWeave, 17 du rapport de gestion du S-1/A n° 2) par 58 lignes corrigées. Elle remplace aussi les 12 lignes du bloc 58d3426a72ef (D-0084, six en double) par ses 6 lignes uniques.
+      - Cinq observations anciennes changent de document par la règle de D-0083 (point 12). Trois lignes de Core Scientific reviennent du 8-K/A au 8-K de janvier 2024, au même texte : l'ordre des deux dépôts dans `db/blocks.jsonl` suit l'inventaire de la phase 0, qui les a intervertis cette fois.
+      - Deux abstentions, renvois mot pour mot de l'item 2.03 à l'item 1.01, passent aux 8-K d'Akamai du 2026-11-12 et d'Apollo du 2026-11-13, et leur date de connaissance avance d'autant ;
+    - entités +27 :
+      - l'alias « Nscale plc » (point 12) ;
+      - 23 entités : 3 confirmées par leur groupe de contrepartie (AUO Corporation, RUM Group Inc., TSMC Partners, Ltd.), avec leurs 3 appartenances, et 20 pending (noms sans forme juridique de la lecture, « CFD V-V », « electric service provider », « sureties ») ;
+      - la fin de validité du nom « Applied Digital Corp. », lue dans les formerNames de la SEC, passe du 2026-11-06 au 2026-11-12 ;
+      - les deux appartenances d'Apollo apparaissent changées : mêmes enregistrements, dans un autre ordre, comme en D-0084 ;
+    - liens +275, −13 : 165 arêtes (financement 105, commercial 46, soutien de crédit 13, contrepartie au client 1) et 110 relations entre montants.
+      - Disparus : les 6 arêtes des lignes en double du bloc 58d3426a72ef, remplacées par celles de ses lignes uniques.
+      - Disparues aussi, 7 relations de même mesure, qui se recomposent autour de la ligne la plus récente : séries C à H d'Anthropic (S-1 ↔ S-1/A n° 1, désormais S-1/A n° 2 ↔ chacun), et prêt de fonds de roulement de Cerebras à OpenAI (10-Q du deuxième trimestre ↔ 424B4, désormais note de dette du 10-Q du troisième trimestre ↔ chacun) ;
+    - mesures, hors as_of : 1 084 cellules nouvelles, 36 disparues, 104 valeurs ou statuts changés :
+      - le troisième trimestre 2026 de Cerebras, CoreWeave et Galaxy, dont les 10-Q datent de la semaine : 6 ou 12 cellules par indicateur, 168 de `segment_significant_expenses` pour Galaxy ;
+      - les comparatifs de ces 10-Q :
+        - valeurs de CoreWeave arrondies au million (capex du troisième trimestre 2025, 2 389,2 → 2 389,0 M$) ;
+        - troisième trimestre 2025 de Cerebras, jusqu'ici non publié ;
+        - croissance du revenu de Galaxy indéterminée sur trois trimestres (frontière de retraitement) ; dépenses de segment de Galaxy du troisième trimestre 2025 refondues ;
+      - `lab_ledger` :
+        - engagement d'achat de capacité de Microsoft envers Anthropic au 31 octobre 2026, 44,9 → 47,2 Md$ ;
+        - Cerebras envers OpenAI au 30 septembre 2026 : encours du prêt de fonds de roulement 829,1 M$ (918,2 au 30 juin), revenu de neuf mois 146,8 M$ (74,4 au semestre), intérêts de neuf mois 57,2 M$ ;
+        - bon de RUM Group Inc. à Anthropic, 50 808 408 actions ;
+      - `lab_contract_clause` +12 : 11 clauses du bon de RUM (durée, résiliation, neuf tranches d'acquisition) et le droit de résiliation de la commande de services GPU de Nscale à Anthropic ;
+      - `lab_tagged_value` +22, faits balisés de Cerebras sur OpenAI ;
+      - `lab_capacity` +2, Cerebras pour OpenAI : 750 MW engagés, au plus 2,0 GW avec l'option ;
+      - paires nouvelles, TSMC → Anthropic, TSMC → OpenAI et Micron → Anthropic : conclusion « causalité non établie », couverture contractuelle nulle, E5 indéterminée, exposition non déterminable ;
+      - chemin documenté nouveau : Broadcom → TSMC → Anthropic. Cycles décrits en E6 : 121 → 122 (Broadcom 5 → 6, TSMC 4 → 5) ;
+      - `counterparty_exposure` : 13 cellules passent du 30 juin au 30 septembre 2026 (Cerebras 2, CoreWeave 8, Galaxy 3), 3 s'ajoutent pour les paires nouvelles ;
+      - offres de rachat des BDC :
+        - sept offres closes depuis ont leurs ratios calculés. Au titre de F15, l'offre d'Onex, servie au prorata (point 8), est un événement ; les six autres n'en sont pas ;
+        - cinq offres nouvelles, période non écoulée ;
+        - F16 est calculé, sans événement, pour cinq offres antérieures ;
+      - `financed_status` +368 (TSMC 200, Micron 116, CoreWeave 32, Galaxy 12, Cerebras 8) et `exposure_matrix` +75, avec les arêtes et les dépôts nouveaux ;
+      - annexe F des groupes :
+        - troisième trimestre 2026 : F1 et F2 pour Cerebras, CoreWeave et Galaxy, F5 pour Cerebras et CoreWeave ;
+        - troisième trimestre 2025 de Cerebras : F1 et F2 ;
+    - contrôles :
+      - as_of changé partout ;
+      - les 264 contrôles bilatéraux datés de l'as_of précédent sont remplacés par 267 (trois paires nouvelles) ;
+      - contrôles par dépôt des trois 10-Q nouveaux et de leurs comparatifs ;
+      - 70 preuves changées (Cerebras, CoreWeave, Galaxy) ;
+      - bascules d'un statut à l'autre : C15 `mismatch` → `ok` 3, C1 `ok` → `not_testable` 5, C2 `not_testable` → `ok` 1 ;
+    - exclusions +61 :
+      - `pending_entity` +20, les noms ci-dessus ;
+      - `not_processed` +20 : unités de la découverte de la période nouvelle, non lues (14 en-têtes d'EX-10 de déposants hors périmètre, 6 de la piste de Samsung hors de la règle de lecture) ;
+      - `out_of_scope` +14 : un 6-K de TSMC sans terme du lexique, 8 dépôts de fonds des montages sans paragraphe qualifiant, 5 fenêtres du S-1/A de Nscale dans ses facteurs de risque ;
+      - `financial_parties_only` +4 : EX-4 d'Akamai, d'Apollo et de Meta ;
+      - `conflicting` +3 : faits nouveaux de Cerebras et de Galaxy ;
+      - 39 détails changés : 28 périodes d'archives scannées avec un lexique antérieur (38 → 42 dénominations ajoutées depuis), 11 décomptes de relevés de portefeuille non lus (D-0046, point 8).
+  - `delta.md` :
+    - aucun arrêt : aucun refus 403 ; aucun groupe en échec sur 32 ; 21 périodes en échec sur 934 ;
+    - dépôts lus pour la première fois : 10-Q 10, 8-K 7, 6-K 6, D 2, 10-K 1, S-1 1 ;
+    - événements nouveaux de l'annexe F : Cerebras F1 et F2 (deux trimestres) et F5 ; CoreWeave F1, F2 et F5 ; Galaxy F1 et F2 ; aucun disparu ;
+    - véhicules BDC : F15 +1/−0 ;
+    - arêtes apparues 165, relations de financement disparues 6 ;
+    - 32 294 nombres publiés.
+    - La section des critères des annexes E et F dit « modifiés » (`annex_f`) depuis leur commit d'origine, comme au 2026-11-07. Cette exécution n'y touche pas.
+  - Contrôle du point 10, après réassemblage : aucune ligne de Nscale ne porte le passage sur le bâtiment 2 du campus de Monarch.
+  - Laissés à l'utilisateur, sans changement ici :
+    - la règle de D-0083 (point 12). Elle rattache un texte repris mot pour mot au dernier bloc du catalogue, ce qui peut avancer une date de connaissance. Elle dépend en outre de l'ordre de l'inventaire, qui peut changer d'une exécution à l'autre (Core Scientific ci-dessus) ;
+    - la variante Alphabet de D-0082 ;
+    - les formulaires 485BPOS et N-CSRS/A des relevés de portefeuille ;
+    - la persistance du conteneur.

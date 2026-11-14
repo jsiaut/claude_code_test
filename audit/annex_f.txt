@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..85016c6 100644
+index 1378604..5a10683 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,209 @@ user_agent:
@@ -98,9 +98,9 @@ index 1378604..85016c6 100644
  
 -scope: first_pass            # extension seulement sur décision de l'utilisateur (§11.1)
 -scope_decision: null         # {date, decision, yield_presented} à la réponse de l'utilisateur
-+as_of: "2026-11-07"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
++as_of: "2026-11-14"           # date de connaissance de l'exécution, seule source (D-0073) ; une borne écrite
 +                             # « as_of » dans ce fichier finit à cette date
-+as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27", "2026-10-31"]   # as_of des exécutions précédentes, dans l'ordre (D-0074) : une recherche plein texte
++as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27", "2026-10-31", "2026-11-07"]   # as_of des exécutions précédentes, dans l'ordre (D-0074) : une recherche plein texte
 +                                 # se coupe à ces dates, et une exécution reprend les catalogues de la précédente
 +search_overlap_from: "2026-10-27"   # D-0083, point 5 : à partir de cet as_of précédent, la fenêtre suivante d'une recherche
 +                                    # plein texte reprend son jour, pour les dépôts acceptés après le tirage de ce jour-là
@@ -498,7 +498,7 @@ index 1378604..85016c6 100644
  
  lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Microsoft,
                 Oracle, CoreWeave, SpaceX, xAI, "X.AI", OpenAI, Anthropic, Stargate,
-@@ -55,6 +432,863 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
+@@ -55,6 +432,899 @@ lexicon_seed: [NVIDIA, Alphabet, Google, Amazon, "Amazon Web Services", Meta, Mi
  lexicon_rules:
    AMD: {whole_word: true, case_sensitive: true}   # l'acronyme désigne aussi une maladie de l'œil
  
@@ -624,6 +624,12 @@ index 1378604..85016c6 100644
 +         note_sets: [{period_start: "2025-01-01", period_end: "2025-12-31", label: "états annuels audités, exercices 2025 et 2024", assurance: audited},
 +                     {period_start: "2026-01-01", period_end: "2026-06-30", label: "états intermédiaires résumés au 30 juin 2026", assurance: reviewed}],
 +         decision: D-0054}
++      # S-1/A n° 1 de Nscale (D-0085, point 5) : seuls les textes qui changent entrent au catalogue
++      - {ref: "NF:NSCALE", cik: "2110365", filer: "Nscale plc", accession: "0001193125-26-458722", form: S-1/A,
++         filed: "2026-11-12", primary: ck0002110365-20261112.htm, entity_list: ck0002110365-ex21_1.htm,
++         note_sets: [{period_start: "2025-01-01", period_end: "2025-12-31", label: "états annuels audités, exercices 2025 et 2024", assurance: audited},
++                     {period_start: "2026-01-01", period_end: "2026-06-30", label: "états intermédiaires résumés au 30 juin 2026", assurance: reviewed}],
++         decision: D-0085}
 +      # S-1 d'un laboratoire, texte propre de LAB:ANTHROPIC (D-0077, points 4 et 9)
 +      - ref: "LAB:ANTHROPIC"
 +        cik: "2130357"
@@ -683,6 +689,35 @@ index 1378604..85016c6 100644
 +            "WHERE YOU CAN FIND ADDITIONAL INFORMATION": "informations complémentaires"
 +            "INDEX TO CONSOLIDATED FINANCIAL STATEMENTS": "états financiers, lus par leurs notes"
 +        decision: D-0084
++      # S-1/A n° 2 du laboratoire (D-0085, point 5) : seuls les textes qui changent entrent au catalogue
++      - ref: "LAB:ANTHROPIC"
++        cik: "2130357"
++        filer: "Anthropic, PBC"
++        accession: "0001628280-26-072484"
++        form: S-1/A
++        filed: "2026-11-10"
++        primary: anthropicpbc-sx1ax2.htm
++        exhibit_types: [EX-10, EX-4]          # un EX-4 se traite comme un EX-10 : en-tête, puis corps retenu par l'en-tête
++        running_headers: ["Anthropic, PBC", "(Continued)"]
++        note_sets: [{period_start: "2023-01-01", period_end: "2026-09-30", audited_through: "2025-12-31", assurance: audited,
++                     label: "états consolidés, exercices 2023 à 2025 audités, neuf mois clos les 30 septembre 2025 et 2026 non audités"}]
++        note_assurance: {16: audited, 17: unaudited}    # 16 : événements postérieurs, audités ; 17 : « Subsequent Events (Unaudited) »
++        prospectus:
++          layout: positioned                 # une ligne visuelle par élément placé : paragraphes par l'écart vertical
++          max_chars: 25000
++          item_404: "CERTAIN RELATIONSHIPS AND RELATED PERSON TRANSACTIONS"
++          excluded:                          # sections non lues (D-0077, point 4), titre du sommaire -> motif
++            "SELECT DEFINED TERMS": "glossaire"
++            "SPECIAL NOTE REGARDING FORWARD-LOOKING STATEMENTS": "cadre juridique sans contrepartie : mise en garde sur les déclarations prospectives"
++            "INDUSTRY, MARKET, AND OTHER DATA": "convention de présentation : sources des données de marché"
++            "MANAGEMENT": "personnes physiques : direction et gouvernance"
++            "EXECUTIVE COMPENSATION": "personnes physiques : rémunération des dirigeants et des administrateurs"
++            "MATERIAL U.S. FEDERAL INCOME TAX CONSEQUENCES TO NON-U.S. HOLDERS OF OUR CLASS A COMMON STOCK": "conséquences fiscales"
++            "LEGAL MATTERS": "questions juridiques"
++            "EXPERTS": "experts"
++            "WHERE YOU CAN FIND ADDITIONAL INFORMATION": "informations complémentaires"
++            "INDEX TO CONSOLIDATED FINANCIAL STATEMENTS": "états financiers, lus par leurs notes"
++        decision: D-0085
 +
 +form_d:                      # bloc de §14 ouvert le 2026-10-10 (décision D-0041)
 +  excluded_issuers:          # le terme y désigne autre chose qu'une exposition à la cible ; motif lu dans le Form D
@@ -1306,6 +1341,7 @@ index 1378604..85016c6 100644
 +  - {alias: "TBC", of: "The Boring Company", decision: D-0074, block: a8fa917a7d1db0972b3e8ce97024b77a9384286ce8ebd4f541d6c7f116033703, accession: 0001628280-26-066880, quote: "TBC - The Boring Company (\"TBC\")", note: "note des participations du 10-Q de SpaceX du 2026-10-22 ; la ligne du gain latent de 561 M$ vient de la note des parties liées du même 10-Q"}
 +  # D-0077, intégration : nom court du fonds d'intérêt public d'Anthropic, défini par l'extrait
 +  - {alias: "Anthropic Public Benefit Fund", of: "Anthropic Public Benefit Fund, LLC", decision: D-0077, block: 1871f094ef09ce74b7091136563b743399240116be3a0be8fb4724b70eef024f, accession: 0001628280-26-067168, quote: "to Anthropic Public Benefit Fund, LLC (the \"Anthropic Public Benefit Fund\")"}
++  - {alias: "Nscale plc", of: "Nscale Limited", decision: D-0085, block: c920a9629c7ffc3f2dd1a1b8e2c37eb49ed0d4415e89be64e5682a9522dc5339, accession: 0001193125-26-395475, quote: "* Nscale Limited will be re-registered as a public limited company incorporated in England and Wales under the named Nscale plc prior to the consummation of this offering."}
 +own_entities:                # entités sans suffixe de forme juridique, identité établie par l'extrait
 +  - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
 +  - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
@@ -1362,18 +1398,18 @@ index 1378604..85016c6 100644
  # Mesures de rang 1 (tableau de §11.1), avec les mesures dont elles se calculent.
  # Une entrée « mesure:terme » restreint le rang 1 à ce terme.
  tier1:
-@@ -116,6 +1350,10 @@ thresholds:                  # seuils cités dans le corps (annexe B)
+@@ -116,6 +1386,10 @@ thresholds:                  # seuils cités dans le corps (annexe B)
  
  reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
    max_read_chars: 80000      # n'entre dans aucune clé, modifiable à tout moment
 +  text_block_first_pass: "2026-10-07T16:30:00Z"   # première passe du bloc text (D-0029) : ses lignes et celles des passes suivantes forment son rendement
 +  # passes de correction, sans lecture nouvelle (D-0078) : un bloc lu avant l'ouverture du bloc text et repris par l'une
 +  # d'elles reste hors de son rendement
-+  correction_passes: ["2026-10-27T18:30:00Z", "2026-10-27T18:40:00Z", "2026-10-27T19:15:00Z", "2026-11-07T18:00:00Z"]
++  correction_passes: ["2026-10-27T18:30:00Z", "2026-10-27T18:40:00Z", "2026-10-27T19:15:00Z", "2026-11-07T18:00:00Z", "2026-11-14T18:00:00Z"]
  
  session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
  
-@@ -131,6 +1369,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
+@@ -131,6 +1405,8 @@ watched_forms:               # surveillance de l'exécution périodique (§11.5)
    periodic: ["10-K", "10-K/A", "10-Q", "10-Q/A", "10-KT", "10-KT/A", "10-QT", "10-QT/A", "DEF 14A"]
    late: ["NT 10-K", "NT 10-Q"]
    eight_k_items: ["1.01", "1.02", "1.03", "2.01", "2.03", "2.04", "2.06", "3.01", "3.03", "4.01", "4.02", "8.01"]
@@ -1382,7 +1418,7 @@ index 1378604..85016c6 100644
  
  # Registre des paires non additives (§8.2), en sélecteurs sur les colonnes de links,
  # facts, observations et measures. Chaque paire engendre une relation overlaps
-@@ -318,6 +1558,73 @@ annex_e:
+@@ -318,6 +1594,73 @@ annex_e:
        unilateral: [E5]
        descriptive: [E4, E6]
  
@@ -1456,7 +1492,7 @@ index 1378604..85016c6 100644
  # Annexe F — événements de fragilité, liste fermée, commitée avec l'annexe E (§11.1).
  annex_f:
    source: "spec v6.14, annexe F"
-@@ -370,6 +1677,42 @@ annex_f:
+@@ -370,6 +1713,42 @@ annex_f:
        observable: "un doute sur la continuité d'exploitation"
        source: "sig_going_concern (§4.5)"
        rule: {measure: sig_going_concern}
@@ -1499,7 +1535,7 @@ index 1378604..85016c6 100644
  
  concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux présents dans us-gaap-2026.xsd (annexe D)
    revenue_total: [Revenues, RevenueFromContractWithCustomerExcludingAssessedTax]
-@@ -389,7 +1732,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -389,7 +1768,9 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    cfo: [NetCashProvidedByUsedInOperatingActivities]
    cfi: [NetCashProvidedByUsedInInvestingActivities]
    cff: [NetCashProvidedByUsedInFinancingActivities]
@@ -1510,7 +1546,7 @@ index 1378604..85016c6 100644
    unpaid_capex: [CapitalExpendituresIncurredButNotYetPaid]
    eps_diluted: [EarningsPerShareDiluted]
    diluted_shares_weighted: [WeightedAverageNumberOfDilutedSharesOutstanding]
-@@ -411,7 +1756,8 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
+@@ -411,7 +1792,8 @@ concept_anchors:             # contrôle de la règle de §8.3 ; noms locaux pr
    dividends_declared: [Dividends, DividendsCommonStock]
    profit_including_nci: [ProfitLoss]
    vendor_financed_ppe_additions: [NoncashOrPartNoncashAcquisitionFixedAssetsAcquired1]   # sans distinction du mode de paiement
@@ -1520,7 +1556,7 @@ index 1378604..85016c6 100644
    debt_proceeds: [ProceedsFromIssuanceOfLongTermDebt, ProceedsFromIssuanceOfDebt]
    debt_repayments: [RepaymentsOfLongTermDebt, RepaymentsOfDebt]
    rou_obtained_finance_lease: [RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability]
-@@ -438,6 +1784,508 @@ concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans l
+@@ -438,6 +1820,508 @@ concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans l
  
  unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,

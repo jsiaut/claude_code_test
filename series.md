@@ -1,6 +1,6 @@
 # series.md — vue temporelle
 
-*Exécution du 2026-11-07. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
+*Exécution du 2026-11-14. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
 
 ## NVIDIA (NVDA)
 
@@ -203,6 +203,7 @@
 | 2025-12-31 | 110,4 % | 167,9 % | 2,60 x | n.d. (terme manquant) | -2 501 M$ | n.d. (terme manquant) | -2 501 M$ | 185 j | 60 700 M$ | 8,88 x | 3,51 x | F1, F2, F4, F5 |
 | 2026-03-31 | 111,6 % | 129,9 % | 2,58 x | n.d. (non publié) | -4 711 M$ | -4 726 M$ | -4 711 M$ | 92 j | 98 800 M$ | 8,30 x | 3,43 x | F1, F2, F4, F5 |
 | 2026-06-30 | 112,5 % | 115,3 % | 9,46 x | n.d. (terme manquant) | -5 743 M$ | -5 761 M$ | -5 743 M$ | 90 j | 103 700 M$ | n.d. (terme manquant) | 4,40 x | F1, F2, F5 |
+| 2026-09-30 | 168,2 % | 129,6 % | 4,78 x | n.d. (terme manquant) | -7 466 M$ | -7 470 M$ | -7 466 M$ | 108 j | 132 300 M$ | n.d. (terme manquant) | 3,74 x | F1, F2, F5 |
 
 ## SpaceX (SPCX)
 
@@ -605,6 +606,7 @@
 | 2025-12-31 | -34,4 % | n.d. (non publié) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -1 632 M$ | n.d. (concept non résolu) | -1 632 M$ | 0 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (concept non résolu) | F2, F6, F8 |
 | 2026-03-31 | -22,6 % | 24,3 % | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -421 M$ | n.d. (concept non résolu) | -421 M$ | 1 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F1, F2 |
 | 2026-06-30 | -1,2 % | 24,7 % | 1,07 x | n.d. (terme manquant) | -27 M$ | n.d. (concept non résolu) | -27 M$ | 1 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F1, F2 |
+| 2026-09-30 | -71,6 % | ↯ | 1,15 x | n.d. (terme manquant) | -63 M$ | n.d. (concept non résolu) | -63 M$ | 1 j | n.d. (concept non résolu) | n.d. (concept non résolu) | n.d. (terme manquant) | F1, F2 |
 
 ## Akamai (AKAM)
 
@@ -931,10 +933,11 @@
 | 2024-12-31 | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2025-03-31 | n.d. (non publié) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -153 M$ | n.d. (concept non résolu) | -153 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F2 |
 | 2025-06-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -156 M$ | n.d. (concept non résolu) | -156 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
-| 2025-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2025-09-30 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -126 M$ | n.d. (concept non résolu) | -126 M$ | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2 |
 | 2025-12-31 | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (terme manquant) | n.d. (non publié) | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2026-03-31 | 94,4 % | n.d. (terme manquant) | 10,70 x | n.d. (terme manquant) | -120 M$ | n.d. (concept non résolu) | -120 M$ | 29 j | 25 000 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F2, F5 |
 | 2026-06-30 | 74,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -477 M$ | n.d. (concept non résolu) | -477 M$ | 62 j | 25 400 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
+| 2026-09-30 | 55,3 % | n.d. (terme manquant) | n.d. (dénominateur négatif ou nul) | n.d. (terme manquant) | -839 M$ | n.d. (concept non résolu) | -839 M$ | 101 j | 26 100 M$ | n.d. (terme manquant) | n.d. (terme manquant) | F1, F2, F5 |
 
 ## SoftBank (NF:SOFTBANK) : obligations valorisées par les fonds (Form N-PORT)
 
@@ -10078,48 +10081,70 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | --- | --- | --- | ---: | --- |
 | `ClassOfWarrantOrRightGrantDateFairValuePerShare` | Open AI | au 2026-03-31 | 82,02 USD/shares | 10-Q 0001628280-26-044981 |
 | `ClassOfWarrantOrRightGrantDateFairValuePerShare` | Open AI | au 2026-06-30 | 82,02 USD/shares | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightGrantDateFairValuePerShare` | Open AI Warrant | au 2026-09-30 | 82,02 USD/shares | 10-Q 0001628280-26-073494 |
 | `ClassOfWarrantOrRightVestedAndExercisable` | Open AI | au 2026-01-31 | 4 459 337 actions | 10-Q 0001628280-26-056357 |
 | `ClassOfWarrantOrRightVestedAndExercisable` | Open AI | au 2026-03-31 | 4 459 337 actions | 10-Q 0001628280-26-044981 |
 | `ClassOfWarrantOrRightVestedAndExercisable` | Open AI | au 2026-06-30 | 5 574 171 actions | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | Open AI Warrant | au 2026-09-30 | 10 033 508 actions | 10-Q 0001628280-26-073494 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | Open AI Warrant | au 2026-01-31 | 4 459 337 actions | 10-Q 0001628280-26-073494 |
+| `ClassOfWarrantOrRightVestedAndExercisable` | Open AI Warrant | au 2026-09-30 | 5 574 171 actions | 10-Q 0001628280-26-073494 |
 | `CommittedComputeCapacityIncludedInRemainingPerformanceObligations` | Open AI | au 2026-03-31 | 250 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
 | `CommittedComputeCapacityUnderMasterRelationshipAgreement` | Open AI | au 2025-12-31 | 750 MW (unité balisée : megawatt) | 10-Q 0001628280-26-044981 |
 | `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-01-01 → 2026-03-31 | 800 000 $ | 10-Q 0001628280-26-044981 |
 | `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-01-01 → 2026-06-30 | 3 M$ | 10-Q 0001628280-26-056357 |
 | `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-04-01 → 2026-06-30 | 2 M$ | 10-Q 0001628280-26-056357 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-01-01 → 2026-09-30 | 6 M$ | 10-Q 0001628280-26-073494 |
+| `CustomerWarrantAssetAmortizationReductionOfRevenue` | Open AI | 2026-07-01 → 2026-09-30 | 3 M$ | 10-Q 0001628280-26-073494 |
+| `CustomerWarrantAssetsCapitalized` | Open AI Warrant | 2026-01-01 → 2026-09-30 | 823 M$ | 10-Q 0001628280-26-073494 |
+| `CustomerWarrantAssetsCapitalized` | Open AI Warrant | 2026-07-01 → 2026-09-30 | 0 $ | 10-Q 0001628280-26-073494 |
 | `LongTermDebtOffsettingAmount` | Open AI | 2026-01-01 → 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
 | `LongTermDebtOffsettingAmount` | Open AI | 2026-01-01 → 2026-06-30 | -86 M$ | 10-Q 0001628280-26-056357 |
+| `LongTermDebtOffsettingAmount` | Open AI | 2026-01-01 → 2026-09-30 | -176 M$ | 10-Q 0001628280-26-073494 |
 | `MaximumTotalComputeCapacityUnderMasterRelationshipAgreement` | Open AI | au 2025-12-31 | 2 GW | 10-Q 0001628280-26-044981 |
 | `NoncashInterestExpense` | Open AI | 2026-01-01 → 2026-03-31 | 19 M$ | 10-Q 0001628280-26-044981 |
 | `NoncashInterestExpense` | Open AI | 2026-01-01 → 2026-06-30 | 39 M$ | 10-Q 0001628280-26-056357 |
 | `NoncashInterestExpense` | Open AI | 2026-04-01 → 2026-06-30 | 20 M$ | 10-Q 0001628280-26-056357 |
+| `NoncashInterestExpense` | Open AI | 2026-01-01 → 2026-09-30 | 57 M$ | 10-Q 0001628280-26-073494 |
+| `NoncashInterestExpense` | Open AI | 2026-07-01 → 2026-09-30 | 19 M$ | 10-Q 0001628280-26-073494 |
 | `NoncashRepaymentOfDebt` | Open AI | 2026-01-01 → 2026-03-31 | 22 M$ | 10-Q 0001628280-26-044981 |
 | `NoncashRepaymentOfDebt` | Open AI | 2026-01-01 → 2026-06-30 | 86 M$ | 10-Q 0001628280-26-056357 |
+| `NoncashRepaymentOfDebt` | Open AI | 2026-01-01 → 2026-09-30 | 175 M$ | 10-Q 0001628280-26-073494 |
 | `OptionToPurchaseAdditionalComputeCapacity` | Open AI | au 2025-12-31 | 1,25 GW | 10-Q 0001628280-26-044981 |
 | `RevenueContractInitialTerm` | Open AI | au 2025-12-31 | 4 ans | 10-Q 0001628280-26-044981 |
 | `RevenueContractInitialTerm` | Open AI | au 2025-12-31 | 3 ans | 10-Q 0001628280-26-044981 |
 | `RevenueContractMaximumExtendedTerm` | Open AI | au 2025-12-31 | 5 ans | 10-Q 0001628280-26-044981 |
 | `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | Open AI | au 2025-12-31 | 0,00 USD/shares | 10-Q 0001628280-26-044981 |
 | `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | Open AI | au 2026-06-30 | 0,00 USD/shares | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1` | Open AI Warrant | au 2025-12-31 | 0,00 USD/shares | 10-Q 0001628280-26-073494 |
 | `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2025-12-31 | 33 445 026 actions | 10-Q 0001628280-26-044981 |
 | `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2026-06-30 | 33 445 026 actions | 10-Q 0001628280-26-056357 |
 | `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI | au 2026-07-31 | 10 033 508 actions | 10-Q 0001628280-26-056357 |
+| `ClassOfWarrantOrRightNumberOfSecuritiesCalledByWarrantsOrRights` | Open AI Warrant | au 2026-09-30 | 33 445 026 actions | 10-Q 0001628280-26-073494 |
 | `DebtInstrumentCarryingAmount` | Open AI | au 2026-03-31 | 983 M$ | 10-Q 0001628280-26-044981 |
 | `DebtInstrumentCarryingAmount` | Open AI | au 2026-06-30 | 918 M$ | 10-Q 0001628280-26-056357 |
+| `DebtInstrumentCarryingAmount` | Open AI | au 2026-09-30 | 829 M$ | 10-Q 0001628280-26-073494 |
 | `DebtInstrumentFaceAmount` | Open AI | au 2025-12-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
 | `DebtInstrumentInterestRateStatedPercentage` | Open AI | au 2026-03-31 | 6,0 % | 10-Q 0001628280-26-044981 |
 | `DebtInstrumentInterestRateStatedPercentage` | Open AI | au 2026-06-30 | 6,0 % | 10-Q 0001628280-26-056357 |
+| `DebtInstrumentInterestRateStatedPercentage` | Open AI | au 2026-09-30 | 6,0 % | 10-Q 0001628280-26-073494 |
 | `LongTermDebtCurrent` | Open AI | au 2026-03-31 | 621 M$ | 10-Q 0001628280-26-044981 |
 | `LongTermDebtCurrent` | Open AI | au 2026-06-30 | 736 M$ | 10-Q 0001628280-26-056357 |
+| `LongTermDebtCurrent` | Open AI | au 2026-09-30 | 707 M$ | 10-Q 0001628280-26-073494 |
 | `LongTermDebtNoncurrent` | Open AI | au 2026-03-31 | 362 M$ | 10-Q 0001628280-26-044981 |
 | `LongTermDebtNoncurrent` | Open AI | au 2026-06-30 | 182 M$ | 10-Q 0001628280-26-056357 |
+| `LongTermDebtNoncurrent` | Open AI | au 2026-09-30 | 123 M$ | 10-Q 0001628280-26-073494 |
 | `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-01-31 | 1 000 M$ | 10-Q 0001628280-26-044981 |
 | `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-03-31 | 1 005 M$ | 10-Q 0001628280-26-044981 |
 | `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-06-30 | 1 005 M$ | 10-Q 0001628280-26-056357 |
+| `ProceedsFromIssuanceOfLongTermDebt` | Open AI | 2026-01-01 → 2026-09-30 | 1 005 M$ | 10-Q 0001628280-26-073494 |
 | `RepaymentsOfLongTermDebt` | Open AI | 2026-01-01 → 2026-03-31 | 0 $ | 10-Q 0001628280-26-044981 |
 | `RepaymentsOfLongTermDebt` | Open AI | 2026-01-01 → 2026-06-30 | 0 $ | 10-Q 0001628280-26-056357 |
+| `RepaymentsOfLongTermDebt` | Open AI | 2026-01-01 → 2026-09-30 | 0 $ | 10-Q 0001628280-26-073494 |
 | `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-01-01 → 2026-03-31 | 17 M$ | 10-Q 0001628280-26-044981 |
 | `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-01-01 → 2026-06-30 | 74 M$ | 10-Q 0001628280-26-056357 |
 | `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-04-01 → 2026-06-30 | 57 M$ | 10-Q 0001628280-26-056357 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-01-01 → 2026-09-30 | 147 M$ | 10-Q 0001628280-26-073494 |
+| `RevenueFromContractWithCustomerExcludingAssessedTax` | Open AI | 2026-07-01 → 2026-09-30 | 72 M$ | 10-Q 0001628280-26-073494 |
 
 **OpenAI — CoreWeave**
 
@@ -10302,6 +10327,18 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - Nscale, nscale:anthropic_gpu_services_order — clause de sortie, 2026-09-18 (date de la pièce), — (S-1 EX-10.25 0001193125-26-395475) : commande de Nscale : chaque partie peut résilier, sans autre obligation, si le fournisseur n'a pas obtenu son financement à la date butoir ; ligne de clause (D-0067)
 - Nscale, nscale:anthropic_gpu_services_order — durée, 2026-09-18 (date de la pièce), — (S-1 EX-10.25 0001193125-26-395475) : commande de Nscale : durée de tranche à compter de la réception par Anthropic ; aucun paiement avant la réception écrite ; prix par GPU et par heure et valeur totale caviardés ; ligne de clause (D-0067)
 - Nscale, nscale:anthropic_gpu_services_order — durée, 2026-09-18 (date de la pièce), — (S-1 EX-10.25 0001193125-26-395475) : commande de Nscale : contrat en vigueur jusqu'à la fin de la dernière tranche livrée et reçue ; prolongations au choix d'Anthropic, alignées sur les contrats des autres sociétés du groupe ; ligne de clause (D-0067)
+- Nscale, nscale:anthropic_gpu_services_order — clause de sortie, 2026-11-12 (date de la pièce), — (S-1/A 0001193125-26-458722) : S-1 de Nscale : sortie d'Anthropic sur disponibilité insuffisante (niveaux de service plus stricts que pour les autres clients) ; autres sorties codées sur la pièce 10.25 ; aucun engagement ferme de financement obtenu à la date du prospectus ; ligne de clause (D-0067) ; repris de la lecture du S-1, passage inchangé dans l'amendement n° 1 (D-0085, point 5)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — clause de sortie, 2026-11-12 (date de la pièce), — (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : la part non acquise tombe si le contrat commercial ou l'accord d'extension expire ou est résilié, ou en cas de défaut de paiement important non régularisé d'Anthropic, après un délai de 60 jours et hors…
+- RUM Group Inc., rumg:anthropic_warrant_2026 — durée, 2026-11-12 (date de la pièce) ; « tenth anniversary of the date of issuance », — (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : durée de dix ans à compter de l'émission, exercice automatique en numéraire des parts acquises à la fin ; droits d'enregistrement de la revente (S-3 dans les 30 jours du premier exercice) ; en cas d'ins…
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 16,7 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : première tranche, 16,67 % (8 468 068 actions) ; ligne de clause (D-0067)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 50 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : acquisition accélérée de 50 % (et des tranches d'extension déjà contractées) en cas de dissolution volontaire de RUM Group ou de changement de contrôle sans reprise du bon ou payé à plus de 80 % en numé…
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 33,3 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : deuxième tranche, 33,33 % cumulés (16 936 136 actions) ; ligne de clause (D-0067)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 50 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : troisième tranche, 50 % cumulés (25 404 204 actions) ; ligne de clause (D-0067)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 60 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : première tranche d'extension, 60 % cumulés (30 485 045 actions) : accord d'extension pour une capacité informatique critique au-delà d'un seuil caviardé ; ligne de clause (D-0067)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 70 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : deuxième tranche d'extension, 70 % cumulés (35 565 886 actions) ; ligne de clause (D-0067)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 80 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : troisième tranche d'extension, 80 % cumulés (40 646 727 actions) ; ligne de clause (D-0067)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 90 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : quatrième tranche d'extension, 90 % cumulés (45 727 568 actions) ; ligne de clause (D-0067)
+- RUM Group Inc., rumg:anthropic_warrant_2026 — tranche d'acquisition, 2026-11-12 (date de la pièce), 100 % (10-Q EX-4.1 0001213900-26-118479) : fenêtre de la pièce 4.1 du 10-Q de RUM Group Inc. du 12 novembre 2026 (bon de souscription d'actions de classe A au profit d'Anthropic, PBC, du 30 septembre 2026) (« Investor » : Anthropic, PBC) : dernière tranche d'extension, 100 % (50 808 408 actions) ; ligne de clause (D-0067)
 - TeraWulf, wulf:justified_anthropic_lease — calendrier de livraison, 2026-07-06 (date de la pièce) ; « in phases beginning in late 2027 and concluding in early 2028 », — (8-K 0001104659-26-080583) : 8-K de TeraWulf : livraison par phases de fin 2027 à début 2028 ; ligne de clause (D-0067)
 - TeraWulf, wulf:justified_anthropic_lease — durée, 2026-07-06 (date de la pièce) ; « a term of 20 years thereafter ; two successive five-year renewal options », — (8-K 0001104659-26-080583) : 8-K de TeraWulf : loyer dû dès la livraison, 20 ans, prolongeable de dix ans au choix d'Anthropic ; paiements d'Anthropic appelés à être soutenus par un crédit de catégorie investissement non nommé ; ligne de clause (D-0067)
 - TeraWulf, wulf:justified_anthropic_lease — calendrier de livraison, 2026-11-06 (date de la pièce) ; « Q4 2027 – 1H 2028 », 401 MW (8-K EX-99.2 0001628280-26-071306) : présentation de TeraWulf du 2026-11-06 : livraison par phases des 401 MW de charge informatique critique louée à Anthropic à Justified, du T4 2027 au premier semestre 2028 (CB-1 137,6 MW au T4 2027, CB-2 137,6 MW au T1 2028, CB-3 125,6 MW au T2 2028 selon une autre diapositive) ; ligne de clause et de capacité (D-0067)
@@ -10313,6 +10350,8 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - AMD, amd:openai_supply_2025 — calcul, 2025-10-06 (date de la pièce), 1 GW (8-K 0001193125-25-230895) : 8-K d'AMD du 6 octobre 2025 : engagement ferme d'OpenAI, à la signature du contrat d'approvisionnement, d'acheter le premier gigawatt de GPU MI450 ; ligne de clause et de capacité (D-0067)
 - AMD, amd:openai_supply_2025 — calcul, 2025-10-06 (date de la pièce), 6 GW (8-K 0001193125-25-230895) : 8-K d'AMD : six gigawatts de GPU, seuil d'acquisition complète du bon ; seul le premier gigawatt fait l'objet d'un engagement ferme ; les dépôts suivants écrivent « deploy 6 gigawatts » puis « intends to deploy up to 6 gigawatts » ; ligne de capacité (D-0067)
 - Cerebras, cerebras:openai_mra — calcul, 2026-08-12 (date de la pièce) ; « multi-year term », 750 MW (10-Q 0001628280-26-056357) : 10-Q de Cerebras au 30 juin 2026 (page de note R10) : capacité de calcul d'inférence engagée par OpenAI au MRA de décembre 2025, sur trois ou quatre ans extensibles à cinq ; même texte que la note lue au bloc 150c8de9 ; ligne de capacité (D-0067)
+- Cerebras, cerebras:openai_mra — calcul, 2026-11-12 (date de la pièce), 750 MW (10-Q 0001628280-26-073494) : MRA de décembre 2025 : 750 MW de capacité d'inférence qu'OpenAI s'oblige à acheter, avec les services liés, sur trois ou quatre ans extensibles par OpenAI à cinq ; le MRA comprend le prêt de fonds de roulement d'environ 1,0 Md$ versé en janvier 2026 (note 10) et un bon de souscription d'actions de classe N (note 12)
+- Cerebras, cerebras:openai_mra — calcul, 2026-11-12 (date de la pièce) ; « by the end of 2030 », 2 GW (10-Q 0001628280-26-073494) : option d'OpenAI sur 1,25 GW de capacité additionnelle, déployée par tranches d'ici fin 2030, soit au plus 2,0 GW au total avec la capacité engagée
 - Cerebras, cerebras:openai_mra — calcul, 2026-12-31 (fin de période) ; « by the end of calendar year 2026 », 250 MW (S-1/A EX-10.11 0001628280-26-029503) : MRA de Cerebras : premier segment de la capacité initiale, 250 MW avant la fin de 2026, répartis dans un nombre caviardé de centres de données ; ligne de clause et de capacité (D-0067)
 - Cerebras, cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 1,25 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : option d'OpenAI sur une capacité additionnelle déployée par tranches d'ici fin 2030 ; ligne de capacité (D-0067)
 - Cerebras, cerebras:openai_mra — calcul, 2030-12-31 (fin de période) ; « by the end of 2030 », 2 GW (10-Q 0001628280-26-056357) : 10-Q de Cerebras : total écrit par Cerebras, capacité engagée et option comprises ; non additionné ici ; ligne de capacité (D-0067)
@@ -10484,6 +10523,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | --- | ---: | ---: | ---: | --- | --- |
 | 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 | 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-09-30 | 100,0 % | 26 100 M$ | 26 100 M$ | reste écrit par le vendeur | 10-Q 0001628280-26-073494 |
 
 ## Core Scientific → CoreWeave : carnet contracté, loyers à recevoir (D-0068)
 
@@ -10499,6 +10539,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2025-12-31 | [0 ; 23,4 %] | 14 200 M$ | 60 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050 |
 | 2026-03-31 | [0 ; 35,6 %] | 35 200 M$ | 98 800 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050, 8-K 0001769628-26-000154 |
 | 2026-06-30 | [0 ; 33,9 %] | 35 200 M$ | 103 700 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050, 8-K 0001769628-26-000154 |
+| 2026-09-30 | [0 ; 26,6 %] | 35 200 M$ | 132 300 M$ | valeur publiée des contrats ÷ carnet du vendeur (hypothèse déclarée) | 8-K 0001769628-25-000050, 8-K 0001769628-26-000154 |
 
 ## CoreWeave → OpenAI : carnet contracté, RPO (D-0068)
 
@@ -10510,6 +10551,7 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 | 2025-12-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 | 2026-03-31 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 | 2026-06-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
+| 2026-09-30 | n.d. (non publié) | — | — | aucun reste ni aucune valeur de contrat qui le majore | — |
 
 ## IREN → Microsoft : carnet contracté, RPO (D-0068)
 
@@ -11495,6 +11537,7 @@ Offres de rachat (D-0047) :
 | 2026-02-13 | 2026-03-16 | 2,21 x | 45,2 % | réduite |
 | 2026-05-15 | 2026-06-15 | 3,36 x | 29,8 % | réduite |
 | 2026-08-14 | 2026-09-14 | 2,95 x | 33,9 % | réduite |
+| 2026-11-13 | 2026-11-13 | n.d. (période non écoulée à la date de coupure) | n.d. (période non écoulée à la date de coupure) | n.d. (offre encore ouverte) |
 
 ## MIDCAP APOLLO INSTITUTIONAL PRIVATE LENDING (véhicule BDC, cik:0002006758)
 

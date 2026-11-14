@@ -1271,6 +1271,7 @@ entity_aliases:
   - {alias: "TBC", of: "The Boring Company", decision: D-0074, block: a8fa917a7d1db0972b3e8ce97024b77a9384286ce8ebd4f541d6c7f116033703, accession: 0001628280-26-066880, quote: "TBC - The Boring Company (\"TBC\")", note: "note des participations du 10-Q de SpaceX du 2026-10-22 ; la ligne du gain latent de 561 M$ vient de la note des parties liées du même 10-Q"}
   # D-0077, intégration : nom court du fonds d'intérêt public d'Anthropic, défini par l'extrait
   - {alias: "Anthropic Public Benefit Fund", of: "Anthropic Public Benefit Fund, LLC", decision: D-0077, block: 1871f094ef09ce74b7091136563b743399240116be3a0be8fb4724b70eef024f, accession: 0001628280-26-067168, quote: "to Anthropic Public Benefit Fund, LLC (the \"Anthropic Public Benefit Fund\")"}
+  - {alias: "Nscale plc", of: "Nscale Limited", decision: D-0085, block: c920a9629c7ffc3f2dd1a1b8e2c37eb49ed0d4415e89be64e5682a9522dc5339, accession: 0001193125-26-395475, quote: "* Nscale Limited will be re-registered as a public limited company incorporated in England and Wales under the named Nscale plc prior to the consummation of this offering."}
 own_entities:                # entités sans suffixe de forme juridique, identité établie par l'extrait
   - {name: "Project Beignet Holdings", decision: D-0046, block: 7f75168d77e0adc0666980407fbf373be5b269c7a3d9a2bbc244f9497ad26483, accession: 0001944366-25-000126, quote: "Project Beignet Holdings (\"Beignet JV\")"}
   - {name: "MagAI Ventures", decision: D-0021, block: d4f91946a0358cb6763b9f58b605dfa44cf619ada1d163d7655cfe1afd609335, accession: 0001769628-26-000191, quote: "with a fund managed by Magnetar (\"MagAI Ventures\")"}
@@ -1388,7 +1389,7 @@ reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
   text_block_first_pass: "2026-10-07T16:30:00Z"   # première passe du bloc text (D-0029) : ses lignes et celles des passes suivantes forment son rendement
   # passes de correction, sans lecture nouvelle (D-0078) : un bloc lu avant l'ouverture du bloc text et repris par l'une
   # d'elles reste hors de son rendement
-  correction_passes: ["2026-10-27T18:30:00Z", "2026-10-27T18:40:00Z", "2026-10-27T19:15:00Z", "2026-11-07T18:00:00Z"]
+  correction_passes: ["2026-10-27T18:30:00Z", "2026-10-27T18:40:00Z", "2026-10-27T19:15:00Z", "2026-11-07T18:00:00Z", "2026-11-14T18:00:00Z"]
 
 session_stale_minutes: 120   # verrou de session périmé au-delà (§11.5)
 

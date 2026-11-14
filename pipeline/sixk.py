@@ -129,6 +129,12 @@ def incorporation(texts):
     return False, None, None
 
 
+def _line(b):
+    """Ligne du catalogue : U+2028 et U+2029 échappés, que str.splitlines() prendrait pour des fins de ligne
+    (D-0085, point 13). La valeur lue est la même."""
+    return json.dumps(b, ensure_ascii=False, default=str).replace("\u2028", "\\u2028").replace("\u2029", "\\u2029") + "\n"
+
+
 def prepare():
     """Blocs des fenêtres, du 6-K le plus récent au plus ancien ; plafond par groupe."""
     cfg = config.load()
@@ -183,7 +189,7 @@ def prepare():
     tmp = CATALOG.with_suffix(".jsonl.tmp")
     with open(tmp, "w", encoding="utf-8") as fh:
         for b in out:
-            fh.write(json.dumps(b, ensure_ascii=False, default=str) + "\n")
+            fh.write(_line(b))
     tmp.replace(CATALOG)
     info = json.loads(INFO.read_text()) if INFO.exists() else {}
     info.update({"filings": len(inv), "blocks": len(out), "units_by_group": n_by, "no_window": no_window,
