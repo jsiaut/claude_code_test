@@ -144,5 +144,24 @@ class UnitesPrioritaires(unittest.TestCase):
                 discovery.UNITS, discovery.built_units = old_units, old_built
 
 
+class CatalogueEchappe(unittest.TestCase):
+    """Point 10 : une ligne du catalogue de la découverte échappe U+2028 et U+2029, que str.splitlines() prendrait
+    pour des fins de ligne."""
+
+    def test_separateurs_de_ligne(self):
+        with tempfile.TemporaryDirectory() as d:
+            old = discovery.DISC_CATALOG, discovery.BUILT, discovery._note_unit_block
+            discovery.DISC_CATALOG, discovery.BUILT = Path(d) / "c.jsonl", Path(d) / "b.jsonl"
+            discovery._note_unit_block = lambda u, client: ({"content_key": "k", "text": "a b c"}, None)
+            try:
+                client = type("Client", (), {"stats": {"requests": 0}})()
+                discovery._build([{"order": 1, "rank": 1, "cik": "1", "kind": "note", "adsh": "x", "doc": "y"}], client)
+                raw = discovery.DISC_CATALOG.read_text(encoding="utf-8")
+                self.assertEqual(len(raw.splitlines()), 1)
+                self.assertEqual(json.loads(raw)["text"], "a b c")
+            finally:
+                discovery.DISC_CATALOG, discovery.BUILT, discovery._note_unit_block = old
+
+
 if __name__ == "__main__":
     unittest.main()

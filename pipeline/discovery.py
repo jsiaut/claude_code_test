@@ -1343,8 +1343,10 @@ def _build(todo, client):
         rec = {"order": int(u["order"]), "rank": int(u["rank"]), "cik": u["cik"], "kind": u["kind"],
                "adsh": u["adsh"], "doc": u["doc"], "content_key": b["content_key"] if b else None, "error": err}
         if b:
+            # U+2028 et U+2029 échappés, que str.splitlines() prendrait pour des fins de ligne (D-0086, point 10)
+            line = json.dumps(b, ensure_ascii=False).replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
             with open(DISC_CATALOG, "a", encoding="utf-8") as fh:
-                fh.write(json.dumps(b, ensure_ascii=False) + "\n")
+                fh.write(line + "\n")
             nb += 1
         with open(BUILT, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")

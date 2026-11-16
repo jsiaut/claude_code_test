@@ -5120,3 +5120,99 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Reste, sur demande de l'utilisateur ou à la prochaine mise à jour :
     - préparer et lire les 52 unités prioritaires, environ une requête par unité ;
     - les 13F des autres groupes déclarants (AMD, Galaxy et Blackstone selon D-0071) ne sont pas en cache ; les lire demanderait des requêtes.
+
+  (10) Préparation et lecture des unités prioritaires, sur demande de l'utilisateur (2026-11-16, « Fais-le maintenant »). Règles et volume, avant toute requête :
+  - Volume (`python -m pipeline.discovery priority`) : 52 unités de 12 candidats.
+    - 35 notes. Chacune demande sa page R ; aucune n'est en cache, soit au plus 35 requêtes.
+    - 17 en-têtes d'EX-10, dont les pièces sont déjà en cache : sans requête.
+    - Par candidat : Tempus AI 18 (10 notes, 8 en-têtes) ; AST SpaceMobile 10 (9 et 1) ; Allegiant Travel 5 notes ; Synopsys 4 notes ; Astera Labs 4 (2 et 2) ; X-Energy 3 en-têtes ; Coherent 2 notes ; Oscar Health 2 (1 et 1) ; Nokia, CME Group 1 note chacun ; UiPath et le candidat de PayPay 1 en-tête chacun.
+  - Réseau (§9.5) : une seule commande, `prepare-priority`, à 4 requêtes par seconde au plus ; pause d'au moins dix minutes après un refus 403 ; chaque requête au journal.
+  - Écriture : le catalogue de la découverte s'écrit avec l'échappement de D-0085 (point 13), U+2028 et U+2029. La règle s'étend à `discovery._build` avant la préparation ; la valeur lue ne change pas.
+  - Lecture :
+    - le volume en caractères des blocs préparés se consigne ici avant toute lecture ;
+    - l'exécutant lit lui-même, un bloc à la fois, sous la passe ordinaire de l'as_of, liste `d0086_priority` ;
+    - mêmes règles que la file de la découverte (D-0036, D-0038) : les corps d'EX-10 (passe C) ne se lisent pas ; aucune personne physique n'est nommée dans une ligne (D-0078).
+  - Puis : contrôles du point 3 de D-0085 (montants contre citations, personnes), entités par extrait si besoin, assemblage, comparaison aux tables de 587dbbc, rendus, résultats ici.
+  - Préparation (2026-11-16) : 52 blocs sur 52 unités, 35 requêtes, toutes acceptées (code 200), aucun refus ; aucun séparateur de ligne brut au catalogue.
+  - Volume, avant toute lecture : 52 blocs (35 notes, 17 en-têtes), 396 581 caractères. Tempus AI 154 030 ; AST SpaceMobile 131 997 ; Allegiant Travel 39 062 ; Nokia 16 525 ; Astera Labs 11 207 ; Coherent 10 593 ; X-Energy 10 160 ; Synopsys 7 520 ; CME Group 5 827 ; Oscar Health 4 245 ; UiPath 2 979 ; le candidat de PayPay 2 436. Liste `work/lists/d0086_priority.txt`.
+  - Lecture (2026-11-16), par l'exécutant seul, un bloc à la fois : 52 blocs, 85 lignes (59 observations, 26 abstentions), aucune rejetée au final. Garde de D-0078 : aucune personne physique. Montants contre citations : aucun écart, hors une alerte de forme sur un montant écrit au cent près (238 327 424,73 $), présent dans sa citation.
+  - Constats :
+    - NVIDIA : les trois participations sans pièce de nos 13F sont documentées par l'émetteur.
+      - Nokia : émission réservée de 166 389 351 actions à 6,01 $, soit 1 000 M$ (2025).
+      - Coherent : placement privé du 2 mars 2026, 7 788 161 actions à 256,80 $, 2 Md$.
+      - Synopsys : placement privé de décembre 2025, environ 4,8 millions d'actions à 414,79 $, 2,0 Md$ nets.
+      - Les nombres d'actions sont ceux du 13F du 30 juin 2026.
+    - Tempus AI et Google :
+      - billet convertible émis à Google le 22 juin 2020 (330,0 M$) « in connection with entry into an agreement for use of [...] Google Cloud Platform » (pièce L5) ;
+      - 80 M$ d'actions de préférence G-2 remises à Google en règlement partiel (novembre 2020), puis billet de 250,0 M$ et, en février 2025, de 238,8 M$ (238 327 424,73 $ selon la pièce) ;
+      - le principal se réduit chaque année selon les services Google Cloud consommés (pièce L1) ; un avenant de février 2025 au contrat Google Cloud ajoute 43,4 M$ d'engagements d'achat (pièce L5) ;
+      - intérêts relevés de 2022 au premier semestre 2026.
+    - AST SpaceMobile et Google : obligations convertibles de 2034 émises le 22 janvier 2024 à AT&T, Google et Vodafone (110,0 M$ au total), converties en actions au premier trimestre 2025. Une lettre d'accord de services réciproques avec Google a été signée « in connection with the Investments » (pièce L5).
+    - CME Group : actions de préférence de série G vendues à Google LLC en novembre 2021, environ 1,0 Md$.
+    - Amazon :
+      - bons d'Astera Labs (2022 et 2023 ; 2026, jusqu'à 3 262 299 actions, avec Amazon.com NV Investment Holdings LLC), acquis par tranches de paiements d'Amazon, en réduction du revenu (5,5 M$ en 2025) ;
+      - bons de Sun Country remis à Amazon avec le contrat de fret, réglés à l'acquisition par Allegiant (16,2 M$).
+    - Oscar Health : Alphabet Holdings LLC, porteur de plus de 5 % en 2021, dont des affiliés vendent des services technologiques à Oscar (2,4 à 2,5 M$ par an, 2019 à 2021).
+  - Noms sans rattachement par extrait (D-0077) :
+    - « Alphabet Holdings LLC » (Oscar Health) et « Amazon NV Investment Holdings LLC » (note d'Astera Labs ; la pièce du bon écrit Amazon.com NV Investment Holdings LLC) restent des entités propres ;
+    - les positions d'Alphabet dans Oscar Health et d'Amazon par ce nom restent donc sans pièce rattachée au groupe.
+  - Sans pièce lue : X-Energy (accords d'enregistrement : porteurs en annexe) et UiPath (accord de droits des investisseurs : investisseurs en annexe), dont les corps ne se lisent pas (D-0038).
+
+  (11) Premier réassemblage (494 s), comparaison aux tables de 587dbbc, puis écart et règle fixée avant toute correction (2026-11-16).
+  - Constat :
+    - 24 lignes d'intérêts du billet de Tempus AI (9 blocs ; payeur Tempus, receveur Google LLC) portent `family` `financing` et `edge_type` `convertible_or_safe`.
+    - Or le guide de lecture (§3) et D-0015 veulent qu'un paiement en sens inverse sur un instrument déjà décrit (intérêts, loyer, remboursement) suive la trésorerie, sans `family` ni `edge_type`.
+    - Ces lignes ouvraient 24 arêtes de financement de Tempus vers Google. C'est une erreur de ma lecture.
+  - Règle : passe de correction `repass_d0086` sur ces 9 blocs, passe `2026-11-16T12:00:00Z`, inscrite dans `reading.correction_passes`.
+    - Elle reprend toutes les lignes de la passe chargée de chaque bloc. Seules les 24 lignes d'intérêts changent : `family` et `edge_type` retirés, le reste inchangé (payeur, receveur, montant, `instrument_key`).
+    - Puis réassemblage, comparaison aux tables de 587dbbc, rendus.
+  - Même défaut dans des lectures antérieures, hors des 52 blocs : 41 lignes d'intérêts (22 blocs) et 14 de commissions (12 blocs), 34 blocs en tout, ouvrent des arêtes du groupe emprunteur vers son prêteur ; les commissions sont presque toutes au stade réglé, qui n'ouvre pas de paire.
+    - Des paires où un groupe « finance » son prêteur, que D-0033 (5) avait écartées pour les clôtures, naissent de ces lignes : Backblaze → City National Bank et → AFCO Premium Credit, Riot → Coinbase Credit (statut « financé » actif établi par ces seules lignes).
+    - Dans la typologie (volet B), elles donnent une relation Cerebras → OpenAI de type 1 ; or la relation va d'OpenAI à Cerebras, de type 2, et elle figure déjà dans la table.
+    - Non corrigé ici, hors de la demande : proposé à l'utilisateur (correction de ces lignes ou règle de code, et garde du lecteur).
+
+  (12) Second réassemblage (499 s), comparaison aux tables de 587dbbc, rendus (2026-11-16).
+  - Passe `repass_d0086` écrite : 9 blocs, 28 lignes, aucune rejetée. Les 24 lignes d'intérêts n'ont plus ni `family` ni `edge_type`. Par rapport au premier réassemblage, elle retire 24 arêtes, 3 relations entre montants et 10 cellules `investor_customer_revenue_share` (Alphabet et Tempus) que ces lignes faisaient naître.
+  - Écarts aux tables de 587dbbc, tous expliqués :
+    - `documents` : +35 documents principaux, les notes tirées. 84 documents passent de non lus à lus : ceux des 12 dépôts dont les en-têtes de pièces ont été lus, dont 69 du F-1 de PayPay.
+    - `facts` : +11 faits de BDC, rattachés aux entités nouvelles Allegiant Travel et Coherent par leur dénomination légale entière : des BDC détiennent leurs titres de dette.
+    - `observations` : +85 lignes (67 de notes, 18 d'en-têtes).
+    - `entities` :
+      - 11 entités nouvelles, avec leur rattachement : Allegiant, Alphabet Holdings LLC, Amazon NV Investment Holdings LLC, Astera Labs, CME, Coherent, Nokia, Oscar Health, Synopsys, UiPath, X-Energy ;
+      - AST SpaceMobile et Tempus AI changent seulement de graphie (nom du déposant, en capitales, repris des lignes nouvelles), sous le même identifiant ;
+      - PayPay Corporation prend son CIK (2080845) et devient déposant ;
+      - la clé en double d'Apollo existait déjà ; ce n'est pas un changement.
+    - `links` : +35 arêtes.
+      - Financement : Alphabet → CME, Tempus et AST SpaceMobile ; NVIDIA → Nokia, Coherent et Synopsys ; Alphabet Holdings LLC → Oscar.
+      - Achats : Tempus → Alphabet (achat et engagement d'achat), et intention réciproque Alphabet ↔ AST.
+      - Bons remis au client : Astera → Amazon et → Amazon NV Investment Holdings LLC ; Allegiant → Amazon.
+      - Revenu et achats : Amazon → Allegiant, Amazon NV Investment Holdings LLC → Astera, Oscar → Alphabet Holdings LLC.
+    - `measures` : +1 035 cellules, −11.
+      - Six paires nouvelles (Alphabet → CME, Tempus, AST SpaceMobile ; NVIDIA → Nokia, Coherent, Synopsys), avec leurs cellules :
+        - `financed_status` 708 ;
+        - dépendances de revenu 66 et de carnet 134 ;
+        - annexe E 31, conclusions 6, couverture contractuelle 6, exposition 6 ;
+        - revenu non monétaire 14, couverture des paires 10.
+      - Conclusions : dépendance documentée pour Alphabet → Tempus (L1, L5) et Alphabet → AST (L5). Causalité non établie pour les quatre autres : financement seul, recherche complète.
+      - E1 :
+        - étayé pour Alphabet → Tempus (8 issues étayées en tout, contre 7) ; non étayé pour CME, Nokia, Coherent et Synopsys ;
+        - aucune cellule pour AST : la paire n'est jamais active en vue `as_known`, car la pièce lue est déposée après la conversion des obligations.
+      - E7 : 116 issues indéterminées sur 208 (55,8 %), contre 111 sur 198 (56,1 %). La discrimination reste possible.
+      - E6 : 125 cycles, contre 122. Les trois nouveaux sont en dépendance documentée : Amazon → Allegiant (L3), Alphabet → AST (L5) et Alphabet → Tempus (L1, L5).
+      - Flux après financement des contreparties :
+        - Alphabet : −1 000 M$ au quatrième trimestre 2021 (CME), −238,8 M$ au premier trimestre 2025 (billet de Tempus) ;
+        - NVIDIA : −3 000 M$ au trimestre clos le 25 janvier 2026 (Nokia et Synopsys), −2 000 M$ au suivant (Coherent) ;
+        - dates de connaissance reportées à celles des pièces lues, de même que pour trois événements F2, dont les valeurs ne changent pas.
+      - Paires visibles : Alphabet de 3–7 à 5–10 selon l'année ; NVIDIA, exercice 2026, de 1 à 3.
+      - BDC : 48 cellules, pour Allegiant (non balisées) et Coherent (2 M$ de prêts, 1,00 x).
+      - `ownership_undocumented` : 38 positions, puis 30.
+        - Documentées : NVIDIA → Nokia, Coherent, Synopsys ; Alphabet → CME, Tempus, AST SpaceMobile ; Amazon → Allegiant, Astera Labs.
+        - X-Energy, Oscar et UiPath changent seulement de contrepartie (`CP:` au lieu de `none`), les entités existant désormais ; PayPay change de drapeaux (unités toutes lues).
+        - Restent : Alphabet 24 (biotechnologies surtout, Freshworks, UiPath, PayPay, Qualcomm, Arm, Oscar, Figma…), Amazon 2 (X-Energy, Beta Technologies), Intel 2 (Mobileye, Joby), NVIDIA 2 (SpaceX, Generate Biomedicines).
+        - Unités à préparer : 0.
+      - Typologie BRI : inchangée, aucun des nœuds nouveaux n'étant dans le périmètre.
+    - `controls` : +6 `c5_bilateral`, non testables, un par paire nouvelle.
+    - `exclusions` :
+      - −52 `not_processed` : les unités lues ;
+      - 28 détails d'archives N-PORT : 53 dénominations légales ajoutées depuis leur scan, contre 42, soit les 11 entités nouvelles.
+  - Rendus : 32 295 nombres publiés ; `delta.md` dit les mêmes écarts.

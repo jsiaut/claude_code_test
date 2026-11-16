@@ -29,8 +29,8 @@
 | 2025-04-27 | 69,2 % | 86,2 % | 0,04 x | n.d. (terme manquant) | 26 187 M$ | n.d. (concept non résolu) | 26 187 M$ | 46 j | 1 800 M$ | 0,10 x | 0,02 x |  |
 | 2025-07-27 | 55,6 % | 71,6 % | 0,12 x | n.d. (terme manquant) | 13 470 M$ | n.d. (concept non résolu) | 13 470 M$ | 54 j | 1 900 M$ | 0,09 x | 0,02 x |  |
 | 2025-10-26 | 62,5 % | 65,2 % | 0,07 x | n.d. (terme manquant) | 22 115 M$ | n.d. (concept non résolu) | 21 715 M$ | 53 j | 2 500 M$ | 0,08 x | 0,02 x |  |
-| 2026-01-25 | 73,2 % | 65,5 % | 0,04 x | n.d. (terme manquant) | 34 904 M$ | n.d. (concept non résolu) | 27 904 M$ | 51 j | 2 300 M$ | 0,06 x | 0,02 x |  |
-| 2026-04-26 | 85,2 % | 70,7 % | 0,03 x | n.d. (terme manquant) | 48 587 M$ | n.d. (concept non résolu) | 46 110 M$ | 45 j | 2 600 M$ | 0,05 x | 0,03 x |  |
+| 2026-01-25 | 73,2 % | 65,5 % | 0,04 x | n.d. (terme manquant) | 34 904 M$ | n.d. (concept non résolu) | 24 904 M$ | 51 j | 2 300 M$ | 0,06 x | 0,02 x |  |
+| 2026-04-26 | 85,2 % | 70,7 % | 0,03 x | n.d. (terme manquant) | 48 587 M$ | n.d. (concept non résolu) | 44 110 M$ | 45 j | 2 600 M$ | 0,05 x | 0,03 x |  |
 | 2026-07-26 | 105,9 % | 83,4 % | 0,11 x | n.d. (terme manquant) | 21 400 M$ | n.d. (concept non résolu) | 21 400 M$ | 60 j | 3 200 M$ | 0,17 x | 0,03 x |  |
 
 ## Alphabet (GOOGL)
@@ -40,7 +40,7 @@
 | 2021-03-31 | 34,4 % | 18,0 % | 0,31 x | n.d. (non publié) | 13 347 M$ | n.d. (terme manquant) | 13 347 M$ | 46 j | 30 700 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2021-06-30 | 61,6 % | 32,7 % | 0,25 x | n.d. (terme manquant) | 16 394 M$ | n.d. (terme manquant) | 16 394 M$ | 47 j | 35 300 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2021-09-30 | 41,0 % | 39,3 % | 0,27 x | n.d. (terme manquant) | 18 720 M$ | n.d. (terme manquant) | 18 720 M$ | 48 j | 37 100 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2021-12-31 | 32,4 % | 41,2 % | 0,26 x | n.d. (terme manquant) | 18 551 M$ | n.d. (terme manquant) | 18 551 M$ | 48 j | 51 000 M$ | n.d. (non publié) | n.d. (terme manquant) |  |
+| 2021-12-31 | 32,4 % | 41,2 % | 0,26 x | n.d. (terme manquant) | 18 551 M$ | n.d. (terme manquant) | 17 551 M$ | 48 j | 51 000 M$ | n.d. (non publié) | n.d. (terme manquant) |  |
 | 2022-03-31 | 23,0 % | 37,4 % | 0,39 x | n.d. (non publié) | 15 320 M$ | n.d. (terme manquant) | 15 320 M$ | 46 j | 50 500 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2022-06-30 | 12,6 % | 26,3 % | 0,35 x | n.d. (terme manquant) | 12 594 M$ | n.d. (terme manquant) | 12 594 M$ | 47 j | 51 200 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2022-09-30 | 6,1 % | 17,9 % | 0,31 x | n.d. (terme manquant) | 16 077 M$ | n.d. (terme manquant) | 16 077 M$ | 46 j | 52 400 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
@@ -53,7 +53,7 @@
 | 2024-06-30 | 13,6 % | 13,4 % | 0,49 x | n.d. (terme manquant) | 13 454 M$ | n.d. (terme manquant) | 13 454 M$ | 51 j | 78 800 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-09-30 | 15,1 % | 14,4 % | 0,43 x | n.d. (terme manquant) | 17 637 M$ | n.d. (terme manquant) | 15 587 M$ | 51 j | 86 800 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2024-12-31 | 11,8 % | 13,9 % | 0,36 x | n.d. (terme manquant) | 24 837 M$ | n.d. (terme manquant) | 24 837 M$ | 50 j | 93 200 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
-| 2025-03-31 | 12,0 % | 13,1 % | 0,48 x | n.d. (terme manquant) | 18 953 M$ | 18 761 M$ | 18 953 M$ | 51 j | 92 400 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
+| 2025-03-31 | 12,0 % | 13,1 % | 0,48 x | n.d. (terme manquant) | 18 953 M$ | 18 761 M$ | 18 714 M$ | 51 j | 92 400 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2025-06-30 | 13,8 % | 13,1 % | 0,81 x | n.d. (terme manquant) | 5 301 M$ | 5 191 M$ | 5 301 M$ | 52 j | 108 200 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2025-09-30 | 15,9 % | 13,4 % | 0,49 x | n.d. (terme manquant) | 24 461 M$ | 24 369 M$ | 23 711 M$ | 51 j | 157 700 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
 | 2025-12-31 | 18,0 % | 15,1 % | 0,53 x | n.d. (terme manquant) | 24 551 M$ | 22 957 M$ | 24 551 M$ | 51 j | 242 800 M$ | n.d. (terme manquant) | n.d. (terme manquant) |  |
@@ -9911,7 +9911,7 @@ Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées
 | 2021-11-30 | 6 360,0 % | 0,0 M USD | 1 | 1 | 1 | 2021-12-13 | 14,77 | — | TD SECURITIES (USA) LLC (PUBLIC SERVICE ENTERPRISE GROUP INC) 14.77% 12/13/2021 (PEG US) |
 | 2022-05-31 | 6 187,5 % | 0,1 M USD | 1 | 1 | 1 | 2022-07-22 | 20,42 | — | TD SECURITIES INC (SEALED AIR CORP) 20.42% 07/22/2022 (SEE US) |
 
-## Tempus AI, Inc. (CP:tempus ai inc) : prêts et dette valorisés par les fonds (Form N-PORT)
+## TEMPUS AI, INC. (CP:tempus ai inc) : prêts et dette valorisés par les fonds (Form N-PORT)
 
 Valeur déclarée ÷ nominal, dans la monnaie du titre, des positions évaluées au niveau 3, au dernier dépôt de chaque série pour la date de portefeuille ; échéances et coupons extrêmes tels que déclarés (un coupon se déclare en taux annuel, en fraction ou en pourcentage selon le fonds). Perspective `counterparty` : jamais une probabilité de défaut ni un fait comptable de l'emprunteur (D-0066, point 4).
 
