@@ -22,6 +22,7 @@ import json
 import re
 import sys
 import zipfile
+from collections import Counter
 
 import pandas as pd
 
@@ -1279,6 +1280,42 @@ def prepare_frontier(rate=4.0):
     _build([u for u in frontier_units() if u["order"] not in done], client)
 
 
+def priority_units(cells=None):
+    """Unités prioritaires de D-0086 (point 3) : celles des candidats rattachés à une position du 13F sans pièce
+    (`ownership_undocumented` des tables), qui nomment le déclarant et ne sont pas encore préparées, dans l'ordre de
+    la file. Hors de la frontière de D-0041."""
+    if cells is None:
+        p = config.ROOT / "tables" / "measures.parquet"
+        if not p.exists():
+            return []
+        cells = pd.read_parquet(p, columns=["measure", "subject", "flags"])
+        cells = cells[cells["measure"] == "ownership_undocumented"].to_dict("records")
+    want = {}
+    for c in cells:
+        fl = c["flags"] if isinstance(c["flags"], dict) else json.loads(c["flags"] or "{}")
+        cd = fl.get("candidate") or {}
+        if cd.get("units_naming_holder"):
+            want.setdefault(str(cd["cik"]), set()).add(c["subject"])
+    if not want or not UNITS.exists():
+        return []
+    done = built_units()
+    out = []
+    for u in pd.read_parquet(UNITS).sort_values("order").to_dict("records"):
+        g = set((u["groups"] if isinstance(u["groups"], str) else "").split(";"))
+        if str(u["cik"]) in want and g & want[str(u["cik"])] and u["order"] not in done:
+            out.append(u)
+    return out
+
+
+def prepare_priority(rate=4.0):
+    """Blocs des unités prioritaires de D-0086 (point 3), une requête par page R ou par pièce ; leur nombre se consigne
+    avant (`python -m pipeline.discovery priority`)."""
+    cfg = config.load()
+    client = net.SecClient(config.as_of(), cfg)
+    client.min_interval = 1.0 / rate
+    _build(priority_units(), client)
+
+
 def prepare_history(rate=4.0):
     """Mode de reconstruction (D-0084, point 3) : blocs des unités de la file dont vient un bloc lu ou arrêté à son
     en-tête au commit de référence, une pièce par son document, une note par son accession. Le catalogue se ramène
@@ -1419,6 +1456,12 @@ if __name__ == "__main__":
         prepare_frontier()
     elif cmd == "prepare-history":
         prepare_history()
+    elif cmd == "priority":
+        pu = priority_units()
+        print(len(pu), "unités prioritaires (D-0086, point 3) :",
+              dict(Counter(f"{u['cik']}|{u['kind']}" for u in pu)))
+    elif cmd == "prepare-priority":
+        prepare_priority()
     elif cmd == "verify":
         verify_exhibits()
         verify_form_d()

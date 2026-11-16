@@ -1,6 +1,6 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-11-14, comparée à l'exécution précédente, dont les tables sont celles du commit 8cf383ceb641 (2026-11-07). Généré depuis les tables (D-0069, point 8).*
+*Exécution du 2026-11-14, comparée à l'exécution précédente, dont les tables sont celles du commit 2278fd5f3bf5 (2026-11-14). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
@@ -8,19 +8,9 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, et la dernière requ
 
 ## Événements nouveaux de l'annexe F
 
-**Apparus** (trimestres des groupes) :
-- Cerebras : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 2 trimestre(s)
-- Cerebras : F2 (flux après financement des contreparties négatif) — 2 trimestre(s)
-- Cerebras : F5 (faiblesse significative du contrôle interne) — 1 trimestre(s)
-- CoreWeave : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
-- CoreWeave : F2 (flux après financement des contreparties négatif) — 1 trimestre(s)
-- CoreWeave : F5 (faiblesse significative du contrôle interne) — 1 trimestre(s)
-- Galaxy : F1 (capex décaissé supérieur au CFO deux trimestres de suite) — 1 trimestre(s)
-- Galaxy : F2 (flux après financement des contreparties négatif) — 1 trimestre(s)
+**Apparus** : aucun.
 
 **Disparus** : aucun.
-
-Véhicules BDC de l'univers (D-0045, D-0047), événements apparus et disparus : F15 +1 / −0.
 
 ## Rendement du passage (§11.1)
 
@@ -35,7 +25,7 @@ Véhicules BDC de l'univers (D-0045, D-0047), événements apparus et disparus :
 - Blocs lus : 12 448 sur 12 823 clés de contenu ; par item de 8-K : 1.01 481, 1.02 50, 2.01 38, 2.03 146, 3.03 36, 8.01 842 ; pièces arrêtées à leur en-tête : EX-4 375.
 - Lignes rejetées par la validation : 0.
 - Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 692 (collisions : 240).
-- Durée de l'assemblage : 535 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 497 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -96,15 +86,11 @@ Véhicules BDC de l'univers (D-0045, D-0047), événements apparus et disparus :
 
 ## Exclusions nouvelles, par motif
 
-- `not_processed` : +20, −0
-- `pending_entity` : +20, −0
-- `out_of_scope` : +14, −0
-- `financial_parties_only` : +4, −0
-- `conflicting` : +3, −0
+- Aucune.
 
 ## Décisions et variantes nouvelles
 
-- D-0085 — Mise à jour du modèle à l'as_of du 2026-11-14. Règles fixées avant tout tirage.
+- D-0086 — Participations déclarées au 13F sans pièce de financement, et typologie du Bulletin BRI n° 137. Règles fixées avant tout changement de code.
 
 ## Critères des annexes E et F
 
@@ -116,7 +102,7 @@ Modifiés : annex_f
 
 ## Dépôts nouveaux
 
-Dépôts lus pour la première fois : 10-Q 10, 8-K 7, 6-K 6, D 2, 10-K 1, S-1 1.
+Aucun.
 
 ## Valeurs changées pour des périodes déjà publiées
 
@@ -124,76 +110,20 @@ Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cel
 
 | Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
 | --- | ---: | ---: | ---: | ---: |
-| `revenue_growth` | 9 | 4 | 12 | 0 |
-| `cov_interest_coverage` | 8 | 0 | 12 | 0 |
-| `segment_significant_expenses` | 8 | 0 | 168 | 0 |
-| `fragility_event` | 7 | 7 | 47 | 7 |
-| `lev_debt_and_leases_to_operating_income_plus_da` | 7 | 0 | 12 | 0 |
-| `cfo_net_income_gap` | 6 | 4 | 6 | 0 |
-| `capex_to_revenue` | 5 | 3 | 6 | 0 |
-| `receivables_collection_period` | 5 | 1 | 12 | 0 |
-| `capex_cash` | 4 | 2 | 6 | 0 |
-| `fcf_after_counterparty_financing` | 4 | 2 | 6 | 0 |
-| `fcf_after_sbc` | 4 | 2 | 6 | 0 |
-| `fcf_basic` | 4 | 2 | 6 | 0 |
-| `gross_margin` | 4 | 2 | 6 | 0 |
-| `operating_lease_rou_additions` | 4 | 2 | 6 | 0 |
-| `operating_margin` | 4 | 2 | 6 | 0 |
-| `annex_e_outcome` | 3 | 0 | 3 | 0 |
-| `eq_equity_and_accumulated_deficit` | 3 | 2 | 12 | 0 |
-| `capex_to_cfo` | 2 | 4 | 12 | 0 |
-| `capitalized_interest` | 2 | 0 | 6 | 0 |
-| `capitalized_interest_to_cip` | 2 | 0 | 6 | 0 |
-| `cip_change_to_capex` | 2 | 0 | 6 | 0 |
-| `fcf_after_finance_leases` | 2 | 4 | 6 | 0 |
-| `sbc_to_cfo` | 2 | 2 | 6 | 0 |
-| `segment_revenue` | 2 | 0 | 12 | 0 |
-| `lab_ledger` | 1 | 0 | 4 | 2 |
-| `bdc_tender_acceptance_ratio` | 0 | 0 | 12 | 7 |
-| `bdc_tender_demand_ratio` | 0 | 0 | 12 | 7 |
-| `cip_share` | 0 | 0 | 6 | 0 |
-| `contract_coverage` | 0 | 0 | 3 | 0 |
-| `contracted_backlog_share` | 0 | 0 | 3 | 0 |
-| `counterparty_exposure` | 0 | 0 | 16 | 13 |
-| `cov_pik_interest` | 0 | 0 | 6 | 0 |
-| `customer_advances` | 0 | 0 | 6 | 0 |
-| `customer_concentration_anonymous` | 0 | 0 | 12 | 0 |
-| `documented_backlog_dependency` | 0 | 0 | 12 | 0 |
-| `documented_path` | 0 | 0 | 1 | 0 |
-| `documented_revenue_dependency` | 0 | 0 | 32 | 0 |
-| `eq_diluted_share_count_change` | 0 | 0 | 6 | 0 |
-| `exposure_matrix` | 0 | 0 | 75 | 0 |
-| `financed_status` | 0 | 0 | 368 | 0 |
-| `lab_capacity` | 0 | 0 | 2 | 0 |
-| `lab_contract_clause` | 0 | 0 | 12 | 0 |
-| `lab_tagged_value` | 0 | 0 | 22 | 0 |
-| `lessor_lease_receipts` | 0 | 0 | 4 | 0 |
-| `liq_undrawn_committed_facilities` | 0 | 0 | 6 | 0 |
-| `relationship_conclusion` | 0 | 0 | 3 | 0 |
-| `rpo_beyond_12m` | 0 | 0 | 4 | 0 |
-| `rpo_total` | 0 | 0 | 6 | 0 |
-| `sig_auditor_change_or_nonreliance` | 0 | 0 | 3 | 0 |
-| `sig_covenant_events` | 0 | 0 | 3 | 0 |
-| `sig_distress_8k_items` | 0 | 0 | 3 | 0 |
-| `sig_going_concern` | 0 | 0 | 3 | 0 |
-| `sig_late_filing` | 0 | 0 | 3 | 0 |
-| `sig_material_weakness` | 0 | 0 | 3 | 0 |
-| `sig_pledged_assets` | 0 | 0 | 3 | 0 |
-| `supplier_concentration` | 0 | 0 | 8 | 0 |
-| `working_capital` | 0 | 0 | 36 | 0 |
+| `investment_relationship_type` | 0 | 0 | 56 | 0 |
+| `ownership_position` | 0 | 0 | 2 | 0 |
+| `ownership_undocumented` | 0 | 0 | 38 | 0 |
 
 Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 114, Apollo 88, ASML 7, Broadcom 22, Backblaze 12, Blackstone 1, Cipher 49, Core Scientific 98, CoreWeave 7, Dell 286, Galaxy 4, Alphabet 21, Hut 8 7, Intel 45, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 34, Oracle 52, Blue Owl 7, Riot 113, Supermicro 162, TSMC 17, TeraWulf 21.
 
 ## Arêtes nouvelles
 
-- Apparues : commercial/amount 18, commercial/relation 28, credit_support/amount 7, credit_support/relation 6, customer_consideration/amount 1, financing/amount 39, financing/relation 66.
-- Disparues : financing/relation 6.
+- Apparues : aucune.
+- Disparues : aucune.
 
 ## Contrôles qui ont basculé
 
-- C15 : `mismatch` → `ok` 3
-- C1 : `ok` → `not_testable` 5
-- C2 : `not_testable` → `ok` 1
+- Aucun.
 
 ## Entités pending
 
@@ -209,5 +139,5 @@ Relations candidates par paire du registre : na01 0, na02 0, na03 255, na04 0, n
 
 ## Changements dus à une nouvelle passe de lecture ou au code
 
-Lecture : 664 lignes d'observation nouvelles, dans 349 blocs, et 12 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
+Lecture : 0 lignes d'observation nouvelles, dans 0 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
 

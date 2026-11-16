@@ -2312,6 +2312,15 @@ Actions déclarées par le financeur au 13F (date de portefeuille) ou à une ann
 | 2026-06-30 | 13F | 35 248 893 | 1 167,8 M$ | — |  |
 | 2026-09-30 | 13F | 35 248 893 | 577,7 M$ | — |  |
 
+## Alphabet (GOOGL) → SpaceX (SPCX) : déclarations de détention
+
+Actions déclarées par le financeur au 13F (date de portefeuille) ou à une annexe 13D ou 13G (date de l'événement) ; perspective du déclarant, descriptive (D-0071, point 3).
+
+| Date | Déclaration | Actions | Valeur déclarée | Part de la catégorie | Sortie publiée ensuite |
+| --- | --- | ---: | ---: | ---: | --- |
+| 2026-06-30 | 13F | 551 189 500 | 94 176,2 M$ | — |  |
+| 2026-09-30 | 13F | 555 043 560 | 83 733,9 M$ | — |  |
+
 ## Amazon (AMZN) → RIVIAN AUTOMOTIVE, INC. / DE (CP:rivian automotive inc / de) : déclarations de détention
 
 Actions déclarées par le financeur au 13F (date de portefeuille) ou à une annexe 13D ou 13G (date de l'événement) ; perspective du déclarant, descriptive (D-0071, point 3).

@@ -310,6 +310,10 @@ MEASURES = {
     # D-0071, volet A : déclarations de détention (13F ; 13D et 13G), descriptives, à la perspective du déclarant
     "ownership_position": (2, [NONE], "instant", "14"),
     "ownership_stake": (2, [NONE], "event", "14"),
+    # D-0086, volet A : positions déclarées au 13F qu'aucune arête ne documente (descriptives, perspective du déclarant)
+    "ownership_undocumented": (2, [NONE], "instant", "14"),
+    # D-0086, volet B : type de chaque relation d'investissement selon le Bulletin BRI n° 137 (descriptive)
+    "investment_relationship_type": (2, [NONE], "window", "14"),
     # D-0060 : OpenAI et Anthropic vus par les déposants (bloc labs) : faits balisés, grand livre par laboratoire
     "lab_tagged_value": (2, [NONE], "window", "14"),
     "lab_ledger": (2, [NONE], "window", "14"),

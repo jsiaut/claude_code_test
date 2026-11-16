@@ -5008,3 +5008,115 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - la variante Alphabet de D-0082 ;
     - les formulaires 485BPOS et N-CSRS/A des relevés de portefeuille ;
     - la persistance du conteneur.
+
+- **D-0086 — Participations déclarées au 13F sans pièce de financement, et typologie du Bulletin BRI n° 137. Règles fixées avant tout changement de code.**
+  (1) Origine :
+  - Le 2026-11-16, l'utilisateur transmet le Bulletin BRI n° 137, « Circular relationships among AI firms » (1er octobre 2026), et demande si le modèle rate des choses.
+  - Le bulletin appelle circulaire une relation d'investissement entre deux sociétés d'IA doublée, à un moment quelconque de 2021 à 2025, d'une relation commerciale entre elles. Il en distingue trois types : l'investisseur fournit la cible (type 1), il en est client (type 2), ou les deux (type 3). Ses données viennent de bases privées de transactions et de relations commerciales, sur 1 246 sociétés.
+  - Réponse : la définition recoupe `relationship_conclusion` (§3.4), le statut « financé » (§3.2) et les mesures de dépendance (§3.3). Deux manques : des participations absentes du texte lu, que montrent les 13F déjà en cache, et aucune sortie comparable à celle du bulletin.
+  - Proposition acceptée le même jour (« ok on fait ça »), sans requête nouvelle : rapprocher les 13F en cache des arêtes de financement, une participation sans arête devenant un candidat de la découverte ; publier la typologie du bulletin comme table descriptive.
+  - Ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change. Ni pull request ni tâche planifiée.
+
+  (2) Constat (2026-11-16), sur les tables de 2278fd5 et le cache, sans requête :
+  - Le volet A de D-0071 ne lit les 13F qu'au profit de ses paires, déjà porteuses d'une arête de financement en titres. Les autres lignes des mêmes 13F ne publient rien.
+  - Derniers 13F en cache : Amazon et Alphabet au 30 septembre 2026, Intel et NVIDIA au 30 juin 2026.
+    - NVIDIA y déclare huit émetteurs. Trois portent une arête (CoreWeave, Intel, Nebius). Les autres n'en ont pas : SpaceX (environ 21,0 Md$), Coherent (3,1 Md$), Nokia (2,2 Md$), Synopsys (2,2 Md$) et une société de biotechnologie.
+    - Aucune pièce lue de NVIDIA ni de SpaceX ne nomme la participation dans SpaceX, ni ne relie les deux sociétés.
+  - Plusieurs émetteurs sans arête sont déjà candidats de la découverte, leurs dépôts nommant le déclarant, mais loin de la frontière de lecture de D-0041 : Coherent au rang 2 321, Synopsys 2 329, Nokia 2 091, Astera Labs 1 056, X-Energy 404.
+    - Leurs unités ne sont pas préparées, et une unité ne se prépare qu'avec une requête (page R ou pièce).
+    - Celles qui nomment le déclarant sont environ 52.
+  - Typologie appliquée aux arêtes, en lecture seule, sur le périmètre du point 4 : 36 relations d'investissement, dont 19 circulaires (8 de type 1, 5 de type 2, 6 de type 3) ; sur 2021–2025, 20 relations, dont 7 circulaires.
+  - Le bulletin trouve 16,1 % des transactions entre sociétés d'IA circulaires (46,4 % en valeur), dont 64 % de type 1. Son univers et ses unités de compte (transactions, valeur totale du tour) diffèrent des nôtres.
+
+  (3) Volet A, participations déclarées au 13F sans pièce, règles :
+  - Source : les 13F-HR et 13F-HR/A en cache du volet A de D-0071, lus de même (lignes SH hors options, amendements, valeurs en milliers avant le 2023-01-03, attribution par dénomination légale puis préfixe CUSIP). Aucune requête.
+  - Date : pour chaque déclarant, sa dernière date de portefeuille.
+  - Une position est documentée si une arête lie le déclarant S au nœud C de la ligne, quel que soit son stade :
+    - un financement en titres de S vers C (`equity_primary`, `convertible_or_safe`, `noncash_investment`) ;
+    - ou des titres remis par C à son client S (`equity_or_warrants_to_customer`).
+    - Une ligne du groupe de S (filiale consolidée) n'est pas une participation.
+  - Mesure `ownership_undocumented` (rang 2, §14) :
+    - une cellule par position sans pièce, à la date de portefeuille ; valeur : actions déclarées ;
+    - drapeaux : valeur déclarée, émetteur et CUSIP tels qu'écrits, règle d'attribution, candidat de la découverte ;
+    - contrepartie : le nœud s'il existe ; sinon `none`, et l'émetteur va dans `breakdown_key`.
+    - Descriptive comme `ownership_position` : hors du revenu, de l'exposition, des paires et de l'annexe F. Elle n'ouvre jamais la condition (a) de §3.2 (D-0071).
+  - Candidat : le candidat de la découverte de même dénomination normalisée que l'émetteur (minuscules, sans ponctuation ni suffixe d'État). Ses unités prioritaires sont celles qui nomment S.
+  - Priorité :
+    - ces unités se préparent et se lisent avant toute autre unité de la file, hors de la frontière de D-0041, par `python -m pipeline.discovery prepare-priority` ;
+    - pas dans cette décision, faute de requête : à la prochaine mise à jour, ou plus tôt sur demande de l'utilisateur, le volume exact étant consigné avant toute préparation.
+  - Publication : une section de la note de synthèse, après les déclarations de détention.
+
+  (4) Volet B, typologie du bulletin, règles :
+  - Périmètre : les groupes de `config.yaml` sauf les gestionnaires d'actifs ajoutés par D-0055 (Blue Owl, Apollo, Blackstone, financeurs plutôt que sociétés d'IA) ; les deux laboratoires ; les cinq non-déposants. Hors intragroupe, arêtes éliminées exclues.
+  - Relation d'investissement I → T : une arête `financing` de I vers T, de tout type et à tout stade, puisque le bulletin compte les opérations annoncées. Le stade le plus avancé est publié.
+  - Une arête commerciale va du payeur au fournisseur :
+    - type 1 (`supplier_investor`) : une arête commerciale de T vers I ;
+    - type 2 (`customer_investor`) : une arête commerciale de I vers T ;
+    - type 3 (`reciprocal`) : les deux ;
+    - sinon `financing_only`.
+  - Fenêtres : de l'historique à l'as_of ; du 2021-01-01 au 2025-12-31, celle du bulletin. Une arête compte dans une fenêtre si sa date y tombe ; sans date, elle ne compte que dans la première.
+  - Les titres ou crédits remis à un client (contrepartie au client) se comptent à part, hors des types.
+  - Mesure `investment_relationship_type` (rang 2, §14) : une cellule par relation et par fenêtre.
+    - `value_text` porte le type ; les drapeaux, les arêtes de financement et les arêtes commerciales de chaque sens, et le stade le plus avancé.
+    - Hors du revenu, de l'exposition, des paires, des cycles et des annexes E et F.
+  - Publication : une section de la note de synthèse (décompte par fenêtre et par type, relations circulaires, contreparties au client). Les chiffres du bulletin n'y sont pas repris, puisqu'ils ne se rattachent à aucune cellule ; la comparaison reste ici.
+
+  (5) Ordre : registre et schéma, code et tests, réassemblage, comparaison aux tables de 2278fd5, rendus, résultats ici, `make check`, commit, push, verrou levé, rapport.
+
+  (6) Attribution des lignes, règle ajoutée avant son code (2026-11-16) :
+  - Constat : essai des règles de D-0071 sur les derniers 13F en cache.
+    - Lignes rattachées à un nœud : Amazon 2 émetteurs sur 6, Alphabet 7 sur 29, Intel 0 sur 2, NVIDIA 3 sur 8.
+    - SpaceX reste sans nœud chez NVIDIA comme chez Alphabet : le 13F abrège la dénomination (« SPACE EXPLORATION TECHN CORP »). La paire Alphabet → SpaceX de D-0071 n'a donc aucune position, alors qu'Alphabet déclare SpaceX à ses deux derniers 13F.
+    - Mobileye Global Inc., filiale d'Intel, est inconnue du registre ; aucun extrait lu ne la rattache à Intel.
+  - Règle : une ligne que les règles de D-0071 laissent sans nœud va à l'entité dont elle abrège la dénomination légale mot à mot, aux conditions suivantes :
+    - même nombre de mots, un seul mot tronqué, d'au moins quatre lettres et préfixe du mot de la dénomination ;
+    - même forme juridique finale ;
+    - une seule entité candidate.
+    - La règle vaut pour le volet A de D-0071 comme pour D-0086 : les positions d'Alphabet dans SpaceX deviennent visibles, et la sortie publiée d'une paire peut en dépendre.
+  - Mobileye reste une position sans pièce, puisqu'aucun extrait n'en fait une filiale d'Intel (D-0077). La note de synthèse dit qu'une filiale consolidée inconnue du registre peut figurer dans la liste.
+
+  (7) Précision au point 4, avant le premier assemblage (2026-11-16) :
+  - Constat, à l'essai du code : la date d'une arête est celle du modèle (événement, sinon fin de période, sinon date de connaissance). Borner la première fenêtre à l'as_of écarte donc les engagements dont la période finit après l'as_of. SoftBank → OpenAI y perd son type 2 : l'achat de SoftBank à OpenAI court au-delà de l'as_of.
+  - Règle : la première fenêtre prend toutes les arêtes connues à l'as_of, sans borne sur leur date ; ses cellules sont datées de l'as_of. La seconde reste bornée par la date de l'arête, du 2021-01-01 au 2025-12-31. Configuration : `windows: [[null, null], ["2021-01-01", "2025-12-31"]]`.
+
+  (8) Écart au point 3, constaté au premier assemblage (2026-11-16) :
+  - Constat : les positions s'y regroupaient par nœud. Chez Alphabet, Arm Holdings et PayPay, deux sociétés de SoftBank, faisaient une seule cellule dont la valeur additionnait les actions de deux émetteurs.
+  - Règle : une position par émetteur. La cellule porte l'émetteur normalisé dans `breakdown_key`, que la ligne ait un nœud ou non ; le nœud reste la contrepartie. Puis second assemblage.
+
+  (9) Intégration et résultats (2026-11-16), sans requête :
+  - Code :
+    - `ownership` : `abbreviation_of` (point 6), `documented_holdings`, `issuer_norm`, `candidates_index`, `latest_13f` et `undocumented` (points 3 et 8) ;
+    - module `typology` (points 4 et 7) ;
+    - `discovery` : `priority_units`, `prepare_priority`, commandes `priority` et `prepare-priority` ;
+    - deux mesures au registre (schéma régénéré), deux sections de la note de synthèse, configuration (`ownership.undocumented`, `bis_typology`), tests `tests/test_d0086.py`.
+  - Assemblages : deux. Le premier (645 s) a montré l'écart du point 8. Le second (497 s) donne les tables commitées.
+  - Comparaison aux tables de 2278fd5, clé par clé :
+    - documents, faits, observations, liens, contrôles et exclusions sont identiques ;
+    - entités : seules les deux appartenances d'Apollo apparaissent changées, mêmes enregistrements dans un autre ordre (comme en D-0084 et D-0085) ;
+    - mesures : +96 cellules, aucune cellule existante changée.
+  - `investment_relationship_type`, 56 cellules :
+    - arêtes connues à l'as_of : 36 relations d'investissement, dont 19 circulaires (type 1 : 8, type 2 : 5, type 3 : 6) et 17 financements seuls ;
+    - 2021–2025 : 20 relations, dont 7 circulaires (2, 4 et 1) et 13 financements seuls ;
+    - titres ou crédits remis à un client, comptés à part : 12 paires (5 sur 2021–2025).
+  - `ownership_undocumented`, 38 positions sans pièce :
+    - NVIDIA 5 : SpaceX (122 764 805 actions, 20 975,6 M$ au 30 juin 2026, rattachée par l'abréviation du point 6), Coherent (3 072,2 M$), Nokia (2 209,7 M$), Synopsys (2 150,8 M$), une société de biotechnologie ;
+    - Amazon 4 : X-Energy (933,6 M$), Beta Technologies (259,8 M$), Astera Labs (98,9 M$), Allegiant Travel (11,3 M$) ;
+    - Intel 2 : Mobileye (484,0 M$, filiale que le registre ne connaît pas), Joby Aviation (136,6 M$) ;
+    - Alphabet 27, dont Arm Holdings et PayPay (sociétés de SoftBank), CME, Qualcomm, AST SpaceMobile et Tempus AI, et des sociétés de biotechnologie.
+  - Candidats de la découverte :
+    - 17 positions en ont un, et 12 de ces candidats ont des unités qui nomment le déclarant ;
+    - unités prioritaires : 52, non préparées, volume consigné ici avant toute préparation (`python -m pipeline.discovery priority`).
+  - `ownership_position` +2, rendues visibles par le point 6 : Alphabet → SpaceX au 30 juin 2026 (551 189 500 actions, 94 176,2 M$) et au 30 septembre 2026 (555 043 560 actions, 83 733,9 M$). Le statut « financé » de la paire ne change pas : une position ne l'ouvre jamais, et aucune sortie n'est publiée.
+  - Rendus :
+    - deux sections nouvelles dans la note de synthèse ;
+    - `delta.md`, comparé à 2278fd5 : aucun événement nouveau de l'annexe F, 96 cellules apparues, aucune disparue ;
+    - 32 192 nombres publiés.
+  - Comparaison au bulletin, gardée ici puisque ses chiffres ne se rattachent à aucune cellule :
+    - univers : 37 nœuds contre 1 246 sociétés ;
+    - source : pièces déposées à la SEC, contre des bases privées de transactions et de relations commerciales ;
+    - unité de compte : la relation, à tout stade, contre la transaction à sa valeur totale ;
+    - part circulaire : 53 % des relations à l'as_of (35 % sur 2021–2025), contre 16,1 % des transactions (46,4 % en valeur) ; l'écart va dans le sens du bulletin, qui concentre la circularité chez les grands acteurs de l'amont (73 % des relations circulaires partent du calcul ou de l'infrastructure) ;
+    - type 1 : 8 relations circulaires sur 19 (42 %), contre 64 %. Les clients anonymes des fabricants de puces et des clouds (§3.6) privent souvent la relation de son arête commerciale ; NVIDIA → Anthropic, Micron → Anthropic, TSMC → Anthropic et TSMC → OpenAI restent des financements seuls, faute d'achat direct documenté.
+  - Reste, sur demande de l'utilisateur ou à la prochaine mise à jour :
+    - préparer et lire les 52 unités prioritaires, environ une requête par unité ;
+    - les 13F des autres groupes déclarants (AMD, Galaxy et Blackstone selon D-0071) ne sont pas en cache ; les lire demanderait des requêtes.

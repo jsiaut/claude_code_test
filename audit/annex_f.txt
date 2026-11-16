@@ -89,7 +89,7 @@ annex_f:
 
 Diff :
 diff --git a/config.yaml b/config.yaml
-index 1378604..5a10683 100644
+index 1378604..631412c 100644
 --- a/config.yaml
 +++ b/config.yaml
 @@ -16,9 +16,209 @@ user_agent:
@@ -1556,7 +1556,7 @@ index 1378604..5a10683 100644
    debt_proceeds: [ProceedsFromIssuanceOfLongTermDebt, ProceedsFromIssuanceOfDebt]
    debt_repayments: [RepaymentsOfLongTermDebt, RepaymentsOfDebt]
    rou_obtained_finance_lease: [RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability]
-@@ -438,6 +1820,508 @@ concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans l
+@@ -438,6 +1820,514 @@ concept_anchors_to_verify:   # ajouts v6 (§4.2), à vérifier en phase 0 dans l
  
  unanchored_quantities:       # résolues par la seule règle de §8.3
    [income_tax_expense, effective_tax_rate, retained_earnings, fx_effect_on_cash,
@@ -2044,6 +2044,7 @@ index 1378604..5a10683 100644
 +  decision: D-0071
 +  period: ["2019-01-01", as_of]        # dépôts de la période (13F, 13D et 13G)
 +  thirteen_f_filers: [AMZN, GOOGL, INTC, NVDA]   # financeurs des paires qui déposent des 13F-HR
++  undocumented: {decision: D-0086}   # volet A de D-0086 : positions sans arête qui les documente, à la dernière date de portefeuille
 +  dollars_from: "2023-01-03"   # valeurs des 13F en dollars à partir de ce dépôt, en milliers avant (règle de la SEC)
 +  pairs:                     # point 3 : S groupe, C déclarant (groupe, ou entité qui porte un CIK), arête de financement en titres
 +    - {s: AMZN, c: "CP:rivian automotive inc / de", cik: "1874178"}
@@ -2067,3 +2068,8 @@ index 1378604..5a10683 100644
 +duckdb:                      # D-0072 (point 3 d) : réglages explicites des connexions de l'assemblage, du mémo, du rendu et de l'aperçu
 +  threads: 4                 # cœurs de cet environnement, le défaut de DuckDB
 +  memory_limit: "10GB"       # sur 15 Go ; l'ordre d'insertion reste préservé (défaut)
++
++bis_typology:                # D-0086, volet B : typologie du Bulletin BRI n° 137 (rang 2, descriptive)
++  decision: D-0086
++  excluded_groups: [OWL, APO, BX]   # gestionnaires d'actifs ajoutés par D-0055 : financeurs, hors des sociétés d'IA du bulletin
++  windows: [[null, null], ["2021-01-01", "2025-12-31"]]   # toutes les arêtes connues à l'as_of (D-0086, point 7) ; fenêtre du bulletin

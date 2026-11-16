@@ -4735,6 +4735,39 @@ Un cycle suit les arêtes dans le sens de la ressource (financeur → financé, 
 
 Décompte de E.6 (descriptif, hors de E.7) : 122 cycles ; concomitance non : causalité non établie 1, relation commerciale doublée d'un financement 4, achats réciproques seulement 1 ; concomitance oui : causalité non établie 24, relation commerciale doublée d'un financement 47, dépendance documentée 14, achats réciproques seulement 31.
 
+## Circularité au sens du Bulletin BRI n° 137 (D-0086)
+
+Le bulletin appelle circulaire une relation d'investissement entre deux sociétés d'IA doublée d'une relation commerciale entre elles, à un moment quelconque de la fenêtre. Appliqué aux arêtes du modèle, sur les 37 nœuds du périmètre (groupes hors gestionnaires d'actifs, laboratoires, non-déposants) : une arête de financement de I vers T, de tout type et à tout stade, fait une relation d'investissement ; une arête commerciale de T vers I (T paie I) en fait le type 1, de I vers T le type 2, les deux le type 3 (D-0086, points 4 et 7). La relation se lit sur pièces seulement, relation par relation, sans pièce de lien exigée : elle ne dit rien de la causalité, que porte `relationship_conclusion` (§3.4). Description, hors des annexes E et F.
+
+| Fenêtre | Relations d'investissement | Circulaires | Type 1 | Type 2 | Type 3 | Financement seul |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| arêtes connues au 2026-11-14 | 36 | 19 | 8 | 5 | 6 | 17 |
+| du 2021-01-01 au 2025-12-31 | 20 | 7 | 2 | 4 | 1 | 13 |
+
+Relations circulaires, arêtes connues à l'as_of :
+
+- AMD → Anthropic : type 1 (l'investisseur fournit la cible), financement au stade `signed`.
+- Broadcom → Anthropic : type 1 (l'investisseur fournit la cible), financement au stade `available`.
+- Cerebras → OpenAI : type 1 (l'investisseur fournit la cible), financement au stade `recognized`.
+- Micron → Intel : type 1 (l'investisseur fournit la cible), financement au stade `settled`.
+- Microsoft → OpenAI : type 1 (l'investisseur fournit la cible), financement au stade `recognized`.
+- NVIDIA → Nebius : type 1 (l'investisseur fournit la cible), financement au stade `drawn_or_paid`.
+- NVIDIA → OpenAI : type 1 (l'investisseur fournit la cible), financement au stade `drawn_or_paid`.
+- Supermicro → Lambda : type 1 (l'investisseur fournit la cible), financement au stade `drawn_or_paid`.
+- Intel → Micron : type 2 (l'investisseur est client de la cible), financement au stade `settled`.
+- NVIDIA → Nscale : type 2 (l'investisseur est client de la cible), financement au stade `settled`.
+- NVIDIA → SoftBank : type 2 (l'investisseur est client de la cible), financement au stade `drawn_or_paid`.
+- OpenAI → Cerebras : type 2 (l'investisseur est client de la cible), financement au stade `settled`.
+- SoftBank → OpenAI : type 2 (l'investisseur est client de la cible), financement au stade `drawn_or_paid`.
+- Alphabet → Anthropic : type 3 (relation commerciale dans les deux sens), financement au stade `settled`.
+- Amazon → Anthropic : type 3 (relation commerciale dans les deux sens), financement au stade `settled`.
+- Amazon → OpenAI : type 3 (relation commerciale dans les deux sens), financement au stade `recognized`.
+- Microsoft → Anthropic : type 3 (relation commerciale dans les deux sens), financement au stade `recognized`.
+- NVIDIA → CoreWeave : type 3 (relation commerciale dans les deux sens), financement au stade `recognized`.
+- NVIDIA → IREN : type 3 (relation commerciale dans les deux sens), financement au stade `signed`.
+
+Titres ou crédits remis à un client, comptés à part : 12 paires — Akamai → Anthropic, AMD → OpenAI, AMD → Meta, Applied Digital → CoreWeave, Backblaze → CoreWeave, Cerebras → Amazon, Cerebras → OpenAI, CoreWeave → OpenAI, Marvell → Amazon, Marvell → Alphabet, Marvell → SoftBank, SoftBank → OpenAI.
+
 ## Form D (bloc form_d, §14)
 
 Un Form D donne le montant vendu d'une offre, cumulé depuis sa première vente, jamais une valorisation ni une contrepartie. La mesure se fait par offre (CIK de l'émetteur et date de première vente) sur le dernier dépôt connu : un D et ses D/A ne se somment pas, chaque dépôt remplace le précédent. Le montant peut inclure du non monétaire (titres remis lors d'un regroupement d'entreprises, par exemple) : ce n'est pas du numéraire primaire sans autre pièce. Aucun total n'est fait, ni entre offres ni entre véhicules.
@@ -5475,16 +5508,64 @@ Exclusions du bloc : `not_processed` 607, `out_of_scope` 382 (relevés de portef
 
 Actions qu'un financeur déclare détenir dans une société de ses paires : au 13F (table d'information, par date de portefeuille) et aux annexes 13D et 13G (page de couverture, à la date de l'événement), lues par leurs champs, sans lecture de texte (D-0071, point 3). Ces déclarations prouvent une détention à une date, jamais son origine : elles n'ouvrent jamais la condition (a) du statut « financé », faute d'opération primaire attestée (§3.2). Une sortie publiée la ferme : un 13F complet sans ligne de la société après un 13F qui en portait, aucun des deux ne déclarant de traitement confidentiel, ou une annexe à zéro action. Elle ne ferme que les détentions en actions (`equity_primary`) de la paire ; obligations convertibles, bons et prêts restent ouverts. Les valeurs sont celles que le financeur déclare (en milliers de dollars avant 2023, converties). Ni position ni part n'entre dans le revenu, l'exposition, les paires ou l'annexe F ; la série complète est dans `series.md`.
 
-Cellules : 56 positions au 13F et 5 parts aux annexes 13D et 13G.
+Cellules : 58 positions au 13F et 5 parts aux annexes 13D et 13G.
 
 | Paire | Positions au 13F | Dernière position (date de portefeuille) | Valeur déclarée | Dernière annexe (date de l'événement) | Sorties publiées | Statut « financé » au dernier trimestre |
 | --- | ---: | --- | ---: | --- | --- | --- |
 | Alphabet → PLANET LABS PBC | 20 | 35 248 893 actions (2026-09-30) | 578 M$ | — | aucune | active (2026-09-30) |
+| Alphabet → SpaceX | 2 | 555 043 560 actions (2026-09-30) | 83 734 M$ | — | aucune | active (2026-09-30) |
 | Amazon → RIVIAN AUTOMOTIVE, INC. / DE | 20 | 158 363 834 actions (2026-09-30) | 2 366 M$ | 18,1 % (2021-12-31, SC 13G) | aucune | unknown (2026-09-30) |
 | Intel → ASML | 0 | — | — | 1,6 % (2018-12-31, SC 13G/A) | aucune | lapsed (2026-09-26) |
 | NVIDIA → CoreWeave | 6 | 47 213 353 actions (2026-06-30) | 4 700 M$ | 11,5 % (2026-01-23, SCHEDULE 13G/A) | aucune | active (2026-07-26) |
 | NVIDIA → Intel | 3 | 214 776 632 actions (2026-06-30) | 29 989 M$ | — | aucune | active (2026-07-26) |
 | NVIDIA → Nebius | 7 | 1 190 476 actions (2026-06-30) | 329 M$ | 9,3 % (2026-07-13, SCHEDULE 13G) | aucune | active (2026-07-26) |
+
+## Participations déclarées au 13F sans pièce de financement (D-0086)
+
+Actions qu'un groupe déclare à son dernier 13F en cache sans qu'aucune arête lue documente la détention : ni financement en titres du groupe vers l'émetteur, ni titres remis par l'émetteur à son client, quel qu'en soit le stade (D-0086, point 3). Une position prouve une détention, pas son origine : elle n'ouvre jamais le statut « financé » (§3.2, D-0071) et n'entre ni dans le revenu, ni dans l'exposition, ni dans les paires. Elle signale une pièce que la lecture n'a pas encore trouvée. Quand l'émetteur est un candidat de la découverte dont des unités nomment le groupe, ces unités passent en tête de file ; leur préparation demande des requêtes. La liste peut porter une filiale consolidée que le registre ne connaît par aucun extrait lu.
+
+Positions : 38, dont 12 chez un candidat de la découverte dont des unités nomment le groupe ; unités à préparer : 52.
+
+| Groupe | Émetteur (nœud du modèle) | Date de portefeuille | Actions | Valeur déclarée | Candidat de la découverte : rang ; unités qui nomment le groupe (à préparer) |
+| --- | --- | --- | ---: | ---: | --- |
+| Alphabet | CME GROUP INC | 2026-09-30 | 3 484 020 | 912,7 M$ | 2 415 ; 1 (1) |
+| Alphabet | ARM HOLDINGS PLC (SoftBank) | 2026-09-30 | 1 960 784 | 568,0 M$ | — |
+| Alphabet | REVOLUTION MEDICINES INC | 2026-09-30 | 2 673 909 | 548,8 M$ | — |
+| Alphabet | QUALCOMM INC (QUALCOMM INC/DE) | 2026-09-30 | 2 976 982 | 547,9 M$ | 2 240 ; 0 (0) |
+| Alphabet | AST SPACEMOBILE INC (AST SpaceMobile, Inc.) | 2026-09-30 | 8 943 486 | 526,4 M$ | 587 ; 11 (10) |
+| Alphabet | FRESHWORKS INC | 2026-09-30 | 14 336 643 | 183,4 M$ | 2 574 ; 0 (0) |
+| Alphabet | PARABILIS MEDICINES INC | 2026-09-30 | 4 919 498 | 158,9 M$ | — |
+| Alphabet | TEMPUS AI INC (Tempus AI, Inc.) | 2026-09-30 | 1 551 102 | 127,0 M$ | 338 ; 20 (18) |
+| Alphabet | UIPATH INC | 2026-09-30 | 7 034 337 | 90,3 M$ | 240 ; 1 (1) |
+| Alphabet | NEUTRON HOLDINGS INC | 2026-09-30 | 1 898 948 | 53,5 M$ | — |
+| Alphabet | PRIME MEDICINE INC | 2026-09-30 | 16 562 498 | 50,7 M$ | — |
+| Alphabet | PAYPAY CORP (SoftBank) | 2026-09-30 | 3 125 000 | 49,1 M$ | 1 374 ; 1 (1) |
+| Alphabet | MAZE THERAPEUTICS INC | 2026-09-30 | 1 388 583 | 37,7 M$ | — |
+| Alphabet | FREENOME INC | 2026-09-30 | 2 022 131 | 31,8 M$ | — |
+| Alphabet | RELAY THERAPEUTICS INC | 2026-09-30 | 1 410 029 | 25,5 M$ | — |
+| Alphabet | FERVO ENERGY CO | 2026-09-30 | 1 760 732 | 23,9 M$ | 1 904 ; 0 (0) |
+| Alphabet | ETHOS TECHNOLOGIES INC (Ethos Technologies Inc.) | 2026-09-30 | 571 907 | 19,2 M$ | — |
+| Alphabet | OBSIDIAN THERAPEUTICS INC | 2026-09-30 | 1 224 869 | 16,8 M$ | — |
+| Alphabet | OSCAR HEALTH INC | 2026-09-30 | 481 988 | 14,9 M$ | 84 ; 2 (2) |
+| Alphabet | BRIDGEBIO ONCOLOGY THERAPEUT | 2026-09-30 | 2 823 126 | 11,6 M$ | — |
+| Alphabet | SANA BIOTECHNOLOGY INC | 2026-09-30 | 2 812 500 | 8,2 M$ | 478 ; 0 (0) |
+| Alphabet | BEAM THERAPEUTICS INC | 2026-09-30 | 321 604 | 7,9 M$ | — |
+| Alphabet | VERA THERAPEUTICS INC | 2026-09-30 | 241 264 | 7,8 M$ | — |
+| Alphabet | FIGMA INC | 2026-09-30 | 215 582 | 4,5 M$ | — |
+| Alphabet | MONTE ROSA THERAPEUTICS INC | 2026-09-30 | 372 474 | 4,4 M$ | — |
+| Alphabet | LYELL IMMUNOPHARMA INC | 2026-09-30 | 293 256 | 2,9 M$ | — |
+| Alphabet | HYPERFINE INC | 2026-09-30 | 898 720 | 0,7 M$ | — |
+| Amazon | X-ENERGY INC | 2026-09-30 | 65 836 948 | 933,6 M$ | 404 ; 3 (3) |
+| Amazon | BETA TECHNOLOGIES INC | 2026-09-30 | 11 753 896 | 259,8 M$ | — |
+| Amazon | ASTERA LABS INC | 2026-09-30 | 277 777 | 98,9 M$ | 1 056 ; 4 (4) |
+| Amazon | ALLEGIANT TRAVEL CO | 2026-09-30 | 149 317 | 11,3 M$ | 67 ; 5 (5) |
+| Intel | Mobileye Global Inc. | 2026-06-30 | 50 000 000 | 484,0 M$ | — |
+| Intel | Joby Aviation Inc. | 2026-06-30 | 15 316 315 | 136,6 M$ | 816 ; 0 (0) |
+| NVIDIA | SPACE EXPLORATION TECHN CORP (SpaceX) | 2026-06-30 | 122 764 805 | 20 975,6 M$ | — |
+| NVIDIA | COHERENT CORP | 2026-06-30 | 7 788 161 | 3 072,2 M$ | 2 321 ; 2 (2) |
+| NVIDIA | NOKIA CORP | 2026-06-30 | 166 389 351 | 2 209,7 M$ | 2 091 ; 1 (1) |
+| NVIDIA | SYNOPSYS INC | 2026-06-30 | 4 821 717 | 2 150,8 M$ | 2 329 ; 4 (4) |
+| NVIDIA | GENERATE BIOMEDICINES INC | 2026-06-30 | 833 325 | 14,1 M$ | — |
 
 ## Obligations de SoftBank valorisées par les fonds (Form N-PORT)
 

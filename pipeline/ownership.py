@@ -329,26 +329,58 @@ def legal_forms(ent_rows):
     return out
 
 
+def abbreviation_of(name, legal):
+    """Entité dont un nom d'émetteur de 13F abrège la dénomination légale mot à mot (D-0086, point 6) : même nombre de
+    mots, un seul mot tronqué, d'au moins quatre lettres et préfixe du mot de la dénomination, même forme juridique
+    finale, une seule entité candidate (« space exploration techn corp » : « space exploration technologies corp »)."""
+    from .nport import forms
+    found = set()
+    for f in forms(name):
+        toks = f.split()
+        if len(toks) < 2:
+            continue
+        for k, e in legal.items():
+            kt = k.split()
+            if len(kt) != len(toks) or kt[-1] != toks[-1]:
+                continue
+            cut = 0
+            for a, b in zip(toks, kt):
+                if a == b:
+                    continue
+                if len(a) >= 4 and b.startswith(a):
+                    cut += 1
+                else:
+                    cut = 2
+                    break
+            if cut == 1:
+                found.add(e)
+    return next(iter(found)) if len(found) == 1 else None
+
+
 def attribute_lines(lines, legal, node_at):
-    """Nœud de chaque ligne de 13F : l'émetteur commence par une dénomination légale (règle des BDC), puis toute ligne
-    au même préfixe CUSIP de six caractères si ce préfixe ne désigne qu'un nœud. `lines` : dictionnaires avec issuer,
-    cusip et period ; `node_at(entity_id, date)`. Renvoie [(nœud, règle)] dans l'ordre des lignes."""
+    """Nœud de chaque ligne de 13F : l'émetteur commence par une dénomination légale (règle des BDC), ou l'abrège mot à
+    mot (D-0086, point 6), puis toute ligne au même préfixe CUSIP de six caractères si ce préfixe ne désigne qu'un
+    nœud. `lines` : dictionnaires avec issuer, cusip et period ; `node_at(entity_id, date)`. Renvoie [(nœud, règle)]
+    dans l'ordre des lignes."""
     from .nport import attribute
-    memo, named = {}, []
+    memo, named, rules = {}, [], []
     for x in lines:
         n = x.get("issuer") or ""
         if n not in memo:
-            memo[n] = attribute(n, legal)[0] if n else None
-        e = memo[n]
+            e = attribute(n, legal)[0] if n else None
+            a = None if e or not n else abbreviation_of(n, legal)
+            memo[n] = (e, "legal_name") if e else (a, "abbreviation") if a else (None, None)
+        e, rule = memo[n]
         named.append(node_at(e, x["period"]) if e else None)
+        rules.append(rule)
     by_prefix = {}
     for x, nd in zip(lines, named):
         if nd and len(x.get("cusip") or "") >= 6:
             by_prefix.setdefault(x["cusip"][:6], set()).add(nd)
     out = []
-    for x, nd in zip(lines, named):
+    for x, nd, rule in zip(lines, named, rules):
         if nd:
-            out.append((nd, "legal_name"))
+            out.append((nd, rule))
             continue
         ps = by_prefix.get((x.get("cusip") or "")[:6]) if len(x.get("cusip") or "") >= 6 else None
         out.append((next(iter(ps)), "cusip_prefix") if ps and len(ps) == 1 else (None, None))
@@ -517,6 +549,133 @@ def build(ent_rows, reg, as_of, cfg=None):
 def closing_ends(exits):
     """Sorties d'une paire sous la forme que lit le statut « financé » : (date, date de connaissance)."""
     return {k: [(dt.date.fromisoformat(e["date"]), dt.date.fromisoformat(e["known"])) for e in v] for k, v in exits.items()}
+
+
+
+# -- D-0086, volet A : positions sans arête qui les documente ---------------------------------------------------
+
+SECURITIES_FINANCING = ("equity_primary", "convertible_or_safe", "noncash_investment")
+UNDOCUMENTED_BASIS = ("actions d'un émetteur que le déclarant porte au 13F à sa dernière date de portefeuille en cache, "
+                      "sans arête qui documente la détention (financement en titres du déclarant vers l'émetteur, ou "
+                      "titres remis par l'émetteur à son client), quel que soit son stade ; perspective du déclarant, "
+                      "descriptive : hors du revenu, de l'exposition, des paires et de l'annexe F, elle n'ouvre jamais la "
+                      "condition (a) de §3.2 (D-0071 ; D-0086, point 3)")
+
+
+def documented_holdings(edges):
+    """Paires (S, C) dont une arête documente la détention par S de titres de C, quel que soit son stade (D-0086,
+    point 3) : financement en titres de S vers C, ou titres remis par C à son client S."""
+    out = set()
+    for e in edges:
+        if e.get("link_kind", "edge") != "edge" or e.get("elimination_status") == "eliminated":
+            continue
+        fg, tg = e.get("from_group"), e.get("to_group")
+        if not fg or not tg:
+            continue
+        if e.get("family") == "financing" and e.get("edge_type") in SECURITIES_FINANCING:
+            out.add((fg, tg))
+        elif e.get("family") == "customer_consideration" and e.get("edge_type") == "equity_or_warrants_to_customer":
+            out.add((tg, fg))
+    return out
+
+
+def issuer_norm(name):
+    """Dénomination normalisée d'un émetteur ou d'un déposant de la découverte (D-0086, point 3) : minuscules, sans
+    ponctuation ni suffixe d'État (« qualcomm inc/de » : « qualcomm inc »)."""
+    n = STATE_SUFFIX.sub("", (name or "").lower().strip())
+    return re.sub(r"\s+", " ", re.sub(r"[.,]", "", n)).strip()
+
+
+def candidates_index(candidates=None, units=None, built=None):
+    """Candidats de la découverte par dénomination normalisée {nom: (cik, rang, déposant)}, et unités de la file par
+    CIK {cik: [{order, groups, built}]} (D-0086, point 3). Sans file de la découverte, deux dictionnaires vides."""
+    import pandas as pd
+    from . import discovery as D
+    if candidates is None:
+        if not D.CANDIDATES.exists() or not D.UNITS.exists():
+            return {}, {}
+        candidates = pd.read_parquet(D.CANDIDATES, columns=["rank", "cik", "filer"])
+        units = pd.read_parquet(D.UNITS, columns=["order", "cik", "groups"])
+        built = set(D.built_units())
+    by_name = {}
+    for r in candidates.sort_values("rank").to_dict("records"):
+        by_name.setdefault(issuer_norm(r["filer"]), (str(r["cik"]), int(r["rank"]), r["filer"]))
+    by_cik = {}
+    for r in units.to_dict("records"):
+        by_cik.setdefault(str(r["cik"]), []).append({"order": int(r["order"]),
+                                                     "groups": set((r["groups"] if isinstance(r["groups"], str)
+                                                                    else "").split(";")) - {""},
+                                                     "built": int(r["order"]) in (built or set())})
+    return by_name, by_cik
+
+
+def latest_13f(todo):
+    """13F de la dernière date de portefeuille de chaque déclarant, amendements compris (D-0086, point 3)."""
+    last = {}
+    for f in todo:
+        if f["kind"] == "13f" and f.get("report_date"):
+            last[f["s"]] = max(last.get(f["s"], ""), f["report_date"])
+    return [f for f in todo if f["kind"] == "13f" and (not f.get("report_date") or f["report_date"] == last.get(f["s"]))]
+
+
+def undocumented(ent_rows, reg, as_of, edges, cfg=None, index=None):
+    """Cellules ownership_undocumented (D-0086, volet A) : positions de la dernière date de portefeuille de chaque
+    déclarant, en cache, qu'aucune arête ne documente, avec le candidat de la découverte de l'émetteur ; décomptes.
+    L'assemblage ne tire rien."""
+    from .measures import NONE, cell
+    cfg = cfg or config.load()
+    E = edgar.Edgar(None, as_of)
+    todo, _ = plan(E, cfg)
+    legal = legal_forms(ent_rows)
+    node_at = lambda e, d: reg.group_at(e, d, "as_known")
+    docd = documented_holdings(edges)
+    by_name, by_cik = index if index is not None else candidates_index()
+    stats, by_s, cells = Counter(), {}, []
+    for f in latest_13f(todo):
+        raw = raw_of(E, f)
+        if raw is None:
+            stats["13f_not_collected"] += 1
+            continue
+        p = parse_13f(raw)
+        if not p["ok"]:
+            stats["13f_parse_failed"] += 1
+            continue
+        by_s.setdefault(f["s"], []).append(dict(f, parsed=p))
+    for s, fs in sorted(by_s.items()):
+        eff = effective(fs)
+        d = max(eff)
+        lines = [dict(x, period=d) for x in eff[d]["lines"] if x.get("type") == "SH" and not x.get("put_call")]
+        for x, (nd, rule) in zip(lines, attribute_lines(lines, legal, node_at)):
+            x["node"], x["rule"] = nd, rule
+        held = {}                        # une position par émetteur, nœud ou non (D-0086, point 8)
+        for x in lines:
+            held.setdefault((x["node"] or "", issuer_norm(x["issuer"])), []).append(x)
+        for (_, name), ls in sorted(held.items()):
+            nd = ls[0]["node"]
+            if nd == s:
+                stats["own_group"] += 1
+                continue
+            if nd and (s, nd) in docd:
+                stats["documented"] += 1
+                continue
+            issuers = sorted({x["issuer"] for x in ls})
+            sh = sum(_dec(x["shares"]) or 0 for x in ls)
+            val = sum((_dec(x["value"]) or 0) * (1000 if thousands(x["filed"], cfg) else 1) for x in ls)
+            fl = {"perspective": "filer", "value_usd": str(val), "issuers": issuers,
+                  "cusips": sorted({x["cusip"] for x in ls}), "rules": sorted({x["rule"] or "none" for x in ls}),
+                  "accessions": sorted({x["accession"] for x in ls}), "confidential": eff[d]["confidential"],
+                  "basis": UNDOCUMENTED_BASIS}
+            cand = next((by_name[n] for n in map(issuer_norm, issuers) if n in by_name), None)
+            if cand:
+                us = [u for u in by_cik.get(cand[0], []) if s in u["groups"]]
+                fl["candidate"] = {"cik": cand[0], "rank": cand[1], "filer": cand[2], "units_naming_holder": len(us),
+                                   "units_not_built": sum(not u["built"] for u in us)}
+                stats["with_candidate"] += 1
+            cells.append(cell("ownership_undocumented", s, None, d, "as_known", as_of, counterparty=nd or NONE,
+                              breakdown=name, value=sh, unit="shares",
+                              knowledge_date=max(x["filed"] for x in ls), flags=fl))
+            stats["undocumented"] += 1
+    return cells, dict(stats)
 
 
 def volume():

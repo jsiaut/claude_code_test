@@ -76,7 +76,10 @@ commande s'arrête si l'étape précédente porte un autre as_of : l'assemblage 
 `db/phase0.json` (« relancer la phase 0 »), le rendu devant les tables (« relancer l'assemblage »), le
 lecteur devant une passe ouverte (« ouvrir une passe nouvelle »). Une recherche plein texte ne se tire
 que sur la fenêtre nouvelle ; les catalogues préparés et les files gardent tels quels les blocs et les
-unités de l'exécution précédente, et n'y ajoutent que ceux de la période nouvelle (D-0074).
+unités de l'exécution précédente, et n'y ajoutent que ceux de la période nouvelle (D-0074). Les unités de la
+découverte que D-0086 met en tête de file (candidats des positions du 13F sans pièce, d'après les tables) se
+comptent avec `python3 -m pipeline.discovery priority`, nombre consigné avant toute préparation, puis se
+préparent avec `prepare-priority` (requêtes) et se lisent avant les autres.
 
 Les tables et les rendus ne dépendent pas de `PYTHONHASHSEED` : sous les graines 0 et 1, deux réassemblages
 à froid donnent les huit tables à l'octet près, et les rendus aussi, à la durée mesurée près (D-0072). Deux

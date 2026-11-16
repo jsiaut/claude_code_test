@@ -541,6 +541,7 @@ def synthesis(con, as_of, stats):
     # Circularité
     L += circularity_section(con, T, groups)
     L += paths_section(con, T)
+    L += typology_section(con, T)
     L += formd_section(con, T)
     L += foreign_section(con, T)
     L += lender_section(con, T)
@@ -548,6 +549,7 @@ def synthesis(con, as_of, stats):
     L += lender_liabilities_section(con, T)
     L += montages_section(con, T)
     L += ownership_section(con, T)
+    L += ownership_undocumented_section(con, T)
     L += nport_section(con, T)
     L += bonds_section(con, T)
     L += unlisted_section(con, T)
@@ -1377,6 +1379,112 @@ def ownership_section(con, T):
                  + (", ".join(ex) or "aucune") + " | "
                  + (f"{st[0]['value_text']} ({st[0]['period_end']})" if st else "—") + " |")
     L.append("")
+    return L
+
+
+def ownership_undocumented_section(con, T):
+    """D-0086, volet A : positions des derniers 13F en cache qu'aucune arête ne documente."""
+    rows = q(con, """SELECT * FROM measures WHERE measure = 'ownership_undocumented' AND view = 'as_known'
+                     ORDER BY subject, counterparty, breakdown_key""")
+    if not rows:
+        return []
+    for r in rows:
+        r["fl"] = json.loads(r["flags"]) if r["flags"] else {}
+    rows.sort(key=lambda r: (group_label(r["subject"]), -Decimal(r["fl"].get("value_usd") or 0), r["breakdown_key"]))
+    L = ["## Participations déclarées au 13F sans pièce de financement (D-0086)", ""]
+    L.append("Actions qu'un groupe déclare à son dernier 13F en cache sans qu'aucune arête lue documente la détention : ni "
+             "financement en titres du groupe vers l'émetteur, ni titres remis par l'émetteur à son client, quel qu'en soit "
+             "le stade (D-0086, point 3). Une position prouve une détention, pas son origine : elle n'ouvre jamais le "
+             "statut « financé » (§3.2, D-0071) et n'entre ni dans le revenu, ni dans l'exposition, ni dans les paires. "
+             "Elle signale une pièce que la lecture n'a pas encore trouvée. Quand l'émetteur est un candidat de la "
+             "découverte dont des unités nomment le groupe, ces unités passent en tête de file ; leur préparation demande "
+             "des requêtes. La liste peut porter une filiale consolidée que le registre ne connaît par aucun extrait lu.")
+    L.append("")
+    cand = [r for r in rows if (r["fl"].get("candidate") or {}).get("units_naming_holder")]
+    todo = sum(int(r["fl"]["candidate"].get("units_not_built") or 0) for r in cand)
+    L.append(f"Positions : {T.n('measures', {'measure': 'ownership_undocumented'}, len(rows))}, dont "
+             f"{T.n('measures', {'measure': 'ownership_undocumented', 'candidate_units': True}, len(cand))} chez un "
+             "candidat de la découverte dont des unités nomment le groupe ; unités à préparer : "
+             f"{T.n('measures', {'measure': 'ownership_undocumented', 'units_not_built': True}, todo)}.")
+    L.append("")
+    L.append("| Groupe | Émetteur (nœud du modèle) | Date de portefeuille | Actions | Valeur déclarée | Candidat de la "
+             "découverte : rang ; unités qui nomment le groupe (à préparer) |")
+    L.append("| --- | --- | --- | ---: | ---: | --- |")
+    for r in rows:
+        fl, k = r["fl"], [r["subject"], r["counterparty"], r["breakdown_key"]]
+        v = Decimal(fl.get("value_usd") or 0)
+        issuer = " ; ".join(fl.get("issuers") or [r["breakdown_key"]])
+        node = f" ({group_label(r['counterparty'])})" if r["counterparty"] != NONE else ""
+        cd = fl.get("candidate")
+        ctext = (f"{T.n('measures', {'ownership_undocumented_rank': k}, cd['rank'])} ; "
+                 f"{T.n('measures', {'ownership_undocumented_units': k}, cd['units_naming_holder'])} "
+                 f"({T.n('measures', {'ownership_undocumented_units_not_built': k}, cd['units_not_built'])})"
+                 if cd else "—")
+        L.append(f"| {group_label(r['subject'])} | {issuer}{node} | {r['period_end']} | {T.m(r, fmt='count')} | "
+                 + T.n("measures", {"ownership_undocumented_value_usd": k}, v, text=fr_num(v / Decimal(10**6), 1) + " M$")
+                 + f" | {ctext} |")
+    L.append("")
+    return L
+
+
+TYPOLOGY_FR = {"supplier_investor": "type 1 (l'investisseur fournit la cible)",
+               "customer_investor": "type 2 (l'investisseur est client de la cible)",
+               "reciprocal": "type 3 (relation commerciale dans les deux sens)",
+               "financing_only": "financement seul"}
+
+
+def typology_section(con, T):
+    """D-0086, volet B : relations d'investissement du périmètre, typées selon le Bulletin BRI n° 137."""
+    rows = q(con, """SELECT * FROM measures WHERE measure = 'investment_relationship_type' AND view = 'as_known'
+                     ORDER BY period_start, subject, counterparty""")
+    if not rows:
+        return []
+    from . import typology
+    cfg = config.load()
+    nodes = typology.perimeter(cfg)
+    L = ["## Circularité au sens du Bulletin BRI n° 137 (D-0086)", ""]
+    L.append("Le bulletin appelle circulaire une relation d'investissement entre deux sociétés d'IA doublée d'une relation "
+             "commerciale entre elles, à un moment quelconque de la fenêtre. Appliqué aux arêtes du modèle, sur les "
+             f"{T.n('measures', {'bis_typology_nodes': True}, len(nodes))} nœuds du périmètre (groupes hors gestionnaires "
+             "d'actifs, laboratoires, non-déposants) : une arête de financement de I vers T, de tout type et à tout stade, "
+             "fait une relation d'investissement ; une arête commerciale de T vers I (T paie I) en fait le type 1, de I "
+             "vers T le type 2, les deux le type 3 (D-0086, points 4 et 7). La relation se lit sur pièces seulement, "
+             "relation par relation, sans pièce de lien exigée : elle ne dit rien de la causalité, que porte "
+             "`relationship_conclusion` (§3.4). Description, hors des annexes E et F.")
+    L.append("")
+    wins = sorted({(r["period_start"], r["period_end"]) for r in rows}, key=lambda w: (w[0] != NONE, w))
+    L.append("| Fenêtre | Relations d'investissement | Circulaires | Type 1 | Type 2 | Type 3 | Financement seul |")
+    L.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: |")
+    for w in wins:
+        rs = [r for r in rows if (r["period_start"], r["period_end"]) == w]
+        c = {k: sum(1 for r in rs if r["value_text"] == k) for k in TYPOLOGY_FR}
+        label = f"arêtes connues au {w[1]}" if w[0] == NONE else f"du {w[0]} au {w[1]}"
+        key = lambda x: {"measure": "investment_relationship_type", "window": list(w), "type": x}
+        L.append(f"| {label} | {T.n('measures', key('all'), len(rs))} | "
+                 f"{T.n('measures', key('circular'), len(rs) - c['financing_only'])} | "
+                 + " | ".join(T.n("measures", key(k), c[k]) for k in ("supplier_investor", "customer_investor",
+                                                                     "reciprocal", "financing_only")) + " |")
+    L.append("")
+    first = [r for r in rows if r["period_start"] == NONE and r["value_text"] != "financing_only"]
+    if first:
+        L.append("Relations circulaires, arêtes connues à l'as_of :")
+        L.append("")
+        order = list(TYPOLOGY_FR)
+        for r in sorted(first, key=lambda r: (order.index(r["value_text"]), group_label(r["subject"]),
+                                              group_label(r["counterparty"]))):
+            fl = json.loads(r["flags"]) if r["flags"] else {}
+            L.append(f"- {group_label(r['subject'])} → {group_label(r['counterparty'])} : {TYPOLOGY_FR[r['value_text']]}, "
+                     f"financement au stade `{fl.get('stage') or NONE}`.")
+        L.append("")
+    cc = q(con, """SELECT DISTINCT from_group, to_group FROM links WHERE link_kind = 'edge'
+                   AND family = 'customer_consideration' AND from_group <> to_group
+                   AND coalesce(elimination_status, '') <> 'eliminated' ORDER BY 1, 2""")
+    cc = [r for r in cc if r["from_group"] in nodes and r["to_group"] in nodes]
+    if cc:
+        L.append(f"Titres ou crédits remis à un client, comptés à part : "
+                 f"{T.n('links', {'bis_typology_customer_consideration': True}, len(cc))} paires — "
+                 + ", ".join(f"{group_label(r['from_group'])} → {group_label(r['to_group'])}" for r in cc) + ".")
+        L.append("")
     return L
 
 

@@ -404,6 +404,11 @@ def run(as_of, use_cache=True, apercu=False):
         cells += ocells
         own_exits = ownership.closing_ends(oexits)
         stats["ownership"] = dict(ost, exits_by_pair={f"{s}->{c}": [e["date"] for e in v] for (s, c), v in sorted(oexits.items())})
+        # D-0086, volet A : positions des derniers 13F en cache qu'aucune arête ne documente (descriptives)
+        if (cfg.get("ownership") or {}).get("undocumented"):
+            ucells_13f, ust = ownership.undocumented(ent_rows, reg, as_of, edges, cfg)
+            cells += ucells_13f
+            stats["ownership_undocumented"] = ust
     # D-0078 : définitions de termes des documents qui portent une pièce de lien (blocs du même dépôt et du même fichier)
     link_docs = {o["doc_key"] for o in obs_rows if o.get("link_category") not in (None, circularity.NONE)}
     doc_defs = {}
@@ -441,6 +446,12 @@ def run(as_of, use_cache=True, apercu=False):
         stats["paths"] = {"cycles": len(path_list), "by_length": dict(Counter(len(x["nodes"]) for x in path_list)),
                           "by_temporal_conclusion": dict(Counter(f"{x['temporal']}|{x['conclusion']}" for x in path_list))}
     cells += annex_e.evaluate(ev, cfg, gw, deadlines, as_of, paths=path_list)
+    # D-0086, volet B : typologie du Bulletin BRI n° 137 par relation d'investissement (descriptive, hors annexes)
+    if cfg.get("bis_typology"):
+        from . import typology
+        tcells, tst = typology.cells(edges, as_of, cfg)
+        cells += tcells
+        stats["bis_typology"] = tst
     if apercu:
         # aperçu : les invariants d'agrégat et l'univers attendu, comme aux étapes 10 et 11, puis arrêt ;
         # `computed` : les cellules que l'aperçu a calculées (l'univers attendu en ajoute pour toutes les mesures)
