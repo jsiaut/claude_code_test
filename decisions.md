@@ -5383,3 +5383,20 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   (5) Identité : le User-Agent que l'utilisateur a fourni le 2026-11-23 pour l'environnement (D-0087, point 3) sert seul pendant toute l'exécution. Sa valeur ne s'écrit pas dans le dépôt.
 
   (6) Ordre et commits : la décision ; le temps A, consigné ici au fil de l'eau ; le temps B comme D-0085 (tirages, volumes consignés avant lecture, lecture, intégration, rendus, résultats, `make check`, commit, push, rapport).
+
+  (7) Temps A, reconstruction à l'as_of du 2026-11-14, consignée au fil de l'eau (2026-11-23) :
+  - Tronc (16:45 à 17:30 UTC), identique à `f358538` :
+    - phase 0 : inventaire de 31 066 dépôts ; les 128 dépôts datés après le 2026-11-14 sont écartés ;
+    - univers de 25 032 cellules ; index de 2 278 dépôts, sans échec ;
+    - phase 1 : 808 dépôts XBRL lus, et les 7 échecs connus ; phase 2 : 2 385 documents, sans échec ;
+    - catalogues : tranche de 4 491 blocs (4 410 clés), bloc `text` de 4 845 blocs (4 545 clés). Les 8 573 clés lues de ces deux catalogues reviennent toutes ;
+    - série annuelle de SpaceX (`python3 -m pipeline.spacex_d1`, commande de D-0087) : 205 faits, vérifications passées ;
+    - les deux fichiers de `db/` que nul programme n'écrit : `exhibits_tranche.json` (237 pièces, depuis la table `documents` de `f358538`) et `usgaap2026_balance.json` (4 966 701 octets, 7 377 concepts à solde, comme en D-0084).
+  - Réseau du tronc : 10 063 requêtes, aucun refus 403. Une réponse 504 a été redemandée par le client ; une coupure du relais réseau pendant la phase 1 aussi, sans effet.
+  - Mode d'emploi : `python3 -m pipeline.catalog` et `python3 -m pipeline.spacex_d1`, non éprouvées en D-0087, tournent telles qu'écrites.
+  - Blocs de §14, BDC (17:33 à 18:03 UTC) :
+    - BDC Data Sets : 23 archives sur la page, 22 gardées. La SEC a republié l'archive 2026_08 le 2026-11-20, après l'as_of du temps A : elle n'est pas gardée (point 3), alors que `f358538` en portait le millésime du 2026-10-20. Ses cellules manqueront au temps A et reviendront au temps B, sous le millésime nouveau ;
+    - positions : 680 763, de 195 BDC et 1 933 dépôts ; faits des archives : 3 071 091, de 1 936 dépôts ;
+    - passif : 2 227 dépôts de 207 véhicules ; inventaire de 64 899 dépôts ; 1 420 documents d'offres ;
+    - un document (SC TO-I de Crestline Lending Solutions, 0001628280-25-058190) a reçu huit réponses 502 de suite. `lender_liabilities fetch`, relancé, n'a tiré que lui ; `classify`, `exhibits` et `finalize` ont été refaits ;
+    - offres de rachat : 616 relevés, identiques au fichier versionné ; 42 unités d'annonces, 334 8-K ou fenêtres au-delà du plafond ; aucune erreur.
