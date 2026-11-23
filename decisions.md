@@ -5216,3 +5216,91 @@ Ce fichier ne va pas à l'auditeur (§12.2).
       - −52 `not_processed` : les unités lues ;
       - 28 détails d'archives N-PORT : 53 dénominations légales ajoutées depuis leur scan, contre 42, soit les 11 entités nouvelles.
   - Rendus : 32 295 nombres publiés ; `delta.md` dit les mêmes écarts.
+- **D-0087 — Reprise en main : environnement dédié, gardes de lecture à la soumission, mode d'emploi de la mise à jour, nettoyage. Règles fixées avant tout changement du dépôt.**
+  (1) Origine :
+  - Le 2026-11-23, l'utilisateur confie le dépôt à une session nouvelle : s'en imprégner sans y toucher, puis dire ce qui mérite d'être changé, sans excès, et ce qui est en trop. Sans sous-agent.
+  - Analyse rendue le même jour, en lecture seule : six points par ordre de valeur, puis une liste du superflu. Réponse de l'utilisateur : « Ok fais 4, 2 et 5 plus nettoyage », avec le User-Agent à poser dans l'environnement.
+    - Retenus : l'environnement dédié (4), les contrôles de lecture à la soumission (2), le mode d'emploi unique de la mise à jour (5), le nettoyage.
+    - Laissés pour la prochaine mise à jour, qui demande de toute façon une reconstruction : les lignes d'intérêts de D-0086 (point 11), l'état de `db/` à versionner, le poids de `tables/facts.parquet`.
+  - Ni requête à la SEC, ni lecture de bloc, ni réassemblage, ni rendu : aucune table et aucun rendu ne changent ici. L'as_of reste le 2026-11-14. Ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change. Ni pull request ni tâche planifiée.
+
+  (2) Constat (2026-11-23), sans requête à la SEC :
+  - Conteneur neuf, comme en D-0084 (point 2) :
+    - `db/`, `cache/`, `work/tmp/` et `secrets/` sont absents : ni `assemble` ni `render` ne démarrent, et le lecteur n'a aucun bloc à servir ;
+    - duckdb, pyarrow et zstandard ne sont pas installés, et PyYAML est en 6.0.3 pour 6.0.1 épinglé ;
+    - le clone est superficiel (50 commits), sans le commit des critères `3ff3b98` que relit `render.criteria_status` ; le crochet `.githooks/pre-commit` n'est pas activé ;
+    - `make check` passe une fois les dépendances installées : ruff sans constat, 520 tests en 12 s.
+  - Coût d'un conteneur neuf, lu au journal (temps A de D-0084, le 2026-11-07 de 09:45 à 16:00 UTC) : 26 794 requêtes et 98,3 Go. Les archives des Notes Data Sets font 52,0 Go en 132 tirages et celles de N-PORT 35,8 Go en 84 : chacun des trois volets N-PORT tire les 28 archives, et une même archive des Notes se tire jusqu'à six fois.
+  - 102 fichiers d'observations (109 lignes, dont 26 observations) ont une clé que les tables ne chargent plus : ce sont les blocs perdus à la reconstruction (D-0084, point 7, en comptait 101).
+  - Lecture, trois contrôles hors du code :
+    - le montant d'une ligne ne se compare pas à sa citation (D-0084, point 14 ; D-0085, points 3 et 11) : contrôle fait à la main avant chaque réassemblage ;
+    - la garde des personnes physiques (D-0078) est un test sur la table assemblée : elle ne parle qu'après le réassemblage ;
+    - la règle du guide de lecture (§3) sur les intérêts n'est vérifiée nulle part. 91 lignes chargées portent la famille `financing` avec une nature `interest` (77) ou `fee` (14) ; le payeur y est le déclarant dans 88 cas. Leur correction reste celle de D-0086 (point 11).
+    - S'y ajoutent une double soumission chargée deux fois (D-0085, point 11) et l'ouverture d'une passe, qu'aucune commande ne fait : `work/tmp/run.json` s'écrit à la main.
+  - Mode d'emploi :
+    - l'ordre d'une mise à jour est dans D-0074 (point 3), repris par D-0083, D-0084 (point 8) et D-0085 (point 3) ; près de 70 sous-commandes dans dix modules, qu'aucune commande n'enchaîne ;
+    - deux étapes n'ont pas de commande : `catalog.build` (catalogue de la tranche) et `spacex_d1.run` (série annuelle de SpaceX), l'une des deux étapes oubliées en D-0084 (point 7) ;
+    - les guides de lecture (`work/guide_lecture_*.md`) ne sont cités ni dans `CLAUDE.md` ni dans `README.md`.
+  - Superflu :
+    - une quinzaine de définitions jamais appelées, environ 130 lignes (`model.quarter_series`, `lender.match_rows`, `quantities.select_view`, `lender_portfolio.platform_ciks`…) ;
+    - le verrou de session (§11.5) : aucune commande ne le vérifie avant d'écrire ou de tirer, et deux sessions de deux conteneurs ne partagent pas son fichier ;
+    - `audit/annex_f.txt` pèse 365 Ko : il porte le diff entier de `config.yaml` depuis `3ff3b98` (1 897 lignes ajoutées, presque toutes du registre des entités), et non celui de l'annexe F ;
+    - `render.audit` ne masque l'adresse de contact que depuis `secrets/user_agent.txt`, alors que `config.mask_contact`, jamais appelée, lit aussi la variable ;
+    - `work/lists/` garde 153 listes de lectures intégrées et le manifeste des lots du bloc `text`, qu'aucun code ne lit. Aucune liste n'a de bloc à lire : leurs 200 clés sans lecture sont 194 corps arrêtés à leur en-tête et 6 clés sorties du catalogue ;
+    - `pyproject.toml` répète les versions de `requirements.txt`, porte une section pytest que rien ne lit et une version figée à 0.72.0 ;
+    - le contrôle de l'adresse de contact avant commit est une ligne de commande de `CLAUDE.md`, qui s'arrête sans User-Agent ; `README.md` dit 32 groupes pour 33.
+
+  (3) Volet 1, environnement dédié (hors dépôt, créé le 2026-11-23 sur l'accord de l'utilisateur) :
+  - environnement cloud personnel `claude_code_test`, rattaché au dépôt ; la session y passe pour son réseau ;
+  - réseau limité aux registres de paquets et aux six hôtes du journal : `www.sec.gov`, `data.sec.gov`, `efts.sec.gov`, `xbrl.sec.gov`, `xbrl.fasb.org`, `xbrl.ifrs.org` ;
+  - variable `SEC_USER_AGENT` : le User-Agent fourni par l'utilisateur ce jour, que `config.user_agent` lit avant le fichier. Sa valeur ne s'écrit pas dans le dépôt. La variable n'étant posée qu'au prochain redémarrage, cette session le garde aussi dans `secrets/user_agent.txt` (hors suivi, chmod 600) ;
+  - script de démarrage, lancé à la construction d'un conteneur neuf ; aucune de ses trois commandes n'empêche la session de s'ouvrir si elle échoue :
+    - `python3 -m pip install -q -r claude_code_test/requirements.txt` ;
+    - `git -C claude_code_test fetch --unshallow --filter=blob:none origin` (clone partiel, README) ;
+    - `git -C claude_code_test config core.hooksPath .githooks` ;
+  - chaque commande est d'abord lancée à la main dans ce conteneur.
+
+  (4) Volet 2, gardes de lecture (`pipeline/guards.py`, appelé par `reader`) :
+  - G1, prix d'un financement, erreur : une ligne de famille `financing` dont la nature est `interest` ou `fee` est refusée. Intérêts et commissions suivent la trésorerie, sans `family` ni `edge_type`, sous le même `instrument_key` (guide de lecture, §3 ; D-0015 ; D-0086, point 11). Un remboursement garde sa famille : le code le lit comme une clôture (D-0069, point 5).
+  - G2, personne physique, erreur : le relevé de D-0078 (motifs et liste admise) passe de `tests/test_d0078.py` au pipeline et s'applique à chaque ligne soumise.
+    - Champs : ceux du relevé, plus `ultimate_obligor` et `party_role` (aucune mention dans les lignes chargées), et `instrument_key`.
+    - Une société prise pour une personne s'ajoute à la liste admise, comme en D-0084 (point 14), et se consigne dans la décision en cours.
+    - La garde sur la table assemblée reste, par le même code.
+  - G3, montant contre citation, alerte : pour une observation dont l'origine n'est pas `tagged_reference`, chaque montant non nul (`amount`, `amount_lower`, `amount_upper`) doit se lire dans la citation, en valeur absolue :
+    - un nombre suivi de son échelle (thousand, million, billion, trillion, ou k, m, mm, mn, b, bn) ;
+    - un pourcentage, divisé par cent ;
+    - un nombre nu, à l'unité ou à une échelle de mille en mille jusqu'à 10¹², l'échelle d'un tableau s'écrivant souvent hors de la citation.
+    - Mesure sur les lignes chargées : 155 alertes pour 6 625 montants narratifs (2,3 %). À la passe du 2026-11-14, ce sont les cinq lignes que D-0085 (point 11) avait relevées à la main, hors faits balisés et pourcentages.
+    - Une alerte bloque la soumission ordinaire. La ligne se corrige (citer le passage qui porte le montant), ou se confirme par `--confirm` : somme de séries publiées écrite en note, montant écrit en lettres. `--final` écrit aussi les lignes en alerte.
+  - G4, doublon exact : une ligne identique à une ligne déjà écrite du bloc dans la même passe, ou répétée dans la soumission, ne s'écrit pas ; le lecteur le dit.
+  - `python3 -m pipeline.reader check [--list L]` : G1 à G4 sur les lignes de l'as_of courant, passe chargée de chaque bloc, sans catalogue. Code de sortie 1 s'il reste une erreur. Il remplace le contrôle fait à la main avant le réassemblage (D-0085, point 3).
+  - Aucune garde ne s'applique au chargement (`load.semantic_errors`) : les lignes déjà écrites gardent leur état, et les tables ne changent pas.
+
+  (5) Volet 3, mode d'emploi :
+  - `RUNBOOK.md`, à la racine : la session neuve, les règles permanentes, la mise à jour pas à pas avec ses commandes dans l'ordre de D-0074 (point 3), la lecture et ses gardes, l'intégration, la reconstruction d'un conteneur neuf.
+    - Il est tiré des décisions D-0074 à D-0086 et des docstrings, sans exécution possible ici : la prochaine mise à jour l'éprouve, et ses écarts s'y corrigent.
+    - `decisions.md` reste le journal ; les règles d'une décision l'emportent sur lui.
+  - Une commande par étape qui n'en avait pas :
+    - `python3 -m pipeline.catalog` (catalogue de la tranche) ;
+    - `python3 -m pipeline.spacex_d1` (série annuelle de SpaceX, puis ses vérifications) ;
+    - `python3 -m pipeline.reader open-pass [--list L] [--id AAAA-MM-JJTHH:MM:SSZ]` (passe de lecture à l'as_of de `config.yaml`).
+  - `Makefile` : cibles `universe`, `index`, `catalog` et `read-check`, à leur place dans l'ordre.
+  - `CLAUDE.md` et `README.md` renvoient au mode d'emploi et aux guides de lecture ; les guides disent les gardes.
+
+  (6) Volet 4, nettoyage :
+  - verrou de session retiré : `pipeline/lock.py`, ses appels dans `net` et `reader`, `config.LOCK`, la clé `session_stale_minutes`, la ligne de `.gitignore` et la consigne de `CLAUDE.md`. C'est un écart à §11.5, sur décision de l'utilisateur ;
+  - code mort retiré : les définitions qu'aucun module, aucun test et aucune commande n'appelle.
+    - Restent `spacex_d1.aux_connection`, que la commande nouvelle appelle, et deux fonctions que seuls des tests appellent (`quantities.derive_quarters`, `nf_discovery.is_non_filer`) : un test ne se retire pas ici.
+    - `config.mask_contact` devient le masquage de `render.audit` ;
+  - `audit/annex_e.txt` et `audit/annex_f.txt` : le diff se réduit à la section de l'annexe, entre le commit des critères et l'état courant. Effet au prochain rendu ;
+  - `work/lists/` : les 153 listes passées et leur manifeste sortent du dépôt (l'historique les garde jusqu'à `f358538`). Règle : les listes d'une exécution intégrée se retirent au début de la suivante ;
+  - `pyproject.toml` ne garde que les réglages de ruff ; `requirements.txt` devient la seule liste de versions, ruff compris, et `make lint` lance `python3 -m ruff` ;
+  - contrôle de l'adresse de contact : un test de `make check` cherche l'adresse dans l'index entier, et saute sans User-Agent ; le crochet le lance donc à chaque commit ;
+  - `README.md` : 33 groupes, prérequis et renvois à jour.
+
+  (7) Ce qui ne se fait pas ici :
+  - le registre des entités reste dans `config.yaml` : l'en sortir contredit §0, et l'utilisateur ne l'a pas décidé ;
+  - `render.py` et `assemble.run` ne se réorganisent pas ; ni CI, ni paquet, ni orchestrateur ;
+  - les 91 lignes de G1 déjà chargées, les 102 fichiers orphelins et les archives tirées plusieurs fois attendent la prochaine mise à jour.
+
+  (8) Ordre et commits : la décision ; les gardes et leurs tests ; le nettoyage ; le mode d'emploi ; les résultats ici. `make check` avant chaque commit, puis le push.
