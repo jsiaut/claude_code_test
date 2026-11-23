@@ -6,7 +6,6 @@ Lancement : python3 -m unittest tests.test_d0078 -v
 import datetime as dt
 import json
 import pathlib
-import re
 import tempfile
 import unittest
 
@@ -15,6 +14,7 @@ import pandas as pd
 from pipeline import circularity as C
 from pipeline import config
 from pipeline import entities as E
+from pipeline import guards
 from pipeline import render as R
 from pipeline.graph import normalize_name
 
@@ -154,53 +154,13 @@ class StaleCaps(unittest.TestCase):
 
 # -- garde : aucune ligne chargée ne nomme une personne physique (D-0078, points 3 et 6) ----------------------------
 
-FIELDS = ("quote", "note", "counterparty_name", "payer", "payee", "period_label", "trigger_description", "exhibit_title")
-FIRST = """Aaron Adam Alan Albert Alex Alexander Alice Amanda Amit Amy Andrea Andrew Andy Angela Ann Anna Anne Anthony
-Antonio Arthur Barbara Ben Benjamin Bill Bob Brad Bradley Brian Bruce Carl Carlos Carol Catherine Charles Charlie Chris
-Christine Christopher Colin Craig Dan Daniel Dave David Dean Deborah Dennis Diana Diane Donald Doug Douglas Edward
-Elizabeth Elon Emily Eric Erik Frank Fred Gary George Glenn Gordon Grace Greg Gregory Gwynne Harold Harry Heather Helen
-Henry Hock Howard Ian Ira Jack Jacob James Jamie Jane Janet Jason Jay Jeff Jeffrey Jennifer Jensen Jeremy Jerry Jessica
-Jim Joan Joe Joel John Jon Jonathan Jordan Jose Joseph Josh Joshua Juan Judith Julia Julie Justin Karen Kate Katherine
-Keith Kelly Ken Kenneth Kevin Kim Kimbal Larry Laura Lauren Lawrence Lee Leon Linda Lisa Lori Louis Marc Margaret Maria
-Marie Mark Martin Mary Masayoshi Matt Matthew Michael Michelle Mike Nancy Nathan Nazar Neil Nicholas Nick Nicole Pamela
-Patricia Patrick Paul Peter Philip Rachel Rajeev Ralph Ray Raymond Rebecca Reid Richard Rick Robert Robin Roger Ronald
-Rose Russell Ryan Safra Sam Samuel Sandra Sara Sarah Satya Scott Sean Sergey Sharon Stephen Steve Steven Sundar Susan
-Syed Ted Thomas Tim Timothy Todd Tom Tony Victor Walter Wayne Wes William""".split()
-SURNAMES = """Altman Amodei Ballmer Bartz Belardi Benioff Bezos Birchall Brin Catz Denholm Ellison Feldman Gracias Hoffman Huang
-Intrator Jassy Masaitis McCabe Moussouris Musk Nadella Novak Pichai Prager Schmidt Shotwell Suleyman Sutardja Varjabedian
-Yaccarino Zuckerberg""".split()
-PATTERNS = [
-    re.compile(r"\b(?:" + "|".join(FIRST) + r")\s+(?:[A-Z]\.\s+)?[A-Z][a-zA-Z'\-]+"),
-    re.compile(r"\b(?:" + "|".join(SURNAMES) + r")\b"),
-    re.compile(r"\b(?:Mr|Ms|Mrs|Dr|Messrs)\.\s+[A-Z][a-z]+|\bM\.\s+[A-Z][a-z]+|\bMme\s+[A-Z]|\bJudge\s+[A-Z]"),
-    re.compile(r"\b[A-Z][a-z]{2,} [A-Z]\. [A-Z][a-z]{2,}\b"),
-    re.compile(r"\b[A-Z][a-z]+(?: [A-Z][a-z]+)? (?:v\.|c\.) [A-Z]"),
-    re.compile(r"(?:Family|Revocable|Living|Irrevocable) Trust"),
-]
-KEY_SURNAMES = re.compile(r"(?:^|[:_\-])(" + "|".join(s.lower() for s in SURNAMES) + r")(?:[_\-]|$)")
-# noms de sociétés, de fondations, de lieux, de projets et tournures admis (D-0078, point 6), retirés avant le relevé
-ALLOWED = sorted("""Carl Zeiss|Ben Milam|Frank Funds|BCH San Jose LLC|Jane Street|Jordan HPC|Sharon AI|John Wiley|Apollo Rose
-|Lawrence Investments|Grace Blackwell|Louis Energy|USMIO Charlie LLC|Angela Bridge|Martin Merger Sub|Raymond James|Ernst & Young LLP
-|Raymond Chabot|James River|George Town|Howard Street|Dave Inc|Grace Period|Saint Lawrence|Bradley Woods|Trade Mark Licence
-|B. Riley|Term Loan A. The|Company A. Intel|Texas v. Meta|Brandt Dr. S.|Green Earth Liang's Inc.|Green Earth Liang
-|The Jen-Hsun and Lori Huang Foundation|Huang Foundation|McCabe Petroleum|Ellison Institute|Ellison Medical|Musk Industries
-|Harbor Gates|Kohlberg Kravis Roberts|Kravis Roberts|Hong Kong|Kleiner Perkins|Janus Henderson|The Washington Post
-|Charles Schwab & Co., Inc.""".replace("\n", "").split("|"),
-                 key=len, reverse=True)
+# Le relevé (champs, motifs, liste admise) vit dans pipeline/guards.py depuis D-0087 : la soumission d'une ligne le
+# lit aussi. Ici, il passe sur la table assemblée.
+FIELDS = guards.FIELDS
 
 
 def person_hits(df):
-    out = []
-    for f in FIELDS:
-        for k, t in zip(df["obs_key"], df[f]):
-            if not isinstance(t, str) or not t:
-                continue
-            for a in ALLOWED:
-                t = t.replace(a, " ")
-            out += [(k, f, m.group(0)) for rx in PATTERNS for m in rx.finditer(t)]
-    out += [(k, "instrument_key", ik) for k, ik in zip(df["obs_key"], df["instrument_key"])
-            if isinstance(ik, str) and KEY_SURNAMES.search(ik.lower())]
-    return out
+    return [(r["obs_key"], f, m) for r in df.to_dict("records") for f, m in guards.person_mentions(r)]
 
 
 class NoNaturalPerson(unittest.TestCase):

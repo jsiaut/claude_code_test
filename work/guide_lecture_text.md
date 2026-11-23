@@ -8,9 +8,11 @@ aucune arithmétique.
 
 ## 1. Procédure
 
-Depuis `/home/user/claude_code_test`, avec la liste de blocs qui t'est confiée (`LOT`) :
+Depuis `/home/user/claude_code_test`, avec la liste de blocs à lire (`LOT`). La passe s'ouvre une fois, avant la
+première soumission (`--list work/lists/LOT.txt` pour une passe de relecture, D-0087) :
 
 ```
+python3 -m pipeline.reader open-pass
 python3 -m pipeline.reader next --list work/lists/LOT.txt
 ```
 
@@ -30,6 +32,12 @@ python3 -m pipeline.reader submit CLE_DE_CONTENU work/tmp/lines_LOT.jsonl --list
   `narrative_only`…). Corrige les lignes refusées et soumets de nouveau, une fois. S'il reste
   des erreurs, soumets avec `--final` : les lignes valides sont écrites, les autres gardées
   à part comme rejets.
+- Gardes de lecture (D-0087, `pipeline/guards.py`) :
+  - une ligne qui nomme une personne physique est refusée, même avec `--final` : écris la fonction à la place du nom
+    et réduis la citation à un passage sans nom (D-0078) ;
+  - un montant qui ne se lit pas dans sa citation est une alerte. Cite le passage qui porte le montant ; ou, pour une
+    somme de montants publiés (à dire dans `note`) ou un montant écrit en lettres, soumets de nouveau avec `--confirm` ;
+  - une ligne déjà écrite dans la passe ne s'écrit pas deux fois.
 - `FILE VIDE` : ton lot est fini.
 - Au moins une ligne par bloc. Ne saute aucun bloc, ne relis jamais un bloc déjà soumis.
 
@@ -88,7 +96,8 @@ champ est refusé) :
 | `customer_consideration` | fournisseur → client | `equity_or_warrants_to_customer`, `credits_to_customer`, `cash_incentive_to_customer` |
 
 - Un remboursement, un loyer ou des intérêts payés sur un instrument déjà décrit suivent le sens
-  de la trésorerie, sans `family` ni `edge_type`, avec le même `instrument_key`.
+  de la trésorerie, sans `family` ni `edge_type`, avec le même `instrument_key`. Le validateur refuse la nature
+  `interest` ou `fee` sous la famille `financing` (D-0087).
 - `vendor_credit` exige une créance de financement sur un client nommé, une composante de
   financement significative publiée, une location-vente ou un délai de plus de 12 mois.
 - Un bail passé avec le fournisseur du service est un `capacity_lease` (famille `commercial`).

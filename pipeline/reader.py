@@ -7,20 +7,27 @@ l'exécutant reprend une fois ; puis le code écrit le fichier du bloc avec les 
 passent, même s'il n'y en a aucune. Les rejets au schéma se gardent à côté.
 La validation sémantique se fait au chargement dans `observations` (load.py).
 
+Gardes de lecture (guards.py, D-0087), à la soumission seulement : une ligne qui nomme une personne physique ne
+s'écrit nulle part, même avec --final ; un montant qui ne se lit pas dans sa citation est une alerte, que l'exécutant
+corrige ou confirme (--confirm) ; une ligne déjà écrite dans la même passe ne s'écrit pas deux fois.
+
 Usage :
+  python -m pipeline.reader open-pass [--list L] [--id AAAA-MM-JJTHH:MM:SSZ]
   python -m pipeline.reader status
   python -m pipeline.reader next [--max-chars N]
-  python -m pipeline.reader submit CONTENT_KEY FICHIER.jsonl [--final] [--next]
+  python -m pipeline.reader submit CONTENT_KEY FICHIER.jsonl [--confirm] [--final] [--next]
   python -m pipeline.reader show CONTENT_KEY
+  python -m pipeline.reader check [--list L]      # gardes sur les lignes de l'as_of courant, avant le réassemblage
 """
 import argparse
 import datetime as dt
 import json
+import pathlib
 import re
 import sys
 from decimal import Decimal, InvalidOperation
 
-from . import config
+from . import config, guards
 from .lock import touch_lock
 from .registry import ENUMS
 
@@ -176,6 +183,7 @@ def schema_errors(line):
                 errs.append("une ligne de carnet nomme le client (counterparty_name, counterparty_evidence named)")
         from .ppe_notes import schema_errors as component_errors     # ligne de composante (D-0076, point 7)
         errs += component_errors(line)
+        errs += guards.flow_errors(line)                              # prix d'un financement (D-0087, G1)
     return errs
 
 
@@ -222,7 +230,7 @@ LIST = None        # fichier de clés de contenu : file de lecture restreinte, d
 
 def _state_path():
     if LIST:
-        return STATE.parent / f"reading_state_{__import__('pathlib').Path(LIST).stem}.json"
+        return STATE.parent / f"reading_state_{pathlib.Path(LIST).stem}.json"
     return STATE
 
 
@@ -231,10 +239,14 @@ def _run_path():
     relisent même s'ils ont déjà des lignes, et la passe la plus récente remplace l'ancienne
     au chargement (§7.4)."""
     if LIST:
-        p = RUN.parent / f"run_{__import__('pathlib').Path(LIST).stem}.json"
+        p = _list_run_path()
         if p.exists():
             return p
     return RUN
+
+
+def _list_run_path():
+    return RUN.parent / f"run_{pathlib.Path(LIST).stem}.json"
 
 
 def _read_in_pass(ck, pass_id):
@@ -443,8 +455,9 @@ def cmd_lot(small=4000, total=20000):
     print(f"### LOT : {len(lot)} blocs, {size} caractères ; file restante : {len(q)} blocs")
 
 
-def cmd_submit_lot(path, final=False):
-    """Lignes de plusieurs blocs : champ `block` = clé de contenu ; écrites bloc par bloc."""
+def cmd_submit_lot(path, final=False, confirm=False):
+    """Lignes de plusieurs blocs : champ `block` = clé de contenu ; écrites bloc par bloc. Un bloc refusé (erreur ou
+    alerte) n'est pas écrit, les autres le sont : seuls les blocs refusés se soumettent de nouveau."""
     groups = {}
     order = []
     src = sys.stdin.read() if path == "-" else open(path, encoding="utf-8").read()
@@ -459,10 +472,10 @@ def cmd_submit_lot(path, final=False):
         groups[ck].append(json.dumps(obj, ensure_ascii=False))
     rc = 0
     # un fichier par liste : deux lecteurs simultanés ne doivent jamais s'échanger leurs lignes (D-0034)
-    tmp = STATE.parent / (f"lot_part_{__import__('pathlib').Path(LIST).stem}.jsonl" if LIST else "lot_part.jsonl")
+    tmp = STATE.parent / (f"lot_part_{pathlib.Path(LIST).stem}.jsonl" if LIST else "lot_part.jsonl")
     for ck in order:
         tmp.write_text("\n".join(groups[ck]) + "\n", encoding="utf-8")
-        r = cmd_submit(ck, str(tmp), final)
+        r = cmd_submit(ck, str(tmp), final, confirm)
         rc = max(rc, r or 0)
     return rc
 
@@ -527,9 +540,14 @@ def _run_info():
     return {"as_of": config.as_of(), "pass_id": now.isoformat(timespec="seconds")}
 
 
-def cmd_submit(content_key, path, final=False):
+def _stored(run, obj):
+    """Ligne telle qu'elle s'écrit dans le fichier du bloc : la passe en tête, clés triées."""
+    return json.dumps({"as_of": run["as_of"], "pass_id": run["pass_id"], **obj}, ensure_ascii=False, sort_keys=True)
+
+
+def cmd_submit(content_key, path, final=False, confirm=False):
     lines = []
-    raw_lines = open(path, encoding="utf-8").read().splitlines() if path != "-" else sys.stdin.read().splitlines()
+    raw_lines = pathlib.Path(path).read_text(encoding="utf-8").splitlines() if path != "-" else sys.stdin.read().splitlines()
     for i, raw in enumerate(raw_lines):
         if not raw.strip():
             continue
@@ -544,7 +562,17 @@ def cmd_submit(content_key, path, final=False):
     if content_key not in catalog:
         print(f"REFUS : clé de contenu inconnue {content_key}")
         return 2
-    errs = []
+    # G2 (D-0078, D-0087) : une ligne qui nomme une personne physique ne s'écrit nulle part, pas même parmi les rejets,
+    # dont la ligne brute va aux exclusions ; --final n'y change rien
+    persons = [(i, guards.person_mentions(obj)) for i, (_, obj) in enumerate(lines) if isinstance(obj, dict)]
+    persons = [(i, m) for i, m in persons if m]
+    if persons:
+        print("REFUS : personne physique nommée (D-0078) — écrire la fonction, réduire la citation à un passage sans nom ; "
+              "une société prise à tort s'ajoute à guards.ALLOWED. Rien n'est écrit, même avec --final :")
+        for i, m in persons:
+            print(f"  ligne {i + 1}: " + " ; ".join(f"{f} « {x} »" for f, x in m))
+        return 2
+    errs, alerts = [], []
     from .load import semantic_errors
     for i, (raw, obj) in enumerate(lines):
         e = [obj["__json_error__"]] if "__json_error__" in obj else schema_errors(obj)
@@ -552,20 +580,41 @@ def cmd_submit(content_key, path, final=False):
             e = ["sémantique : " + x for x in semantic_errors(obj, catalog[content_key])[0]]
         if e:
             errs.append((i, raw, e))
-    if errs and not final:
-        print("ERREURS DE SCHÉMA OU DE SÉMANTIQUE (reprendre une fois les lignes refusées, puis --final) :")
-        for i, _, e in errs:
-            print(f"  ligne {i + 1}: " + " ; ".join(e))
+        elif not final and not confirm:
+            a = guards.amount_alerts(obj)              # G3 : montant contre citation
+            if a:
+                alerts.append((i, a))
+    if (errs or alerts) and not final:
+        if errs:
+            print("ERREURS DE SCHÉMA OU DE SÉMANTIQUE (reprendre une fois les lignes refusées, puis --final) :")
+            for i, _, e in errs:
+                print(f"  ligne {i + 1}: " + " ; ".join(e))
+        if alerts:
+            print("ALERTES DE LECTURE (corriger la ligne, ou confirmer par --confirm) :")
+            for i, a in alerts:
+                print(f"  ligne {i + 1}: " + " ; ".join(a))
         return 1
     run = _run_info()
     good = [obj for i, (raw, obj) in enumerate(lines) if i not in {x[0] for x in errs}]
     p = obs_path(content_key)
     p.parent.mkdir(parents=True, exist_ok=True)
+    # G4 : une ligne déjà écrite dans cette passe, ou répétée dans la soumission, ne s'écrit pas deux fois
+    seen = set()
+    if p.exists():
+        for l in p.read_text(encoding="utf-8").splitlines():
+            if l.strip():
+                d = json.loads(l)
+                if (d.get("as_of"), d.get("pass_id")) == (run["as_of"], run["pass_id"]):
+                    seen.add(json.dumps(d, ensure_ascii=False, sort_keys=True))
+    new = []
+    for obj in good:
+        s = _stored(run, dict(obj))
+        if s not in seen:
+            seen.add(s)
+            new.append(s)
     with open(p, "a", encoding="utf-8") as fh:
-        for obj in good:
-            obj = dict(obj)
-            fh.write(json.dumps({"as_of": run["as_of"], "pass_id": run["pass_id"], **obj},
-                                ensure_ascii=False, sort_keys=True) + "\n")
+        for s in new:
+            fh.write(s + "\n")
     if errs:
         with open(rejected_path(content_key), "a", encoding="utf-8") as fh:
             for i, raw, e in errs:
@@ -579,7 +628,79 @@ def cmd_submit(content_key, path, final=False):
         if st.get("content_key") == content_key:
             sp.unlink()
     touch_lock()
-    print(f"ÉCRIT : {len(good)} ligne(s) valides, {len(errs)} rejetée(s) — {p.name}")
+    dup = len(good) - len(new)
+    print(f"ÉCRIT : {len(new)} ligne(s) valides, {len(errs)} rejetée(s) — {p.name}"
+          + (f" ; {dup} ligne(s) déjà écrite(s) dans cette passe, ignorée(s)" if dup else ""))
+    return 0
+
+
+def cmd_check():
+    """Gardes de lecture sur les lignes de l'as_of courant (D-0087), avant le réassemblage : passe chargée de chaque
+    bloc, ou des seuls blocs d'une liste. Erreurs : prix d'un financement sous la famille `financing` (G1), personne
+    physique nommée (G2), ligne en double dans la passe (G4). Alertes : montant qui ne se lit pas dans sa citation
+    (G3). Sans catalogue : seuls les fichiers d'observations sont lus. Renvoie 1 s'il reste une erreur."""
+    as_of = config.as_of()
+    if LIST:
+        paths = [obs_path(k.strip()) for k in pathlib.Path(LIST).read_text(encoding="utf-8").splitlines() if k.strip()]
+    else:
+        paths = sorted(p for p in config.OBS_DIR.glob("*.jsonl") if not p.name.endswith(".rejected.jsonl"))
+    blocks = n = n_err = n_alert = 0
+    for p in paths:
+        if not p.exists():
+            continue
+        lines = [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
+        if not lines:
+            continue
+        last = max((l.get("as_of"), l.get("pass_id")) for l in lines)
+        if last[0] != as_of:
+            continue
+        blocks += 1
+        seen = set()
+        for i, l in enumerate(x for x in lines if (x.get("as_of"), x.get("pass_id")) == last):
+            n += 1
+            errs = guards.flow_errors(l) + [f"{f} nomme une personne physique (« {x} », D-0078)"
+                                            for f, x in guards.person_mentions(l)]
+            s = json.dumps(l, ensure_ascii=False, sort_keys=True)
+            if s in seen:
+                errs.append("ligne en double dans la passe")
+            seen.add(s)
+            alerts = guards.amount_alerts(l)
+            for kind, msgs in (("ERREUR", errs), ("ALERTE", alerts)):
+                for m in msgs:
+                    print(f"{kind} {p.stem[:12]} ligne {i + 1} : {m}")
+            n_err += len(errs)
+            n_alert += len(alerts)
+    print(f"contrôlé : {n} ligne(s) de l'as_of {as_of} dans {blocks} bloc(s) ; {n_err} erreur(s), {n_alert} alerte(s)")
+    return 1 if n_err else 0
+
+
+_PASS_ID = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+
+
+def cmd_open_pass(pass_id=None):
+    """Ouvre la passe de lecture de l'exécution (work/tmp/run.json) ou, avec --list, celle d'une liste de relecture
+    (work/tmp/run_<liste>.json) : l'as_of de config.yaml et un identifiant AAAA-MM-JJTHH:MM:SSZ, l'heure UTC par
+    défaut. Sans passe ouverte, chaque soumission prendrait l'heure du moment, et un bloc rendu en plusieurs morceaux
+    ne chargerait que le dernier. Une passe ouverte au même as_of se garde ; celle d'un autre as_of est remplacée
+    (D-0087). Une passe de correction s'inscrit aussi dans reading.correction_passes de config.yaml (D-0078)."""
+    if pass_id is not None and not _PASS_ID.match(pass_id):
+        print(f"REFUS : identifiant de passe attendu sous la forme AAAA-MM-JJTHH:MM:SSZ, pas {pass_id!r}")
+        return 2
+    as_of = config.as_of()
+    p = _list_run_path() if LIST else RUN
+    if p.exists():
+        cur = json.loads(p.read_text())
+        if cur.get("as_of") == as_of:
+            if pass_id in (None, cur.get("pass_id")):
+                print(f"passe déjà ouverte : {cur.get('pass_id')} (as_of {as_of}) — work/tmp/{p.name}")
+                return 0
+            print(f"REFUS : la passe {cur.get('pass_id')} est ouverte au même as_of ({as_of}) dans work/tmp/{p.name} ; "
+                  "retirer ce fichier pour en ouvrir une autre")
+            return 2
+    pid = pass_id or dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"as_of": as_of, "pass_id": pid}), encoding="utf-8")
+    print(f"passe ouverte : {pid} (as_of {as_of}) — work/tmp/{p.name}")
     return 0
 
 
@@ -609,7 +730,7 @@ def cmd_show(content_key):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("status")
+    st_ = sub.add_parser("status")
     n = sub.add_parser("next")
     n.add_argument("--max-chars", type=int)
     s = sub.add_parser("submit")
@@ -628,10 +749,13 @@ def main(argv=None):
     sl.add_argument("--then", choices=["lot", "next", "auto"])
     sl.add_argument("--small", type=int, default=5000)
     sl.add_argument("--total", type=int, default=22000)
-    for sp_ in (n, s, lt, sl):
+    ck = sub.add_parser("check")
+    op = sub.add_parser("open-pass")
+    op.add_argument("--id", dest="pass_id")
+    for sp_ in (s, sl):
+        sp_.add_argument("--confirm", action="store_true")      # alertes de lecture vues et confirmées (D-0087)
+    for sp_ in (st_, n, s, lt, sl, ck, op):
         sp_.add_argument("--list")
-    st_ = sub.choices["status"]
-    st_.add_argument("--list")
     a = ap.parse_args(argv)
     global LIST
     LIST = getattr(a, "list", None)
@@ -640,7 +764,7 @@ def main(argv=None):
     if a.cmd == "next":
         return cmd_next(a.max_chars)
     if a.cmd == "submit":
-        rc = cmd_submit(a.content_key, a.path, a.final)
+        rc = cmd_submit(a.content_key, a.path, a.final, a.confirm)
         if rc == 0 and a.next:
             cmd_next(None)
         return rc
@@ -649,7 +773,7 @@ def main(argv=None):
     if a.cmd == "lot":
         return cmd_lot(a.small, a.total)
     if a.cmd == "submit-lot":
-        rc = cmd_submit_lot(a.path, a.final)
+        rc = cmd_submit_lot(a.path, a.final, a.confirm)
         if rc == 0 and a.then == "lot":
             cmd_lot(a.small, a.total)
         elif rc == 0 and a.then == "next":
@@ -657,6 +781,10 @@ def main(argv=None):
         elif rc == 0 and a.then == "auto":
             cmd_auto(a.small, a.total)
         return rc
+    if a.cmd == "check":
+        return cmd_check()
+    if a.cmd == "open-pass":
+        return cmd_open_pass(a.pass_id)
 
 
 if __name__ == "__main__":
