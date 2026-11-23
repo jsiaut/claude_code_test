@@ -5394,9 +5394,27 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les deux fichiers de `db/` que nul programme n'écrit : `exhibits_tranche.json` (237 pièces, depuis la table `documents` de `f358538`) et `usgaap2026_balance.json` (4 966 701 octets, 7 377 concepts à solde, comme en D-0084).
   - Réseau du tronc : 10 063 requêtes, aucun refus 403. Une réponse 504 a été redemandée par le client ; une coupure du relais réseau pendant la phase 1 aussi, sans effet.
   - Mode d'emploi : `python3 -m pipeline.catalog` et `python3 -m pipeline.spacex_d1`, non éprouvées en D-0087, tournent telles qu'écrites.
-  - Blocs de §14, BDC (17:33 à 18:03 UTC) :
+  - Blocs de §14, BDC (17:33 à 18:00 UTC) :
     - BDC Data Sets : 23 archives sur la page, 22 gardées. La SEC a republié l'archive 2026_08 le 2026-11-20, après l'as_of du temps A : elle n'est pas gardée (point 3), alors que `f358538` en portait le millésime du 2026-10-20. Ses cellules manqueront au temps A et reviendront au temps B, sous le millésime nouveau ;
     - positions : 680 763, de 195 BDC et 1 933 dépôts ; faits des archives : 3 071 091, de 1 936 dépôts ;
     - passif : 2 227 dépôts de 207 véhicules ; inventaire de 64 899 dépôts ; 1 420 documents d'offres ;
-    - un document (SC TO-I de Crestline Lending Solutions, 0001628280-25-058190) a reçu huit réponses 502 de suite. `lender_liabilities fetch`, relancé, n'a tiré que lui ; `classify`, `exhibits` et `finalize` ont été refaits ;
-    - offres de rachat : 616 relevés, identiques au fichier versionné ; 42 unités d'annonces, 334 8-K ou fenêtres au-delà du plafond ; aucune erreur.
+    - un document (SC TO-I de Crestline Lending Solutions, 0001628280-25-058190) a reçu neuf réponses 502, la dernière à la relance de `lender_liabilities fetch`, qui n'a tiré que lui ; `classify`, `exhibits` et `finalize` ont été refaits ;
+    - offres de rachat : 616 relevés, identiques au fichier versionné ; 42 unités d'annonces, 334 8-K ou fenêtres au-delà du plafond ; aucune erreur ;
+    - réseau : 1 859 requêtes (www.sec.gov 1 652, data.sec.gov 207), 0,6 Go, aucun refus 403.
+
+  (8) Réponses 429 de la SEC pendant la vérification de la découverte : constat, et règles fixées avant toute reprise des tirages et avant tout changement de code (2026-11-23, 18:43 UTC).
+  - Constat :
+    - découverte, avant l'arrêt : 48 archives des Notes scannées (18,7 Go, toutes publiées au plus le 2026-11-04) ; recherche plein texte, 9 501 résultats en 2 290 requêtes ; vérification des pièces en cours, 2 218 pièces tirées ;
+    - de 18:35:35 à 18:40:41, www.sec.gov répond 429 à 249 requêtes sur 67 adresses (5 151 octets chacune) ; 16 requêtes aboutissent dans l'intervalle. Six réponses 502 et une 504 les précèdent de quelques minutes. La commande est arrêtée à la main à 18:40:53 ;
+    - cadence depuis le début de la décision : 16 735 requêtes en deux heures, au plus 5 départs par seconde, souvent 4 à 5 par seconde pendant des dizaines de minutes. Le plafond de §9.5 n'a jamais été dépassé ; aucun refus 403 ;
+    - défaut du client : il traite une 429 comme une erreur passagère de l'adresse demandée (trois reprises à 2, 8 et 30 secondes, puis « non obtenu »), sans arrêter les autres requêtes. Les huit fils de la vérification ont donc continué à solliciter la SEC pendant son refus, alors que §9.5 veut le silence après un refus ;
+    - second défaut, vu à la lecture du code : `AccessRefused` est une exception ordinaire, que les enveloppes « une pièce illisible ne coupe pas la vérification » avalent. Après un refus durable, la commande continuerait, sans pause ;
+    - la vérification n'écrit son résultat qu'à la fin : les pièces tirées sont au cache, rien n'est marqué « non obtenu ».
+  - Règles :
+    - silence : aucune requête vers un hôte de la SEC avant 18:56, soit quinze minutes après la dernière ;
+    - une 429 d'un hôte de la SEC est un refus, comme un 403 : pause du client entier (`pause_after_403_seconds`, 600 s), ligne `pause` au journal, puis la même adresse se redemande ;
+    - les refus se comptent par pause, non par réponse : un refus reçu pendant une pause déjà ouverte (requête partie avant elle) la prolonge sans compter. Après `max_consecutive_403_pauses` pauses sans succès entre elles, le client s'arrête ;
+    - cet arrêt est définitif pour la commande : `AccessRefused` traverse les enveloppes (elle dérive de `SystemExit`), et le client refuse ensuite toute requête sans l'envoyer ;
+    - cadence : 2 requêtes par seconde au plus pour le reste de cette décision et jusqu'à nouvel ordre (`cruise_requests_per_second: 2`, `sec_ceiling_requests_per_second: 2`). Le plafond s'applique aussi aux commandes qui règlent leur propre cadence ;
+    - code : `pipeline/net.py`, tests dans `tests/test_d0088.py` ; CLAUDE.md, `RUNBOOK.md` et le README disent la cadence et le traitement de la 429 ;
+    - reprise : la vérification repart de son début, sans retirer les pièces au cache. Les étapes déjà finies (page, archives, recherche) ne se relancent pas.
