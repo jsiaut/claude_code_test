@@ -9,7 +9,8 @@ le journal des décisions `decisions.md`, et la configuration (groupes, seuils, 
 note) et `series.md` (les séries trimestrielles). Le dossier `audit/` est prêt pour l'audit indépendant de
 l'annexe C : il contient les consignes et les nombres publiés reliés à leurs cellules.
 
-Une session Claude Code lit d'abord `CLAUDE.md` : les invariants d'exploitation, en une page.
+Une session Claude Code lit d'abord `CLAUDE.md` (les invariants d'exploitation, en une page), puis `RUNBOOK.md`
+(le mode d'emploi).
 
 ## Ce qu'un clone contient
 
@@ -38,6 +39,8 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
   `secrets/user_agent.txt`. Ce fichier n'est pas versionné, et le dépôt est public : l'adresse de contact
   ne s'y écrit jamais. Règles réseau : 5 requêtes par seconde au plus, une seule commande réseau à la fois,
   et une pause d'au moins 10 minutes après un refus 403.
+- En session cloud, l'environnement `claude_code_test` installe ces prérequis à l'ouverture et porte le User-Agent
+  (`RUNBOOK.md`, § 1).
 - Disque : environ 41 Go pour garder les archives des Notes Data Sets et des N-PORT. Par défaut, chaque
   archive est effacée après lecture (`discovery.fetch(keep_zip=False)`) ; pour la garder, appeler
   `discovery.fetch(keep_zip=True)` depuis Python.
@@ -54,32 +57,30 @@ L'as_of, date de connaissance de l'exécution, a une seule source : la clé `as_
 (D-0073). Aucune commande ne la prend ailleurs, ni de la date du jour ; une date passée en argument doit
 lui être égale. Les bornes de `config.yaml` qui finissent à l'as_of s'écrivent `as_of`.
 
-`make help` liste ces étapes sous forme de cibles (`make phase0`, `make assemble`, `make render`…), les cibles
-réseau signalées.
+`RUNBOOK.md` est le mode d'emploi complet (D-0087) : session neuve, mise à jour pas à pas, lecture et ses
+gardes, blocs de §14 dans leur ordre, intégration, reconstruction d'un conteneur neuf. `make help` liste le
+tronc sous forme de cibles, les cibles réseau signalées :
 
-1. `python3 -m pipeline.phase0` : inventaire des dépôts, calendriers et fenêtres
-   (`db/phase0.json`).
-2. `python3 -m pipeline.phase1_run` : `companyfacts` et instances XBRL des rapports
-   périodiques.
-3. `python3 -m pipeline.phase2_fetch` : documents de la tranche texte.
-4. Lecture des blocs, un à un : `python3 -m pipeline.reader status`, puis `show` et `submit`. Chaque
-   bloc extensif (`discovery`, `lender`, `nport`, `montages`, `sixk`, `sb_own`…) a ses commandes dans la
-   docstring de son module, et la décision qui l'ouvre dans `decisions.md`.
-5. `python3 -m pipeline.assemble` : les huit tables, en 14 minutes environ sans mémo, 18 si la
-   recherche des citations se refait aussi (après un changement de `textnorm.py` ou de `cache.py`). Profil :
-   `python3 -m pipeline.profiling work/tmp/profil.txt pipeline.assemble`.
-6. `python3 -m pipeline.render` : les rendus, en 30 secondes environ.
+1. `make phase0` : inventaire des dépôts, calendriers et fenêtres (`db/phase0.json`) ; puis `make universe`
+   (univers attendu) et `make index` (index et en-têtes SGML des dépôts de la tranche).
+2. `make phase1` : `companyfacts` et instances XBRL des rapports périodiques.
+3. `make phase2` : documents de la tranche texte ; puis `make catalog` (catalogues de la tranche et du bloc
+   `text`).
+4. Lecture des blocs, un à un : `python3 -m pipeline.reader open-pass`, puis `status`, `next` et `submit`,
+   d'après les guides `work/guide_lecture_*.md`. Les blocs de §14 (`discovery`, `lender`, `nport`, `montages`,
+   `sixk`, `sb_own`…) ont leurs commandes, dans l'ordre, au § 5 de `RUNBOOK.md`.
+5. `make read-check`, puis `make assemble` : les huit tables, en 8 à 15 minutes selon ce que le mémo reprend
+   (davantage si la recherche des citations se refait, après un changement de `textnorm.py` ou de `cache.py`).
+   Profil : `python3 -m pipeline.profiling work/tmp/profil.txt pipeline.assemble`.
+6. `make compare` : les tables contre celles du dernier commit, clé par clé ; chaque écart s'explique dans la
+   décision. Puis `make render` : les rendus, en 30 secondes environ.
 
-Mettre le modèle à jour : changer `as_of` dans `config.yaml` et ajouter l'ancien à `as_of_previous`,
-puis relancer les étapes ci-dessus dans l'ordre, et les blocs de §14 dans celui de D-0074 (point 3). Une
-commande s'arrête si l'étape précédente porte un autre as_of : l'assemblage et la phase 1 devant
-`db/phase0.json` (« relancer la phase 0 »), le rendu devant les tables (« relancer l'assemblage »), le
-lecteur devant une passe ouverte (« ouvrir une passe nouvelle »). Une recherche plein texte ne se tire
-que sur la fenêtre nouvelle ; les catalogues préparés et les files gardent tels quels les blocs et les
-unités de l'exécution précédente, et n'y ajoutent que ceux de la période nouvelle (D-0074). Les unités de la
-découverte que D-0086 met en tête de file (candidats des positions du 13F sans pièce, d'après les tables) se
-comptent avec `python3 -m pipeline.discovery priority`, nombre consigné avant toute préparation, puis se
-préparent avec `prepare-priority` (requêtes) et se lisent avant les autres.
+Mettre le modèle à jour : changer `as_of` dans `config.yaml` et ajouter l'ancien à `as_of_previous`, puis suivre
+le § 3 de `RUNBOOK.md`. Une commande s'arrête si l'étape précédente porte un autre as_of : l'assemblage et la
+phase 1 devant `db/phase0.json` (« relancer la phase 0 »), le rendu devant les tables (« relancer
+l'assemblage »), le lecteur devant une passe ouverte (« ouvrir une passe nouvelle » : `reader open-pass`). Une
+recherche plein texte ne se tire que sur la fenêtre nouvelle ; les catalogues préparés et les files gardent tels
+quels les blocs et les unités de l'exécution précédente, et n'y ajoutent que ceux de la période nouvelle (D-0074).
 
 Les tables et les rendus ne dépendent pas de `PYTHONHASHSEED` : sous les graines 0 et 1, deux réassemblages
 à froid donnent les huit tables à l'octet près, et les rendus aussi, à la durée mesurée près (D-0072). Deux

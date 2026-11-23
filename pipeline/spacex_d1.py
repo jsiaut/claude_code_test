@@ -6,6 +6,11 @@ seulement à vérifier, jamais à apparier. Chaque chiffre porte is_tagged = fal
 On vérifie les équations internes (C1, C2, C6) et on recoupe avec le bilan comparatif
 du 10-Q au 31 décembre 2025, à la tolérance d'arrondi. Un écart inexpliqué écarte la
 série annuelle avec son motif.
+
+    python -m pipeline.spacex_d1        # db/facts_html.parquet, puis les vérifications ; sans requête (D-0087)
+
+La commande se lance après les phases 1 et 2 (linkbases, libellés et faits du 10-Q dans db/, 424B4 en cache), à la
+première exécution et à chaque reconstruction de db/ : l'assemblage lit db/facts_html.parquet.
 """
 import json
 import re
@@ -258,3 +263,14 @@ def verify(df, con):
                         "lhs": Decimal(r.value), "rhs": tenq[r.concept], "missing": [],
                         "status": "ok" if diff <= half * 2 else "mismatch"})
     return out
+
+
+if __name__ == "__main__":
+    from collections import Counter
+    _con = aux_connection()
+    _df, _unmatched, _report = run(_con)
+    _checks = verify(_df, _con)
+    print(json.dumps({"faits": len(_df), "lignes_sans_concept": _unmatched, "tableaux": _report,
+                      "verifications": dict(Counter(f"{c['control']}|{c['status']}" for c in _checks)),
+                      "ecarts": [c for c in _checks if c["status"] != "ok"]},
+                     ensure_ascii=False, indent=1, default=str))

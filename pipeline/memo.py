@@ -1,10 +1,10 @@
 """Mémo des étapes du réassemblage qui ne lisent pas les observations (D-0062).
 
 Une étape mémorisée se reprend telle quelle quand rien de ce qu'elle peut lire n'a changé depuis
-qu'elle a été calculée. L'empreinte des entrées couvre le code (pipeline/, sauf le rendu et
-l'aperçu, et schema.sql), les versions de Python et des bibliothèques, config.yaml, les fichiers de db/ (hors
-la base de l'exécution et ce mémo), ceux de work/ hors observations et fichiers temporaires, et
-l'arbre du cache. Seules les observations peuvent donc changer entre deux exécutions qui reprennent
+qu'elle a été calculée. L'empreinte des entrées couvre le code (pipeline/, sauf le rendu,
+l'aperçu, les gardes de lecture et la comparaison des tables, et schema.sql), les versions de Python et des
+bibliothèques, config.yaml, les fichiers de db/ (hors la base de l'exécution et ce mémo), ceux de work/ hors
+observations, listes de lecture et fichiers temporaires, et l'arbre du cache. Seules les observations peuvent donc changer entre deux exécutions qui reprennent
 une étape ; tout autre changement la recalcule. Une étape qui lit des faits ajoutés en cours
 d'exécution (positions des BDC, Notes Data Sets des laboratoires) porte aussi leur empreinte.
 
@@ -23,7 +23,10 @@ from . import config
 MEMO = config.DB_DIR / "memo"
 KEEP = 2                                   # entrées gardées par étape (la plus récente d'abord)
 _SKIP_DB = {"model.duckdb", "model.duckdb.wal", "apercu.duckdb", "apercu.duckdb.wal", "memo"}
-_SKIP_WORK = {"observations", "tmp"}       # et les fichiers posés à la racine de work/ (journaux, verrou)
+_SKIP_WORK = {"observations", "tmp", "lists"}    # et les fichiers posés à la racine de work/ (guides, journaux) ;
+#                                                  aucune étape ne lit une liste de lecture (D-0087, point 9)
+# modules qu'aucune étape de l'assemblage n'exécute : rendu, aperçu, gardes de lecture, comparaison des tables
+NOT_STEPS = ("render.py", "apercu.py", "guards.py", "compare.py")
 
 
 def _tree(h, root, skip=frozenset(), top_files=True):
@@ -54,7 +57,7 @@ def inputs_fingerprint():
         except (ImportError, AttributeError):
             h.update(f"{mod}=absent\n".encode("utf-8"))
     for p in sorted((config.ROOT / "pipeline").glob("*.py")):
-        if p.name not in ("render.py", "apercu.py"):          # ni le rendu ni l'aperçu ne sont des étapes
+        if p.name not in NOT_STEPS:
             h.update(p.name.encode("utf-8") + b"\0" + p.read_bytes())
     h.update((config.ROOT / "schema.sql").read_bytes())
     h.update(config.CONFIG_PATH.read_bytes())

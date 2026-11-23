@@ -5,9 +5,12 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
 
 ## Avant de commencer
 
-- Lire `delta.md` (ce qui a changé à la dernière exécution), puis `README.md` (prérequis, ordre d'une exécution).
+- Lire `delta.md` (ce qui a changé à la dernière exécution), puis `README.md` (prérequis) et `RUNBOOK.md`, le mode
+  d'emploi : session neuve, mise à jour pas à pas, lecture, intégration, reconstruction (D-0087).
 - `decisions.md` est chronologique et long : y chercher une décision par son numéro (`grep -n "D-0078"`), sans le
   lire d'un bloc. La dernière dit où en est le travail.
+- Conteneur neuf : ni `db/` ni `cache/`. Rien ne s'assemble ni ne se rend avant leur reconstruction
+  (`RUNBOOK.md`, § 6).
 
 ## Invariants
 
@@ -27,14 +30,17 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
 
 - Chaque décision va dans `decisions.md` sous le numéro suivant (D-nnnn) : origine, constat, règles fixées avant
   tout tirage, toute lecture et tout changement de code, puis résultats. Un écart à une règle s'y consigne.
-- Volume mesuré et consigné avant toute lecture. L'exécutant lit lui-même, un bloc à la fois
-  (`python3 -m pipeline.reader status`, `show`, `submit` ; `lot` et `submit-lot` pour les petits blocs). Jamais de
-  sous-agent : ils consomment les limites d'usage de l'utilisateur.
+- Volume mesuré et consigné avant toute lecture. L'exécutant lit lui-même, un bloc à la fois, d'après les guides
+  `work/guide_lecture_text.md` et `work/guide_lecture_discovery.md` (`python3 -m pipeline.reader open-pass`, puis
+  `status`, `next`, `submit` ; `lot` et `submit-lot` pour les petits blocs). Jamais de sous-agent : ils consomment
+  les limites d'usage de l'utilisateur.
+- Gardes de lecture (D-0087) : une alerte de montant se corrige ou se confirme (`submit --confirm`) ; `make
+  read-check` passe sur les lignes de l'as_of avant le réassemblage.
 - Relecture : une liste `work/lists/<nom>.txt` et sa passe `work/tmp/run_<nom>.json`, avec `--list` ; la passe la
   plus récente remplace l'ancienne au chargement. Une passe sans lecture nouvelle (correction) s'inscrit dans
   `reading.correction_passes` de `config.yaml` (D-0078).
 - `assemble` (10 à 15 minutes) puis `render`, en arrière-plan, jamais en même temps. Après un réassemblage,
-  comparer les tables à celles du commit précédent et expliquer chaque écart dans la décision.
+  comparer les tables à celles du commit précédent (`make compare`) et expliquer chaque écart dans la décision.
 
 ## Git
 

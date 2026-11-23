@@ -5314,3 +5314,34 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - `python3 -m pipeline.compare [REF]` (cible `make compare REF=…`) : par table, les lignes du commit `REF` (HEAD par défaut) et celles de `tables/`, les clés apparues, disparues, et les lignes changées à clé égale ; pour `measures`, le détail par mesure. Sans `db/`, en lecture seule ;
     - épreuve : contre `587dbbc`, la commande doit redonner les écarts consignés en D-0086 (point 12) ;
     - l'empreinte du mémo laisse de côté `work/lists/`, `guards.py` et `compare.py`, comme elle laisse déjà le rendu et l'aperçu : aucun n'est lu par une étape de l'assemblage.
+
+  (10) Résultats (2026-11-23), sans requête à la SEC :
+  - Volet 1, environnement :
+    - `claude_code_test` est créé, et la session y est passée pour son réseau ; GitHub et PyPI restent joignables ;
+    - les trois commandes du script, lancées à la main dans ce conteneur : dépendances installées (duckdb 1.5.6, pyarrow 25.0.1, zstandard 0.25.0, PyYAML ramené à 6.0.1), clone complété en clone partiel (396 commits, `3ff3b98` lisible), crochet actif ;
+    - le script lui-même ne tourne qu'à la construction d'un conteneur neuf : il reste à constater à la première session neuve.
+  - Volet 2, gardes de lecture :
+    - `pipeline/guards.py` ; `reader submit` (G1 à G4, `--confirm`), `reader check`, `reader open-pass` ; guide de lecture à jour ;
+    - écart au point 4 : la mesure de G3 (155 alertes) venait d'un essai qui refusait un nombre précédé d'une lettre. La garde l'accepte (« W8,837,748 million », le won coréen) : 142 alertes pour 6 625 montants narratifs (2,1 %) ;
+    - sur toutes les lignes chargées : G1 91 lignes (75 à l'as_of du 2026-10-07, 10 au 2026-11-07, 6 au 2026-11-14), G2 aucune ;
+    - `reader check` à l'as_of courant : 749 lignes dans 401 blocs, 6 erreurs et 5 alertes. Les erreurs sont les lignes de G1 du 2026-11-14, en attente (D-0086, point 11) ; les alertes sont celles que D-0085 (point 11) avait relevées et gardées (sommes de séries publiées écrites en note, citation qui s'arrête avant le montant) ;
+    - le relevé des personnes, déplacé, donne le même résultat sur la table assemblée : aucune mention, champs nouveaux compris.
+  - Volet 3, mode d'emploi :
+    - `RUNBOOK.md` (210 lignes). Chaque sous-commande qu'il cite existe dans le `main` de son module, chaque cible dans le `Makefile` ; ses vérifications d'ouverture de session et son extrait de liste tournent ici, sur des catalogues vides ;
+    - commandes nouvelles : `pipeline.catalog`, `pipeline.spacex_d1`, `reader open-pass`, `pipeline.compare` ; cibles `universe`, `index`, `catalog`, `read-check` et `compare` ;
+    - `pipeline.compare 587dbbc` redonne les écarts de D-0086 (point 12) : documents +35 et 84 lignes changées, faits +11, observations +85, liens +35, mesures +1 035 et −11 (dont `financed_status` +708), contrôles +6, exclusions −52 et 28 libellés. Contre HEAD : aucun écart ;
+    - non éprouvées, faute de `db/` et de cache : `pipeline.catalog` et `pipeline.spacex_d1`, simples appels de fonctions existantes.
+  - Volet 4, nettoyage :
+    - verrou de session retiré ;
+    - code mort : 16 définitions, 135 lignes. Fonctions : `circularity.quarter_index`, `exhibits.body_required`, `lender.match_rows`, `lender_portfolio.platform_ciks`, `model.quarter_series`, `model.annual_value`, `model._from_terms` (appelée par la seule `quarter_series`), `quantities.select_view`, `sections.document_title`. Constantes : `config.AUDIT`, `labs.CAPACITY_UNITS`, `load.OBS_COLS`, `rank2.QUARTER_FLOWS`, `render.SIGNALS`, `typology.TYPES`, `xbrl.NS_IX`. L'alias `textnorm.VERSION` reste : `textnorm.py` entre dans l'empreinte des plages de citations ;
+    - annexes de l'audit : le diff de l'annexe F fait 67 lignes (61 ajoutées, les événements F11 à F16), contre 1 985 (1 896 ajoutées, et non 1 897 comme au point 2 ; 362 Ko) ; celui de l'annexe E est vide. Effet au prochain rendu ;
+    - `work/lists/` : 154 fichiers retirés ;
+    - `pyproject.toml` : 9 lignes ; ruff 0.16.8 dans `requirements.txt` ;
+    - adresse de contact : le test échoue quand une sonde la met dans l'index, en ne nommant que le fichier, et passe sinon ;
+    - mémo : `work/lists/`, `guards.py` et `compare.py` hors de l'empreinte.
+  - Contrôles : `make check` passe, ruff sans constat et 538 tests (520 avant, 18 de plus dans `tests/test_d0087.py`) ; les 66 modules s'importent.
+  - Tables et rendus : aucun ne change. Au prochain rendu, `audit/annex_f.txt` se réduit et `delta.md` cite D-0087.
+  - Reste, pour la prochaine mise à jour ou sur demande de l'utilisateur :
+    - les 91 lignes de G1 déjà chargées (D-0086, point 11), l'état de `db/` à versionner, les archives tirées plusieurs fois, le poids de `tables/facts.parquet` ;
+    - le registre des entités dans `config.yaml` ;
+    - `config.yaml` porte le nom du User-Agent d'origine (D-0001) : la prochaine décision qui tire à la SEC dit sous quelle identité elle le fait.

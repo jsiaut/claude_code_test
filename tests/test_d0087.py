@@ -291,5 +291,63 @@ class CleanUp(unittest.TestCase):
             self.assertEqual(r.stdout.split(), [], "l'adresse de contact est dans des fichiers de l'index")
 
 
+class CompareTables(unittest.TestCase):
+    """`pipeline.compare` : clés apparues, disparues et lignes changées à clé égale (point 9)."""
+
+    def test_ecarts_par_table_et_par_mesure(self):
+        import duckdb
+        from pipeline import compare
+        con = duckdb.connect()
+        with tempfile.TemporaryDirectory() as d:
+            old, new = pathlib.Path(d) / "old", pathlib.Path(d) / "new"
+            for side, rows, links in (
+                    (old, "('m1', 'A', 1.0, 'x'), ('m1', 'B', 2.0, 'x'), ('m2', 'A', 3.0, 'x')", "('k1', 1), ('k2', 2)"),
+                    (new, "('m1', 'A', 1.0, 'x'), ('m1', 'B', 2.5, 'x'), ('m3', 'A', 4.0, 'x'), ('m3', 'B', 5.0, 'x')",
+                     "('k1', 1), ('k2', 2)")):
+                side.mkdir()
+                con.execute(f"COPY (SELECT * FROM (VALUES {rows}) t(measure, subject, value, flags)) "
+                            f"TO '{side / 'measures.parquet'}' (FORMAT PARQUET)")
+                extra = ", 'n' AS note" if side is new else ""
+                con.execute(f"COPY (SELECT *{extra} FROM (VALUES {links}) t(link_key, amount)) "
+                            f"TO '{side / 'links.parquet'}' (FORMAT PARQUET)")
+            got = compare.diff_tables(old, new, {"measures": ["measure", "subject"], "links": ["link_key"]})
+        m = got["measures"]
+        self.assertEqual((m["old"], m["new"], m["added"], m["removed"], m["changed"]), (3, 4, 2, 1, 1))
+        self.assertEqual(m["by_measure"], {"m1": {"added": 0, "removed": 0, "changed": 1},
+                                           "m2": {"added": 0, "removed": 1, "changed": 0},
+                                           "m3": {"added": 2, "removed": 0, "changed": 0}})
+        # une colonne de plus n'est pas un changement de ligne : elle se dit à part
+        self.assertEqual((got["links"]["changed"], got["links"]["columns_added"], got["links"]["columns_removed"]),
+                         (0, ["note"], []))
+        text = compare.report(got, "abc1234")
+        self.assertIn("clés apparues 2, disparues 1 ; lignes changées à clé égale 1", text)
+        self.assertIn("m3 : +2, −0, changées 0", text)
+
+
+class MemoFingerprint(unittest.TestCase):
+    """L'empreinte du mémo laisse de côté ce qu'aucune étape de l'assemblage ne lit (point 9)."""
+
+    def test_listes_gardes_et_comparaison_hors_de_l_empreinte(self):
+        from pipeline import memo
+        from tests.test_memo import _Paths
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            for sub in ("pipeline", "db", "work/lists", "work/tenders", "cache"):
+                (root / sub).mkdir(parents=True)
+            for name in ("a.py", "guards.py", "compare.py", "render.py"):
+                (root / "pipeline" / name).write_text("x = 1\n")
+            (root / "schema.sql").write_text("-- s\n")
+            (root / "config.yaml").write_text("a: 1\n")
+            with _Paths(ROOT=root, CONFIG_PATH=root / "config.yaml", DB_DIR=root / "db", WORK=root / "work",
+                        CACHE=root / "cache"):
+                fp = memo.inputs_fingerprint()
+                (root / "work" / "lists" / "repass_x.txt").write_text("k1\n")
+                for name in ("guards.py", "compare.py", "render.py"):
+                    (root / "pipeline" / name).write_text("x = 2\n")
+                self.assertEqual(memo.inputs_fingerprint(), fp)
+                (root / "pipeline" / "a.py").write_text("x = 2\n")
+                self.assertNotEqual(memo.inputs_fingerprint(), fp)
+
+
 if __name__ == "__main__":
     unittest.main()

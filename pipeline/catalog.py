@@ -1,5 +1,8 @@
 """Catalogue des blocs de la tranche à fort signal (§11.1, phase 2), recalculé à chaque
-exécution depuis le cache. Écrit db/blocks.jsonl, que le lecteur sert dans l'ordre du signal."""
+exécution depuis le cache. Écrit db/blocks.jsonl, que le lecteur sert dans l'ordre du signal.
+
+    python -m pipeline.catalog          # après les phases 0 à 2, sans requête (D-0087)
+"""
 import io
 import json
 import re
@@ -275,3 +278,10 @@ def related_party_note_html(raw):
     if not best:
         return None
     return textnorm.lines_to_text(lines[best[0]:best[1]])
+
+
+if __name__ == "__main__":
+    import sys
+    built, st = build(config.as_of(sys.argv[1] if len(sys.argv) > 1 else None))     # jamais la date du jour (D-0073)
+    print(len(built), "blocs ;", len({b["content_key"] for b in built}), "clés de contenu ;",
+          json.dumps(st, ensure_ascii=False, sort_keys=True))
