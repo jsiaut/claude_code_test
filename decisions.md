@@ -5418,3 +5418,14 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - cadence : 2 requêtes par seconde au plus pour le reste de cette décision et jusqu'à nouvel ordre (`cruise_requests_per_second: 2`, `sec_ceiling_requests_per_second: 2`). Le plafond s'applique aussi aux commandes qui règlent leur propre cadence ;
     - code : `pipeline/net.py`, tests dans `tests/test_d0088.py` ; CLAUDE.md, `RUNBOOK.md` et le README disent la cadence et le traitement de la 429 ;
     - reprise : la vérification repart de son début, sans retirer les pièces au cache. Les étapes déjà finies (page, archives, recherche) ne se relancent pas.
+
+  (9) Temps A, suite : blocs de §14 après la correction du client (2026-11-23).
+  - Reprise à 18:56, après quinze minutes de silence. Le correctif est commité avant elle (`78d29a6`) : 9 tests, `make check` à 547 tests.
+  - Refus suivant : une 429 à 19:15:27, après 1 950 requêtes à 2 par seconde. Sa page s'intitule « SEC.gov | Request Rate Threshold Exceeded » : le refus vient bien de la SEC, non du relais du conteneur. Le client se met en pause 600 s, redemande l'adresse et l'obtient ; aucune autre requête ne part dans l'intervalle.
+    - Le seuil de la SEC est de 10 requêtes par seconde et par adresse IP. Deux requêtes par seconde ne l'atteignent pas : la sortie du conteneur passe par un relais dont l'adresse peut servir à d'autres. La cause reste indéterminée, et la cadence reste à 2.
+  - Découverte (18:00 à 19:58, arrêt et pauses compris) :
+    - 48 archives des Notes, celles de `f358538`, toutes publiées au plus le 2026-11-04 ; lexique `lx-8d4520d34ab5` ;
+    - recherche : 376 fenêtres, 9 501 résultats. Dix totaux diffèrent des journaux versionnés, tous sur la fenêtre du 2026-10-25 au 2026-10-27 : les dépôts du 27 acceptés après le tirage d'alors, comme en D-0084 (point 7) ;
+    - vérification : 5 451 pièces EX-10 (5 064 avec mention, 387 sans) et 849 Form D (733 et 116) ; aucun document non obtenu ;
+    - 25 567 mentions, 3 087 candidats, 19 086 unités ; `prepare-history` : 1 068 blocs pour 1 068 unités ;
+    - réseau : 9 547 requêtes (www.sec.gov 7 257, efts.sec.gov 2 290), 22,2 Go ; 250 réponses 429 (249 avant la correction, une après), 35 erreurs de serveur redemandées (500, 502, 504).
