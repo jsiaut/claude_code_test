@@ -5429,3 +5429,17 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - vérification : 5 451 pièces EX-10 (5 064 avec mention, 387 sans) et 849 Form D (733 et 116) ; aucun document non obtenu ;
     - 25 567 mentions, 3 087 candidats, 19 086 unités ; `prepare-history` : 1 068 blocs pour 1 068 unités ;
     - réseau : 9 547 requêtes (www.sec.gov 7 257, efts.sec.gov 2 290), 22,2 Go ; 250 réponses 429 (249 avant la correction, une après), 35 erreurs de serveur redemandées (500, 502, 504).
+  - Piste des non-déposants (19:58 à 20:45) :
+    - les 48 archives des Notes se retirent une seconde fois, chaque volet tirant les siennes (19,1 Go) ;
+    - recherche : 1 154 résultats en 615 requêtes ; vérification : 862 pièces (727 avec mention, 135 sans) ;
+    - 4 565 mentions, 389 candidats, 4 130 unités ; `prepare_history` : 579 blocs pour 579 unités, 369 blocs des documents d'enregistrement, 19 corps de pièces ;
+    - réseau : 1 675 requêtes (www.sec.gov 1 060, efts.sec.gov 615) ; aucun refus, 33 erreurs de serveur redemandées.
+  - Form D, émetteurs étrangers, 6-K, SoftBank, participations, labs (20:45 à 21:34) :
+    - Form D : 967 lignes, toutes lues (849 véhicules candidats, 118 sujets) ;
+    - émetteurs étrangers : 266 dans la file, 6 retenus, 20 blocs ; 6-K : 688 dépôts, 1 143 pièces, 550 blocs avant restriction ;
+    - SoftBank : 530 en-têtes, 575 pièces, 520 blocs (2 605 047 caractères), comme `f358538` ;
+    - labs : 206 faits (instances 186, Notes 20) ;
+    - refus : une 429 à 20:55:47, pendant le tirage des 6-K ; pause de 600 s, puis reprise ;
+    - échec de `sb_own fetch` : un en-tête (formulaire 4 de 2021) était resté « non obtenu » après quatre réponses 504, et `fetch` s'arrête sur sa liste de pièces vide. `sb_own headers`, relancé, ne tire que lui (1 requête) ; puis la suite ;
+    - réseau : 3 278 requêtes (www.sec.gov 3 224, data.sec.gov 54), 0,6 Go.
+  - Mode d'emploi, écart corrigé : un document « non obtenu » après des erreurs de serveur répétées (ici un 502 et un 504) arrête l'étape suivante ou fausse un décompte. `RUNBOOK.md` dit de relancer la commande qui le tire avant de continuer.

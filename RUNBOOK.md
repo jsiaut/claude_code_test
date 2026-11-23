@@ -46,6 +46,9 @@ Une session neuve tourne sur un conteneur neuf : seul ce que Git suit s'y trouve
     après trois pauses sans succès, la commande s'arrête (`AccessRefused`). Elle ne se relance pas à l'aveugle :
     regarder le journal (`status` 429, 403, `pause`, `refused`), attendre, consigner dans la décision.
   - Une commande arrêtée ou tuée se relance telle quelle : ce qui est au cache ne se retire pas.
+  - Un document « non obtenu » après des erreurs de serveur répétées (502, 504) se voit au décompte de la
+    commande (`non obtenus`, `not_collected`) : la relancer avant l'étape suivante, elle ne tire que le manquant
+    (D-0088 : un relevé d'offre manquait, puis `sb_own fetch` s'arrêtait sur un en-tête non obtenu).
 - **Volumes avant lecture.** Blocs et caractères à lire se consignent dans la décision avant la première lecture.
 - **Lecture.** Par l'exécutant seul, un bloc à la fois ; jamais de sous-agent.
 - **Deux écritures jamais ensemble.** `assemble` et `render`, ou deux `montages prepare`.
