@@ -5345,3 +5345,41 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les 91 lignes de G1 déjà chargées (D-0086, point 11), l'état de `db/` à versionner, les archives tirées plusieurs fois, le poids de `tables/facts.parquet` ;
     - le registre des entités dans `config.yaml` ;
     - `config.yaml` porte le nom du User-Agent d'origine (D-0001) : la prochaine décision qui tire à la SEC dit sous quelle identité elle le fait.
+- **D-0088 — Mise à jour du modèle à l'as_of du 2026-11-23, sur un conteneur sans `db/` ni `cache/` : reconstruction à l'as_of du 2026-11-14 (temps A), puis mise à jour (temps B). Règles fixées avant tout tirage.**
+  (1) Origine : demande de l'utilisateur, le 2026-11-23 : « Mets à jour le modèle à la date du jour ».
+  - C'est la sixième mise à jour (§11.5), après D-0074, D-0077, D-0083, D-0084 et D-0085, et la première sous le mode d'emploi de D-0087 (`RUNBOOK.md`), qu'elle éprouve.
+  - Lecture séquentielle par l'exécutant, sans sous-agent. Ni groupe, ni bloc de §14, ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change. Ni pull request ni tâche planifiée.
+  - Les trois chantiers laissés par D-0087 (lignes d'intérêts de D-0086, état de `db/` à versionner, poids de `tables/facts.parquet`) restent en attente : l'utilisateur ne les a pas demandés.
+
+  (2) Constat, sans tirage (2026-11-23, 16:41 UTC) :
+  - Le conteneur est celui de D-0087 : dépendances installées, clone complet (401 commits), crochet actif. La session a redémarré, et la variable `SEC_USER_AGENT` de l'environnement `claude_code_test` est posée.
+  - `db/`, `cache/` et `work/tmp/` sont absents : sans eux, `assemble` ne démarre pas. Comme en D-0084, tout se retire de la SEC avant la mise à jour.
+  - Référence : les tables de `f358538` (2026-11-16), dernier commit qui les change ; celles de la tête (`dcd7a80`) sont les mêmes.
+    - 12 500 clés lues, 375 blocs arrêtés à leur en-tête (`financial_parties_only`), 28 034 documents non traités.
+    - 102 fichiers d'observations ont une clé que ces tables ne chargent déjà plus (D-0087, point 2).
+  - Volume à retirer, d'après le journal (55 771 lignes) : 27 329 adresses distinctes tirées avec succès, 41,4 Go, dont 68 archives de plus de 200 Mo (29,9 Go) et 3 280 pages de recherche plein texte. Le temps A de D-0084 a pris 6 h 15 et 98 Go, les archives se tirant plusieurs fois.
+  - Le 2026-11-23 est un lundi. La reconstruction prenant plusieurs heures, les tirages de la période nouvelle se feront après elle, le 23 au soir ou le 24.
+
+  (3) Temps A, reconstruction à l'as_of du 2026-11-14 : règles de D-0084 (points 3 et 6), sur la référence `f358538`.
+  - Configuration inchangée : `as_of`, `as_of_previous` et `search_overlap_from` comme au commit de tête.
+  - Mode : `PIPELINE_RECONSTRUCTION=f358538`. Catalogues et files se recalculent sur toute la période, puis se ramènent aux clés que la référence charge (lues, ou arrêtées à leur en-tête).
+  - Réseau : chaque ressource se tire une fois par le client unique, 5 requêtes par seconde au plus, pause de 10 minutes après un refus 403, chaque requête au journal. Une seule commande réseau à la fois.
+    - Une ressource vivante tirée aujourd'hui se garde sous l'as_of du 2026-11-14 ; seuls ses dépôts datés au plus du 2026-11-14 comptent, là où le code filtre. Le reste se repère à la comparaison.
+    - Une archive (Notes, N-PORT, BDC) ne se garde que si son en-tête Last-Modified est au plus du 2026-11-14.
+    - Les journaux versionnés des recherches ne se réécrivent pas ; une fenêtre dont le total a changé se note ici.
+  - Ordre : celui du § 6 de `RUNBOOK.md`. Le tronc (phases 0 à 2, index, univers, catalogues, série annuelle de SpaceX), puis les blocs de §14 dans l'ordre de D-0074, avec `prepare-history` pour la découverte et la piste des non-déposants, `lender num`, et les deux fichiers de `db/` que nul programme n'écrit (D-0084, point 7).
+  - Aucune lecture. Une clé lue qui ne revient dans aucun catalogue est un échec de la reconstruction, consigné avec sa cause ; elle ne se relit pas.
+  - Réassemblage au 2026-11-14, puis `make compare REF=f358538`. Chaque écart s'explique ici. Les tables du temps A ne se commitent pas.
+  - Un écart au mode d'emploi se corrige dans `RUNBOOK.md` et se consigne ici (D-0087, point 5).
+
+  (4) Temps B, mise à jour à l'as_of du 2026-11-23 : règles de D-0085 (point 3), précisées au point qui l'ouvrira, après le temps A et avant tout tirage de la période nouvelle.
+  - Configuration : `as_of: "2026-11-23"`, et `as_of_previous` augmenté du 2026-11-14. `search_overlap_from` reste au 2026-10-27 : la fenêtre nouvelle d'une recherche va du 2026-11-14 au 2026-11-23.
+  - Mode ordinaire : l'état du temps A tient lieu d'exécution précédente.
+  - Connaissance : les dépôts datés au plus du 2026-11-23. Un tirage fait le 24 ne garde que ceux-là, là où le code filtre (phase 0) ; ce qui passerait se repère à la comparaison.
+  - Statut des têtes non déposantes (Nscale, Anthropic) avant les phases ; un dépôt nouveau de l'une d'elles se traite par une règle fixée avant toute lecture.
+  - Lecture sous les gardes de D-0087 : passe ouverte par `reader open-pass`, listes `upd_20261123_groups` et `upd_20261123_s14`, `make read-check` avant le réassemblage.
+  - Comparaison : `make compare REF=f358538`, chaque écart expliqué ici ; `delta.md` se compare de même à `f358538`.
+
+  (5) Identité : le User-Agent que l'utilisateur a fourni le 2026-11-23 pour l'environnement (D-0087, point 3) sert seul pendant toute l'exécution. Sa valeur ne s'écrit pas dans le dépôt.
+
+  (6) Ordre et commits : la décision ; le temps A, consigné ici au fil de l'eau ; le temps B comme D-0085 (tirages, volumes consignés avant lecture, lecture, intégration, rendus, résultats, `make check`, commit, push, rapport).
