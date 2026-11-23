@@ -1393,11 +1393,11 @@ reading:                     # plafond de lecture (§7.4, §9.1), hypothèse
 
 
 network:                     # §9.5
-  cruise_requests_per_second: 5
-  sec_ceiling_requests_per_second: 10
-  pause_after_403_seconds: 600
-  max_consecutive_403_pauses: 3
-  retries_transient: 3       # 429, 5xx, délais dépassés
+  cruise_requests_per_second: 2        # D-0088, point 8 : 2 requêtes par seconde au plus, jusqu'à nouvel ordre (5 avant)
+  sec_ceiling_requests_per_second: 2   # plafond par seconde glissante, opposable à toute commande (10 avant, le seuil de la SEC)
+  pause_after_403_seconds: 600         # pause du client entier après un refus : 403, ou 429 d'un hôte de la SEC (D-0088)
+  max_consecutive_403_pauses: 3        # pauses sans succès entre elles avant l'arrêt définitif
+  retries_transient: 3       # 5xx, délais dépassés, 429 d'un hôte hors SEC
   retry_backoff_seconds: [2, 8, 30]
 
 watched_forms:               # surveillance de l'exécution périodique (§11.5), revue à chaque phase 0 (§13)

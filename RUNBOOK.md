@@ -39,8 +39,13 @@ Une session neuve tourne sur un conteneur neuf : seul ce que Git suit s'y trouve
   cours de route s'écrit avant son code ; un écart se consigne.
 - **As_of.** Une seule source, la clé `as_of` de `config.yaml`. Un as_of qui tombe un samedi connaît les dépôts
   du vendredi.
-- **Réseau.** Une seule commande réseau à la fois, 5 requêtes par seconde au plus, dix minutes de pause après un
-  refus 403, aucun changement d'identité. Chaque requête va à `journal.jsonl`.
+- **Réseau.** Une seule commande réseau à la fois, 2 requêtes par seconde au plus (D-0088 ; plafond réglé dans
+  `network` de `config.yaml`, opposable aux commandes qui règlent leur cadence), aucun changement d'identité. Chaque
+  requête va à `journal.jsonl`.
+  - Un refus de la SEC, 403 ou 429, met le client entier en pause dix minutes, puis la même adresse se redemande ;
+    après trois pauses sans succès, la commande s'arrête (`AccessRefused`). Elle ne se relance pas à l'aveugle :
+    regarder le journal (`status` 429, 403, `pause`, `refused`), attendre, consigner dans la décision.
+  - Une commande arrêtée ou tuée se relance telle quelle : ce qui est au cache ne se retire pas.
 - **Volumes avant lecture.** Blocs et caractères à lire se consignent dans la décision avant la première lecture.
 - **Lecture.** Par l'exécutant seul, un bloc à la fois ; jamais de sous-agent.
 - **Deux écritures jamais ensemble.** `assemble` et `render`, ou deux `montages prepare`.

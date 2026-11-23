@@ -15,8 +15,10 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
 ## Invariants
 
 - L'as_of n'a qu'une source, la clé `as_of` de `config.yaml`, jamais la date du jour (D-0073).
-- Réseau SEC (§9.5) : une seule commande réseau à la fois, 5 requêtes par seconde au plus, une pause d'au moins
-  10 minutes après un 403, aucun changement d'identité. Chaque requête va au journal (`journal.jsonl`).
+- Réseau SEC (§9.5, D-0088) : une seule commande réseau à la fois, 2 requêtes par seconde au plus (`network` de
+  `config.yaml`), une pause d'au moins 10 minutes après un refus (403 ou 429), aucun changement d'identité. Le client
+  fait la pause lui-même ; après trois pauses sans succès, la commande s'arrête et ne se relance pas sans en chercher
+  la cause. Chaque requête va au journal (`journal.jsonl`).
 - User-Agent : `secrets/user_agent.txt` (non versionné) ou `SEC_USER_AGENT`, envoyé aux seuls hôtes de la SEC. Ne
   jamais afficher ce fichier, ni écrire l'adresse de contact dans le dépôt (contrôle sous « Git »). L'adresse de
   courriel du compte de l'utilisateur ne va ni dans le dépôt ni dans une requête.

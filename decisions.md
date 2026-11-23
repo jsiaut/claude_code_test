@@ -5412,7 +5412,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - la vérification n'écrit son résultat qu'à la fin : les pièces tirées sont au cache, rien n'est marqué « non obtenu ».
   - Règles :
     - silence : aucune requête vers un hôte de la SEC avant 18:56, soit quinze minutes après la dernière ;
-    - une 429 d'un hôte de la SEC est un refus, comme un 403 : pause du client entier (`pause_after_403_seconds`, 600 s), ligne `pause` au journal, puis la même adresse se redemande ;
+    - une 429 d'un hôte de la SEC est un refus, comme un 403 : pause du client entier (`pause_after_403_seconds`, 600 s), ligne `pause` au journal, puis la même adresse se redemande. C'est un écart à §9.5, qui range la 429 parmi les erreurs passagères ; le motif qu'il donne pour le 403 (« toute requête pendant ce délai la prolonge ») vaut ici de même. Une 429 d'un autre hôte reste passagère ;
     - les refus se comptent par pause, non par réponse : un refus reçu pendant une pause déjà ouverte (requête partie avant elle) la prolonge sans compter. Après `max_consecutive_403_pauses` pauses sans succès entre elles, le client s'arrête ;
     - cet arrêt est définitif pour la commande : `AccessRefused` traverse les enveloppes (elle dérive de `SystemExit`), et le client refuse ensuite toute requête sans l'envoyer ;
     - cadence : 2 requêtes par seconde au plus pour le reste de cette décision et jusqu'à nouvel ordre (`cruise_requests_per_second: 2`, `sec_ceiling_requests_per_second: 2`). Le plafond s'applique aussi aux commandes qui règlent leur propre cadence ;

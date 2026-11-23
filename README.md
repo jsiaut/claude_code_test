@@ -37,8 +37,8 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
   joignable.
 - Pour toute phase réseau, un User-Agent déclaré à la SEC, dans `SEC_USER_AGENT` ou dans
   `secrets/user_agent.txt`. Ce fichier n'est pas versionné, et le dépôt est public : l'adresse de contact
-  ne s'y écrit jamais. Règles réseau : 5 requêtes par seconde au plus, une seule commande réseau à la fois,
-  et une pause d'au moins 10 minutes après un refus 403.
+  ne s'y écrit jamais. Règles réseau : 2 requêtes par seconde au plus (D-0088 ; §9.5 en permet 5), une seule
+  commande réseau à la fois, et une pause d'au moins 10 minutes après un refus, 403 ou 429.
 - En session cloud, l'environnement `claude_code_test` installe ces prérequis à l'ouverture et porte le User-Agent
   (`RUNBOOK.md`, § 1).
 - Disque : environ 41 Go pour garder les archives des Notes Data Sets et des N-PORT. Par défaut, chaque

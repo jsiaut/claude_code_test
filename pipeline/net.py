@@ -1,10 +1,16 @@
 """Client HTTP unique vers la SEC (§9.5).
 
 Toute requête vers www.sec.gov, data.sec.gov, efts.sec.gov ou xbrl.sec.gov passe
-par ce client : un seul User-Agent, 5 requêtes par seconde au plus, une pause d'au
-moins 10 minutes après un 403 (aucune requête SEC pendant la pause), quelques
-nouvelles tentatives espacées sur 429, 5xx et délais dépassés, et chaque requête
-au journal. Le User-Agent n'est jamais envoyé à un autre hôte.
+par ce client : un seul User-Agent, la cadence de `config.yaml` (5 requêtes par
+seconde au plus, §9.5 ; 2 depuis D-0088), une pause d'au moins 10 minutes après un
+refus — 403 ou 429 — pendant laquelle aucune requête ne part vers la SEC, quelques
+nouvelles tentatives espacées sur 5xx et délais dépassés, et chaque requête au
+journal. Le User-Agent n'est jamais envoyé à un autre hôte.
+
+Un refus se compte par pause : celui qui arrive pendant une pause déjà ouverte
+(requête partie avant elle, par un autre fil) la prolonge sans compter. Après
+`max_consecutive_403_pauses` pauses sans succès entre elles, le client s'arrête
+pour de bon (D-0088, point 8).
 """
 import datetime as dt
 import json
@@ -19,8 +25,10 @@ import requests
 from . import config
 
 
-class AccessRefused(Exception):
-    """Refus d'accès durable de la SEC malgré les pauses : arrêt (§11.4)."""
+class AccessRefused(SystemExit):
+    """Refus d'accès durable de la SEC malgré les pauses : arrêt (§11.4). Dérive de SystemExit pour traverser les
+    enveloppes `except Exception` des commandes (« une pièce illisible ne coupe pas la vérification ») : après un
+    refus durable, la commande s'arrête au lieu de passer à la pièce suivante (D-0088, point 8)."""
 
 
 class EgressBlocked(Exception):
@@ -57,7 +65,8 @@ class SecClient:
         self._last_start = 0.0
         self._recent = []          # départs des requêtes SEC sur la dernière seconde
         self._paused_until = 0.0
-        self._consecutive_403 = 0
+        self._consecutive_403 = 0  # pauses ouvertes depuis le dernier succès (403 et 429)
+        self._refused = None       # motif de l'arrêt définitif, une fois le refus durable constaté
         self.session = requests.Session()
         self.session.headers.update({"Accept-Encoding": "gzip, deflate"})
         self.stats = {"requests": 0, "bytes": 0, "elapsed": 0.0}
@@ -87,9 +96,16 @@ class SecClient:
                     wait = max(self.min_interval - gap, 0.01)
             time.sleep(min(wait, 5.0))
 
-    def _pause(self, seconds):
+    def _refusal(self, seconds):
+        """Refus de la SEC (403 ou 429) : ouvre ou prolonge la pause du client entier. Renvoie True si le refus ouvre
+        une pause nouvelle, False s'il arrive pendant une pause déjà ouverte (même épisode, vu par un autre fil)."""
         with self._lock:
-            self._paused_until = max(self._paused_until, time.monotonic() + seconds)
+            now = time.monotonic()
+            opened = now >= self._paused_until
+            if opened:
+                self._consecutive_403 += 1
+            self._paused_until = max(self._paused_until, now + seconds)
+            return opened
 
     # -- requête ---------------------------------------------------------------
     def get(self, url, timeout=120, dest=None, method="GET"):
@@ -105,6 +121,8 @@ class SecClient:
         while True:
             attempt += 1
             if is_sec:
+                if self._refused:                      # arrêt définitif : plus aucune requête vers la SEC
+                    raise AccessRefused(self._refused)
                 self._wait_slot()
             t0 = time.monotonic()
             ts_start = _utcnow().isoformat(timespec="milliseconds")
@@ -138,9 +156,10 @@ class SecClient:
             status = resp.status_code
             nbytes = getattr(resp, "_streamed_bytes", len(body))
             note = None
-            if status == 403 and is_sec:
+            refusal = is_sec and status in (403, 429)
+            if refusal:
                 m = re.search(rb"<title>(.*?)</title>", body[:4000], re.I | re.S)
-                note = m.group(1).decode("utf-8", "replace").strip() if m else "403"
+                note = re.sub(r"\s+", " ", m.group(1).decode("utf-8", "replace")).strip()[:200] if m else str(status)
             self.journal(url=url, host=host, status=status, bytes=nbytes, ts_start=ts_start,
                          elapsed_ms=int(elapsed * 1000), attempt=attempt, note=note,
                          **({"method": method} if method != "GET" else {}))
@@ -149,20 +168,22 @@ class SecClient:
                 self.stats["bytes"] += nbytes
                 self.stats["elapsed"] += elapsed
             if status == 200:
-                if is_sec:
+                if is_sec and time.monotonic() >= self._paused_until:      # un succès hors pause clôt l'épisode
                     self._consecutive_403 = 0
                 return (None if dest is not None else body), resp.headers
-            if status == 403 and is_sec:
-                self._consecutive_403 += 1
-                if self._consecutive_403 > self.max_403:
-                    raise AccessRefused(f"403 persistant malgré {self.max_403} pauses : {note}")
-                self.journal(url=url, host=host, status="pause", bytes=0,
-                             note=f"pause {self.pause_403} s après 403 ({note})")
-                self._pause(self.pause_403)
+            if refusal:
+                # 403 ou 429 d'un hôte de la SEC : silence du client entier, puis la même adresse (§9.5, D-0088)
+                if self._refusal(self.pause_403):
+                    if self._consecutive_403 > self.max_403:
+                        self._refused = f"{status} persistant malgré {self.max_403} pauses : {note}"
+                        self.journal(url=url, host=host, status="refused", bytes=0, note=self._refused)
+                        raise AccessRefused(self._refused)
+                    self.journal(url=url, host=host, status="pause", bytes=0,
+                                 note=f"pause {self.pause_403} s après {status} ({note})")
                 continue
             if status in (404, 410):
                 raise NotCollected(url, status, "absent")
-            if status == 429 or status >= 500:
+            if status == 429 or status >= 500:         # 429 d'un hôte hors SEC, ou erreur de serveur
                 if transient < len(self.backoff):
                     time.sleep(self.backoff[transient])
                     transient += 1
