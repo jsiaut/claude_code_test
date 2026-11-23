@@ -5443,3 +5443,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - échec de `sb_own fetch` : un en-tête (formulaire 4 de 2021) était resté « non obtenu » après quatre réponses 504, et `fetch` s'arrête sur sa liste de pièces vide. `sb_own headers`, relancé, ne tire que lui (1 requête) ; puis la suite ;
     - réseau : 3 278 requêtes (www.sec.gov 3 224, data.sec.gov 54), 0,6 Go.
   - Mode d'emploi, écart corrigé : un document « non obtenu » après des erreurs de serveur répétées (ici un 502 et un 504) arrête l'étape suivante ou fausse un décompte. `RUNBOOK.md` dit de relancer la commande qui le tire avant de continuer.
+  - N-PORT (21:34 à 23:12) : trois volets de 28 archives (2019q4 à 2026q3), toutes scannées ; non-cotés avec le lexique historique `lx-cd6e02bb8912` (1 527 dénominations légales, comme en D-0084). Réseau : 97 requêtes, 35,8 Go, chaque volet retirant ses archives ; aucun refus. Le temps passe au scan (une à deux minutes par archive), non au tirage (dix secondes).
+  - Montages (23:12 à 23:42) : recherches et pièces des six montages à recherche, rejeu de `labs_contracts` (78 résultats, 76 pièces), corpus, puis `prepare` sans requête (732 s) : 1 872 blocs avant restriction.
+  - Catalogues ramenés aux clés de `f358538` (`reconstruction restrict`) : montages 1 763, 6-K 501, SoftBank 520, découverte 769, piste des non-déposants 729.
+  - Couverture : les 12 500 clés lues reviennent toutes (`reconstruction missing` : 0). Les 101 clés perdues par D-0084 ne manquent plus : depuis D-0084 (point 7), une fenêtre de montage lue garde ses bornes.
