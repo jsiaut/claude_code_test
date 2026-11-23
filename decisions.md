@@ -5304,3 +5304,13 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - les 91 lignes de G1 déjà chargées, les 102 fichiers orphelins et les archives tirées plusieurs fois attendent la prochaine mise à jour.
 
   (8) Ordre et commits : la décision ; les gardes et leurs tests ; le nettoyage ; le mode d'emploi ; les résultats ici. `make check` avant chaque commit, puis le push.
+
+  (9) Ajouts aux volets 3 et 4, règles fixées avant leur code (2026-11-23) :
+  - Constat, à l'écriture du mode d'emploi :
+    - la comparaison des tables à celles du commit précédent, que `CLAUDE.md` demande après chaque réassemblage, n'a pas de commande : elle se récrit à chaque décision ;
+    - `memo.inputs_fingerprint` prend `work/lists/` dans son empreinte. Une liste de relecture créée entre deux réassemblages (passe de correction) fait donc tout recalculer, alors qu'aucune étape de l'assemblage ne lit une liste ;
+    - le relevé des personnes vit désormais dans `pipeline/guards.py` : une société ajoutée à la liste admise en cours de lecture changerait de même l'empreinte.
+  - Règles :
+    - `python3 -m pipeline.compare [REF]` (cible `make compare REF=…`) : par table, les lignes du commit `REF` (HEAD par défaut) et celles de `tables/`, les clés apparues, disparues, et les lignes changées à clé égale ; pour `measures`, le détail par mesure. Sans `db/`, en lecture seule ;
+    - épreuve : contre `587dbbc`, la commande doit redonner les écarts consignés en D-0086 (point 12) ;
+    - l'empreinte du mémo laisse de côté `work/lists/`, `guards.py` et `compare.py`, comme elle laisse déjà le rendu et l'aperçu : aucun n'est lu par une étape de l'assemblage.
