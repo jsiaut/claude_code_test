@@ -36,7 +36,6 @@ STANDARD = ("us-gaap", "srt", "dei", "ifrs-full", "ecd", "country", "currency", 
 INSTANCES = config.DB_DIR / "facts_instances.parquet"
 NOTES = config.CACHE / "datasets" / "notes"
 LABELS = config.DB_DIR / "labels.parquet"
-CAPACITY_UNITS = {"MW": "MW", "MWh": "MW", "megawatt": "MW", "GW": "GW", "gigawatt": "GW"}
 MARK = "@@F[{}]@@"
 MARK_RX = re.compile(r"@@F\[([^\]]+)\]@@")
 

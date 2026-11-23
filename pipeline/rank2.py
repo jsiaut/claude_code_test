@@ -17,9 +17,6 @@ from .quantities import PPE_ROU_GROSS
 
 # en-cours balisés sans dimension (§6.2) ; les autres viennent du membre en-cours d'un poste brut (D-0075)
 NONDIM_CIP = {"us-gaap:ConstructionInProgressGross", "ifrs-full:ConstructionInProgress"}
-QUARTER_FLOWS = {"gross_profit", "cost_of_revenue", "operating_income", "revenue_total", "capex_cash", "cfo",
-                 "sbc_expense", "net_income", "depreciation_expense", "rou_obtained_operating_lease",
-                 "capitalized_interest", "pik_interest", "interest_expense"}
 
 
 def _nd(S, qn, r):

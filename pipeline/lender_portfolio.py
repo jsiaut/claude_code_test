@@ -137,7 +137,6 @@ def _dec(v):
     return Decimal(str(v)) if v is not None and v == v else None
 
 
-
 SCALE = 500     # coût ou juste valeur à 500 fois le principal au moins, ou coût à 1/500 au plus : erreur d'échelle
 
 
@@ -301,18 +300,6 @@ def events_cells(cells_by_vehicle, as_of, gap_days, events=None, decision="D-004
                                 value_text="event" if hit else "no_event", knowledge_date=c["knowledge_date"],
                                 flags={"subjects": "bdc_vehicles", "decision": decision, "dates": trio,
                                        "values": [str(v) for v in vals], "measure": measure}))
-    return out
-
-
-def platform_ciks(df, cfg):
-    """Véhicules d'une plateforme par la marque du gestionnaire dans la dénomination EDGAR,
-    actuelle ou ancienne (D-0045, point 3) : un regroupement de présentation, sans somme."""
-    out = {}
-    for plat, spec in (cfg.get("platforms") or {}).items():
-        terms = [t.lower() for t in spec.get("name_terms") or []]
-        names = df[["cik", "name", "former"]].drop_duplicates()
-        hit = names[[any(t in f"{n} {fo}".lower() for t in terms) for n, fo in zip(names["name"], names["former"])]]
-        out[plat] = sorted(hit["cik"].unique())
     return out
 
 

@@ -40,8 +40,3 @@ def decide(req):
     if not parties:
         return True, "parties non établies à l'en-tête : corps lu par prudence"
     return False, "établissements financiers seulement"
-
-
-def body_required(req):
-    want, _ = decide(req)
-    return bool(want)

@@ -1,5 +1,5 @@
 """D-0087 : gardes de lecture à la soumission (G1 à G4), contrôle d'avant réassemblage (`reader check`), ouverture
-d'une passe (`reader open-pass`).
+d'une passe (`reader open-pass`), et nettoyage (diff d'une annexe, adresse de contact masquée et hors de l'index).
 
 Lancement : python3 -m unittest tests.test_d0087 -v
 """
@@ -247,6 +247,48 @@ class OpenPass(unittest.TestCase):
             run = json.loads((reader.RUN.parent / "run_repass_x.json").read_text())
             self.assertEqual(run, {"as_of": config.as_of(), "pass_id": "2026-11-23T18:00:00Z"})
             self.assertEqual(reader._run_info(), run)
+
+
+class CleanUp(unittest.TestCase):
+    """Nettoyage de D-0087 : diff d'une annexe réduit à sa section, adresse de contact masquée et hors de l'index."""
+
+    def test_diff_d_une_annexe_sur_sa_seule_section(self):
+        from pipeline import render
+        old = {"annex_f": {"events": {"F1": {"observable": "a"}}}, "confirmed_entities": [{"name": "X"}]}
+        new = {"annex_f": {"events": {"F1": {"observable": "a"}, "F11": {"observable": "b"}}},
+               "confirmed_entities": [{"name": "X"}, {"name": "Y"}], "annex_e": {"ids": [1]}}
+        d = render.annex_diff("annex_f", old, new)
+        self.assertIn("+    F11:", d)
+        self.assertNotIn("confirmed_entities", d)
+        self.assertNotIn("name: Y", d)
+        self.assertEqual(render.annex_diff("annex_f", new, new), "")
+        self.assertIn("+annex_e:", render.annex_diff("annex_e", old, new))
+
+    def test_masquage_par_la_variable_ou_le_fichier(self):
+        import os
+        cfg = {"user_agent": {"value_sources": ["env:D0087_TEST_UA", "file:secrets/absent_d0087.txt"]}}
+        self.assertEqual(config.contact_addresses(cfg), [])
+        self.assertEqual(config.mask_contact("écrire à a@b.example", cfg), "écrire à a@b.example")
+        os.environ["D0087_TEST_UA"] = "a@b.example projet_de_test"
+        try:
+            self.assertEqual(config.contact_addresses(cfg), ["a@b.example"])
+            self.assertEqual(config.mask_contact("écrire à a@b.example", cfg), "écrire à <adresse masquée>")
+        finally:
+            del os.environ["D0087_TEST_UA"]
+
+    def test_l_adresse_de_contact_n_est_pas_dans_l_index(self):
+        """Avant chaque commit (le crochet lance `make check`) : aucun fichier de l'index ne porte l'adresse de contact
+        du User-Agent. Le message ne cite que les fichiers, jamais l'adresse."""
+        import subprocess
+        addrs = config.contact_addresses()
+        if not addrs:
+            self.skipTest("User-Agent absent : aucune adresse à chercher")
+        for a in addrs:
+            r = subprocess.run(["git", "grep", "--cached", "-l", "-F", "-e", a], capture_output=True, text=True,
+                               cwd=config.ROOT)
+            if r.returncode not in (0, 1):
+                self.skipTest("pas un dépôt git")
+            self.assertEqual(r.stdout.split(), [], "l'adresse de contact est dans des fichiers de l'index")
 
 
 if __name__ == "__main__":

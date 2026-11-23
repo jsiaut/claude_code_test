@@ -401,12 +401,6 @@ def full_text(raw):
     return textnorm.lines_to_text(_lines(raw))
 
 
-def document_title(text, n=6):
-    """Premières lignes non vides d'une pièce (pour la règle des amendements, §11.1)."""
-    lines = [l.strip() for l in text.split("\n") if l.strip()]
-    return " ".join(lines[:n])[:500]
-
-
 AMEND_EX10 = re.compile(r"\b(amendment|waiver|consent)\b", re.I)
 AMENDED_RESTATED = re.compile(
     r"^\W*((first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|\d+(st|nd|rd|th))\s+)?"

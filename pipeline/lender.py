@@ -141,7 +141,6 @@ def extract():
     return out
 
 
-
 # -- rattachement des positions aux entités (§10.2) ---------------------------------------
 
 def legal_names(ent_rows):
@@ -158,36 +157,6 @@ def legal_names(ent_rows):
             continue
         out.setdefault(n, r["entity_id"])
     return out
-
-
-def match_rows(soi, names):
-    """Positions dont un champ d'identification contient, mot pour mot, une dénomination
-    légale du registre ; la plus longue l'emporte (« x ai holdings corp » avant « x ai corp »)."""
-    from .graph import normalize_name
-    fields = ["identifier", "issuer_enum", "issuer_axis", "name_axis"]
-    keys = sorted(names, key=len, reverse=True)
-    cache_norm = {}
-
-    def norm(s):
-        if s not in cache_norm:
-            cache_norm[s] = " " + normalize_name(s) + " " if s else ""
-        return cache_norm[s]
-
-    hits = []
-    for i, r in enumerate(soi[fields].itertuples(index=False)):
-        best = None
-        for f, v in zip(fields, r):
-            t = norm(v)
-            if not t:
-                continue
-            for k in keys:
-                if " " + k + " " in t:
-                    if best is None or len(k) > len(best[1]):
-                        best = (f, k)
-                    break
-        if best:
-            hits.append((i, best[0], best[1], names[best[1]]))
-    return hits
 
 
 # -- faits de num : la source des positions rattachées --------------------------------------
@@ -312,7 +281,6 @@ def registry(obs_rows=None):
 def _universe_names():
     rows, _ = registry()
     return legal_names(rows)
-
 
 
 # -- positions rattachées et mesures (§14) ---------------------------------------------------
@@ -546,7 +514,6 @@ def measures_cells(hold, as_of):
                                 breakdown=bk, status="not_determinable", nd_reason="not_tagged", knowledge_date=kd,
                                 flags={**fl_base, "note": "statut de performance non balisé : une absence ne prouve pas une accumulation d'intérêts"}))
     return out
-
 
 
 def exclusions(as_of):

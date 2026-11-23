@@ -7,6 +7,7 @@ l'accession et l'emplacement de chacun de ses termes.
 """
 import csv
 import datetime as dt
+import difflib
 import json
 import re
 import shutil
@@ -179,7 +180,6 @@ def criteria_status():
     return out, full, cur, old, new
 
 
-
 def criteria_diff(old, new):
     """Diff des critères des annexes E et F et des seuils par rapport à leur commit d'origine :
     événements ajoutés, retirés ou modifiés, clés changées (annexe F, statut)."""
@@ -211,6 +211,15 @@ def criteria_diff(old, new):
         if ks:
             out.append(f"`{blk}`, clés modifiées : " + ", ".join(f"`{k}`" for k in ks))
     return out
+
+def annex_diff(key, old, new):
+    """Diff unifié d'une annexe (`annex_e`, `annex_f`) entre le commit des critères et l'état courant de config.yaml,
+    sur sa seule section : le reste du fichier (registre des entités, périmètre) n'est pas un critère (D-0087)."""
+    a, b = (yaml.safe_dump({key: c.get(key)}, allow_unicode=True, sort_keys=False, width=110).splitlines(keepends=True)
+            for c in (old, new))
+    return "".join(difflib.unified_diff(a, b, fromfile=f"config.yaml ({key}), commit {CRITERIA_COMMIT[:7]}",
+                                        tofile=f"config.yaml ({key}), état courant"))
+
 
 CONFIG_DECISIONS = {"concept_anchors": "second candidat de capex, D-0012 ; StockIssued1 retiré des additions payées en "
                                        "titres, D-0082",
@@ -268,8 +277,6 @@ ANNUAL = [
     ("vendor_financed_additions", NONE, "Additions financées par le vendeur", "usd"),
     ("stock_paid_additions", NONE, "Additions payées en titres", "usd"),
 ]
-SIGNALS = ["sig_late_filing", "sig_distress_8k_items", "sig_auditor_change_or_nonreliance", "sig_material_weakness",
-           "sig_going_concern", "sig_covenant_events"]
 SIG_FR = {"sig_late_filing": "dépôt tardif", "sig_distress_8k_items": "items de détresse (8-K)",
           "sig_auditor_change_or_nonreliance": "auditeur ou correction d'erreur", "sig_material_weakness": "faiblesse du contrôle interne",
           "sig_going_concern": "continuité d'exploitation", "sig_covenant_events": "clauses financières",
@@ -724,7 +731,6 @@ def lender_section(con, T):
              f"{T.n('exclusions', {'lender_ambiguous': True}, amb)}.")
     L.append("")
     return L
-
 
 
 LP_MEAS = ("bdc_portfolio_fv_to_cost", "bdc_portfolio_pik_share", "bdc_portfolio_non_accrual_share",
@@ -3499,18 +3505,12 @@ def audit(con, as_of, rows, stats):
                f"Changement ultérieur : {'aucun (critères identiques dans le config.yaml courant)' if same else 'voir le diff ci-dessous'}\n\n"
                + body)
         if not same:
-            txt += "\nDiff :\n" + subprocess.run(["git", "diff", CRITERIA_COMMIT, "--", "config.yaml"], capture_output=True,
-                                                 text=True, cwd=config.ROOT).stdout
+            txt += "\nDiff :\n" + annex_diff(key, old, new)
         (out / fname).write_text(txt, encoding="utf-8")
     (out / "domain_rules.md").write_text(domain_rules(), encoding="utf-8")
-    # journal masqué : vérifié avant copie
+    # journal masqué : l'adresse de contact du User-Agent, qu'il vienne de la variable ou du fichier (D-0087)
     jt = (config.ROOT / "journal.jsonl").read_text(encoding="utf-8")
-    secret = (config.ROOT / "secrets" / "user_agent.txt")
-    if secret.exists():
-        for tok in secret.read_text(encoding="utf-8").split():
-            if "@" in tok:
-                jt = jt.replace(tok, "<adresse masquée>")
-    (out / "journal.jsonl").write_text(jt, encoding="utf-8")
+    (out / "journal.jsonl").write_text(config.mask_contact(jt), encoding="utf-8")
     shutil.copy(config.ROOT / "synthesis.md", out / "synthesis.md")
     shutil.copy(config.ROOT / "tables" / "measures.parquet", out / "measures.parquet")
     shutil.copy(config.ROOT / "tables" / "controls.parquet", out / "controls.parquet")

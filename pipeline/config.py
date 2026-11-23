@@ -10,10 +10,8 @@ CACHE = ROOT / "cache"
 WORK = ROOT / "work"
 OBS_DIR = WORK / "observations"
 TABLES = ROOT / "tables"
-AUDIT = ROOT / "audit"
 DB_DIR = ROOT / "db"
 JOURNAL = ROOT / "journal.jsonl"
-LOCK = WORK / "session.lock"
 
 # Versions qui entrent dans les clés de cache (§9.2, §9.6).
 NORMALIZER_VERSION = "n1"
@@ -148,14 +146,17 @@ def user_agent(cfg=None):
     raise SystemExit("User-Agent absent : l'utilisateur doit le fournir (config.yaml, §9.5).")
 
 
-def mask_contact(text, cfg=None):
-    """Masque l'adresse de contact dans toute copie partagée (§9.5)."""
+def contact_addresses(cfg=None):
+    """Adresses de contact du User-Agent, variable ou fichier (§9.5) ; aucune si l'utilisateur ne l'a pas fourni."""
     try:
         ua = user_agent(cfg)
     except SystemExit:
-        return text
-    parts = ua.split()
-    for p in parts:
-        if "@" in p:
-            text = text.replace(p, "<adresse masquée>")
+        return []
+    return sorted({p for p in ua.split() if "@" in p})
+
+
+def mask_contact(text, cfg=None):
+    """Masque l'adresse de contact dans toute copie partagée (§9.5)."""
+    for p in contact_addresses(cfg):
+        text = text.replace(p, "<adresse masquée>")
     return text

@@ -36,8 +36,8 @@ render:  ## synthesis.md, series.md, delta.md et audit/
 
 tables: assemble render  ## assemblage puis rendus
 
-lint:  ## ruff (règles F et E9, pyproject.toml)
-	ruff check pipeline tests
+lint:  ## ruff (règles F et E9, pyproject.toml ; version de requirements.txt)
+	$(PY) -m ruff check pipeline tests
 
 test:  ## tests unitaires
 	$(PY) -m unittest discover -s tests -t .

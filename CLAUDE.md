@@ -8,9 +8,6 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
 - Lire `delta.md` (ce qui a changé à la dernière exécution), puis `README.md` (prérequis, ordre d'une exécution).
 - `decisions.md` est chronologique et long : y chercher une décision par son numéro (`grep -n "D-0078"`), sans le
   lire d'un bloc. La dernière dit où en est le travail.
-- Avant un travail qui écrit, prendre le verrou de session, et le lever à la fin (§11.5, `pipeline/lock.py`) :
-  `python3 -c "from pipeline import config, lock; lock.acquire(config.as_of(), label='<tâche>')"`, puis
-  `python3 -c "from pipeline import lock; lock.release()"`.
 
 ## Invariants
 
@@ -18,12 +15,13 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
 - Réseau SEC (§9.5) : une seule commande réseau à la fois, 5 requêtes par seconde au plus, une pause d'au moins
   10 minutes après un 403, aucun changement d'identité. Chaque requête va au journal (`journal.jsonl`).
 - User-Agent : `secrets/user_agent.txt` (non versionné) ou `SEC_USER_AGENT`, envoyé aux seuls hôtes de la SEC. Ne
-  jamais afficher ce fichier, ni écrire l'adresse de contact dans le dépôt (contrôle ci-dessous). L'adresse de
+  jamais afficher ce fichier, ni écrire l'adresse de contact dans le dépôt (contrôle sous « Git »). L'adresse de
   courriel du compte de l'utilisateur ne va ni dans le dépôt ni dans une requête.
 - Les critères des annexes E et F et les seuils sont commités avant toute requête ; tout changement ultérieur est
   signalé dans la note (§11.1, annexe B).
 - Aucune ligne chargée ne nomme une personne physique (contrepartie, payeur, receveur, citation, note) : la fonction
-  remplace le nom, une citation se réduit à un passage sans nom (D-0078 ; garde : `tests/test_d0078.py`).
+  remplace le nom, une citation se réduit à un passage sans nom (D-0078). Gardes : à la soumission d'une ligne
+  (`pipeline/guards.py`, D-0087), puis sur la table assemblée (`tests/test_d0078.py`).
 
 ## Méthode
 
@@ -42,11 +40,8 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
 
 - `make check` (ruff, puis les tests) avant chaque commit ; le crochet le lance une fois activé dans le clone :
   `git config core.hooksPath .githooks`.
-- Avant chaque commit, vérifier que l'adresse de contact n'est pas dans l'index (la commande doit afficher 0) :
-
-  ```
-  python3 -c "import os,re,subprocess as s; u=os.environ.get('SEC_USER_AGENT') or open('secrets/user_agent.txt').read(); print(sum(s.run(['git','diff','--cached'],capture_output=True,text=True).stdout.count(a) for a in set(re.findall(r'[\w.+-]+@[\w-]+\.[\w.-]+',u))))"
-  ```
+- `make check` cherche aussi l'adresse de contact dans l'index, et le crochet refuse le commit qui la porterait
+  (`tests/test_d0087.py`, D-0087). Sans User-Agent fourni, ce contrôle saute.
 - Ni pull request, ni tâche planifiée de l'exécution périodique (§11.5), sans demande de l'utilisateur.
 - Clone partiel (`git clone --filter=blob:none`) ou complet, jamais `--depth 1` (README, D-0079).
 - Rapports à l'utilisateur : courts, en français.

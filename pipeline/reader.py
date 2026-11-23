@@ -28,7 +28,6 @@ import sys
 from decimal import Decimal, InvalidOperation
 
 from . import config, guards
-from .lock import touch_lock
 from .registry import ENUMS
 
 CATALOG = config.DB_DIR / "blocks.jsonl"          # recalculé à chaque exécution
@@ -627,7 +626,6 @@ def cmd_submit(content_key, path, final=False, confirm=False):
         st = json.loads(sp.read_text())
         if st.get("content_key") == content_key:
             sp.unlink()
-    touch_lock()
     dup = len(good) - len(new)
     print(f"ÉCRIT : {len(new)} ligne(s) valides, {len(errs)} rejetée(s) — {p.name}"
           + (f" ; {dup} ligne(s) déjà écrite(s) dans cette passe, ignorée(s)" if dup else ""))

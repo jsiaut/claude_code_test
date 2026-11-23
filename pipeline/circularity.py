@@ -37,13 +37,6 @@ def _kd(l):
     return _d(l["_obs"].get("knowledge_date"))
 
 
-def quarter_index(quarters, d):
-    for i, q in enumerate(quarters):
-        if q["start"] and q["start"] <= d <= q["end"]:
-            return i
-    return None
-
-
 class Pair:
     def __init__(self, s, c):
         self.s, self.c = s, c

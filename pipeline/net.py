@@ -17,7 +17,6 @@ import urllib.parse
 import requests
 
 from . import config
-from .lock import touch_lock
 
 
 class AccessRefused(Exception):
@@ -146,7 +145,6 @@ class SecClient:
                          elapsed_ms=int(elapsed * 1000), attempt=attempt, note=note,
                          **({"method": method} if method != "GET" else {}))
             if is_sec:
-                touch_lock()
                 self.stats["requests"] += 1
                 self.stats["bytes"] += nbytes
                 self.stats["elapsed"] += elapsed

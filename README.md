@@ -1,6 +1,6 @@
 # Fragilité financière de la chaîne de l'IA, tirée des seuls dépôts SEC
 
-Le dépôt mesure et date, sans noter ni prédire, la fragilité financière de 32 groupes de la chaîne de l'IA
+Le dépôt mesure et date, sans noter ni prédire, la fragilité financière de 33 groupes de la chaîne de l'IA
 et la circularité de leurs financements, à partir des seuls dépôts EDGAR. La spécification est `SPEC.md`,
 le journal des décisions `decisions.md`, et la configuration (groupes, seuils, critères des annexes E et F)
 `config.yaml`.
@@ -26,9 +26,9 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
 
 ## Prérequis
 
-- Python 3.13 et `pip install -r requirements.txt` : versions exactes, dépendances transitives comprises. La
-  vérification des tables à l'octet près les suppose, DuckDB 1.5.6 d'abord. `pyproject.toml` décrit le projet
-  pour `uv` (`uv lock`, puis `uv sync`), hors d'une exécution du pipeline puisque `uv lock` interroge PyPI.
+- Python 3.13 et `pip install -r requirements.txt` : versions exactes, dépendances transitives et ruff compris.
+  C'est la seule liste de versions (D-0087), et la vérification des tables à l'octet près les suppose, DuckDB 1.5.6
+  d'abord. `pyproject.toml` ne porte que les réglages de ruff.
 - L'historique des commits, pas forcément celui des fichiers : `git clone --filter=blob:none <url>` suffit (un
   `.git` d'environ 55 Mo, contre plus de 700 Mo pour un clone complet, D-0079), jamais `--depth 1`. Le rendu
   relit deux commits anciens : les critères du commit d'origine `3ff3b98` et, pour `delta.md`, les tables du

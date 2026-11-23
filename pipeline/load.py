@@ -129,8 +129,6 @@ def mark_conflicts(con, scale_jump_factor):
 
 # -- observations --------------------------------------------------------------------
 
-OBS_COLS = None
-
 
 def canonical_filers(catalog):
     """Dénomination courante de chaque déposant découvert : celle de son dépôt le plus récent. Un même

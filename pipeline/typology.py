@@ -13,7 +13,6 @@ from collections import Counter
 from . import config
 from .measures import NONE, cell
 
-TYPES = ("supplier_investor", "customer_investor", "reciprocal", "financing_only")
 BIS_TYPE = {"supplier_investor": 1, "customer_investor": 2, "reciprocal": 3, "financing_only": None}
 ADVANCE = ("intent_non_binding", "signed", "available", "drawn_or_paid", "delivered", "recognized", "settled")
 BASIS = ("relation d'investissement I -> T entre nœuds du périmètre (arête de financement de tout type et de tout stade), "

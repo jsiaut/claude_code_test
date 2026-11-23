@@ -16,7 +16,6 @@ NS_XBRLDI = "http://xbrl.org/2006/xbrldi"
 NS_LINK = "http://www.xbrl.org/2003/linkbase"
 NS_XLINK = "http://www.w3.org/1999/xlink"
 NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
-NS_IX = "http://www.xbrl.org/2013/inlineXBRL"
 
 _STD = [
     (re.compile(r"^http://fasb\.org/(us-gaap|srt|us-types|us-roles)/(\d{4}(?:-\d\d-\d\d)?)$"), None),

@@ -4,7 +4,6 @@ cache/
 secrets/
 # Fichiers de travail temporaires
 work/tmp/
-work/session.lock
 db/
 __pycache__/
 *.pyc
