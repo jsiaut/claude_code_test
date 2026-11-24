@@ -1,6 +1,8 @@
 {
  "as_of": "2026-11-23",
  "files": [
+  "built/discovery_built.jsonl",
+  "built/nf_discovery_built.jsonl",
   "catalogs/discovery.jsonl",
   "catalogs/foreign_6k.jsonl",
   "catalogs/montages.jsonl",
@@ -27,5 +29,30 @@
   "queues/nf_discovery_candidates.jsonl",
   "queues/nf_discovery_own_units.jsonl",
   "queues/nf_discovery_units.jsonl"
+ ],
+ "manifest_fields": [
+  "content_key",
+  "block_kind",
+  "accession",
+  "document",
+  "exhibit_type",
+  "montage",
+  "window",
+  "sort_key",
+  "chars",
+  "filing_date",
+  "group_id",
+  "cik",
+  "form",
+  "acceptance",
+  "knowledge_date",
+  "period_start",
+  "period_end",
+  "filing_status",
+  "assurance_level",
+  "tier",
+  "locator",
+  "unit_order",
+  "nf_queue"
  ]
 }

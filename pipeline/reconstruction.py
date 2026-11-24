@@ -50,10 +50,19 @@ def table(name):
 
 
 @functools.lru_cache(maxsize=None)
+def commit(ref):
+    """Empreinte du commit que `ref` désigne ; `ref` tel quel si Git ne le connaît pas. `HEAD` ou une branche peuvent
+    bouger : ce qui se garde d'une commande à l'autre se range sous l'empreinte (D-0091, point 12)."""
+    r = subprocess.run(["git", "rev-parse", "--verify", "--quiet", f"{ref}^{{commit}}"], capture_output=True, text=True,
+                       cwd=config.ROOT)
+    return r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else str(ref)
+
+
+@functools.lru_cache(maxsize=None)
 def _state_dir(ref):
     """`state/` du commit de référence, extrait une fois sous work/tmp/ref_state/ ; None si le commit n'en a pas."""
     import tarfile
-    out = config.WORK / "tmp" / "ref_state" / str(ref)
+    out = config.WORK / "tmp" / "ref_state" / commit(ref)
     if (out / "state" / "STATE.json").exists():
         return out / "state"
     r = subprocess.run(["git", "archive", "--format=tar", str(ref), "state"], capture_output=True, cwd=config.ROOT)
@@ -80,6 +89,43 @@ def _manifests(ref):
 def manifests():
     """Manifestes des catalogues préparés au commit de référence : nom du catalogue -> blocs, dans l'ordre."""
     return _manifests(reference())
+
+
+def manifest_fields():
+    """Champs que portent les manifestes du commit de référence ; vide sans état versionné."""
+    from . import state
+    d = state_dir()
+    return state.manifest_fields(d) if d else ()
+
+
+def _missing(v):
+    return v is None or (isinstance(v, float) and v != v)
+
+
+def realign(b, row, fields):
+    """Rend au bloc `b` les champs que la ligne `row` de son manifeste porte : le manifeste dit l'attribution, le
+    recalcul rend le texte (D-0091, point 12). Un champ du manifeste absent de la ligne était vide à l'origine. Renvoie
+    (changé, autre dépôt ou autre document)."""
+    moved = b.get("accession") != row.get("accession") or b.get("document") != row.get("document")
+    changed = False
+    for f in fields:
+        if f in ("content_key", "chars"):
+            continue
+        mv, bv = row.get(f), b.get(f)
+        if f == "locator":
+            if isinstance(mv, dict):
+                loc = dict(bv) if isinstance(bv, dict) else {}
+                if any(k not in loc or loc[k] != v for k, v in mv.items()):
+                    loc.update(mv)
+                    b[f] = loc
+                    changed = True
+            continue
+        if _missing(mv) and _missing(bv):
+            continue
+        if mv != bv:
+            b[f] = mv
+            changed = True
+    return changed, moved
 
 
 @functools.lru_cache(maxsize=None)
@@ -196,6 +242,8 @@ def restrict(paths=None):
     - un bloc gardé du bon document, dont aucune occurrence ne porte le type de pièce que la référence montre, le
       reprend d'elle : le recalcul le tire parfois du registre des documents, qui ne type pas les pièces des montages."""
     k, ref, man = keys(), shown(), manifests()
+    fields = manifest_fields() if man else ()
+    attributed = "knowledge_date" in fields              # manifeste qui porte l'attribution des blocs (D-0091, point 12)
     out = {}
     for p in paths or catalogs():
         if not p.exists():
@@ -222,9 +270,17 @@ def restrict(paths=None):
             if ck not in best or rank > best[ck]:
                 best[ck] = rank
         keep = {i: ck for ck, (_, i) in best.items()}
-        retyped = 0
+        retyped = realigned = moved = 0
+        row_of = {b["content_key"]: b for b in rows} if rows is not None else {}
         for ck, (agreement, i) in best.items():
-            if agreement == 1:                           # bon document, type de pièce absent ou autre
+            if rows is not None and attributed:          # le manifeste dit l'attribution du bloc
+                b = json.loads(lines[i])
+                changed, other = realign(b, row_of[ck], fields)
+                if changed:
+                    lines[i] = _line(b)
+                    realigned += 1
+                    moved += bool(other)
+            elif agreement == 1:                         # bon document, type de pièce absent ou autre
                 b = json.loads(lines[i])
                 b["exhibit_type"] = told[ck][3]
                 lines[i] = _line(b)
@@ -237,8 +293,50 @@ def restrict(paths=None):
         out[p.name] = {"kept": len(kept), "removed": len(lines) - len(kept),
                        **({"read_elsewhere": elsewhere} if elsewhere else {}),
                        **({"retyped": retyped} if retyped else {}),
+                       **({"realigned": realigned, "from_another_filing": moved} if realigned else {}),
                        **({"manifest": len(place), "missing_from_manifest": len(set(place) - set(best))}
                           if place is not None else {})}
+    return out
+
+
+def unmanifested():
+    """Catalogues recalculés des documents, sans manifeste : celui des groupes et celui du bloc `text`."""
+    from . import reader
+    return [reader.CATALOG, reader.CATALOG_EXT]
+
+
+def prefer_shown(paths=None):
+    """Catalogues sans manifeste : entre plusieurs blocs de même clé, range en dernier celui du dépôt et du document que
+    la référence montre ; le chargement, qui garde le dernier, le retient (D-0091, point 12). L'ordre de ces blocs suit
+    l'index des dépôts, qui dépend de l'exécution (D-0085, point 15). Rien d'autre ne bouge. Renvoie, par catalogue, les
+    clés en double et celles réordonnées."""
+    ref = shown()
+    out = {}
+    for p in paths or unmanifested():
+        if not p.exists():
+            continue
+        with open(p, encoding="utf-8") as fh:            # ligne à ligne, comme `restrict`
+            lines = [x.rstrip("\n") for x in fh if x.strip()]
+        where = {}
+        for i, line in enumerate(lines):
+            b = json.loads(line)
+            where.setdefault(b.get("content_key"), []).append((i, b.get("accession"), b.get("document")))
+        swapped = 0
+        for ck, occ in where.items():
+            r = ref.get(ck)
+            if len(occ) < 2 or r is None:
+                continue
+            good = [i for i, acc, doc in occ if acc == r[1] and doc == r[2]]
+            last = occ[-1][0]
+            if good and good[-1] != last:
+                i = good[-1]
+                lines[i], lines[last] = lines[last], lines[i]
+                swapped += 1
+        if swapped:
+            tmp = p.with_suffix(p.suffix + ".tmp")
+            tmp.write_text("".join(x + "\n" for x in lines), encoding="utf-8")
+            tmp.replace(p)
+        out[p.name] = {"duplicated_keys": sum(1 for o in where.values() if len(o) > 1), "reordered": swapped}
     return out
 
 
@@ -296,11 +394,14 @@ def main(argv):
         from . import montages, state
         out = restrict()
         if state_dir() is not None:
-            # état versionné (D-0091) : les listes des montages sont celles de l'exécution d'origine
+            # état versionné (D-0091) : les listes des montages et les registres des unités préparées sont ceux de
+            # l'exécution d'origine
             out["montages_info"] = {"restored": state.restore_lists(state=state_dir())}
+            out["built"] = {"restored": state.restore_built(state=state_dir())}
         else:
             # sans état : les listes « au-delà du plafond » suivent leur catalogue (D-0088, point 25)
             out["montages_info"] = {"over_cap": montages.restrict_info()}
+        out["without_manifest"] = prefer_shown()
         print(json.dumps(out, indent=1))
     elif cmd == "hand":
         from . import state

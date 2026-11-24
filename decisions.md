@@ -5900,7 +5900,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Constat : gardées, les 48 archives Notes occupent 18,7 Go jusqu'à leur dernier lecteur, les 28 archives N-PORT 11,9 Go ; avant D-0091, une archive s'effaçait dès sa lecture. Un disque trop petit arrêterait la reconstruction en plein tirage. Ce conteneur annonce 47 Go libres, 23 Go déjà pris.
   - Règle : la commande ne garde les archives que si le disque a au moins 30 Go libres à son lancement. Sinon elle le dit, ne pose pas `PIPELINE_KEEP_ARCHIVES`, et chaque lecteur retire son archive comme avant : même résultat, 42 Go de transfert en plus.
 
-  (12) Fin de la première épreuve, constats et règles fixées avant le code (2026-11-24, 14:16 UTC) :
+  (12) Fin de la première épreuve, constats et règles fixées avant le code (2026-11-24, 14:18 UTC) :
   - Première épreuve, sans la correction du point 9 : 76 étapes de 11:48 à 14:01, soit 2 h 12 de calcul sans réseau, dont 34 minutes d'assemblage à mémo vide. Une seule requête tentée, l'index du 8-K de Meta, absent de la SEC depuis D-0088. Comparaison au commit : faits et entités identiques ; documents, 5 lignes changées ; observations, 86 disparues et 172 changées ; liens, 133 disparus et 22 changés ; mesures, 2 apparues, 41 disparues et 84 changées ; contrôles, 1 changé ; exclusions, 15 disparues.
   - Causes, chacune de l'historique d'exécution :
     - a) le S-1/A n° 2 de SB Energy (point 9) : les 86 observations disparues (29 de l'Item 404, 57 des notes), 161 des 172 changées (notes communes aux deux amendements, rattachées au n° 3 : dépôt, document, date de connaissance), les liens, les mesures (matrice d'exposition surtout) et le contrôle bilatéral NVIDIA–SoftBank (21 arêtes, puis 19) ;

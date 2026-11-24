@@ -7,7 +7,11 @@ mais quatre choses ne se recalculent pas à l'identique, ou ne se recalculent pa
 - l'ordre et le choix des blocs des catalogues préparés, qui dépendent de ce qui était lu à chaque exécution : un
   manifeste par catalogue, sans texte (`MANIFEST_FIELDS`) ;
 - les listes des montages (pièces sans fenêtre, fenêtres au-delà du plafond, déjà lues…) ;
-- les files et les candidats de la découverte et de la piste, avec leurs rangs et leurs états.
+- les files et les candidats de la découverte et de la piste, avec leurs rangs et leurs états, et le registre de
+  leurs unités préparées (`BUILT`).
+
+Le manifeste porte l'attribution d'un bloc, le recalcul en rend le texte (point 12) : un texte que le recalcul ne rend
+que d'un autre dépôt reprend du manifeste son dépôt, son document et ses dates.
 
     python3 -m pipeline.state save      # db/ -> state/, après un assemblage ; se commite avec les tables
     python3 -m pipeline.state check     # state/ décrit-il db/ ? (code de retour 1 sinon)
@@ -30,17 +34,33 @@ STATE = config.ROOT / "state"
 HAND = ("exhibits_tranche.json", "usgaap2026_balance.json")
 CATALOGS = {"montages": "montages_blocks.jsonl", "foreign_6k": "foreign_6k_blocks.jsonl", "sb": "sb_blocks.jsonl",
             "discovery": "discovery_blocks.jsonl", "nf_discovery": "nf_discovery_blocks.jsonl"}
-# champs d'un manifeste : de quoi retrouver le bloc et sa place, rien de son texte
-MANIFEST_FIELDS = ("content_key", "block_kind", "accession", "document", "exhibit_type", "montage", "window", "sort_key",
-                   "chars", "filing_date", "group_id")
+# champs d'un manifeste : de quoi retrouver le bloc, sa place et son attribution, rien de son texte. Les onze premiers
+# sont ceux du premier état commité ; les suivants tiennent au dépôt du bloc et à sa file (point 12)
+MANIFEST_FIELDS_V1 = ("content_key", "block_kind", "accession", "document", "exhibit_type", "montage", "window", "sort_key",
+                      "chars", "filing_date", "group_id")
+MANIFEST_FIELDS = MANIFEST_FIELDS_V1 + ("cik", "form", "acceptance", "knowledge_date", "period_start", "period_end",
+                                        "filing_status", "assurance_level", "tier", "locator", "unit_order", "nf_queue")
+LOCATOR_FIELDS = ("file", "accession", "cik", "byte_range")      # pas `section`, un titre du dépôt
 QUEUES = ("discovery_units.parquet", "discovery_candidates.parquet", "nf_discovery_units.parquet",
           "nf_discovery_own_units.parquet", "nf_discovery_candidates.parquet")
 LISTS_GLOB = "montages_info*.json"
+# registres des unités préparées de la découverte et de la piste, et leurs champs : aucun ne porte de texte de dépôt
+BUILT = ("discovery_built.jsonl", "nf_discovery_built.jsonl")
+BUILT_FIELDS = ("order", "rank", "cik", "kind", "adsh", "doc", "content_key", "error", "selected_by", "queue", "rule",
+                "own_filing")
 
 
 def _clean(v):
     """Valeur d'un champ de manifeste : un flottant manquant (NaN d'un type de pièce absent) s'écrit null."""
     return None if isinstance(v, float) and v != v else v
+
+
+def _field(b, k):
+    """Champ `k` du bloc pour son manifeste ; d'une localisation ne se gardent que LOCATOR_FIELDS."""
+    v = _clean(b.get(k))
+    if k == "locator" and isinstance(v, dict):
+        return {f: _clean(v.get(f)) for f in LOCATOR_FIELDS if f in v}
+    return v
 
 
 def manifest_rows(path):
@@ -50,8 +70,23 @@ def manifest_rows(path):
         for line in fh:
             if line.strip():
                 b = json.loads(line)
-                out.append({k: v for k, v in ((k, _clean(b.get(k))) for k in MANIFEST_FIELDS) if v is not None})
+                out.append({k: v for k, v in ((k, _field(b, k)) for k in MANIFEST_FIELDS) if v is not None})
     return out
+
+
+def built_text(path):
+    """Registre des unités préparées, ligne à ligne, dans son ordre. Un champ hors de la liste fermée arrête
+    l'écriture : il s'ajoute à BUILT_FIELDS une fois vérifié qu'il ne porte pas de texte de dépôt."""
+    out = []
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            if line.strip():
+                r = json.loads(line)
+                unknown = sorted(set(r) - set(BUILT_FIELDS))
+                if unknown:
+                    raise ValueError(f"{path.name} : champ hors de la liste fermée de l'état : {', '.join(unknown)}")
+                out.append(json.dumps(r, ensure_ascii=False) + "\n")
+    return "".join(out)
 
 
 def _dump_rows(rows):
@@ -99,7 +134,11 @@ def files(db=None):
     for name in QUEUES:
         if (db / name).exists():
             out[f"queues/{name[:-len('.parquet')]}.jsonl"] = table_text(db / name)
-    out["STATE.json"] = json.dumps({"as_of": config.as_of(), "files": sorted(out)}, ensure_ascii=False, indent=1) + "\n"
+    for name in BUILT:
+        if (db / name).exists():
+            out[f"built/{name}"] = built_text(db / name)
+    out["STATE.json"] = json.dumps({"as_of": config.as_of(), "files": sorted(out), "manifest_fields": list(MANIFEST_FIELDS)},
+                                   ensure_ascii=False, indent=1) + "\n"
     return out
 
 
@@ -166,6 +205,25 @@ def restore_lists(db=None, state=None):
         (db / src.name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
         done.append(src.name)
     return done
+
+
+def restore_built(db=None, state=None):
+    """Remet les registres des unités préparées, tels qu'à l'exécution d'origine. Renvoie leurs noms."""
+    db, state = db or config.DB_DIR, state or STATE
+    done = []
+    for name in BUILT:
+        src = state / "built" / name
+        if src.exists():
+            (db / name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+            done.append(name)
+    return done
+
+
+def manifest_fields(state=None):
+    """Champs que les manifestes de cet état portent : un champ absent d'une ligne y était vide à l'origine. Le premier
+    état commité ne les nommait pas : ce sont alors les onze premiers."""
+    head = json.loads(((state or STATE) / "STATE.json").read_text(encoding="utf-8"))
+    return tuple(head.get("manifest_fields") or MANIFEST_FIELDS_V1)
 
 
 def manifests(state=None):

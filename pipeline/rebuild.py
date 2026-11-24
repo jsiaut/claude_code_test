@@ -212,7 +212,7 @@ def summary(st):
 def main(argv):
     if not argv or argv[0].startswith("-"):
         raise SystemExit("usage : python3 -m pipeline.rebuild <commit de référence> [--list] [--from ÉTAPE] [--only ÉTAPE…]")
-    ref, rest = argv[0], argv[1:]
+    ref, rest = reconstruction.commit(argv[0]), argv[1:]       # l'empreinte : `HEAD` peut bouger (D-0091, point 12)
     if subprocess.run(["git", "cat-file", "-e", f"{ref}:tables/observations.parquet"], cwd=config.ROOT).returncode != 0:
         raise SystemExit(f"{ref} : commit sans tables lisibles (clone superficiel ? RUNBOOK.md, § 1)")
     if "--list" in rest:

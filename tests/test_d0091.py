@@ -140,9 +140,10 @@ class VersionedState(unittest.TestCase):
         self.assertEqual(state.save(self.db, self.state), ["lists/montages_info_x.json"])
 
     def test_the_manifest_fields_carry_no_text(self):
-        for f in ("text", "candidate_facts", "note_label", "filer_name", "terms", "queries", "locator", "sgml_description",
-                  "incorporation_quote", "issuer_name", "party_terms"):
+        for f in ("text", "candidate_facts", "note_label", "filer_name", "terms", "queries", "sgml_description",
+                  "incorporation_quote", "issuer_name", "party_terms", "txt_tag", "span", "requires"):
             self.assertNotIn(f, state.MANIFEST_FIELDS)
+        self.assertEqual(state.LOCATOR_FIELDS, ("file", "accession", "cik", "byte_range"))    # pas le titre de section
 
     def test_a_queue_comes_back_without_loss(self):
         state.save(self.db, self.state)
@@ -161,14 +162,58 @@ class VersionedState(unittest.TestCase):
         self.assertEqual(json.loads((out / "usgaap2026_balance.json").read_text()), {"Assets": "debit"})
         self.assertEqual(state.restore_lists(db=out, state=self.state), ["montages_info_x.json"])
 
+    def test_the_manifest_carries_the_attribution_not_the_titles(self):
+        # point 12 : dépôt, dates et localisation du bloc, sans le titre de section que la localisation peut porter
+        b = _block("k3", cik="0000000001", form="S-1/A", knowledge_date="2026-09-21", period_end="2026-09-21", tier="C",
+                   acceptance=None, unit_order=174, nf_queue=float("nan"), txt_tag="BaliseDuDeposant",
+                   locator={"file": "a.htm", "accession": "0000000001-26-000001", "cik": "0000000001", "byte_range": None,
+                            "section": "MANAGEMENT'S DISCUSSION"})
+        p = self.db / "sb_blocks.jsonl"
+        p.write_text(json.dumps(b) + "\n", encoding="utf-8")
+        row = state.manifest_rows(p)[0]
+        self.assertEqual(row["locator"], {"file": "a.htm", "accession": "0000000001-26-000001", "cik": "0000000001",
+                                          "byte_range": None})
+        self.assertEqual((row["cik"], row["form"], row["knowledge_date"], row["tier"], row["unit_order"]),
+                         ("0000000001", "S-1/A", "2026-09-21", "C", 174))
+        self.assertTrue({"acceptance", "nf_queue", "txt_tag", "text", "note_label"}.isdisjoint(row))
+        state.save(self.db, self.state)
+        self.assertEqual(state.manifest_fields(self.state), state.MANIFEST_FIELDS)
+        head = json.loads((self.state / "STATE.json").read_text())
+        head.pop("manifest_fields")                                  # le premier état commité ne les nommait pas
+        (self.state / "STATE.json").write_text(json.dumps(head))
+        self.assertEqual(state.manifest_fields(self.state), state.MANIFEST_FIELDS_V1)
+
+    def test_built_registers_come_back_and_refuse_unknown_fields(self):
+        rec = [{"order": 1, "rank": 1, "cik": "12", "kind": "note", "adsh": "a", "doc": "T", "content_key": "k1", "error": None},
+               {"order": 2, "rank": 7, "cik": "34", "kind": "exhibit_header", "adsh": "b", "doc": "x.htm", "content_key": None,
+                "error": "identical_text", "queue": 3, "rule": "own_text-corps", "own_filing": True}]
+        (self.db / "nf_discovery_built.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rec), encoding="utf-8")
+        state.save(self.db, self.state)
+        out = self.db.parent / "db4"
+        out.mkdir()
+        self.assertEqual(state.restore_built(db=out, state=self.state), ["nf_discovery_built.jsonl"])
+        back = [json.loads(x) for x in (out / "nf_discovery_built.jsonl").read_text().splitlines()]
+        self.assertEqual(back, rec)
+        (self.db / "discovery_built.jsonl").write_text(json.dumps({"order": 1, "excerpt": "texte du dépôt"}) + "\n")
+        with self.assertRaises(ValueError):
+            state.save(self.db, self.state)
+
     def test_the_committed_state_describes_the_committed_tables(self):
         # l'état versionné du dépôt : présent, à l'as_of de la configuration, sans champ hors de la liste fermée
         self.assertTrue(state.present())
         head = json.loads((state.STATE / "STATE.json").read_text(encoding="utf-8"))
         self.assertEqual(head["as_of"], config.as_of())
+        self.assertEqual(state.manifest_fields(), state.MANIFEST_FIELDS)
         for name, rows in state.manifests().items():
             self.assertTrue(rows, name)
             self.assertLessEqual({k for r in rows for k in r}, set(state.MANIFEST_FIELDS), name)
+            self.assertLessEqual({k for r in rows for k in r.get("locator") or {}}, set(state.LOCATOR_FIELDS), name)
+            self.assertTrue(all(r.get("knowledge_date") for r in rows), name)
+        for name in state.BUILT:
+            lines = (state.STATE / "built" / name).read_text(encoding="utf-8").splitlines()
+            self.assertTrue(lines, name)
+            self.assertLessEqual({k for x in lines for k in json.loads(x)}, set(state.BUILT_FIELDS), name)
+            self.assertLessEqual({json.loads(x).get("error") for x in lines}, {None, "identical_text"}, name)
         self.assertEqual(sorted(p.name for p in (state.STATE / "hand").iterdir()), sorted(state.HAND))
 
     @unittest.skipUnless((config.DB_DIR / "phase0.json").exists(), "db/ absent : conteneur neuf")
@@ -202,6 +247,74 @@ class RestrictFollowsTheManifest(unittest.TestCase):
         self.assertEqual([(b["content_key"], b["accession"]) for b in kept],
                          [("first", "0000000001-26-000001"), ("read", "acc-A"), ("unread", "0000000001-26-000001")])
         self.assertEqual(out[p.name], {"kept": 3, "removed": 2, "manifest": 4, "missing_from_manifest": 1})
+
+    def test_a_text_found_in_another_filing_takes_back_its_attribution(self):
+        # point 12 : le recalcul ne rend ce texte que du dépôt le plus récent ; le manifeste dit celui d'origine
+        late = _block("twice", accession="acc-3", document="s1a3.htm", form="S-1/A", filing_date="2026-11-19",
+                      knowledge_date="2026-11-19", period_end="2026-11-19", window=4, sort_key="mt:x:00009",
+                      group_id="LAB:ANTHROPIC", exhibit_type="S-1/A", cik="0000000009",
+                      locator={"file": "s1a3.htm", "accession": "acc-3", "cik": "0000000009", "byte_range": None,
+                               "section": "titre gardé du recalcul"})
+        same = _block("same", knowledge_date="2026-01-05", filing_date="2026-01-05", cik="0000000001")
+        man = {"montages_blocks.jsonl": [
+            {"content_key": "twice", "block_kind": "montage_text", "accession": "acc-2", "document": "s1a2.htm",
+             "form": "S-1/A", "filing_date": "2026-09-21", "knowledge_date": "2026-09-21", "period_end": "2026-09-21",
+             "window": 2, "sort_key": "mt:x:00003", "group_id": "CP:anthropic pbc", "cik": "0000000009", "chars": 33,
+             "locator": {"file": "s1a2.htm", "accession": "acc-2", "cik": "0000000009", "byte_range": None}},
+            {"content_key": "same", "block_kind": "montage_text", "accession": "0000000001-26-000001", "document": "a.htm",
+             "filing_date": "2026-01-05", "knowledge_date": "2026-01-05", "cik": "0000000001", "sort_key": "mt00000",
+             "chars": 33}]}
+        for fields, expected in ((state.MANIFEST_FIELDS, ("acc-2", "s1a2.htm", "2026-09-21", 2, "CP:anthropic pbc", None)),
+                                 (state.MANIFEST_FIELDS_V1, ("acc-3", "s1a3.htm", "2026-11-19", 4, "LAB:ANTHROPIC", "S-1/A"))):
+            with tempfile.TemporaryDirectory() as d:
+                p = pathlib.Path(d) / "montages_blocks.jsonl"
+                p.write_text("".join(json.dumps(b) + "\n" for b in (late, same)), encoding="utf-8")
+                with mock.patch.object(reconstruction, "keys", lambda: set()), \
+                        mock.patch.object(reconstruction, "shown", lambda: {}), \
+                        mock.patch.object(reconstruction, "manifests", lambda: man), \
+                        mock.patch.object(reconstruction, "manifest_fields", lambda fields=fields: fields):
+                    out = reconstruction.restrict([p])
+                kept = {b["content_key"]: b for b in map(json.loads, p.read_text(encoding="utf-8").splitlines())}
+            b = kept["twice"]
+            self.assertEqual((b["accession"], b["document"], b["knowledge_date"], b["window"], b["group_id"],
+                              b["exhibit_type"]), expected)
+            self.assertEqual(b["text"], late["text"])                 # le texte reste celui du recalcul
+            if fields is state.MANIFEST_FIELDS:
+                self.assertEqual(b["locator"], {"file": "s1a2.htm", "accession": "acc-2", "cik": "0000000009",
+                                                "byte_range": None, "section": "titre gardé du recalcul"})
+                self.assertEqual(out[p.name], {"kept": 2, "removed": 0, "realigned": 1, "from_another_filing": 1,
+                                               "manifest": 2, "missing_from_manifest": 0})
+                self.assertEqual(kept["same"], same)                   # un bloc déjà conforme ne bouge pas
+            else:                                                     # premier état : pas d'attribution, rien ne bouge
+                self.assertEqual(out[p.name], {"kept": 2, "removed": 0, "manifest": 2, "missing_from_manifest": 0})
+
+    def test_catalogs_without_manifest_end_with_the_filing_the_reference_shows(self):
+        # point 12 : la pièce d'un 8-K et de son 8-K/A ; le chargement garde le dernier bloc d'une clé
+        def blk(key, acc, doc="ex101.htm"):
+            return {"content_key": key, "block_kind": "exhibit_header", "accession": acc, "document": doc, "text": "t"}
+        cat = [blk("solo", "a-1"), blk("dup", "8-K/A"), blk("other", "a-2"), blk("dup", "8-K"), blk("unread", "x-1"),
+               blk("unread", "x-2"), blk("fine", "f-1"), blk("fine", "f-2")]
+        shown = {"dup": ("exhibit_header", "8-K/A", "ex101.htm", None), "fine": ("exhibit_header", "f-2", "ex101.htm", None),
+                 "solo": ("exhibit_header", "a-1", "ex101.htm", None)}
+        with tempfile.TemporaryDirectory() as d:
+            p, q = pathlib.Path(d) / "blocks.jsonl", pathlib.Path(d) / "text_blocks_ext.jsonl"
+            p.write_text("".join(json.dumps(b) + "\n" for b in cat), encoding="utf-8")
+            q.write_text(json.dumps(blk("solo", "a-1")) + "\n", encoding="utf-8")
+            before = q.stat().st_mtime_ns
+            with mock.patch.object(reconstruction, "shown", lambda: shown):
+                out = reconstruction.prefer_shown([p, q, pathlib.Path(d) / "absent.jsonl"])
+            got = [(b["content_key"], b["accession"]) for b in map(json.loads, p.read_text(encoding="utf-8").splitlines())]
+            self.assertEqual(q.stat().st_mtime_ns, before)             # rien à faire : fichier intact
+        self.assertEqual(got, [("solo", "a-1"), ("dup", "8-K"), ("other", "a-2"), ("dup", "8-K/A"), ("unread", "x-1"),
+                               ("unread", "x-2"), ("fine", "f-1"), ("fine", "f-2")])
+        self.assertEqual(out, {"blocks.jsonl": {"duplicated_keys": 3, "reordered": 1},
+                               "text_blocks_ext.jsonl": {"duplicated_keys": 0, "reordered": 0}})
+
+    def test_the_reference_is_kept_under_its_hash(self):
+        head = reconstruction.commit("HEAD")
+        self.assertRegex(head, r"^[0-9a-f]{40}$")
+        self.assertEqual(reconstruction.commit(head[:12]), head)
+        self.assertEqual(reconstruction.commit("pas-un-commit"), "pas-un-commit")
 
     def test_without_state_the_reference_decides(self):
         with tempfile.TemporaryDirectory() as d:
