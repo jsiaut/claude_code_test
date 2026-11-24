@@ -132,6 +132,18 @@ class LoadedTables(unittest.TestCase):
             self.assertEqual(shown[k], first["accession"], k)
 
     @unittest.skipUnless(reader.CATALOG.exists(), "db/ absent : conteneur neuf")
+    def test_the_order_of_filings_no_longer_matters(self):
+        # l'ordre des dépôts dans les catalogues suit l'inventaire, qui change d'une exécution à l'autre (D-0085,
+        # point 15) : le choix n'en dépend plus. L'ordre des blocs d'un même dépôt, lui, reste (tri stable).
+        cat = reader.load_catalog()
+
+        def choice(catalog):
+            return {k: (b["accession"], b.get("document"), b["block_kind"]) for k, b in reader.by_key(catalog).items()}
+        base = choice(cat)
+        for reverse in (False, True):
+            self.assertEqual(choice(sorted(cat, key=lambda b: str(b["accession"]), reverse=reverse)), base)
+
+    @unittest.skipUnless(reader.CATALOG.exists(), "db/ absent : conteneur neuf")
     def test_a_text_shared_by_several_groups_carries_no_oriented_line(self):
         # une ligne orientée (contrepartie, payeur, receveur) se lit du point de vue d'un déposant et ne vaut pas pour un
         # autre groupe. Aujourd'hui une seule clé réunit des dépôts de plusieurs groupes, et porte une abstention. Si ce

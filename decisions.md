@@ -5979,9 +5979,9 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - documents, faits, entités, mesures, contrôles et exclusions : identiques. Aucun rejet de validation.
   - Tout est l'effet attendu au point 4, sauf le changement de groupe de l'abstention, non prévu et sans conséquence : une abstention n'oriente rien.
   - Limite, et sa garde : une ligne orientée (contrepartie, payeur, receveur) se lit du point de vue d'un déposant, et ne vaut pas pour un autre groupe. Un test échoue le jour où une clé portée par des dépôts de plusieurs groupes porte une telle ligne. Le bloc se relit alors dans une passe de correction : la file le sert par son premier dépôt.
-  - Stabilité : ni l'ordre de l'inventaire ni un dépôt futur, forcément postérieur, ne changent plus l'attribution d'un texte déjà lu.
+  - Stabilité : ni l'ordre de l'inventaire ni un dépôt futur, forcément postérieur, ne changent plus l'attribution d'un texte déjà lu. Vérifié sur le catalogue : cinq ordres de dépôts, deux triés et trois tirés au hasard, rendent le même bloc pour les 13 172 clés ; sous l'ancienne règle, un autre ordre changeait le dépôt de 49 clés.
   - Rendus : `synthesis.md` et `series.md` inchangés. `delta.md` se compare à `92b233a` : aucun événement, aucune cellule, aucune arête apparue ni disparue. 32 207 nombres publiés, contre 32 455 à D-0090 : l'écart est celui de `delta.md`, presque vide cette fois. `audit/attributions.csv` : la ligne de Cipher.
   - État : `make state` n'écrit rien, catalogues et files n'ayant pas changé.
   - Mode d'emploi : `RUNBOOK.md`, § 4 (une clé est de la période nouvelle par son dernier dépôt ; règle du premier dépôt) et § 6 (reconstruction contre un commit antérieur).
-  - Tests : 617, dont 10 pour cette décision ; un test de D-0088 suit la règle nouvelle.
+  - Tests : 618, dont 11 pour cette décision ; un test de D-0088 suit la règle nouvelle.
   - Restes : ceux du point 6.
