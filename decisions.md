@@ -5835,3 +5835,47 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - l'index du 8-K de Meta du 2026-11-23 répond toujours 404 ;
     - le bloc d'Item 404 du catalogue s'arrête au milieu de la section pour ce 424B4 (point 8) ;
     - les blocs dont le même texte figure dans un 8-K et son 8-K/A changent de dépôt d'une exécution à l'autre.
+
+- **D-0091 — Troisième chantier de D-0087 : état versionné, reconstruction en une commande, archives tirées une fois. Règles fixées avant tout changement de code.**
+  (1) Origine : la même réponse de l'utilisateur (D-0089, point 1). L'as_of reste le 2026-11-23. Aucune requête à la SEC pour ce chantier : il s'éprouve sur une copie, réseau coupé. Aucune table ne change. Sans sous-agent.
+
+  (2) Constat, mesuré le 2026-11-24 sur le conteneur de D-0088 (11:35 UTC) :
+  - `db/` pèse 2,2 Go : mémo de l'assemblage 868 Mo et base DuckDB 452 Mo, qui se recalculent ; faits des BDC 243 Mo ; catalogues avec le texte des blocs 373 Mo (tranche 133, bloc `text` 130, piste 47, découverte 44, montages 11, 6-K 4, SoftBank 3,5).
+  - `cache/` pèse 2,7 Go compressés : 24 048 documents de dépôts (1,7 Go), extraits des archives Notes et N-PORT (499 Mo), 23 archives BDC (481 Mo), 3 426 pages de recherche (44 Mo), listes de l'API (20 Mo), liste des noms d'EDGAR (21 Mo).
+  - Temps A de D-0088, au journal, par nature : documents de dépôts 16 763 requêtes (9,0 Go), index de dépôts 5 882, recherche plein texte 3 341, archives XBRL 808, API 372, archives BDC 23 ; archives Notes 96 tirages pour 48 archives (37,3 Go), archives N-PORT 84 pour 28 (35,8 Go). Les archives font 73 des 84 Go, pour 26 minutes de transfert ; les 26 800 petites requêtes, à 2 par seconde, font à elles seules 3 h 45.
+  - L'assemblage relit tout le cache : il prend l'empreinte de chaque ressource pour la table des documents (28 899 fichiers ouverts), et cherche chaque citation dans son document (4 168 documents).
+  - Le texte des blocs ne peut pas se versionner. Les catalogues portent le texte des dépôts tel quel, avec les noms de personnes physiques, les adresses et les numéros d'identité que le dépôt tient hors de ses lignes (D-0051, D-0078). Les catalogues se recalculent donc des documents, et les documents se retirent de la SEC : le mode de reconstruction reste.
+  - Ce qui dépend de l'historique sans porter de texte de dépôt est petit : files et candidats de la découverte et de la piste (1,1 Mo en Parquet), listes des montages (0,3 Mo), manifestes des cinq catalogues préparés sans leur texte (4,3 Mo en JSON), et les deux fichiers de `db/` qu'aucun programme n'écrit (0,6 Mo). Git suit déjà les journaux des recherches et les relevés des offres (`work/discovery`, `work/montages`, `work/tenders`).
+  - La reconstruction de D-0088 s'est faite à la main : 75 commandes en onze scripts, trois reprises, deux fichiers reconstitués à part.
+
+  (3) Règles, état versionné (`state/`) :
+  - `state/` ne porte aucun texte de dépôt : ni texte de bloc, ni titre, ni dénomination. Un test le vérifie sur une liste fermée de champs.
+    - les deux fichiers faits à la main, tels quels : `exhibits_tranche.json` et `usgaap2026_balance.json` ;
+    - le manifeste de chacun des cinq catalogues préparés (montages, 6-K, SoftBank, découverte, piste), dans l'ordre du catalogue : clé de contenu, type de bloc, dépôt, document, type de pièce, montage, fenêtre, rang, longueur, date et groupe ;
+    - les listes des montages (`montages_info*.json`) ;
+    - les files et les candidats de la découverte et de la piste, ligne à ligne, sans perte de type.
+  - `python3 -m pipeline.state save` l'écrit depuis `db/` après un assemblage ; `check` dit s'il est à jour ; `restore` le remet. Il se commite avec les tables qu'il décrit.
+  - La reconstruction s'en sert, et se comporte comme avant sans lui :
+    - les clés gardées sont celles que la référence a lues, plus celles des manifestes : un bloc préparé mais non lu revient aussi ;
+    - `reconstruction restrict` suit le manifeste : mêmes clés, même dépôt et même document quand un texte figure dans deux dépôts, même ordre ;
+    - les listes des montages reviennent du manifeste après la préparation ; les files et les candidats, après leur recalcul : rangs et états sont ceux de l'exécution d'origine.
+
+  (4) Règles, archives tirées une fois :
+  - Avec `PIPELINE_KEEP_ARCHIVES=1`, le client garde une archive tirée dans un fichier (`work/tmp/kept_archives/`) ; un tirage suivant de la même adresse la reprend sans requête, avec ses en-têtes. La reprise s'écrit au journal sans adresse : ce n'est pas une requête.
+  - La commande de reconstruction pose la variable et efface chaque famille après son dernier lecteur : Notes après la piste, N-PORT après ses trois volets. Hors d'elle, rien ne change.
+
+  (5) Règles, reconstruction en une commande :
+  - `make rebuild REF=<commit>` (`pipeline/rebuild.py`) enchaîne les étapes du § 6 de `RUNBOOK.md`, dans l'ordre suivi à D-0088 : état remis, tronc, BDC, découverte, piste, Form D, émetteurs étrangers et 6-K, SoftBank, participations, laboratoires, N-PORT, montages dans l'ordre de la configuration, restriction, clés manquantes, assemblage, comparaison à la référence.
+  - Une étape à la fois, donc une seule commande réseau à la fois. Chaque étape a son journal sous `work/tmp/logs/` ; la commande s'arrête à la première qui échoue et reprend où elle s'est arrêtée (`--from`, `--only`, `--list`). Un refus durable de la SEC l'arrête comme toute commande (D-0088, point 8).
+  - Elle ne lit aucun bloc et ne commite rien. Les écarts de la comparaison s'expliquent dans la décision en cours, comme avant.
+
+  (6) Épreuve, sans requête :
+  - sur une copie du dépôt, avec une copie de ce cache et un `db/` vide, réseau coupé : `make rebuild REF=HEAD`. Tout étant au cache, aucune requête ne doit partir ; une requête tentée est un constat. Les tables obtenues se comparent à celles du commit, chaque écart expliqué ici ;
+  - la reprise d'une archive gardée s'éprouve par des tests, sans archive réelle ;
+  - l'épreuve ne dit rien d'un tirage réel sur un conteneur neuf (durée, refus) : `RUNBOOK.md` le dit, avec l'estimation tirée du journal.
+
+  (7) Hors de cette décision, à dire à l'utilisateur :
+  - seuls le texte des blocs ou le cache brut, gardés quelque part, éviteraient de retirer les documents ; le premier porte des données personnelles, le second pèse 2,7 Go : ni l'un ni l'autre n'entre dans ce dépôt sans sa décision ;
+  - une session reprise garde son conteneur : `db/` et `cache/` y sont encore, comme ce 24 novembre.
+
+  (8) Ordre et commits : la décision ; le client (archives gardées) et ses tests ; l'état (`pipeline/state.py`) et ses tests ; la reconstruction qui s'en sert ; la commande ; l'état sauvé pour les tables de D-0090 ; l'épreuve et ses résultats ici ; `RUNBOOK.md` et `CLAUDE.md` ; `make check`, commit, push ; rapport.
