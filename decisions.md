@@ -5503,3 +5503,18 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - volumes consignés ici avant toute lecture ; ne se lisent que les blocs tirés de dépôts de la période nouvelle, du plus récent au plus ancien ;
     - lecture sous les gardes de D-0087 : passe ouverte par `reader open-pass`, listes `upd_20261123_groups` et `upd_20261123_s14`, `make read-check` avant le réassemblage.
   - Comparaison : `make compare REF=f358538`, chaque écart expliqué ici ; `delta.md` se compare de même à `f358538`.
+
+  (13) Statut des têtes non déposantes, et règle fixée avant toute lecture (2026-11-24, 00:40 UTC).
+  - Réseau : 5 requêtes, toutes en 200 : submissions des deux têtes (2), en-têtes du S-1/A n° 3, du 424B4 et du S-1MEF d'Anthropic (3).
+  - Nscale plc n'a rien déposé depuis son S-1/A du 2026-11-12.
+  - Anthropic, PBC est introduite en bourse dans la période. Vingt-deux dépôts du 2026-11-17 au 2026-11-23 :
+    - amendement n° 3 du S-1 (S-1/A du 2026-11-17, 0001628280-26-074338) : document principal, EX-1.1 (contrat de garantie), deux EX-23 ; ni EX-10 ni EX-4 ;
+    - enregistrement des titres (8-A12B, 2026-11-17), certification de la bourse (CERT) et avis de prise d'effet (EFFECT) du 2026-11-18, S-1MEF du même jour (titres supplémentaires : EX-5.1, deux EX-23, table des frais) ;
+    - prospectus définitif (424B4 du 2026-11-19, 0001628280-26-074944), sans pièce ; prospectus libre de fixation du prix et deux S-8 le même jour, un prospectus libre le 18 ;
+    - huit formulaires 3 (2026-11-18) et quatre formulaires 4 (2026-11-23), déclarations de personnes initiées.
+  - Règles :
+    - le S-1/A n° 3 et le 424B4 se lisent comme les amendements n° 1 et n° 2 (D-0084, point 9 ; D-0085, point 5) : textes propres de LAB:ANTHROPIC, une entrée de `own_filings` chacun, mêmes sections écartées, même mise en page, mêmes jeux de notes que l'amendement n° 2. Le 424B4 est la dernière version du même prospectus : il se lit comme un amendement ;
+    - une unité dont le texte est déjà un bloc du catalogue n'y entre pas. Chaque bloc nouveau se lit en regard de son homologue de la version précédente, la plus récente qui porte la même section : une ligne se reprend quand sa citation figure encore dans le bloc et que le passage n'a pas changé, sinon elle se récrit ;
+    - ne se lisent pas : l'EX-1.1, les EX-23, le S-1MEF et ses pièces, le 8-A12B, la certification, l'avis de prise d'effet, les prospectus libres et les S-8, comme en D-0085 ; ni les formulaires 3 et 4, déclarations de personnes physiques (D-0078) ;
+    - cotation : le prospectus d'introduction en donne la date au code (D-0065, point 7 ; D-0083, point 11). Aucune archive N-PORT ne couvre encore de date postérieure ; l'effet se vérifie à la comparaison ;
+    - LAB:ANTHROPIC reste un laboratoire, lu par ses textes propres. En faire un groupe déposant (rapports périodiques, XBRL, annexe F) changerait la liste des groupes : la décision revient à l'utilisateur et lui est signalée.
