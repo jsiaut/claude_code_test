@@ -5757,3 +5757,38 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - contrôles 73 045 → 73 040 : les cinq `c5_bilateral` des paires disparues ; trois autres comptent une ou deux arêtes de moins. Aucun contrôle ne bascule.
   - Rendus : 32 233 nombres publiés. `delta.md` se compare désormais à 1eeb487 et dit ces écarts ; celui de la mise à jour reste dans ce commit-là.
   - Contrôles : `make check`, 574 tests (9 dans `tests/test_d0089.py`, dont la garde G1 sur toutes les lignes chargées), ruff sans constat.
+
+- **D-0090 — Anthropic, laboratoire devenu déposant, entre comme groupe. Règles fixées avant tout tirage.**
+  (1) Origine : réponse de l'utilisateur au rapport de D-0088, le 2026-11-24 : « Ok fais 1 et 2 ». Le point 1 du rapport demandait s'il fallait faire d'Anthropic un groupe déposant (D-0088, points 13 et 26). Lecture par l'exécutant seul, sans sous-agent. L'as_of reste le 2026-11-23 (D-0048, point 2) : ce n'est pas une mise à jour (§11.5). Ni critère des annexes E et F, ni seuil ne change.
+
+  (2) Statut, lu sans requête dans le cache du 2026-11-23 (10:16 UTC) :
+  - `company_tickers.json` : le symbole ANT résout le CIK 2130357 (Anthropic, PBC ; Nasdaq ; SIC 7372 ; Delaware ; exercice clos le 31 décembre).
+  - 36 dépôts au 2026-11-23, le premier du 2026-06-01 : un projet confidentiel et cinq amendements (DRS, DRS/A), le S-1 du 2026-10-26, trois S-1/A, le 8-A12B, la certification de la bourse, l'avis de prise d'effet du 2026-11-18, un S-1MEF, le 424B4 du 2026-11-19, sept prospectus libres, deux S-8, huit formulaires 3 et quatre formulaires 4. Ni rapport périodique, ni 8-K.
+  - Le document d'enregistrement présente les exercices 2023 à 2025, audités, et les neuf mois clos les 30 septembre 2025 et 2026 (jeux de notes de `own_filings`). Le premier rapport périodique attendu est donc le 10-K de 2026 ; le premier 10-Q portera sur le premier trimestre de 2027 (règle 13a-13).
+  - EDGAR marque d'un balisage le S-1, le S-1/A n° 2, le S-1MEF et les deux S-8. Dans ce corpus, les documents d'enregistrement de Cerebras et de SpaceX n'ont de balisé que leur page de garde (15 et 5 faits `dei`) : la phase 1 dira ce qu'il en est ici.
+  - Ce que le modèle sait déjà d'Anthropic, sous la référence `LAB:ANTHROPIC` : 821 lignes lues dans 381 blocs (textes propres du S-1, de ses trois amendements et du 424B4, par la piste des dépôts propres ; fenêtres de montage), 341 liens, 1 364 cellules.
+  - Essai sans réseau, sur une copie du dépôt : la phase 0 et l'univers attendu acceptent le groupe sous cette référence (calendrier d'exercices clos le 31 décembre, 36 dépôts à l'inventaire, 744 cellules attendues de plus).
+
+  (3) Identité : un seul nœud.
+  - Anthropic reste un laboratoire (volets de D-0059 à D-0067) et devient en plus un groupe de `config.yaml`. Le groupe garde la référence `LAB:ANTHROPIC` : aucune clé publiée ne change, et il n'y a pas de migration (§9.6). Dans les tables, « laboratoire » ne veut plus dire « non déposant » pour lui.
+  - `groups` reçoit `"LAB:ANTHROPIC": "0002130357"`, et `group_tickers` donne son symbole, ANT : `company_tickers.json` continue de résoudre le CIK (§10.1). `group_entry` au 2026-11-24. `labs` ne change pas.
+  - Tête : l'entité du CIK, semée par la phase 0 comme pour tout groupe. L'entrée de `confirmed_entities` qui tenait ce rôle (« Anthropic PBC », D-0021) se retire si elle fait double emploi ; les lignes qui nomment la société vont alors à l'entité du CIK, sous le même groupe. L'entité du laboratoire (`lab:anthropic`), ses filiales et ses alias ne changent pas.
+  - `reporting_start` : exercices à partir du 2023-01-01 (424B4, Reg S-X 3-02) ; trimestres à partir du 2027-01-01, à revoir au premier rapport périodique. `history_left_censored` si la phase 0 le constate.
+
+  (4) Phases : celles des groupes présents (D-0070, point 3), réseau en série, 2 requêtes par seconde au plus.
+  - Phase 0, univers attendu, index, phase 1 (companyfacts et instances), phase 2, catalogue.
+  - Faits : ce que la phase 1 trouve de balisé entre dans `facts`. Si les états financiers ne sont pas balisés, les mesures tirées des faits restent indéterminées, avec leur motif. Aucune série annuelle ne se lit en HTML ici : la décision D1 de §10.3 demande les libellés d'un premier rapport périodique, qui n'existe pas encore.
+  - Un projet confidentiel (DRS) est soumis, pas déposé : il n'entre dans aucune mesure (§10.3). Les formulaires 3 et 4, déclarations de personnes physiques, ne se lisent pas (D-0078).
+
+  (5) Texte : le document d'enregistrement reste lu par la piste des dépôts propres.
+  - Le S-1, ses amendements et le 424B4 sont lus en entier par cette piste (prospectus, jeux de notes, Item 404, pièces : D-0077, D-0084, D-0085, D-0088), plus largement que le catalogue d'un groupe ne les lirait. Leurs entrées de `own_filings` et leurs lignes ne changent pas.
+  - Un bloc que le catalogue du groupe tire d'un de ces dépôts, et dont le texte est déjà lu par la piste, ne se relit pas : il reçoit une abstention `duplicate_of_other_block` qui nomme le bloc porteur des lignes (D-0070, point 11). Un bloc dont le texte n'est pas déjà lu se lit.
+  - Volume consigné ici avant toute lecture : blocs nouveaux du catalogue, repris et à lire.
+  - Les rapports périodiques et les 8-K à venir se liront par le catalogue du groupe, à chaque mise à jour. Un amendement ou un prospectus nouveau du document d'enregistrement garde sa règle (D-0085, point 5).
+
+  (6) Découverte, montages, N-PORT :
+  - le CIK d'Anthropic est déjà écarté des candidats de la découverte (entité d'un laboratoire, D-0036) ; les unités tirées de ses dépôts propres restent à la piste ;
+  - une fenêtre de montage tirée d'un dépôt d'Anthropic porte déjà son groupe ; ce que le passage au rang de groupe change dans les montages de corpus se mesure à leur préparation et se consigne avant toute lecture ;
+  - la date de cotation vient du 424B4, comme avant (D-0065, point 7).
+
+  (7) Ordre et commits : la décision ; la configuration et le code de la résolution du symbole, avec ses tests ; phase 0 et univers ; index, phases 1 et 2 ; catalogue et montages, volumes consignés ici ; lecture ; intégration (entités, réassemblage, `make compare` contre le commit de D-0089, chaque écart expliqué) ; rendus ; `make check`, commit, push.
