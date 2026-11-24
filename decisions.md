@@ -5589,7 +5589,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - Écart d'ordre, sans effet : dans la piste, l'amendement n° 3 a été lu avant le 424B4, plus récent, pour que ses lignes puissent s'y reprendre.
   - Restent à lire : SoftBank, 74 blocs ; montages, 102 fenêtres. Pour le S-1/A de SB Energy (71 blocs, 383 982 caractères), le texte nouveau au sens du point 16 fait 153 780 caractères.
 
-  (19) Lecture de SoftBank, premières fenêtres de montage, et règle de lecture du bail du bâtiment 2, fixée avant sa lecture (2026-11-24, 03:25 UTC).
+  (19) Lecture de SoftBank, premières fenêtres de montage, et règle de lecture du bail du bâtiment 2, fixée avant sa lecture (2026-11-24, 03:02 UTC).
   - SoftBank : 74 blocs lus par l'exécutant seul, 241 lignes (200 observations, 41 abstentions).
     - Amendement n° 3 de SB Energy, Item 404 : 22 lignes reprises, 5 récrites. La juste valeur des bons d'OpenAI à l'émission passe d'environ 3,646 à environ 4,603 Md$ ; le passif vaut environ 2,3 Md$ au 30 septembre 2026 (environ 5,5 Md$ au 30 juin dans l'amendement n° 2).
     - Retraitement : les comptes au 31 mars et au 30 juin 2026 sont corrigés d'une erreur de valorisation des bons d'OpenAI (passif sous-évalué de 753 050 et de 826 590 milliers de dollars, incitation locative de 957 232 milliers). Les deux notes de retraitement portent le signal `nonreliance` présent, au titre de la correction d'erreur de §4.5, avec `judgment_sensitive` : le texte ne dit pas que les comptes émis ne doivent plus être utilisés.
@@ -5604,3 +5604,15 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les phrases et lignes de tableau absentes de la pièce 10.28 (40 679 caractères) se lisent en entier, avec leur contexte ;
     - une clause identique à une clause relevée sur le bâtiment 1 se relève de même sur le bail du bâtiment 2, deuxième contrat, avec la citation de la pièce 10.29 ;
     - une fenêtre sans phrase nouvelle ni clause reçoit l'abstention de la fenêtre homologue.
+
+  (20) Fin de la lecture de §14 (2026-11-24, 03:12 UTC). La file est vide : 295 blocs lus par l'exécutant seul à cet as_of, plus le bloc des groupes.
+  - Montages, 102 fenêtres, 103 lignes (24 observations, 79 abstentions) :
+    - bail refondu du bâtiment 1 de Milam County (pièce 10.28, 41 fenêtres) : point 19, plus la refonte du bail du 9 janvier 2026 et l'acte d'adhésion d'OpenAI Global, LLC (garantie principale et inconditionnelle, participation de contrôle dans la preneuse) ;
+    - bail du bâtiment 2 (pièce 10.29, 34 fenêtres), lu en regard (point 19). La comparaison se fait hors numéros de page et blancs : les écarts de phrases mesurés au point 19 (40 679 caractères) tenaient pour l'essentiel à la mise en page. Deux différences de fond : une sortie propre au bâtiment 2 (la preneuse ou la bailleresse peut résilier si Oncor n'a pas confirmé une puissance supplémentaire à une date masquée) et la compensation des réparations sur cinquante pour cent au plus du loyer de base, masquée dans l'autre bail. Les clauses communes sont relevées sur chaque bail : durée, premier refus sur l'électricité renouvelable, garantie d'achèvement d'Energy Global, LP, quatre sorties ;
+    - garantie de valeur résiduelle de NVIDIA signée (pièce 10.31, 13 fenêtres) : même contrat que le modèle déposé le 4 septembre 2026, dont le corps est lu (bloc 452925f1038e). Ses clauses ne se relèvent pas deux fois (D-0067) : dix abstentions de doublon, trois de clauses usuelles ; les parties, désormais nommées, sont relevées sur l'en-tête ;
+    - actes d'adhésion d'OpenAI Global, LLC aux baux des bâtiments 1, 4 et 10 de PORTS (pièces 10.46 à 10.48) : la garantie s'éteint avec celle de NVIDIA ; pour le bâtiment 10, hors des neuf bâtiments couverts, elle ne prend effet qu'à la remise par NVIDIA de sa garantie ;
+    - convention de crédit relais de SE Cosmos, LLC (pièce 10.30) : ses détenteurs admis sont Softbank Group Corp. et OpenAI ;
+    - contrat-cadre de Quanome Technologies, Inc. (pièce 10.4 d'un 10-Q, 4 fenêtres, 231 006 caractères) : mention fausse du lexique. « OpenAI » n'y désigne qu'un format d'interface ; les parties, Xpert Software Solutions Pte. Ltd. et XDT Infrastructure I, LLC, sont hors de la chaîne ; NVIDIA n'est citée que comme fabricant. Ces quatre fenêtres sont parcourues en entier par recherche des noms des groupes, des laboratoires et des termes du lexique, comme le guide de la découverte le prévoit pour un bloc très long (§ 5), et reçoivent une abstention qui dit ce parcours ;
+    - les fenêtres du prospectus (`labs_events`, `stargate`) : un doublon (option de NVIDIA sur 3,78 GW-IT) et une notice biographique, hors champ.
+  - Lignes de clause (D-0067) de cette lecture : 16 (durée 5, sortie 9, exclusivité 2).
+  - Lecture de §14 à cet as_of : 295 blocs, 534 lignes : piste 48 blocs et 99 lignes ; 6-K 71 et 91 ; SoftBank 74 et 241 ; montages 102 et 103.
