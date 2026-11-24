@@ -2899,17 +2899,28 @@ def journal_stats():
     return n, ok, by, first, last
 
 
-def stop_rule(con):
-    """Règle d'arrêt de §11.4, calculée (D-0069, point 8). Refus durable de la SEC : la dernière requête du
-    journal est un refus 403. Échec général des contrôles : sur les contrôles non provisoires
-    (`tolerance_basis = declared`) de la vue as_known, plus de la moitié des groupes ont plus de la moitié de
-    leurs périodes testées en échec, une période l'étant quand ses mismatch dépassent ses ok."""
-    n403, last = 0, None
-    for line in open(config.ROOT / "journal.jsonl", encoding="utf-8"):
+def journal_refusals(path):
+    """Refus de la SEC au journal (D-0088, points 8 et 23) : nombre de 403, nombre de 429 d'hôtes de la SEC, et refus
+    durable, quand la dernière entrée est un 403, une telle 429, une pause ou un arrêt du client."""
+    def sec(o):
+        return str(o.get("host") or "").endswith("sec.gov")
+    n403, n429, last = 0, 0, None
+    for line in open(path, encoding="utf-8"):
         o = json.loads(line)
         if o.get("url"):
             n403 += o.get("status") == 403
+            n429 += o.get("status") == 429 and sec(o)
             last = o
+    st = last.get("status") if last else None
+    return n403, n429, bool(last and (st in (403, "pause", "refused") or (st == 429 and sec(last))))
+
+
+def stop_rule(con):
+    """Règle d'arrêt de §11.4, calculée (D-0069, point 8). Refus durable de la SEC : la dernière requête du
+    journal est un refus, 403 ou 429 (D-0088, point 23). Échec général des contrôles : sur les contrôles non provisoires
+    (`tolerance_basis = declared`) de la vue as_known, plus de la moitié des groupes ont plus de la moitié de
+    leurs périodes testées en échec, une période l'étant quand ses mismatch dépassent ses ok."""
+    n403, n429, refused = journal_refusals(config.ROOT / "journal.jsonl")
     groups = set(config.load()["groups"])
     per = {}
     for r in q(con, """SELECT subject, period_end, count(*) FILTER (WHERE status = 'mismatch') AS m,
@@ -2921,7 +2932,7 @@ def stop_rule(con):
             t[0] += 1
             t[1] += r["m"] > r["ok"]
     failing = sorted(g for g, (n, f) in per.items() if 2 * f > n)
-    return {"n403": n403, "refused": bool(last and last.get("status") == 403), "groups": len(per), "failing": failing,
+    return {"n403": n403, "n429": n429, "refused": refused, "groups": len(per), "failing": failing,
             "general": 2 * len(failing) > len(per), "periods": sum(n for n, _ in per.values()),
             "failing_periods": sum(f for _, f in per.values())}
 
@@ -2929,7 +2940,8 @@ def stop_rule(con):
 def stop_text(con, T):
     """(arrêt, phrase sur la SEC, phrase sur les contrôles), nombres en jetons."""
     s = stop_rule(con)
-    sec = (f"refus 403 de la SEC au journal : {T.n('journal', {'http_403': True}, s['n403'])}, et la dernière requête "
+    sec = (f"refus 403 de la SEC au journal : {T.n('journal', {'http_403': True}, s['n403'])}, réponses 429 de la SEC : "
+           f"{T.n('journal', {'http_429_sec': True}, s['n429'])}, et la dernière requête "
            + ("est un refus" if s["refused"] else "a abouti"))
     ctl = ("groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, "
            f"`mismatch` plus nombreux que `ok`) : {T.n('controls', {'stop_failing_groups': True}, len(s['failing']))} sur "

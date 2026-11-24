@@ -253,5 +253,35 @@ class NfQueueFile(unittest.TestCase):
         self.assertNotIn("u.get('file')", src)
 
 
+class StopRuleRefusals(unittest.TestCase):
+    """Règle d'arrêt du rendu : les 429 d'un hôte de la SEC comptent, et une dernière entrée de refus arrête (point 23)."""
+
+    def _journal(self, rows):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        p = pathlib.Path(d.name) / "journal.jsonl"
+        p.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+        return p
+
+    def test_counts_403_and_sec_429(self):
+        from pipeline import render
+        u = "https://www.sec.gov/x"
+        p = self._journal([{"url": u, "host": "www.sec.gov", "status": 429}, {"url": u, "host": "www.sec.gov", "status": "pause"},
+                           {"url": "https://xbrl.fasb.org/x", "host": "xbrl.fasb.org", "status": 429},
+                           {"url": u, "host": "data.sec.gov", "status": 403}, {"url": u, "host": "www.sec.gov", "status": 200}])
+        self.assertEqual(render.journal_refusals(p), (1, 1, False))
+
+    def test_a_last_refusal_is_a_stop(self):
+        from pipeline import render
+        u = "https://www.sec.gov/x"
+        ok = {"url": u, "host": "www.sec.gov", "status": 200}
+        for last in ({"url": u, "host": "www.sec.gov", "status": 403}, {"url": u, "host": "efts.sec.gov", "status": 429},
+                     {"url": u, "host": "www.sec.gov", "status": "pause"}, {"url": u, "host": "www.sec.gov", "status": "refused"}):
+            self.assertTrue(render.journal_refusals(self._journal([ok, last]))[2], last)
+        # une 429 d'un hôte hors SEC reste passagère, et une entrée sans adresse ne compte pas
+        self.assertFalse(render.journal_refusals(self._journal([ok, {"url": "https://xbrl.fasb.org/x", "host": "xbrl.fasb.org", "status": 429}]))[2])
+        self.assertFalse(render.journal_refusals(self._journal([ok, {"note": "fin de commande", "status": 403}]))[2])
+
+
 if __name__ == "__main__":
     unittest.main()

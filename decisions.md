@@ -5629,7 +5629,14 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   (22) Premier réassemblage du temps B (613 s), comparaison, constat et règle fixée avant tout changement de code (2026-11-24, 03:37 UTC).
   - Tables : documents 28 285, faits 1 631 709, observations 33 595, entités 3 753, liens 12 380, mesures 201 701, contrôles 73 045, exclusions 32 253.
   - Constat, table des exclusions : 81 libellés de la piste des non-déposants écrivent « au-delà du plafond de lecture (nan) » au lieu de « (D-0044) ».
+    - Le défaut est ancien : la table de `f358538` porte déjà 88 de ces libellés. L'état reconstruit au temps A, sans la colonne, les écrivait « (D-0044) » ; la mise à jour les fait revenir.
     - L'état des unités reconstruit au temps A (`nf_discovery_units.parquet`) n'a pas la colonne `file`, qui nomme la file d'origine de chaque unité. La mise à jour ajoute sept unités avec la leur (D-0074) : les 4 130 unités antérieures reçoivent une valeur manquante, que l'assemblage prend pour un libellé.
     - La même valeur manquante compte pour « autre que D-0044 » dans l'ordre de préparation des unités retenues (`prepare`) : les unités d'origine ne passeraient plus avant les files à part. Sans effet à cette exécution, où seules les trois unités nouvelles restaient à préparer.
   - Règle : une unité sans file appartient à la file d'origine, D-0044, comme `select_with_prior` l'écrit déjà pour un état antérieur. Les deux lectures de la colonne, libellé d'exclusion et ordre de préparation, prennent une valeur manquante pour D-0044. L'état reste tel quel : les unités de l'exécution précédente ne changent pas (D-0074, point 3).
   - Code : `pipeline/nf_discovery.py` (`unit_file`, `queue_order`), `pipeline/assemble.py` ; tests dans `tests/test_d0088.py`. Puis second réassemblage et comparaison.
+
+  (23) Second réassemblage (529 s) et rendus : constat, et règle fixée avant tout changement de code (2026-11-24, 03:50 UTC).
+  - Second réassemblage : les huit tables sont celles du premier, sauf les 81 libellés du point 22, qui écrivent « (D-0044) ».
+  - Constat, `delta.md` : sa section « Arrêt » ne compte que les refus 403 (« refus 403 de la SEC au journal : 0 »). Le journal porte 252 réponses 429 d'hôtes de la SEC et trois pauses, que le client traite comme des refus depuis le point 8. Une exécution arrêtée par le client sur une 429 persistante s'y lirait « aucun arrêt ».
+  - Règle : la règle d'arrêt de §11.4, telle que le rendu la calcule (D-0069, point 8), compte les refus des deux sortes. Un refus durable est une dernière entrée du journal qui est un 403, une 429 d'un hôte de la SEC, une pause ou un arrêt du client. La phrase donne les deux nombres. Le reste de la section ne change pas.
+  - Code : `pipeline/render.py` (`journal_refusals`, `stop_rule`, `stop_text`) ; tests dans `tests/test_d0088.py`. Puis nouveau rendu.
