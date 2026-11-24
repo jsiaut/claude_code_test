@@ -5489,7 +5489,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Bilan : la reconstruction redonne `f358538` à ces écarts près. Le temps B part de cet état ; ses tables se comparent à celles de `f358538`.
   - Mode d'emploi, écarts corrigés dans `RUNBOOK.md` : traitement des refus et cadence (point 8), document « non obtenu » (point 9), ordre des montages et règle de restriction (point 10).
 
-  (12) Temps B, mise à jour à l'as_of du 2026-11-23 : règles fixées avant tout tirage de la période nouvelle (2026-11-24, 00:35 UTC).
+  (12) Temps B, mise à jour à l'as_of du 2026-11-23 : règles fixées avant tout tirage de la période nouvelle (2026-11-24, 00:33 UTC).
   - Configuration : `as_of: "2026-11-23"` et `as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27", "2026-10-31", "2026-11-07", "2026-11-14"]`. `search_overlap_from` reste au 2026-10-27 : la fenêtre nouvelle d'une recherche va du 2026-11-14 au 2026-11-23.
   - Mode ordinaire : `PIPELINE_RECONSTRUCTION` n'est plus posée. L'état du temps A tient lieu d'exécution précédente :
     - catalogues préparés et files copiés une fois sous `{nom}.2026-11-14` avant leur première réécriture ; seuls s'y ajoutent les blocs et les unités de la période nouvelle ;
@@ -5504,7 +5504,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - lecture sous les gardes de D-0087 : passe ouverte par `reader open-pass`, listes `upd_20261123_groups` et `upd_20261123_s14`, `make read-check` avant le réassemblage.
   - Comparaison : `make compare REF=f358538`, chaque écart expliqué ici ; `delta.md` se compare de même à `f358538`.
 
-  (13) Statut des têtes non déposantes, et règle fixée avant toute lecture (2026-11-24, 00:40 UTC).
+  (13) Statut des têtes non déposantes, et règle fixée avant toute lecture (2026-11-24, 00:36 UTC).
   - Réseau : 5 requêtes, toutes en 200 : submissions des deux têtes (2), en-têtes du S-1/A n° 3, du 424B4 et du S-1MEF d'Anthropic (3).
   - Nscale plc n'a rien déposé depuis son S-1/A du 2026-11-12.
   - Anthropic, PBC est introduite en bourse dans la période. Vingt-deux dépôts du 2026-11-17 au 2026-11-23 :
@@ -5518,3 +5518,14 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - ne se lisent pas : l'EX-1.1, les EX-23, le S-1MEF et ses pièces, le 8-A12B, la certification, l'avis de prise d'effet, les prospectus libres et les S-8, comme en D-0085 ; ni les formulaires 3 et 4, déclarations de personnes physiques (D-0078) ;
     - cotation : le prospectus d'introduction en donne la date au code (D-0065, point 7 ; D-0083, point 11). Aucune archive N-PORT ne couvre encore de date postérieure ; l'effet se vérifie à la comparaison ;
     - LAB:ANTHROPIC reste un laboratoire, lu par ses textes propres. En faire un groupe déposant (rapports périodiques, XBRL, annexe F) changerait la liste des groupes : la décision revient à l'utilisateur et lui est signalée.
+
+  (14) Phases 0 à 2 et catalogues des groupes, avant toute lecture (2026-11-24, 00:52 UTC) :
+  - Réseau : 103 requêtes : phase 0 62, index 3, phase 1 37, phase 2 1. Avec le point 13 : 108 à cet as_of, aucun refus.
+  - Inventaire : 31 066 → 31 209 dépôts. Les 143 nouveaux sont datés du 2026-11-16 au 2026-11-23 ; aucun ne sort.
+    - 8-K : AMD (8-K/A du 16, item 3.02 ; 8-K du 20, items 5.03 et 9.01), NVIDIA (résultats du 17, items 2.02 et 9.01 ; 8-K du 23, items 5.02 et 9.01), Oracle (5.07), Meta (8.01, le 23). Seul l'item 8.01 de Meta est un item suivi.
+    - 6-K : deux de SK hynix (16 et 20 novembre), traités par le bloc 6-K de §14.
+    - Le reste : formulaires 4 (73), 144 (32), 13G et 13D (15), 13F-HR (9, dont ceux de NVIDIA, d'AMD, d'Intel, de Galaxy et de Blackstone), émissions d'Alphabet (424B5, FWP, 8-A12B, certification, 424B2), S-3ASR d'AMD. Aucun rapport périodique.
+  - Univers attendu : 25 032 cellules, inchangé. Index : 2 278 → 2 279 dépôts. Phase 1 : 808 dépôts lus, les 7 échecs connus. Phase 2 : 2 385 → 2 386 documents, aucun échec.
+    - L'index du 8-K de Meta (`index.json`) répond 404, deux fois, trois heures après l'acceptation du dépôt. Son en-tête SGML est tiré : treize documents, sans pièce. Seules les tailles manquent ; l'index se retirera à l'exécution suivante.
+  - Catalogues, sans requête : aucune clé lue ne disparaît. Tranche : 4 410 → 4 411 clés ; bloc `text` : 4 545 clés, inchangé.
+  - À lire : 1 bloc, 3 789 caractères, l'item 8.01 du 8-K de Meta. Liste `upd_20261123_groups`. Passe ouverte : `2026-11-24T00:51:08Z`.
