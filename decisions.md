@@ -5529,3 +5529,26 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - L'index du 8-K de Meta (`index.json`) répond 404, deux fois, trois heures après l'acceptation du dépôt. Son en-tête SGML est tiré : treize documents, sans pièce. Seules les tailles manquent ; l'index se retirera à l'exécution suivante.
   - Catalogues, sans requête : aucune clé lue ne disparaît. Tranche : 4 410 → 4 411 clés ; bloc `text` : 4 545 clés, inchangé.
   - À lire : 1 bloc, 3 789 caractères, l'item 8.01 du 8-K de Meta. Liste `upd_20261123_groups`. Passe ouverte : `2026-11-24T00:51:08Z`.
+
+  (15) Blocs de §14, première partie, et volume de la piste avant toute lecture (2026-11-24, 01:42 UTC).
+  - Lecture des groupes (point 14) : 1 bloc, 1 abstention. Le 8-K de Meta rapporte un litige d'actionnaires sur sa reclassification en actions de classe C, sans contrepartie de la chaîne ni montant.
+  - Interruption : le processus de la session a redémarré à 01:16 pendant la vérification de la découverte. Rien n'était écrit ; l'étape est repartie de son début, sans retirer les pièces au cache.
+  - BDC (224 requêtes) :
+    - l'archive 2026_08, republiée le 2026-11-20, est gardée : 78 461 121 octets, contre 75 864 269 dans `f358538` ;
+    - positions 749 499, de 199 BDC et 2 103 dépôts ; faits des archives 3 482 336, de 2 106 dépôts ; passif 2 401 dépôts, 210 véhicules ; inventaire de 65 006 dépôts ; 12 documents d'offres tirés ;
+    - offres de rachat : 616 → 618 relevés, chaque relevé nouveau ou changé vérifié sur le texte de l'amendement :
+      - Prospect Floating Rate & Alternative Income Fund, offre expirée le 2026-10-30 : 26 743 parts apportées, toutes rachetées ;
+      - First Eagle Private Credit Fund, offre du 2026-10-30 sur 621 572 parts au plus, ouverte jusqu'au 2026-11-30 : sans résultat ;
+      - Ares Strategic Income Fund : un amendement final corrigé (2026-11-17, erreur administrative d'un tiers) porte les parts apportées de 50 400 325 à 50 412 264 et les parts acceptées de 19 264 139 à 19 268 702, toujours 38,2 % au prorata ;
+      - `finalize` : 0 erreur ; annonces : les mêmes 42 unités.
+  - Découverte (100 requêtes, dont 5 réponses 500 redemandées) : aucune archive nouvelle des Notes ; recherche sur la fenêtre du 2026-11-14 au 2026-11-23, 9 501 → 9 559 résultats ; 33 pièces tirées ; candidats 3 087 → 3 091 ; file 19 086 → 19 116 unités. Aucune unité nouvelle n'entre dans la frontière de D-0041, et il ne reste aucune unité prioritaire de D-0086 : le catalogue garde ses 769 blocs.
+  - Piste des non-déposants (79 requêtes, dont 5 réponses 500 redemandées) : recherche 1 154 → 1 173 résultats ; candidats 389 → 388 ; file 4 130 → 4 137 unités. Catalogue : 729 → 777 blocs, les anciens identiques :
+    - 3 en-têtes de pièces EX-10 d'un dépôt de Kulicke & Soffa du 2026-11-19 (12 633 caractères), retenus par la règle R1 ;
+    - 45 blocs des deux dépôts d'Anthropic (844 797 caractères) : S-1/A n° 3, 10 sections du prospectus et la note 17 ; 424B4, 32 sections, l'Item 404 et la note 17. Les 115 autres unités ont le texte d'un bloc déjà au catalogue et restent à leur dépôt d'origine.
+  - Refus : une 429 à 01:35:48, sur la première requête du bloc Form D, après deux minutes sans requête. Le client se met en pause 600 s. La cadence de l'exécution n'y est pour rien, ce qui appuie l'hypothèse d'une adresse de sortie partagée (point 9).
+  - À lire, piste : 48 blocs, 857 430 caractères. Liste `upd_20261123_s14`, du plus récent au plus ancien ; elle se complète des blocs des volets suivants, consignés avant leur lecture.
+  - Lecture en regard (point 13), précisée avant la lecture :
+    - l'homologue d'un bloc est l'ensemble des blocs de LAB:ANTHROPIC de même type et de même section (sans le numéro de partie, les coupures se déplaçant d'une version à l'autre), tirés des versions antérieures ;
+    - le texte ajouté ou changé est fait des paragraphes absents de toutes ces versions : 67 557 caractères pour les 45 blocs. Il se lit en entier ;
+    - une ligne d'une version antérieure se reprend dans un bloc si sa citation y figure mot pour mot et que le paragraphe qui la porte y est inchangé ;
+    - un bloc sans ligne reprise ni ligne nouvelle reçoit une abstention.
