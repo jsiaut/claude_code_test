@@ -344,6 +344,24 @@ class OneCommand(unittest.TestCase):
                 self.assertEqual(rebuild.run("abc1234", env={}), 0)                       # reprend à l'étape en échec
                 self.assertEqual(calls[3:], ["universe", "phase0_index"])
 
+    def test_archives_are_kept_only_with_enough_disk(self):
+        self.assertFalse(rebuild.keeps_archives(free=29 * 10 ** 9))
+        self.assertTrue(rebuild.keeps_archives(free=30 * 10 ** 9))
+        for enough, expected in ((True, "1"), (False, None)):
+            with tempfile.TemporaryDirectory() as d:
+                d = pathlib.Path(d)
+                seen = []
+
+                def fake_run(cmd, **kw):
+                    seen.append(kw["env"].get(net.KEEP_ENV))
+                    return mock.Mock(returncode=0)
+                with mock.patch.object(rebuild, "STATE", d / "rebuild.json"), mock.patch.object(rebuild, "LOGS", d / "logs"), \
+                        mock.patch.object(rebuild, "steps", lambda ref, specs=None: [("phase0", ["phase0"])]), \
+                        mock.patch.object(rebuild, "keeps_archives", lambda enough=enough: enough), \
+                        mock.patch.object(rebuild.subprocess, "run", fake_run), mock.patch("builtins.print"):
+                    self.assertEqual(rebuild.run("abc1234", env={net.KEEP_ENV: "1"}), 0)
+                self.assertEqual(seen, [expected])
+
 
 if __name__ == "__main__":
     unittest.main()

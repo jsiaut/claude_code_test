@@ -12,7 +12,8 @@ Elle s'arrête à la première étape qui échoue (un refus durable de la SEC ar
 où elle s'est arrêtée : l'avancement est dans `work/tmp/rebuild.json`.
 
 Elle pose `PIPELINE_KEEP_ARCHIVES=1` : une archive des jeux de données se tire une fois pour tous ses lecteurs (Notes :
-découverte et piste ; N-PORT : trois volets), puis s'efface après le dernier (D-0091, point 4).
+découverte et piste ; N-PORT : trois volets), puis s'efface après le dernier (D-0091, point 4). Avec moins de 30 Go de
+disque libres au lancement, elle ne la pose pas : chaque lecteur retire son archive (D-0091, point 11).
 
 Elle ne lit aucun bloc et ne commite rien. La dernière étape compare les tables à celles de la référence : chaque écart
 s'explique dans la décision en cours.
@@ -20,6 +21,7 @@ s'explique dans la décision en cours.
 import datetime as dt
 import json
 import os
+import shutil
 import subprocess
 import sys
 
@@ -28,6 +30,7 @@ from . import config, montages, net, reconstruction
 STATE = config.WORK / "tmp" / "rebuild.json"
 LOGS = config.WORK / "tmp" / "logs"
 NOTES_URL, NPORT_URL = "financial-statement-notes", "form-n-port"
+KEEP_MIN_FREE = 30 * 10 ** 9      # D-0091, point 11 : 18,7 Go d'archives Notes au plus fort, db/, cache/ et la marge
 
 # source d'un montage -> commandes qui tirent ou relèvent ses documents, avant la préparation des fenêtres
 SEARCHED = {None: ("search", "fetch"), "search": ("search", "fetch"), "hits": ("replay", "fetch")}
@@ -131,11 +134,23 @@ def _journal_count():
     return {"lines": n, "requests": req, "bytes": by, "reused": reused}
 
 
+def keeps_archives(free=None):
+    """Les archives ne se gardent d'une étape à l'autre que si le disque a de quoi les porter (D-0091, point 11)."""
+    if free is None:
+        free = shutil.disk_usage(config.ROOT).free
+    return free >= KEEP_MIN_FREE
+
+
 def run(ref, start=None, only=None, env=None):
     """Lance les étapes restantes ; renvoie 0 si tout a réussi, 1 à la première étape qui échoue."""
     env = dict(os.environ if env is None else env)
     env[reconstruction.ENV] = ref                        # chaque étape tourne dans son processus, sous le mode
-    env[net.KEEP_ENV] = "1"
+    if keeps_archives():
+        env[net.KEEP_ENV] = "1"
+    else:
+        env.pop(net.KEEP_ENV, None)
+        print(f"disque : moins de {KEEP_MIN_FREE // 10 ** 9} Go libres, les archives ne se gardent pas d'une étape à "
+              "l'autre ; chaque lecteur retire la sienne (D-0091, point 11)", flush=True)
     S = steps(ref)
     names = [n for n, _ in S]
     for x in ([start] if start else []) + list(only or []):

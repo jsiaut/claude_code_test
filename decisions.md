@@ -5896,6 +5896,6 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Constats à consigner : les tables comparées au commit ; chaque étape arrêtée ; chaque adresse demandée que le cache d'origine n'a pas ; les fichiers du cache d'origine que l'épreuve n'a pas redemandés, et parmi eux ceux que la table des documents du commit nomme ; le compte des requêtes par étape, pour l'estimation de `RUNBOOK.md`.
   - Elle porte la correction du point 9 : sa comparaison vaut résultat. Si le bouchon fait défaut, la reprise de la première épreuve aux étapes touchées en tient lieu, comme prévu au point 9.
 
-  (11) Règle ajoutée avant son code (2026-11-24, 13:49 UTC), disque :
+  (11) Règle ajoutée avant son code (2026-11-24, 13:47 UTC), disque :
   - Constat : gardées, les 48 archives Notes occupent 18,7 Go jusqu'à leur dernier lecteur, les 28 archives N-PORT 11,9 Go ; avant D-0091, une archive s'effaçait dès sa lecture. Un disque trop petit arrêterait la reconstruction en plein tirage. Ce conteneur annonce 47 Go libres, 23 Go déjà pris.
   - Règle : la commande ne garde les archives que si le disque a au moins 30 Go libres à son lancement. Sinon elle le dit, ne pose pas `PIPELINE_KEEP_ARCHIVES`, et chaque lecteur retire son archive comme avant : même résultat, 42 Go de transfert en plus.
