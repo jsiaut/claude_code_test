@@ -456,6 +456,11 @@ class OneCommand(unittest.TestCase):
                 self.assertEqual(json.loads((d / "rebuild.json").read_text())["done"], ["hand", "phase0"])
                 self.assertEqual(rebuild.run("abc1234", env={}), 0)                       # reprend à l'étape en échec
                 self.assertEqual(calls[3:], ["universe", "phase0_index"])
+                # `--from` part de l'étape nommée, même sans avancement noté pour cette référence
+                n = len(calls)
+                self.assertEqual(rebuild.run("def5678", start="universe", env={}), 0)
+                self.assertEqual(calls[n:], ["universe", "phase0_index"])
+                self.assertEqual(json.loads((d / "rebuild.json").read_text())["done"], ["hand", "phase0", "universe", "index"])
 
     def test_archives_are_kept_only_with_enough_disk(self):
         self.assertFalse(rebuild.keeps_archives(free=29 * 10 ** 9))

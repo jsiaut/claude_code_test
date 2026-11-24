@@ -157,8 +157,8 @@ def run(ref, start=None, only=None, env=None):
         if x not in names:
             raise SystemExit(f"étape inconnue : {x} (voir --list)")
     st = _load(ref)
-    if start:
-        st["done"] = [n for n in st["done"] if names.index(n) < names.index(start)] if set(st["done"]) <= set(names) else []
+    if start:                                            # reprise à l'étape nommée, quel que soit l'avancement noté
+        st["done"] = names[:names.index(start)]
     LOGS.mkdir(parents=True, exist_ok=True)
     for name, cmd in S:
         if only and name not in only:
