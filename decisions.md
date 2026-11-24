@@ -5552,3 +5552,16 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - le texte ajouté ou changé est fait des paragraphes absents de toutes ces versions : 67 557 caractères pour les 45 blocs. Il se lit en entier ;
     - une ligne d'une version antérieure se reprend dans un bloc si sa citation y figure mot pour mot et que le paragraphe qui la porte y est inchangé ;
     - un bloc sans ligne reprise ni ligne nouvelle reçoit une abstention.
+
+  (16) S-1/A n° 3 de SB Energy, jeux de notes : constat, et règle fixée avant tout changement de code et toute lecture (2026-11-24, 01:57 UTC).
+  - Constat : SB Energy, Inc. a déposé le 2026-11-19 l'amendement n° 3 de son S-1 (0001628280-26-075026). Le volet C de SoftBank lit les notes du dernier document d'enregistrement (D-0058). Ce document porte quatre jeux de notes, contre deux dans le S-1 et l'amendement n° 2 :
+    - comptes annuels audités des exercices 2025 et 2024 ;
+    - comptes intermédiaires au 31 mars 2026 et au 30 juin 2026, chacun clos par une note « Restatement of previously issued financial statements » ;
+    - comptes intermédiaires au 30 septembre 2026, nouveaux.
+  - Le code étiquette les jeux par leur rang (`SBE_SETS`, deux libellés) : le deuxième jeu, celui du 31 mars, porterait le libellé « au 30 juin 2026 », et les deux suivants « jeu 3 » et « jeu 4 ».
+  - Règles :
+    - les libellés des jeux se donnent par dépôt quand son ordre n'est pas celui du S-1 : pour l'amendement n° 3, « comptes annuels audités », « comptes intermédiaires non audités au 31 mars 2026, retraités », « comptes intermédiaires non audités au 30 juin 2026, retraités », « comptes intermédiaires non audités au 30 septembre 2026 ». Le libellé n'entre pas dans la clé d'un bloc ; les blocs lus gardent le leur ;
+    - le catalogue de SoftBank se prépare de nouveau après la fin des montages, les deux commandes lisant ou écrivant le même fichier ;
+    - lecture en regard, comme pour Nscale et Anthropic (D-0085, point 5 ; point 15 ci-dessus) : l'homologue d'une note est la note de même titre des versions antérieures, tous jeux confondus, et l'Item 404 celui de l'amendement n° 2. Le texte nouveau se lit en entier. Une ligne se reprend dans la note du même jeu (30 juin 2026) et dans celle du jeu le plus récent (30 septembre 2026) quand sa citation y figure et que le passage n'a pas changé ; elle ne se reprend pas dans le jeu du 31 mars, période antérieure aux faits déjà relevés ;
+    - les deux notes de retraitement et les douze en-têtes de pièces nouvelles se lisent en entier.
+  - Code : `pipeline/sb_own.py` (libellés par dépôt), un test dans `tests/test_d0088.py`.
