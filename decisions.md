@@ -5465,3 +5465,26 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Les catalogues des 6-K et des montages se régénèrent sans requête, se ramènent de nouveau, puis le réassemblage et la comparaison se refont. Ceux de la découverte, de la piste et de SoftBank, sans écart, restent.
   - Écart de l'exécutant, sans effet une fois la règle appliquée : les montages ont été tirés par type de source (recherches, puis corpus) et non dans l'ordre de la configuration ; les corpus ont donc vu des pièces que les recherches venaient de tirer. `RUNBOOK.md` dit l'ordre.
   - Code : `pipeline/reconstruction.py`, tests dans `tests/test_d0088.py`.
+
+  (11) Temps A, résultat : second réassemblage (506 s) et comparaison à `f358538` (2026-11-24, 00:35 UTC).
+  - Restriction sous la règle du point 10 : montages 1 759 blocs (5 blocs d'une clé lue dans un autre catalogue écartés, 7 types de pièce repris), 6-K 501 ; les 29 clés de 6-K présentes plusieurs fois retrouvent le dépôt de la référence (la première occurrence n'était la bonne que 13 fois). Les 12 500 clés lues reviennent toujours.
+  - Tables contre `f358538`, clé par clé :
+    - faits 1 631 698 → 1 631 420 : les 278 faits de l'archive BDC 2026_08 (10-Q déposés du 3 au 14 août 2026) ;
+    - mesures 201 286 → 198 978 : 2 308 cellules des BDC au 30 juin 2026, de la même archive (11 mesures `bdc_*` 1 624, événements de l'annexe F des véhicules 684) ; 11 autres cellules changent, sans valeur changée : le rang de candidat de 9 positions sans pièce (file de la découverte recalculée), une date de connaissance et une première date, par les blocs ci-dessous ;
+    - observations 33 060, identiques sauf 8 lignes qui changent de dépôt, le même texte figurant dans deux dépôts dont le catalogue recalculé ne porte qu'un :
+      - 6 fenêtres de montage ou de SoftBank : 10-Q d'un fonds d'Ares (30 juin → 30 septembre 2026), 6-K d'Arm (juillet → novembre 2026), S-1 → S-1/A de Nscale, 424B4 → S-1/A de CoreWeave, 424B4 → S-1 de Galaxy (deux). Trois observations et trois abstentions ; la date de connaissance avance de trois mois pour deux d'entre elles, recule de quelques jours pour trois ;
+      - une pièce d'un 8-K de 2021 et de son 8-K/A (en-tête et corps), dans le catalogue des groupes, que l'ordre de l'inventaire règle à chaque exécution (D-0085, point 15) ;
+    - liens 12 071 : 4 dates de connaissance, par les mêmes blocs ; contrôles : identiques ;
+    - entités : identiques, sauf la fin de validité de l'ancien nom d'Applied Digital (2026-11-12 → 2026-11-20), lue dans la liste vivante de la SEC ;
+    - documents 28 671 → 27 677 :
+      - pages de recherche gardées sous leur date de tirage (−3 265, +3 263) ; listes vivantes des as_of antérieurs (−667 submissions, −74 companyfacts) ; l'archive BDC 2026_08 ;
+      - 305 pièces EX-10 de rapports périodiques des dix premiers groupes ne sont plus au cache : D-0084 les avait tirées par un écart corrigé ensuite (point 7, règle d'abord trop large). Aucune lecture n'en vient ;
+      - 46 documents principaux tirés en plus par les volets refaits (WULF, IREN, APO, déposants étrangers) ;
+      - 16 474 empreintes changent : documents principaux, en-têtes et pièces plus courts de 2 octets pour la plupart, hors du texte ; les clés des blocs sont identiques ;
+    - exclusions 32 067 → 32 025 :
+      - 91 disparaissent : 51 fenêtres au-delà du plafond de `labs_contracts` et de `labs_events`, 31 unités de la découverte, 8 de l'archive BDC, 1 de la piste ;
+      - 49 apparaissent : 33 fenêtres de corpus dans des facteurs de risque (10-Q de novembre), 15 unités de la piste, un 8-K de BDC au-delà du plafond ;
+      - 16 160 libellés changent, par les rangs recalculés des candidats (découverte 15 225, piste 930).
+  - Réseau du temps A (16:45 à 23:23) : 27 373 requêtes (www.sec.gov 23 659, efts.sec.gov 3 341, data.sec.gov 372, xbrl.fasb.org 1), 83,8 Go. Refus : 251 réponses 429 en trois épisodes (249 avant la correction du client, puis deux, chacune suivie d'une pause de 600 s) ; aucun 403. Erreurs de serveur redemandées : 116.
+  - Bilan : la reconstruction redonne `f358538` à ces écarts près. Le temps B part de cet état ; ses tables se comparent à celles de `f358538`.
+  - Mode d'emploi, écarts corrigés dans `RUNBOOK.md` : traitement des refus et cadence (point 8), document « non obtenu » (point 9), ordre des montages et règle de restriction (point 10).
