@@ -5640,3 +5640,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Constat, `delta.md` : sa section « Arrêt » ne compte que les refus 403 (« refus 403 de la SEC au journal : 0 »). Le journal porte 252 réponses 429 d'hôtes de la SEC et trois pauses, que le client traite comme des refus depuis le point 8. Une exécution arrêtée par le client sur une 429 persistante s'y lirait « aucun arrêt ».
   - Règle : la règle d'arrêt de §11.4, telle que le rendu la calcule (D-0069, point 8), compte les refus des deux sortes. Un refus durable est une dernière entrée du journal qui est un 403, une 429 d'un hôte de la SEC, une pause ou un arrêt du client. La phrase donne les deux nombres. Le reste de la section ne change pas.
   - Code : `pipeline/render.py` (`journal_refusals`, `stop_rule`, `stop_text`) ; tests dans `tests/test_d0088.py`. Puis nouveau rendu.
+
+  (24) Comparaison à `f358538`, table des entités : un attribut changé par une ligne de cette lecture. Constat, et règle fixée avant la correction (2026-11-24, 04:03 UTC).
+  - Constat : l'entité BCPE Pangea Intermediate Holdings Cayman, L.P. passe d'« établissement financier : non » à « oui ».
+    - Les deux lignes de la passe du 2026-10-07 (note d'engagements de SK hynix) écrivent `party_is_financial_institution: false`. La ligne de cette lecture (6-K du 20 novembre 2026, achat de 1 001 actions de SPC2 à ce vendeur, bloc 4594a7045bc2) écrit `true`.
+    - L'attribut d'une entité vient de la première ligne qui le renseigne, dans l'ordre des clés de bloc (`links.counterparty_names`) : la ligne nouvelle passe devant les anciennes.
+    - Le guide (§ 4) réserve l'attribut aux banques, agents administratifs, fiduciaires et fonds de crédit. Le vendeur, véhicule de détention que le 6-K dit « an affiliate of Bain Capital », n'en est pas un : la lecture antérieure est la bonne.
+    - Aucune mesure ne lit cet attribut : seule la table des entités change. Aucun autre nom ne porte les deux valeurs par une ligne de cet as_of (vérifié sur la table des observations).
+  - Règle : une ligne de la passe ouverte se corrige dans sa passe, avant le commit des tables. Le bloc se soumet de nouveau en entier sous les gardes : ses trois lignes, la troisième avec `false`, remplacent les trois lignes soumises. Puis `make read-check`, réassemblage, comparaison au second réassemblage (seule cette entité doit changer) et rendus.
