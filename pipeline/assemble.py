@@ -1,5 +1,5 @@
 """Phase 3 : assembler, mesurer (§11.1). Tout se recalcule depuis le cache et les fichiers
-d'observations (§9.6) ; les huit tables sont exportées en Parquet, triées par clé primaire.
+d'observations (§9.6) ; les huit tables sont exportées en Parquet, triées par clé primaire (export.py).
 
     python -m pipeline.assemble                 # reprend du mémo ce qui n'a pas changé (D-0062)
     python -m pipeline.assemble --sans-cache    # recalcule tout, mêmes tables à l'octet près
@@ -21,7 +21,7 @@ from decimal import Decimal
 import pandas as pd
 
 from . import (annex_e, backlog, circularity, config, controls, controls_more, dimensional, documents, entities, events,
-               fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, memo, model, montages,
+               export, fsignals, lender, lender_liabilities, lender_portfolio, links, load, measures, memo, model, montages,
                ppe_notes, rank2, sb_own, sixk, reader)
 from .phase0 import PERIODIC as PERIODIC_FORMS
 from .registry import MEASURES
@@ -586,8 +586,10 @@ def run(as_of, use_cache=True, apercu=False):
     out = config.ROOT / "tables"
     out.mkdir(exist_ok=True)
     for t, pk in TABLES.items():
-        con.execute(f"COPY (SELECT * FROM {t} ORDER BY {', '.join(pk)}) TO '{out / (t + '.parquet')}' "
-                    "(FORMAT PARQUET, COMPRESSION ZSTD)")
+        if t == "facts":            # groupes de lignes à frontières stables (D-0089, point 4)
+            stats["facts_row_groups"] = export.write_facts(con, out / "facts.parquet", key=pk[0])
+        else:
+            export.write_table(con, t, pk, out / (t + ".parquet"))
     stats["rows"] = {t: con.execute(f"SELECT count(*) FROM {t}").fetchone()[0] for t in TABLES}
     stats["pk_duplicates"] = dict(PK_DUPLICATES, exclusions=load.EXCL_DUPLICATES)
     (config.ROOT / "work" / "tmp" / "pk_collisions.json").write_text(json.dumps(PK_COLLISIONS, indent=0, default=str))

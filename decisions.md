@@ -5735,3 +5735,25 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Le gain ne vaut que pour les versions à venir : l'historique déjà poussé ne se réécrit pas. Le premier commit sous la nouvelle coupe pèse le fichier entier.
 
   (5) Ordre et commits : la décision ; la passe de correction et son contrôle (`make read-check`) ; le code de l'export et ses tests ; un réassemblage ; `make compare` contre 1eeb487, chaque écart expliqué ici ; les rendus ; `make check`, commit, push. Le rapport à l'utilisateur vient après D-0090 et D-0091.
+
+  (6) Résultats (2026-11-24, 10:12 UTC), sans requête :
+  - Passe `repass_d0089`, identifiant `2026-11-24T09:46:31Z`, inscrit dans `reading.correction_passes` : 38 blocs, 431 lignes écrites, aucune rejetée. Les 91 lignes n'ont plus ni `family` ni `edge_type` ; celle d'Applied Digital est réorientée.
+    - Deux alertes de montant, confirmées : la même ligne reprise dans deux blocs (crédit senior de Macquarie chez Nscale, 78,9 M$, somme des 10,2 M$ courants et des 68,7 M$ non courants que la note écrit).
+    - `make read-check` : 966 lignes de l'as_of dans 334 blocs, aucune erreur, ces deux alertes.
+  - Export : `pipeline/export.py`. `tables/facts.parquet` fait 98 groupes de lignes et 32,8 Mo (30,1 Mo). Relue, la table est identique à celle de 1eeb487, ligne à ligne et type à type, dans le même ordre.
+  - Réassemblage (1 010 s). Tables : documents 28 285, faits 1 631 709, observations 33 595, entités 3 753, liens 12 323, mesures 200 895, contrôles 73 040, exclusions 31 548.
+  - Comparaison à 1eeb487 (`make compare`, puis par contenu, les clés des lignes reprises portant leur passe) :
+    - documents, faits, entités et exclusions : identiques ;
+    - observations : les 431 lignes changent de passe ; seules les 91 changent de contenu ;
+    - liens 12 380 → 12 323 : 57 disparaissent, aucun n'apparaît.
+      - 55 arêtes de financement d'un emprunteur vers son prêteur : Riot → Coinbase Credit 15, Backblaze → City National Bank 14, Backblaze → AFCO Premium Credit 4, Hut 8 → Anchorage 3 et → Coatue 2, Applied Digital → B. Riley Commercial Capital 2, → YA II PN 2, → B. Riley Financial 1, → AI Bridge Funding 1 et → Base Electron 1, Nscale → Arkon, Macquarie, Delphos et Blue Sky 2 chacune, Cerebras → OpenAI 2 ; et 2 relations entre montants.
+      - Les 36 autres lignes n'ouvraient pas d'arête, leur prêteur n'étant pas nommé. Les autres liens des 38 blocs ne changent que de clé ;
+    - mesures 201 701 → 200 895 :
+      - cinq paires nées de ces seules arêtes disparaissent, avec 804 cellules : Backblaze → City National Bank, Backblaze → AFCO Premium Credit, Riot → Coinbase Credit, Applied Digital → B. Riley Commercial Capital et → B. Riley Financial (`financed_status` 576, dépendances de carnet 110 et de revenu 54, annexe E 26, revenu non monétaire 12, couverture des paires 6, couverture contractuelle, exposition, chemins et conclusions 5 chacune). Les trois premières publiaient un financement actif : 105 paires à financement documenté deviennent 102 ; les conclusions « causalité non établie » passent de 186 à 181 ;
+      - Cerebras et OpenAI : le flux d'intérêts de 57,2 M$ sort du grand livre du laboratoire (`lab_ledger`), et la relation Cerebras → OpenAI de type fournisseur-investisseur sort de la typologie (`investment_relationship_type`) ; la relation d'OpenAI vers Cerebras reste ;
+      - sept valeurs changent : cycles (E6) 125 → 120 (Applied Digital 9 → 7, Backblaze 3 → 1, Riot 1 → 0), E7 116 issues indéterminées sur 208 → 113 sur 202, paires documentées de Backblaze 3 → 1 et de Riot 8 → 7 ;
+      - 60 cellules ne changent que de renvois (clés de passe), et 14 cellules de `exposure_matrix` de clé ;
+      - aucun événement de l'annexe F ne change ;
+    - contrôles 73 045 → 73 040 : les cinq `c5_bilateral` des paires disparues ; trois autres comptent une ou deux arêtes de moins. Aucun contrôle ne bascule.
+  - Rendus : 32 233 nombres publiés. `delta.md` se compare désormais à 1eeb487 et dit ces écarts ; celui de la mise à jour reste dans ce commit-là.
+  - Contrôles : `make check`, 574 tests (9 dans `tests/test_d0089.py`, dont la garde G1 sur toutes les lignes chargées), ruff sans constat.
