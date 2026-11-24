@@ -5447,3 +5447,20 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Montages (23:12 à 23:42) : recherches et pièces des six montages à recherche, rejeu de `labs_contracts` (78 résultats, 76 pièces), corpus, puis `prepare` sans requête (732 s) : 1 872 blocs avant restriction.
   - Catalogues ramenés aux clés de `f358538` (`reconstruction restrict`) : montages 1 763, 6-K 501, SoftBank 520, découverte 769, piste des non-déposants 729.
   - Couverture : les 12 500 clés lues reviennent toutes (`reconstruction missing` : 0). Les 101 clés que D-0084 avait perdues ne sont plus dans la référence : leurs fichiers d'observations sont parmi les orphelins du point 2.
+
+  (10) Temps A, premier réassemblage (975 s) et comparaison à `f358538` : constat, et règle fixée avant tout changement de code (2026-11-24, 00:35 UTC).
+  - Constat (`make compare REF=f358538`) :
+    - observations, entités, liens et contrôles : mêmes effectifs ; faits −278 et mesures −2 308, toutes de l'archive BDC 2026_08 non gardée (point 7) ;
+    - 115 observations changent à clé égale, dans 93 blocs :
+      - 69 blocs de montage perdent leur type de pièce (EX-99.1, EX-99.2, CORRESP), et 18 lignes passent du niveau E (« furnished ») au niveau C ;
+      - 24 blocs changent de dépôt, le même texte figurant dans deux dépôts : 17 fenêtres de 6-K (TSMC, Nebius), 6 fenêtres de montage, une pièce d'un 8-K et de son 8-K/A. Leur date de connaissance suit : du 2026-08-14 au 2026-11-13 pour les 6-K de TSMC ;
+      - un bloc lu comme item 1.01 d'un 8-K devient une fenêtre de montage.
+    - Cause, lue dans le code : le chargement retient, pour une clé présente plusieurs fois, le dernier bloc du catalogue (`load.py` ; D-0083, point 12), alors que `reconstruction restrict` en garde la première occurrence. Or un catalogue recalculé d'un bloc porte les deux : le 6-K récent avant l'ancien, la fenêtre d'un montage de corpus (sans type de pièce) avant celle du montage de recherche qui a tiré la pièce. D-0084 (point 7) avait le même écart sur 26 lignes, mis au compte de D-0083.
+    - L'ordre seul ne dit pas quelle occurrence la référence portait : un doublon né dans une même exécution se charge par le dernier bloc, un doublon venu d'une exécution suivante ne s'ajoute pas (`update.carry_over`).
+  - Règle : la référence dit elle-même de quel bloc viennent ses lectures (table des observations : type de bloc, dépôt, document, type de pièce). `reconstruction restrict` :
+    - écarte d'un catalogue le bloc dont la référence montre la clé sous un autre type de bloc ;
+    - entre plusieurs blocs de même clé, garde celui du dépôt et du document que la référence montre, de même type de pièce s'il y en a plusieurs ; à défaut d'accord, le dernier, comme le chargement ;
+    - garde l'ordre du catalogue.
+  - Les catalogues des 6-K et des montages se régénèrent sans requête, se ramènent de nouveau, puis le réassemblage et la comparaison se refont. Ceux de la découverte, de la piste et de SoftBank, sans écart, restent.
+  - Écart de l'exécutant, sans effet une fois la règle appliquée : les montages ont été tirés par type de source (recherches, puis corpus) et non dans l'ordre de la configuration ; les corpus ont donc vu des pièces que les recherches venaient de tirer. `RUNBOOK.md` dit l'ordre.
+  - Code : `pipeline/reconstruction.py`, tests dans `tests/test_d0088.py`.
