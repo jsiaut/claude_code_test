@@ -11,7 +11,7 @@ import time
 import unittest
 from unittest import mock
 
-from pipeline import config, net, reconstruction
+from pipeline import config, net, reconstruction, sb_own
 from tests.test_d0084 import _Mode
 
 REFUSAL = b"<html><head><title>SEC.gov | Request Rate\n Threshold Exceeded</title></head><body></body></html>"
@@ -205,6 +205,22 @@ class RestrictByReference(unittest.TestCase):
             with _Mode(keys={"k"}):
                 reconstruction.restrict([p])
             self.assertEqual(json.loads(p.read_text(encoding="utf-8"))["text"], "a\u2028b")
+
+
+class SbEnergyNoteSets(unittest.TestCase):
+    """Libellés des jeux de notes de SB Energy, par dépôt quand son ordre n'est pas celui du S-1 (point 16)."""
+
+    def test_default_order_is_the_s1(self):
+        self.assertEqual(sb_own.sbe_set_label("0001628280-26-062846", 0), "comptes annuels audités")
+        self.assertEqual(sb_own.sbe_set_label("0001628280-26-062846", 1), "comptes intermédiaires non audités au 30 juin 2026")
+        self.assertEqual(sb_own.sbe_set_label("0001628280-26-062846", 2), "jeu 3")
+
+    def test_third_amendment_has_four_sets(self):
+        labels = [sb_own.sbe_set_label("0001628280-26-075026", i) for i in range(5)]
+        self.assertIn("31 mars 2026, retraités", labels[1])
+        self.assertIn("30 juin 2026, retraités", labels[2])
+        self.assertIn("30 septembre 2026", labels[3])
+        self.assertEqual(labels[4], "jeu 5")
 
 
 if __name__ == "__main__":

@@ -595,6 +595,19 @@ RP_TITLES = ("Certain Relationships and Related Party Transactions", "Related Pa
 RP_HEAD = re.compile(r"^CERTAIN RELATIONSHIPS AND RELATED PART")
 SBE_HEADER = re.compile(r"^SB Energy, Inc\.$")
 SBE_SETS = ("comptes annuels audités", "comptes intermédiaires non audités au 30 juin 2026")
+# dépôt dont les jeux de notes ne suivent pas cet ordre (D-0088, point 16) : l'amendement n° 3 porte les comptes des
+# trois premiers trimestres de 2026, ceux de mars et de juin retraités
+SBE_SETS_BY_FILING = {
+    "0001628280-26-075026": ("comptes annuels audités", "comptes intermédiaires non audités au 31 mars 2026, retraités",
+                             "comptes intermédiaires non audités au 30 juin 2026, retraités",
+                             "comptes intermédiaires non audités au 30 septembre 2026"),
+}
+
+
+def sbe_set_label(accession, rank):
+    """Libellé du jeu de notes de rang `rank` (à partir de 0) du document d'enregistrement de SB Energy."""
+    sets = SBE_SETS_BY_FILING.get(accession, SBE_SETS)
+    return sets[rank] if rank < len(sets) else f"jeu {rank + 1}"
 
 
 def _cp(name):
@@ -692,7 +705,7 @@ def blocks_c(cfg=None):
     add(heading_section(raw, RP_HEAD), "discovery_item_404", SBE_NAME, last.cik, last.accessionNumber, last.form,
         last.filingDate, last.primaryDocument, {"note_label": RP_TITLES[0], "mention_class": "related_party"}, "sbc:sbe:404")
     for s in split_notes(raw, TITLE_SBE, noise=SBE_HEADER):
-        label = SBE_SETS[s["set"]] if s["set"] < len(SBE_SETS) else f"jeu {s['set'] + 1}"
+        label = sbe_set_label(last.accessionNumber, s["set"])
         for nt in s["notes"]:
             fam = regdoc.note_kind(nt["title"]) or ("segment_note" if regdoc.SEGMENT.search(nt["title"]) else None)
             add(nt["text"], "discovery_note", SBE_NAME, last.cik, last.accessionNumber, last.form, last.filingDate,
