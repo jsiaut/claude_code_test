@@ -185,10 +185,12 @@ Unités prioritaires de la découverte (D-0086) : leur nombre (`discovery priori
 préparation ; elles se préparent (`prepare-priority`, une requête par page R ou par pièce) et se lisent avant les
 autres.
 
-Montages, par source : `search` → `montages search <id>` puis `montages fetch <id>` ; `hits` → `montages replay
-<id>` puis `fetch` ; `corpus` → `montages corpus <id>` ; `lab_corpus` → `montages lab_corpus <id>` ; `backlog` →
-`montages backlog_corpus <id>` ; `edge_values` → `montages values_corpus <id>` ; `tagged` → `labs inventory` ;
-`span` et `ppe_notes` → rien avant la préparation. `montages prepare` écrit ensuite les fenêtres de tous les montages.
+Montages, un par un dans l'ordre de `montages` de `config.yaml`, chacun selon sa source : `search` → `montages
+search <id>` puis `montages fetch <id>` ; `hits` → `montages replay <id>` puis `fetch` ; `corpus` → `montages corpus
+<id>` ; `lab_corpus` → `montages lab_corpus <id>` ; `backlog` → `montages backlog_corpus <id>` ; `edge_values` →
+`montages values_corpus <id>` ; `tagged` → `labs inventory` ; `span` et `ppe_notes` → rien avant la préparation.
+`montages prepare` écrit ensuite les fenêtres de tous les montages. L'ordre compte : un corpus lit ce qui est au
+cache, pièces des recherches déjà tirées comprises (D-0088, point 10).
 
 Ce qui ne se recalcule pas d'une exécution à l'autre (D-0074, point 3) : les catalogues préparés (montages, 6-K,
 SoftBank), les files (découverte, non-déposants) et les résultats gardés des recherches plein texte gardent leurs
@@ -211,7 +213,8 @@ Sans `db/` ni `cache/`, tout se retire de la SEC avant la mise à jour. Mesure d
   `exhibits_tranche.json` (types SGML des pièces, depuis la table `documents`) et `usgaap2026_balance.json`
   (soldes des concepts de `us-gaap-2026.xsd`) ;
 - `python3 -m pipeline.reconstruction restrict`, puis `missing` : une clé lue qui ne revient pas est un échec
-  consigné, jamais une relecture ;
+  consigné, jamais une relecture. Entre plusieurs blocs de même clé (même texte dans deux dépôts, même fenêtre
+  dans deux montages), `restrict` garde celui que les tables de la référence montrent (D-0088, point 10) ;
 - aucune lecture ; réassemblage, puis `make compare REF=<ce commit>` : chaque écart s'explique dans la décision.
   Les tables de la reconstruction ne se commitent pas ;
 - la variable se retire, et la mise à jour (§ 3) part de cet état.

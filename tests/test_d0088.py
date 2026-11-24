@@ -1,5 +1,6 @@
 """D-0088 (point 8) : une 429 d'un hôte de la SEC est un refus, comme un 403 — pause du client entier, refus comptés
 par pause, arrêt définitif après les pauses permises — et le plafond de cadence vaut pour toute commande.
+D-0088 (point 10) : la restriction d'un catalogue garde, entre plusieurs blocs de même clé, celui que la référence montre.
 
 Lancement : python3 -m unittest tests.test_d0088 -v
 """
@@ -10,7 +11,8 @@ import time
 import unittest
 from unittest import mock
 
-from pipeline import config, net
+from pipeline import config, net, reconstruction
+from tests.test_d0084 import _Mode
 
 REFUSAL = b"<html><head><title>SEC.gov | Request Rate\n Threshold Exceeded</title></head><body></body></html>"
 
@@ -127,6 +129,82 @@ class Cadence(unittest.TestCase):
         self.assertLessEqual(n["sec_ceiling_requests_per_second"], 2)         # D-0088, jusqu'à nouvel ordre
         self.assertLessEqual(n["cruise_requests_per_second"], n["sec_ceiling_requests_per_second"])
         self.assertGreaterEqual(n["pause_after_403_seconds"], 600)            # §9.5 : dix minutes au moins
+
+
+def _block(key, n, accession="a-1", document="d.htm", kind="montage_text", exhibit_type=None):
+    return {"content_key": key, "n": n, "block_kind": kind, "accession": accession, "document": document,
+            "exhibit_type": exhibit_type}
+
+
+class RestrictByReference(unittest.TestCase):
+    """Entre plusieurs blocs de même clé, celui que la référence montre ; à défaut, le dernier (point 10)."""
+
+    def _restrict(self, rows, keys, shown):
+        with tempfile.TemporaryDirectory() as d:
+            p = pathlib.Path(d) / "c.jsonl"
+            p.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+            with _Mode(keys=keys, shown=shown):
+                r = reconstruction.restrict([p])
+            kept = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines()]
+        return [(x["content_key"], x["n"]) for x in kept], r["c.jsonl"]
+
+    def test_same_text_in_two_filings_keeps_the_filing_the_reference_shows(self):
+        rows = [_block("k", 0, "recent", "q3.htm", "foreign_6k_text"), _block("k", 1, "ancien", "q2.htm", "foreign_6k_text"),
+                _block("m", 2, "ancien", "x.htm", "foreign_6k_text"), _block("m", 3, "recent", "y.htm", "foreign_6k_text")]
+        shown = {"k": ("foreign_6k_text", "recent", "q3.htm", None), "m": ("foreign_6k_text", "ancien", "x.htm", None)}
+        kept, r = self._restrict(rows, {"k", "m"}, shown)
+        self.assertEqual(kept, [("k", 0), ("m", 2)])               # ni la première ni la dernière par principe
+        self.assertEqual(r, {"kept": 2, "removed": 2})
+
+    def test_same_document_keeps_the_exhibit_type_the_reference_shows(self):
+        rows = [_block("k", 0, exhibit_type=float("nan")),          # montage de corpus : pas de type de pièce
+                _block("k", 1, exhibit_type="EX-99.1"),             # montage de recherche : le type du résultat
+                _block("k", 2, exhibit_type=float("nan"))]
+        kept, _ = self._restrict(rows, {"k"}, {"k": ("montage_text", "a-1", "d.htm", "EX-99.1")})
+        self.assertEqual(kept, [("k", 1)])
+        kept, _ = self._restrict(rows, {"k"}, {"k": ("montage_text", "a-1", "d.htm", None)})
+        self.assertEqual(kept, [("k", 2)])                           # deux accords égaux : le dernier
+
+    def test_right_document_without_the_exhibit_type_takes_it_from_the_reference(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = pathlib.Path(d) / "c.jsonl"
+            rows = [{**_block("k", 0, exhibit_type=float("nan")), "text": "a\u2028b"}, _block("m", 1, exhibit_type="EX-10.1")]
+            p.write_text("".join(json.dumps(r, ensure_ascii=False).replace("\u2028", "\\u2028") + "\n" for r in rows),
+                         encoding="utf-8")
+            with _Mode(keys={"k", "m"}, shown={"k": ("montage_text", "a-1", "d.htm", "EX-99.2"),
+                                               "m": ("montage_text", "a-1", "d.htm", "EX-10.1")}):
+                r = reconstruction.restrict([p])
+            raw = p.read_text(encoding="utf-8")
+            kept = [json.loads(x) for x in raw.split("\n") if x]
+        self.assertEqual([(x["content_key"], x["exhibit_type"]) for x in kept], [("k", "EX-99.2"), ("m", "EX-10.1")])
+        self.assertEqual(kept[0]["text"], "a\u2028b")                # le texte ne change pas
+        self.assertNotIn("\u2028", raw)                              # et reste échappé dans le fichier
+        self.assertEqual(r["c.jsonl"], {"kept": 2, "removed": 0, "retyped": 1})
+
+    def test_without_agreement_the_last_one_as_the_loader(self):
+        rows = [_block("k", 0, "a-2"), _block("k", 1, "a-3")]
+        kept, _ = self._restrict(rows, {"k"}, {"k": ("montage_text", "a-1", "d.htm", None)})
+        self.assertEqual(kept, [("k", 1)])
+
+    def test_key_read_in_another_catalog_is_removed(self):
+        rows = [_block("k", 0), _block("h", 1)]                     # « h » : arrêtée à son en-tête, sans lecture
+        kept, r = self._restrict(rows, {"k", "h"}, {"k": ("item_8k_101", "a-1", "d.htm", None)})
+        self.assertEqual(kept, [("h", 1)])
+        self.assertEqual(r, {"kept": 1, "removed": 1, "read_elsewhere": 1})
+
+    def test_order_is_kept_and_unkept_keys_removed(self):
+        rows = [_block("b", 0), _block("x", 1), _block("a", 2), _block("b", 3, "a-9")]
+        kept, _ = self._restrict(rows, {"a", "b"}, {"a": ("montage_text", "a-1", "d.htm", None),
+                                                     "b": ("montage_text", "a-1", "d.htm", None)})
+        self.assertEqual(kept, [("b", 0), ("a", 2)])
+
+    def test_line_separator_inside_a_text_is_not_a_line_end(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = pathlib.Path(d) / "c.jsonl"
+            p.write_text(json.dumps({**_block("k", 0), "text": "a\u2028b"}, ensure_ascii=False) + "\n", encoding="utf-8")
+            with _Mode(keys={"k"}):
+                reconstruction.restrict([p])
+            self.assertEqual(json.loads(p.read_text(encoding="utf-8"))["text"], "a\u2028b")
 
 
 if __name__ == "__main__":

@@ -17,19 +17,20 @@ from pipeline import config, discovery, montages, reconstruction, update
 class _Mode:
     """Mode de reconstruction actif, avec des clés gardées données."""
 
-    def __init__(self, keys=(), accessions=()):
-        self.k, self.a = frozenset(keys), frozenset(accessions)
+    def __init__(self, keys=(), accessions=(), shown=None):
+        self.k, self.a, self.s = frozenset(keys), frozenset(accessions), dict(shown or {})
 
     def __enter__(self):
         self.env = os.environ.get(reconstruction.ENV)
         os.environ[reconstruction.ENV] = "abc1234"
-        self.old = reconstruction.keys, reconstruction.accessions
+        self.old = reconstruction.keys, reconstruction.accessions, reconstruction.shown
         reconstruction.keys = lambda: self.k
         reconstruction.accessions = lambda: self.a
+        reconstruction.shown = lambda: self.s
         return self
 
     def __exit__(self, *a):
-        reconstruction.keys, reconstruction.accessions = self.old
+        reconstruction.keys, reconstruction.accessions, reconstruction.shown = self.old
         if self.env is None:
             os.environ.pop(reconstruction.ENV, None)
         else:
@@ -149,7 +150,8 @@ class Restrict(unittest.TestCase):
             with _Mode(keys={"a", "b"}):
                 r = reconstruction.restrict([p])
             kept = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines()]
-            self.assertEqual([(x["content_key"], x["n"]) for x in kept], [("b", 0), ("a", 2)])
+            # sans indication de la référence, la dernière occurrence, celle que le chargement retient (D-0088, point 10)
+            self.assertEqual([(x["content_key"], x["n"]) for x in kept], [("a", 2), ("b", 3)])
             self.assertEqual(r["c.jsonl"], {"kept": 2, "removed": 2})
 
 

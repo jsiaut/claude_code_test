@@ -5448,7 +5448,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Catalogues ramenés aux clés de `f358538` (`reconstruction restrict`) : montages 1 763, 6-K 501, SoftBank 520, découverte 769, piste des non-déposants 729.
   - Couverture : les 12 500 clés lues reviennent toutes (`reconstruction missing` : 0). Les 101 clés que D-0084 avait perdues ne sont plus dans la référence : leurs fichiers d'observations sont parmi les orphelins du point 2.
 
-  (10) Temps A, premier réassemblage (975 s) et comparaison à `f358538` : constat, et règle fixée avant tout changement de code (2026-11-24, 00:35 UTC).
+  (10) Temps A, premier réassemblage (975 s) et comparaison à `f358538` : constat, et règle fixée avant tout changement de code (2026-11-24, 00:08 UTC).
   - Constat (`make compare REF=f358538`) :
     - observations, entités, liens et contrôles : mêmes effectifs ; faits −278 et mesures −2 308, toutes de l'archive BDC 2026_08 non gardée (point 7) ;
     - 115 observations changent à clé égale, dans 93 blocs :
@@ -5460,7 +5460,8 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Règle : la référence dit elle-même de quel bloc viennent ses lectures (table des observations : type de bloc, dépôt, document, type de pièce). `reconstruction restrict` :
     - écarte d'un catalogue le bloc dont la référence montre la clé sous un autre type de bloc ;
     - entre plusieurs blocs de même clé, garde celui du dépôt et du document que la référence montre, de même type de pièce s'il y en a plusieurs ; à défaut d'accord, le dernier, comme le chargement ;
-    - garde l'ordre du catalogue.
+    - garde l'ordre du catalogue ;
+    - précision, avant le code : quand le bloc gardé vient bien du document que la référence montre mais qu'aucune occurrence n'en porte le type de pièce, il le reprend de la référence. C'est le cas de 7 fenêtres de pièces de 8-K de novembre 2026, que la référence tenait d'un montage de recherche et que le recalcul tire du registre des documents, qui ne type pas ces pièces. Rien d'autre du bloc ne change.
   - Les catalogues des 6-K et des montages se régénèrent sans requête, se ramènent de nouveau, puis le réassemblage et la comparaison se refont. Ceux de la découverte, de la piste et de SoftBank, sans écart, restent.
   - Écart de l'exécutant, sans effet une fois la règle appliquée : les montages ont été tirés par type de source (recherches, puis corpus) et non dans l'ordre de la configuration ; les corpus ont donc vu des pièces que les recherches venaient de tirer. `RUNBOOK.md` dit l'ordre.
   - Code : `pipeline/reconstruction.py`, tests dans `tests/test_d0088.py`.
