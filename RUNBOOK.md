@@ -113,7 +113,10 @@ python3 - <<'EOF'
 from pipeline import config, reader
 prev, a = config.previous_as_of(), config.as_of()
 S14 = ("discovery_", "montage_text", "foreign_6k_text", "ownership_", "holdings_13f")
-new = [b for b in reader.queue() if str(b.get("filing_date") or "")[:10] > prev]
+last = {}                                  # dernier dépôt de chaque clé : un texte repris se sert par son premier
+for b in reader.load_catalog():
+    last[b["content_key"]] = max(last.get(b["content_key"], ""), str(b.get("filing_date") or "")[:10])
+new = [b for b in reader.queue() if last[b["content_key"]] > prev]
 (config.WORK / "lists").mkdir(exist_ok=True)
 for name, keep in (("groups", lambda b: not b["block_kind"].startswith(S14)), ("s14", lambda b: b["block_kind"].startswith(S14))):
     bs = sorted((b for b in new if keep(b)), key=lambda b: str(b["filing_date"]), reverse=True)
@@ -124,6 +127,10 @@ EOF
 
 Le corps d'une pièce n'entre dans la file qu'après la lecture de son en-tête, et seulement si l'en-tête le
 demande (§11.1) : il s'ajoute alors à la liste.
+
+Un texte repris mot pour mot dans plusieurs dépôts se lit une fois. La file le sert, et le chargement le rattache,
+par le bloc de son premier dépôt : première date de connaissance, puis première acceptation, puis plus petit numéro
+d'accession (D-0092). L'ordre des lignes d'un catalogue n'y change rien.
 
 **Passe.** Elle s'ouvre une fois, avant la première soumission : `python3 -m pipeline.reader open-pass`
 *(D-0087)*. Sans elle, chaque soumission prendrait l'heure du moment, et un bloc rendu en plusieurs morceaux ne
@@ -242,9 +249,10 @@ python3 -m pipeline.rebuild <commit> --only <étape> …    # ces seules étapes
 - **Après.** La comparaison doit rendre sept tables identiques. Seule `documents`, qui liste le cache, peut
   différer : les versions des listes de l'API datées d'as_of antérieurs manquent ; les ressources vivantes retirées
   (listes, pages de recherche) changent d'empreinte ; une ressource tirée jadis hors des étapes manque ; quelques
-  pièces de la découverte gagnent un formulaire et une date (D-0091, points 12 et 13). Tout autre écart s'explique
-  dans la décision en cours avant d'aller plus loin ; les tables de la reconstruction ne se commitent pas. La mise
-  à jour (§ 3) part de cet état.
+  pièces de la découverte gagnent un formulaire et une date (D-0091, points 12 et 13). Contre un commit antérieur
+  à D-0092, 38 observations reviennent en outre au premier dépôt de leur texte. Tout autre écart s'explique dans la
+  décision en cours avant d'aller plus loin ; les tables de la reconstruction ne se commitent pas. La mise à jour
+  (§ 3) part de cet état.
 
 La commande a été éprouvée deux fois sans réseau (D-0091, point 13) : sur une copie du cache, puis sur un cache
 vidé de ses documents et de ses listes d'API, resservis par un bouchon local (23 622 requêtes). Les deux fois, les

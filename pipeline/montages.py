@@ -500,7 +500,7 @@ def values_corpus(mid):
             ck = ob.at[k, "content_key"]
             quotes.setdefault(ck, set()).add(ob.at[k, "quote"])
             edges.setdefault(ck, set()).add(r.link_key)
-    catalog = {b["content_key"]: b for b in reader.load_catalog()}
+    catalog = reader.by_key()
     rows = []
     for ck in sorted(quotes):
         b = catalog.get(ck)

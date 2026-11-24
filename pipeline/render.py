@@ -3908,7 +3908,7 @@ def block_stats():
 
 def _block_stats(read):
     from . import reader
-    cat = {b["content_key"]: b for b in reader.load_catalog()}
+    cat = reader.by_key()
     by_item = Counter()
     for k, b in cat.items():
         if k in read and b["block_kind"].startswith("item_8k_"):

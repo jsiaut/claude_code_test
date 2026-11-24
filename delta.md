@@ -1,6 +1,6 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-11-23, comparée à l'exécution précédente, dont les tables sont celles du commit 8aaadd168991 (2026-11-24). Généré depuis les tables (D-0069, point 8).*
+*Exécution du 2026-11-23, comparée à l'exécution précédente, dont les tables sont celles du commit 92b233ad555f (2026-11-24). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
@@ -25,7 +25,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, réponses 429 de la 
 - Blocs lus : 12 797 sur 13 172 clés de contenu ; par item de 8-K : 1.01 481, 1.02 50, 2.01 38, 2.03 146, 3.03 36, 8.01 843 ; pièces arrêtées à leur en-tête : EX-4 375.
 - Lignes rejetées par la validation : 0.
 - Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 712 (collisions : 249).
-- Durée de l'assemblage : 883 s ; lecture : voir le journal ci-dessus.
+- Durée de l'assemblage : 978 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -86,12 +86,12 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, réponses 429 de la 
 
 ## Exclusions nouvelles, par motif
 
-- `submitted_draft` : +6, −0
-- `history_left_censored` : +1, −0
+- Aucune.
 
 ## Décisions et variantes nouvelles
 
-- D-0090 — Anthropic, laboratoire devenu déposant, entre comme groupe. Règles fixées avant tout tirage.
+- D-0091 — Troisième chantier de D-0087 : état versionné, reconstruction en une commande, archives tirées une fois. Règles fixées avant tout changement de code.
+- D-0092 — Un texte repris dans plusieurs dépôts se rattache au premier. Règles fixées avant tout changement de code.
 
 ## Critères des annexes E et F
 
@@ -107,71 +107,7 @@ Aucun.
 
 ## Valeurs changées pour des périodes déjà publiées
 
-Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cellules apparues et disparues, par mesure :
-
-| Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
-| --- | ---: | ---: | ---: | ---: |
-| `annex_e_outcome` | 0 | 0 | 5 | 0 |
-| `capex_accrual` | 0 | 0 | 10 | 0 |
-| `capex_cash` | 0 | 0 | 46 | 0 |
-| `capex_to_cfo` | 0 | 0 | 92 | 0 |
-| `capex_to_revenue` | 0 | 0 | 46 | 0 |
-| `capitalized_interest` | 0 | 0 | 46 | 0 |
-| `capitalized_interest_to_cip` | 0 | 0 | 46 | 0 |
-| `cfo_net_income_gap` | 0 | 0 | 46 | 0 |
-| `cip_change_to_capex` | 0 | 0 | 46 | 0 |
-| `cip_share` | 0 | 0 | 46 | 0 |
-| `contract_coverage` | 0 | 0 | 4 | 0 |
-| `counterparty_exposure` | 0 | 0 | 4 | 0 |
-| `cov_interest_coverage` | 0 | 0 | 92 | 0 |
-| `cov_pik_interest` | 0 | 0 | 46 | 0 |
-| `customer_advances` | 0 | 0 | 46 | 0 |
-| `customer_concentration_anonymous` | 0 | 0 | 10 | 0 |
-| `depreciation_life_published` | 0 | 0 | 30 | 0 |
-| `documented_pair_coverage` | 0 | 0 | 1 | 0 |
-| `documented_path` | 0 | 0 | 4 | 4 |
-| `documented_revenue_dependency` | 0 | 0 | 40 | 0 |
-| `earnings_bridge_pretax` | 0 | 0 | 20 | 0 |
-| `earnings_bridge_share` | 0 | 0 | 10 | 0 |
-| `eq_diluted_share_count_change` | 0 | 0 | 46 | 0 |
-| `eq_equity_and_accumulated_deficit` | 0 | 0 | 92 | 0 |
-| `exposure_matrix` | 0 | 0 | 10 | 0 |
-| `fcf_after_counterparty_financing` | 0 | 0 | 46 | 0 |
-| `fcf_after_finance_leases` | 0 | 0 | 46 | 0 |
-| `fcf_after_sbc` | 0 | 0 | 46 | 0 |
-| `fcf_basic` | 0 | 0 | 46 | 0 |
-| `finance_lease_additions` | 0 | 0 | 10 | 0 |
-| `financed_status` | 0 | 0 | 448 | 0 |
-| `fragility_event` | 0 | 0 | 230 | 0 |
-| `gross_margin` | 0 | 0 | 46 | 0 |
-| `implied_useful_life` | 0 | 0 | 10 | 0 |
-| `investor_customer_revenue_share` | 0 | 0 | 30 | 0 |
-| `lease_not_commenced_bridge` | 0 | 0 | 40 | 0 |
-| `lev_debt_and_leases_to_operating_income_plus_da` | 0 | 0 | 92 | 0 |
-| `liq_cash_to_12m_outflows` | 0 | 0 | 20 | 0 |
-| `liq_principal_due_to_cash` | 0 | 0 | 20 | 0 |
-| `liq_undrawn_committed_facilities` | 0 | 0 | 46 | 0 |
-| `named_edge_coverage` | 0 | 0 | 15 | 0 |
-| `operating_lease_rou_additions` | 0 | 0 | 46 | 0 |
-| `operating_margin` | 0 | 0 | 46 | 0 |
-| `receivables_collection_period` | 0 | 0 | 92 | 0 |
-| `relationship_conclusion` | 0 | 0 | 4 | 0 |
-| `revenue_growth` | 0 | 0 | 92 | 0 |
-| `rpo_total` | 0 | 0 | 46 | 0 |
-| `sbc_to_cfo` | 0 | 0 | 46 | 0 |
-| `segment_significant_expenses` | 0 | 0 | 4 | 0 |
-| `sig_auditor_change_or_nonreliance` | 0 | 0 | 23 | 0 |
-| `sig_covenant_events` | 0 | 0 | 23 | 0 |
-| `sig_distress_8k_items` | 0 | 0 | 23 | 0 |
-| `sig_going_concern` | 0 | 0 | 23 | 0 |
-| `sig_late_filing` | 0 | 0 | 23 | 0 |
-| `sig_material_weakness` | 0 | 0 | 23 | 0 |
-| `sig_pledged_assets` | 0 | 0 | 23 | 0 |
-| `stock_paid_additions` | 0 | 0 | 10 | 0 |
-| `supplier_concentration` | 0 | 0 | 10 | 0 |
-| `vendor_financed_additions` | 0 | 0 | 10 | 0 |
-| `visible_pairs_count` | 0 | 0 | 5 | 0 |
-| `working_capital` | 0 | 0 | 276 | 0 |
+Aucune cellule changée, apparue ni disparue.
 
 Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 114, Apollo 88, ASML 7, Broadcom 22, Backblaze 12, Blackstone 1, Cipher 49, Core Scientific 98, CoreWeave 7, Dell 286, Galaxy 4, Alphabet 21, Hut 8 7, Intel 45, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 34, Oracle 52, Blue Owl 7, Riot 113, Supermicro 162, TSMC 17, TeraWulf 21.
 
@@ -198,5 +134,5 @@ Relations candidates par paire du registre : na01 0, na02 0, na03 255, na04 0, n
 
 ## Changements dus à une nouvelle passe de lecture ou au code
 
-Lecture : 1 lignes d'observation nouvelles, dans 1 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
+Lecture : 0 lignes d'observation nouvelles, dans 0 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
 

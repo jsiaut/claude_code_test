@@ -188,7 +188,7 @@ def load_observations(con, catalog, as_of, use_memo=True):
     """Charge la passe la plus récente de chaque bloc dont la clé existe encore, après
     validation sémantique ; une ligne rejetée devient une exclusion validation_failed.
     use_memo=False ignore les plages de citations déjà trouvées et les cherche toutes."""
-    cat = {b["content_key"]: b for b in catalog}
+    cat = reader.by_key(catalog)                         # premier dépôt d'un texte repris dans plusieurs (D-0092)
     canon = canonical_filers(catalog)
     # un déposant découvert devenu groupe de config.yaml (D-0043) : ses lignes vont à son groupe ; la
     # tête d'un groupe non déposant qui a déposé son document d'enregistrement (D-0054, point 13) aussi

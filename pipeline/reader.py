@@ -216,6 +216,30 @@ def load_catalog():
     return out
 
 
+def first_filed(b):
+    """Rang du dépôt d'un bloc parmi ceux de même texte (D-0092) : la date de connaissance, puis l'acceptation, une
+    acceptation inconnue venant après, puis le numéro d'accession."""
+    return (str(b.get("knowledge_date") or "")[:10] or "9999-99-99", str(b.get("acceptance") or "9999"),
+            str(b.get("accession") or ""))
+
+
+def by_key(catalog=None):
+    """Clé de contenu -> bloc qui la représente (D-0092). Entre des blocs de plusieurs dépôts, celui du premier dépôt :
+    un texte repris mot pour mot était connu dès sa première publication (§7.3). Entre blocs d'un même dépôt, le dernier
+    dans l'ordre des catalogues, comme avant. L'ordre des lignes ne décide donc plus entre deux dépôts."""
+    catalog = load_catalog() if catalog is None else catalog
+    per = {}                                             # clé -> {accession: [rang du dépôt, dernier bloc]}
+    for b in catalog:
+        d = per.setdefault(b["content_key"], {})
+        acc, rank = b.get("accession"), first_filed(b)
+        if acc in d:
+            d[acc][0] = min(d[acc][0], rank)
+            d[acc][1] = b
+        else:
+            d[acc] = [rank, b]
+    return {k: min(d.values(), key=lambda x: x[0])[1] for k, d in per.items()}
+
+
 def obs_path(content_key):
     return config.OBS_DIR / f"{content_key}.jsonl"
 
@@ -259,8 +283,10 @@ def _read_in_pass(ck, pass_id):
 
 def queue(catalog=None):
     """Blocs sans fichier d'observations, dans l'ordre du signal (§11.1) ; avec une liste,
-    seulement ses blocs, dans l'ordre de la liste."""
+    seulement ses blocs, dans l'ordre de la liste. Une clé portée par plusieurs blocs se sert une fois, à la place du
+    premier dans cet ordre, par le bloc qui la représente (`by_key`, D-0092) : celui que le chargement retiendra."""
     catalog = catalog if catalog is not None else load_catalog()
+    chosen = by_key(catalog)
     seen, out = set(), []
     order = None
     if LIST:
@@ -279,7 +305,7 @@ def queue(catalog=None):
         if b.get("requires") and not _requirement_met(b["requires"], b):
             continue
         seen.add(ck)
-        out.append(b)
+        out.append(chosen[ck])
     return out
 
 
@@ -557,7 +583,7 @@ def cmd_submit(content_key, path, final=False, confirm=False):
     if not lines:
         print("REFUS : au moins une ligne par bloc (observation ou abstention)")
         return 2
-    catalog = {b["content_key"]: b for b in load_catalog()}
+    catalog = by_key()
     if content_key not in catalog:
         print(f"REFUS : clé de contenu inconnue {content_key}")
         return 2
@@ -705,7 +731,7 @@ def cmd_open_pass(pass_id=None):
 def cmd_status():
     cat = load_catalog()
     q = queue(cat)
-    done = sum(1 for b in {b["content_key"]: b for b in cat}.values() if obs_path(b["content_key"]).exists())
+    done = sum(1 for k in by_key(cat) if obs_path(k).exists())
     by = {}
     for b in q:
         by.setdefault(b["block_kind"], [0, 0])
@@ -717,7 +743,7 @@ def cmd_status():
 
 
 def cmd_show(content_key):
-    cat = {b["content_key"]: b for b in load_catalog()}
+    cat = by_key()
     b = cat[content_key]
     header, facts, chunks = render_block(b, 10**9)
     print(header)

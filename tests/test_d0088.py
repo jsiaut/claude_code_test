@@ -138,7 +138,8 @@ def _block(key, n, accession="a-1", document="d.htm", kind="montage_text", exhib
 
 
 class RestrictByReference(unittest.TestCase):
-    """Entre plusieurs blocs de même clé, celui que la référence montre ; à défaut, le dernier (point 10)."""
+    """Entre plusieurs blocs de même clé, celui que la référence montre (point 10) ; à défaut, celui du premier dépôt,
+    que le chargement retient (D-0092)."""
 
     def _restrict(self, rows, keys, shown):
         with tempfile.TemporaryDirectory() as d:
@@ -182,10 +183,15 @@ class RestrictByReference(unittest.TestCase):
         self.assertNotIn("\u2028", raw)                              # et reste échappé dans le fichier
         self.assertEqual(r["c.jsonl"], {"kept": 2, "removed": 0, "retyped": 1})
 
-    def test_without_agreement_the_last_one_as_the_loader(self):
-        rows = [_block("k", 0, "a-2"), _block("k", 1, "a-3")]
+    def test_without_agreement_the_first_filing_as_the_loader(self):
+        # D-0092 : sans accord avec la référence, le bloc que le chargement retient, celui du premier dépôt
+        late, early = {"knowledge_date": "2026-03-01"}, {"knowledge_date": "2025-03-01"}
+        rows = [{**_block("k", 0, "a-2"), **late}, {**_block("k", 1, "a-3"), **early}]
         kept, _ = self._restrict(rows, {"k"}, {"k": ("montage_text", "a-1", "d.htm", None)})
         self.assertEqual(kept, [("k", 1)])
+        rows = [{**_block("k", 0, "a-3"), **early}, {**_block("k", 1, "a-2"), **late}]
+        kept, _ = self._restrict(rows, {"k"}, {"k": ("montage_text", "a-1", "d.htm", None)})
+        self.assertEqual(kept, [("k", 0)])
 
     def test_key_read_in_another_catalog_is_removed(self):
         rows = [_block("k", 0), _block("h", 1)]                     # « h » : arrêtée à son en-tête, sans lecture

@@ -238,9 +238,11 @@ def restrict(paths=None):
     même fenêtre servie par deux montages. La référence dit de quel bloc viennent ses lectures (D-0088, point 10) :
     - un bloc dont elle montre la clé sous un autre type de bloc est écarté (elle la lit dans un autre catalogue) ;
     - entre plusieurs blocs de même clé, se garde celui du dépôt et du document qu'elle montre, de même type de pièce
-      s'il y en a plusieurs ; à défaut d'accord, le dernier, celui que le chargement retient (D-0083, point 12) ;
+      s'il y en a plusieurs ; à défaut d'accord, celui que le chargement retient : le dernier bloc du premier dépôt
+      (D-0092) ;
     - un bloc gardé du bon document, dont aucune occurrence ne porte le type de pièce que la référence montre, le
       reprend d'elle : le recalcul le tire parfois du registre des documents, qui ne type pas les pièces des montages."""
+    from . import reader
     k, ref, man = keys(), shown(), manifests()
     fields = manifest_fields() if man else ()
     attributed = "knowledge_date" in fields              # manifeste qui porte l'attribution des blocs (D-0091, point 12)
@@ -256,7 +258,7 @@ def restrict(paths=None):
         place = {b["content_key"]: i for i, b in enumerate(rows)} if rows is not None else None
         told = ({b["content_key"]: (b.get("block_kind"), b.get("accession"), b.get("document"), b.get("exhibit_type"))
                  for b in rows} if rows is not None else ref)
-        best, elsewhere = {}, 0
+        cands, elsewhere = {}, 0
         for i, line in enumerate(lines):
             b = json.loads(line)
             ck = b.get("content_key")
@@ -266,9 +268,13 @@ def restrict(paths=None):
             if r is not None and b.get("block_kind") != r[0]:
                 elsewhere += 1
                 continue
-            rank = (_agreement(b, r), i)                 # à accord égal, la dernière occurrence
-            if ck not in best or rank > best[ck]:
-                best[ck] = rank
+            cands.setdefault(ck, []).append((_agreement(b, r), i, reader.first_filed(b), b.get("accession")))
+        best = {}
+        for ck, c in cands.items():
+            top = max(x[0] for x in c)
+            c = [x for x in c if x[0] == top]
+            acc = min(c, key=lambda x: x[2])[3]          # à accord égal, le premier dépôt (D-0092)…
+            best[ck] = (top, max(x[1] for x in c if x[3] == acc))     # … et son dernier bloc
         keep = {i: ck for ck, (_, i) in best.items()}
         retyped = realigned = moved = 0
         row_of = {b["content_key"]: b for b in rows} if rows is not None else {}
@@ -307,9 +313,10 @@ def unmanifested():
 
 def prefer_shown(paths=None):
     """Catalogues sans manifeste : entre plusieurs blocs de même clé, range en dernier celui du dépôt et du document que
-    la référence montre ; le chargement, qui garde le dernier, le retient (D-0091, point 12). L'ordre de ces blocs suit
-    l'index des dépôts, qui dépend de l'exécution (D-0085, point 15). Rien d'autre ne bouge. Renvoie, par catalogue, les
-    clés en double et celles réordonnées."""
+    la référence montre (D-0091, point 12). L'ordre de ces blocs suit l'index des dépôts, qui dépend de l'exécution
+    (D-0085, point 15). Depuis D-0092, le chargement retient le premier dépôt quel que soit l'ordre : ce rangement ne
+    joue plus qu'entre blocs d'un même dépôt, dont le chargement garde le dernier. Rien d'autre ne bouge. Renvoie, par
+    catalogue, les clés en double et celles réordonnées."""
     ref = shown()
     out = {}
     for p in paths or unmanifested():

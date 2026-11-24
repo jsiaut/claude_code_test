@@ -5967,3 +5967,21 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - l'ordre des lignes du catalogue des groupes reste celui de l'inventaire.
 
   (7) Ordre et commits : la décision ; le code et ses tests ; un réassemblage ; `make compare` contre `f827850`, chaque écart expliqué ici ; les rendus ; `make state` ; `make check`, commit, push ; rapport.
+
+  (8) Résultats (2026-11-24, 16:49 UTC) :
+  - Code : `reader.by_key`, seule fonction qui choisit le bloc d'une clé, avec le rang `reader.first_filed`. L'emploient le chargement (`load.load_observations`), le lecteur (file, affichage, soumission, décompte), le corpus des montages tiré des liens et les décomptes des rendus. `reconstruction restrict` y revient quand la référence ne montre aucun des blocs recalculés. Sur le catalogue, 38 clés changent de bloc retenu, aucune entre blocs d'un même dépôt.
+  - Réassemblage : 978 s, mémo non repris puisque le code du chargement change. `make compare` contre `f827850`, dont les tables sont celles de D-0090 :
+    - observations : 38 lignes changées à clé égale, aucune apparue ni disparue. Colonnes touchées : dépôt, document et date de connaissance (38), localisation (12), formulaire (3, du 8-K/A au 8-K), groupe et CIK (1) ;
+    - 36 abstentions d'items 2.03 et 2.01 de 8-K reviennent à leur premier dépôt, de 2 à 2 735 jours plus tôt ;
+    - les 2 lignes de la pièce de Cipher passent du 8-K/A du 9 septembre 2021 au 8-K du 8 ;
+    - une abstention change de groupe : un item 2.03 aux mêmes mots dans sept 8-K d'Applied Digital, de TeraWulf et de Hut 8, de novembre 2024 à septembre 2026. Rattachée jusqu'ici à Hut 8, le dernier dans l'ordre du catalogue, elle va à Applied Digital, le premier déposant. C'est la seule clé que portent des dépôts de plusieurs groupes ;
+    - liens : 1 ligne changée, la date de connaissance de l'arête de prépaiement de Cipher à SuperAcme, du 2021-09-09 au 2021-09-08 ;
+    - documents, faits, entités, mesures, contrôles et exclusions : identiques. Aucun rejet de validation.
+  - Tout est l'effet attendu au point 4, sauf le changement de groupe de l'abstention, non prévu et sans conséquence : une abstention n'oriente rien.
+  - Limite, et sa garde : une ligne orientée (contrepartie, payeur, receveur) se lit du point de vue d'un déposant, et ne vaut pas pour un autre groupe. Un test échoue le jour où une clé portée par des dépôts de plusieurs groupes porte une telle ligne. Le bloc se relit alors dans une passe de correction : la file le sert par son premier dépôt.
+  - Stabilité : ni l'ordre de l'inventaire ni un dépôt futur, forcément postérieur, ne changent plus l'attribution d'un texte déjà lu.
+  - Rendus : `synthesis.md` et `series.md` inchangés. `delta.md` se compare à `92b233a` : aucun événement, aucune cellule, aucune arête apparue ni disparue. 32 207 nombres publiés, contre 32 455 à D-0090 : l'écart est celui de `delta.md`, presque vide cette fois. `audit/attributions.csv` : la ligne de Cipher.
+  - État : `make state` n'écrit rien, catalogues et files n'ayant pas changé.
+  - Mode d'emploi : `RUNBOOK.md`, § 4 (une clé est de la période nouvelle par son dernier dépôt ; règle du premier dépôt) et § 6 (reconstruction contre un commit antérieur).
+  - Tests : 617, dont 10 pour cette décision ; un test de D-0088 suit la règle nouvelle.
+  - Restes : ceux du point 6.
