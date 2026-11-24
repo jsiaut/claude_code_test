@@ -1,6 +1,6 @@
 # delta.md — à lire en premier
 
-*Exécution du 2026-11-23, comparée à l'exécution précédente, dont les tables sont celles du commit 1eeb4873d8ae (2026-11-24). Généré depuis les tables (D-0069, point 8).*
+*Exécution du 2026-11-23, comparée à l'exécution précédente, dont les tables sont celles du commit 8aaadd168991 (2026-11-24). Généré depuis les tables (D-0069, point 8).*
 
 ## Arrêt
 
@@ -14,18 +14,18 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, réponses 429 de la 
 
 ## Rendement du passage (§11.1)
 
-- Cellules de rang 1, par statut et motif : calculée 43 559 ; indéterminée / historique tronqué 8 829 ; indéterminée / terme manquant 7 834 ; indéterminée / concept non résolu 6 863 ; indéterminée / non publié 4 730 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 750 ; indéterminée / précondition non remplie 1 700 ; indéterminée / recherche incomplète 1 057 ; bornée 825 ; indéterminée / client anonyme 527 ; indéterminée / caviardé 490 ; indéterminée / dénominateur négatif ou nul 361 ; indéterminée / frontière de retraitement 319 ; partielle / non publié 231 ; indéterminée / non collecté 101 ; partielle / terme manquant 39 ; indéterminée / entité non confirmée 4.
-- Cellules de l'annexe F des groupes, par statut et motif : calculée 4 605 ; indéterminée / annuel seulement 1 194 ; indéterminée / non publié 584 ; indéterminée / terme manquant 471 ; partielle / non publié 425 ; indéterminée / concept non résolu 307 ; indéterminée / période antérieure absente 72 ; indéterminée / non collecté 51 ; indéterminée / frontière de retraitement 9 ; indéterminée / dénominateur négatif ou nul 2.
+- Cellules de rang 1, par statut et motif : calculée 43 639 ; indéterminée / historique tronqué 9 317 ; indéterminée / terme manquant 7 987 ; indéterminée / concept non résolu 7 461 ; indéterminée / non publié 4 805 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 750 ; indéterminée / précondition non remplie 1 700 ; indéterminée / recherche incomplète 1 057 ; bornée 825 ; indéterminée / client anonyme 557 ; indéterminée / caviardé 490 ; indéterminée / dénominateur négatif ou nul 361 ; indéterminée / frontière de retraitement 319 ; partielle / non publié 254 ; indéterminée / non collecté 101 ; partielle / terme manquant 39 ; indéterminée / entité non confirmée 4.
+- Cellules de l'annexe F des groupes, par statut et motif : calculée 4 628 ; indéterminée / annuel seulement 1 230 ; indéterminée / non publié 630 ; indéterminée / terme manquant 471 ; partielle / non publié 471 ; indéterminée / concept non résolu 386 ; indéterminée / période antérieure absente 72 ; indéterminée / non collecté 51 ; indéterminée / frontière de retraitement 9 ; indéterminée / dénominateur négatif ou nul 2.
 - Cellules de F11 à F16 des véhicules BDC (D-0045, D-0047), par statut et motif : indéterminée / non balisé 4 083 ; calculée 4 055 ; indéterminée / période antérieure absente 1 580 ; indéterminée / période non écoulée à la date de coupure 75 ; indéterminée / non publié 28.
 - Paires à financement documenté (F active au moins un trimestre) : 102 — Amazon → Anthropic, Amazon → OpenAI, Applied Digital → Base Electron Corp., Applied Digital → Base Electron, Inc., Apollo → AMAPS 1, LLC, Apollo → AMAPS 2, LLC, Apollo → AMAPS 3, LLC, Apollo → AMAPS 4, LLC, Apollo → AMAPS 5, LLC, Apollo → AMAPS 6, LLC, Apollo → AP Alkaios (Luxembourg) S.à.r.l., Apollo → AP Aristotle Holdings LLC, Apollo → AP Falcon Holdings, LLC, Apollo → AP Grange Holdings, LLC, Apollo → AP Tundra Holdings LLC, Apollo → Apollo Rose II (B), L.P., Apollo → AT&T Inc., Apollo → Athene Holding Ltd., Apollo → Athora Holding Ltd., Apollo → Atlas Secured Advance Funding L.P., Apollo → Atlas Securitized Products Funding 1, L.P., Apollo → Atlas Securitized Products Holdings L.P., Apollo → Bank of America, N.A., Apollo → Big Sky Funding LLC, Apollo → Catalina Holdings (Bermuda) Ltd., Apollo → Fox Hedge L.P., Apollo → LeasePlan USA, Inc., Apollo → MORGAN STANLEY, Apollo → PARAMOUNT SKYDANCE CORP, Apollo → PK AirFinance, Apollo → Skylign Aviation Holdings, LP, Apollo → Stonepeak Wallaby I Holdings LP, Apollo → SVF II Finco Cayman L.P., Apollo → VA Capital Company LLC, Apollo → Venerable Holdings, Inc., Apollo → Warehouse Halifax Funding, L.P., Apollo → Wheels Inc., Apollo → Électricité de France SA, Apollo → SoftBank, ASML → Carl Zeiss SMT GmbH, ASML → Carl Zeiss SMT Holding GmbH & Co. KG, ASML → Mistral AI, Broadcom → Silicon Manufacturing Partners Pte. Ltd., Backblaze → CoreWeave, Blackstone → American International Group, Inc., Blackstone → Corebridge Financial, Inc., Blackstone → Pátria Investimentos Ltda, Blackstone → Pátria Investments Limited, Cerebras → Amazon, Cerebras → OpenAI, CoreWeave → MAIV, CoreWeave → OpenAI, Galaxy → Candy Digital Inc., Alphabet → Cipher, Alphabet → ADT INC., Alphabet → CME GROUP INC., Alphabet → PLANET LABS PBC, Alphabet → TEMPUS AI, INC., Alphabet → Anthropic, Alphabet → SpaceX, Intel → Altera Corporation, Intel → Beijing Unisoc Technology Ltd., Intel → McAfee Corp., Intel → Micron, Meta → Jio Platforms Limited, Microsoft → GENERAL MOTORS CO, Microsoft → OpenAI, NVIDIA → COHERENT CORP., NVIDIA → NOKIA CORP, NVIDIA → SYNOPSYS INC, NVIDIA → CoreWeave, NVIDIA → Intel, NVIDIA → Nebius, Oracle → Ampere Computing Holdings LLC, Oracle → Ampere Computing LLC, Oracle → Screening Room Media, Inc., Oracle → TikTok USDS Joint Venture LLC, Blue Owl → Blue Owl Real Estate Net Lease Trust, Riot → Bitfarms Ltd., Riot → Coinsquare Ltd., Riot → goNumerical Ltd., Riot → Mogo Inc., Riot → TessPay Inc., Riot → Verady, Inc., Riot → Verady, LLC, SK hynix → BCPE Pangea Cayman2, Ltd., SK hynix → BCPE Pangea Intermediate Holdings Cayman, L.P., SK hynix → HITECH Semiconductor (Wuxi) Co., Ltd., SK hynix → SiFive, Inc., SK hynix → SK China Company Limited, SK hynix → SK hynix system ic (Wuxi) Co., Ltd., SK hynix → SK South East Asia Investment Pte. Ltd., SK hynix → Specialized Investment-type Private Equity Investment Trust For Growth Of Semiconductor, SK hynix → Specialized Investment-type Private Equity Investment Trust For Win-win System Semiconductor, SK hynix → Wuxi xinfa IC industry park., Ltd, Supermicro → Ampera Inc., SpaceX → The Boring Company, TSMC → Global Unichip Corporation, TSMC → Mutual-Pak Technology Co., Ltd., TSMC → Systems on Silicon Manufacturing Company Pte Ltd., TSMC → Vanguard International Semiconductor Corporation, TSMC → Xintec Inc..
 - Arêtes de montant : commercial 3 296, credit_support 118, customer_consideration 123, financing 2 013 ; arêtes de relation : 3 546.
-- Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : Akamai (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Applied Digital (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 96,0 % [94,0 % ; 98,0 %] ; Apollo (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; ASML (exercice clos le 2025-12-31) : nommés 61,2 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; Backblaze (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blackstone (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Cerebras (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Cipher (exercice clos le 2025-12-31) : nommés 70,0 %, anonymes d'au moins 10 % 0,0 % ; Core Scientific (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Dell (exercice clos le 2026-01-30) : nommés 0,0 %, anonymes d'au moins 10 % 12,0 % [11,5 % ; 12,5 %] ; Galaxy (exercice clos le 2025-12-31) : nommés 38,0 %, anonymes d'au moins 10 % 0,0 % ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Hut 8 (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Intel (exercice clos le 2025-12-27) : nommés 43,0 %, anonymes d'au moins 10 % 43,0 % [42,5 % ; 43,5 %] ; IREN (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 7,3 %, anonymes d'au moins 10 % 0,0 % ; Micron (exercice clos le 2026-09-03) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Nebius (exercice clos le 2025-12-31) : nommés 40,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blue Owl (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Riot (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SK hynix (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Supermicro (exercice clos le 2026-06-30) : nommés 0,2 %, anonymes d'au moins 10 % 28,1 % [28,0 % ; 28,2 %] ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TSMC (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TeraWulf (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
-- Cellules de la question 4, par statut et motif : calculée 20 618 ; indéterminée / historique tronqué 8 829 ; indéterminée / concept non résolu 2 566 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 750 ; indéterminée / précondition non remplie 1 698 ; indéterminée / non publié 1 421 ; indéterminée / recherche incomplète 1 057 ; bornée 825 ; indéterminée / client anonyme 527 ; indéterminée / caviardé 490 ; indéterminée / terme manquant 159.
-- Requêtes : 83 770 au journal, dont 82 938 réussies, 346 192 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-11-24T01:55:39.610+00:00.
-- Blocs lus : 12 796 sur 13 171 clés de contenu ; par item de 8-K : 1.01 481, 1.02 50, 2.01 38, 2.03 146, 3.03 36, 8.01 843 ; pièces arrêtées à leur en-tête : EX-4 375.
+- Revenu attribué par chaque fournisseur à des clients nommés, dernier exercice (le texte autour des faits de concentration est lu : l'anonymat est celui des pièces), et part des clients anonymes : Akamai (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; AMD (exercice clos le 2025-12-27) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Amazon (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Applied Digital (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 96,0 % [94,0 % ; 98,0 %] ; Apollo (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; ASML (exercice clos le 2025-12-31) : nommés 61,2 %, anonymes d'au moins 10 % 0,0 % ; Broadcom (exercice clos le 2025-11-02) : nommés 0,0 %, anonymes d'au moins 10 % 32,0 % [31,5 % ; 32,5 %] ; Backblaze (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blackstone (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Cerebras (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Cipher (exercice clos le 2025-12-31) : nommés 70,0 %, anonymes d'au moins 10 % 0,0 % ; Core Scientific (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; CoreWeave (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 67,0 % [66,5 % ; 67,5 %] ; Dell (exercice clos le 2026-01-30) : nommés 0,0 %, anonymes d'au moins 10 % 12,0 % [11,5 % ; 12,5 %] ; Galaxy (exercice clos le 2025-12-31) : nommés 38,0 %, anonymes d'au moins 10 % 0,0 % ; Alphabet (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Hut 8 (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Intel (exercice clos le 2025-12-27) : nommés 43,0 %, anonymes d'au moins 10 % 43,0 % [42,5 % ; 43,5 %] ; IREN (exercice clos le 2026-06-30) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Anthropic (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Meta (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Marvell (exercice clos le 2026-01-31) : nommés 0,0 %, anonymes d'au moins 10 % 51,0 % [50,0 % ; 52,0 %] ; Microsoft (exercice clos le 2026-06-30) : nommés 7,3 %, anonymes d'au moins 10 % 0,0 % ; Micron (exercice clos le 2026-09-03) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Nebius (exercice clos le 2025-12-31) : nommés 40,0 %, anonymes d'au moins 10 % 0,0 % ; NVIDIA (exercice clos le 2026-01-25) : nommés 0,0 %, anonymes d'au moins 10 % 36,0 % [35,0 % ; 37,0 %] ; Oracle (exercice clos le 2026-05-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Blue Owl (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; Riot (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; SK hynix (exercice clos le 2025-12-31) : nommés n.d. (terme manquant), anonymes d'au moins 10 % n.d. (terme manquant) ; Supermicro (exercice clos le 2026-06-30) : nommés 0,2 %, anonymes d'au moins 10 % 28,1 % [28,0 % ; 28,2 %] ; SpaceX (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TSMC (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 % ; TeraWulf (exercice clos le 2025-12-31) : nommés 0,0 %, anonymes d'au moins 10 % 0,0 %.
+- Cellules de la question 4, par statut et motif : calculée 20 627 ; indéterminée / historique tronqué 9 317 ; indéterminée / concept non résolu 2 576 ; indéterminée / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 750 ; indéterminée / précondition non remplie 1 698 ; indéterminée / non publié 1 421 ; indéterminée / recherche incomplète 1 057 ; bornée 825 ; indéterminée / client anonyme 557 ; indéterminée / caviardé 490 ; indéterminée / terme manquant 174.
+- Requêtes : 83 777 au journal, dont 82 944 réussies, 346 192 Mo reçus ; de 2026-10-07T10:56:41.445+00:00 à 2026-11-24T10:19:36.012+00:00.
+- Blocs lus : 12 797 sur 13 172 clés de contenu ; par item de 8-K : 1.01 481, 1.02 50, 2.01 38, 2.03 146, 3.03 36, 8.01 843 ; pièces arrêtées à leur en-tête : EX-4 375.
 - Lignes rejetées par la validation : 0.
-- Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 692 (collisions : 240).
-- Durée de l'assemblage : 1010 s ; lecture : voir le journal ci-dessus.
+- Doublons de clé primaire écartés à l'assemblage : `entities` 1 (collisions : 1), `exclusions` 2 (collisions : 0), `measures` 712 (collisions : 249).
+- Durée de l'assemblage : 883 s ; lecture : voir le journal ci-dessus.
 
 ## Rendement du bloc lender (§14)
 
@@ -36,15 +36,15 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, réponses 429 de la 
 ## Rendement du bloc text (§14)
 
 - Blocs lus : 4 733 sur 4 733 (55,7 sur 55,7 millions de caractères) ; par type : paragraphes sur les clients 103/103 ; notes d'investissements 697/697 ; 8-K item 2.01 38/38 ; 8-K item 2.03 146/146 ; notes de dette 770/770 ; notes de baux 489/489 ; notes d'engagements 763/763 ; immobilisations et estimations 1 068/1 068 ; notes de revenu 469/469 ; corps d'EX-10 190/190. Aucun bloc du catalogue ne reste à lire.
-- Lignes rendues dans les passes du bloc : 22 980 observations, 5 854 abstentions motivées, 0 rejetées par la validation.
+- Lignes rendues dans les passes du bloc : 22 980 observations, 5 855 abstentions motivées, 0 rejetées par la validation.
 - Arêtes établies par une ligne du bloc : commercial (montant) 2 977, commercial (relation) 425, credit_support (montant) 93, credit_support (relation) 335, customer_consideration (montant) 39, customer_consideration (relation) 4, financing (montant) 1 741, financing (relation) 2 198.
-- Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 79 219 ; calculée 6 322 → 43 559 ; bornée 161 → 825 ; partielle 794 → 270 ; indéterminée 8 489 → 34 565 ; motif « non traité » 3 394 → 1 750. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
+- Cellules de rang 1, avant l'ouverture → maintenant : total 15 766 → 80 666 ; calculée 6 322 → 43 639 ; bornée 161 → 825 ; partielle 794 → 293 ; indéterminée 8 489 → 35 909 ; motif « non traité » 3 394 → 1 750. Le total peut changer : une ligne lue ouvre parfois des cellules nouvelles (une paire, un instrument).
 - Événements de l'annexe F : 33 → 528 ; issues de paire indéterminées (E.1 et E.2) : 11 sur 12 → 113 sur 202.
-- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 3 635, inconnu / historique tronqué 2 027, actif 998, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 403, inconnu / recherche incomplète 257, échu 231, inconnu / caviardé 112. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
-- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : historique tronqué 8 868 ; terme manquant 8 344 ; concept non résolu 7 296 ; non publié 6 286 ; non balisé 4 083 ; précondition non remplie 1 865 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 758 ; période antérieure absente 1 652 ; annuel seulement 1 194 ; recherche incomplète 1 070 ; client anonyme 554 ; caviardé 493 ; dénominateur négatif ou nul 363 ; frontière de retraitement 328 ; non collecté 152 ; intervalle à cheval sur le seuil 87 ; période non écoulée à la date de coupure 75 ; date manquante 31 ; entité non confirmée 4. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
-- Clauses financières (`sig_covenant_events`, trimestres-groupes, vue `as_known`) : événement 29, sans événement 512, partielle (sans événement sur la part lue) / non publié 231.
-- Actifs nantis (`sig_pledged_assets`, trimestres-groupes, vue `as_known`) : événement 92, sans événement 451, indéterminée / non publié 229.
-- Pont des baux non commencés (`lease_not_commenced_bridge`) : calculée 193, indéterminée 1 204, partielle 14.
+- Statut « financé » (trimestres-paires, vue `as_known`, politique `exposure_outstanding`) : jamais documenté 3 635, inconnu / historique tronqué 2 139, actif 998, inconnu / non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 403, inconnu / recherche incomplète 257, échu 231, inconnu / caviardé 112. « Jamais documenté » veut dire qu'aucune pièce lue n'établit F, sous une recherche complète au sens de E.0 : tout le texte du fournisseur et, s'il dépose, du client est lu ; un client qui peut déposer hors du périmètre laisse la recherche incomplète tant que ses dépôts qui nomment le fournisseur ne sont pas tous lus (découverte, §14, D-0037).
+- Motifs des cellules de rang 1 indéterminées ou partielles après le bloc : historique tronqué 9 356 ; terme manquant 8 497 ; concept non résolu 7 973 ; non publié 6 480 ; non balisé 4 083 ; précondition non remplie 1 865 ; non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 758 ; période antérieure absente 1 652 ; annuel seulement 1 230 ; recherche incomplète 1 070 ; client anonyme 584 ; caviardé 493 ; dénominateur négatif ou nul 363 ; frontière de retraitement 328 ; non collecté 152 ; intervalle à cheval sur le seuil 87 ; période non écoulée à la date de coupure 75 ; date manquante 31 ; entité non confirmée 4. Une extension ne change rien là où le motif est « non-déposant » ou « caviardé » ; « recherche incomplète » attend la lecture du reste de la file de la découverte (§14) ; « client anonyme » est définitif, le texte autour des faits de concentration étant lu.
+- Clauses financières (`sig_covenant_events`, trimestres-groupes, vue `as_known`) : événement 29, sans événement 512, partielle (sans événement sur la part lue) / non publié 254.
+- Actifs nantis (`sig_pledged_assets`, trimestres-groupes, vue `as_known`) : événement 92, sans événement 451, indéterminée / non publié 252.
+- Pont des baux non commencés (`lease_not_commenced_bridge`) : calculée 195, indéterminée 1 242, partielle 14.
 - Effet publié d'un changement de durée d'utilité (`depreciation_life_change_effect`) : calculée 51.
 - Résultat opérationnel retraité de cet effet (`lever_restatement`) : calculée 153.
 
@@ -76,7 +76,7 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, réponses 429 de la 
 ## Rendement du bloc foreign (§14)
 
 - Blocs de formulaires étrangers lus : 1 114 ; 1 321 observations, 806 abstentions.
-- Lignes par cadre comptable de leur pièce : aucun 13 080, ifrs 1 043, us_gaap 19 472.
+- Lignes par cadre comptable de leur pièce : aucun 13 081, ifrs 1 043, us_gaap 19 472.
 
 ## Rendement du bloc form_d (§14)
 
@@ -86,11 +86,12 @@ Aucun arrêt (§11.4) : refus 403 de la SEC au journal : 0, réponses 429 de la 
 
 ## Exclusions nouvelles, par motif
 
-- Aucune.
+- `submitted_draft` : +6, −0
+- `history_left_censored` : +1, −0
 
 ## Décisions et variantes nouvelles
 
-- D-0089 — Deux chantiers laissés par D-0087 : lignes d'intérêts en famille `financing`, poids de `tables/facts.parquet`. Règles fixées avant tout changement.
+- D-0090 — Anthropic, laboratoire devenu déposant, entre comme groupe. Règles fixées avant tout tirage.
 
 ## Critères des annexes E et F
 
@@ -110,26 +111,74 @@ Cellules de même clé dont la valeur, le statut ou le motif a changé, puis cel
 
 | Mesure | Valeur changée | Statut ou motif changé | Apparues | Disparues |
 | --- | ---: | ---: | ---: | ---: |
-| `annex_e_outcome` | 5 | 0 | 0 | 26 |
-| `documented_pair_coverage` | 2 | 0 | 0 | 6 |
-| `contract_coverage` | 0 | 0 | 0 | 5 |
-| `counterparty_exposure` | 0 | 0 | 0 | 5 |
-| `documented_backlog_dependency` | 0 | 0 | 0 | 110 |
-| `documented_path` | 0 | 0 | 0 | 5 |
-| `documented_revenue_dependency` | 0 | 0 | 0 | 54 |
-| `exposure_matrix` | 0 | 0 | 14 | 14 |
-| `financed_status` | 0 | 0 | 0 | 576 |
-| `investment_relationship_type` | 0 | 0 | 0 | 1 |
-| `lab_ledger` | 0 | 0 | 0 | 1 |
-| `noncash_revenue_from_investees` | 0 | 0 | 0 | 12 |
-| `relationship_conclusion` | 0 | 0 | 0 | 5 |
+| `annex_e_outcome` | 0 | 0 | 5 | 0 |
+| `capex_accrual` | 0 | 0 | 10 | 0 |
+| `capex_cash` | 0 | 0 | 46 | 0 |
+| `capex_to_cfo` | 0 | 0 | 92 | 0 |
+| `capex_to_revenue` | 0 | 0 | 46 | 0 |
+| `capitalized_interest` | 0 | 0 | 46 | 0 |
+| `capitalized_interest_to_cip` | 0 | 0 | 46 | 0 |
+| `cfo_net_income_gap` | 0 | 0 | 46 | 0 |
+| `cip_change_to_capex` | 0 | 0 | 46 | 0 |
+| `cip_share` | 0 | 0 | 46 | 0 |
+| `contract_coverage` | 0 | 0 | 4 | 0 |
+| `counterparty_exposure` | 0 | 0 | 4 | 0 |
+| `cov_interest_coverage` | 0 | 0 | 92 | 0 |
+| `cov_pik_interest` | 0 | 0 | 46 | 0 |
+| `customer_advances` | 0 | 0 | 46 | 0 |
+| `customer_concentration_anonymous` | 0 | 0 | 10 | 0 |
+| `depreciation_life_published` | 0 | 0 | 30 | 0 |
+| `documented_pair_coverage` | 0 | 0 | 1 | 0 |
+| `documented_path` | 0 | 0 | 4 | 4 |
+| `documented_revenue_dependency` | 0 | 0 | 40 | 0 |
+| `earnings_bridge_pretax` | 0 | 0 | 20 | 0 |
+| `earnings_bridge_share` | 0 | 0 | 10 | 0 |
+| `eq_diluted_share_count_change` | 0 | 0 | 46 | 0 |
+| `eq_equity_and_accumulated_deficit` | 0 | 0 | 92 | 0 |
+| `exposure_matrix` | 0 | 0 | 10 | 0 |
+| `fcf_after_counterparty_financing` | 0 | 0 | 46 | 0 |
+| `fcf_after_finance_leases` | 0 | 0 | 46 | 0 |
+| `fcf_after_sbc` | 0 | 0 | 46 | 0 |
+| `fcf_basic` | 0 | 0 | 46 | 0 |
+| `finance_lease_additions` | 0 | 0 | 10 | 0 |
+| `financed_status` | 0 | 0 | 448 | 0 |
+| `fragility_event` | 0 | 0 | 230 | 0 |
+| `gross_margin` | 0 | 0 | 46 | 0 |
+| `implied_useful_life` | 0 | 0 | 10 | 0 |
+| `investor_customer_revenue_share` | 0 | 0 | 30 | 0 |
+| `lease_not_commenced_bridge` | 0 | 0 | 40 | 0 |
+| `lev_debt_and_leases_to_operating_income_plus_da` | 0 | 0 | 92 | 0 |
+| `liq_cash_to_12m_outflows` | 0 | 0 | 20 | 0 |
+| `liq_principal_due_to_cash` | 0 | 0 | 20 | 0 |
+| `liq_undrawn_committed_facilities` | 0 | 0 | 46 | 0 |
+| `named_edge_coverage` | 0 | 0 | 15 | 0 |
+| `operating_lease_rou_additions` | 0 | 0 | 46 | 0 |
+| `operating_margin` | 0 | 0 | 46 | 0 |
+| `receivables_collection_period` | 0 | 0 | 92 | 0 |
+| `relationship_conclusion` | 0 | 0 | 4 | 0 |
+| `revenue_growth` | 0 | 0 | 92 | 0 |
+| `rpo_total` | 0 | 0 | 46 | 0 |
+| `sbc_to_cfo` | 0 | 0 | 46 | 0 |
+| `segment_significant_expenses` | 0 | 0 | 4 | 0 |
+| `sig_auditor_change_or_nonreliance` | 0 | 0 | 23 | 0 |
+| `sig_covenant_events` | 0 | 0 | 23 | 0 |
+| `sig_distress_8k_items` | 0 | 0 | 23 | 0 |
+| `sig_going_concern` | 0 | 0 | 23 | 0 |
+| `sig_late_filing` | 0 | 0 | 23 | 0 |
+| `sig_material_weakness` | 0 | 0 | 23 | 0 |
+| `sig_pledged_assets` | 0 | 0 | 23 | 0 |
+| `stock_paid_additions` | 0 | 0 | 10 | 0 |
+| `supplier_concentration` | 0 | 0 | 10 | 0 |
+| `vendor_financed_additions` | 0 | 0 | 10 | 0 |
+| `visible_pairs_count` | 0 | 0 | 5 | 0 |
+| `working_capital` | 0 | 0 | 276 | 0 |
 
 Même identité de fait, valeurs différentes selon le dépôt (C4), publiées sans écrasement ; la cause de révision (`recast_cause`) se lit au cas par cas dans `controls` : Akamai 35, AMD 21, Amazon 53, Applied Digital 114, Apollo 88, ASML 7, Broadcom 22, Backblaze 12, Blackstone 1, Cipher 49, Core Scientific 98, CoreWeave 7, Dell 286, Galaxy 4, Alphabet 21, Hut 8 7, Intel 45, Meta 12, Marvell 15, Microsoft 1, Micron 1, Nebius 23, NVIDIA 34, Oracle 52, Blue Owl 7, Riot 113, Supermicro 162, TSMC 17, TeraWulf 21.
 
 ## Arêtes nouvelles
 
-- Apparues : commercial/amount 8, commercial/relation 2, credit_support/amount 7, credit_support/relation 7, financing/amount 84, financing/relation 77.
-- Disparues : commercial/amount 8, commercial/relation 2, credit_support/amount 7, credit_support/relation 7, financing/amount 124, financing/relation 92.
+- Apparues : aucune.
+- Disparues : aucune.
 
 ## Contrôles qui ont basculé
 
@@ -149,5 +198,5 @@ Relations candidates par paire du registre : na01 0, na02 0, na03 255, na04 0, n
 
 ## Changements dus à une nouvelle passe de lecture ou au code
 
-Lecture : 431 lignes d'observation nouvelles, dans 38 blocs, et 431 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
+Lecture : 1 lignes d'observation nouvelles, dans 1 blocs, et 0 disparues. Code : les décisions nouvelles ci-dessus disent ce qui a changé.
 

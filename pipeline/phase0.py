@@ -24,12 +24,18 @@ def _items(s):
     return {x.strip() for x in (s or "").split(",") if x.strip()}
 
 
+def group_ticker(group, cfg):
+    """Symbole boursier d'un groupe : sa référence, sauf pour un groupe qui garde une autre référence (`group_tickers` :
+    un laboratoire devenu déposant, D-0090)."""
+    return str((cfg.get("group_tickers") or {}).get(group, group)).upper()
+
+
 def resolve(e, cfg):
     tickers = e.tickers()
     by_ticker = {v["ticker"].upper(): v for v in tickers.values()}
     groups, excluded = {}, []
     for tk, hint in cfg["groups"].items():
-        v = by_ticker.get(tk.upper())
+        v = by_ticker.get(group_ticker(tk, cfg))
         if v is None:
             excluded.append({"group": tk, "reason": "ticker non résolu par company_tickers.json"})
             continue

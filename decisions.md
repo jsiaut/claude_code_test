@@ -5792,3 +5792,46 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - la date de cotation vient du 424B4, comme avant (D-0065, point 7).
 
   (7) Ordre et commits : la décision ; la configuration et le code de la résolution du symbole, avec ses tests ; phase 0 et univers ; index, phases 1 et 2 ; catalogue et montages, volumes consignés ici ; lecture ; intégration (entités, réassemblage, `make compare` contre le commit de D-0089, chaque écart expliqué) ; rendus ; `make check`, commit, push.
+
+  (8) Phases 0 à 2, catalogue et montages : volumes (11:08 UTC).
+  - Réseau : 7 requêtes, aucun refus. Phase 0 : aucune, les listes de l'as_of étant au cache. Index : 5 dépôts d'Anthropic (S-1, trois S-1/A, 424B4), et l'index du 8-K de Meta, qui répond encore 404 (D-0088, point 14). Phase 1 : le `companyfacts` d'Anthropic. Phase 2 et catalogue : aucune, le 424B4 étant au cache.
+  - Phase 0 : 34 groupes, aucun écarté. Anthropic : 36 dépôts, aucun daté après l'as_of ; calendrier d'exercices clos le 31 décembre ; `history_left_censored`, son premier dépôt (2026-06-01) suivant le début de lecture. Inventaire : 5 dépôts d'introduction (S-1, S-1/A, 424B4), 31 autres. Univers attendu : 25 776 cellules (25 032), soit 744 de plus.
+  - Phase 1 : le `companyfacts` d'Anthropic ne porte que les tables de frais d'enregistrement (taxonomie `ffd`, 23 faits du S-1, du S-1/A n° 2, du S-1MEF et des deux S-8). Les états financiers ne sont pas balisés : les mesures tirées des faits resteront indéterminées jusqu'au premier rapport périodique (point 4). 808 dépôts lus, les 7 échecs connus.
+  - Phase 2 : 2 387 documents (2 386), le 424B4 en plus.
+  - Catalogue : aucune clé lue ne disparaît.
+    - Tranche : 4 411 → 4 412 clés. Le bloc nouveau est l'Item 404 du 424B4 (c24c413f6254, 11 411 caractères). Il s'arrête au milieu de la section, que la piste lit en entier (cf908c00ae42, 23 915 caractères) : ses 138 paragraphes y figurent tous.
+    - Bloc `text` : 4 545 clés, inchangé ; aucune note, faute d'instance.
+    - Deux blocs de Core Scientific changent de dépôt, d'un 8-K à son 8-K/A de janvier 2024 (même texte dans les deux ; ordre de l'inventaire, D-0085, point 15).
+  - Montages, corpus refaits puis préparation, sans requête : 1 861 blocs, aucun nouveau, aucune clé perdue.
+    - `labs_events` prend le S-1/A n° 3 et le 424B4 d'Anthropic comme dépôts d'un groupe : aucun paragraphe n'y nomme un terme hors du nom du déposant (deux pièces sans fenêtre).
+    - `labs_corpus` prend le communiqué de résultats de NVIDIA du 2026-11-17, tiré après le corpus de D-0088 : sa fenêtre est déjà lue par le montage `anthropic_chain`.
+    - Deux fenêtres de `labs_contracts` du S-1/A de SB Energy, lues à D-0088, passent de lecture complète à complémentaire : leur texte est désormais dans un bloc lu. Rien ne change dans leurs lignes.
+  - À lire : rien. Repris : 1 bloc, l'Item 404 du catalogue, par une abstention `duplicate_of_other_block` qui nomme le bloc de la piste (point 5).
+  - Écart d'ordre, sans effet : cette abstention a été rendue juste avant que ce volume ne soit consigné. `make read-check` : 967 lignes de l'as_of dans 335 blocs, aucune erreur, les deux alertes confirmées de D-0089.
+  - Entités (point 3) : l'entrée « Anthropic PBC » de `confirmed_entities` se retire. Son nom normalisé est celui de l'entité du CIK : gardée, elle doublerait l'appartenance de la tête.
+  - Constat, sans suite ici : le catalogue coupe l'Item 404 du 424B4 d'Anthropic au milieu d'une phrase, à un saut de page de sa mise en page en lignes placées. La piste, qui connaît cette mise en page (`own_filings`), lit la section entière : rien n'est perdu. Les Item 404 des sept autres prospectus d'introduction du catalogue (CoreWeave, SpaceX, Applied Digital, Galaxy, Backblaze, SK hynix, Cerebras) finissent en fin de phrase.
+
+  (9) Intégration et résultats (11:27 UTC).
+  - Configuration : `groups`, `group_tickers`, `group_entry` (2026-11-24) et `reporting_start` d'Anthropic ; l'entrée « Anthropic PBC » de `confirmed_entities` retirée. Code : `phase0.group_ticker` résout le symbole d'un groupe dont la référence n'est pas le symbole ; le rendu nomme le groupe et sait écrire son rang (`NUM_FR`). Aucun autre module ne change : les contrôles qui lisent le préfixe `LAB:` restent justes pour un laboratoire qui dépose.
+  - Réassemblage (883 s). Tables : documents 28 291, faits 1 631 732, observations 33 596, entités 3 753, liens 12 323, mesures 203 814, contrôles 73 044, exclusions 31 555.
+  - Comparaison au commit de D-0089 (8aaadd1), chaque écart expliqué :
+    - documents +6 : les index des cinq dépôts d'introduction et le `companyfacts`. 38 documents d'Anthropic, jusque-là sans forme ni date, portent leur groupe, leur forme et leurs dates ; le 424B4 passe à « analysé » ;
+    - faits +23 : les tables de frais d'enregistrement (point 8) ;
+    - observations +1 : l'abstention de reprise. 55 lignes prennent l'entité du CIK pour contrepartie résolue (`cik:0002130357` au lieu de `name:anthropic pbc`). 3 lignes de Core Scientific reviennent d'un 8-K/A à son 8-K de janvier 2024, où `f358538` les avait (ordre de l'inventaire, D-0085, point 15 ; D-0088, point 26). Une ligne d'une fenêtre de montage du S-1/A de SB Energy perd un type de pièce qui était la forme du dépôt ;
+    - entités : l'entité et l'appartenance de la tête changent d'identifiant (même groupe, même traitement) ; 42 liens et 617 cellules N-PORT citent le nouvel identifiant ;
+    - mesures +2 923, −4, aucune valeur changée ailleurs :
+      - 2 919 cellules du groupe : 108 calculées, 69 partielles, 2 746 indéterminées (concept non résolu 1 785, historique tronqué 488, terme manquant 245, non publié 148, annuel seulement 36, client anonyme 30, non balisé 14). Faute de faits balisés, aucune mesure tirée des comptes n'a de valeur ;
+      - signaux et annexe F d'Anthropic : aucun événement. Sans événement, calculé : retard de dépôt, items de détresse des 8-K, changement d'auditeur ou non-fiabilité, F9. Sans événement sur la part lue : clauses financières, F3, F4. Indéterminés : continuité d'exploitation, faiblesse du contrôle interne, actifs nantis, F1, F2 et F5 à F8, F10 ;
+      - quatre paires dont Anthropic est le fournisseur naissent de liens déjà lus : vers Amazon, Alphabet et Microsoft (achats réciproques seulement) et vers Ode with Anthropic (causalité non établie) ; leur statut « financé » est inconnu (448 cellules) ;
+      - quatre cycles qui passent par Anthropic se nomment désormais à partir de lui (`LAB:ANTHROPIC>MSFT`, `>WULF`, `>NF:NSCALE>NVDA`, `>NF:FLUIDSTACK>WULF`), sous les mêmes conclusions : 120 cycles, E7 113 sur 202, inchangés ;
+      - les agrégats entre groupes énoncent l'entrée d'Anthropic au 2026-11-24 (composition des issues de l'annexe E) ;
+    - contrôles +4 : `c5_bilateral` des quatre paires, non testables ; aucun ne bascule ;
+    - exclusions +7 : `history_left_censored` pour le groupe, et les six projets confidentiels (`submitted_draft`).
+  - Rendus : 32 455 nombres publiés ; `delta.md` se compare au commit de D-0089. La synthèse a sa section « Anthropic (LAB:ANTHROPIC) », où chaque mesure des comptes s'écrit « n.d. (concept non résolu) ».
+  - `RUNBOOK.md` : Anthropic vient désormais par le tronc pour ses rapports périodiques et ses 8-K ; un amendement du document d'enregistrement garde sa règle.
+  - Tests : `tests/test_d0090.py` (6 tests).
+  - Restent :
+    - à son premier rapport périodique (10-K de 2026, attendu au plus tard fin mars 2027) : revoir `reporting_start`, lire la série annuelle du 424B4 en HTML sur les libellés de ce rapport (§10.3, D1), et lire ses notes par le catalogue ;
+    - l'index du 8-K de Meta du 2026-11-23 répond toujours 404 ;
+    - le bloc d'Item 404 du catalogue s'arrête au milieu de la section pour ce 424B4 (point 8) ;
+    - les blocs dont le même texte figure dans un 8-K et son 8-K/A changent de dépôt d'une exécution à l'autre.

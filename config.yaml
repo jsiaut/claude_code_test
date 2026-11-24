@@ -260,6 +260,11 @@ groups:                      # CIK indicatifs ; company_tickers.json fait foi (�
   ASML: "0000937966"         # ajouts du 2026-10-18 (D-0057) : équipements et mémoire, émetteurs privés étrangers
   SKHY: "0002120882"         # déclarant de 2026 (D-0057, point 2)
   CBRS: "0002021728"         # ajout du 2026-10-22 (D-0070) : puces et calcul d'IA, introduit en Bourse en 2026
+  "LAB:ANTHROPIC": "0002130357"   # ajout du 2026-11-24 (D-0090) : laboratoire devenu déposant, introduit en Bourse en 2026 ;
+                                  # il garde sa référence de laboratoire, et group_tickers donne son symbole
+
+group_tickers:               # symbole d'un groupe dont la référence n'est pas le symbole (D-0090) : company_tickers.json
+  "LAB:ANTHROPIC": ANT       # le résout comme les autres (§10.1)
 
 group_entry:                 # date d'entrée de chaque groupe dans le modèle ; tout agrégat entre groupes
                              # énonce sa composition et ces dates (§9.6)
@@ -274,6 +279,7 @@ group_entry:                 # date d'entrée de chaque groupe dans le modèle ;
   - {date: 2026-10-18, groups: [INTC, MU, TSM], basis: "D-0056, ajout de groupes de §14"}
   - {date: 2026-10-18, groups: [ASML, SKHY], basis: "D-0057, ajout de groupes de §14"}
   - {date: 2026-10-22, groups: [CBRS], basis: "D-0070, ajout de groupes de §14"}
+  - {date: 2026-11-24, groups: ["LAB:ANTHROPIC"], basis: "D-0090, laboratoire devenu déposant"}
 
 group_frameworks:            # cadre comptable des états d'un groupe, s'il n'est pas US GAAP (invariant f, D-0056,
                              # point 5) : ses notes portent ce cadre, ses grandeurs se résolvent par concept_anchors_ifrs
@@ -394,6 +400,9 @@ reporting_start:             # début de l'obligation de publier, par fréquence
   CBRS:
     quarter: ["2026-01-01", "EFFECT 9999999995-26-001616 du 2026-05-13, 424B4 0001628280-26-035214 du 2026-05-14 ; premier 10-Q 0001628280-26-044981 (trimestre clos le 2026-03-31) (D-0070)"]
     fiscal_year: ["2024-01-01", "424B4 0001628280-26-035214 du 2026-05-14 : exercices 2024 et 2025 présentés (Reg S-X 3-02, émetteur émergent), chacun audité par son cabinet (D-0070)"]
+  "LAB:ANTHROPIC":
+    quarter: ["2027-01-01", "EFFECT 9999999995-26-003574 du 2026-11-18, 424B4 0001628280-26-074944 du 2026-11-19 ; aucun rapport périodique à l'as_of : le document d'enregistrement présente les neuf mois clos le 2026-09-30, le premier 10-Q portera sur le premier trimestre de 2027 (règle 13a-13) ; à revoir au premier rapport périodique (D-0090)"]
+    fiscal_year: ["2023-01-01", "424B4 0001628280-26-074944 du 2026-11-19 : exercices 2023 à 2025 présentés (Reg S-X 3-02) (D-0090)"]
 
 registration_text:           # document d'enregistrement qui tient lieu de rapports périodiques, sans instance XBRL
                              # financière : jeux de notes découpés en HTML, notes lues par familles de titres
@@ -418,7 +427,7 @@ known_entities:              # appartenances et dates lues en phase 0 (§10.3)
   SPCX: ["X.AI Holdings Corp.", "X.AI Corp.", "X Holdings Corp.", "X Corp.",
          "X.AI LLC", "CTC Property, LLC"]
 cik_hints: {"X.AI Corp.": "0002002695"}
-labs: [OpenAI, Anthropic]    # groupes économiques non déposants (§10.4)
+labs: [OpenAI, Anthropic]    # laboratoires (§10.4) ; Anthropic dépose depuis 2026 et figure aussi dans groups (D-0090)
 non_filers:                  # autres groupes économiques non déposants (§10.4), ni laboratoires ni sous-jacents de form_d (D-0044)
   - {name: SoftBank, ref: "NF:SOFTBANK"}
   - {name: Lambda, ref: "NF:LAMBDA"}     # D-0054 : sans titre coté à l'as_of
@@ -853,7 +862,7 @@ confirmed_entities:
   - {name: "VMware, Inc.", group: AVGO, treatment: consolidated_subsidiary, valid_from: "2023-11-22", rule: executor_decision, decision: D-0021, block: 4f9fd0db37ba5714e9d9adad617c682f0692d80a312aa862d5f630f8d1334556, accession: 0001140361-23-054354, quote: "On November 22, 2023, Broadcom Inc. (\"Broadcom\") completed its acquisition of VMware, Inc. (\"VMware\")", membership_note: "8-K item 2.01 (bloc text) : VMware survit à la First Merger comme filiale à 100 % de Holdco, Holdco devenant filiale à 100 % de Broadcom par la Second Merger ; avant cette date, groupe propre"}
   - {name: "OpenAI OpCo, LLC", group: LAB:OPENAI, treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0021, block: 5d0931cd4f5232639347d9d3635fa149009dcbb5261431752bf99537218ff1bb, accession: 0001193125-25-216497, quote: "OpenAI OpCo, LLC (\"OpenAI\")"}
   - {name: "OpenAI Group PBC", group: LAB:OPENAI, treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0021, block: 8e289f5600a093d7746ac91c13ba2adbd349bf8a1048b4303aa73aba22314536, accession: 0001104659-26-021050, quote: "OpenAI Group PBC (\"OpenAI\")"}
-  - {name: "Anthropic PBC", group: LAB:ANTHROPIC, treatment: parent, valid_from: "none", rule: executor_decision, decision: D-0021, block: 46b1cfb8909d9aa57c6317242f0c846d1e2eda719fb95c8e6b711761c34c9e0b, accession: 0001193125-26-144028, quote: "Anthropic PBC (\"Anthropic\")"}
+  # « Anthropic PBC » (D-0021, bloc 46b1cfb8909d, 0001193125-26-144028) : entrée retirée par D-0090, la tête du groupe étant désormais l'entité de son CIK
   - {name: "Amazon Logistics, Inc.", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0038, block: 6f45e084ec881e52209cd693dacbe259217f6a7590e47a263a7a0f2363395397, accession: 0001874178-23-000058, quote: "Amazon Logistics, Inc., a Delaware corporation (\"Amazon\")", membership_note: "même bloc : « Additionally, Amazon's affiliate, Amazon.com, Inc., and Rivian's affiliate, Rivian Automotive, Inc., entered into a letter agreement dated February 15, 2019 » ; affiliée d'Amazon.com, Inc., tête du groupe AMZN"}
   - {name: "Amazon.com Services LLC", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0040, block: 9fb22e68f88a34af527d594209be55dc4c5cefb28adf76ac9fe8558c176c7053, accession: 0001193125-24-136251, quote: "Amazon.com Services LLC, a direct or indirect subsidiary of Amazon", membership_note: "même bloc : « Air Transport Services Group, Inc., a Delaware corporation (the \"Company\"), and Amazon.com, Inc., a Delaware corporation (\"Amazon\") » ; filiale d'Amazon.com, Inc., tête du groupe AMZN"}
   - {name: "Amazon Data Services, Inc.", group: AMZN, treatment: consolidated_subsidiary, valid_from: "none", rule: executor_decision, decision: D-0043, block: afc9ecc5828fc4c4301dd88f108da11223baefbd4c356793f8a0ac3c79bb5c54, accession: 0000950103-26-001966, quote: "\"Amazon Parent\" means Amazon.com, Inc. \"Amazon Tenant\" means Amazon Data Services, Inc.", membership_note: "même bloc : « \"Amazon Guaranty\" means the limited parent guarantee dated as of November 21, 2025, from Amazon Parent relating to Amazon Tenant's payment obligations under the Datacenter Lease. » ; filiale d'Amazon.com, Inc., tête du groupe AMZN ; corps d'EX-4 resté à son en-tête (financial_parties_only), cité pour l'identité seulement"}

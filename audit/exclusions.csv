@@ -647,6 +647,7 @@ history_left_censored:CRWV,group,CRWV,history_left_censored,"premier dépôt apr
 history_left_censored:GLXY,group,GLXY,history_left_censored,"fusion inversée réalisée le 2025-05-13 : l'historique du groupe est celui de l'acquéreur comptable (Galaxy Digital Holdings LP), publié par les rapports postérieurs ; rien avant (D-0043)",GLXY,,,,,2026-11-23
 history_left_censored:HUT,group,HUT,history_left_censored,"premier dépôt après le début de la période de lecture, aucun prédécesseur (plan.md)",HUT,,,,,2026-11-23
 history_left_censored:IREN,group,IREN,history_left_censored,"rupture d'historique le 2024-07-01 (changement de référentiel comptable) : avant, rapports en IFRS (20-F, 6-K) ; l'historique du groupe commence aux rapports postérieurs (D-0048)",IREN,,,,,2026-11-23
+history_left_censored:LAB:ANTHROPIC,group,LAB:ANTHROPIC,history_left_censored,"premier dépôt après le début de la période de lecture, aucun prédécesseur (plan.md)",LAB:ANTHROPIC,,,,,2026-11-23
 history_left_censored:NBIS,group,NBIS,history_left_censored,"rupture d'historique le 2024-07-12 (cession d'un périmètre) : avant, Yandex N.V. (activités russes cédées) ; l'historique du groupe commence aux rapports postérieurs (D-0048)",NBIS,,,,,2026-11-23
 history_left_censored:OWL,group,OWL,history_left_censored,"fusion inversée réalisée le 2021-05-19 : l'historique du groupe est celui de l'acquéreur comptable (Owl Rock (présentation combinée d'Owl Rock Capital Group LLC et de Blue Owl Securities LLC)), publié par les rapports postérieurs ; rien avant (D-0043)",OWL,,,,,2026-11-23
 history_left_censored:SKHY,group,SKHY,history_left_censored,"premier dépôt après le début de la période de lecture, aucun prédécesseur (plan.md)",SKHY,,,,,2026-11-23
@@ -31544,6 +31545,12 @@ submitted_draft:0001628279-24-000336,filing,0001628279-24-000336,submitted_draft
 submitted_draft:0001628279-25-000260,filing,0001628279-25-000260,submitted_draft,"DRS soumis, pas déposé (§2.1)",GLXY,0001628279-25-000260,,,,2026-11-23
 submitted_draft:0001628279-26-000583,filing,0001628279-26-000583,submitted_draft,"DRS/A soumis, pas déposé (§2.1)",SPCX,0001628279-26-000583,,,,2026-11-23
 submitted_draft:0001628279-26-000584,filing,0001628279-26-000584,submitted_draft,"DRSLTR soumis, pas déposé (§2.1)",SPCX,0001628279-26-000584,,,,2026-11-23
+submitted_draft:0001628279-26-000861,filing,0001628279-26-000861,submitted_draft,"DRS/A soumis, pas déposé (§2.1)",LAB:ANTHROPIC,0001628279-26-000861,,,,2026-11-23
+submitted_draft:0001628279-26-000993,filing,0001628279-26-000993,submitted_draft,"DRS/A soumis, pas déposé (§2.1)",LAB:ANTHROPIC,0001628279-26-000993,,,,2026-11-23
+submitted_draft:0001628279-26-001111,filing,0001628279-26-001111,submitted_draft,"DRS/A soumis, pas déposé (§2.1)",LAB:ANTHROPIC,0001628279-26-001111,,,,2026-11-23
 submitted_draft:0001628280-26-021860,filing,0001628280-26-021860,submitted_draft,"DRS soumis, pas déposé (§2.1)",SPCX,0001628280-26-021860,,,,2026-11-23
 submitted_draft:0002021728-25-000005,filing,0002021728-25-000005,submitted_draft,"DRS soumis, pas déposé (§2.1)",CBRS,0002021728-25-000005,,,,2026-11-23
 submitted_draft:0002021728-26-000004,filing,0002021728-26-000004,submitted_draft,"DRS/A soumis, pas déposé (§2.1)",CBRS,0002021728-26-000004,,,,2026-11-23
+submitted_draft:0002130357-26-000005,filing,0002130357-26-000005,submitted_draft,"DRS soumis, pas déposé (§2.1)",LAB:ANTHROPIC,0002130357-26-000005,,,,2026-11-23
+submitted_draft:0002130357-26-000009,filing,0002130357-26-000009,submitted_draft,"DRS/A soumis, pas déposé (§2.1)",LAB:ANTHROPIC,0002130357-26-000009,,,,2026-11-23
+submitted_draft:0002130357-26-000014,filing,0002130357-26-000014,submitted_draft,"DRS/A soumis, pas déposé (§2.1)",LAB:ANTHROPIC,0002130357-26-000014,,,,2026-11-23

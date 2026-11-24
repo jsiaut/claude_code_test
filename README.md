@@ -1,6 +1,6 @@
 # Fragilité financière de la chaîne de l'IA, tirée des seuls dépôts SEC
 
-Le dépôt mesure et date, sans noter ni prédire, la fragilité financière de 33 groupes de la chaîne de l'IA
+Le dépôt mesure et date, sans noter ni prédire, la fragilité financière de 34 groupes de la chaîne de l'IA
 et la circularité de leurs financements, à partir des seuls dépôts EDGAR. La spécification est `SPEC.md`,
 le journal des décisions `decisions.md`, et la configuration (groupes, seuils, critères des annexes E et F)
 `config.yaml`.

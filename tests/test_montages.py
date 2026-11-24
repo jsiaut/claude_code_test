@@ -255,7 +255,9 @@ class CorpusLabs(unittest.TestCase):
             self.assertTrue(c["quote"].strip() and c["membership_note"].strip())
             self.assertEqual(c["treatment"], "undetermined")
         names = ["OpenAI Global, LLC", "OpenAI OpCo LLC", "Anthropic, PBC", "an affiliate of OpenAI"]
-        _, reg = E.build({"meta": {}}, cfg, {n: False for n in names})
+        # depuis D-0090, la tête d'Anthropic est l'entité de son CIK, semée par la phase 0 comme pour tout groupe
+        p0 = {"meta": {"0002130357": {"group": "LAB:ANTHROPIC", "is_predecessor": False, "name": "Anthropic, PBC"}}}
+        _, reg = E.build(p0, cfg, {n: False for n in names})
         g = lambda n: E.resolve(reg, n, "2026-06-30")[1]
         self.assertEqual(g("OpenAI Global, LLC"), "LAB:OPENAI")
         self.assertEqual(g("OpenAI OpCo LLC"), "LAB:OPENAI")

@@ -63,9 +63,12 @@ Règles : D-0074 (point 3), D-0083 (points 3 et 5), D-0085 (point 3). Ordres de 
 1. **Décision et configuration**, commitées avant tout tirage :
    - `as_of` nouveau ; l'ancien s'ajoute à `as_of_previous` ; `search_overlap_from` ne change pas ;
    - les listes de lecture de l'exécution précédente se retirent (`git rm work/lists/*.txt`).
-2. **Têtes non déposantes** (Nscale, CIK 2110365 ; Anthropic, CIK 2130357 ; `discovery.non_filer.own_filings`) :
-   tirer leurs `submissions` et regarder les dépôts de la période nouvelle. Un amendement de S-1, un avis de prise
-   d'effet, un 424B4 ou un rapport périodique demande une règle écrite avant toute lecture (D-0085, point 5).
+2. **Têtes à document d'enregistrement** (Nscale, CIK 2110365 ; Anthropic, CIK 2130357 ;
+   `discovery.non_filer.own_filings`) : tirer leurs `submissions` et regarder les dépôts de la période nouvelle. Un
+   amendement de S-1, un avis de prise d'effet, un 424B4 ou un premier rapport périodique demande une règle écrite
+   avant toute lecture (D-0085, point 5). Anthropic est aussi un groupe depuis D-0090, sous la référence
+   `LAB:ANTHROPIC` : ses rapports périodiques et ses 8-K viennent par le tronc (étape 3) ; son premier rapport
+   périodique fait revoir `reporting_start` et la série annuelle de §10.3 (D1).
 
    ```
    python3 -c "
