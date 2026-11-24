@@ -223,5 +223,35 @@ class SbEnergyNoteSets(unittest.TestCase):
         self.assertEqual(labels[4], "jeu 5")
 
 
+class NfQueueFile(unittest.TestCase):
+    """File d'origine d'une unité de la piste des non-déposants : une valeur manquante vaut D-0044 (point 22)."""
+
+    def test_a_missing_file_is_the_original_queue(self):
+        from pipeline import nf_discovery as NF
+        self.assertEqual(NF.unit_file({"file": float("nan")}), "D-0044")
+        self.assertEqual(NF.unit_file({"file": None}), "D-0044")
+        self.assertEqual(NF.unit_file({}), "D-0044")
+        self.assertEqual(NF.unit_file({"file": ""}), "D-0044")
+        self.assertEqual(NF.unit_file({"file": "D-0074"}), "D-0074")
+
+    def test_original_queue_is_prepared_before_the_others(self):
+        import pandas as pd
+        from pipeline import nf_discovery as NF
+        # état reconstruit puis mis à jour : les unités antérieures n'ont pas de file, les nouvelles ont la leur
+        u = pd.DataFrame({"adsh": ["new1", "old2", "old1", "out"], "queue": [1, 2, 1, 3],
+                          "status": ["queued", "queued", "queued", "over_cap"],
+                          "file": ["D-0074", float("nan"), None, float("nan")]})
+        self.assertEqual(list(NF.queue_order(u)["adsh"]), ["old1", "old2", "new1"])
+        # sans la colonne : la file d'origine seule, par rang
+        self.assertEqual(list(NF.queue_order(u.drop(columns=["file"]))["adsh"]), ["new1", "old1", "old2"])
+
+    def test_the_exclusion_label_names_the_queue(self):
+        import inspect
+        from pipeline import assemble
+        src = inspect.getsource(assemble.nf_discovery_exclusions)
+        self.assertIn("NF.unit_file(u)", src)
+        self.assertNotIn("u.get('file')", src)
+
+
 if __name__ == "__main__":
     unittest.main()

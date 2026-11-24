@@ -640,18 +640,28 @@ def _exhibit_block(u, client):
             "terms": r["terms"]}, None
 
 
+def unit_file(u):
+    """File d'origine d'une unité (décision qui l'a fait entrer) : D-0044 quand la colonne manque ou n'est pas
+    renseignée, comme dans un état reconstruit, où seules les unités d'une mise à jour la portent (D-0088, point 22)."""
+    f = u.get("file")
+    return f if isinstance(f, str) and f else "D-0044"
+
+
+def queue_order(units):
+    """Unités retenues (`queued`), dans l'ordre de leur préparation : la file d'origine d'abord, puis les files à
+    part, chacune par rang."""
+    q = units[units["status"] == "queued"]
+    first = [0 if unit_file(u) == "D-0044" else 1 for u in q.to_dict("records")]
+    return q.assign(_f=first).sort_values(["_f", "queue"], kind="mergesort")
+
+
 def prepare(n=50, rate=4.0):
     """Blocs des `n` unités retenues suivantes de la file (une requête par page R), ajoutés au
     catalogue de la piste."""
     cfg = config.load()
     client = net.SecClient(config.as_of(), cfg)
     client.min_interval = 1.0 / rate
-    units = pd.read_parquet(UNITS)
-    units = units[units["status"] == "queued"]
-    if "file" in units:
-        units = units.assign(_f=(units["file"] != "D-0044").astype(int)).sort_values(["_f", "queue"])
-    else:
-        units = units.sort_values("queue")
+    units = queue_order(pd.read_parquet(UNITS))
     done = built_units()
     todo = [u for u in units.to_dict("records") if (u["adsh"], u["doc"]) not in done][:n]
     nb = 0

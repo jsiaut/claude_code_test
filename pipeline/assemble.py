@@ -923,12 +923,12 @@ def nf_discovery_exclusions(ex, todo):
         reason = "not_processed"
         if u["status"] == "own_group":
             why, reason = (f"dépôt propre d'une entité du groupe non déposant, lu comme texte du groupe "
-                           f"({u.get('file')}) : pas une unité de la piste"), "out_of_scope"
+                           f"({NF.unit_file(u)}) : pas une unité de la piste"), "out_of_scope"
         elif u["status"] == "out_of_rule":
             why = ("hors de la règle de lecture (D-0044) : ni co-mention d'un groupe, d'un laboratoire ou de "
                    "Stargate, ni note du dernier dépôt d'un candidat à montant documenté")
         elif u["status"] == "over_cap":
-            why = f"retenue ({u['rule']}), au-delà du plafond de lecture ({u.get('file') or 'D-0044'})"
+            why = f"retenue ({u['rule']}), au-delà du plafond de lecture ({NF.unit_file(u)})"
         elif b and b.get("error"):
             why, reason = b["error"], "not_collected"
         else:

@@ -5605,7 +5605,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - une clause identique à une clause relevée sur le bâtiment 1 se relève de même sur le bail du bâtiment 2, deuxième contrat, avec la citation de la pièce 10.29 ;
     - une fenêtre sans phrase nouvelle ni clause reçoit l'abstention de la fenêtre homologue.
 
-  (20) Fin de la lecture de §14 (2026-11-24, 03:12 UTC). La file est vide : 295 blocs lus par l'exécutant seul à cet as_of, plus le bloc des groupes.
+  (20) Fin de la lecture de §14 (2026-11-24, 03:10 UTC). La file est vide : 295 blocs lus par l'exécutant seul à cet as_of, plus le bloc des groupes.
   - Montages, 102 fenêtres, 103 lignes (24 observations, 79 abstentions) :
     - bail refondu du bâtiment 1 de Milam County (pièce 10.28, 41 fenêtres) : point 19, plus la refonte du bail du 9 janvier 2026 et l'acte d'adhésion d'OpenAI Global, LLC (garantie principale et inconditionnelle, participation de contrôle dans la preneuse) ;
     - bail du bâtiment 2 (pièce 10.29, 34 fenêtres), lu en regard (point 19). La comparaison se fait hors numéros de page et blancs : les écarts de phrases mesurés au point 19 (40 679 caractères) tenaient pour l'essentiel à la mise en page. Deux différences de fond : une sortie propre au bâtiment 2 (la preneuse ou la bailleresse peut résilier si Oncor n'a pas confirmé une puissance supplémentaire à une date masquée) et la compensation des réparations sur cinquante pour cent au plus du loyer de base, masquée dans l'autre bail. Les clauses communes sont relevées sur chaque bail : durée, premier refus sur l'électricité renouvelable, garantie d'achèvement d'Energy Global, LP, quatre sorties ;
@@ -5617,7 +5617,7 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Lignes de clause (D-0067) de cette lecture : 16 (durée 5, sortie 9, exclusivité 2).
   - Lecture de §14 à cet as_of : 295 blocs, 534 lignes : piste 48 blocs et 99 lignes ; 6-K 71 et 91 ; SoftBank 74 et 241 ; montages 102 et 103.
 
-  (21) Intégration, entités par extrait, fixées avant le réassemblage (2026-11-24, 03:20 UTC). `make read-check` : 535 lignes de l'as_of dans 296 blocs, aucune erreur, aucune alerte. Chaque extrait est vérifié mot pour mot dans un bloc lu, sans nom de personne physique (D-0021, D-0044 point 7, D-0050 points 4 à 7) :
+  (21) Intégration, entités par extrait, fixées avant le réassemblage (2026-11-24, 03:15 UTC). `make read-check` : 535 lignes de l'as_of dans 296 blocs, aucune erreur, aucune alerte. Chaque extrait est vérifié mot pour mot dans un bloc lu, sans nom de personne physique (D-0021, D-0044 point 7, D-0050 points 4 à 7) :
   - quatre entités membres, au traitement indéterminé faute des mots de D-0050, point 4 :
     - Orion DC I, LLC, au laboratoire OpenAI : « Orion DC I, LLC, an affiliate of OpenAI » (Item 404 du S-1/A n° 3 de SB Energy, règle A). L'acte d'adhésion au bail ajoute que sa garante, OpenAI Global, LLC, « has a controlling ownership interest in Tenant ». L'entité était jusqu'ici une entité propre (D-0022) : les baux de Milam County entrent ainsi dans les relations d'OpenAI ;
     - Vela I Holdings, LLC, au laboratoire OpenAI : la garantie de valeur résiduelle nomme OpenAI Global, LLC « Tenant Parent » de la preneuse, et l'acte d'adhésion au bail écrit la même participation de contrôle. Preneuse des baux de PORTS ;
@@ -5625,3 +5625,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - OpenAI, Inc., au laboratoire OpenAI : « OpenAI, Inc. (together with its applicable subsidiaries and controlled affiliates, "OpenAI") » (note 1 des comptes de SB Energy au 30 septembre 2026, règle B). Ses deux lignes sont sans arête ;
   - deux alias, définis par l'extrait et sans autre emploi dans les lignes : « BRP » (Balanced Rock Power, LLC, note 3 de SB Energy) et « SPC2 » (BCPE Pangea Cayman2, Ltd., 6-K de SK hynix du 20 novembre 2026) ;
   - restent des entités propres ou en attente : FNBC Leasing Corporation, Astra AI Infra LLC (« an affiliate » de SK hynix, sans lien de contrôle écrit), Penguin Solutions, Inc., Kioxia Holdings Corporation, BCPE Pangea Intermediate Holdings Cayman, L.P., les banques du rapport de SK hynix, et les désignations sans nom (« an affiliate of OpenAI », « a related party »).
+
+  (22) Premier réassemblage du temps B (613 s), comparaison, constat et règle fixée avant tout changement de code (2026-11-24, 03:37 UTC).
+  - Tables : documents 28 285, faits 1 631 709, observations 33 595, entités 3 753, liens 12 380, mesures 201 701, contrôles 73 045, exclusions 32 253.
+  - Constat, table des exclusions : 81 libellés de la piste des non-déposants écrivent « au-delà du plafond de lecture (nan) » au lieu de « (D-0044) ».
+    - L'état des unités reconstruit au temps A (`nf_discovery_units.parquet`) n'a pas la colonne `file`, qui nomme la file d'origine de chaque unité. La mise à jour ajoute sept unités avec la leur (D-0074) : les 4 130 unités antérieures reçoivent une valeur manquante, que l'assemblage prend pour un libellé.
+    - La même valeur manquante compte pour « autre que D-0044 » dans l'ordre de préparation des unités retenues (`prepare`) : les unités d'origine ne passeraient plus avant les files à part. Sans effet à cette exécution, où seules les trois unités nouvelles restaient à préparer.
+  - Règle : une unité sans file appartient à la file d'origine, D-0044, comme `select_with_prior` l'écrit déjà pour un état antérieur. Les deux lectures de la colonne, libellé d'exclusion et ordre de préparation, prennent une valeur manquante pour D-0044. L'état reste tel quel : les unités de l'exécution précédente ne changent pas (D-0074, point 3).
+  - Code : `pipeline/nf_discovery.py` (`unit_file`, `queue_order`), `pipeline/assemble.py` ; tests dans `tests/test_d0088.py`. Puis second réassemblage et comparaison.
