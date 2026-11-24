@@ -5701,3 +5701,37 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - l'attribut d'établissement financier d'une entité dépend de l'ordre des blocs quand ses lignes divergent (point 24) ;
     - l'index du 8-K de Meta se retirera à l'exécution suivante (point 14) ;
     - les trois chantiers que D-0087 (point 1) laissait à cette mise à jour (lignes d'intérêts de D-0086, état de `db/` à versionner, poids de `tables/facts.parquet`) n'ont pas été ouverts : l'utilisateur ne les a pas demandés. La reconstruction a pris près de huit heures et 84 Go avant une mise à jour de quatre heures ; `RUNBOOK.md` le dit.
+
+- **D-0089 — Deux chantiers laissés par D-0087 : lignes d'intérêts en famille `financing`, poids de `tables/facts.parquet`. Règles fixées avant tout changement.**
+  (1) Origine : réponse de l'utilisateur au rapport de D-0088, le 2026-11-24 : « Ok fais 1 et 2 ».
+  - Le point 1 du rapport fait d'Anthropic un groupe déposant : D-0090.
+  - Le point 2 ouvre les trois chantiers de D-0087 (point 1) : les lignes d'intérêts de D-0086 (point 11) et le poids de `tables/facts.parquet`, ici ; l'état de `db/` à versionner et la reconstruction, D-0091.
+  - L'as_of reste le 2026-11-23 : ce n'est pas une mise à jour (§11.5). Ni requête à la SEC ni lecture de bloc dans cette décision. Ni critère des annexes E et F, ni seuil, ni lexique ne change. Sans sous-agent. Ni pull request ni tâche planifiée.
+
+  (2) Constat (2026-11-24, 09:30 UTC), en lecture seule sur les tables de 1eeb487 :
+  - Le conteneur de D-0088 a gardé `db/` et `cache/` : aucune reconstruction n'est à faire.
+  - Lignes d'intérêts (D-0086, point 11 ; garde G1 de D-0087) :
+    - 91 lignes chargées portent `family: financing` avec une nature `interest` (77, dans 26 blocs) ou `fee` (14, dans 12 blocs) : 38 blocs, dont la passe chargée compte 431 lignes (32 blocs de la passe `2026-10-09T15:20:00Z`, 2 de `2026-11-07T17:00:00Z`, 4 de `2026-11-14T08:00:00Z`). Aucune à l'as_of du 2026-11-23, où la garde les refuse.
+    - Par groupe : Riot 47, Backblaze 18, Hut 8 9, Nscale 8, Applied Digital 7, Cerebras 2.
+    - Ces lignes ouvrent des arêtes de financement de l'emprunteur vers son prêteur. Elles publient un financement « actif » Backblaze → City National Bank, Backblaze → AFCO Premium Credit et Riot → Coinbase Credit, et une relation Cerebras → OpenAI de type 1 dans la typologie.
+    - 90 lignes suivent déjà la trésorerie (l'emprunteur paie). Une seule est à l'envers : les produits d'intérêts d'Applied Digital sur son billet à vue (« approximately $0.1 million of interest income was recognized », bloc 608a744075) ont la société pour payeur et Base Electron Corp. pour receveur.
+  - Poids de `tables/facts.parquet`, mesuré dans un dépôt Git d'essai (deux versions, `git repack`) :
+    - la table s'écrit triée par clé (`fact_key`), en 14 groupes de lignes de 122 880 lignes. Toute clé commence par le dépôt du fait : un dépôt nouveau s'insère en un point, et décale tous les groupes qui suivent ;
+    - de 8cf383c à 2278fd5 (une semaine, 6 081 faits de plus) : 11,9 Mo de delta pour un fichier de 30,1 Mo ; de f358538 à 1eeb487 (11 faits de plus) : 2,5 Mo ;
+    - mêmes lignes, même ordre, mais groupes coupés au début d'un dépôt dont l'empreinte est un multiple de 32 : 0,83 Mo de delta pour la même semaine, fichier de 32,7 Mo (96 groupes).
+    - Les sept autres tables ne s'y prêtent pas : leurs lignes portent l'as_of ou s'insèrent par clé de contenu, partout à la fois.
+
+  (3) Règles, lignes d'intérêts :
+  - Passe de correction `repass_d0089`, sans lecture nouvelle, sur les 38 blocs ; identifiant inscrit dans `reading.correction_passes` (D-0078).
+  - Elle reprend toutes les lignes de la passe chargée de chaque bloc. Seules les 91 lignes changent : `family` et `edge_type` retirés, le reste inchangé (payeur, receveur, montant, nature, `instrument_key`), comme la passe de D-0086 (point 11).
+  - La ligne d'Applied Digital prend en plus le sens de la trésorerie : Base Electron Corp. paie, la société reçoit. Le guide (§ 3) et D-0015 le veulent ; rien d'autre n'y change.
+  - Les gardes de D-0087 s'appliquent à la soumission. Une alerte de montant sur une ligne reprise telle quelle se confirme (`--confirm`) : elle porte sur une lecture déjà chargée, que cette passe ne relit pas. Leur nombre se consigne ici.
+  - Aucune règle de code dans la construction des arêtes : la garde G1 refuse déjà ces lignes à la soumission, et une règle de plus cacherait une erreur de lecture au lieu de la corriger.
+
+  (4) Règles, `tables/facts.parquet` :
+  - La table reste versionnée, avec les mêmes lignes, les mêmes colonnes et le même ordre (clé primaire). Seule change la coupe en groupes de lignes : un groupe commence à la première ligne d'un dépôt (préfixe de la clé : `cf/`, `bdc/`, `html/`, `nds/` et l'accession, ou l'accession seule) dont le CRC-32 est un multiple de 32, ou d'un multiple de 4 quand le groupe en cours dépasse 40 000 lignes. La coupe ne dépend que des clés voisines : un dépôt nouveau ne réécrit que son groupe.
+  - Écriture par pyarrow (ZSTD, niveau 12), les sept autres tables par DuckDB comme avant. Les types logiques restent ceux de DuckDB ; l'écriture reste déterministe (« mêmes tables à l'octet près »).
+  - Contrôle avant commit : la table relue est identique ligne à ligne à celle de DuckDB, et `make compare` ne montre aucun écart de clé.
+  - Le gain ne vaut que pour les versions à venir : l'historique déjà poussé ne se réécrit pas. Le premier commit sous la nouvelle coupe pèse le fichier entier.
+
+  (5) Ordre et commits : la décision ; la passe de correction et son contrôle (`make read-check`) ; le code de l'export et ses tests ; un réassemblage ; `make compare` contre 1eeb487, chaque écart expliqué ici ; les rendus ; `make check`, commit, push. Le rapport à l'utilisateur vient après D-0090 et D-0091.
