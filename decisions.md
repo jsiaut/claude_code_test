@@ -5567,11 +5567,11 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Code : `pipeline/sb_own.py` (libellés par dépôt), un test dans `tests/test_d0088.py`.
 
   (17) Blocs de §14, suite, et volumes des 6-K et de SoftBank avant leur lecture (2026-11-24, 02:00 UTC).
-  - Form D (7 requêtes, dont la 429 du point 15) : 967 → 969 lignes. Émetteurs étrangers : aucune unité nouvelle.
+  - Form D (6 requêtes, dont la 429 du point 15) : 967 → 969 lignes. Émetteurs étrangers : aucune unité nouvelle.
   - 6-K (4 requêtes) : deux 6-K de SK hynix, 2 pièces tirées ; catalogue 501 → 572 blocs, les anciens identiques. Les 71 nouveaux : 68 fenêtres du 6-K du 2026-11-16 (60 948 caractères) et 3 de celui du 2026-11-20 (4 224).
-  - SoftBank (34 requêtes) : 530 → 533 dépôts propres, 575 → 593 pièces ; catalogue 520 → 594 blocs, les anciens identiques. Les 74 nouveaux, 387 938 caractères :
+  - SoftBank (52 requêtes) : 530 → 533 dépôts propres, 575 → 593 pièces ; catalogue 520 → 594 blocs, les anciens identiques. Les 74 nouveaux, 387 938 caractères :
     - amendement n° 3 du S-1 de SB Energy (point 16) : 12 en-têtes de pièces EX-10 (22 208 caractères), l'Item 404 (63 003) et 58 notes (298 771) ;
     - un 13F-HR de SoftBank Group Corp. (493), un 13G/A de SB Investment Advisers (2 412), une fenêtre d'un 6-K d'Arm du 2026-11-23 (1 051).
-  - N-PORT (13 requêtes) : aucune archive nouvelle, 28 archives de 2019q4 à 2026q3 ; lexique des non-cotés inchangé. Participations (5 requêtes) : 128 dépôts au plan, les 13F-HR du troisième trimestre de NVIDIA et d'Intel tirés. Labs : 206 faits, inchangés.
+  - N-PORT (1 requête) : aucune archive nouvelle, 28 archives de 2019q4 à 2026q3 ; lexique des non-cotés inchangé. Participations (9 requêtes) : 128 dépôts au plan, les 13F-HR du troisième trimestre de NVIDIA et d'Intel tirés. Labs : 206 faits, inchangés.
   - À lire : 6-K, 71 blocs et 65 172 caractères ; SoftBank, 74 blocs et 387 938 caractères, dont le S-1/A de SB Energy en regard de ses versions antérieures (point 16). Ils s'ajoutent à la liste `upd_20261123_s14`. Les fenêtres de montage se consignent après leur préparation.
   - Ordre : comme en D-0085, les montages se préparent avant la lecture de §14. Les lectures de la piste déjà faites (14 blocs) sont mises de côté pendant cette préparation, puis remises ; les autres se soumettent après elle.
