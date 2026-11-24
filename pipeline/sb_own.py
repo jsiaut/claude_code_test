@@ -660,7 +660,31 @@ def _related_section(raw):
     return None, None
 
 
-def blocks_c(cfg=None):
+PROSPECTUS_KINDS = ("discovery_item_404", "discovery_note")
+
+
+def sbe_prospectuses(sbe, named=()):
+    """Documents d'enregistrement de SB Energy dont le prospectus se découpe (Item 404 et notes), dans l'ordre de dépôt :
+    le dernier, et ceux de `named`. Hors reconstruction `named` est vide ; en reconstruction, il porte les dépôts auxquels
+    le manifeste du commit de référence attribue un tel bloc : le catalogue d'origine garde les blocs d'un document qui
+    n'est plus le dernier, le recalcul complet ne les rendrait pas (D-0091, point 9)."""
+    if not len(sbe):
+        return []
+    wanted = set(named) | {sbe.iloc[-1].accessionNumber}
+    return [x for x in sbe.itertuples(index=False) if x.accessionNumber in wanted]
+
+
+def named_prospectuses():
+    """Dépôts auxquels le manifeste de la reconstruction attribue un bloc de prospectus ; vide hors reconstruction ou
+    sans état versionné."""
+    from . import reconstruction
+    if not reconstruction.reference():
+        return frozenset()
+    return frozenset(b["accession"] for b in reconstruction.manifests().get(BLOCKS.name, ())
+                     if b.get("block_kind") in PROSPECTUS_KINDS and b.get("accession"))
+
+
+def blocks_c(cfg=None, named=None):
     """Volet C : documents des déposants contrôlés, lus comme texte de leur propre groupe de contrepartie jusqu'au
     rattachement par extrait (D-0058, points 5 et 16)."""
     from . import cache, regdoc, sections
@@ -682,7 +706,6 @@ def blocks_c(cfg=None):
 
     # SB Energy : S-1 et ses deux amendements ; prospectus du dernier, EX-10 et EX-21 des trois
     sbe = inv[(inv["cik"] == "0002133037") & inv["form"].isin(["S-1", "S-1/A"])].sort_values("filingDate")
-    last = sbe.iloc[-1]
     seen = set()
     for x in sbe.itertuples(index=False):
         for d in _docs(x.cik, x.accessionNumber):
@@ -701,18 +724,20 @@ def blocks_c(cfg=None):
                 if d["FILENAME"] in SBE_BODIES and out and out[-1]["document"] == d["FILENAME"]:
                     out.append(exhibit_body(out[-1], sections.full_text(r)))
                     info[f"{SBE_NAME}:discovery_exhibit_body"] += 1
-    raw = raw_of(last.cik, last.accessionNumber, last.primaryDocument)
-    add(heading_section(raw, RP_HEAD), "discovery_item_404", SBE_NAME, last.cik, last.accessionNumber, last.form,
-        last.filingDate, last.primaryDocument, {"note_label": RP_TITLES[0], "mention_class": "related_party"}, "sbc:sbe:404")
-    for s in split_notes(raw, TITLE_SBE, noise=SBE_HEADER):
-        label = sbe_set_label(last.accessionNumber, s["set"])
-        for nt in s["notes"]:
-            fam = regdoc.note_kind(nt["title"]) or ("segment_note" if regdoc.SEGMENT.search(nt["title"]) else None)
-            add(nt["text"], "discovery_note", SBE_NAME, last.cik, last.accessionNumber, last.form, last.filingDate,
-                last.primaryDocument, {"note_label": f"{label}, note {nt['number']}. {nt['title']}", "note_family": fam,
-                                       "note_set": s["set"],
-                                       "mention_class": "related_party" if fam == "related_party_note" else "note"},
-                f"sbc:sbe:s{s['set'] + 1}n{nt['number']:02d}")
+    for reg in sbe_prospectuses(sbe, named_prospectuses() if named is None else named):
+        raw = raw_of(reg.cik, reg.accessionNumber, reg.primaryDocument)
+        add(heading_section(raw, RP_HEAD), "discovery_item_404", SBE_NAME, reg.cik, reg.accessionNumber, reg.form,
+            reg.filingDate, reg.primaryDocument, {"note_label": RP_TITLES[0], "mention_class": "related_party"},
+            "sbc:sbe:404")
+        for s in split_notes(raw, TITLE_SBE, noise=SBE_HEADER):
+            label = sbe_set_label(reg.accessionNumber, s["set"])
+            for nt in s["notes"]:
+                fam = regdoc.note_kind(nt["title"]) or ("segment_note" if regdoc.SEGMENT.search(nt["title"]) else None)
+                add(nt["text"], "discovery_note", SBE_NAME, reg.cik, reg.accessionNumber, reg.form, reg.filingDate,
+                    reg.primaryDocument, {"note_label": f"{label}, note {nt['number']}. {nt['title']}", "note_family": fam,
+                                           "note_set": s["set"],
+                                           "mention_class": "related_party" if fam == "related_party_note" else "note"},
+                    f"sbc:sbe:s{s['set'] + 1}n{nt['number']:02d}")
     # Arm : 20-F (toutes les notes du dernier ; familles retenues des précédents), Item 7.B, pièce 8.1 du dernier,
     # parties liées du 424B4, unités 6-K
     arm = inv[inv["cik"] == "0001973239"]

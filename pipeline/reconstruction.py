@@ -270,11 +270,19 @@ def _line(b):
     return json.dumps(b, ensure_ascii=False).replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
 
 
+def missing_keys(have=None):
+    """Échecs de la reconstruction : (clés lues du commit de référence, clés de ses manifestes) qu'aucun catalogue ne
+    porte. Les secondes comptent aussi les blocs préparés que la référence n'a pas lus (D-0091, point 9)."""
+    if have is None:
+        from . import reader
+        have = {b["content_key"] for b in reader.load_catalog()}
+    man = {b["content_key"] for rows in manifests().values() for b in rows}
+    return sorted(read_keys() - have), sorted(man - have)
+
+
 def missing():
-    """Clés lues du commit de référence qu'aucun catalogue ne porte : échecs de la reconstruction."""
-    from . import reader
-    have = {b["content_key"] for b in reader.load_catalog()}
-    return sorted(read_keys() - have)
+    """Clés lues du commit de référence qu'aucun catalogue ne porte."""
+    return missing_keys()[0]
 
 
 def main(argv):
@@ -302,10 +310,16 @@ def main(argv):
     elif cmd == "queues":
         print(json.dumps(restore_queues(argv[1:]), indent=1, ensure_ascii=False))
     elif cmd == "missing":
-        m = missing()
-        print(len(m), "clés lues sans bloc")
-        for x in m[:50]:
-            print(" ", x)
+        read, man = missing_keys()
+        print(len(read), "clés lues sans bloc ;", len(man), "blocs des manifestes absents des catalogues")
+        was_read = set(read)
+        for x in sorted(was_read | set(man))[:50]:
+            print(" ", x, "lue" if x in was_read else "préparée, non lue")
+        if read or man:
+            # D-0091, point 9 : on n'assemble pas des tables qu'on sait incomplètes sans l'avoir décidé
+            raise SystemExit("reconstruction incomplète : chercher la cause avant d'assembler. Pour assembler quand même, "
+                             f"`python3 -m pipeline.rebuild {reference()} --from assemble`, et expliquer l'écart dans la "
+                             "décision en cours.")
     else:
         raise SystemExit(f"commande inconnue : {cmd}")
 

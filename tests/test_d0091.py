@@ -11,7 +11,7 @@ from unittest import mock
 
 import pandas as pd
 
-from pipeline import config, net, rebuild, reconstruction, state
+from pipeline import cache, config, net, rebuild, reconstruction, sb_own, state
 
 
 # -- archives gardées (point 4) ---------------------------------------------------------------------------------------
@@ -171,6 +171,11 @@ class VersionedState(unittest.TestCase):
             self.assertLessEqual({k for r in rows for k in r}, set(state.MANIFEST_FIELDS), name)
         self.assertEqual(sorted(p.name for p in (state.STATE / "hand").iterdir()), sorted(state.HAND))
 
+    @unittest.skipUnless((config.DB_DIR / "phase0.json").exists(), "db/ absent : conteneur neuf")
+    def test_state_is_saved_with_the_tables(self):
+        # là où db/ existe, state/ le décrit : `make state` avant de commiter des tables
+        self.assertEqual(state.check(), [])
+
 
 # -- la reconstruction s'en sert (point 3) ----------------------------------------------------------------------------
 
@@ -209,6 +214,81 @@ class RestrictFollowsTheManifest(unittest.TestCase):
             kept = [json.loads(x)["content_key"] for x in p.read_text(encoding="utf-8").splitlines()]
         self.assertEqual(kept, ["read"])
         self.assertEqual(out[p.name], {"kept": 1, "removed": 1})
+
+
+# -- un document qui n'est plus le dernier (point 9) ---------------------------------------------------------------------
+
+N2, N3 = "0001628280-26-062846", "0001628280-26-075026"       # S-1/A n° 2 et n° 3 de SB Energy
+
+
+class EarlierRegistrationDocument(unittest.TestCase):
+    SBE = pd.DataFrame({"accessionNumber": ["acc-1", N2, N3], "form": ["S-1", "S-1/A", "S-1/A"],
+                        "filingDate": ["2026-09-01", "2026-09-21", "2026-11-19"]})
+
+    def test_ordinary_mode_cuts_the_last_one_only(self):
+        self.assertEqual([x.accessionNumber for x in sb_own.sbe_prospectuses(self.SBE)], [N3])
+        self.assertEqual(sb_own.sbe_prospectuses(self.SBE.iloc[:0]), [])
+        with mock.patch.dict("os.environ", clear=False) as env:
+            env.pop(reconstruction.ENV, None)
+            self.assertEqual(sb_own.named_prospectuses(), frozenset())
+
+    def test_rebuild_also_cuts_those_the_manifest_names(self):
+        got = sb_own.sbe_prospectuses(self.SBE, {N2, "inconnu"})
+        self.assertEqual([x.accessionNumber for x in got], [N2, N3])          # ordre de dépôt, le dernier compris
+        man = {sb_own.BLOCKS.name: [
+            {"content_key": "a", "block_kind": "discovery_note", "accession": N2},
+            {"content_key": "b", "block_kind": "discovery_item_404", "accession": N3},
+            {"content_key": "c", "block_kind": "discovery_exhibit_header", "accession": "acc-1"},      # pièce, pas prospectus
+            {"content_key": "d", "block_kind": "discovery_note", "accession": None}],
+            "montages_blocks.jsonl": [{"content_key": "e", "block_kind": "discovery_note", "accession": "ailleurs"}]}
+        with mock.patch.dict("os.environ", {reconstruction.ENV: "abc1234"}), \
+                mock.patch.object(reconstruction, "manifests", lambda: man):
+            self.assertEqual(sb_own.named_prospectuses(), frozenset({N2, N3}))
+        with mock.patch.dict("os.environ", {reconstruction.ENV: "abc1234"}), \
+                mock.patch.object(reconstruction, "manifests", lambda: {}):
+            self.assertEqual(sb_own.named_prospectuses(), frozenset())        # commit de référence sans état
+
+    @unittest.skipUnless(sb_own.INV.exists() and cache.archive_path("0002133037", N2, "sbenergy-sx1a2.htm").exists(),
+                         "db/ ou cache/ absent : conteneur neuf")
+    def test_the_committed_manifest_comes_back_from_both_documents(self):
+        # le manifeste commité attribue des blocs de prospectus au n° 2 et au n° 3 : découpés tous deux, ils les rendent
+        man = [b for b in state.manifests()[sb_own.BLOCKS.name]
+               if b["block_kind"] in sb_own.PROSPECTUS_KINDS and b["accession"] in (N2, N3)]
+        self.assertEqual({b["accession"] for b in man}, {N2, N3})
+        inv = pd.read_parquet(sb_own.INV)
+        got = set()
+        for x in inv[inv["accessionNumber"].isin([N2, N3])].itertuples(index=False):
+            raw = cache.read(cache.archive_path(x.cik, x.accessionNumber, x.primaryDocument))
+            texts = [sb_own.heading_section(raw, sb_own.RP_HEAD)]
+            texts += [nt["text"] for s in sb_own.split_notes(raw, sb_own.TITLE_SBE, noise=sb_own.SBE_HEADER) for nt in s["notes"]]
+            got |= {sb_own._block(t, "discovery_note", "g", x.cik, x.accessionNumber, x.form, x.filingDate,
+                                  x.primaryDocument, {}, "k")["content_key"] for t in texts if t and t.strip()}
+        self.assertEqual({b["content_key"] for b in man} - got, set())
+
+
+class MissingKeysStopTheRebuild(unittest.TestCase):
+    MAN = {"sb_blocks.jsonl": [{"content_key": "lue"}, {"content_key": "préparée"}, {"content_key": "absente"}]}
+
+    def _missing(self, have):
+        with mock.patch.object(reconstruction, "read_keys", lambda: frozenset({"lue", "lue-ailleurs", "perdue"})), \
+                mock.patch.object(reconstruction, "manifests", lambda: self.MAN):
+            return reconstruction.missing_keys(have)
+
+    def test_read_keys_and_manifest_keys_are_both_counted(self):
+        self.assertEqual(self._missing({"lue", "lue-ailleurs", "préparée", "absente", "perdue"}), ([], []))
+        self.assertEqual(self._missing({"lue", "lue-ailleurs", "préparée"}), (["perdue"], ["absente"]))
+
+    def test_the_command_fails_when_a_key_is_missing(self):
+        for found, fails in (((["perdue"], []), True), (([], ["absente"]), True), (([], []), False)):
+            with mock.patch.dict("os.environ", {reconstruction.ENV: "abc1234"}), \
+                    mock.patch.object(reconstruction, "missing_keys", lambda found=found: found), \
+                    mock.patch("builtins.print"):
+                if fails:
+                    with self.assertRaises(SystemExit) as ctx:
+                        reconstruction.main(["missing"])
+                    self.assertIn("--from assemble", str(ctx.exception))
+                else:
+                    reconstruction.main(["missing"])
 
 
 # -- une commande (point 5) -------------------------------------------------------------------------------------------
