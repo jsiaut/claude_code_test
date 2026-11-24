@@ -5466,13 +5466,13 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Écart de l'exécutant, sans effet une fois la règle appliquée : les montages ont été tirés par type de source (recherches, puis corpus) et non dans l'ordre de la configuration ; les corpus ont donc vu des pièces que les recherches venaient de tirer. `RUNBOOK.md` dit l'ordre.
   - Code : `pipeline/reconstruction.py`, tests dans `tests/test_d0088.py`.
 
-  (11) Temps A, résultat : second réassemblage (506 s) et comparaison à `f358538` (2026-11-24, 00:35 UTC).
+  (11) Temps A, résultat : second réassemblage (506 s) et comparaison à `f358538` (2026-11-24, 00:32 UTC).
   - Restriction sous la règle du point 10 : montages 1 759 blocs (5 blocs d'une clé lue dans un autre catalogue écartés, 7 types de pièce repris), 6-K 501 ; les 29 clés de 6-K présentes plusieurs fois retrouvent le dépôt de la référence (la première occurrence n'était la bonne que 13 fois). Les 12 500 clés lues reviennent toujours.
   - Tables contre `f358538`, clé par clé :
     - faits 1 631 698 → 1 631 420 : les 278 faits de l'archive BDC 2026_08 (10-Q déposés du 3 au 14 août 2026) ;
     - mesures 201 286 → 198 978 : 2 308 cellules des BDC au 30 juin 2026, de la même archive (11 mesures `bdc_*` 1 624, événements de l'annexe F des véhicules 684) ; 11 autres cellules changent, sans valeur changée : le rang de candidat de 9 positions sans pièce (file de la découverte recalculée), une date de connaissance et une première date, par les blocs ci-dessous ;
     - observations 33 060, identiques sauf 8 lignes qui changent de dépôt, le même texte figurant dans deux dépôts dont le catalogue recalculé ne porte qu'un :
-      - 6 fenêtres de montage ou de SoftBank : 10-Q d'un fonds d'Ares (30 juin → 30 septembre 2026), 6-K d'Arm (juillet → novembre 2026), S-1 → S-1/A de Nscale, 424B4 → S-1/A de CoreWeave, 424B4 → S-1 de Galaxy (deux). Trois observations et trois abstentions ; la date de connaissance avance de trois mois pour deux d'entre elles, recule de quelques jours pour trois ;
+      - 6 fenêtres de montage ou de SoftBank : 10-Q d'un fonds d'Ares (30 juin → 30 septembre 2026), 6-K d'Arm (juillet → novembre 2026), S-1 → S-1/A de Nscale, 424B4 → S-1/A de CoreWeave, 424B4 → S-1 de Galaxy (deux). Trois observations et trois abstentions ; la date de connaissance avance de deux à trois mois pour trois d'entre elles, recule de quelques jours pour les trois autres ;
       - une pièce d'un 8-K de 2021 et de son 8-K/A (en-tête et corps), dans le catalogue des groupes, que l'ordre de l'inventaire règle à chaque exécution (D-0085, point 15) ;
     - liens 12 071 : 4 dates de connaissance, par les mêmes blocs ; contrôles : identiques ;
     - entités : identiques, sauf la fin de validité de l'ancien nom d'Applied Digital (2026-11-12 → 2026-11-20), lue dans la liste vivante de la SEC ;
@@ -5488,3 +5488,18 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Réseau du temps A (16:45 à 23:23) : 27 373 requêtes (www.sec.gov 23 659, efts.sec.gov 3 341, data.sec.gov 372, xbrl.fasb.org 1), 83,8 Go. Refus : 251 réponses 429 en trois épisodes (249 avant la correction du client, puis deux, chacune suivie d'une pause de 600 s) ; aucun 403. Erreurs de serveur redemandées : 116.
   - Bilan : la reconstruction redonne `f358538` à ces écarts près. Le temps B part de cet état ; ses tables se comparent à celles de `f358538`.
   - Mode d'emploi, écarts corrigés dans `RUNBOOK.md` : traitement des refus et cadence (point 8), document « non obtenu » (point 9), ordre des montages et règle de restriction (point 10).
+
+  (12) Temps B, mise à jour à l'as_of du 2026-11-23 : règles fixées avant tout tirage de la période nouvelle (2026-11-24, 00:35 UTC).
+  - Configuration : `as_of: "2026-11-23"` et `as_of_previous: ["2026-10-07", "2026-10-24", "2026-10-27", "2026-10-31", "2026-11-07", "2026-11-14"]`. `search_overlap_from` reste au 2026-10-27 : la fenêtre nouvelle d'une recherche va du 2026-11-14 au 2026-11-23.
+  - Mode ordinaire : `PIPELINE_RECONSTRUCTION` n'est plus posée. L'état du temps A tient lieu d'exécution précédente :
+    - catalogues préparés et files copiés une fois sous `{nom}.2026-11-14` avant leur première réécriture ; seuls s'y ajoutent les blocs et les unités de la période nouvelle ;
+    - les résultats gardés des recherches sont ceux du temps A ; le lexique N-PORT des non-cotés reste celui du dernier scan.
+  - Connaissance : les dépôts datés au plus du 2026-11-23. Les tirages se font le 24 à partir de 00:35 UTC : la journée de dépôt du 23 est close (un dépôt accepté après 17:30 à New York porte la date du lendemain), et un dépôt daté du 24 s'écarte à l'inventaire.
+  - Statut des têtes non déposantes (Nscale, Anthropic) avant les phases ; un dépôt nouveau de l'une d'elles se traite par une règle fixée ici avant toute lecture.
+  - Le reste suit D-0085 (point 3) :
+    - ordre : phases 0 à 2 et catalogues des groupes ; lecture des groupes ; blocs de §14 dans l'ordre de D-0074 ; montages, un par un dans l'ordre de la configuration, préparés après la lecture du texte des groupes ; lecture de §14 ;
+    - réseau : point 8 (2 requêtes par seconde au plus, pause du client après un refus 403 ou 429) ;
+    - archives nouvelles des jeux de données, s'il y en a : tirées et traitées comme les autres. L'archive BDC 2026_08, republiée le 2026-11-20, se garde cette fois, sous son millésime nouveau ;
+    - volumes consignés ici avant toute lecture ; ne se lisent que les blocs tirés de dépôts de la période nouvelle, du plus récent au plus ancien ;
+    - lecture sous les gardes de D-0087 : passe ouverte par `reader open-pass`, listes `upd_20261123_groups` et `upd_20261123_s14`, `make read-check` avant le réassemblage.
+  - Comparaison : `make compare REF=f358538`, chaque écart expliqué ici ; `delta.md` se compare de même à `f358538`.
