@@ -5940,3 +5940,30 @@ Ce fichier ne va pas à l'auditeur (§12.2).
     - les listes de mentions et de pièces de la découverte, et les listes de documents des montages, se recalculent un peu autrement qu'à l'origine, sans effet sur les tables ;
     - ni le texte des blocs ni le cache brut ne se gardent hors du conteneur : une session neuve retire tout (point 7).
   - Tests : 607, dont 27 pour cette décision. Aucune table n'a changé ; `make state` et `python3 -m pipeline.state check` passent.
+
+- **D-0092 — Un texte repris dans plusieurs dépôts se rattache au premier. Règles fixées avant tout changement de code.**
+  (1) Origine : la réponse de l'utilisateur au rapport de D-0091, « Ok fais 2 », second des deux points à décider : l'attribution d'un texte présent dans un 8-K et dans son 8-K/A, qui change d'une exécution à l'autre. La question lui était laissée depuis D-0083 (« proposé, non fait »), D-0084 et D-0085. L'as_of reste le 2026-11-23 : ce n'est pas une mise à jour (§11.5). Aucune requête, aucune lecture. Sans sous-agent.
+
+  (2) Constat, mesuré le 2026-11-24 (16:22 UTC) sur les catalogues de D-0090, sans rien écrire :
+  - 13 911 blocs pour 13 172 clés de contenu ; 610 clés sont portées par plusieurs blocs. Pour 529, les blocs sont d'un même dépôt et d'un même document : surtout un bloc servi par deux catalogues (317 par la découverte et la piste). Pour 81, ils viennent de plusieurs dépôts : 25 clés du catalogue des groupes, 56 du bloc `text`.
+  - Le chargement garde le dernier bloc dans l'ordre des catalogues (`load.load_observations` ; D-0083, point 12). Cet ordre n'est pas une règle. Le catalogue des groupes suit l'inventaire de la phase 0, en général du plus récent au plus ancien : le dernier bloc est celui du premier dépôt pour 23 clés sur 25. Les deux autres sont l'en-tête et le corps de la pièce du 8-K de Cipher du 8 septembre 2021 et de son 8-K/A du lendemain, dont l'ordre change d'une exécution à l'autre (D-0083 ; D-0085, point 15 ; D-0088 ; D-0090 ; D-0091, point 12). Au bloc `text`, 20 clés vont au premier dépôt et 36 à un dépôt postérieur.
+  - Ces 36 clés sont des items 2.03 (35) et 2.01 (1) de 8-K, qui renvoient à un autre item dans les mêmes mots d'un 8-K à l'autre : jusqu'à dix dépôts d'un même groupe, sur sept ans. Chacune porte une abstention : 17 sans contenu utile, 14 reprises d'un autre bloc, 5 formules sans événement. Leur date de connaissance suit aujourd'hui un dépôt postérieur à la première publication de 2 à 2 735 jours, 413 en médiane, plus d'un an pour 21 d'entre elles.
+  - §7.3 : la vue `as_known` répond à « que savait-on à la date D ? ». Un texte publié une première fois était connu ce jour-là. §9.2 : un bloc repris à l'identique n'est pas relu, et ses occurrences restent listées.
+  - Les cinq autres catalogues n'ont aucune clé dans plusieurs dépôts : leurs préparateurs gardent le premier bloc venu d'une exécution à l'autre (D-0074, point 3), et D-0091 le leur rend à la reconstruction.
+  - Pour toute clé, date de connaissance et date de dépôt du bloc sont les mêmes ; les 81 clés portent toutes l'heure d'acceptation de leurs dépôts ; une seule réunit deux dépôts du même jour.
+
+  (3) Règle : entre plusieurs blocs de même clé, se retient celui du premier dépôt.
+  - Premier dépôt : la plus ancienne date de connaissance ; à date égale, l'acceptation la plus ancienne, une acceptation inconnue venant après ; à égalité encore, le plus petit numéro d'accession.
+  - Entre blocs d'un même dépôt, rien ne change : le dernier dans l'ordre des catalogues, comme avant.
+  - La règle vaut partout où un bloc représente sa clé, par une seule fonction : chargement, lecteur (file, affichage, soumission), corpus des montages tirés des liens, décomptes des rendus.
+  - L'ordre des lignes d'un catalogue ne décide plus entre deux dépôts. Les occurrences restent listées (§9.2). Aucune ligne n'est relue ni réécrite : seule change ce qu'elle tient de son bloc, dépôt, document, formulaire, date de connaissance, localisation.
+
+  (4) Effets attendus, à vérifier par la comparaison : 38 observations changent de dépôt. 36 abstentions d'items de 8-K reviennent à leur premier dépôt. Les 2 lignes de la pièce de Cipher passent du 8-K/A au 8-K, un jour plus tôt, et avec elles la date de connaissance de l'arête de prépaiement de Cipher à SuperAcme. Rien d'autre n'est attendu ; tout autre écart s'explique ici.
+
+  (5) Reconstruction (D-0091) : contre ce commit et les suivants, rien ne change. Contre un commit antérieur, elle rend ces 38 observations au premier dépôt : l'écart est celui de cette décision. Le rangement des catalogues sans manifeste (D-0091, point 12, règle 3) ne joue plus qu'entre blocs d'un même dépôt ; il reste.
+
+  (6) Hors de cette décision :
+  - à leur première préparation, les préparateurs des montages, des 6-K, de SoftBank et de la découverte gardent entre deux fenêtres de même texte la première dans leur ordre de lecture, souvent la plus récente ;
+  - l'ordre des lignes du catalogue des groupes reste celui de l'inventaire.
+
+  (7) Ordre et commits : la décision ; le code et ses tests ; un réassemblage ; `make compare` contre `f827850`, chaque écart expliqué ici ; les rendus ; `make state` ; `make check`, commit, push ; rapport.
