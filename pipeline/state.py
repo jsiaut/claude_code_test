@@ -39,7 +39,8 @@ CATALOGS = {"montages": "montages_blocks.jsonl", "foreign_6k": "foreign_6k_block
 MANIFEST_FIELDS_V1 = ("content_key", "block_kind", "accession", "document", "exhibit_type", "montage", "window", "sort_key",
                       "chars", "filing_date", "group_id")
 MANIFEST_FIELDS = MANIFEST_FIELDS_V1 + ("cik", "form", "acceptance", "knowledge_date", "period_start", "period_end",
-                                        "filing_status", "assurance_level", "tier", "locator", "unit_order", "nf_queue")
+                                        "filing_status", "assurance_level", "tier", "locator", "unit_order", "nf_queue",
+                                        "sb_unit")
 LOCATOR_FIELDS = ("file", "accession", "cik", "byte_range")      # pas `section`, un titre du dépôt
 QUEUES = ("discovery_units.parquet", "discovery_candidates.parquet", "nf_discovery_units.parquet",
           "nf_discovery_own_units.parquet", "nf_discovery_candidates.parquet")

@@ -53,6 +53,7 @@
   "tier",
   "locator",
   "unit_order",
-  "nf_queue"
+  "nf_queue",
+  "sb_unit"
  ]
 }
