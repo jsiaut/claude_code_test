@@ -2905,12 +2905,13 @@ def journal_refusals(path):
     def sec(o):
         return str(o.get("host") or "").endswith("sec.gov")
     n403, n429, last = 0, 0, None
-    for line in open(path, encoding="utf-8"):
-        o = json.loads(line)
-        if o.get("url"):
-            n403 += o.get("status") == 403
-            n429 += o.get("status") == 429 and sec(o)
-            last = o
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            o = json.loads(line)
+            if o.get("url"):
+                n403 += o.get("status") == 403
+                n429 += o.get("status") == 429 and sec(o)
+                last = o
     st = last.get("status") if last else None
     return n403, n429, bool(last and (st in (403, "pause", "refused") or (st == 429 and sec(last))))
 

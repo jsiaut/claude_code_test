@@ -1061,6 +1061,76 @@ def prepare(only=None):
     tmp.replace(CATALOG)
 
 
+CORPUS_SOURCES = ("corpus", "tagged", "lab_corpus", "backlog", "edge_values", "ppe_notes")
+
+
+def _corpus_point(spec):
+    """Point de la décision d'un montage de corpus que ses libellés d'exclusion citent."""
+    return {"tagged": 4, "lab_corpus": 4, "backlog": 6, "edge_values": 15,          # D-0060, D-0058, D-0067, D-0068
+            "ppe_notes": 4}.get(spec.get("source"), 3)                             # D-0076
+
+
+def _over_cap(mid, spec, info):
+    """Fenêtres au-delà du plafond d'un montage : (entrée, motif, libellé). Montage de corpus : une fenêtre reste à
+    lire (D-0058, point 3). Montage de recherche : hors champ quand le déposant est devenu un groupe suivi, dont les
+    dépôts se lisent par son catalogue (D-0053, point 7) ; à lire sinon."""
+    over = info.get("over_cap") or []
+    dec = spec.get("decision", "D-0046")
+    if spec.get("source") in CORPUS_SOURCES:
+        pt = _corpus_point(spec)
+        for d in over:
+            yield d, "not_processed", f"fenêtre au-delà du plafond de {spec['cap']} unités ({dec}, point {pt})"
+        return
+    docs_path = _paths(mid)[1]
+    filer_cik = {}
+    if docs_path.exists() and over:
+        docs = pd.read_parquet(docs_path, columns=["adsh", "cik"])
+        filer_cik = {a: str(int(c)) for a, c in zip(docs["adsh"], docs["cik"]) if str(c).strip().isdigit()}
+    from .load import config_group_ciks
+    as_group = config_group_ciks()
+    for d in over:
+        grp = as_group.get(filer_cik.get(d["adsh"], ""))
+        if grp:
+            yield d, "out_of_scope", (f"fenêtre au-delà du plafond de {spec['cap']} unités, dépôt du groupe {grp} lu par "
+                                      "son catalogue (D-0053, point 7)")
+        else:
+            yield d, "not_processed", (f"fenêtre au-delà du plafond de {spec['cap']} unités "
+                                       f"({'D-0046, point 4' if mid == FIRST else dec})")
+
+
+def window_exclusion_key(mid, d, reason="not_processed"):
+    """Clé d'exclusion d'une fenêtre d'un montage."""
+    return f"{reason}:{'montages' if mid == FIRST else f'montages:{mid}'}:{d['adsh']}/{d['file']}#{d['window']}"
+
+
+def restrict_info(known=None, paths=None):
+    """Listes « au-delà du plafond » des montages ramenées, à la reconstruction, aux fenêtres que l'assemblage compte
+    (D-0084, point 7 ; D-0088, point 25) : celles dont l'exclusion `not_processed` est dans `known` (par défaut, celles
+    du commit de référence), et celles d'un dépôt d'un groupe, hors champ.
+
+    Sans cela, l'exécution suivante, en mode ordinaire, reprend les listes telles quelles (D-0074, point 3) et compte
+    toutes les fenêtres recalculées hors des clés gardées, dont les bornes ont seulement changé. `paths` : par montage,
+    le fichier à ramener (par défaut, l'état courant). Renvoie, par montage touché, les fenêtres gardées et retirées."""
+    if known is None:
+        from . import reconstruction
+        ref = reconstruction.table("exclusions")
+        known = set(ref.loc[ref["reason"] == "not_processed", "exclusion_key"])
+    out = {}
+    for mid, spec in specs().items():
+        p = (paths or {}).get(mid) or _paths(mid)[2]
+        if not p.exists():
+            continue
+        info = json.loads(p.read_text())
+        over = info.get("over_cap") or []
+        keep = [d for d, reason, _ in _over_cap(mid, spec, info)
+                if reason != "not_processed" or window_exclusion_key(mid, d) in known]
+        if len(keep) != len(over):
+            info["over_cap"] = keep
+            p.write_text(json.dumps(info, ensure_ascii=False))
+            out[mid] = {"kept": len(keep), "removed": len(over) - len(keep)}
+    return out
+
+
 def exclusions(as_of):
     """Relevés de portefeuille non lus, pièces sans fenêtre qualifiante, fenêtres au-delà du plafond."""
     out = []
@@ -1077,18 +1147,16 @@ def exclusions(as_of):
                         "reason": reason, "detail": detail, "group_id": None, "accession": acc, "content_key": None,
                         "as_of": as_of})
         terms = " », « ".join(t.get("label") or re.sub(r"\\b", "", t["rx"]) for t in spec.get("terms") or [])
-        if spec.get("source") in ("corpus", "tagged", "lab_corpus", "backlog", "edge_values", "ppe_notes"):
+        if spec.get("source") in CORPUS_SOURCES:
             # montage de corpus (D-0058, point 3) : un document sans terme n'est pas une exclusion, ses blocs se lisent
             # par le catalogue du groupe ; une fenêtre d'un facteur de risque est hors champ (§14), et au-delà du
             # plafond, une fenêtre reste à lire
-            pt = {"tagged": 4, "lab_corpus": 4, "backlog": 6, "edge_values": 15,          # D-0060, D-0058, D-0067, D-0068
-                  "ppe_notes": 4}.get(spec.get("source"), 3)                             # D-0076
+            pt = _corpus_point(spec)
             for d in info.get("risk_factors") or []:
                 ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
                    f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec}, point {pt})", d["adsh"])
-            for d in info.get("over_cap") or []:
-                ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
-                   f"fenêtre au-delà du plafond de {spec['cap']} unités ({dec}, point {pt})", d["adsh"])
+            for d, reason, detail in _over_cap(mid, spec, info):
+                ex(f"{d['adsh']}/{d['file']}#{d['window']}", reason, detail, d["adsh"])
             continue
         for form, n in sorted((info.get("holdings_not_read") or {}).items()):
             ex(f"holdings:{form}", "out_of_scope",
@@ -1111,23 +1179,8 @@ def exclusions(as_of):
         for d in info.get("risk_factors") or []:      # §14 ; D-0058, point 20, que l'export omettait (D-0064)
             ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
                f"{d['filer']} ({d['form']}) : fenêtre dans la section des facteurs de risque (§14 ; {dec})", d["adsh"])
-        # déposant devenu groupe suivi (D-0053, point 7) : ses dépôts se lisent par le catalogue du groupe
-        docs_path = _paths(mid)[1]
-        filer_cik = {}
-        if docs_path.exists() and info.get("over_cap"):
-            docs = pd.read_parquet(docs_path, columns=["adsh", "cik"])
-            filer_cik = {a: str(int(c)) for a, c in zip(docs["adsh"], docs["cik"]) if str(c).strip().isdigit()}
-        from .load import config_group_ciks
-        as_group = config_group_ciks()
-        for d in info.get("over_cap") or []:
-            grp = as_group.get(filer_cik.get(d["adsh"], ""))
-            if grp:
-                ex(f"{d['adsh']}/{d['file']}#{d['window']}", "out_of_scope",
-                   f"fenêtre au-delà du plafond de {spec['cap']} unités, dépôt du groupe {grp} lu par son catalogue (D-0053, point 7)",
-                   d["adsh"])
-                continue
-            ex(f"{d['adsh']}/{d['file']}#{d['window']}", "not_processed",
-               f"fenêtre au-delà du plafond de {spec['cap']} unités ({'D-0046, point 4' if mid == FIRST else dec})", d["adsh"])
+        for d, reason, detail in _over_cap(mid, spec, info):
+            ex(f"{d['adsh']}/{d['file']}#{d['window']}", reason, detail, d["adsh"])
     from . import reconstruction
     if reconstruction.reference():
         # D-0084, point 7 : une fenêtre recalculée hors des clés gardées ne compte au-delà du plafond que si le commit

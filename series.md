@@ -1,6 +1,6 @@
 # series.md — vue temporelle
 
-*Exécution du 2026-11-14. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
+*Exécution du 2026-11-23. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
 
 ## NVIDIA (NVDA)
 
@@ -2371,6 +2371,7 @@ Actions déclarées par le financeur au 13F (date de portefeuille) ou à une ann
 | 2026-01-23 | SCHEDULE 13G/A | 47 213 353 | — | 11,5 % |  |
 | 2026-03-31 | 13F | 47 213 353 | 3 657,6 M$ | — |  |
 | 2026-06-30 | 13F | 47 213 353 | 4 699,6 M$ | — |  |
+| 2026-09-30 | 13F | 47 213 353 | 4 113,2 M$ | — |  |
 
 ## NVIDIA (NVDA) → Intel (INTC) : déclarations de détention
 
@@ -2381,6 +2382,7 @@ Actions déclarées par le financeur au 13F (date de portefeuille) ou à une ann
 | 2025-12-31 | 13F | 214 776 632 | 7 925,3 M$ | — |  |
 | 2026-03-31 | 13F | 214 776 632 | 9 478,1 M$ | — |  |
 | 2026-06-30 | 13F | 214 776 632 | 29 989,3 M$ | — |  |
+| 2026-09-30 | 13F | 161 082 488 | 19 366,9 M$ | — |  |
 
 ## NVIDIA (NVDA) → Nebius (NBIS) : déclarations de détention
 
@@ -2396,6 +2398,7 @@ Actions déclarées par le financeur au 13F (date de portefeuille) ou à une ann
 | 2026-03-31 | 13F | 1 190 476 | 123,5 M$ | — |  |
 | 2026-06-30 | 13F | 1 190 476 | 328,8 M$ | — |  |
 | 2026-07-13 | SCHEDULE 13G | 22 256 412 | — | 9,3 % |  |
+| 2026-09-30 | 13F | 1 190 476 | 280,8 M$ | — |  |
 
 ## Oracle (ORCL) : obligations valorisées par les fonds (Form N-PORT)
 
@@ -7769,8 +7772,10 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 
 | Trimestre | Valeur détenue déclarée | Séries | Positions |
 | --- | ---: | ---: | ---: |
-| 2024-06-30 | 2 M$ | 1 | 1 |
-| 2024-09-30 | 1 M$ | 1 | 1 |
+| 2023-12-31 | 2 M$ | 1 | 1 |
+| 2024-03-31 | 2 M$ | 1 | 1 |
+| 2024-06-30 | 4 M$ | 2 | 2 |
+| 2024-09-30 | 4 M$ | 2 | 2 |
 | 2024-12-31 | 276 M$ | 4 | 5 |
 | 2025-03-31 | 282 M$ | 4 | 5 |
 | 2025-06-30 | 461 M$ | 4 | 6 |
@@ -7794,6 +7799,8 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | BlackRock Technology & Private Equity Term Trust | OPENAI SERIES C (EC) | 2026-06-30 (687,69 USD) | 2026-06-30 (687,69 USD) | 1 |
 | BlackRock Total Return Fund | OPENAI SERIES C (EC) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
 | ClearBridge Select Fund | OpenAI Private Placement (EC) | 2025-10-31 (430,00 USD) | 2026-07-31 (687,69 USD) | 4 |
+| Destiny Tech100 Inc. | Empros Technologies (EC) | 2024-06-30 (178,00 USD) | 2024-09-30 (262,00 USD) | 2 |
+| Destiny Tech100 Inc. | OpenAI, Inc. (EC) | 2023-12-31 (178,00 USD) | 2024-03-31 (178,00 USD) | 2 |
 | Fidelity Advisor Equity Growth Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
 | Fidelity Advisor Growth Opportunities Fund | OPENAI GROUP PBC A PP (EC) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
 | Fidelity Advisor Growth Opportunities Fund | OPENAI GROUP PBC A-2 PC PP (EP) | 2025-11-30 (434,54 USD) | 2026-05-31 (687,69 USD) | 3 |
@@ -7922,22 +7929,6 @@ Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évalu�
 | VIP Technology Portfolio | OPENAI GROUP PBC A-3 PC PP (EP) | 2025-12-31 (477,48 USD) | 2026-06-30 (687,69 USD) | 3 |
 | VIP Technology Portfolio | OPENAI GROUP PBC C PC PP (EP) | 2026-03-31 (687,69 USD) | 2026-06-30 (687,69 USD) | 2 |
 | iShares A.I. Innovation and Tech Active ETF | OPENAI SERIES C (EC) | 2026-04-30 (687,69 USD) | 2026-07-31 (687,69 USD) | 2 |
-
-## OpenAI, Inc. (CP:openai inc) : actions valorisées par les fonds (Form N-PORT)
-
-Valeur que les fonds enregistrés déclarent pour leurs actions du nœud évaluées au niveau 3, au dernier rapport de chaque série dans le trimestre civil ; perspective `counterparty`, jamais une valeur du nœud (D-0065, point 8).
-
-| Trimestre | Valeur détenue déclarée | Séries | Positions |
-| --- | ---: | ---: | ---: |
-| 2023-12-31 | 2 M$ | 1 | 1 |
-| 2024-03-31 | 2 M$ | 1 | 1 |
-| 2024-06-30 | 2 M$ | 1 | 1 |
-| 2024-09-30 | 3 M$ | 1 | 1 |
-
-| Fonds (série) | Titre | Première date (valeur par action) | Dernière date (valeur par action) | Dates |
-| --- | --- | --- | --- | ---: |
-| Destiny Tech100 Inc. | Empros Technologies (EC) | 2024-06-30 (178,00 USD) | 2024-09-30 (262,00 USD) | 2 |
-| Destiny Tech100 Inc. | OpenAI, Inc. (EC) | 2023-12-31 (178,00 USD) | 2024-03-31 (178,00 USD) | 2 |
 
 ## PENDRELL CORP (CP:pendrell corp) : actions valorisées par les fonds (Form N-PORT)
 
@@ -10286,6 +10277,19 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - NVIDIA, nvda:portsmouth_rvg_2026 — durée, 2026-08-17 (date de la pièce) ; « the 20th anniversary of the commencement of the applicable lease », — (8-K 0001045810-26-000069) : 8-K de NVIDIA : fin des obligations de NVIDIA au plus tard au 20e anniversaire du début du bail ; NVIDIA paie l'écart entre la valeur minimale garantie et le produit d'une relocation ou d'une vente si OpenAI est insolvable ou ne paie pas ; OpenAI rembourse et indemnise NVIDIA de toute somme versée ; ligne de clause (D-0067)
 - NVIDIA, nvda:sb_energy_openai_guarantees — calendrier de livraison, 2026-08-26 (date de la pièce) ; « the first of which is expected in fiscal year 2029 », — (10-Q 0001045810-26-000075) : 10-Q de NVIDIA du 26 août 2026 : neuf phases de construction au campus PORTS, la première attendue sur l'exercice 2029 de NVIDIA, chaque garantie prenant effet au début du bail correspondant ; ligne de clause (D-0067)
 - SoftBank, nvda:portsmouth_rvg_2026 — durée, 2026-09-01 (date de la pièce), — (S-1 0001628280-26-059639) : S-1 de SB Energy : fin automatique de la garantie de NVIDIA ; ligne de clause (D-0067)
+- SoftBank, sbenergy:milam_leases — exclusivité, 2026-11-19 (date de la pièce), — (S-1/A EX-10.29 0001628280-26-075026) : fenêtre de la pièce 10.29 du S-1/A n° 3 de SB Energy (bail du bâtiment 2 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : article 4 du bail du bâtiment 2 (impôts de fin de bail, services publics), texte du bail du bâtiment 1 : droit de premier refus de la bailleresse et de ses affiliés pour fournir l'électricité renouvelable du site, droit personnel à SB Energy et à …
+- SoftBank, sbenergy:milam_leases — exclusivité, 2026-11-19 (date de la pièce), — (S-1/A EX-10.28 0001628280-26-075026) : fenêtre de la pièce 10.28 du S-1/A n° 3 de SB Energy (bail refondu du bâtiment 1 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : article 4 (services publics) : droit de premier refus de la bailleresse et de ses affiliés pour fournir l'électricité renouvelable du site si la preneuse reçoit une offre d'un tiers (réponse sous dix jours ouvrés), droit personnel à SB Ene…
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.28 0001628280-26-075026) : fenêtre de la pièce 10.28 du S-1/A n° 3 de SB Energy (bail refondu du bâtiment 1 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : articles 14 et 15 (défauts de la preneuse et recours de la bailleresse) : en cas de défaut de paiement non corrigé après un second avis de soixante jours, de défaut critique ou d'insolvabilité, la bailleresse peut résilier et réclamer les …
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.29 0001628280-26-075026) : fenêtre de la pièce 10.29 du S-1/A n° 3 de SB Energy (bail du bâtiment 2 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : articles 14 et 15 du bail du bâtiment 2 (défauts de la preneuse et recours de la bailleresse), texte du bail du bâtiment 1 : en cas de défaut de paiement non corrigé après un second avis de soixante jours, de défaut critique ou d'insolvabilité, la…
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.28 0001628280-26-075026) : fenêtre de la pièce 10.28 du S-1/A n° 3 de SB Energy (bail refondu du bâtiment 1 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : article 18 (interruptions de service) : crédits de loyer proportionnels en cas de coupure d'électricité ou d'un autre service critique imputable à la bailleresse, droit de la preneuse d'y remédier, puis droit de résilier le bail si l'inter…
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.29 0001628280-26-075026) : fenêtre de la pièce 10.29 du S-1/A n° 3 de SB Energy (bail du bâtiment 2 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : article 18 du bail du bâtiment 2 (interruptions de service), texte du bail du bâtiment 1 : crédits de loyer en cas de coupure d'électricité ou d'un autre service critique imputable à la bailleresse, droit de la preneuse d'y remédier, puis de résil…
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.29 0001628280-26-075026) : fenêtre de la pièce 10.29 du S-1/A n° 3 de SB Energy (bail du bâtiment 2 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : articles 12 et 13 du bail du bâtiment 2 (expropriation et sinistre), texte du bail du bâtiment 1 : fin du bail de plein droit en cas d'expropriation totale ; sortie de la preneuse en cas d'expropriation partielle ou temporaire d'au moins six mois …
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.29 0001628280-26-075026) : fenêtre de la pièce 10.29 du S-1/A n° 3 de SB Energy (bail du bâtiment 2 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : article 2, propre au bail du bâtiment 2 : la preneuse ou la bailleresse peut résilier si Oncor n'a pas confirmé, à une date masquée, la disponibilité d'une puissance supplémentaire (deux tranches en MW, masquées) pour le bâtiment 2 ; le droit s'ét…
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.28 0001628280-26-075026) : fenêtre de la pièce 10.28 du S-1/A n° 3 de SB Energy (bail refondu du bâtiment 1 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : article 28 (cession par la bailleresse) : en cas de cession interdite (vente ou changement de contrôle de 50 % ou plus au profit d'une entité restreinte ou interdite des annexes O-1 et O-2, hors investisseur immobilier institutionnel), le …
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.29 0001628280-26-075026) : fenêtre de la pièce 10.29 du S-1/A n° 3 de SB Energy (bail du bâtiment 2 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : article 28 du bail du bâtiment 2 (cession par la bailleresse), texte du bail du bâtiment 1 : en cas de cession interdite au profit d'une entité restreinte ou interdite, le loyer de base baisse d'office d'une part masquée et la preneuse peut résili…
+- SoftBank, sbenergy:milam_leases — clause de sortie, 2026-11-19 (date de la pièce), — (S-1/A EX-10.28 0001628280-26-075026) : fenêtre de la pièce 10.28 du S-1/A n° 3 de SB Energy (bail refondu du bâtiment 1 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : articles 12 et 13 (expropriation et sinistre) : fin du bail de plein droit en cas d'expropriation totale ; sortie de la preneuse en cas d'expropriation partielle ou temporaire d'au moins six mois empêchant son activité, ou de sinistre non …
+- SoftBank, sbenergy:milam_leases — durée, 2026-11-19 (date de la pièce) ; « fifteen (15) years following such Commencement Date », — (S-1/A EX-10.28 0001628280-26-075026) : fenêtre de la pièce 10.28 du S-1/A n° 3 de SB Energy (bail refondu du bâtiment 1 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : données de base du bail : durée de quinze ans à compter de la date de commencement (livraison de la première phase et de la première tranche de puissance, ou date cible), prorogeable selon l'annexe C ; loyer de base calculé selon l'annexe …
+- SoftBank, sbenergy:milam_leases — durée, 2026-11-19 (date de la pièce) ; « fifteen (15) years following such Commencement Date », — (S-1/A EX-10.29 0001628280-26-075026) : fenêtre de la pièce 10.29 du S-1/A n° 3 de SB Energy (bail du bâtiment 2 de Milam County, Milam County DC, LLC bailleresse, Orion DC I, LLC preneuse) : données de base du bail du bâtiment 2 : durée de quinze ans à compter de la date de commencement, prorogeable selon l'annexe C ; loyer de base calculé selon l'annexe D, indexation annuelle masquée ; texte du bail du bâtiment 1 ; « Tenant » : Orion…
 - SoftBank, sbenergy:openai_registration_rights — durée, 2026-09-21 (date de la pièce), — (S-1/A EX-10.37 0001628280-26-062846) : accord de droits d'enregistrement de SB Energy (SoftBank, OpenAI Infra Holdings, NVIDIA) : fin des droits d'un porteur sous 1 % des actions en circulation, fin de l'accord quand plus personne ne détient d'actions ou d'un commun accord ; ligne de clause (D-0067)
 - SoftBank, sbenergy:openai_warrants — tranche d'acquisition, 2026-09-01 (date de la pièce), 868 934 actions (S-1 EX-4.1 0001628280-26-059639) : annexe E du bon refondu de SB Energy, ligne 1 : 868 934 bons acquis à la signature des baux NNN de 800 MW de charge IT au projet d'Orion (Milam County), déjà échangés ; la capacité est celle des baux que la ligne dit signés ; ligne de clause et de capacité (D-0067)
 - SoftBank, sbenergy:openai_warrants — tranche d'acquisition, 2026-09-01 (date de la pièce), 408 942 actions (S-1 EX-4.1 0001628280-26-059639) : annexe E du bon refondu de SB Energy, ligne 2 : seuil de 753 MW pris sur la même capacité d'Orion, sans ligne de capacité à part ; ligne 3 réservée ; les lignes suivantes de l'annexe ne sont pas dans les fenêtres servies ; ligne de clause (D-0067)
@@ -10295,6 +10299,9 @@ Série complète de `lab_tagged_value`, vue `as_known`, par laboratoire et par d
 - SoftBank, sbenergy:openai_warrants — tranche d'acquisition, 2026-09-01 (date de la pièce), — (S-1 EX-4.1 0001628280-26-059639) : bon refondu de SB Energy : annulation d'une part non acquise quand OpenAI perd ses droits sur un projet ; ligne de clause (D-0067)
 - SoftBank, sbenergy:openai_warrants — tranche d'acquisition, 2026-09-21 (date de la pièce), 868 933 actions (S-1/A 0001628280-26-062846) : S-1/A de SB Energy : deux des huit tranches acquises à la fixation du prix de l'offre ; la première (868 934 bons, baux de 800 MW-IT à Milam County) est codée sur l'annexe E du bon au bloc 49434981 ; ligne de clause (D-0067)
 - SoftBank, sbenergy:openai_warrants — durée, 2036-01-09 (fin de période), — (S-1 EX-4.1 0001628280-26-059639) : bon refondu de SB Energy : exerçable jusqu'au 9 janvier 2036, ou plus tard jusqu'aux autorisations réglementaires ; la part non acquise s'annule à l'expiration ; période d'exercice de dix ans ; ligne de clause (D-0067)
+- SoftBank, sbenergy:ports_pike_tenant_guaranty — durée, 2026-11-19 (date de la pièce), — (S-1/A EX-10.48 0001628280-26-075026) : fenêtre de la pièce 10.48 du S-1/A n° 3 de SB Energy (bail du bâtiment 10 de PORTS, PORTS Building 10, LLC bailleresse, Vela I Holdings, LLC preneuse) : acte d'adhésion au bail du bâtiment 10 de PORTS, hors des neuf bâtiments couverts par NVIDIA : la garantie d'OpenAI Global, LLC ne prend effet qu'à la signature et à la remise par NVIDIA de sa garantie de valeur résiduelle (article 29 du bail, ma…
+- SoftBank, sbenergy:ports_pike_tenant_guaranty — durée, 2026-11-19 (date de la pièce), — (S-1/A EX-10.46 0001628280-26-075026) : fenêtre de la pièce 10.46 du S-1/A n° 3 de SB Energy (bail du bâtiment 1 de PORTS, PORTS Building 1, LLC bailleresse, Vela I Holdings, LLC preneuse) : acte d'adhésion au bail du bâtiment 1 de PORTS : OpenAI Global, LLC garantit sans condition, à titre principal, toutes les obligations de la preneuse, dont elle détient le contrôle ; la garantie s'éteint d'office avec la garantie de valeur résiduel…
+- SoftBank, sbenergy:ports_pike_tenant_guaranty — durée, 2026-11-19 (date de la pièce), — (S-1/A EX-10.47 0001628280-26-075026) : fenêtre de la pièce 10.47 du S-1/A n° 3 de SB Energy (bail du bâtiment 4 de PORTS, PORTS Building 4, LLC bailleresse, Vela I Holdings, LLC preneuse) : acte d'adhésion au bail du bâtiment 4 de PORTS : OpenAI Global, LLC garantit sans condition, à titre principal, toutes les obligations de la preneuse, dont elle détient le contrôle ; la garantie s'éteint d'office avec la garantie de valeur résiduel…
 
 ## Anthropic : clauses des contrats (D-0067, volet 8)
 

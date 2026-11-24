@@ -1,6 +1,7 @@
 """D-0088 (point 8) : une 429 d'un hôte de la SEC est un refus, comme un 403 — pause du client entier, refus comptés
 par pause, arrêt définitif après les pauses permises — et le plafond de cadence vaut pour toute commande.
 D-0088 (point 10) : la restriction d'un catalogue garde, entre plusieurs blocs de même clé, celui que la référence montre.
+D-0088 (point 25) : elle ramène aussi les listes « au-delà du plafond » des montages aux fenêtres que la référence comptait.
 
 Lancement : python3 -m unittest tests.test_d0088 -v
 """
@@ -281,6 +282,80 @@ class StopRuleRefusals(unittest.TestCase):
         # une 429 d'un hôte hors SEC reste passagère, et une entrée sans adresse ne compte pas
         self.assertFalse(render.journal_refusals(self._journal([ok, {"url": "https://xbrl.fasb.org/x", "host": "xbrl.fasb.org", "status": 429}]))[2])
         self.assertFalse(render.journal_refusals(self._journal([ok, {"note": "fin de commande", "status": 403}]))[2])
+
+
+class MontageOverCapAfterReconstruction(unittest.TestCase):
+    """Listes « au-delà du plafond » des montages après une reconstruction : ne restent que les fenêtres que la
+    référence comptait, et celles d'un dépôt d'un groupe, hors champ (point 25)."""
+
+    SPECS = {"corpus_x": {"source": "corpus", "cap": 300, "decision": "D-0059"},
+             "search_y": {"cap": 40, "decision": "D-0050"}}
+
+    def setUp(self):
+        import pandas as pd
+        from pipeline import montages as M
+        self.M = M
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        self.dir = pathlib.Path(d.name)
+        pd.DataFrame({"adsh": ["g-1", "o-1"], "cik": ["0000000042", "0000000007"]}).to_parquet(self.dir / "docs_search_y.parquet")
+        for target, value in ((M, {"specs": lambda cfg=None: self.SPECS,
+                                   "_paths": lambda mid: (None, self.dir / f"docs_{mid}.parquet", self.dir / f"info_{mid}.json")}),):
+            for name, v in value.items():
+                patch = mock.patch.object(target, name, v)
+                patch.start()
+                self.addCleanup(patch.stop)
+        patch = mock.patch("pipeline.load.config_group_ciks", lambda: {"42": "GRP"})
+        patch.start()
+        self.addCleanup(patch.stop)
+
+    def _info(self, mid, over, **more):
+        p = self.dir / f"info_{mid}.json"
+        p.write_text(json.dumps({"over_cap": over, **more}), encoding="utf-8")
+        return p
+
+    @staticmethod
+    def _w(adsh, k):
+        return {"adsh": adsh, "file": "a.htm", "window": k}
+
+    def test_only_the_windows_the_reference_counted_remain(self):
+        M = self.M
+        risk = [{"adsh": "r-1", "file": "a.htm", "window": 0, "filer": "X", "form": "10-Q"}]
+        p = self._info("corpus_x", [self._w("a-1", 0), self._w("a-1", 1), self._w("a-2", 0)], risk_factors=risk)
+        known = {M.window_exclusion_key("corpus_x", self._w("a-1", 1))}
+        self.assertEqual(M.restrict_info(known=known), {"corpus_x": {"kept": 1, "removed": 2}})
+        info = json.loads(p.read_text())
+        self.assertEqual(info["over_cap"], [self._w("a-1", 1)])
+        self.assertEqual(info["risk_factors"], risk)                 # les autres listes ne changent pas
+        # la clé est celle de l'exclusion que l'assemblage écrit
+        self.assertEqual({e["exclusion_key"] for e in M.exclusions("2026-11-23") if e["reason"] == "not_processed"}, known)
+        self.assertEqual(M.restrict_info(known=known), {})           # rien à retirer la seconde fois
+
+    def test_a_group_filing_stays_out_of_scope(self):
+        M = self.M
+        self._info("search_y", [self._w("g-1", 0), self._w("o-1", 0)])
+        self.assertEqual(M.restrict_info(known=set()), {"search_y": {"kept": 1, "removed": 1}})
+        ex = M.exclusions("2026-11-23")
+        self.assertEqual([(e["reason"], e["accession"]) for e in ex], [("out_of_scope", "g-1")])
+        self.assertIn("dépôt du groupe GRP lu par son catalogue", ex[0]["detail"])
+
+    def test_the_reference_is_the_default_and_a_kept_state_can_be_named(self):
+        import pandas as pd
+        M = self.M
+        self._info("corpus_x", [self._w("a-1", 0), self._w("a-2", 0)])
+        snap = self.dir / "info_corpus_x.2026-11-14.json"
+        snap.write_text(json.dumps({"over_cap": [self._w("a-1", 0), self._w("a-2", 0)]}), encoding="utf-8")
+        ref = pd.DataFrame({"reason": ["not_processed", "out_of_scope"],
+                            "exclusion_key": [M.window_exclusion_key("corpus_x", self._w("a-2", 0)),
+                                              M.window_exclusion_key("corpus_x", self._w("a-1", 0), "out_of_scope")]})
+        with mock.patch.object(reconstruction, "table", lambda name: ref):
+            self.assertEqual(M.restrict_info(paths={"corpus_x": snap}), {"corpus_x": {"kept": 1, "removed": 1}})
+        self.assertEqual(json.loads(snap.read_text())["over_cap"], [self._w("a-2", 0)])
+        self.assertEqual(len(json.loads((self.dir / "info_corpus_x.json").read_text())["over_cap"]), 2)   # l'état courant n'est pas touché
+
+    def test_restrict_command_also_restricts_the_lists(self):
+        import inspect
+        self.assertIn("montages.restrict_info()", inspect.getsource(reconstruction.main))
 
 
 if __name__ == "__main__":

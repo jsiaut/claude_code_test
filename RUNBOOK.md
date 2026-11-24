@@ -214,10 +214,14 @@ Sans `db/` ni `cache/`, tout se retire de la SEC avant la mise à jour. Mesure d
   (soldes des concepts de `us-gaap-2026.xsd`) ;
 - `python3 -m pipeline.reconstruction restrict`, puis `missing` : une clé lue qui ne revient pas est un échec
   consigné, jamais une relecture. Entre plusieurs blocs de même clé (même texte dans deux dépôts, même fenêtre
-  dans deux montages), `restrict` garde celui que les tables de la référence montrent (D-0088, point 10) ;
+  dans deux montages), `restrict` garde celui que les tables de la référence montrent (D-0088, point 10). La
+  commande ramène aussi les listes « au-delà du plafond » des montages (`db/montages_info*.json`) aux fenêtres que
+  la référence comptait : sans cela, la mise à jour qui suit compte à tort toutes les fenêtres recalculées
+  (D-0088, point 25). Elle se relance après toute nouvelle préparation des montages ;
 - aucune lecture ; réassemblage, puis `make compare REF=<ce commit>` : chaque écart s'explique dans la décision.
   Les tables de la reconstruction ne se commitent pas ;
 - la variable se retire, et la mise à jour (§ 3) part de cet état.
 
-Trois chantiers allégeraient cette étape et attendent la prochaine mise à jour (D-0087, point 1) : versionner
-l'état que `db/` porte seul, tirer chaque archive une seule fois, enchaîner la reconstruction en une commande.
+Trois chantiers allégeraient cette étape et attendent une demande de l'utilisateur (D-0087, point 1 ; D-0088,
+point 26) : versionner l'état que `db/` porte seul, tirer chaque archive une seule fois, enchaîner la
+reconstruction en une commande. Celle de D-0088 a pris près de huit heures et 84 Go.

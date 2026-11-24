@@ -208,7 +208,11 @@ def main(argv):
         print(json.dumps({"reference": reference(), "read_keys": len(read_keys()), "kept_keys": len(keys()),
                           "accessions": len(accessions()), "documents": len(documents())}, indent=1))
     elif cmd == "restrict":
-        print(json.dumps(restrict(), indent=1))
+        from . import montages
+        out = restrict()
+        # les listes « au-delà du plafond » des montages suivent leur catalogue (D-0088, point 25)
+        out["montages_info"] = {"over_cap": montages.restrict_info()}
+        print(json.dumps(out, indent=1))
     elif cmd == "missing":
         m = missing()
         print(len(m), "clés lues sans bloc")
