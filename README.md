@@ -19,6 +19,9 @@ Une session Claude Code lit d'abord `CLAUDE.md` (les invariants d'exploitation, 
 - `work/observations/` : les lectures, un fichier par bloc lu. Elles ne se rejouent pas, d'où leur
   versionnement.
 - `journal.jsonl` : chaque requête réseau, sans le User-Agent.
+- `state/` : ce qui dépend de l'historique d'exécution et ne se recalcule pas à l'identique (files de la
+  découverte, manifestes des catalogues préparés, listes des montages), sans aucun texte de dépôt (D-0091 ;
+  environ 12 Mo).
 - Les rendus : `synthesis.md`, `series.md`, `delta.md` et `audit/`.
 
 Ce qu'un clone ne contient pas, parce que `.gitignore` l'exclut : `db/` (inventaire, faits XBRL, mémo,
@@ -41,13 +44,15 @@ environ 2,4 Go), `cache/` (copies des dépôts) et `work/tmp/`. Sans `db/`, `ass
   commande réseau à la fois, et une pause d'au moins 10 minutes après un refus, 403 ou 429.
 - En session cloud, l'environnement `claude_code_test` installe ces prérequis à l'ouverture et porte le User-Agent
   (`RUNBOOK.md`, § 1).
-- Disque : environ 41 Go pour garder les archives des Notes Data Sets et des N-PORT. Par défaut, chaque
-  archive est effacée après lecture (`discovery.fetch(keep_zip=False)`) ; pour la garder, appeler
-  `discovery.fetch(keep_zip=True)` depuis Python.
+- Disque : `db/` et `cache/` pèsent 5 Go. La reconstruction garde chaque archive des Notes Data Sets et des
+  N-PORT jusqu'à son dernier lecteur, 19 Go au plus fort, si le disque a 30 Go libres ; sinon chaque lecteur
+  retire la sienne (D-0091). Hors reconstruction, une archive s'efface dès sa lecture.
 
 ## Sans `db/`, depuis un clone
 
 - Lire les tables, avec DuckDB (`SELECT * FROM 'tables/measures.parquet'`) ou avec pandas.
+- Reconstruire `db/` et `cache/` : `make rebuild REF=<commit des tables>`, en une commande (D-0091 ; `RUNBOOK.md`,
+  § 6). Tout se retire de la SEC : environ 27 000 requêtes, six heures, sans intervention sauf refus de la SEC.
 - Lancer les contrôles : `make check` (ruff, puis les tests ; `make test` pour les seuls tests). Le crochet
   `.githooks/pre-commit` les lance avant chaque commit une fois activé : `git config core.hooksPath .githooks`.
 

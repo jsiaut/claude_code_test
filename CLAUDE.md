@@ -9,8 +9,9 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
   d'emploi : session neuve, mise à jour pas à pas, lecture, intégration, reconstruction (D-0087).
 - `decisions.md` est chronologique et long : y chercher une décision par son numéro (`grep -n "D-0078"`), sans le
   lire d'un bloc. La dernière dit où en est le travail.
-- Conteneur neuf : ni `db/` ni `cache/`. Rien ne s'assemble ni ne se rend avant leur reconstruction
-  (`RUNBOOK.md`, § 6).
+- Conteneur neuf : ni `db/` ni `cache/`. Rien ne s'assemble ni ne se rend avant leur reconstruction :
+  `make rebuild REF=<commit des tables>`, en une commande et six heures environ (`RUNBOOK.md`, § 6 ; D-0091). Une
+  session reprise garde son conteneur : vérifier `ls db cache` avant de reconstruire.
 
 ## Invariants
 
@@ -43,6 +44,8 @@ Dépôt public. Ce fichier résume les invariants d'exploitation ; en cas d'éca
   `reading.correction_passes` de `config.yaml` (D-0078).
 - `assemble` (10 à 15 minutes) puis `render`, en arrière-plan, jamais en même temps. Après un réassemblage,
   comparer les tables à celles du commit précédent (`make compare`) et expliquer chaque écart dans la décision.
+- `make state` avant de commiter des tables : `state/` porte les files, les manifestes des catalogues et les listes
+  des montages qui ne se recalculent pas, sans aucun texte de dépôt (D-0091). Il se commite avec les tables.
 
 ## Git
 

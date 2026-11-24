@@ -4,10 +4,10 @@ Ce que fait l'exécutant, dans l'ordre, pour ouvrir une session, mettre le modè
 reconstruire un conteneur neuf. `CLAUDE.md` porte les invariants ; `SPEC.md` et `decisions.md` l'emportent en cas
 d'écart, et les règles d'une décision l'emportent sur cette page.
 
-**État de cette page (D-0087, 2026-11-23).** Elle est tirée des décisions D-0074 à D-0086 et des docstrings des
-modules, sans exécution possible ce jour-là (`db/` et `cache/` absents). La première mise à jour qui la suit
-l'éprouve : un écart se corrige ici, et se consigne dans la décision en cours. Les commandes notées *(D-0087)* sont
-nouvelles ; celles de la lecture et de la comparaison sont éprouvées, pas `catalog` ni `spacex_d1`.
+**État de cette page.** Écrite à D-0087 (2026-11-23) d'après les décisions D-0074 à D-0086, éprouvée par la mise à
+jour de D-0088 et corrigée par elle. Le § 6 est celui de D-0091 : la commande de reconstruction y est éprouvée deux
+fois hors ligne, pas encore par un tirage réel sur un conteneur neuf. Un écart se corrige ici, et se consigne
+dans la décision en cours.
 
 ## 1. Ouvrir une session
 
@@ -29,7 +29,7 @@ Une session neuve tourne sur un conteneur neuf : seul ce que Git suit s'y trouve
   Le User-Agent ne s'affiche jamais et ne s'écrit jamais dans le dépôt. Sans variable, l'utilisateur le fournit et
   il va dans `secrets/user_agent.txt` (hors suivi, `chmod 600`). Une seule identité par exécution.
 - **État hors Git.** `ls db cache` : s'ils manquent, rien ne s'assemble ni ne se rend, et toute mise à jour
-  commence par la reconstruction (§ 6).
+  commence par la reconstruction (§ 6 : `make rebuild REF=<commit des tables>`). Une session reprise les a encore.
 - **Où en est le travail.** `delta.md`, puis la dernière décision de `decisions.md` (`grep -n "^- \*\*D-" decisions.md | tail -3`).
 
 ## 2. Règles de toute exécution
@@ -158,6 +158,7 @@ make read-check                 # gardes sur les lignes de l'as_of courant
 make assemble                   # en arrière-plan, 8 à 15 minutes ; jamais en même temps que render
 make compare                    # tables/ contre le dernier commit, clé par clé (REF=<commit> pour un autre)
 make render                     # synthesis.md, series.md, delta.md, audit/
+make state                      # state/ écrit depuis db/ : il se commite avec les tables qu'il décrit (D-0091)
 make check
 ```
 
@@ -202,29 +203,58 @@ celui du dernier scan (`frozen_lexicon`).
 
 ## 6. Reconstruire un conteneur neuf
 
-Sans `db/` ni `cache/`, tout se retire de la SEC avant la mise à jour. Mesure de D-0084, au journal : 6 h 15,
-26 794 requêtes, 98 Go, dont 88 Go d'archives des jeux de données tirées plusieurs fois. **Relire D-0084
-(points 3, 6 et 7) avant de s'y lancer** ; en résumé :
+Sans `db/` ni `cache/`, tout se retire de la SEC avant la mise à jour. Une session **reprise** garde son conteneur :
+si `db/` et `cache/` sont là, il n'y a rien à reconstruire.
 
-- la configuration reste celle du dernier commit des tables (son as_of), et
-  `export PIPELINE_RECONSTRUCTION=<ce commit>` active le mode : les catalogues et les files se recalculent sur
-  toute la période, puis se ramènent aux clés que ce commit charge ;
-- le tronc (§ 3, étape 3), puis `python3 -m pipeline.spacex_d1` *(D-0087)* pour la série annuelle de SpaceX ;
-- les blocs de §14 (§ 5), avec `discovery prepare-history` et `nf_discovery prepare_history` à la place des
-  préparations ordinaires, sans oublier `lender num` ;
-- deux fichiers de `db/` que nul programme n'écrit se reconstituent à la main (D-0084, point 7) :
-  `exhibits_tranche.json` (types SGML des pièces, depuis la table `documents`) et `usgaap2026_balance.json`
-  (soldes des concepts de `us-gaap-2026.xsd`) ;
-- `python3 -m pipeline.reconstruction restrict`, puis `missing` : une clé lue qui ne revient pas est un échec
-  consigné, jamais une relecture. Entre plusieurs blocs de même clé (même texte dans deux dépôts, même fenêtre
-  dans deux montages), `restrict` garde celui que les tables de la référence montrent (D-0088, point 10). La
-  commande ramène aussi les listes « au-delà du plafond » des montages (`db/montages_info*.json`) aux fenêtres que
-  la référence comptait : sans cela, la mise à jour qui suit compte à tort toutes les fenêtres recalculées
-  (D-0088, point 25). Elle se relance après toute nouvelle préparation des montages ;
-- aucune lecture ; réassemblage, puis `make compare REF=<ce commit>` : chaque écart s'explique dans la décision.
-  Les tables de la reconstruction ne se commitent pas ;
-- la variable se retire, et la mise à jour (§ 3) part de cet état.
+```
+make rebuild REF=<commit des tables>      # D-0091 : la reconstruction en une commande, à lancer en arrière-plan
+python3 -m pipeline.rebuild <commit> --list              # les étapes, dans l'ordre, et celles déjà faites
+python3 -m pipeline.rebuild <commit> --from <étape>      # reprise à cette étape, après un échec
+python3 -m pipeline.rebuild <commit> --only <étape> …    # ces seules étapes
+```
 
-Trois chantiers allégeraient cette étape et attendent une demande de l'utilisateur (D-0087, point 1 ; D-0088,
-point 26) : versionner l'état que `db/` porte seul, tirer chaque archive une seule fois, enchaîner la
-reconstruction en une commande. Celle de D-0088 a pris près de huit heures et 84 Go.
+- **Référence.** `REF` est le dernier commit des tables (`git log -1 --format=%h -- tables/measures.parquet`) ; la
+  configuration reste la sienne (son as_of). La commande pose elle-même `PIPELINE_RECONSTRUCTION=<empreinte>`
+  (D-0084) : les catalogues et les files se recalculent sur toute la période, puis se ramènent à ceux de ce commit.
+- **Ce qu'elle enchaîne** (76 étapes, une à la fois, donc une seule commande réseau à la fois) : les deux fichiers de
+  `db/` qu'aucun programme n'écrit, remis de `state/` ; le tronc (§ 3, étape 3) et `spacex_d1` ; les blocs de §14
+  (§ 5), avec `prepare-history` pour la découverte et la piste, et `lender num` ; les montages, recherches et pièces
+  d'abord, corpus ensuite ; `reconstruction restrict` et `missing` ; l'assemblage ; `make compare REF=<commit>`.
+- **Journaux et reprise.** Chaque étape écrit `work/tmp/logs/rebuild_<étape>.log` ; l'avancement est dans
+  `work/tmp/rebuild.json`. La commande s'arrête à la première étape qui échoue et dit comment reprendre. Un refus
+  durable de la SEC arrête l'étape (§ 2) : regarder le journal avant de relancer. Un document « non obtenu » se voit
+  au décompte de l'étape : relancer l'étape avant de continuer (`--from`).
+- **Clés manquantes.** `missing` arrête la commande avant l'assemblage dès qu'une clé lue, ou un bloc d'un
+  manifeste, ne revient d'aucun catalogue : en chercher la cause dans le préparateur du catalogue (D-0091, point 9 :
+  un document qui n'était plus « le dernier »). Aucune relecture ne répare une clé manquante.
+- **État versionné** (`state/`, D-0091). Il porte ce qui dépend de l'historique sans texte de dépôt : les deux
+  fichiers faits à la main ; le manifeste des cinq catalogues préparés (clé, ordre, et l'attribution de chaque
+  bloc : dépôt, document, dates, niveaux, rang) ; les listes des montages ; les files, les candidats et les
+  registres d'unités préparées de la découverte et de la piste. Le manifeste dit l'attribution, le recalcul rend le
+  texte : un bloc préparé mais non lu revient aussi, et un texte que le recalcul ne trouve plus que dans un dépôt
+  plus récent garde son dépôt et ses dates d'origine. Le texte des blocs n'y est pas (noms de personnes, D-0078).
+- **Archives tirées une fois** (D-0091). La commande pose `PIPELINE_KEEP_ARCHIVES=1` : une archive Notes sert la
+  découverte puis la piste, une archive N-PORT ses trois volets, puis s'efface ; 19 Go de disque au plus fort. Avec
+  moins de 30 Go libres au lancement, elle ne garde rien et le dit : chaque lecteur retire alors son archive.
+- **Coût attendu.** Environ 27 000 requêtes à 2 par seconde, soit 3 h 45 à elles seules, 42 Go d'archives, et
+  1 h 45 de calcul hors réseau : compter six heures, davantage si la SEC impose des pauses. D-0088, à la main et
+  archives tirées deux ou trois fois, a pris 6 h 38 du premier au dernier tirage, pour 27 375 requêtes et 84 Go.
+- **Après.** La comparaison doit rendre sept tables identiques. Seule `documents`, qui liste le cache, peut
+  différer : les versions des listes de l'API datées d'as_of antérieurs manquent ; les ressources vivantes retirées
+  (listes, pages de recherche) changent d'empreinte ; une ressource tirée jadis hors des étapes manque ; quelques
+  pièces de la découverte gagnent un formulaire et une date (D-0091, points 12 et 13). Tout autre écart s'explique
+  dans la décision en cours avant d'aller plus loin ; les tables de la reconstruction ne se commitent pas. La mise
+  à jour (§ 3) part de cet état.
+
+La commande a été éprouvée deux fois sans réseau (D-0091, point 13) : sur une copie du cache, puis sur un cache
+vidé de ses documents et de ses listes d'API, resservis par un bouchon local (23 622 requêtes). Les deux fois, les
+tables sont revenues à l'identique, `documents` mis à part. Elle ne l'a pas encore été par un tirage réel : les
+ressources vivantes de la SEC (listes de dépôts, recherche plein texte) ont pu changer depuis.
+
+Sans `state/` dans le commit de référence (avant D-0091), la commande marche encore, comme la reconstruction de
+D-0084 et de D-0088 : les deux fichiers faits à la main se reconstituent alors à part (D-0084, point 7 :
+`exhibits_tranche.json` depuis la table `documents`, `usgaap2026_balance.json` depuis `us-gaap-2026.xsd`), et
+`restrict` ramène les listes « au-delà du plafond » des montages à ce que la référence comptait (D-0088, point 25).
+
+Ce qui éviterait de retirer les documents n'est pas dans ce dépôt (D-0091, point 7) : le texte des blocs porte des
+données personnelles, et le cache brut pèse 2,7 Go.
