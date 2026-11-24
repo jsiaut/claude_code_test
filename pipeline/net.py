@@ -11,11 +11,19 @@ Un refus se compte par pause : celui qui arrive pendant une pause déjà ouverte
 (requête partie avant elle, par un autre fil) la prolonge sans compter. Après
 `max_consecutive_403_pauses` pauses sans succès entre elles, le client s'arrête
 pour de bon (D-0088, point 8).
+
+Archives gardées (D-0091, point 4) : avec `PIPELINE_KEEP_ARCHIVES=1`, une ressource
+tirée dans un fichier (archive d'un jeu de données) se garde sous
+`work/tmp/kept_archives/` ; un tirage suivant de la même adresse la reprend, avec
+ses en-têtes, sans requête. La reprise s'écrit au journal sans adresse.
 """
 import datetime as dt
+import hashlib
 import json
 import os
+import pathlib
 import re
+import shutil
 import threading
 import time
 import urllib.parse
@@ -47,6 +55,49 @@ def _utcnow():
     return dt.datetime.now(dt.timezone.utc)
 
 
+KEEP_ENV = "PIPELINE_KEEP_ARCHIVES"
+KEEP_DIR = config.WORK / "tmp" / "kept_archives"
+
+
+def _kept_paths(directory, url):
+    stem = hashlib.sha256(url.encode("utf-8")).hexdigest()[:40]
+    return pathlib.Path(directory) / f"{stem}.bin", pathlib.Path(directory) / f"{stem}.json"
+
+
+def _link_or_copy(src, dst):
+    """Même fichier sous un second nom quand le système le permet, copie sinon."""
+    tmp = pathlib.Path(str(dst) + ".part")
+    if tmp.exists():
+        tmp.unlink()
+    try:
+        os.link(src, tmp)
+    except OSError:
+        shutil.copyfile(src, tmp)
+    os.replace(tmp, dst)
+
+
+def kept_archives(directory=None):
+    """Archives gardées : (adresse, fichier, octets)."""
+    d = pathlib.Path(directory or KEEP_DIR)
+    out = []
+    for meta in sorted(d.glob("*.json")) if d.exists() else []:
+        body = meta.with_suffix(".bin")
+        if body.exists():
+            out.append((json.loads(meta.read_text(encoding="utf-8"))["url"], body, body.stat().st_size))
+    return out
+
+
+def drop_kept(substring="", directory=None):
+    """Efface les archives gardées dont l'adresse contient `substring` (toutes par défaut) ; renvoie leur nombre."""
+    n = 0
+    for url, body, _ in kept_archives(directory):
+        if substring in url:
+            body.unlink()
+            body.with_suffix(".json").unlink()
+            n += 1
+    return n
+
+
 class SecClient:
     def __init__(self, as_of, cfg=None, journal_path=None):
         self.cfg = cfg or config.load()
@@ -70,6 +121,7 @@ class SecClient:
         self.session = requests.Session()
         self.session.headers.update({"Accept-Encoding": "gzip, deflate"})
         self.stats = {"requests": 0, "bytes": 0, "elapsed": 0.0}
+        self.keep_dir = KEEP_DIR if os.environ.get(KEEP_ENV) == "1" else None      # archives gardées (D-0091)
 
     # -- journal -----------------------------------------------------------
     def journal(self, **rec):
@@ -116,6 +168,13 @@ class SecClient:
         host = urllib.parse.urlparse(url).hostname or ""
         is_sec = host in self.sec_hosts
         headers = {"User-Agent": self.ua} if is_sec else {}
+        keep = _kept_paths(self.keep_dir, url) if self.keep_dir and dest is not None and method == "GET" else None
+        if keep and keep[0].exists() and keep[1].exists():
+            # archive déjà tirée par une étape précédente de la reconstruction : reprise sans requête (D-0091)
+            _link_or_copy(keep[0], dest)
+            self.journal(resource=url, host=host, status="reused", bytes=keep[0].stat().st_size,
+                         note="archive gardée, reprise sans requête (D-0091)")
+            return None, requests.structures.CaseInsensitiveDict(json.loads(keep[1].read_text(encoding="utf-8"))["headers"])
         attempt = 0
         transient = 0
         while True:
@@ -170,6 +229,11 @@ class SecClient:
             if status == 200:
                 if is_sec and time.monotonic() >= self._paused_until:      # un succès hors pause clôt l'épisode
                     self._consecutive_403 = 0
+                if keep:
+                    keep[0].parent.mkdir(parents=True, exist_ok=True)
+                    _link_or_copy(dest, keep[0])
+                    keep[1].write_text(json.dumps({"url": url, "headers": dict(resp.headers)}, ensure_ascii=False),
+                                       encoding="utf-8")
                 return (None if dest is not None else body), resp.headers
             if refusal:
                 # 403 ou 429 d'un hôte de la SEC : silence du client entier, puis la même adresse (§9.5, D-0088)

@@ -9,7 +9,7 @@ PY ?= python3
 
 .DEFAULT_GOAL := help
 .PHONY: help phase0 universe index phase1 phase2 catalog read read-check assemble assemble-cold compare render tables \
-	lint test check
+	lint test check state rebuild
 
 help:  ## liste des cibles
 	@grep -E '^[a-z0-9-]+:.*## ' $(MAKEFILE_LIST) | sed -E 's/:.*## /\t/' | expand -t 16
@@ -47,6 +47,12 @@ assemble-cold:  ## les huit tables, tout recalculé : mêmes tables à l'octet p
 
 compare:  ## tables/ contre celles d'un commit, clé par clé (REF=HEAD par défaut), entre assemble et render
 	$(PY) -m pipeline.compare $(REF)
+
+state:  ## state/ écrit depuis db/ après un assemblage : files, manifestes et listes, sans texte de dépôt (D-0091)
+	$(PY) -m pipeline.state save
+
+rebuild:  ## réseau : reconstruction d'un conteneur neuf en une commande, REF=<commit des tables> (RUNBOOK.md, § 6)
+	$(PY) -m pipeline.rebuild $(REF)
 
 render:  ## synthesis.md, series.md, delta.md et audit/
 	$(PY) -m pipeline.render $(AS_OF)

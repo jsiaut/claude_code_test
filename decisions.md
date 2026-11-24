@@ -5849,7 +5849,8 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - La reconstruction de D-0088 s'est faite à la main : 75 commandes en onze scripts, trois reprises, deux fichiers reconstitués à part.
 
   (3) Règles, état versionné (`state/`) :
-  - `state/` ne porte aucun texte de dépôt : ni texte de bloc, ni titre, ni dénomination. Un test le vérifie sur une liste fermée de champs.
+  - `state/` ne porte aucun texte de dépôt : ni texte de bloc, ni titre de note ou de pièce. Un test le vérifie sur une liste fermée de champs.
+    - Précision avant le code : les listes des montages et les candidats gardent la dénomination du déposant, telle qu'au registre d'EDGAR et que la table des entités la publie déjà. Les 3 443 dénominations présentes sont celles de sociétés et de fonds, aucune d'une personne physique ; les manifestes des catalogues n'en portent pas.
     - les deux fichiers faits à la main, tels quels : `exhibits_tranche.json` et `usgaap2026_balance.json` ;
     - le manifeste de chacun des cinq catalogues préparés (montages, 6-K, SoftBank, découverte, piste), dans l'ordre du catalogue : clé de contenu, type de bloc, dépôt, document, type de pièce, montage, fenêtre, rang, longueur, date et groupe ;
     - les listes des montages (`montages_info*.json`) ;
