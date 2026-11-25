@@ -5985,3 +5985,33 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Mode d'emploi : `RUNBOOK.md`, § 4 (une clé est de la période nouvelle par son dernier dépôt ; règle du premier dépôt) et § 6 (reconstruction contre un commit antérieur).
   - Tests : 618, dont 11 pour cette décision ; un test de D-0088 suit la règle nouvelle.
   - Restes : ceux du point 6.
+
+- **D-0093 — Mise à jour du modèle à l'as_of du 2026-11-25. Règles fixées avant tout tirage.**
+  (1) Origine : demande de l'utilisateur, le 2026-11-25, de mettre le dépôt à jour à la date du jour. Le dépôt privé du cache, proposé après D-0092, est remis à plus tard (« On verra plus tard »).
+  - C'est la septième mise à jour (§11.5), après D-0074, D-0077, D-0083, D-0084, D-0085 et D-0088. C'est la première depuis qu'Anthropic est un groupe (D-0090), que l'état est versionné (D-0091) et qu'un texte repris se rattache à son premier dépôt (D-0092).
+  - Lecture séquentielle par l'exécutant, sans sous-agent. Ni groupe, ni bloc de §14, ni critère des annexes E et F, ni seuil, ni lexique, ni règle de lecture ne change. Ni pull request ni tâche planifiée.
+
+  (2) Constat, sans tirage (2026-11-25, 12:37 UTC) :
+  - Le conteneur est celui de D-0088 à D-0092 : `db/` (2,2 Go) et `cache/` (2,7 Go) sont là, `state/` les décrit, dépendances, crochet et User-Agent sont en place. Rien à reconstruire.
+  - Référence : les tables de `4e871b8` (D-0092) ; celles de la tête `fc5b3af` sont les mêmes. Catalogue : 13 911 blocs, 12 797 clés lues, file de lecture vide.
+  - Journal : 83 778 lignes. Dernière requête le 2026-11-24 à 10:19 UTC (D-0090). Depuis le 24 à 00:30 : 617 succès, un seul 429, suivi de sa pause.
+  - Le 25 novembre 2026 est un mercredi, veille de Thanksgiving. Il est 07:37 à New York : la journée de dépôt du 25 commence à peine.
+  - Deux tests de D-0091 lient l'état versionné à l'as_of de la configuration. Pendant une mise à jour, la configuration précède les tables et l'état jusqu'au réassemblage : ces tests refuseraient le commit de la configuration, que la méthode place avant tout tirage.
+
+  (3) Règles : celles de D-0085 (point 3) et de D-0088 (point 12), à l'as_of du 2026-11-25.
+  - Configuration : `as_of: "2026-11-25"`, et `as_of_previous` augmenté du 2026-11-23. `search_overlap_from` reste au 2026-10-27 : la fenêtre nouvelle d'une recherche va du 2026-11-23 au 2026-11-25.
+  - Tirage le jour même de l'as_of, comme à D-0077. Les dépôts du 25 acceptés après le tirage manquent à cette exécution ; la suivante les rattrape, la phase 0 par ses listes, les recherches par la reprise du jour (D-0083, point 5). L'heure de chaque tirage se consigne ici.
+  - Mode ordinaire : l'état laissé par D-0088 à D-0092 tient lieu d'exécution précédente. Catalogues préparés et files se copient une fois sous `{nom}.2026-11-23` avant leur première réécriture ; seuls s'y ajoutent les blocs et les unités de la période nouvelle.
+  - Têtes à document d'enregistrement (Nscale, Anthropic), avant les phases : leurs submissions se tirent. Un amendement de S-1, un avis de prise d'effet, un 424B4 ou un premier rapport périodique se traite par une règle fixée ici avant toute lecture. Anthropic est un groupe depuis D-0090 : ses 8-K et ses rapports périodiques viennent par le tronc.
+  - Le reste suit D-0085 (point 3) et le § 3 de `RUNBOOK.md` :
+    - ordre : phases 0 à 2 et catalogues des groupes ; lecture des groupes ; blocs de §14 dans l'ordre de D-0074 ; montages, un par un dans l'ordre de la configuration, préparés après la lecture du texte des groupes ; lecture de §14 ;
+    - réseau : une commande à la fois, 2 requêtes par seconde au plus, pause du client après un refus 403 ou 429, arrêt après trois pauses sans succès (D-0088, point 8) ;
+    - archives nouvelles des jeux de données, s'il y en a : tirées et traitées comme les autres ;
+    - volumes consignés ici avant toute lecture ; ne se lisent que les blocs tirés de dépôts de la période nouvelle, du plus récent au plus ancien ; un texte repris se sert par son premier dépôt (D-0092) ;
+    - lecture sous les gardes de D-0087 : passe ouverte par `reader open-pass`, listes `upd_20261125_groups` et `upd_20261125_s14`, `make read-check` avant le réassemblage.
+  - Comparaison : `make compare` contre `4e871b8`, chaque écart expliqué ici ; `delta.md` s'y compare aussi. `make state` avant le commit des tables (D-0091).
+  - Tests de l'état versionné, règle fixée avant leur changement : l'état décrit les tables commitées, et son as_of est le leur, lu dans la table des exclusions. Le test qui compare `state/` à `db/` ne vaut que lorsque les tables sont à l'as_of de la configuration ; pendant une mise à jour, il se saute et le dit.
+
+  (4) Identité : le User-Agent de l'environnement, le même depuis D-0087, sert seul pendant toute l'exécution. Sa valeur ne s'écrit pas dans le dépôt.
+
+  (5) Ordre et commits : la décision ; les deux tests, la configuration et le retrait des listes de lecture de l'exécution précédente ; les têtes à document d'enregistrement ; le tronc ; la lecture des groupes ; les blocs de §14, chacun avec ses requêtes et ses volumes consignés ici avant toute lecture ; les montages ; la lecture de §14 ; l'intégration (contrôles, entités par extrait, réassemblage, comparaison, rendus, état, résultats ici) ; `make check`, commit, push ; rapport.
