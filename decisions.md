@@ -6015,3 +6015,17 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   (4) Identité : le User-Agent de l'environnement, le même depuis D-0087, sert seul pendant toute l'exécution. Sa valeur ne s'écrit pas dans le dépôt.
 
   (5) Ordre et commits : la décision ; les deux tests, la configuration et le retrait des listes de lecture de l'exécution précédente ; les têtes à document d'enregistrement ; le tronc ; la lecture des groupes ; les blocs de §14, chacun avec ses requêtes et ses volumes consignés ici avant toute lecture ; les montages ; la lecture de §14 ; l'intégration (contrôles, entités par extrait, réassemblage, comparaison, rendus, état, résultats ici) ; `make check`, commit, push ; rapport.
+
+  (6) Têtes à document d'enregistrement, phases 0 à 2 et catalogues des groupes, avant toute lecture (2026-11-25, 13:12 UTC) :
+  - Réseau, de 12:42 à 12:58 UTC : 118 requêtes. Têtes 2, phase 0 62, index 7, phase 1 38, phase 2 9, catalogues 0.
+    - Un refus : la première requête de la phase 2, à 12:48:04, reçoit un 429 (« Request Rate Threshold Exceeded »). Le client se tait dix minutes, redemande la même adresse et l'obtient ; la phase finit sans échec. Les 109 requêtes d'avant étaient passées à 2 par seconde au plus.
+  - Têtes : ni Nscale ni Anthropic n'ont déposé depuis le 23. Aucune règle à fixer.
+  - Inventaire : 31 245 → 31 271 dépôts. Les 26 nouveaux : un formulaire 4 d'Alphabet daté du 23 et accepté le 24 à 02:07 UTC, après le tirage de D-0088 ; 22 dépôts du 24 ; 3 du 25, le dernier accepté à 12:27 UTC. Aucun ne sort.
+    - 8-K du 24 : Applied Digital (items 1.01, 3.02, 7.01, 9.01), Dell (résultats, items 2.02 et 9.01), Alphabet (items 8.01 et 9.01).
+    - Micron, le 24 : circulaire (DEF 14A), complément (DEFA14A), rapport annuel aux actionnaires (ARS).
+    - TSMC, le 25 : deux 6-K, traités par le bloc 6-K de §14.
+    - Le reste : 17 formulaires 4 et un formulaire 144. Aucun rapport périodique.
+  - Univers attendu : 25 776 cellules, inchangé. Index : 2 284 → 2 287 dépôts, aucun échec ; l'index du 8-K de Meta du 23, absent à D-0088 et à D-0090, répond cette fois. Phase 1 : 808 dépôts lus, les 7 échecs connus. Phase 2 : 2 395 documents, aucun échec.
+  - Catalogues, sans requête : aucune clé lue ne disparaît. Tranche : 4 412 → 4 425 clés ; bloc `text` : 4 545 clés, inchangé.
+  - À lire : 8 blocs, 17 721 caractères, tous du 24. Alphabet : item 8.01 et quatre en-têtes de pièces EX-4. Applied Digital : item 1.01 et un en-tête d'EX-10.1. Micron : Item 404 de la circulaire. Liste `upd_20261125_groups`.
+  - Après la lecture de son en-tête, le corps de l'EX-10.1 d'Applied Digital entre dans la file au titre du bloc `text` (pièce entre le groupe et des établissements financiers) : 1 bloc de plus, 4 983 caractères, ajouté à la liste avant sa lecture.
