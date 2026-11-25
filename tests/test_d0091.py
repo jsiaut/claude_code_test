@@ -97,6 +97,11 @@ class KeptArchives(unittest.TestCase):
 
 # -- état versionné (point 3) -----------------------------------------------------------------------------------------
 
+def _tables_as_of():
+    """As_of des tables commitées, lu dans la table des exclusions, dont chaque ligne le porte."""
+    return str(pd.read_parquet(config.ROOT / "tables" / "exclusions.parquet", columns=["as_of"])["as_of"].max())[:10]
+
+
 def _block(key, **more):
     return {"content_key": key, "block_kind": "montage_text", "accession": "0000000001-26-000001", "document": "a.htm",
             "text": "Texte du dépôt, M. Untel compris.", "note_label": "Titre de note", "filer_name": "SOCIETE X",
@@ -202,7 +207,7 @@ class VersionedState(unittest.TestCase):
         # l'état versionné du dépôt : présent, à l'as_of de la configuration, sans champ hors de la liste fermée
         self.assertTrue(state.present())
         head = json.loads((state.STATE / "STATE.json").read_text(encoding="utf-8"))
-        self.assertEqual(head["as_of"], config.as_of())
+        self.assertEqual(head["as_of"], _tables_as_of())             # l'as_of des tables, pas celui d'une mise à jour en cours
         self.assertEqual(state.manifest_fields(), state.MANIFEST_FIELDS)
         for name, rows in state.manifests().items():
             self.assertTrue(rows, name)
@@ -218,7 +223,10 @@ class VersionedState(unittest.TestCase):
 
     @unittest.skipUnless((config.DB_DIR / "phase0.json").exists(), "db/ absent : conteneur neuf")
     def test_state_is_saved_with_the_tables(self):
-        # là où db/ existe, state/ le décrit : `make state` avant de commiter des tables
+        # là où db/ existe, state/ le décrit : `make state` avant de commiter des tables. Pendant une mise à jour, la
+        # configuration précède les tables et db/ change sans elles : le test attend le réassemblage (D-0093, point 3)
+        if _tables_as_of() != config.as_of():
+            self.skipTest("mise à jour en cours : les tables ne sont pas encore à l'as_of de la configuration")
         self.assertEqual(state.check(), [])
 
 
