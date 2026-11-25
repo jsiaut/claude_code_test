@@ -6029,3 +6029,29 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Catalogues, sans requête : aucune clé lue ne disparaît. Tranche : 4 412 → 4 425 clés ; bloc `text` : 4 545 clés, inchangé.
   - À lire : 8 blocs, 17 721 caractères, tous du 24. Alphabet : item 8.01 et quatre en-têtes de pièces EX-4. Applied Digital : item 1.01 et un en-tête d'EX-10.1. Micron : Item 404 de la circulaire. Liste `upd_20261125_groups`.
   - Après la lecture de son en-tête, le corps de l'EX-10.1 d'Applied Digital entre dans la file au titre du bloc `text` (pièce entre le groupe et des établissements financiers) : 1 bloc de plus, 4 983 caractères, ajouté à la liste avant sa lecture.
+
+  (7) Lecture des groupes, bloc des BDC, et volume de ses annonces avant leur lecture (2026-11-25, 13:39 UTC) :
+  - Lecture des groupes : 9 blocs, 22 704 caractères, 16 lignes dont 2 abstentions, sans rejet ni alerte.
+    - Alphabet a clos le 24 novembre une émission de 6 milliards de dollars canadiens d'obligations en quatre séries, de 2029 à 2066. Les quatre titres globaux sont au nom du prête-nom du dépositaire canadien : leurs corps s'arrêtent à l'en-tête.
+    - Applied Digital porte de 2,0 à 2,5 milliards de dollars le plafond de son contrat d'achat d'actions de préférence de série G, par une lettre d'accord du 24 novembre avec trois entités de B. Riley ; 1 035 millions restent à tirer. Le corps de la lettre répète son en-tête : abstention.
+    - Micron : la circulaire ne déclare aucune transaction avec une personne liée.
+  - BDC, de 13:19 à 13:37 UTC : 220 requêtes, toutes abouties.
+    - Aucune archive nouvelle : 23 sur la page, aucune tirée. Positions : 749 499, de 199 BDC et 2 103 dépôts, inchangées. Passif : 2 401 dépôts, 210 véhicules, inchangé.
+    - Faits des archives : 3 483 402, contre 3 482 336 à D-0088, sans archive nouvelle. Les 1 066 faits de plus sont ceux que l'épreuve de D-0091 avait déjà trouvés en recalculant (point 12 de D-0091) ; ils ne touchaient alors aucune table. À vérifier à la comparaison.
+    - Inventaire des véhicules : 65 006 → 65 048 dépôts. Documents d'offres : 1 432 → 1 435, 3 tirés, aucun manquant.
+    - Offres de rachat : 735 → 737 offres classées. Deux SC TO-I du 24 novembre, sans résultat encore : Goldman Sachs Private Credit Corp. et Fortress Private Lending Fund.
+    - Relevés : 618 → 619, `finalize` sans erreur. Le relevé nouveau, vérifié sur l'amendement final du 24 novembre : Kennedy Lewis Capital Company, offre du 31 août sur 5,0 % des parts au plus ; 83 302 parts apportées, toutes rachetées. Aucun relevé ancien ne change.
+  - Annonces à lire : 42 → 44 unités. Les deux nouvelles sont les points mensuels du 24 novembre de Blue Owl Technology Income Corp. et de Blue Owl Credit Income Corp., 4 538 caractères en tout.
+
+  (8) Blocs de §14 et montages, avant toute lecture de §14 (2026-11-25, 14:30 UTC) :
+  - Annonces des BDC : les 2 unités lues, sans événement (points mensuels au 31 octobre, levier et liquidité). `check-announce` : aucune erreur.
+  - Réseau, de 13:39 à 14:09 UTC : 268 requêtes. Avec le tronc et les BDC, 606 à cet as_of : 578 abouties, le refus 429 du point 6, et 27 réponses 500 de la recherche plein texte.
+    - Découverte, 86 requêtes dont 21 réponses 500. La commande de recherche s'arrête une fois, à 13:41, après quatre 500 de suite sur une même requête : erreur de serveur, pas un refus. Relancée telle quelle trente secondes plus tard, elle finit ; les pages déjà au cache ne se retirent pas.
+    - Piste des non-déposants, 68 requêtes, dont une réponse 500 redemandée. Montages, 56 requêtes, dont cinq réponses 500 redemandées.
+    - Form D 5, 6-K de TSMC 5, listes de SoftBank 42, page N-PORT 1, participations 9.
+  - Découverte : aucune archive nouvelle des Notes. Recherche sur la fenêtre du 23 au 25 : 9 559 → 9 563 résultats ; 3 pièces tirées ; candidats 3 091 → 3 092 ; file 19 116 → 19 119 unités. Aucune unité nouvelle dans la frontière de D-0041, aucune unité prioritaire de D-0086 : le catalogue garde ses 769 blocs.
+  - Piste : recherche, candidats (388), file et unités propres inchangés ; le catalogue garde ses 777 blocs.
+  - Form D : 969 lignes, inchangé ; Anthropic, devenue groupe, sort des CIK suivis à part. Étrangers : rien de nouveau. 6-K : les deux dépôts de TSMC du 25 (ajustement de dividende, rapport de fin de mois) ne portent aucune fenêtre ; 572 blocs. SoftBank : aucun dépôt nouveau à lire ; 594 blocs. N-PORT : 28 archives, aucune nouvelle. Participations : 129 dépôts au plan, aucun nouveau.
+  - Montages, préparés après la lecture des groupes (15 minutes) : 1 861 → 1 862 blocs. Le bloc nouveau vient d'une pièce d'un 8-K de Workday du 24 novembre, tirée par la recherche d'`anthropic_chain`.
+    - Depuis D-0090, les dépôts d'Anthropic sont ceux d'un groupe : les corpus les voient (4 590 → 4 622 documents, 177 → 209 qui nomment un laboratoire). Leurs fenêtres n'entrent pas au catalogue : elles viennent de dépôts antérieurs à la période (D-0074, point 3), et ces textes se lisent déjà comme textes propres d'Anthropic. Les listes des montages ne changent que par leurs compteurs.
+  - À lire : 1 bloc, 873 caractères. Liste `upd_20261125_s14`.
