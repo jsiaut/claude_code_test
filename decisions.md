@@ -6055,3 +6055,30 @@ Ce fichier ne va pas à l'auditeur (§12.2).
   - Montages, préparés après la lecture des groupes (15 minutes) : 1 861 → 1 862 blocs. Le bloc nouveau vient d'une pièce d'un 8-K de Workday du 24 novembre, tirée par la recherche d'`anthropic_chain`.
     - Depuis D-0090, les dépôts d'Anthropic sont ceux d'un groupe : les corpus les voient (4 590 → 4 622 documents, 177 → 209 qui nomment un laboratoire). Leurs fenêtres n'entrent pas au catalogue : elles viennent de dépôts antérieurs à la période (D-0074, point 3), et ces textes se lisent déjà comme textes propres d'Anthropic. Les listes des montages ne changent que par leurs compteurs.
   - À lire : 1 bloc, 873 caractères. Liste `upd_20261125_s14`.
+
+  (9) Intégration et résultats (2026-11-25, 14:53 UTC) :
+  - Lecture de §14 : 1 bloc, une abstention. Le communiqué de résultats de Workday annonce un partenariat avec Anthropic, alliance de produits sans engagement ni montant, non codée comme les précédentes (D-0083, point 9).
+  - Lecture de cet as_of, par l'exécutant seul : 10 blocs, 23 577 caractères, 17 lignes dont 3 abstentions ; plus les 2 annonces de BDC. `make read-check` : aucune erreur, aucune alerte. Aucune ligne ne cite les personnes que nomment les textes (destinataires et signataires de la lettre d'Applied Digital).
+  - Entités par extrait : aucune. Les trois entités de B. Riley et le prête-nom du dépositaire canadien restent sous leur nom, sans rattachement.
+  - Réassemblage (622 s). Tables : documents 28 866, faits 1 631 772, observations 33 613, entités 3 753, liens 12 326, mesures 203 821, contrôles 73 044, exclusions 31 564.
+  - Comparaison à `4e871b8` (`make compare`, puis clé par clé, l'as_of de chaque exécution se lisant comme un seul « run » pour les mesures et les contrôles). Tout vient de la période :
+    - documents +575 : listes de dépôts de l'API 327, pages de recherche et des jeux de données 177, companyfacts 38, documents et pièces 20, index 7, en-têtes 5, liste des tickers 1. À clé égale, seule la date de tirage change ;
+    - faits +40 : montants de rémunération et de rendement de la circulaire de Micron (taxonomie `ecd`, 8 concepts sur 5 exercices), comme les 3 985 faits de même nature déjà chargés pour 32 groupes ; aucun nom ;
+    - observations +17 : les lignes de cet as_of ;
+    - entités, 1 changée : l'ancien nom « Applied Digital Corp. » court jusqu'au 2026-11-24, contre le 2026-11-20 ;
+    - liens +3 : les arêtes de financement, sans montant, des trois entités de B. Riley vers Applied Digital, à la date de la lettre. L'émission d'Alphabet et le plafond du contrat, à contrepartie anonyme, ne font pas de lien ;
+    - mesures +10, −3, 4 changées :
+      - offres de rachat (D-0047). Kennedy Lewis Capital Company : le résultat de l'offre du 31 août donne un taux d'acceptation de 1,0 et un événement F15 écarté ; ses trois cellules « non publié » disparaissent. Goldman Sachs Private Credit Corp. et Fortress Private Lending Fund : offres du 24 novembre, cellules indéterminées tant que l'offre court. Pour Goldman Sachs, la fenêtre F16 qui courait jusqu'au 23 décembre se ferme sans événement, une offre nouvelle étant venue, et une autre s'ouvre ;
+      - `ownership_undocumented` : trois cellules d'Alphabet ne changent que par le rang de leur candidat à la découverte, décalé d'un cran par le candidat nouveau ;
+    - contrôles : identiques ;
+    - exclusions +9 : les 4 corps des titres d'Alphabet, arrêtés à leur en-tête ; 3 en-têtes de pièces de la découverte non encore préparés ; les 2 dépôts 6-K de TSMC sans paragraphe du lexique. 9 libellés changent : compteurs des relevés de portefeuille que trouvent les recherches des montages (NPORT-P : 10 787 → 12 140 et 5 120 → 5 678).
+  - Vérifié, comme annoncé au point 7 : les 1 066 faits de BDC de plus ne touchent aucune table.
+  - Connaissance : aucun dépôt daté après le 2026-11-25. Le dernier dépôt connu a été accepté le 25 à 12:27 UTC ; ceux du 25 acceptés après les tirages (12:42 à 14:09 UTC) manquent à cette exécution, et la suivante les rattrape (D-0083, point 5).
+  - `delta.md` : aucun arrêt (aucun refus 403 ; 253 réponses 429 au journal entier, la dernière requête a abouti) ; aucun événement de l'annexe F n'apparaît ni ne disparaît ; 3 arêtes de relation apparues ; 8 dépôts lus pour la première fois. Il nomme `92b233a`, dernier commit de la table des mesures : D-0092 n'ayant changé que des observations et un lien, le delta est le même que contre `4e871b8`.
+  - Rendus : `synthesis.md`, `series.md`, `delta.md` et `audit/` ; 32 230 nombres publiés.
+  - État : `make state`, à l'as_of du 2026-11-25. 13 fichiers changent : un bloc au manifeste des montages, les files et les candidats de la découverte, les compteurs des listes.
+  - Réseau, de 12:42 à 14:09 UTC : 606 requêtes (data.sec.gov 365, efts.sec.gov 203, www.sec.gov 38), 154 Mo ; 578 succès, 1 réponse 429 suivie de sa pause de 600 s, 27 réponses 500 de la recherche plein texte, redemandées ; aucun 403.
+  - L'index du 8-K de Meta du 23 novembre, reste de D-0088 et de D-0090, est obtenu.
+  - Contrôles : `make check`, 618 tests, ruff sans constat ; `make read-check` sans erreur ni alerte ; `python3 -m pipeline.state check` à jour.
+  - Durée : de 12:37 à 14:53 UTC.
+  - Restent, hors de cette exécution : les dépôts du 25 novembre acceptés après les tirages ; le dépôt privé du cache, que l'utilisateur a remis à plus tard ; les restes de D-0092 (point 6).

@@ -1,6 +1,6 @@
 # Note de synthèse — fragilité financière de la chaîne IA
 
-*Exécution du 2026-11-23 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs`, `ownership` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
+*Exécution du 2026-11-25 · spec v6.14 · périmètre : premier passage, blocs `lender`, `text`, `discovery`, `paths`, `form_d`, `foreign`, `lender_portfolio`, `montages`, `lender_liabilities`, `nport`, `labs`, `ownership` de §14 · rendu généré depuis les tables `measures`, `controls` et `exclusions`, jamais édité à la main.*
 
 ## En tête
 
@@ -19,9 +19,9 @@
 - **Contrôles comptables, vue `as_known`** : `mismatch` 1 651, `not_testable` 1 221, `ok` 31 671, `tautological` 1 452 (un contrôle `tautological` n'est jamais compté comme réussi ; un `mismatch` est un résultat publié, avec son code d'explication, dans `controls`).
 - **Contrôles comptables, vue `revised`** : `mismatch` 2 902, `not_testable` 1 666, `ok` 31 029, `tautological` 1 452.
   Par contrôle (`mismatch` sur total, vue `as_known`) : C10 211/906, C11 103/859, C12 324/2 107, C13 0/370, C14 87/1 232, C15 146/877, C16 2/533, C1 295/15 905, C2 169/9 439, C3 221/658, C5 0/274, C6 0/1 452, C7 10/549, C8 77/209, C9 6/625.
-- **Exclusions principales** : `not_processed` 27 500, `pending_entity` 1 973, `out_of_scope` 1 312, `financial_parties_only` 375, `conflicting` 266, `invalid_aggregate` 53, `parse_failed` 32, `submitted_draft` 30, `history_left_censored` 12, `not_public` 2.
+- **Exclusions principales** : `not_processed` 27 503, `pending_entity` 1 973, `out_of_scope` 1 314, `financial_parties_only` 379, `conflicting` 266, `invalid_aggregate` 53, `parse_failed` 32, `submitted_draft` 30, `history_left_censored` 12, `not_public` 2.
 - **Doublons de clé primaire écartés à l'assemblage** (une ligne gardée par clé, la dernière ; D-0069, point 9) : `entities` 1, dont 1 clé(s) en collision, `exclusions` 2, dont 0 clé(s) en collision, `measures` 712, dont 249 clé(s) en collision.
-- **Arrêt (§11.4)** : aucun ; refus 403 de la SEC au journal : 0, réponses 429 de la SEC : 252, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 0 sur 32 ; périodes en échec : 21 sur 934.
+- **Arrêt (§11.4)** : aucun ; refus 403 de la SEC au journal : 0, réponses 429 de la SEC : 253, et la dernière requête a abouti ; groupes dont plus de la moitié des périodes testées sont en échec (contrôles non provisoires, vue `as_known`, `mismatch` plus nombreux que `ok`) : 0 sur 32 ; périodes en échec : 21 sur 934.
 
 ## Événements (annexe F)
 
@@ -658,8 +658,8 @@ Chaque événement est un observable daté, avec sa pièce ; aucune somme, aucun
 - F12 : calculée / événement 221 ; calculée / sans événement 564 ; indéterminée 1 309
 - F13 : indéterminée 2 094
 - F14 : calculée / événement 182 ; calculée / sans événement 524 ; indéterminée 1 680
-- F15 : calculée / événement 90 ; calculée / sans événement 506 ; indéterminée 58
-- F16 : calculée / événement 6 ; calculée / sans événement 448 ; indéterminée 45
+- F15 : calculée / événement 90 ; calculée / sans événement 507 ; indéterminée 59
+- F16 : calculée / événement 6 ; calculée / sans événement 449 ; indéterminée 45
 
 ## Fragilité, par groupe
 
@@ -4849,7 +4849,7 @@ Le bulletin appelle circulaire une relation d'investissement entre deux sociét�
 
 | Fenêtre | Relations d'investissement | Circulaires | Type 1 | Type 2 | Type 3 | Financement seul |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| arêtes connues au 2026-11-23 | 35 | 18 | 7 | 4 | 7 | 17 |
+| arêtes connues au 2026-11-25 | 35 | 18 | 7 | 4 | 7 | 17 |
 | du 2021-01-01 au 2025-12-31 | 20 | 7 | 2 | 4 | 1 | 13 |
 
 Relations circulaires, arêtes connues à l'as_of :
@@ -5438,7 +5438,7 @@ Exclusions du bloc : `invalid_aggregate` 21, `parse_failed` 16 (lignes « Total 
 Mêmes véhicules que le bloc `lender_portfolio`, sans sélection ni somme entre véhicules. Le ratio de couverture est celui que publie le véhicule (loi de 1940 : actif net plus dette de premier rang, sur cette dette) ; dette ÷ actif net s'en déduit, et passif total ÷ actif net le majore. Les offres de rachat sont les SC TO-I des véhicules non cotés : parts apportées, parts acceptées et plafond de l'offre se lisent dans l'amendement final. Événements fixés avant tout calcul : F14 (couverture en baisse deux trimestres de suite), F15 (offre réduite au prorata), F16 (interruption d'un programme régulier d'offres). Les demandes ne disent pas qui demande.
 
 - Bilans : 210 véhicules, 2 386 couples véhicule × date. Couverture publiée et retenue 892 fois ; non balisée 1 447 ; contraire à l'identité du bilan, souvent le seuil légal balisé à la place du ratio, 43 ; hors échelle 4. Passif ÷ actif net calculé 2 277 fois.
-- Offres de rachat de parts dans la fenêtre : 654, chez 69 véhicules. F15 tranché : 596 ; réduites au prorata 90 ; encore ouvertes à `as_of` 30 ; résultat non publié 28 (dont les parts acceptées non chiffrées).
+- Offres de rachat de parts dans la fenêtre : 656, chez 69 véhicules. F15 tranché : 597 ; réduites au prorata 90 ; encore ouvertes à `as_of` 32 ; résultat non publié 27 (dont les parts acceptées non chiffrées).
 
 **Levier des véhicules Blue Owl**
 
@@ -5511,8 +5511,8 @@ Quartiles de l'univers par date de bilan (premier quartile / médiane / troisiè
 | 2025 T4 | 49 | 48 | 3 | 0,32 (41 offres) | 3 |
 | 2026 T1 | 51 | 50 | 11 | 0,58 (39 offres) | 8 |
 | 2026 T2 | 51 | 50 | 18 | 0,64 (36 offres) | 13 |
-| 2026 T3 | 59 | 54 | 12 | 0,41 (39 offres) | 7 |
-| 2026 T4 | 44 | 13 | 1 | 0,42 (8 offres) | 0 |
+| 2026 T3 | 58 | 54 | 12 | 0,41 (39 offres) | 7 |
+| 2026 T4 | 47 | 14 | 1 | 0,42 (8 offres) | 0 |
 
 La demande rapporte les parts apportées au plafond de l'offre (en général 5 % des parts) ; elle n'est calculée que si l'amendement ou l'offre donne ce plafond dans la même unité.
 
@@ -5580,7 +5580,7 @@ La demande rapporte les parts apportées au plafond de l'offre (en général 5 %
 
 **F16, interruptions d'un programme régulier d'offres**
 
-- Cellules : 6 événements, 448 sans événement, 45 dont les 120 jours ne sont pas écoulés.
+- Cellules : 6 événements, 449 sans événement, 45 dont les 120 jours ne sont pas écoulés.
 - Audax Credit BDC Inc. : dernière offre le 2023-07-12, aucune dans les 120 jours (événement daté du 2023-11-09). Aucun 8-K lu n'en donne la cause.
 - MSC INCOME FUND, INC. : dernière offre le 2024-09-26, aucune dans les 120 jours (événement daté du 2025-01-24). 8-K lus : suspension des rachats (2024-11-14 : suspension des rachats en vue d'une cotation).
 - Blue Owl Capital Corp II : dernière offre le 2025-08-18, aucune dans les 120 jours (événement daté du 2025-12-16). 8-K lus : fusion abandonnée (2025-11-19 : fusion avec Blue Owl Capital Corporation abandonnée le 18 novembre 2025) ; accord de fusion (2025-11-05 : accord de fusion avec Blue Owl Capital Corporation (cotée), 5 novembre 2025) ; accord de fusion (2025-11-05 : communiqué de l'accord de fusion) ; suspension des rachats (2025-11-05 : plus d'offre de rachat avant la fusion).
@@ -5646,8 +5646,8 @@ Positions : 31, dont 4 chez un candidat de la découverte dont des unités nomme
 | --- | --- | --- | ---: | ---: | --- |
 | Alphabet | ARM HOLDINGS PLC (SoftBank) | 2026-09-30 | 1 960 784 | 568,0 M$ | — |
 | Alphabet | REVOLUTION MEDICINES INC | 2026-09-30 | 2 673 909 | 548,8 M$ | — |
-| Alphabet | QUALCOMM INC (QUALCOMM INC/DE) | 2026-09-30 | 2 976 982 | 547,9 M$ | 2 244 ; 0 (0) |
-| Alphabet | FRESHWORKS INC | 2026-09-30 | 14 336 643 | 183,4 M$ | 2 578 ; 0 (0) |
+| Alphabet | QUALCOMM INC (QUALCOMM INC/DE) | 2026-09-30 | 2 976 982 | 547,9 M$ | 2 245 ; 0 (0) |
+| Alphabet | FRESHWORKS INC | 2026-09-30 | 14 336 643 | 183,4 M$ | 2 579 ; 0 (0) |
 | Alphabet | PARABILIS MEDICINES INC | 2026-09-30 | 4 919 498 | 158,9 M$ | — |
 | Alphabet | UIPATH INC (UiPath, Inc.) | 2026-09-30 | 7 034 337 | 90,3 M$ | 240 ; 1 (0) |
 | Alphabet | NEUTRON HOLDINGS INC | 2026-09-30 | 1 898 948 | 53,5 M$ | — |
@@ -5656,7 +5656,7 @@ Positions : 31, dont 4 chez un candidat de la découverte dont des unités nomme
 | Alphabet | MAZE THERAPEUTICS INC | 2026-09-30 | 1 388 583 | 37,7 M$ | — |
 | Alphabet | FREENOME INC | 2026-09-30 | 2 022 131 | 31,8 M$ | — |
 | Alphabet | RELAY THERAPEUTICS INC (Relay Therapeutics, Inc.) | 2026-09-30 | 1 410 029 | 25,5 M$ | — |
-| Alphabet | FERVO ENERGY CO | 2026-09-30 | 1 760 732 | 23,9 M$ | 1 908 ; 0 (0) |
+| Alphabet | FERVO ENERGY CO | 2026-09-30 | 1 760 732 | 23,9 M$ | 1 909 ; 0 (0) |
 | Alphabet | ETHOS TECHNOLOGIES INC (Ethos Technologies Inc.) | 2026-09-30 | 571 907 | 19,2 M$ | — |
 | Alphabet | OBSIDIAN THERAPEUTICS INC | 2026-09-30 | 1 224 869 | 16,8 M$ | — |
 | Alphabet | OSCAR HEALTH INC (OSCAR HEALTH, INC.) | 2026-09-30 | 481 988 | 14,9 M$ | 84 ; 2 (0) |
@@ -6693,5 +6693,5 @@ Premier passage : aucune exécution antérieure à laquelle comparer. Les série
 
 ## Ce qui n'a pas pu être établi
 
-Cellules indéterminées en vue `as_known`, par motif : non balisé 16 149, concept non résolu 9 771, non publié 7 809, terme manquant 6 936, historique tronqué 4 702, période antérieure absente 1 836, annuel seulement 1 230, précondition non remplie 1 075, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 069, recherche incomplète 577, dénominateur négatif ou nul 493, client anonyme 289, caviardé 248, non collecté 152, période non écoulée à la date de coupure 135, frontière de retraitement 104, intervalle à cheval sur le seuil 87, faits en conflit 86, date manquante 31, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
+Cellules indéterminées en vue `as_known`, par motif : non balisé 16 149, concept non résolu 9 771, non publié 7 806, terme manquant 6 936, historique tronqué 4 702, période antérieure absente 1 836, annuel seulement 1 230, précondition non remplie 1 076, non traité (unité de la découverte non encore lue, ou bloc de §14 fermé) 1 069, recherche incomplète 577, dénominateur négatif ou nul 493, client anonyme 289, caviardé 248, non collecté 152, période non écoulée à la date de coupure 141, frontière de retraitement 104, intervalle à cheval sur le seuil 87, faits en conflit 86, date manquante 31, dénominateur sous le seuil 10, lecture impossible 8, entité non confirmée 2.
 

@@ -1,6 +1,6 @@
 # series.md — vue temporelle
 
-*Exécution du 2026-11-23. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
+*Exécution du 2026-11-25. Mesures de rang 1 par groupe et par trimestre, vue `as_known` ; « ↯ » marque une frontière de retraitement (`recast_boundary`), « n.d. » un motif d'indétermination. Les événements de l'annexe F sont en regard. Généré depuis `measures`.*
 
 ## NVIDIA (NVDA)
 
